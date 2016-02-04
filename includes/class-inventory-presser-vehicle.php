@@ -2,6 +2,8 @@
 
 if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 	class Inventory_Presser_Vehicle {
+
+		var $post_ID;
 	
 		var $body_style = '';
 		var $car_ID = 0;		
@@ -12,7 +14,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $make = '';
 		var $model = '';
 		var $odometer = '';
-		var $options = array();
+		var $option_array = array();
 		var $price = 0;
 		var $stock_number = '';
 		var $trim = '';
@@ -21,6 +23,15 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		var $carfax_have_report = '0';
 		var $carfax_one_owner = '0';
+
+		// taxonomy terms
+		var $transmission;
+		var $drivetrain;
+
+		// image tag arrays
+		var $populate_images = false;
+		var $images_thumb = array();
+		var $images_large = array();
 
 		function carfax_icon_HTML() {
 			if( $this->have_carfax_report() ) {
@@ -33,20 +44,58 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return '<a href="http://www.carfax.com/cfm/check_order.cfm?partner=DCS_2&VIN=' . $this->vin . '"><img src="' . plugins_url( 'assets/record-check.png', __FILE__ ) . '" alt="CARFAX Free CARFAX Record Check" class="carfax-icon carfax-record-check"></a>';
 		}
 		
-		function __construct( $post_ID ) {
+		// constructor
+		function __construct($param) {
+
+			if (is_int($param)) {
+		        // numerical ID was given
+		        $this->post_ID = $param;
+		    } elseif (is_array($param)) {
+		        if (isset($param['post_ID'])) {
+		            $this->post_ID = $param['post_ID'];
+		        }
+		        if (isset($param['populate_images'])) {
+		            $this->populate_images = $param['populate_images'];
+		        }
+		    }
+
 			//get all data using the post ID
-			$meta = get_post_meta( $post_ID );
+			$meta = get_post_meta( $this->post_ID );
 			//get these post meta values
 			foreach( $this->keys() as $key ) {
 				$filtered_key = apply_filters( 'translate_meta_field_key', $key );
-				if( isset( $meta[$filtered_key] ) && isset( $meta[$filtered_key][0] ) ) {
+				if( isset( $meta[$filtered_key] ) && isset( $meta[$filtered_key][0])) {
 					if( is_array( $this->$key ) ) {
-						array_push( $this->$key, $meta[$filtered_key][0] );
+						$this->$key = array_unique($meta[$filtered_key]);
 					} else {
 						$this->$key = $meta[$filtered_key][0];
 					}
 				}
 			}
+
+			// get selected taxonomy terms
+			$this->transmission = $this->get_term_string('Transmission');
+			$this->drivetype = $this->get_term_string('Drive type');
+
+			// fill arrays of thumb and large image URI's
+			if ($this->populate_images) {
+				
+				$image_args = array('post_parent' => get_the_ID(),
+						'numberposts' => -1,
+						'post_type' => 'attachment',
+						'post_mime_type' => 'image',
+						'order' => 'ASC',
+						'orderby' => 'menu_order ID');
+
+				$images = get_children($image_args);
+
+				foreach($images as $image):
+					$this->images_thumb[] = wp_get_attachment_image($image->ID, 'thumb');
+					$this->images_large[] = wp_get_attachment_image($image->ID, 'large');
+				endforeach;
+
+			}
+			
 		}
 
 		function have_carfax_report() {
@@ -104,6 +153,12 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				$result = number_format( $this->price, 0, '.', '' );
 			}
 			return '$' . $result;
+		}
+
+		//return taxonomy terms as a comma delimited string
+		function get_term_string( $taxonomy ) {
+			$term_list = wp_get_post_terms($this->post_ID, $taxonomy, array("fields" => "names"));
+			return implode(', ', $term_list);
 		}
 	}
 }
