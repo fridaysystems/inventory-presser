@@ -134,7 +134,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		function get_images_html_array( $size ) {
 
 			$this->images[$size] = array();
-			
+
 			$image_args = array('post_parent' =>$this->post_ID,
 					'numberposts' => -1,
 					'post_type' => 'attachment',
