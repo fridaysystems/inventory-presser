@@ -28,10 +28,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $transmission;
 		var $drivetrain;
 
-		// image tag arrays
-		var $populate_images = false;
-		var $images_thumb = array();
-		var $images_large = array();
+		// images
+		var $images = array();
 
 		function carfax_icon_HTML() {
 			if( $this->have_carfax_report() ) {
@@ -45,19 +43,9 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 		
 		// constructor
-		function __construct($param) {
+		function __construct($post_id) {
 
-			if (is_int($param)) {
-		        // numerical ID was given
-		        $this->post_ID = $param;
-		    } elseif (is_array($param)) {
-		        if (isset($param['post_ID'])) {
-		            $this->post_ID = $param['post_ID'];
-		        }
-		        if (isset($param['populate_images'])) {
-		            $this->populate_images = $param['populate_images'];
-		        }
-		    }
+			$this->post_ID = $post_id;
 
 			//get all data using the post ID
 			$meta = get_post_meta( $this->post_ID );
@@ -77,25 +65,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$this->transmission = $this->get_term_string('Transmission');
 			$this->drivetype = $this->get_term_string('Drive type');
 
-			// fill arrays of thumb and large image URI's
-			if ($this->populate_images) {
-				
-				$image_args = array('post_parent' => get_the_ID(),
-						'numberposts' => -1,
-						'post_type' => 'attachment',
-						'post_mime_type' => 'image',
-						'order' => 'ASC',
-						'orderby' => 'menu_order ID');
-
-				$images = get_children($image_args);
-
-				foreach($images as $image):
-					$this->images_thumb[] = wp_get_attachment_image($image->ID, 'thumb');
-					$this->images_large[] = wp_get_attachment_image($image->ID, 'large');
-				endforeach;
-
-			}
-			
 		}
 
 		function have_carfax_report() {
@@ -160,5 +129,26 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$term_list = wp_get_post_terms($this->post_ID, $taxonomy, array("fields" => "names"));
 			return implode(', ', $term_list);
 		}
+
+		// fill arrays of thumb and large image URI's
+		function get_images_html_array( $size ) {
+
+			$this->images[$size] = array();
+			
+			$image_args = array('post_parent' =>$this->post_ID,
+					'numberposts' => -1,
+					'post_type' => 'attachment',
+					'post_mime_type' => 'image',
+					'order' => 'ASC',
+					'orderby' => 'menu_order ID');
+
+			$images = get_children($image_args);
+
+			foreach($images as $image):
+				$this->images[$size][] = wp_get_attachment_image($image->ID, $size);
+			endforeach;
+
+		}
+
 	}
 }

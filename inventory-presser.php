@@ -740,7 +740,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * if we find them coming over as part of the post to save.
 			 */
 
-			$vehicle = new Inventory_Presser_Vehicle;
+			$vehicle = new Inventory_Presser_Vehicle($post_id);
 			foreach( $vehicle->keys() as $key ) {
 				$key = apply_filters( 'translate_meta_field_key', $key );
 				if ( isset( $_POST[$key] ) ) {
