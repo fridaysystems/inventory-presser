@@ -1,0 +1,13 @@
+.wp-media-buttons .annotation{
+	line-height: 230%;	
+}
+.lighter h3,
+.lighter table.form-table tbody tr th,
+.lighter table.form-table tbody tr td fieldset,
+.lighter table.form-table tbody tr td p.description,
+table.form-table tr.lighter th,
+table.form-table tr.lighter td p.description,
+table.form-table tr.lighter td label{
+	color: #c4c4c4;
+}
+.update-nag.no-pad{ padding: 1px 12px; }
