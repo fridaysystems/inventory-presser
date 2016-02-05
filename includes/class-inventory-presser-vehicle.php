@@ -30,17 +30,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		// images
 		var $images = array();
-
-		function carfax_icon_HTML() {
-			if( $this->have_carfax_report() ) {
-				if( $this->is_carfax_one_owner() ) {
-					return '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '"><img src="' . plugins_url( 'assets/free-carfax-one-owner.png', __FILE__ ) . '" alt="CARFAX 1 OWNER Free CARFAX Report" class="carfax-icon carfax-one-owner"></a>';
-				} else {
-					return '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '"><img src="' . plugins_url( 'assets/free-carfax-report.png', __FILE__ ) . '" alt="CARFAX Free CARFAX Report" class="carfax-icon carfax-free-report"></a>';
-				}
-			}
-			return '<a href="http://www.carfax.com/cfm/check_order.cfm?partner=DCS_2&VIN=' . $this->vin . '"><img src="' . plugins_url( 'assets/record-check.png', __FILE__ ) . '" alt="CARFAX Free CARFAX Record Check" class="carfax-icon carfax-record-check"></a>';
-		}
 		
 		// constructor
 		function __construct($post_id) {
@@ -48,13 +37,14 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$this->post_ID = $post_id;
 
 			//get all data using the post ID
-			$meta = get_post_meta( $this->post_ID );
+			$meta = get_post_meta($this->post_ID);
+
 			//get these post meta values
 			foreach( $this->keys() as $key ) {
 				$filtered_key = apply_filters( 'translate_meta_field_key', $key );
 				if( isset( $meta[$filtered_key] ) && isset( $meta[$filtered_key][0])) {
 					if( is_array( $this->$key ) ) {
-						$this->$key = array_unique($meta[$filtered_key]);
+						$this->$key = unserialize($meta[$filtered_key][0]);
 					} else {
 						$this->$key = $meta[$filtered_key][0];
 					}
@@ -65,6 +55,17 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$this->transmission = $this->get_term_string('Transmission');
 			$this->drivetype = $this->get_term_string('Drive type');
 
+		}
+
+		function carfax_icon_HTML() {
+			if( $this->have_carfax_report() ) {
+				if( $this->is_carfax_one_owner() ) {
+					return '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '"><img src="' . plugins_url( 'assets/free-carfax-one-owner.png', __FILE__ ) . '" alt="CARFAX 1 OWNER Free CARFAX Report" class="carfax-icon carfax-one-owner"></a>';
+				} else {
+					return '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '"><img src="' . plugins_url( 'assets/free-carfax-report.png', __FILE__ ) . '" alt="CARFAX Free CARFAX Report" class="carfax-icon carfax-free-report"></a>';
+				}
+			}
+			return '<a href="http://www.carfax.com/cfm/check_order.cfm?partner=DCS_2&VIN=' . $this->vin . '"><img src="' . plugins_url( 'assets/record-check.png', __FILE__ ) . '" alt="CARFAX Free CARFAX Record Check" class="carfax-icon carfax-record-check"></a>';
 		}
 
 		function have_carfax_report() {
@@ -147,6 +148,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			foreach($images as $image):
 				$this->images[$size][] = wp_get_attachment_image($image->ID, $size);
 			endforeach;
+
+			return $this->images[$size];
 
 		}
 
