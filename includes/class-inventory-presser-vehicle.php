@@ -113,7 +113,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		
 		/**
 		 * Return the price as a dollar amount except when it is zero.
-		 * Return the $zero_string when the price is zero.sadfasdf
+		 * Return the $zero_string when the price is zero.
 		 */
 		function price( $zero_string ) {
 			if( 0 === $this->price ) { return $zero_string; }
