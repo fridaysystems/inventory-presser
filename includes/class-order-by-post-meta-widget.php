@@ -105,8 +105,8 @@ class Order_By_Widget extends WP_Widget {
 			'public'   => true,
 		);
 		$already_turned_on_keys = array();
-		if( isset( $instance['obpm-post-meta-keys'] ) ) {
-			$already_turned_on_keys = explode( '|', $instance['obpm-post-meta-keys'] );
+		if( isset( $instance['post-meta-keys'] ) ) {
+			$already_turned_on_keys = explode( '|', $instance['post-meta-keys'] );
 		}
 		//Which post meta keys should the widget allow users to choose?
 		echo '<p>Which post meta keys should users be allowed to use as sort fields?</p>';
@@ -157,7 +157,7 @@ class Order_By_Widget extends WP_Widget {
 		$arr = array();
 		foreach( $this->get_post_meta_keys_from_database() as $key ) {
 			//if we have a saved label, use that. otherwise, create a label
-			$arr[$key] = ( isset( $instance['obpm-label-' . $key] ) ? $instance['obpm-label-' . $key] : $this->create_label( $key ) );
+			$arr[$key] = ( isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $this->create_label( $key ) );
 		}
 		/**
 		 * Some fields do not make sense to order by, such as interior color & VIN
@@ -264,13 +264,13 @@ class Order_By_Widget extends WP_Widget {
 			if( isset( $_REQUEST['obpm-key-' . $key] ) ) {
 				array_push( $keys, $key );
 				if( isset( $_REQUEST['obpm-label-' . $key] ) ) {
-					$instance['obpm-label-' . $key] = strip_tags( $_REQUEST['obpm-label-' . $key] );
+					$instance['label-' . $key] = strip_tags( $_REQUEST['obpm-label-' . $key] );
 				}
 			} else {
-				unset( $instance['obpm-label-' . $key] );
+				unset( $instance['label-' . $key] );
 			}
 		}
-		$instance['obpm-post-meta-keys'] = implode( '|', $keys );
+		$instance['post-meta-keys'] = implode( '|', $keys );
 		return $instance;
 	}
 
@@ -281,13 +281,13 @@ class Order_By_Widget extends WP_Widget {
  	 * @param array $instance
 	 */
  	public function widget( $args, $instance ) {
- 		$keys_to_list = explode( '|', $instance['obpm-post-meta-keys'] );
+ 		$keys_to_list = explode( '|', $instance['post-meta-keys'] );
  		if( 0 < sizeof( $keys_to_list ) ) {
  		 	echo $args['before_widget'];
  		 	echo '<span class="order-by-label">Order by</span><ul class="order-by-list">';
 			foreach( $keys_to_list as $key ) {
 				echo '<li><a href="javascript:order_by_post_meta(\'' . $key . '\');">';
-				echo isset( $instance['obpm-label-' . $key] ) ? $instance['obpm-label-' . $key] : $key;
+				echo isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $key;
 				echo '</a></li>';
 			}
 			echo '</ul>' . $args['after_widget'];
