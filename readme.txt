@@ -57,6 +57,10 @@ and at this time there is no VIN decoder or support for vehicle options.
 
 == Changelog ==
 
+= 1.2.0 =
+* Added a widget to allow users to reorder vehicles by post meta keys. This enables sorting by year, make, model,
+price, odometer, etc. This widget was developed as a separate plugin until being rolled in with this update.
+
 = 1.1.0 = 
 * Added CARFAX support to the vehicle object and added three CARFAX icons to the assets directory
 
