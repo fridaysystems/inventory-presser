@@ -1,5 +1,5 @@
 .wp-media-buttons .annotation{
-	line-height: 230%;	
+	line-height: 230%;
 }
 .lighter h3,
 .lighter table.form-table tbody tr th,
@@ -11,3 +11,19 @@ table.form-table tr.lighter td label{
 	color: #c4c4c4;
 }
 .update-nag.no-pad{ padding: 1px 12px; }
+.list-with-columns{
+	padding: .5em;
+	column-width: 225px;
+	-moz-column-width: 225px;
+	-webkit-column-width: 225px;
+	-moz-column-count: auto;
+	-webkit-column-count: auto;
+	column-count: auto;
+}
+ul.optional-equipment{
+	-webkit-margin-before: 0;
+	-webkit-margin-after: 0;
+}
+ul.optional-equipment li{
+	max-width: 250px;
+}

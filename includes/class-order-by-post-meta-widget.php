@@ -15,85 +15,7 @@ class Order_By_Widget extends WP_Widget {
 
  		//Load our JavaScript
  		add_action( 'wp_enqueue_scripts', array( &$this, 'load_javascript' ) );
-
-		/**
-		 * Deliver our promise to front-end users, change the ORDER BY clause of
-		 * the query that's fetching post objects.
-		 */
-		if( ! is_admin() && isset( $_GET['orderby'] ) ) {
-			add_action( 'pre_get_posts', array( &$this, 'add_orderby_to_query' ) );
-		}
-
-		add_filter( 'order_by_post_meta_widget_meta_value_or_meta_value_num', array( &$this, 'indicate_post_meta_values_are_numbers' ), 10, 2 );
  	}
-
-	function add_orderby_to_query( $query ) {
-		if ( ! $query->is_main_query() ) {
-			return;
-		}
-
-		add_filter( 'posts_clauses', array( &$this, 'modify_query_orderby' ) );
-		
-		$query->set( 'meta_key', $_GET['orderby'] );
-		switch( $query->query_vars['meta_key'] ) {
-		
-			//MAKE
-			case 'inventory_presser_make':
-				$query->set( 'meta_query', array(
-					'relation' => 'AND', 
-						array( 'key' => 'inventory_presser_make', 'compare' => 'EXISTS' ), 
-						array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
-						array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
-					) 
-				);
-				break;
-				
-			//MODEL		
-			case 'inventory_presser_model':
-				$query->set( 'meta_query', array(
-					'relation' => 'AND', 
-						array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ), 
-						array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' ) 
-					) 
-				);
-				break;
-				
-			//YEAR
-			case 'inventory_presser_year':
-				$query->set( 'meta_query', array(
-					'relation' => 'AND', 
-						array( 'key' => 'inventory_presser_year', 'compare' => 'EXISTS' ), 
-						array( 'key' => 'inventory_presser_make', 'compare' => 'EXISTS' ),
-						array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
-						array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
-					) 
-				);
-				break;
-		}
-		
-		//Allow other developers to decide if the post meta values are numbers
-		$meta_value_or_meta_value_num = apply_filters( 'order_by_post_meta_widget_meta_value_or_meta_value_num', 'meta_value', $_GET['orderby'] );
-		$query->set( 'orderby', $meta_value_or_meta_value_num );
-				 
-		if( isset( $_GET['order'] ) ) {
-			$query->set( 'order', $_GET['order'] );
-		}
-	}
-
- 	/**
- 	 * Turn a post meta key into a more readable name that is suggested as the
- 	 * text a user clicks on to sort vehicles by a post meta key.
- 	 * 
- 	 * @param string $post_meta_key The key to make more friendly
- 	 */
-	function create_label( $post_meta_key ) {
-		/**
-		 * Remove 'inventory_presser_'
-		 * Change underscores to spaces
-		 * Capitalize the first character
-		 */
-		return ucfirst( str_replace( '_', ' ', str_replace( 'inventory_presser_', '', $post_meta_key ) ) );
-	}
  	
 	/**
 	 * Outputs the options form on admin
@@ -133,11 +55,6 @@ class Order_By_Widget extends WP_Widget {
 		echo '</dl>';
 	}
 
-	function get_last_word( $str ) {
-		$pieces = explode( ' ', $str );
-		return array_pop( $pieces );
-	}
-
 	/**
 	 * Produces an associative array where the post meta keys are the keys
 	 * and the values are human-readable labels.
@@ -155,9 +72,10 @@ class Order_By_Widget extends WP_Widget {
 		 *
 		 */
 		$arr = array();
+		$vehicle = new Inventory_Presser_Vehicle();
 		foreach( $this->get_post_meta_keys_from_database() as $key ) {
 			//if we have a saved label, use that. otherwise, create a label
-			$arr[$key] = ( isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $this->create_label( $key ) );
+			$arr[$key] = ( isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $vehicle->make_post_meta_key_readable( $key ) );
 		}
 		/**
 		 * Some fields do not make sense to order by, such as interior color & VIN
@@ -182,29 +100,14 @@ class Order_By_Widget extends WP_Widget {
 	function get_post_meta_keys_from_database() {
 		global $wpdb;
 		$query = "
-		SELECT DISTINCT($wpdb->postmeta.meta_key) 
-		FROM $wpdb->posts 
-		LEFT JOIN $wpdb->postmeta 
-		ON $wpdb->posts.ID = $wpdb->postmeta.post_id 
-		WHERE $wpdb->postmeta.meta_key LIKE 'inventory_presser_%'
-		ORDER BY $wpdb->postmeta.meta_key
+			SELECT DISTINCT($wpdb->postmeta.meta_key) 
+			FROM $wpdb->posts 
+			LEFT JOIN $wpdb->postmeta 
+			ON $wpdb->posts.ID = $wpdb->postmeta.post_id 
+			WHERE $wpdb->postmeta.meta_key LIKE 'inventory_presser_%'
+			ORDER BY $wpdb->postmeta.meta_key
 		";
 		return $wpdb->get_col( $query );
-	}
-
-	/**
-	 * Help WordPress understand which post meta values should be treated as
-	 * numbers. By default, they are all strings, and strings sort differently 
-	 * than numbers.
-	 */
-	function indicate_post_meta_values_are_numbers( $value, $meta_key ) {
-		return ( in_array( $meta_key, array( 
-			'_inventory_presser_car_ID',
-			'_inventory_presser_dealer_ID',
-			'inventory_presser_odometer',
-			'inventory_presser_price',
-			'inventory_presser_year',
-		) ) ? 'meta_value_num' : $value );
 	}
 
 	function load_javascript( ) {
@@ -212,39 +115,6 @@ class Order_By_Widget extends WP_Widget {
 			wp_register_script( 'order-by-widget-javascript', plugins_url( 'js/order-by-post-meta-widget.js', dirname( __FILE__ ) ) );
 			wp_enqueue_script( 'order-by-widget-javascript' );
 		}
-	}
-
-	function modify_query_orderby( $pieces ) {
-		/** 
-		 * Count the number of meta fields we have added to the query by parsing
-		 * the join piece of the query
-		 */
-		$meta_field_count = sizeof( explode( 'INNER JOIN wp_postmeta AS', $pieces['join'] ) )-1;
-		
-		//Parse out the ASC or DESC sort direction from the end of the ORDER BY clause
-		$direction = $this->get_last_word( $pieces['orderby'] );
-		$acceptable_directions = array( 'ASC', 'DESC' );
-		$direction = ( in_array( $direction, $acceptable_directions ) ? ' ' . $direction : '' );
-		
-		/** 
-		 * Build a string to replace the existing ORDER BY field name
-		 * Essentially, we are going to turn 'wp_postmeta.meta_value' into
-		 * 'mt1.meta_value ASC, mt2.meta_value ASC, mt3.meta_value ASC'
-		 * where the number of meta values is what we calculated in $meta_field_count
-		 */
-		$replacement = '';
-		for( $m=0; $m<$meta_field_count; $m++ ) {
-			$replacement .= 'mt' . ( $m+1 ) . '.meta_value';
-			if( $m < ( $meta_field_count-1 ) ) {
-				$replacement .= $direction . ', ';
-			}
-		}
-		
-		if( '' != $replacement ) {
-			global $wpdb;
-			$pieces['orderby'] = str_replace( $wpdb->prefix . 'postmeta.meta_value', $replacement, $pieces['orderby'] );
-		}
-		return $pieces;
 	}
 
 	/**

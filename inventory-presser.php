@@ -10,7 +10,6 @@ defined( 'ABSPATH' ) OR exit;
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-
 if ( ! class_exists( 'Inventory_Presser_Vehicle' ) ) {
 	$class_vehicle = plugin_dir_path( __FILE__ ) . 'includes/class-inventory-presser-vehicle.php';
 	if ( file_exists( $class_vehicle ) ) {
@@ -22,12 +21,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	class Inventory_Presser_Plugin {
 		const PRODUCT_NAME = 'Inventory Presser';
 		const OPTION_NAME = 'inventory_presser_options';
-		
+
 		const CUSTOM_POST_TYPE = 'inventory_vehicle';
 		function post_type() {
 			return apply_filters( 'inventory_presser_post_type', self::CUSTOM_POST_TYPE );
-		}		
-		
+		}
+
 		function add_columns_to_vehicles_table( $column ) {
 			//add our columns
 			$column['inventory_presser_stock_number'] = 'Stock #';
@@ -40,31 +39,98 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			unset( $column['tags'] );
 			return $column;
 		}
-		
+
 		function add_our_menu_to_settings( ) {
 			$menu_slug = $this->product_name_slug( '_settings' );
 			$my_admin_page = add_options_page( self::PRODUCT_NAME . ' settings', self::PRODUCT_NAME, 'manage_options', $menu_slug, array( &$this, 'get_settings_page_html'));
 			//when our options page is loaded, run a scan that checks settings values that we recommend
 			add_action('load-'.$my_admin_page, array( &$this, 'scan_for_recommended_settings_and_create_warnings' ) );
 		}
-		
+
+		function add_orderby_to_query( $query ) {
+			//Do not mess with the query if it's not the main one and our CPT
+			if ( ! $query->is_main_query() || ! is_post_type_archive( self::CUSTOM_POST_TYPE ) ) {
+				return;
+			}
+
+			add_filter( 'posts_clauses', array( &$this, 'modify_query_orderby' ) );
+
+			/**
+			 * The field we want to order by is either in $_GET['orderby'] when
+			 * the user has chosen to reorder posts or saved in the plugin
+			 * settings 'default-sort-key.' The sort direction is in
+			 * $_GET['order'] or 'default-sort-order.'
+			 */
+			if( isset( $_GET['orderby'] ) ) {
+				$key = $_GET['orderby'];
+				$direction = $_GET['order'];
+			} else {
+				$options = $this->get_options();
+				$key = $options['default-sort-key'];
+				$direction = $options['default-sort-order'];
+			}
+
+			$query->set( 'meta_key', $key );
+			switch( $query->query_vars['meta_key'] ) {
+
+				//MAKE
+				case 'inventory_presser_make':
+					$query->set( 'meta_query', array(
+						'relation' => 'AND',
+							array( 'key' => 'inventory_presser_make', 'compare' => 'EXISTS' ),
+							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
+							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
+						)
+					);
+					break;
+
+				//MODEL
+				case 'inventory_presser_model':
+					$query->set( 'meta_query', array(
+						'relation' => 'AND',
+							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
+							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
+						)
+					);
+					break;
+
+				//YEAR
+				case 'inventory_presser_year':
+					$query->set( 'meta_query', array(
+						'relation' => 'AND',
+							array( 'key' => 'inventory_presser_year', 'compare' => 'EXISTS' ),
+							array( 'key' => 'inventory_presser_make', 'compare' => 'EXISTS' ),
+							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
+							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
+						)
+					);
+					break;
+			}
+
+			//Allow other developers to decide if the post meta values are numbers
+			$vehicle = new Inventory_Presser_Vehicle(); //UGLY: to add a filter before this next line
+			$meta_value_or_meta_value_num = apply_filters( 'inventory_presser_meta_value_or_meta_value_num', 'meta_value', $key );
+			$query->set( 'orderby', $meta_value_or_meta_value_num );
+			$query->set( 'order', $direction );
+		}
+
 		function annotate_add_media_button( $context ) {
 			return $context . '<span id="media-annotation" class="annotation">' . $this->create_add_media_button_annotation( ) . '</span>';
 		}
 
 		function __construct( ) {
-		
+
 			/**
 			 * Modify the administrator dashboard
 			 */
 
 			//add a menu to the admin settings menu
 			add_action( 'admin_menu', array( &$this, 'add_our_menu_to_settings' ) );
-			
+
 			//Add functionality to the admin dashboard so managing our data is easier
 			add_action( 'admin_init', array( &$this, 'enhance_administrator_dashboard' ) );
-			
-			
+
+
 			/**
 			 * Create our post type and taxonomies
 			 */
@@ -74,8 +140,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//create custom taxonomies for vehicles
 			add_action( 'init', array( &$this, 'create_custom_taxonomies' ) );
-			
-			
+
+
 			/**
 			 * Some custom rewrite rules are created and destroyed
 			 */
@@ -93,7 +159,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Translate friendly names to actual custom field keys
 			add_filter( 'translate_meta_field_key', array( &$this, 'translate_custom_field_names' ) );
-			
+
 			/**
 			 * Affect the way some importers work
 			 */
@@ -114,18 +180,26 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$widget = new Order_By_Widget();
 			//Register the widget
 		 	add_action( 'widgets_init', create_function( '', 'return register_widget( "Order_By_Widget" );' ) );
+
+			/**
+			 * Deliver our promise to order posts, change the ORDER BY clause of
+			 * the query that's fetching post objects.
+			 */
+			if( ! is_admin() && ( isset( $_GET['orderby'] ) || isset( $options['default-sort-key'] ) ) ) {
+				add_action( 'pre_get_posts', array( &$this, 'add_orderby_to_query' ) );
+			}
 		}
 
 		function create_add_media_button_annotation( ) {
 			global $post;
 			if( !is_object( $post ) && isset( $_POST['post_ID'] ) ) {
-				/* this function is being called via AJAX and the 
+				/* this function is being called via AJAX and the
 				 * post_id is incoming, so get the post
 				 */
 				$post = get_post( $_POST['post_ID'] );
 			}
 			if( $this->post_type() == $post->post_type ) {
-				$attachments = get_children( array( 
+				$attachments = get_children( array(
 					'post_parent'    => $post->ID,
 					'post_type'      => 'attachment',
 					'posts_per_page' => -1,
@@ -145,12 +219,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							$counts['image']++;
 							break;
 						case 'video/mpeg':
-						case 'video/mp4': 
+						case 'video/mp4':
 						case 'video/quicktime':
 							$counts['video']++;
 							break;
 						case 'text/csv':
-						case 'text/plain': 
+						case 'text/plain':
 						case 'text/xml':
 							$counts['text']++;
 							break;
@@ -161,32 +235,32 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							$counts['other']++;
 							break;
 					}
-				}				
+				}
 				if( 0 < ( $counts['image'] + $counts['video'] + $counts['text'] + $counts['pdf'] + $counts['other'] ) ) {
 					$note = '';
-					if( 0 < $counts['image'] ) { 
+					if( 0 < $counts['image'] ) {
 						$note .= $counts['image'] . ' photo' . ( 1 != $counts['image'] ? 's' : '' );
 					}
 					if( 0 < $counts['video'] ) {
-						if( '' != $note ) { 
+						if( '' != $note ) {
 							$note .= ', ';
 						}
 						$note .= $counts['video'] . ' video' . ( 1 != $counts['video'] ? 's' : '' );
 					}
-					if( 0 < $counts['text'] ) { 
-						if( '' != $note ) { 
+					if( 0 < $counts['text'] ) {
+						if( '' != $note ) {
 							$note .= ', ';
 						}
 						$note .= $counts['text'] . ' text' . ( 1 != $counts['text'] ? 's' : '' );
 					}
-					if( 0 < $counts['pdf'] ) { 
-						if( '' != $note ) { 
+					if( 0 < $counts['pdf'] ) {
+						if( '' != $note ) {
 							$note .= ', ';
 						}
 						$note .= $counts['pdf'] . ' PDF' . ( 1 != $counts['pdf'] ? 's' : '' );
 					}
-					if( 0 < $counts['other'] ) { 
-						if( '' != $note ) { 
+					if( 0 < $counts['other'] ) {
+						if( '' != $note ) {
 							$note .= ', ';
 						}
 						$note .= $counts['other'] . ' file' . ( 1 != $counts['other'] ? 's' : '' );
@@ -194,16 +268,16 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					return $note;
 				} else {
 					return '0 photos';
-				}				
-			}		
+				}
+			}
 		}
-				
+
 		function create_custom_post_type( ) {
 			//creates a custom post type that will be used by this plugin
-			register_post_type( 
+			register_post_type(
 				$this->post_type(),
-				apply_filters( 
-					'inventory_presser_post_type_args', 
+				apply_filters(
+					'inventory_presser_post_type_args',
 					array (
 						'description'  => __('Vehicles for sale in an automobile or powersports dealership'),
 						'has_archive'  => true,
@@ -219,12 +293,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						'menu_position'=> 5, //below Posts
 						'public'       => true,
 						'rewrite'      => array ( 'slug' => 'inventory' ),
-						'supports'     => array ( 
-									'editor', 
-									'title', 
+						'supports'     => array (
+									'editor',
+									'title',
 									'thumbnail',
 								  ),
-						'taxonomies'   => array ( 
+						'taxonomies'   => array (
 									'post_tag', //Allow tags
 									'Model year',
 									'Make',
@@ -236,13 +310,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 									'Transmission',
 									'Type',
 								  ),
-					
+
 					)
 				)
 			);
 		}
-		
-		function create_custom_taxonomies( ) {			
+
+		function create_custom_taxonomies( ) {
 			//loop over this data, register the taxonomies, and populate the terms if needed
 			$taxonomy_data = $this->taxonomy_data();
 			for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
@@ -254,8 +328,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				 */
 				foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
 					if ( !is_array( term_exists( $desc, $taxonomy_data[$i]['args']['label'] ) ) ) {
-						wp_insert_term( $desc, $taxonomy_data[$i]['args']['label'], 
-							array ( 
+						wp_insert_term( $desc, $taxonomy_data[$i]['args']['label'],
+							array (
 								'description' => $desc,
 								'slug' => $abbr,
 							)
@@ -264,42 +338,42 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				}
 			}
 		}
-		
+
 		function deactivation( ) {
 			/* this is called during plugin deactivation
 			 * delete the rewrite_rules option so the rewrite rules
-			 * are generated on the next page load without ours. 
+			 * are generated on the next page load without ours.
 			 * this is a weird thing and is described here http://wordpress.stackexchange.com/a/44337/13090
 			 */
 			delete_option('rewrite_rules');
 		}
-		
-		function delete_all_data_and_deactivate( ) {			
+
+		function delete_all_data_and_deactivate( ) {
 			//this function will operate as an uninstall utility
 			//removes all the data we have added to the database
 
 			//delete all the vehicles
 			$deleted_count = $this->delete_all_inventory( );
-				
+
 			//remove the terms in taxonomies
 			$taxonomy_data = $this->taxonomy_data();
-			for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {				
+			for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
 				$tax = $taxonomy_data[$i]['args']['label'];
 				$terms = get_terms( $tax, array( 'fields' => 'ids', 'hide_empty' => false ) );
 				foreach ( $terms as $value ) {
 					wp_delete_term( $value, $tax );
 				}
 			}
-			
+
 			do_action( 'inventory_presser_delete_all_data' );
 
 			//kill the option
 			delete_option( self::OPTION_NAME );
-					
+
 			//deactivate so the next page load doesn't restore the option & terms
 			deactivate_plugins( plugin_basename( __FILE__ ) );
 		}
-		
+
 		function delete_all_inventory( ) {
 			//this function deletes all posts that exist of our custom post type
 			//and their associated meta data
@@ -331,28 +405,31 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 			return $deleted_count;
 		}
-		
+
 		function enhance_administrator_dashboard( ) {
 			//This function is added to the 'admin_init' hook
-			
+
 			//Save custom post data when posts are saved
 			add_action( 'save_post', array( &$this, 'save_vehicle_post_meta' ) );
-			
+
 			//Add columns to the table that lists all the Vehicles on edit.php
 			add_filter( 'manage_' . $this->post_type() . '_posts_columns', array( &$this, 'add_columns_to_vehicles_table' ) );
-			
+
 			//Populate the columns we added to the Vehicles table
 			add_action( 'manage_' . $this->post_type() . '_posts_custom_column', array( &$this, 'populate_columns_we_added_to_vehicles_table' ), 10, 2 );
-		
+
 			//Make our added columns to the Vehicles table sortable
-			add_filter( 'manage_edit-' . $this->post_type() . '_sortable_columns', array( &$this, 'make_vehicles_table_columns_sortable' ) );			
-			
+			add_filter( 'manage_edit-' . $this->post_type() . '_sortable_columns', array( &$this, 'make_vehicles_table_columns_sortable' ) );
+
 			//Implement the orderby for each of these added columns
 			add_filter( 'request', array( &$this, 'vehicles_table_columns_orderbys' ) );
-			
+
 			//Add a meta box to the New/Edit post page
 			add_meta_box('vehicle-meta', 'Vehicle attributes', array( &$this, 'meta_box_html_vehicle' ), $this->post_type(), 'advanced', 'high' );
-			
+
+			//Add another meta box to the New/Edit post page
+			add_meta_box('options-meta', 'Optional equipment', array( &$this, 'meta_box_html_options' ), $this->post_type(), 'normal', 'low' );
+
 			// Move all "advanced" meta boxes above the default editor
 			// http://wordpress.stackexchange.com/a/88103
 			add_action( 'edit_form_after_title', function( ) {
@@ -360,34 +437,34 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				do_meta_boxes( get_current_screen( ), 'advanced', $post );
 				unset( $wp_meta_boxes[get_post_type( $post )]['advanced'] );
 			});
-			
+
 			//Move the "Tags" metabox below the meta boxes for vehicle custom taxonomies
 			add_action( 'add_meta_boxes', array( &$this, 'move_tags_meta_box' ), 0 );
 
 			//Load our stylesheet that modifies the dashboard
 			add_action( 'admin_enqueue_scripts', array( &$this, 'my_admin_style' ) );
-			
-			//Load our javascript that modifies the dashboard	 
+
+			//Load our javascript that modifies the dashboard
 			add_action( 'admin_enqueue_scripts', array( &$this, 'my_admin_javascript' ) );
-			
+
 			//Add some content next to the "Add Media" button
 			add_action( 'media_buttons_context', array( &$this, 'annotate_add_media_button' ) );
-			
+
 			//'add_attachment'
 			//'delete_attachment'
 			//Make our Add Media button annotation available from an AJAX call
 			add_action( 'wp_ajax_output_add_media_button_annotation', array( &$this, 'output_add_media_button_annotation' ) );
-			
+
 			//Add a link to the Settings page on the plugin management page
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( &$this, 'insert_settings_link' ), 2, 2 );
 		}
-		
+
 		/**
 		 * $color is a string value of 'red', 'yellow', or 'green' that appears as a left border on the notice box
 		 */
 		function get_admin_notice_html( $message, $color ) {
 			switch( $color ){
-				case 'red': 
+				case 'red':
 					$type = 'error';
 					break;
 				case 'yellow':
@@ -399,14 +476,24 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 			return '<div class="'. $type .' notice"><p><strong>'. __( $message, 'inventory_presser' ) . '</strong></p></div>';
 		}
-		
+
 		function get_default_options( ) {
 			$options = array(
+				'default-sort-key'                 => apply_filters( 'translate_meta_field_key', 'make' ),
+				'default-sort-order'               => 'ASC',
 				'delete-vehicles-not-in-new-feeds' => true,
 			);
 			return apply_filters( 'inventory_presser_default_options', $options );
 		}
-		
+
+		/**
+		 * Given a string, return the last word.
+		 */
+		function get_last_word( $str ) {
+			$pieces = explode( ' ', rtrim( $str ) );
+			return array_pop( $pieces );
+		}
+
 		function get_options( ) {
 			$options = get_option( self::OPTION_NAME );
 			if( !$options ) {
@@ -416,24 +503,30 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 			return $options;
 		}
-		
+
 		function get_settings_page_html( ) {
-			
+
 			$options = $this->get_options( );
-				
+
 			//only take action if we find the nonce
 			if( isset( $_POST['save-options'] ) && check_admin_referer( $this->product_name_slug() . '-nonce' ) ) {
-				//save changes to the plugin's options				
+				//save changes to the plugin's options
 				$new_options = $options;
 				$new_options['delete-vehicles-not-in-new-feeds'] = isset( $_POST['delete-vehicles-not-in-new-feeds'] );
+				if( isset( $_POST['default-sort-key'] ) ) {
+					$new_options['default-sort-key'] = $_POST['default-sort-key'];
+				}
+				if( isset( $_POST['default-sort-order'] ) ) {
+					$new_options['default-sort-order'] = $_POST['default-sort-order'];
+				}
 				if( $options != $new_options ) {
 					//save changes
 					$this->save_options( $new_options );
 					//use the changed set
 					$options = $new_options;
-				}			
+				}
 			}
-			
+
 			//check if user clicked the delete inventory button
 			if ( isset( $_POST['delete-vehicles'] ) && 'yes' == sanitize_text_field( $_POST['delete-vehicles'] ) && check_admin_referer( 'delete-vehicles-nonce' ) ) {
 				$delete_result = $this->delete_all_inventory( );
@@ -451,7 +544,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					echo '</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
 				}
 			}
-			
+
 			//did the user click the Delete all plugin data button?
 			if ( isset( $_POST['delete'] ) && 'yes' == sanitize_text_field( $_POST['delete'] ) && check_admin_referer( 'delete-nonce' ) ) {
 				$delete_result = $this->delete_all_data_and_deactivate( );
@@ -463,11 +556,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					?><script type="text/javascript"> location.href='plugins.php'; </script><?php
 				}
 			}
-			
+
 			//output the admin settings page
 			?><div class="wrap">
-				<h2><?php echo self::PRODUCT_NAME ?> Settings</h2>				
-				<form method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings"><?php 
+				<h2><?php echo self::PRODUCT_NAME ?> Settings</h2>
+				<form method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings"><?php
 					wp_nonce_field( $this->product_name_slug() . '-nonce'); ?>
 					<table class="form-table">
 					<tbody>
@@ -479,20 +572,57 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							</label>
 						</td>
 					</tr>
+					<tr>
+						<th scope="row"><label for="Sort-vehicles-by">Sort vehicles by</label></th>
+						<td>
+							<label for="default-sort-key">
+								<select name="default-sort-key" id="default-sort-key"><?php
+
+								/**
+								 * Get a list of all the post meta keys in our
+								 * CPT. Let the user choose one as a default
+								 * sort.
+								 */
+								$vehicle = new Inventory_Presser_Vehicle();
+								foreach( $vehicle->keys() as $key ) {
+									$key = apply_filters( 'translate_meta_field_key', $key );
+									echo '<option value="'. $key . '"';
+									if( isset( $options['default-sort-key'] ) ) {
+										selected( $options['default-sort-key'], $key );
+									}
+									echo '>' . $vehicle->make_post_meta_key_readable( $key ) . '</option>';
+								}
+
+
+								?></select> in <select name="default-sort-order" id="default-sort-order"><?php
+
+								foreach( array( 'ascending' => 'ASC', 'descending' => 'DESC' ) as $direction => $abbr ) {
+									echo '<option value="'. $abbr . '"';
+									if( isset( $options['default-sort-order'] ) ) {
+										selected( $options['default-sort-order'], $direction );
+									}
+									echo '>' . $direction . '</option>';
+								}
+								?></select> order
+							</label>
+						</td>
+					</tr>
 					</table>
-					
+
 					<input type="submit" id="save-options" name="save-options" class="button-primary" value="<?php _e( 'Save Changes' ) ?>" />
 				</form>
 
-				<h3><?php _e( 'Delete data' ) ?></h3>					
-					
+				<p>&nbsp;</p>
+
+				<h3><?php _e( 'Delete data' ) ?></h3>
+
 				<p><?php _e( 'Remove all vehicle data and photos.' ) ?></p>
 				<form method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings">
 					<?php wp_nonce_field('delete-vehicles-nonce'); ?>
 					<input type="hidden" name="delete-vehicles" value="yes">
 					<input type="submit" class="button-primary" value="<?php _e('Delete all Vehicles') ?>" />
 				</form>
-				
+
 				<p><?php _e( 'Remove all ' . self::PRODUCT_NAME . ' plugin data (including vehicles and photos) and deactivate.' ) ?></p>
 				<form method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings">
 					<?php wp_nonce_field('delete-nonce'); ?>
@@ -501,7 +631,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				</form>
 			</div><?php
 		}
-		
+
 		function get_term_slug( $taxonomy_name, $post_id ) {
 			$terms = wp_get_object_terms( $post_id, $taxonomy_name, array( 'orderby' => 'term_id', 'order' => 'ASC' ) );
 			if ( ! is_wp_error( $terms ) ) {
@@ -511,12 +641,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 			return '';
 		}
-		
+
 		function insert_settings_link( $links ) {
 			$links[] = '<a href="options-general.php?page=' . $this->product_name_slug() . '_settings">Settings</a>';
-			return $links; 
+			return $links;
 		}
-		
+
 		function make_vehicles_table_columns_sortable( $columns ) {
 			$custom = array(
 				// meta column id => sortby value used in query
@@ -527,34 +657,132 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			);
 			return wp_parse_args( $custom, $columns );
 		}
-		
+
 		function meta_box_html_condition( $post ) {
 			echo $this->taxonomy_meta_box_html( 'Condition', 'inventory_presser_condition', $post );
 		}
-		
+
 		function meta_box_html_availability( $post ) {
 			echo $this->taxonomy_meta_box_html( 'Availability', 'inventory_presser_availability', $post );
 		}
-		
+
  		function meta_box_html_drive_type( $post ) {
  			echo $this->taxonomy_meta_box_html( 'Drive type', 'inventory_presser_drive_type', $post );
 		}
-		
+
  		function meta_box_html_fuel( $post ) {
  			echo $this->taxonomy_meta_box_html( 'Fuel', 'inventory_presser_fuel', $post );
 		}
-		
- 		function meta_box_html_transmission( $post ) {
- 			echo $this->taxonomy_meta_box_html( 'Transmission', 'inventory_presser_transmission', $post );
+
+		function meta_box_html_options( $post ) {
+			$options = apply_filters( 'inventory_presser_default_options', array(
+				'3rd Row Seats' => false,
+				'Air Bags' => false,
+				'Air Conditioning' => false,
+				'Alloy Wheels' => false,
+				'Aluminum Wheels' => false,
+				'AM/FM Stereo' => false,
+				'Anti-lock Brakes' => false,
+				'Backup Camera' => false,
+				'Bluetooth, Hands Free' => false,
+				'Cassette' => false,
+				'CD Player' => false,
+				'Cell or Intergrated Cell Phone' => false,
+				'Cloth Seats' => false,
+				'Conversion Package' => false,
+				'Convertible' => false,
+				'Cooled Seats' => false,
+				'Cruise Control' => false,
+				'Custom Paint' => false,
+				'Disability Equipped' => false,
+				'Dual Sliding Doors' => false,
+				'DVD Player' => false,
+				'Extended Cab' => false,
+				'Fog Lights' => false,
+				'Heated Seats' => false,
+				'Keyless Entry' => false,
+				'Leather Seats' => false,
+				'Lift Kit' => false,
+				'Long Bed' => false,
+				'Memory Seat(s)' => false,
+				'Moon Roof' => false,
+				'Multi-zone Climate Control' => false,
+				'Navigation System' => false,
+				'Oversize Off Road Tires' => false,
+				'Portable Audio Connection' => false,
+				'Power Brakes' => false,
+				'Power Lift Gate' => false,
+				'Power Locks' => false,
+				'Power Seats' => false,
+				'Power Steering' => false,
+				'Power Windows' => false,
+				'Premium Audio' => false,
+				'Premium Wheels' => false,
+				'Privacy Glass' => false,
+				'Quad Seating' => false,
+				'Rear Air Bags' => false,
+				'Rear Defroster' => false,
+				'Refrigerator' => false,
+				'Roof Rack' => false,
+				'Running Boards' => false,
+				'Satellite Radio' => false,
+				'Security System' => false,
+				'Short Bed' => false,
+				'Side Air Bags' => false,
+				'Skid Plate(s)' => false,
+				'Snow Plow' => false,
+				'Spoiler' => false,
+				'Sport Package' => false,
+				'Step Side Bed' => false,
+				'Steering Wheel Controls' => false,
+				'Styled Steel Wheels' => false,
+				'Sunroof' => false,
+				'Supercharger' => false,
+				'Tilt Steering Wheel' => false,
+				'Tonneau Cover' => false,
+				'Tow Package' => false,
+				'Traction Control' => false,
+				'Trailer Hitch' => false,
+				'Turbo' => false,
+				'Two Tone Paint' => false,
+				'Wide Tires' => false,
+				'Winch' => false,
+				'Wire Wheels' => false,
+				'Xenon Headlights' => false,
+			) );
+			$options_arr = get_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'option_array' ), true );
+			foreach( $options_arr as $option ) {
+				$options[$option] = true;
+			}
+			//sort the array by key
+			ksort( $options );
+			//output a bunch of checkboxes
+			$HTML = '<div class="list-with-columns">';
+			$HTML .= '<ul class="optional-equipment">';
+			foreach( $options as $key => $value ) {
+				//element IDs cannot contain slashes, spaces or parentheses
+				$id = 'option-' . preg_replace( '/\/\(\)/i', '', str_replace( ' ', '_', $key ) );
+				$HTML .= '<li><input type="checkbox" id="'. $id .'" name="'. $id .'" value="'. $key .'"';
+				$HTML .= checked( true, $value, false );
+				$HTML .= '>';
+				$HTML .= '<label for="'. $id .'">' . $key . '</label></li>';
+			}
+			$HTML .= '</ul>';
+			$HTML .= '</div>';
+			echo $HTML;
 		}
-		
+
+ 		function meta_box_html_transmission( $post ) {
+ 			echo $this->taxonomy_meta_box_html( 'Transmission', apply_filters( 'translate_meta_field_key', 'transmission' ), $post );
+		}
+
 		function meta_box_html_type( $post ) {
-			echo $this->taxonomy_meta_box_html( 'Type', 'inventory_presser_type', $post );
+			echo $this->taxonomy_meta_box_html( 'Type', apply_filters( 'translate_meta_field_key', 'type' ), $post );
 		}
 
 		function meta_box_html_vehicle( $post, $meta_box ) {
 			//HTML output for vehicle data meta box
-			$custom = get_post_custom( $post->ID );	
+			$custom = get_post_custom( $post->ID );
 
 			$body_style = ( isset( $custom['inventory_presser_body_style'] ) ? $custom['inventory_presser_body_style'][0] : '' );
 			$color = ( isset( $custom['inventory_presser_color'] ) ? $custom['inventory_presser_color'][0] : '' );
@@ -565,20 +793,20 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$odometer = ( isset( $custom['inventory_presser_odometer'] ) ? $custom['inventory_presser_odometer'][0] : '' );
 			$price = ( isset( $custom['inventory_presser_price'] ) ? $custom['inventory_presser_price'][0] : '' );
 			$stock_number = ( isset( $custom['inventory_presser_stock_number'] ) ? $custom['inventory_presser_stock_number'][0] : '' );
-			$trim = ( isset( $custom['inventory_presser_trim'] ) ? $custom['inventory_presser_trim'][0] : '' );	
+			$trim = ( isset( $custom['inventory_presser_trim'] ) ? $custom['inventory_presser_trim'][0] : '' );
 			$VIN = ( isset( $custom['inventory_presser_vin'] ) ? $custom['inventory_presser_vin'][0] : '' );
 			$year = ( isset( $custom['inventory_presser_year'] ) ? $custom['inventory_presser_year'][0] : '' );
-			
+
 			echo '<table class="form-table"><tbody>';
-			
+
 			//VIN
 			echo '<tr><th scope="row"><label for="inventory_presser_vin">VIN</label></th>';
 			echo '<td><input type="text" name="inventory_presser_vin" maxlength="17" value="'. $VIN .'"></td>';
-			
+
 			//Stock number
 			echo '<tr><th scope="row"><label for="inventory_presser_stock_number">Stock number</label></th>';
 			echo '<td><input type="text" name="inventory_presser_stock_number" value="'. $stock_number .'"></td>';
-			
+
 			//Year
 			echo '<tr><th scope="row"><label for="inventory_presser_year">Year</label></th>';
 			echo '<td><select name="inventory_presser_year">';
@@ -590,68 +818,114 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				echo '>' .$y. '</option> ';
 			}
 			echo '</select></td></tr>';
-			
+
 			//Make
 			echo '<tr><th scope="row"><label for="inventory_presser_make">Make</label></th>';
 			echo '<td><input type="text" name="inventory_presser_make" value="' .$make. '"></td></tr>';
-			
+
 			//Model
 			echo '<tr><th scope="row"><label for="inventory_presser_model">Model</label></th>';
 			echo '<td><input type="text" name="inventory_presser_model" value="' .$model. '"></td></tr>';
-			
+
 			//Trim level
 			echo '<tr><th scope="row"><label for="inventory_presser_trim">Trim</label></th>';
 			echo '<td><input type="text" name="inventory_presser_trim" value="' .$trim. '"></td></tr>';
-			
+
 			//Engine
 			echo '<tr><th scope="row"><label for="inventory_presser_engine">Engine</label></th>';
 			echo '<td><input type="text" name="inventory_presser_engine" value="' .$engine. '"></td></tr>';
 
-			//Body style			
+			//Body style
 			echo '<tr><th scope="row"><label for="inventory_presser_body_style">Body style</label></th>';
 			echo '<td><input type="text" name="inventory_presser_body_style" value="' .$body_style. '"></td></tr>';
-			
+
 			//Color
 			echo '<tr><th scope="row"><label for="inventory_presser_color">Color</label></th>';
 			echo '<td><input type="text" name="inventory_presser_color" value="' .$color. '"></td></tr>';
-			
+
 			//Interior color
 			echo '<tr><th scope="row"><label for="inventory_presser_interior_color">Interior color</label></th>';
 			echo '<td><input type="text" name="inventory_presser_interior_color" value="' .$interior_color. '"></td></tr>';
-			
+
 			//Odometer
 			echo '<tr><th scope="row"><label for="inventory_presser_odometer">Odometer</label></th>';
 			echo '<td><input type="text" name="inventory_presser_odometer" value="' .$odometer. '"></td></tr>';
-			
+
 			//Price
 			echo '<tr><th scope="row"><label for="inventory_presser_price">Price</label></th>';
 			echo '<td><input type="text" name="inventory_presser_price" value="' .$price. '"></td></tr>';
-			
+
 			echo '</tbody></table>';
 		}
-		
+
+		function modify_query_orderby( $pieces ) {
+			/**
+			 * Count the number of meta fields we have added to the query by parsing
+			 * the join piece of the query
+			 */
+			$meta_field_count = sizeof( explode( 'INNER JOIN wp_postmeta AS', $pieces['join'] ) )-1;
+
+			//Parse out the ASC or DESC sort direction from the end of the ORDER BY clause
+			$direction = $this->get_last_word( $pieces['orderby'] );
+			$acceptable_directions = array( 'ASC', 'DESC' );
+			$direction = ( in_array( $direction, $acceptable_directions ) ? ' ' . $direction : '' );
+
+			/**
+			 * Build a string to replace the existing ORDER BY field name
+			 * Essentially, we are going to turn 'wp_postmeta.meta_value' into
+			 * 'mt1.meta_value ASC, mt2.meta_value ASC, mt3.meta_value ASC'
+			 * where the number of meta values is what we calculated in $meta_field_count
+			 */
+			if( 0 < $meta_field_count ) {
+				$replacement = '';
+				$vehicle = new Inventory_Presser_Vehicle();
+				for( $m=0; $m<$meta_field_count; $m++ ) {
+					$replacement .= 'mt' . ( $m+1 ) . '.meta_value';
+					/**
+					 * Determine if this meta field should be sorted as a number
+					 * 1. Parse out the meta key name from $pieces['where']
+					 * 2. Run it through $vehicle->post_meta_value_is_number
+					 */
+					$field_start = strpos( $pieces['where'], 'mt' . ( $m+1 ) . '.meta_key = \'')+16;
+					$field_end = strpos( $pieces['where'], "'", $field_start )-$field_start;
+					$field_name = substr( $pieces['where'], $field_start, $field_end );
+					if( $vehicle->post_meta_value_is_number( $field_name ) ) {
+						$replacement .= '+0';
+					}
+
+					$replacement .= $direction;
+					if( $m < ( $meta_field_count-1 ) ) {
+						$replacement .= ', ';
+					}
+				}
+
+				$pieces['orderby'] = $replacement;
+			}
+			return $pieces;
+		}
+
 		function move_tags_meta_box( ) {
 			//Remove and re-add the "Tags" meta box so it ends up at the bottom for our CPT
 			global $wp_meta_boxes;
 			unset( $wp_meta_boxes[$this->post_type()]['side']['core']['tagsdiv-post_tag'] );
 			add_meta_box( 'tagsdiv-post_tag', 'Tags', 'post_tags_meta_box', $this->post_type(), 'side', 'core', array( 'taxonomy' => 'post_tag' ));
 		}
-		
+
 		function my_admin_javascript( ) {
 			wp_register_script( 'custom-javascript', plugins_url( '/js/inventory.js', __FILE__ ) );
 			wp_enqueue_script( 'custom-javascript' );
 		}
-		
+
 		function my_admin_style( ) {
 			wp_enqueue_style( 'my-admin-theme', plugins_url( 'wp-admin.css', __FILE__ ) );
 		}
-		
+
 		function my_rewrite_flush( ) {
 			//http://codex.wordpress.org/Function_Reference/register_post_type#Flushing_Rewrite_on_Activation
-			
+
 			// First, we "add" the custom post type via the above written function.
 			// Note: "add" is written with quotes, as CPTs don't get added to the DB,
-			// They are only referenced in the post_type column with a post entry, 
+			// They are only referenced in the post_type column with a post entry,
 			// when you add a post of this CPT.
 			$this->create_custom_post_type( );
 
@@ -659,16 +933,16 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// You should *NEVER EVER* do this on every page load!!
 			flush_rewrite_rules( );
 		}
-		
+
 		function output_add_media_button_annotation( ) { //because AJAX
 			echo $this->create_add_media_button_annotation( );
 			wp_die();
-		}		
-		
+		}
+
 		function populate_columns_we_added_to_vehicles_table( $column_name, $post_id ) {
  			$custom_fields = get_post_custom( $post_id );
  			$val = ( isset( $custom_fields[$column_name] ) ? $custom_fields[$column_name][0] : '' );
-			switch( $column_name ) { 
+			switch( $column_name ) {
 				case 'inventory_presser_odometer':
 					if( class_exists( 'Vehicle_Data_Formatter' ) ) {
 						$formatter = new Vehicle_Data_Formatter;
@@ -690,17 +964,17 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					break;
 				default:
 					echo $val;
-			}			
+			}
 		}
-		
-		function product_name_slug( $suffix = '' ) { 
+
+		function product_name_slug( $suffix = '' ) {
 			return strtolower( str_replace( ' ', '_', self::PRODUCT_NAME ) . $suffix );
 		}
-		
-		function save_options( $arr ) { 
+
+		function save_options( $arr ) {
 			update_option( self::OPTION_NAME, $arr );
 		}
-		
+
 		function save_taxonomy_term( $post_id, $taxonomy_name, $element_name ) {
 			if ( isset( $_POST[$element_name] ) ) {
 				$term_slug = sanitize_text_field( $_POST[$element_name] );
@@ -725,76 +999,87 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				return;
 			}
 			// save post_meta values and custom taxonomy terms when vehicles are saved
-						
+
 			//Condition custom taxonomy
 			$this->save_taxonomy_term( $post_id, 'Condition', 'inventory_presser_condition' );
-			
+
 			//Availability custom taxonomy
 			$this->save_taxonomy_term( $post_id, 'Availability', 'inventory_presser_availability' );
-			
+
 			//Drive type custom taxonomy
 			$this->save_taxonomy_term( $post_id, 'Drive type', 'inventory_presser_drive_type' );
-			
+
 			//Fuel custom taxonomy
 			$this->save_taxonomy_term( $post_id, 'Fuel', 'inventory_presser_fuel' );
-			
+
 			//Transmission custom taxonomy
 			$this->save_taxonomy_term( $post_id, 'Transmission', 'inventory_presser_transmission' );
-			
+
 			//Type custom taxonomy
 			$this->save_taxonomy_term( $post_id, 'Type', 'inventory_presser_type' );
-			
-			/** 
-			 * Loop over the post meta keys we manage and save their values 
+
+			/**
+			 * Loop over the post meta keys we manage and save their values
 			 * if we find them coming over as part of the post to save.
 			 */
-
-			$vehicle = new Inventory_Presser_Vehicle($post_id);
+			$vehicle = new Inventory_Presser_Vehicle( $post_id );
 			foreach( $vehicle->keys() as $key ) {
 				$key = apply_filters( 'translate_meta_field_key', $key );
 				if ( isset( $_POST[$key] ) ) {
 					update_post_meta( $post->ID, $key, sanitize_text_field( $_POST[$key] ) );
 				}
 			}
+
+			/**
+			 * Loop over the keys in the $_POST object to find all the options
+			 * check boxes
+			 */
+			$options = array();
+			foreach( $_POST as $key => $val ) {
+				if( 'option-' == substr( $key, 0, 7) ) {
+					array_push( $options, $val );
+				}
+			}
+			update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'option_array' ), $options );
 		}
-		
-		function scan_for_recommended_settings_and_create_warnings() {	
+
+		function scan_for_recommended_settings_and_create_warnings() {
 			/** Suggest values for WordPress internal settings if the user has the values we do not prefer
 			 */
-			 
+
 			if( '1' == get_option('uploads_use_yearmonth_folders') ) {
 				//Organize uploads into yearly and monthly folders is turned on. Recommend otherwise.
 				add_action( 'admin_notices', array( &$this, 'output_upload_folder_error_html' ) );
 			}
-			
+
 			//Are thumbnail sizes not 4:3 aspect ratios?
-			if( 
+			if(
 				( ( 4/3 ) != ( get_option('thumbnail_size_w')/get_option('thumbnail_size_h') ) ) ||
 				( ( 4/3 ) != ( get_option('medium_size_w')/get_option('medium_size_h') ) ) ||
-				( ( 4/3 ) != ( get_option('large_size_w')/get_option('large_size_h') ) ) 
+				( ( 4/3 ) != ( get_option('large_size_w')/get_option('large_size_h') ) )
 			){
 				//At least one thumbnail size is not 4:3
 				add_action( 'admin_notices', array( &$this, 'output_thumbnail_size_error_html' ) );
 			}
 		}
-		
+
 		function output_upload_folder_error_html() {
-			echo $this->get_admin_notice_html( 
-				'Your media settings are configured to organize uploads into month- and year-based folders. This is not optimal for '.self::PRODUCT_NAME.', and you can turn this setting off on <a href="options-media.php">this page</a>.', 
-				'yellow' 
+			echo $this->get_admin_notice_html(
+				'Your media settings are configured to organize uploads into month- and year-based folders. This is not optimal for '.self::PRODUCT_NAME.', and you can turn this setting off on <a href="options-media.php">this page</a>.',
+				'yellow'
 			);
 		}
-		
+
 		function output_thumbnail_size_error_html() {
 			echo $this->get_admin_notice_html(
 				'At least one of your thumbnail sizes does not have an aspect ratio of 4:3, which is the most common smartphone and digital camera aspect ratio. You can change thumbnail sizes <a href="options-media.php">here</a>.',
 				'yellow'
 			);
 		}
-		
+
 		//this is an array of taxonomy names and the corresponding arrays of term data
 		function taxonomy_data( ) {
-			return apply_filters( 
+			return apply_filters(
 				'inventory_presser_taxonomy_data',
 				array (
 					array (
@@ -807,7 +1092,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							       'search_items'  => 'Search years',
 							       'popular_items' => 'Popular years',
 							       'all_items'     => 'All years',
-							), 
+							),
 							'meta_box_cb'    => null,
 							'query_var'      => 'model-year',
 							'singular_label' => 'Model year',
@@ -869,7 +1154,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						),
 						'term_data' =>	array (
 									'New'  => 'New',
-									'Used' => 'Used',			
+									'Used' => 'Used',
 								),
 					),
 					array (
@@ -896,11 +1181,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 									'SUV' => 'Sport Utility Vehicle',
 									'TRLR'=> 'Trailer',
 									'TRU' => 'Truck',
-									'VAN' => 'Van',			
-								),					
+									'VAN' => 'Van',
+								),
 					),
 					array (
-						'args' => array ( 
+						'args' => array (
 							'hierarchical'   => true,
 							'label'          => 'Availability',
 							'labels'         => array (
@@ -1015,7 +1300,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				)
 			);
 		}
-		
+
 		function taxonomy_meta_box_html( $taxonomy_name, $element_name, $post ) {
 			/* creates HTML output for a meta box that turns a taxonomy into
 			 * a select drop-down list instead of the typical checkboxes
@@ -1039,7 +1324,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$HTML .= '</select>';
 			return $HTML;
 		}
-		
+
 		function translate_custom_field_names( $nice_name ) {
 			$nice_name = strtolower( $nice_name );
 			$prefixed_fields = array(
@@ -1051,29 +1336,29 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 			return 'inventory_presser_' . $nice_name;
 		}
-		
+
 		function vehicles_table_columns_orderbys( $vars ) {
-			if ( isset( $vars['orderby'] ) && 'inventory_presser_color' == $vars['orderby'] ) {
+			if ( isset( $vars['orderby'] ) && apply_filters( 'translate_meta_field_key', 'color' ) == $vars['orderby'] ) {
 				return array_merge( $vars, array(
-					'meta_key' => 'inventory_presser_color',
+					'meta_key' => apply_filters( 'translate_meta_field_key', 'color' ),
 					'orderby' => 'meta_value'
 				) );
 			}
-			if ( isset( $vars['orderby'] ) && 'inventory_presser_odometer' == $vars['orderby'] ) {
+			if ( isset( $vars['orderby'] ) && apply_filters( 'translate_meta_field_key', 'odometer' ) == $vars['orderby'] ) {
 				return array_merge( $vars, array(
-					'meta_key' => 'inventory_presser_odometer',
+					'meta_key' => apply_filters( 'translate_meta_field_key', 'odometer' ),
 					'orderby' => 'meta_value'
 				) );
 			}
-			if ( isset( $vars['orderby'] ) && 'inventory_presser_price' == $vars['orderby'] ) {
+			if ( isset( $vars['orderby'] ) && apply_filters( 'translate_meta_field_key', 'price' ) == $vars['orderby'] ) {
 				return array_merge( $vars, array(
-					'meta_key' => 'inventory_presser_price',
+					'meta_key' => apply_filters( 'translate_meta_field_key', 'price' ),
 					'orderby' => 'meta_value_num'
 				) );
 			}
-			if ( isset( $vars['orderby'] ) && 'inventory_presser_stock_number' == $vars['orderby'] ) {
+			if ( isset( $vars['orderby'] ) && apply_filters( 'translate_meta_field_key', 'stock_number' ) == $vars['orderby'] ) {
 				return array_merge( $vars, array(
-					'meta_key' => 'inventory_presser_stock_number',
+					'meta_key' => apply_filters( 'translate_meta_field_key', 'stock_number' ),
 					'orderby' => 'meta_value'
 				) );
 			}

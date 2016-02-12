@@ -4,9 +4,9 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 	class Inventory_Presser_Vehicle {
 
 		var $post_ID;
-	
+
 		var $body_style = '';
-		var $car_ID = 0;		
+		var $car_ID = 0;
 		var $color = '';
 		var $dealer_ID = 0;
 		var $engine = ''; //3.9L 8 cylinder
@@ -30,9 +30,16 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		// images
 		var $images = array();
-		
-		// constructor
-		function __construct($post_id) {
+
+		// constructors
+		function __construct( $post_id = null ) {
+
+			//Help the order by logic determine which post meta keys are numbers
+			if( ! has_filter( 'inventory_presser_meta_value_or_meta_value_num', array( &$this, 'indicate_post_meta_values_are_numbers' ) ) ) {
+				add_filter( 'inventory_presser_meta_value_or_meta_value_num', array( &$this, 'indicate_post_meta_values_are_numbers' ), 10, 2 );
+			}
+
+			if( is_null( $post_id ) ) { return; }
 
 			$this->post_ID = $post_id;
 
@@ -54,7 +61,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			// get selected taxonomy terms
 			$this->transmission = $this->get_term_string('Transmission');
 			$this->drivetype = $this->get_term_string('Drive type');
-
 		}
 
 		function carfax_icon_HTML() {
@@ -71,11 +77,30 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		function have_carfax_report() {
 			return '1' == $this->carfax_have_report;
 		}
-		
+
+		function post_meta_value_is_number( $post_meta_key ) {
+			return in_array( $post_meta_key, array(
+				'_inventory_presser_car_ID',
+				'_inventory_presser_dealer_ID',
+				'inventory_presser_odometer',
+				'inventory_presser_price',
+				'inventory_presser_year',
+			) );
+		}
+
+		/**
+		 * Help WordPress understand which post meta values should be treated as
+		 * numbers. By default, they are all strings, and strings sort
+		 * differently than numbers.
+		 */
+		function indicate_post_meta_values_are_numbers( $value, $meta_key ) {
+			return ( $this->post_meta_value_is_number( $meta_key ) ? 'meta_value_num' : $value );
+		}
+
 		function is_carfax_one_owner() {
 			return '1' == $this->carfax_one_owner;
 		}
-		
+
 		/**
 		 * This is an array of the post meta keys this object uses. These keys
 		 * are prefixed by an apply_filters() call.
@@ -84,7 +109,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return array(
 				'body_style',
 				'car_ID',
-				'carfax_have_report', 
+				'carfax_have_report',
 				'carfax_one_owner',
 				'color',
 				'dealer_ID',
@@ -101,7 +126,22 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				'year',
 			);
 		}
-		
+
+	 	/**
+	 	 * Turn a post meta key into a more readable name that is suggested as the
+	 	 * text a user clicks on to sort vehicles by a post meta key.
+	 	 *
+	 	 * @param string $post_meta_key The key to make more friendly
+	 	 */
+		function make_post_meta_key_readable( $post_meta_key ) {
+			/**
+			 * Remove 'inventory_presser_'
+			 * Change underscores to spaces
+			 * Capitalize the first character
+			 */
+			return ucfirst( str_replace( '_', ' ', str_replace( 'inventory_presser_', '', $post_meta_key ) ) );
+		}
+
 		//if numeric, format the odometer with thousands separators
 		function odometer( ) {
 			if( is_numeric( $this->odometer ) ) {
@@ -110,14 +150,14 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				return $this->odometer;
 			}
 		}
-		
+
 		/**
 		 * Return the price as a dollar amount except when it is zero.
 		 * Return the $zero_string when the price is zero.
 		 */
 		function price( $zero_string ) {
 			if( 0 === $this->price ) { return $zero_string; }
-			if( function_exists( 'money_format' ) ) { 
+			if( function_exists( 'money_format' ) ) {
 				$result = money_format( '%.0n', $this->price );
 			} else {
 				$result = number_format( $this->price, 0, '.', ',' );
