@@ -941,7 +941,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function my_admin_javascript( ) {
-			wp_register_script( 'inventory-presser-javascript', plugins_url( '/js/inventory.js', __FILE__ ) );
+			wp_register_script( 'inventory-presser-javascript', plugins_url( '/js/admin.js', __FILE__ ) );
 			wp_enqueue_script( 'inventory-presser-javascript' );
 		}
 
