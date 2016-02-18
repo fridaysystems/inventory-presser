@@ -406,6 +406,29 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			return $deleted_count;
 		}
 
+		/**
+		 * AJAX handler for the 'Delete all Inventory' button on options page.
+		 *
+		 * Deletes all inventory and echoes a response to the JavaScript caller.
+		 */
+		function delete_all_inventory_ajax( ) {
+			$delete_result = $this->delete_all_inventory();
+			if ( is_wp_error( $delete_result ) ) {
+				//output error
+				echo "<div id='import-error' class='settings-error'><p><strong>" . $delete_result->get_error_message( ) . "</strong></p></div>";
+			} else {
+				//output the success result, it's a string of html
+				echo '<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"><p><strong>';
+				if( 0 == $delete_result ) {
+					echo 'There are no vehicles to delete.';
+				} else {
+					echo 'Deleted '.$delete_result.' vehicles.';
+				}
+				echo '</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+			}
+			wp_die();
+		}
+
 		function enhance_administrator_dashboard( ) {
 			//This function is added to the 'admin_init' hook
 
@@ -457,6 +480,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Add a link to the Settings page on the plugin management page
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( &$this, 'insert_settings_link' ), 2, 2 );
+
+			//Define an AJAX handler for the 'Delete all inventory' button
+			add_action( 'wp_ajax_delete_all_inventory', array( &$this, 'delete_all_inventory_ajax' ) );
 		}
 
 		/**
@@ -527,6 +553,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				}
 			}
 
+/*
 			//check if user clicked the delete inventory button
 			if ( isset( $_POST['delete-vehicles'] ) && 'yes' == sanitize_text_field( $_POST['delete-vehicles'] ) && check_admin_referer( 'delete-vehicles-nonce' ) ) {
 				$delete_result = $this->delete_all_inventory( );
@@ -544,7 +571,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					echo '</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
 				}
 			}
-
+*/
 			//did the user click the Delete all plugin data button?
 			if ( isset( $_POST['delete'] ) && 'yes' == sanitize_text_field( $_POST['delete'] ) && check_admin_referer( 'delete-nonce' ) ) {
 				$delete_result = $this->delete_all_data_and_deactivate( );
@@ -559,7 +586,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//output the admin settings page
 			?><div class="wrap">
-				<h2><?php echo self::PRODUCT_NAME ?> Settings</h2>
+				<h1><?php echo self::PRODUCT_NAME ?> Settings</h1>
 				<form method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings"><?php
 					wp_nonce_field( $this->product_name_slug() . '-nonce'); ?>
 					<table class="form-table">
@@ -618,9 +645,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 				<p><?php _e( 'Remove all vehicle data and photos.' ) ?></p>
 				<form method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings">
+					<!--
 					<?php wp_nonce_field('delete-vehicles-nonce'); ?>
 					<input type="hidden" name="delete-vehicles" value="yes">
-					<input type="submit" class="button-primary" value="<?php _e('Delete all Vehicles') ?>" />
+					//-->
+					<input type="button" class="button-primary" value="<?php _e('Delete all Inventory') ?>" onclick="delete_all_inventory();" /><span id="busy-notice"></span>
 				</form>
 
 				<p><?php _e( 'Remove all ' . self::PRODUCT_NAME . ' plugin data (including vehicles and photos) and deactivate.' ) ?></p>
@@ -912,8 +941,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function my_admin_javascript( ) {
-			wp_register_script( 'custom-javascript', plugins_url( '/js/inventory.js', __FILE__ ) );
-			wp_enqueue_script( 'custom-javascript' );
+			wp_register_script( 'inventory-presser-javascript', plugins_url( '/js/inventory.js', __FILE__ ) );
+			wp_enqueue_script( 'inventory-presser-javascript' );
 		}
 
 		function my_admin_style( ) {
