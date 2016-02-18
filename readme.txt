@@ -61,6 +61,8 @@ and at this time there is no VIN decoder or support for vehicle options.
 * Added a widget to allow users to reorder vehicles by post meta keys. This enables sorting by year, make, model,
 price, odometer, etc. This widget was developed as a separate plugin until being rolled in with this update.
 * Added a setting to specify a default sort order and direction for vehicle search result pages
+* Added checkboxes to the add/edit vehicle page for adding and removing optional equipment
+* Converted the [Delete all Inventory] button on the settings page to use a looping AJAX call that will restart deletions during server timeouts.
 
 = 1.1.0 =
 * Added CARFAX support to the vehicle object and added three CARFAX icons to the assets directory
