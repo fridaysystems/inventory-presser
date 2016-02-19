@@ -157,12 +157,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 */
 		function price( $zero_string ) {
 			if( 0 === $this->price ) { return $zero_string; }
-			if( function_exists( 'money_format' ) ) {
-				$result = money_format( '%.0n', $this->price );
-			} else {
-				$result = number_format( $this->price, 0, '.', ',' );
-			}
-			return '$' . $result;
+			$result = '$' . number_format( $this->price, 0, '.', ',' );
+			return $result;
 		}
 
 		//return taxonomy terms as a comma delimited string
