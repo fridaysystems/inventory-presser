@@ -23,6 +23,17 @@ class Order_By_Widget extends WP_Widget {
 	 * @param array $instance The widget options
 	 */
 	public function form( $instance ) {
+		if ( isset( $instance[ 'title' ] ) ) {
+			$title = $instance[ 'title' ];
+		} else {
+			$title = '';
+		}
+        ?>
+         <p>
+          <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> 
+          <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+        </p>
+        <?php 
 		$args = array(
 			'public'   => true,
 		);
@@ -125,6 +136,7 @@ class Order_By_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
+		$instance['title'] = strip_tags($new_instance['title']);
 		$tax_args = array(
 			'public'   => true,
 			'_builtin' => false,
@@ -151,16 +163,23 @@ class Order_By_Widget extends WP_Widget {
  	 * @param array $instance
 	 */
  	public function widget( $args, $instance ) {
+
+ 		extract($args);
+
+ 		$title = apply_filters('widget_title', $instance['title']);
+
  		$keys_to_list = explode( '|', $instance['post-meta-keys'] );
  		if( 0 < sizeof( $keys_to_list ) ) {
- 		 	echo $args['before_widget'];
- 		 	echo '<span class="order-by-label">Order by</span><ul class="order-by-list">';
+ 		 	echo $before_widget;
+	 		if ( $title )
+	        	echo $before_title . $title . $after_title;
+ 		 	echo '<ul class="order-by-list">';
 			foreach( $keys_to_list as $key ) {
 				echo '<li><a href="javascript:order_by_post_meta(\'' . $key . '\');">';
 				echo isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $key;
 				echo '</a></li>';
 			}
-			echo '</ul>' . $args['after_widget'];
+			echo '</ul>' . $after_widget;
  		} 		
  	}
 }

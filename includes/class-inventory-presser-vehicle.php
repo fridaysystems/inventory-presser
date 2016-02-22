@@ -66,12 +66,12 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		function carfax_icon_HTML() {
 			if( $this->have_carfax_report() ) {
 				if( $this->is_carfax_one_owner() ) {
-					return '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '"><img src="' . plugins_url( '../assets/free-carfax-one-owner.png', __FILE__ ) . '" alt="CARFAX 1 OWNER Free CARFAX Report" class="carfax-icon carfax-one-owner"></a>';
+					return '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-one-owner.png', __FILE__ ) . '" alt="CARFAX 1 OWNER Free CARFAX Report" title="CARFAX 1 OWNER Free CARFAX Report" class="carfax-icon"></a>';
 				} else {
-					return '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '"><img src="' . plugins_url( '../assets/free-carfax-report.png', __FILE__ ) . '" alt="CARFAX Free CARFAX Report" class="carfax-icon carfax-free-report"></a>';
+					return '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-report.png', __FILE__ ) . '" alt="CARFAX Free CARFAX Report" title="CARFAX Free CARFAX Report" class="carfax-icon"></a>';
 				}
 			}
-			return '<a href="http://www.carfax.com/cfm/check_order.cfm?partner=DCS_2&VIN=' . $this->vin . '"><img src="' . plugins_url( '../assets/record-check.png', __FILE__ ) . '" alt="CARFAX Free CARFAX Record Check" class="carfax-icon carfax-record-check"></a>';
+			return '<a href="http://www.carfax.com/cfm/check_order.cfm?partner=DCS_2&VIN=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-report.png', __FILE__ ) . '" alt="CARFAX Free CARFAX Record Check" title="CARFAX Free CARFAX Record Check" class="carfax-icon"></a>';
 		}
 
 		function have_carfax_report() {
@@ -157,12 +157,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 */
 		function price( $zero_string ) {
 			if( 0 === $this->price ) { return $zero_string; }
-			if( function_exists( 'money_format' ) ) {
-				$result = money_format( '%.0n', $this->price );
-			} else {
-				$result = number_format( $this->price, 0, '.', ',' );
-			}
-			return '$' . $result;
+			$result = '$' . number_format( $this->price, 0, '.', ',' );
+			return $result;
 		}
 
 		//return taxonomy terms as a comma delimited string
