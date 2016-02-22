@@ -31,6 +31,8 @@ function delete_all_inventory() {
 			//Hide the swirly wait gif
 			jQuery('#busy-notice').html('');
 		}
+	}).fail(function() {
+		delete_all_inventory();
 	});
 }
 
