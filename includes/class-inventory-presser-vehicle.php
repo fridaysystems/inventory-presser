@@ -27,9 +27,13 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		// taxonomy terms
 		var $transmission;
 		var $drivetrain;
+		var $fuel;
 
 		// images
 		var $images = array();
+
+		// color string for output
+		var $color_string = '';
 
 		// constructors
 		function __construct( $post_id = null ) {
@@ -53,25 +57,52 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 					if( is_array( $this->$key ) ) {
 						$this->$key = unserialize($meta[$filtered_key][0]);
 					} else {
-						$this->$key = $meta[$filtered_key][0];
+						$this->$key = trim($meta[$filtered_key][0]);
 					}
 				}
 			}
 
+			// set up color string
+			$colorsArr = array();
+			if ($this->color) {
+				$colorsArr[] = ucwords(strtolower($this->color)) . ' Exterior';
+			}
+			if ($this->interior_color) {
+				$colorsArr[] = ucwords(strtolower($this->interior_color)) . ' Interior';
+			}
+			$this->color_string = implode(' / ', $colorsArr);
+
 			// get selected taxonomy terms
 			$this->transmission = $this->get_term_string('Transmission');
 			$this->drivetype = $this->get_term_string('Drive type');
+			$this->fuel = $this->get_term_string('Fuel');
+
+
 		}
 
-		function carfax_icon_HTML() {
+		function carfax_icon_HTML($wrap = false) {
+			
+			$link = '';
+			$text = '';
 			if( $this->have_carfax_report() ) {
 				if( $this->is_carfax_one_owner() ) {
-					return '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-one-owner.png', __FILE__ ) . '" alt="CARFAX 1 OWNER Free CARFAX Report" title="CARFAX 1 OWNER Free CARFAX Report" class="carfax-icon"></a>';
+					$text = 'CARFAX 1 OWNER Free Report';
+					$link = '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-one-owner.png', __FILE__ ) . '" alt="'.$text.'" title="'.$text.'" class="carfax-icon"></a>';
 				} else {
-					return '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-report.png', __FILE__ ) . '" alt="CARFAX Free CARFAX Report" title="CARFAX Free CARFAX Report" class="carfax-icon"></a>';
+					$text = 'CARFAX Free Report';
+					$link = '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-report.png', __FILE__ ) . '" alt="'.$text.'" title="'.$text.'" class="carfax-icon"></a>';
 				}
+			} else {
+				$text = 'CARFAX Free Record Check';
+				$link = '<a href="http://www.carfax.com/cfm/check_order.cfm?partner=DCS_2&VIN=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-report.png', __FILE__ ) . '" alt="'.$text.'" title="'.$text.'" class="carfax-icon"></a>';
 			}
-			return '<a href="http://www.carfax.com/cfm/check_order.cfm?partner=DCS_2&VIN=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-report.png', __FILE__ ) . '" alt="CARFAX Free CARFAX Record Check" title="CARFAX Free CARFAX Record Check" class="carfax-icon"></a>';
+
+			if ($wrap) {
+				return '<div class="carfax-wrap">'.$link.'<br/>'.$text.'</div>';
+			} else {
+				return $link;
+			}
+
 		}
 
 		function have_carfax_report() {
