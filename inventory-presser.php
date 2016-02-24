@@ -321,14 +321,15 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$taxonomy_data = $this->taxonomy_data();
 			for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
 				//create the taxonomy
-				register_taxonomy( $taxonomy_data[$i]['args']['label'], $this->post_type(), $taxonomy_data[$i]['args'] );
+				$taxonomy_name = str_replace( '-', '_', $taxonomy_data[$i]['args']['query_var'] );
+				register_taxonomy( $taxonomy_name, $this->post_type(), $taxonomy_data[$i]['args'] );
 
 				/* populate the taxonomy we just created with terms if they do not
 				 * already exist
 				 */
 				foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
-					if ( !is_array( term_exists( $desc, $taxonomy_data[$i]['args']['label'] ) ) ) {
-						wp_insert_term( $desc, $taxonomy_data[$i]['args']['label'],
+					if ( !is_array( term_exists( $desc, $taxonomy_name ) ) ) {
+						wp_insert_term( $desc, $taxonomy_name,
 							array (
 								'description' => $desc,
 								'slug' => $abbr,
@@ -1027,6 +1028,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			if ( null == $post || $post->post_type != $this->post_type() ) {
 				return;
 			}
+
+			//if we are not coming from the new/edit post page, we want to abort
+			if( ! isset( $_POST['post_title'] ) ) {
+				return;
+			}
+
 			// save post_meta values and custom taxonomy terms when vehicles are saved
 
 			//Condition custom taxonomy
@@ -1142,6 +1149,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							       'all_items'     => 'All makes',
 							),
 							'meta_box_cb'    => null,
+							'query_var'      => 'make',
 							'singular_label' => 'Make',
 							'show_in_menu'   => false,
 							'show_ui'        => false,
@@ -1160,6 +1168,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							       'all_items'     => 'All models',
 							),
 							'meta_box_cb'    => null,
+							'query_var'      => 'model',
 							'singular_label' => 'Model',
 							'show_in_menu'   => false,
 							'show_ui'        => false,
@@ -1178,6 +1187,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							       'all_items'     => 'All new and used',
 							),
 							'meta_box_cb'    => array( $this, 'meta_box_html_condition' ),
+							'query_var'      => 'condition',
 							'singular_label' => 'Condition',
 							'show_in_menu'   => false,
 						),
@@ -1198,6 +1208,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							       'all_items'     => 'All types',
 							),
 							'meta_box_cb'    => array( $this, 'meta_box_html_type' ),
+							'query_var'      => 'type',
 							'singular_label' => 'Type',
 							'show_in_menu'   => false,
 						),
@@ -1225,6 +1236,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							       'all_items'     => 'All sold and for sale',
 							),
 							'meta_box_cb'    => array( $this, 'meta_box_html_availability' ),
+							'query_var'      => 'availability',
 							'singular_label' => 'Availability',
 							'show_in_menu'   => false,
 						),
@@ -1271,6 +1283,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							       'all_items'     => 'All fuel types',
 							),
 							'meta_box_cb'    => array( $this, 'meta_box_html_fuel' ),
+							'query_var'      => 'fuel',
 							'singular_label' => 'Fuel',
 							'show_in_menu'   => false,
 						),
@@ -1279,7 +1292,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 									'D' => 'Diesel',
 									'E' => 'Electric',
 									'F' => 'Flexible',
-									'G' => 'Gas',
+									'C' => 'Gas',
 									'N' => 'Compressed Natural Gas',
 									'P' => 'Propane',
 									'R' => 'Hydrogen Fuel Cell',
@@ -1299,6 +1312,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							       'all_items'     => 'All transmissions',
 							),
 							'meta_box_cb'    => array( $this, 'meta_box_html_transmission' ),
+							'query_var'      => 'transmission',
 							'singular_label' => 'Transmission',
 							'show_in_menu'   => false,
 						),
@@ -1321,10 +1335,21 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							       'all_items'     => 'All cylinder counts',
 							),
 							'meta_box_cb'    => null,
+							'query_var'      => 'cylinders',
 							'singular_label' => 'Cylinders',
 							'show_in_menu'   => false,
 						),
-						'term_data' => array (	),
+						'term_data' => array (
+							'1'  => '1',
+							'2'  => '2',
+							'3'  => '3',
+							'4'  => '4',
+							'5'  => '5',
+							'6'  => '6',
+							'8'  => '8',
+							'10' => '10',
+							'12' => '12',
+						),
 					),
 				)
 			);

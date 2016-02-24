@@ -13,13 +13,13 @@
 class Inventory_Presser_Modify_Imports {
 
 	const PENDING_DIR_NAME = '_pending_import';
-	
+
 	var $existing_posts_before_an_import;
 	var $post_type;
 
 	function allow_fetch_attachments( $value /* boolean */, $URL ) {
 		/**
-		 * Avoid downloading files that are 1) already in the uploads folder 
+		 * Avoid downloading files that are 1) already in the uploads folder
 		 * and 2) already in a subfolder of the uploads folder.
 		 */
 		$upload_dir = wp_upload_dir( );
@@ -31,7 +31,7 @@ class Inventory_Presser_Modify_Imports {
 		/**
 		 * Change the attachment path to match the format of the upload_dir path
 		 * by removing the file name and the slash right before it
-		 */			
+		 */
 		$attachment_path = substr( $attachment_URL_parts['path'], 0, strlen( $attachment_URL_parts['path'] ) - ( 1 + strlen( basename( $attachment_URL_parts['path'] ) ) ) );
 		$same_path = $this_site_URL_parts['path'] == $attachment_path;
 		//both paths point to the same location, do not fetch
@@ -42,7 +42,7 @@ class Inventory_Presser_Modify_Imports {
 		 */
 		if( substr( $attachment_URL_parts['path'], 0, strlen( $this_site_URL_parts['path'] ) ) == $this_site_URL_parts['path'] ) {
 			/**
-			 * Yes, the file lives in a sub-folder of the uploads folder. Such as... 
+			 * Yes, the file lives in a sub-folder of the uploads folder. Such as...
 			 * http://localhost/test-site/wp-content/uploads/{PENDING_DIR_NAME}/H517718-2.jpg
 			 * Copy the file to the uploads folder.
 			 */
@@ -57,18 +57,26 @@ class Inventory_Presser_Modify_Imports {
 		}
 		return true;
 	}
-	
+
 	function associate_parentless_attachments_with_parents( ) {
-		/** 
-		 * Loop over post_type == 'attachment' where no post_parent.
+		/**
+		 * Loop over post_type == 'attachment' where no post_parent, and
+		 * require that attachments found contain our meta key.
 		 * Order by GUID so we can use a control break loop.
 		 */
-		$attachments = get_posts( array( 
+		$attachments = get_posts( array(
+			'meta_query'     => array(
+				array(
+					'key'     => '_inventory_presser_photo_file_name_base',
+					'value'   => '',
+					'compare' => '!='
+				)
+	        ),
+	        'orderby'        => 'guid',
 			'post_parent'    => '0',
 			'post_type'      => 'attachment',
 			'posts_per_page' => -1,
-			'orderby'        => 'guid',
-		) );
+		));
 		$last_file_name_base = $last_post_ID = '';
 		foreach( $attachments as $attachment ) {
 			//the post guid is a URL to the attachment, we need the file name without extension
@@ -76,7 +84,7 @@ class Inventory_Presser_Modify_Imports {
 			$info = pathinfo( $file_name );
 			$file_name_base = apply_filters( '_inventory_presser_create_photo_file_name_base', basename( $file_name, '.' . $info['extension'] ) );
 			if( $file_name_base == $last_file_name_base && '' != $file_name_base ) {
-				//do not need to query, we are looking for the same parent as last 
+				//do not need to query, we are looking for the same parent as last
 				$attachment->post_parent = $last_post_ID;
 			} else {
 				/**
@@ -109,18 +117,18 @@ class Inventory_Presser_Modify_Imports {
 			//save the post with the updated post_parent value
 			wp_update_post( $attachment );
 			$last_file_name_base = $file_name_base;
-		 }			 
+		 }
 	}
 
 	function __construct( $post_type, $delete_vehicles_not_in_new_feeds ) {
 		$this->post_type = $post_type;
-		
+
 		//don't actually download attachments during imports if they are already on this server
 		add_filter( 'import_allow_fetch_file', array( &$this, 'allow_fetch_attachments' ), 10, 2 ) ;
 
 		//after an import is completed, try to match attachments with their parent posts
 		add_action( 'import_end', array( &$this, 'associate_parentless_attachments_with_parents' ) );
-		
+
 		//After an import is completed, prune the pending folder for attachments we no longer need
 		add_action( 'import_end', array( &$this, 'prune_pending_attachments' ) );
 
@@ -139,20 +147,20 @@ class Inventory_Presser_Modify_Imports {
 			//delete them by id means you need to find them by slug
 			add_action( 'import_end', array( &$this, 'delete_posts_not_found_in_new_import' ) );
 		}
-		
+
 		/**
 		 * In our implementation, checking only the first 7 characters of the photo file name base
 		 * is optimal. Users that aren't using import files created by our BirdFeeder app may need
 		 * a different implementation.
 		 */
 		add_filter( '_inventory_presser_create_photo_file_name_base', array( &$this, 'take_left_seven_characters' ) );
-		
+
 		/**
 		 * Delete the pending import folder when the user deletes all plugin data
 		 */
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
 	}
-	
+
 	function delete_directory( $dir ) {
 		if ( !file_exists( $dir ) ) {
 			return true;
@@ -180,7 +188,7 @@ class Inventory_Presser_Modify_Imports {
 		$upload_dir = wp_upload_dir();
 		$result = $this->delete_directory( $upload_dir['basedir'] . '\\' . self::PENDING_DIR_NAME );
 	}
-	
+
 	function delete_posts_not_found_in_new_import() {
 		/* $this->existing_posts_before_an_import should now contain only posts
 		 * that were in the database before the import ran and that were
@@ -197,7 +205,7 @@ class Inventory_Presser_Modify_Imports {
 		 }
 		 $this->existing_posts_before_an_import = array();
 	}
-	
+
 	/**
 	 * True or false: there is an attachment with a $file_name like file.jpg
 	 *
@@ -208,17 +216,17 @@ class Inventory_Presser_Modify_Imports {
 		$id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND guid LIKE %s", '%%/' .$file_name ) );
 		return '' != $id;
 	}
-	
+
 	/**
 	 * We keep a copy of all attachments that arrive alongside imports in a folder
 	 * (whose name is stored in the constant PENDING_DIR_NAME) in the uploads folder.
 	 * I use the word 'alongside' in
-	 * the previous sentence because these files are uploaded via FTP rather than 
+	 * the previous sentence because these files are uploaded via FTP rather than
 	 * downloaded by the importer as it discovers the URLs in the XML file. This
 	 * method deletes all attachments in the pending folder that have not
 	 * been copied into the uploads folder proper and saved as an attachment type
-	 * post in the database. These files are from previous imports and were not 
-	 * part of the most recent import. 
+	 * post in the database. These files are from previous imports and were not
+	 * part of the most recent import.
 	 */
 	function prune_pending_attachments( ) {
 		//need the allowed upload file extensions
@@ -226,7 +234,7 @@ class Inventory_Presser_Modify_Imports {
 		$files = glob( $upload_dir['path'] . '/' . self::PENDING_DIR_NAME . '/*.*', GLOB_BRACE );
 		foreach( $files as $file ) {
 			//do we have an attachment for this filename?
-			if( ! $this->have_attachment_with_file_name( basename( $file ) ) ) { 
+			if( ! $this->have_attachment_with_file_name( basename( $file ) ) ) {
 				//no? delete the file
 				unlink( $file );
 				//make not of this deletion via the importer's error logging mechanism
@@ -235,30 +243,31 @@ class Inventory_Presser_Modify_Imports {
 					return $arr;
 				});
 			}
-		}			
+		}
 	}
-	
+
 	function remember_posts_before_an_import( $posts ) {
-		/* store all the post titles and dates for our post type
+		/**
+		 * Store all the post titles and dates for our post type
 		 * as they exist before the import runs
 		 */
 		$args = array(
 			'post_status'    => 'publish',
 			'post_type'      => $this->post_type,
-			'posts_per_page' => -1,				
+			'posts_per_page' => -1,
 		);
 		$this->existing_posts_before_an_import = get_posts( $args );
-		/** 
-		 * Do not modify the posts coming into this function, and return them 
+		/**
+		 * Do not modify the posts coming into this function, and return them
 		 * back to the importer.
 		 */
 		return $posts;
 	}
-	
+
 	function remove_existing_post_from_import_purge_list( $post ) {
-		/** 
-		 * Loop through all the posts the importer is about to import that we 
-		 * copied into $this->existing_posts_before_an_import with the function 
+		/**
+		 * Loop through all the posts the importer is about to import that we
+		 * copied into $this->existing_posts_before_an_import with the function
 		 * remember_posts_before_an_import()
 		 */
 		for( $p = 0; $p < sizeof( $this->existing_posts_before_an_import ); $p++ ) {
@@ -271,7 +280,7 @@ class Inventory_Presser_Modify_Imports {
 		}
 		return $post;
 	}
-	
+
 	function take_left_seven_characters( $a_string ) {
 		return substr( $a_string, 0, 7 );
 	}

@@ -49,7 +49,7 @@ function query_string_to_associative_array( str ) {
 	var params = {};
 	for( var q = 0; q < arr.length; q++ ) {
 		var pieces = arr[q].split( '=' );
-        params[pieces[0]] = pieces[1];
-    }
-    return params;
+		params[pieces[0]] = pieces[1];
+	}
+	return params;
 }

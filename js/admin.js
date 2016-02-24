@@ -10,7 +10,6 @@ function delete_all_inventory() {
 			delete_all_inventory();
 		} else {
 			//Report to the user that the import is complete.
-			console.log( response );
 			var h1_elements = jQuery('div.wrap').find('h1');
 			if( 1 == h1_elements.length ) {
 				h1_elements.first().after( response );
