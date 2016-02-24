@@ -17,8 +17,8 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) ) {
 	}
 }
 
-if ( ! class_exists( 'Inventory_Presser_Vehicle_Shortcode' ) ) {
-	$class_shortcode = plugin_dir_path( __FILE__ ) . 'includes/class-shortcode.php';
+if ( ! class_exists( 'Inventory_Presser_Vehicle_Shortcodes' ) ) {
+	$class_shortcode = plugin_dir_path( __FILE__ ) . 'includes/class-shortcodes.php';
 	if ( file_exists( $class_shortcode ) ) {
 		require $class_shortcode;
 	}

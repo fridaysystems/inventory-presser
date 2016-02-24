@@ -4,6 +4,9 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 	class Inventory_Presser_Vehicle {
 
 		var $post_ID;
+		var $post_title;
+		var $url;
+		var $image_url;
 
 		var $body_style = '';
 		var $car_ID = 0;
@@ -45,7 +48,11 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 			if( is_null( $post_id ) ) { return; }
 
+			// put wp vars into our object properties
 			$this->post_ID = $post_id;
+			$this->post_title = get_the_title($this->post_ID);
+			$this->url = get_permalink($this->post_ID);
+			$this->image_url = wp_get_attachment_url(get_post_thumbnail_id($this->post_ID, 'medium'));
 
 			//get all data using the post ID
 			$meta = get_post_meta($this->post_ID);
