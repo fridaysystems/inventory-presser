@@ -1,0 +1,14 @@
+.invp-pages {
+	border: 1px solid orange;
+}
+
+.invp-page {
+	display: inline-block;
+	padding: 10px;
+	border-right: 1px solid #CCC;
+}
+
+.invp-simple-item {
+	border-bottom: 1px solid blue;
+	margin-bottom: 25px;
+}
