@@ -954,7 +954,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function my_admin_style( ) {
-			wp_enqueue_style( 'my-admin-theme', plugins_url( 'wp-admin.css', __FILE__ ) );
+			wp_enqueue_style( 'my-admin-theme', plugins_url( 'css/wp-admin.css', __FILE__ ) );
 		}
 
 		function my_rewrite_flush( ) {
