@@ -80,9 +80,9 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$this->color_string = implode(' / ', $colorsArr);
 
 			// get selected taxonomy terms
-			$this->transmission = $this->get_term_string('Transmission');
-			$this->drivetype = $this->get_term_string('Drive type');
-			$this->fuel = $this->get_term_string('Fuel');
+			$this->transmission = $this->get_term_string('transmission');
+			$this->drivetype = $this->get_term_string('drive_type');
+			$this->fuel = $this->get_term_string('fuel');
 
 
 		}
