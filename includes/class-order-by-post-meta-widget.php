@@ -1,6 +1,6 @@
 <?php
 class Order_By_Widget extends WP_Widget {
- 
+
  	const ID_BASE = 'order_by_widget';
 
 	/**
@@ -16,7 +16,7 @@ class Order_By_Widget extends WP_Widget {
  		//Load our JavaScript
  		add_action( 'wp_enqueue_scripts', array( &$this, 'load_javascript' ) );
  	}
- 	
+
 	/**
 	 * Outputs the options form on admin
 	 *
@@ -30,10 +30,10 @@ class Order_By_Widget extends WP_Widget {
 		}
         ?>
          <p>
-          <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> 
+          <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
           <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
         </p>
-        <?php 
+        <?php
 		$args = array(
 			'public'   => true,
 		);
@@ -105,16 +105,16 @@ class Order_By_Widget extends WP_Widget {
 	}
 
 	/**
-	 * Get all post meta keys except when they start with an underscore, 
+	 * Get all post meta keys except when they start with an underscore,
 	 * contain a pipe, or are empty string. Returns a single dimensional array.
 	 */
 	function get_post_meta_keys_from_database() {
 		global $wpdb;
 		$query = "
-			SELECT DISTINCT($wpdb->postmeta.meta_key) 
-			FROM $wpdb->posts 
-			LEFT JOIN $wpdb->postmeta 
-			ON $wpdb->posts.ID = $wpdb->postmeta.post_id 
+			SELECT DISTINCT($wpdb->postmeta.meta_key)
+			FROM $wpdb->posts
+			LEFT JOIN $wpdb->postmeta
+			ON $wpdb->posts.ID = $wpdb->postmeta.post_id
 			WHERE $wpdb->postmeta.meta_key LIKE 'inventory_presser_%'
 			ORDER BY $wpdb->postmeta.meta_key
 		";
@@ -164,9 +164,9 @@ class Order_By_Widget extends WP_Widget {
 	 */
  	public function widget( $args, $instance ) {
 
- 		extract($args);
+ 		extract( $args );
 
- 		$title = apply_filters('widget_title', $instance['title']);
+ 		$title = apply_filters('widget_title', ( isset( $instance['title'] ) ? $instance['title'] : '' ));
 
  		$keys_to_list = explode( '|', $instance['post-meta-keys'] );
  		if( 0 < sizeof( $keys_to_list ) ) {
@@ -180,6 +180,6 @@ class Order_By_Widget extends WP_Widget {
 				echo '</a></li>';
 			}
 			echo '</ul>' . $after_widget;
- 		} 		
+ 		}
  	}
 }
