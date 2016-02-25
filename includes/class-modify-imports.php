@@ -67,7 +67,7 @@ class Inventory_Presser_Modify_Imports {
 		$attachments = get_posts( array(
 			'meta_query'     => array(
 				array(
-					'key'     => '_inventory_presser_photo_file_name_base',
+					'key'     => '_inventory_presser_photo_number',
 					'value'   => '',
 					'compare' => '!='
 				)
