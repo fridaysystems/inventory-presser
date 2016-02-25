@@ -85,8 +85,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					$query->set( 'meta_query', array(
 						'relation' => 'AND',
 							array( 'key' => 'inventory_presser_make', 'compare' => 'EXISTS' ),
-							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
-							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
+							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' )
+							//array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
 						)
 					);
 					break;
@@ -95,8 +95,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				case 'inventory_presser_model':
 					$query->set( 'meta_query', array(
 						'relation' => 'AND',
-							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
-							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
+							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' )
+							//array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
 						)
 					);
 					break;
@@ -107,8 +107,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						'relation' => 'AND',
 							array( 'key' => 'inventory_presser_year', 'compare' => 'EXISTS' ),
 							array( 'key' => 'inventory_presser_make', 'compare' => 'EXISTS' ),
-							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
-							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
+							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' )
+							//array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
 						)
 					);
 					break;
