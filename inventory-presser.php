@@ -696,19 +696,19 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function meta_box_html_condition( $post ) {
-			echo $this->taxonomy_meta_box_html( 'Condition', 'inventory_presser_condition', $post );
+			echo $this->taxonomy_meta_box_html( 'condition', 'inventory_presser_condition', $post );
 		}
 
 		function meta_box_html_availability( $post ) {
-			echo $this->taxonomy_meta_box_html( 'Availability', 'inventory_presser_availability', $post );
+			echo $this->taxonomy_meta_box_html( 'availability', 'inventory_presser_availability', $post );
 		}
 
  		function meta_box_html_drive_type( $post ) {
- 			echo $this->taxonomy_meta_box_html( 'Drive type', 'inventory_presser_drive_type', $post );
+ 			echo $this->taxonomy_meta_box_html( 'drive_type', 'inventory_presser_drive_type', $post );
 		}
 
  		function meta_box_html_fuel( $post ) {
- 			echo $this->taxonomy_meta_box_html( 'Fuel', 'inventory_presser_fuel', $post );
+ 			echo $this->taxonomy_meta_box_html( 'fuel', 'inventory_presser_fuel', $post );
 		}
 
 		function meta_box_html_options( $post ) {
@@ -810,11 +810,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
  		function meta_box_html_transmission( $post ) {
- 			echo $this->taxonomy_meta_box_html( 'Transmission', apply_filters( 'translate_meta_field_key', 'transmission' ), $post );
+ 			echo $this->taxonomy_meta_box_html( 'transmission', apply_filters( 'translate_meta_field_key', 'transmission' ), $post );
 		}
 
 		function meta_box_html_type( $post ) {
-			echo $this->taxonomy_meta_box_html( 'Type', apply_filters( 'translate_meta_field_key', 'type' ), $post );
+			echo $this->taxonomy_meta_box_html( 'type', apply_filters( 'translate_meta_field_key', 'type' ), $post );
 		}
 
 		function meta_box_html_vehicle( $post, $meta_box ) {
