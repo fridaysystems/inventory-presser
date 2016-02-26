@@ -38,11 +38,12 @@ e.g.
 
 = How much does this plugin cost? =
 
-Dollars. TODO
+This plugin is free for any Friday Systems website customer.
 
 = Is this plugin everything I need to run a car dealer website? =
 
-No, but it's close.
+No, currently, you need a company like ours to send feeds of your inventory to populate
+a website running this plugin.
 
 = Can I import my inventory into this system with a bulk feed overnight? =
 
