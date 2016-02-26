@@ -491,6 +491,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Define an AJAX handler for the 'Delete all inventory' button
 			add_action( 'wp_ajax_delete_all_inventory', array( &$this, 'delete_all_inventory_ajax' ) );
+
+			//Sort some taxonomy terms as numbers
+			add_filter( 'get_terms_orderby', array( &$this, 'sort_terms_as_numbers' ), 10,  3 );
 		}
 
 		/**
@@ -561,25 +564,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				}
 			}
 
-/*
-			//check if user clicked the delete inventory button
-			if ( isset( $_POST['delete-vehicles'] ) && 'yes' == sanitize_text_field( $_POST['delete-vehicles'] ) && check_admin_referer( 'delete-vehicles-nonce' ) ) {
-				$delete_result = $this->delete_all_inventory( );
-				if ( is_wp_error( $delete_result ) ) {
-					//output error
-					echo "<div id='import-error' class='settings-error'><p><strong>" . $delete_result->get_error_message( ) . "</strong></p></div>";
-				} else {
-					//output the success result, it's a string of html
-					echo '<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"><p><strong>';
-					if( 0 == $delete_result ) {
-						echo 'There are no vehicles to delete.';
-					} else {
-						echo 'Deleted '.$delete_result.' vehicles.';
-					}
-					echo '</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
-				}
-			}
-*/
 			//did the user click the Delete all plugin data button?
 			if ( isset( $_POST['delete'] ) && 'yes' == sanitize_text_field( $_POST['delete'] ) && check_admin_referer( 'delete-nonce' ) ) {
 				$delete_result = $this->delete_all_data_and_deactivate( );
@@ -697,6 +681,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function meta_box_html_condition( $post ) {
 			echo $this->taxonomy_meta_box_html( 'condition', 'inventory_presser_condition', $post );
+		}
+
+		function meta_box_html_cylinders( $post ) {
+			echo $this->taxonomy_meta_box_html( 'cylinders', 'inventory_presser_cylinders', $post );
 		}
 
 		function meta_box_html_availability( $post ) {
@@ -1120,6 +1108,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			);
 		}
 
+		function sort_terms_as_numbers( $order_by, $args, $taxonomies ) {
+		    $taxonomy_to_sort = 'cylinders';
+		    if( in_array( $taxonomy_to_sort, $taxonomies ) ) {
+		        $order_by .=  '+0';
+		    }
+		    return $order_by;
+		}
+
 		//this is an array of taxonomy names and the corresponding arrays of term data
 		function taxonomy_data( ) {
 			return apply_filters(
@@ -1341,7 +1337,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							       'popular_items' => 'Popular cylinder counts',
 							       'all_items'     => 'All cylinder counts',
 							),
-							'meta_box_cb'    => null,
+							'meta_box_cb'    => array( $this, 'meta_box_html_cylinders' ),
 							'query_var'      => 'cylinders',
 							'singular_label' => 'Cylinders',
 							'show_in_menu'   => false,
@@ -1363,27 +1359,24 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function taxonomy_meta_box_html( $taxonomy_name, $element_name, $post ) {
-			/* creates HTML output for a meta box that turns a taxonomy into
+			/**
+			 *  Creates HTML output for a meta box that turns a taxonomy into
 			 * a select drop-down list instead of the typical checkboxes
 			 */
-			$HTML = '';
-			//get the saved custom taxonomy value
-			$saved = $this->get_term_slug( $taxonomy_name, $post->ID );
-			$HTML .= '<select name="' . $element_name . '">';
+			//get the saved term for this taxonomy
+			$saved_term_slug = $this->get_term_slug( $taxonomy_name, $post->ID );
+			$HTML  = '<select name="' . $element_name . '">';
 			$HTML .= '<option></option>'; //offering a blank value is the only way a user can remove the value
 			//get all the term names and slugs for $taxonomy_name
 			$terms = get_terms( $taxonomy_name,  array( 'hide_empty' => false ) );
 			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 				foreach( $terms as $term ) {
-					$HTML .= '<option value="' . $term->slug . '"';
-					if ( strtolower( $term->slug ) == strtolower( $saved ) ) {
-						$HTML .= ' selected="selected"';
-					}
-					$HTML .= '>' . $term->name . '</option>';
+					$HTML .= '<option value="' . $term->slug . '"'
+						. selected( strtolower( $term->slug ), strtolower( $saved_term_slug ), false )
+						. '>' . $term->name . '</option>';
 				}
 			}
-			$HTML .= '</select>';
-			return $HTML;
+			return $HTML . '</select>';
 		}
 
 		function translate_custom_field_names( $nice_name ) {
