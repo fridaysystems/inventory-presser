@@ -27,3 +27,45 @@ a.invp-page + a.invp-page {
 	border-bottom: 1px solid blue;
 	margin-bottom: 25px;
 }
+
+/* flex slider */
+
+.invp-single-wrapper .flex-direction-nav { *height: 0; position: absolute; top: 10px; right: 10px; z-index: 2; }
+
+.invp-single-wrapper .flex-direction-nav li {
+    list-style: none !important;
+}
+
+.invp-single-wrapper .flex-direction-nav a {
+	opacity: 1.0;
+}
+
+.invp-single-wrapper .flex-direction-nav a:hover {
+	color: #FFF;
+}
+
+.invp-single-wrapper .flexslider {
+	margin-bottom: 20px;
+}
+
+.invp-single-wrapper .flexslider ul {
+	margin: 0;
+}
+
+.invp-single-wrapper .flexslider img {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.invp-single-wrapper .slides {
+	z-index: 2;
+}
+
+.invp-single-wrapper .flex-caption {
+	background-color: #d9d9d9;
+	padding: 5px 10px;
+}

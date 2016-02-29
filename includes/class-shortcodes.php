@@ -9,14 +9,14 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		add_action('wp_enqueue_scripts', array($this, 'load_scripts'));
 		add_action('wp_ajax_get_simple_listing', array($this, 'simple_json') );
 		add_action('wp_ajax_nopriv_get_simple_listing', array($this, 'simple_json') );
-
-		//$feat_image_url = wp_get_attachment_url( get_post_thumbnail_id() );
+		add_filter('the_content', array($this, 'filter_single_content'));
 
 	}
 
 	function load_scripts() {
 
-		wp_register_script('invp-simple-listing', plugins_url('/js/invp-simple-listing.js', dirname(__FILE__)), array('jquery'));
+		wp_register_script('flexslider', plugins_url('/js/jquery.flexslider.min.js', dirname(__FILE__)), array('jquery'));
+		wp_register_script('invp-simple-listing', plugins_url('/js/invp-simple-listing.js', dirname(__FILE__)), array('flexslider'));
 		wp_enqueue_style('invp-simple-listing-style', plugins_url('/css/invp-simple-listing.css', dirname(__FILE__)));
 
 
@@ -27,6 +27,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 			global $post;
 
 			$image_urls = array();
+
 			$featured_image_id = get_post_thumbnail_id($post->ID);
 			if ($featured_image_id) {
 				$sizes = get_intermediate_image_sizes();
@@ -37,6 +38,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 				}
 			}
 
+			wp_enqueue_script('flexslider');
 			wp_enqueue_script('invp-simple-listing');
 			// localize it
 			wp_localize_script('invp-simple-listing', 'invp_options',array(
@@ -111,7 +113,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 						'title' => $vehicle->post_title,
 						'price' => $vehicle->price('Call For Price'),
 						'miles' => $vehicle->odometer(),
-						'colors' => $vehicle->color_string,
+						'color' => $vehicle->color,
 						'engine' => $vehicle->engine,
 						'url' => $vehicle->url,
 						'image_url' => $vehicle->image_url,
@@ -130,6 +132,55 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		echo json_encode($output, JSON_PRETTY_PRINT);
 
 		exit();
+
+	}
+
+	// if singular inventory_vehicle post and a theme with no template for vehicles, add output to the content
+	function filter_single_content($content) {
+
+		if (is_singular('inventory_vehicle') && !file_exists(get_stylesheet_directory().'/single-inventory_vehicle.php')) {
+
+			global $post;
+
+			$vehicle = new Inventory_Presser_Vehicle($post->ID);
+
+			$large_image_list =  $vehicle->get_images_html_array('large');
+			$thumb_image_list =  $vehicle->get_images_html_array('thumb');
+
+			$before =	'<div class="invp-single-wrapper">';
+
+			$before =		'<div class="single-subhead">';
+			$before.=			'<div class="left">'.$vehicle->odometer().' Miles</div>';
+			$before.=			'<div class="right">'.$vehicle->price('Call For Price').'</div>';
+			$before.=			'<div class="clear"></div>';
+			$before.=		'</div>';
+
+			$before.=		'<div id="slider" class="flexslider">';
+			$before.=		  '<ul class="slides">';
+			foreach($large_image_list as $image):
+			$before.=		    '<li>'.$image.'</li>';
+			endforeach;
+			$before.=		  '</ul>';
+			$before.=		'</div>';
+					
+			$before.=		'<div id="carousel" class="flexslider">';
+			$before.=		  '<ul class="slides">';
+			foreach($thumb_image_list as $image):
+			$before.=		    '<li>'.$image.'</li>';
+			endforeach;
+			$before.=		  '</ul>';
+			$before.=		'</div>';
+
+			$after = '';
+			$after .=		'</div>';
+
+			$content = $before.$content.$after;
+
+
+
+		}
+
+		return $content;
 
 	}
 

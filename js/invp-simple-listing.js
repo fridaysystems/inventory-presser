@@ -62,9 +62,9 @@
 	}
 
 	//on page load
-	$( document ).ready(function() {
+	$(document).ready(function() {
 
-		// if we're on the shortcode page
+		// if we're on the shortcode page, show listing
 		if (invp_options.is_archive) {
 			$.get(invp_options.template, function(response) {
 			     template = response;
@@ -73,14 +73,36 @@
 			});
 		}
 
-		// if we're on a singular inventory page
+		// if we're on a singular inventory page, remove featured image from page, where added by the theme
 		if (invp_options.is_singular) {
-			$('.featured_image_urls').each(function(index,url){
-				
+			$(invp_options.featured_image_urls).each(function(index,url){
+				$("img[src='" + url + "']:not('.invp-image')").remove();
 			});
 		}
 
-		
+	});
+
+	$(window).load(function() {
+	  // The slider being synced must be initialized first
+	  $('#carousel').flexslider({
+	    animation: "slide",
+	    controlNav: false,
+	    animationLoop: false,
+	    smoothHeight: true,
+	    slideshow: false,
+	    itemWidth: 150,
+	    itemMargin: 10,
+	    asNavFor: '#slider'
+	  });
+	 
+	  $('#slider').flexslider({
+	    animation: "fade",
+	    controlNav: false,
+	    animationLoop: false,
+	   	smoothHeight: true,
+	    slideshow: false,
+	    sync: "#carousel"
+	  });
 
 	});
 

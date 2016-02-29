@@ -1,11 +1,33 @@
 <div class="invp-simple-item">
-	<h2>{{title}}</h2>
-	<img src="{{image_url}}" alt="{{title}}">
-	<ul>
-		<li>{{price}}</li>
-		<li>{{miles}}</li>
-		<li>{{colors}}</li>
-		<li>{{engine}}</li>
-	</ul>
-	<a href="{{url}}">View Details</a>
+
+	<h2 class="post-title">
+		<a href="{{url}}" title="{{title}}">{{title}}</a>
+	</h2>
+	<div class="ribbon-wrapper">
+		<div class="ribbon-front">
+			{{price}}
+		</div>
+		<div class="ribbon-edge-topright"></div>
+	</div>
+	<div class="post-inner">
+		
+		<div class="post-thumbnail">
+			<a href="{{url}}" title="{{title}}">
+				<img src="{{image_url}}" alt="{{title}}">
+			</a>
+		</div>
+		
+		<div class="post-content vehicle-content">
+			<ul>
+				<li>{{miles}} Miles</li>
+				<li>{{color}}</li>
+				<li>{{engine}}</li>
+			</ul>
+			<a class="vehicle-details" href="{{url}}" title="{{title}}">View Details</a>
+		</div><!--/.post-content-->
+
+		<div class="clear"></div>
+		
+	</div><!--/.post-inner-->	
+
 </div>
