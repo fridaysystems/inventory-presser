@@ -47,7 +47,8 @@ a website running this plugin.
 
 = Can I import my inventory into this system with a bulk feed overnight? =
 
-Yes. The best way to do this is to use a plugin I have also written called WordPress Importer For CRON.
+Yes. The best way to do this is to use a plugin I have also written called WordPress Importer For CRON
+and feeds from our company Friday Systems.
 
 == Screenshots ==
 
@@ -59,6 +60,7 @@ and at this time there is no VIN decoder or support for vehicle options.
 == Changelog ==
 
 = 1.2.0 =
+* Now implements custom rewrite rules for filtering our post type. These rules lived in a widget until now.
 * Added a widget to allow users to reorder vehicles by post meta keys. This enables sorting by year, make, model,
 price, odometer, etc. This widget was developed as a separate plugin until being rolled in with this update.
 * Added a setting to specify a default sort order and direction for vehicle search result pages
@@ -115,6 +117,9 @@ routine operates according to the photo naming convention we employ at Friday Sy
 * Edit.php is customized for our custom post type to list stock number, color, odometer, price & photo count
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+This is the first version of the plugin that is part of a launched website, so there is no reason to not have at least this version.
 
 = 0.5 =
 Without version 0.5, you will not have this readme.txt file

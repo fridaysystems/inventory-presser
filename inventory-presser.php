@@ -4,12 +4,13 @@ defined( 'ABSPATH' ) OR exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: http://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Import or create an automobile or powersports dealership inventory.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Corey Salzano
  * Author URI: https://profiles.wordpress.org/salzano
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
+
 if ( ! class_exists( 'Inventory_Presser_Vehicle' ) ) {
 	$class_vehicle = plugin_dir_path( __FILE__ ) . 'includes/class-inventory-presser-vehicle.php';
 	if ( file_exists( $class_vehicle ) ) {
@@ -83,10 +84,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				//MAKE
 				case 'inventory_presser_make':
 					$query->set( 'meta_query', array(
-						'relation' => 'AND',
-							array( 'key' => 'inventory_presser_make', 'compare' => 'EXISTS' ),
-							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' )
-							//array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
+							'relation' => 'AND',
+							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
+							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' ),
 						)
 					);
 					break;
@@ -94,9 +94,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				//MODEL
 				case 'inventory_presser_model':
 					$query->set( 'meta_query', array(
-						'relation' => 'AND',
-							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' )
-							//array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
+							'relation' => 'AND',
+							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
+							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' ),
 						)
 					);
 					break;
@@ -104,11 +104,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				//YEAR
 				case 'inventory_presser_year':
 					$query->set( 'meta_query', array(
-						'relation' => 'AND',
+							'relation' => 'AND',
 							array( 'key' => 'inventory_presser_year', 'compare' => 'EXISTS' ),
 							array( 'key' => 'inventory_presser_make', 'compare' => 'EXISTS' ),
-							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' )
-							//array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' )
+							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
+							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' ),
 						)
 					);
 					break;
@@ -119,6 +119,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$meta_value_or_meta_value_num = apply_filters( 'inventory_presser_meta_value_or_meta_value_num', 'meta_value', $key );
 			$query->set( 'orderby', $meta_value_or_meta_value_num );
 			$query->set( 'order', $direction );
+		}
+
+		function add_pretty_search_urls( ) {
+			global $wp_rewrite;
+			$wp_rewrite->rules = $this->generate_rewrite_rules('inventory_vehicle') + $wp_rewrite->rules;
 		}
 
 		function annotate_add_media_button( $context ) {
@@ -153,12 +158,19 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * Some custom rewrite rules are created and destroyed
 			 */
 
+			//Add custom rewrite rules
+			add_action('generate_rewrite_rules', array( &$this, 'add_pretty_search_urls' ) );
+
+			/**
+			 * Activation and deactivation hooks ensure that the rewrite rules are
+			 * flushed to add and remove our custom rewrite rules
+			 */
+
 			//Flush rewrite rules when the plugin is activated
 			register_activation_hook( __FILE__, array( &$this, 'my_rewrite_flush' ) );
 
 			//Do some things during deactivation
-			register_deactivation_hook( __FILE__, array( &$this, 'deactivation' ) );
-
+			register_deactivation_hook( __FILE__, array( &$this, 'delete_rewrite_rules_option' ) );
 
 			/**
 			 * These items make it easier to create themes based on our custom post type
@@ -347,7 +359,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 		}
 
-		function deactivation( ) {
+		function delete_rewrite_rules_option( ) {
 			/* this is called during plugin deactivation
 			 * delete the rewrite_rules option so the rewrite rules
 			 * are generated on the next page load without ours.
@@ -494,6 +506,52 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Sort some taxonomy terms as numbers
 			add_filter( 'get_terms_orderby', array( &$this, 'sort_terms_as_numbers' ), 10,  3 );
+		}
+
+		// generate every possible combination of rewrite rules, including 'page', based on post type taxonomy
+		// from http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
+		function generate_rewrite_rules( $post_type, $query_vars = array() ) {
+		    global $wp_rewrite;
+
+		    if( ! is_object( $post_type ) )
+		        $post_type = get_post_type_object( $post_type );
+
+		    $new_rewrite_rules = array();
+
+		    $taxonomies = get_object_taxonomies( $post_type->name, 'objects' );
+
+		    // Add taxonomy filters to the query vars array
+		    foreach( $taxonomies as $taxonomy ) {
+		        $query_vars[] = $taxonomy->query_var;
+			}
+
+		    // Loop over all the possible combinations of the query vars
+		    for( $i = 1; $i <= count( $query_vars );  $i++ ) {
+
+		        $new_rewrite_rule =  $post_type->rewrite['slug'] . '/';
+		        $new_query_string = 'index.php?post_type=' . $post_type->name;
+
+		        // Prepend the rewrites & queries
+		        for( $n = 1; $n <= $i; $n++ ) {
+		            $new_rewrite_rule .= '(' . implode( '|', $query_vars ) . ')/(.+?)/';
+		            $new_query_string .= '&' . $wp_rewrite->preg_index( $n * 2 - 1 ) . '=' . $wp_rewrite->preg_index( $n * 2 );
+		        }
+
+		        // Allow paging of filtered post type - WordPress expects 'page' in the URL but uses 'paged' in the query string so paging doesn't fit into our regex
+		        $new_paged_rewrite_rule = $new_rewrite_rule . 'page/([0-9]{1,})/';
+		        $new_paged_query_string = $new_query_string . '&paged=' . $wp_rewrite->preg_index( $i * 2 + 1 );
+
+		        // Make the trailing backslash optional
+		        $new_paged_rewrite_rule = $new_paged_rewrite_rule . '?$';
+		        $new_rewrite_rule = $new_rewrite_rule . '?$';
+
+		        // Add the new rewrites
+		        $new_rewrite_rules = array( $new_paged_rewrite_rule => $new_paged_query_string,
+		                                    $new_rewrite_rule       => $new_query_string )
+		                             + $new_rewrite_rules;
+		    }
+
+		    return $new_rewrite_rules;
 		}
 
 		/**
@@ -902,7 +960,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * where the number of meta values is what we calculated in $meta_field_count
 			 */
 			if( 0 < $meta_field_count ) {
-				$replacement = '';
+				$replacement = $pieces['orderby'] . ', ';
 				$vehicle = new Inventory_Presser_Vehicle();
 				for( $m=0; $m<$meta_field_count; $m++ ) {
 					$replacement .= 'mt' . ( $m+1 ) . '.meta_value';
@@ -953,6 +1011,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// They are only referenced in the post_type column with a post entry,
 			// when you add a post of this CPT.
 			$this->create_custom_post_type( );
+
+			$this->add_pretty_search_urls( );
 
 			// ATTENTION: This is *only* done during plugin activation hook in this example!
 			// You should *NEVER EVER* do this on every page load!!
