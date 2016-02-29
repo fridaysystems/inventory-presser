@@ -220,7 +220,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$images = get_children($image_args);
 
 			foreach($images as $image):
-				$this->images[$size][] = wp_get_attachment_image($image->ID, $size);
+				$this->images[$size][] = wp_get_attachment_image($image->ID, $size, false, array('class'=>'invp-image'));
 			endforeach;
 
 			return $this->images[$size];

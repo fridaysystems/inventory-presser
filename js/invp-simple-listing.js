@@ -64,11 +64,23 @@
 	//on page load
 	$( document ).ready(function() {
 
-		$.get(invp_options.template, function(response) {
-		     template = response;
-		     per_page = invp_options.per_page;
-		     populate_inventory();
-		});
+		// if we're on the shortcode page
+		if (invp_options.is_archive) {
+			$.get(invp_options.template, function(response) {
+			     template = response;
+			     per_page = invp_options.per_page;
+			     populate_inventory();
+			});
+		}
+
+		// if we're on a singular inventory page
+		if (invp_options.is_singular) {
+			$('.featured_image_urls').each(function(index,url){
+				
+			});
+		}
+
+		
 
 	});
 
