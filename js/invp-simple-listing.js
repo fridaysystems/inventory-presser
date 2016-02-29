@@ -5,7 +5,7 @@
 		per_page = 10,
 		top_adjust = 100;
 
-	function populate_inventory(cur_page) {
+	function populate_inventory() {
 		
 		$.ajax({
 			method: "POST",
@@ -23,17 +23,18 @@
 
 				// create paging
 				if ($('.invp-pages').length && (response.total/1) > per_page) {
+					$('.invp-pages').append('<span>Pages: </span>');
 					page_count = Math.ceil(response.total/per_page);
 					for (var i = 0; i < page_count; i++) {
-						var page_link = (i == cur_page) ? i + 1 : '<a href="#">' + (i + 1) + '</a>';
+						var page_link = (i == cur_page) ? '<a href="#" class="invp-page invp-page-active">' + (i + 1) + '</a>' : '<a href="#" class="invp-page">' + (i + 1) + '</a>';
 						var pager_div = $('<div class="invp-page">' + page_link + '</div>');
-						$('.invp-pages').append(pager_div);
+						$('.invp-pages').append(page_link);
 					}
 					// bind links
-					$('.invp-page a').on('click',function(e){
+					$('a.invp-page').on('click',function(e){
 						e.preventDefault();
-						cur_page = $(this).parent().index();
-						populate_inventory(cur_page);
+						cur_page = $(this).index()-1;
+						populate_inventory();
 						$('html, body').animate({
 					        scrollTop: $(this).closest('.invp-wrapper').offset().top - top_adjust
 					    }, 1000);
@@ -63,11 +64,23 @@
 	//on page load
 	$( document ).ready(function() {
 
-		$.get(invp_options.template, function(response) {
-		     template = response;
-		     per_page = invp_options.per_page;
-		     populate_inventory(cur_page);
-		});
+		// if we're on the shortcode page
+		if (invp_options.is_archive) {
+			$.get(invp_options.template, function(response) {
+			     template = response;
+			     per_page = invp_options.per_page;
+			     populate_inventory();
+			});
+		}
+
+		// if we're on a singular inventory page
+		if (invp_options.is_singular) {
+			$('.featured_image_urls').each(function(index,url){
+				
+			});
+		}
+
+		
 
 	});
 

@@ -292,6 +292,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function create_custom_post_type( ) {
+
 			//creates a custom post type that will be used by this plugin
 			register_post_type(
 				$this->post_type(),
@@ -299,7 +300,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					'inventory_presser_post_type_args',
 					array (
 						'description'  => __('Vehicles for sale in an automobile or powersports dealership'),
-						'has_archive'  => true,
+						// check if the theme has a CPT archive template.  If not, we will assume that the inventory is going to
+						// be displayed via shortcode, and we won't be using the theme archive
+						'has_archive'  => file_exists(get_stylesheet_directory().'/archive-'.self::CUSTOM_POST_TYPE.'.php'),
 						'hierarchical' => false,
 						'labels' => array (
 							'name'          => __( 'Vehicles' ),

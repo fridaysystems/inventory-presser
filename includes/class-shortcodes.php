@@ -10,12 +10,41 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		add_action('wp_ajax_get_simple_listing', array($this, 'simple_json') );
 		add_action('wp_ajax_nopriv_get_simple_listing', array($this, 'simple_json') );
 
+		//$feat_image_url = wp_get_attachment_url( get_post_thumbnail_id() );
+
 	}
 
 	function load_scripts() {
 
 		wp_register_script('invp-simple-listing', plugins_url('/js/invp-simple-listing.js', dirname(__FILE__)), array('jquery'));
 		wp_enqueue_style('invp-simple-listing-style', plugins_url('/css/invp-simple-listing.css', dirname(__FILE__)));
+
+
+		if (is_singular('inventory_vehicle') && !file_exists(get_stylesheet_directory().'/single-inventory_vehicle.php')) {
+
+			// generate an array of all featured image size urls.  This will be used by jquery to remove all instances
+			// of a featured post image in a vehicle page, in the case that a featured image is displayed on a single page
+			global $post;
+
+			$image_urls = array();
+			$featured_image_id = get_post_thumbnail_id($post->ID);
+			if ($featured_image_id) {
+				$sizes = get_intermediate_image_sizes();
+				$sizes[] = 'full';
+				foreach ($sizes as $size) {
+					$image_src = wp_get_attachment_image_src($featured_image_id, $size );
+					$image_urls[] = $image_src[0];
+				}
+			}
+
+			wp_enqueue_script('invp-simple-listing');
+			// localize it
+			wp_localize_script('invp-simple-listing', 'invp_options',array(
+				'is_archive'=>false,
+				'is_singular'=>true,
+				'featured_image_urls'=> array_unique($image_urls)
+			));
+		}
 
 	}
 	
@@ -29,7 +58,13 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		// enqueue the previously registered script
 		wp_enqueue_script('invp-simple-listing');
 		// localize it
-		wp_localize_script('invp-simple-listing', 'invp_options', array('ajax_url'=>admin_url('admin-ajax.php'),'per_page'=>$atts['per_page'], 'template'=>$template));
+		wp_localize_script('invp-simple-listing', 'invp_options',array(
+			'is_archive'=>true,
+			'is_singular'=>false,
+			'ajax_url'=>admin_url('admin-ajax.php'),
+			'per_page'=>$atts['per_page'],
+			'template'=>$template
+		));
 
 		$output = ''; // start blank, may want to add conditionals later for paging options
 		$output .= '<div class="invp-wrapper">';

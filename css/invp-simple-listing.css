@@ -1,12 +1,27 @@
+/* pager */
 .invp-pages {
-	border: 1px solid orange;
+	text-align: center;
+	margin: 10px 5px;
 }
 
-.invp-page {
+a.invp-page {
 	display: inline-block;
-	padding: 10px;
-	border-right: 1px solid #CCC;
+	padding: 5px 10px;
+	text-decoration: none;
+	background-color: #F7F7F7;
+	border-radius: 4px;
 }
+
+a.invp-page-active, a.invp-page:hover {
+	background-color: #041590;
+	color: #fff;
+}
+
+a.invp-page + a.invp-page {
+	margin-left: 2px;
+}
+
+/* archive items */
 
 .invp-simple-item {
 	border-bottom: 1px solid blue;
