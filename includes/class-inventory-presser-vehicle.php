@@ -88,7 +88,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 
 		function carfax_icon_HTML($wrap = false) {
-			
+
 			$link = '';
 			$text = '';
 			if( $this->have_carfax_report() ) {
@@ -194,7 +194,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 * Return the $zero_string when the price is zero.
 		 */
 		function price( $zero_string ) {
-			if( 0 === $this->price ) { return $zero_string; }
+			if( 0 == $this->price ) { return $zero_string; }
 			$result = '$' . number_format( $this->price, 0, '.', ',' );
 			return $result;
 		}
