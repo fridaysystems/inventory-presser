@@ -218,9 +218,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 					'orderby' => 'menu_order ID');
 
 			$images = get_children($image_args);
-
 			foreach($images as $image):
-				$this->images[$size][] = wp_get_attachment_image($image->ID, $size, false, array('class'=>'invp-image'));
+				$this->images[$size][] = wp_get_attachment_image($image->ID, $size, false, array('class'=>"attachment-$size size-$size invp-image"));
 			endforeach;
 
 			return $this->images[$size];
