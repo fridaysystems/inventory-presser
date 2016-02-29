@@ -159,6 +159,16 @@ class Inventory_Presser_Modify_Imports {
 		 * Delete the pending import folder when the user deletes all plugin data
 		 */
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
+
+		//All our meta keys are unique, so tell the importer so, and...
+		add_filter( 'wp_import_post_meta_unique', '__return_true' );
+		//also make sure these unique post keys get updated, because they will
+		//be ignored by the importer because they are unique and already exist
+		add_action( 'import_post_meta', array( &$this, 'update_existing_unique_post_meta_values' ), 10, 3 );
+	}
+
+	function update_existing_unique_post_meta_values( $post_id, $key, $value ) {
+		update_post_meta( $post_id, $key, $value );
 	}
 
 	function delete_directory( $dir ) {
