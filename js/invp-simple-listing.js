@@ -75,8 +75,8 @@
 
 		// if we're on a singular inventory page, remove featured image from page, where added by the theme
 		if (invp_options.is_singular) {
-			$(invp_options.featured_image_urls).each(function(index,url){
-				$("img[src='" + url + "']:not('.invp-image')").remove();
+			$.each(invp_options.featured_image_urls, function(index,url){
+				$(".inventory_vehicle img[src='" + url + "']:not('.invp-image')").remove();
 			});
 		}
 

@@ -15,11 +15,12 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 	function load_scripts() {
 
-		wp_register_script('flexslider', plugins_url('/js/jquery.flexslider.min.js', dirname(__FILE__)), array('jquery'));
-		wp_register_script('invp-simple-listing', plugins_url('/js/invp-simple-listing.js', dirname(__FILE__)), array('flexslider'));
+		wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
 		wp_enqueue_style('invp-simple-listing-style', plugins_url('/css/invp-simple-listing.css', dirname(__FILE__)));
 
-
+		wp_register_script('flexslider', plugins_url('/js/jquery.flexslider.min.js', dirname(__FILE__)), array('jquery'));
+		wp_register_script('invp-simple-listing', plugins_url('/js/invp-simple-listing.js', dirname(__FILE__)), array('flexslider'));
+		
 		if (is_singular('inventory_vehicle') && !file_exists(get_stylesheet_directory().'/single-inventory_vehicle.php')) {
 
 			// generate an array of all featured image size urls.  This will be used by jquery to remove all instances
@@ -71,7 +72,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		$output = ''; // start blank, may want to add conditionals later for paging options
 		$output .= '<div class="invp-wrapper">';
 		$output .= '<div class="invp-pages invp-reset"></div>';
-		$output .= '<div class="invp-listing invp-reset"></div>';
+		$output .= '<div class="invp-listing invp-cf invp-reset"></div>';
 		$output .= '<div class="invp-pages invp-reset"></div>';
 		$output .= '</div>';
 
@@ -112,7 +113,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 				$output['inventory'][] = array (
 						'title' => $vehicle->post_title,
 						'price' => $vehicle->price('Call For Price'),
-						'miles' => $vehicle->odometer(),
+						'miles' => $vehicle->odometer(' Miles'),
 						'color' => $vehicle->color,
 						'engine' => $vehicle->engine,
 						'url' => $vehicle->url,
@@ -149,30 +150,46 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 			$before =	'<div class="invp-single-wrapper">';
 
-			$before =		'<div class="single-subhead">';
-			$before.=			'<div class="left">'.$vehicle->odometer().' Miles</div>';
-			$before.=			'<div class="right">'.$vehicle->price('Call For Price').'</div>';
+			$before.=		'<div class="invp-single-subhead invp-cf">';
+			$before.=			'<div class="invp-left">'.$vehicle->odometer(' Miles').'</div>';
+			$before.=			'<div class="invp-right">'.$vehicle->price('Call For Price').'</div>';
 			$before.=			'<div class="clear"></div>';
 			$before.=		'</div>';
 
-			$before.=		'<div id="slider" class="flexslider">';
-			$before.=		  '<ul class="slides">';
-			foreach($large_image_list as $image):
-			$before.=		    '<li>'.$image.'</li>';
-			endforeach;
-			$before.=		  '</ul>';
-			$before.=		'</div>';
-					
-			$before.=		'<div id="carousel" class="flexslider">';
-			$before.=		  '<ul class="slides">';
-			foreach($thumb_image_list as $image):
-			$before.=		    '<li>'.$image.'</li>';
-			endforeach;
-			$before.=		  '</ul>';
-			$before.=		'</div>';
+			// if there are images, display them
+			if (count($thumb_image_list) > 0) {
+
+				$before.=		'<div id="slider" class="flexslider">';
+				$before.=		  '<ul class="slides">';
+				foreach($large_image_list as $image):
+				$before.=		    '<li>'.$image.'</li>';
+				endforeach;
+				$before.=		  '</ul>';
+				$before.=		'</div>';
+
+				
+				// if only 1 image, skip the nav
+				if (count($thumb_image_list) > 1) {
+					$before.=		'<div id="carousel" class="flexslider">';
+					$before.=		  '<ul class="slides">';
+					foreach($thumb_image_list as $image):
+					$before.=		    '<li>'.$image.'</li>';
+					endforeach;
+					$before.=		  '</ul>';
+					$before.=		'</div>';				
+				}
+
+			}
 
 			$after = '';
-			$after .=		'</div>';
+
+			$after .= '<ul class="vehicle-features">';
+			foreach($vehicle->option_array as $option):
+			$after .= '<li>'.$option.'</li>';
+			endforeach;
+			$after .= '</ul>';
+
+			$after .= '</div>';
 
 			$content = $before.$content.$after;
 

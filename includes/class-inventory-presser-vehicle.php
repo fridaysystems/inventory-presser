@@ -181,12 +181,17 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 
 		//if numeric, format the odometer with thousands separators
-		function odometer( ) {
+		function odometer($append = '') {
+			$odometer = '';
 			if( is_numeric( $this->odometer ) ) {
-				return number_format( $this->odometer, 0, '.', ',' );
+				$odometer .= number_format( $this->odometer, 0, '.', ',' );
 			} else {
-				return $this->odometer;
+				$odometer .= $this->odometer;
 			}
+			if($odometer && $append) {
+				$odometer .= $append;
+			}
+			return $odometer;
 		}
 
 		/**
