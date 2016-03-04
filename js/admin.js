@@ -1,8 +1,38 @@
-function delete_all_inventory() {
+function delete_all_data() {
+	//call delete_all_inventory(), then wait until #busy-notice is cleared to
+	delete_all_inventory( 'delete-all-notice' );
+	var timeoutID = setTimeout( maybe_finish_delete_all_data, 2000 );
+}
+
+function maybe_finish_delete_all_data() {
+	//are the cars still deleting?
+	var el = jQuery('#'+status_element_id);
+	if( '' !== el.html()) {
+		//yes? set another timeout
+		var timeoutID = setTimeout( maybe_finish_delete_all_data, 2000 );
+		console.log('setting another check');
+	} else {
+		//no, submit our form that will perform the rest of the data delete
+		el.html(' <img src="images/loading.gif" /> Deleting other plugin data...');
+		jQuery('#delete-all-data').submit();
+	}
+}
+
+var status_element_id;
+
+/**
+ * Deletes all vehicles managed by this plugin via a looping AJAX call to
+ * workaround script timeouts.
+ *
+ * @param string wait_notice_element_id An HTML element whose contents will show
+ * the user a status while the deletion is taking place
+ */
+function delete_all_inventory( wait_notice_element_id ) {
+	status_element_id = wait_notice_element_id;
 	//Show the admin loading gif in the last run status
-	jQuery('#busy-notice').html(' <img src="images/loading.gif" /> Deleting vehicles...');
+	jQuery('#'+status_element_id).html(' <img src="images/loading.gif" /> Deleting vehicles...');
 	var data = {
-		'action': 'delete_all_inventory',
+		'action': 'delete_all_inventory'
 	};
 	jQuery.post( ajaxurl, data, function( response ) {
 		var success_pos = response.indexOf( 'setting-error-settings_updated' );
@@ -28,7 +58,7 @@ function delete_all_inventory() {
 				});
 			}
 			//Hide the swirly wait gif
-			jQuery('#busy-notice').html('');
+			jQuery('#'+status_element_id).html('');
 		}
 	}).fail(function() {
 		delete_all_inventory();

@@ -702,14 +702,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					<?php wp_nonce_field('delete-vehicles-nonce'); ?>
 					<input type="hidden" name="delete-vehicles" value="yes">
 					//-->
-					<input type="button" class="button-primary" value="<?php _e('Delete all Inventory') ?>" onclick="delete_all_inventory();" /><span id="busy-notice"></span>
+					<input type="button" class="button-primary" value="<?php _e('Delete all Inventory') ?>" onclick="delete_all_inventory( 'delete-vehicles-notice' );" /><span id="delete-vehicles-notice"></span>
 				</form>
 
 				<p><?php _e( 'Remove all ' . self::PRODUCT_NAME . ' plugin data (including vehicles and photos) and deactivate.' ) ?></p>
-				<form method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings">
+				<form id="delete-all-data" method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings">
 					<?php wp_nonce_field('delete-nonce'); ?>
 					<input type="hidden" name="delete" value="yes">
-					<input type="submit" class="button-primary" value="<?php _e('Delete all Plugin Data') ?>" />
+					<input type="button" class="button-primary" value="<?php _e('Delete all Plugin Data') ?>" onclick="delete_all_data();" /><span id="delete-all-notice"></span>
 				</form>
 			</div><?php
 		}
