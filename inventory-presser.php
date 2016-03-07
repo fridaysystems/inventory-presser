@@ -123,7 +123,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function add_pretty_search_urls( ) {
 			global $wp_rewrite;
-			$wp_rewrite->rules = $this->generate_rewrite_rules('inventory_vehicle') + $wp_rewrite->rules;
+			$wp_rewrite->rules = $this->generate_rewrite_rules(self::CUSTOM_POST_TYPE) + $wp_rewrite->rules;
 		}
 
 		function annotate_add_media_button( $context ) {
@@ -227,7 +227,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					'image' => 0,
 					'video' => 0,
 					'text'  => 0,
-					'pdf'   => 0,
+					'PDF'   => 0,
 					'other' => 0,
 				);
 				foreach( $attachments as $attachment ) {
@@ -248,41 +248,20 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							$counts['text']++;
 							break;
 						case 'application/pdf':
-							$counts['pdf']++;
+							$counts['PDF']++;
 							break;
 						default:
 							$counts['other']++;
 							break;
 					}
 				}
-				if( 0 < ( $counts['image'] + $counts['video'] + $counts['text'] + $counts['pdf'] + $counts['other'] ) ) {
+				if( 0 < ( $counts['image'] + $counts['video'] + $counts['text'] + $counts['PDF'] + $counts['other'] ) ) {
 					$note = '';
-					if( 0 < $counts['image'] ) {
-						$note .= $counts['image'] . ' photo' . ( 1 != $counts['image'] ? 's' : '' );
-					}
-					if( 0 < $counts['video'] ) {
-						if( '' != $note ) {
-							$note .= ', ';
+					foreach( $counts as $key => $count ) {
+						if( 0 < $count ) {
+							if( '' != $note ) { $note .= ', '; }
+							$note .= $count . ' ' . $key . ( 1 != $count ? 's' : '' );
 						}
-						$note .= $counts['video'] . ' video' . ( 1 != $counts['video'] ? 's' : '' );
-					}
-					if( 0 < $counts['text'] ) {
-						if( '' != $note ) {
-							$note .= ', ';
-						}
-						$note .= $counts['text'] . ' text' . ( 1 != $counts['text'] ? 's' : '' );
-					}
-					if( 0 < $counts['pdf'] ) {
-						if( '' != $note ) {
-							$note .= ', ';
-						}
-						$note .= $counts['pdf'] . ' PDF' . ( 1 != $counts['pdf'] ? 's' : '' );
-					}
-					if( 0 < $counts['other'] ) {
-						if( '' != $note ) {
-							$note .= ', ';
-						}
-						$note .= $counts['other'] . ' file' . ( 1 != $counts['other'] ? 's' : '' );
 					}
 					return $note;
 				} else {
@@ -1015,8 +994,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// when you add a post of this CPT.
 			$this->create_custom_post_type( );
 
-			$this->add_pretty_search_urls( );
-
 			// ATTENTION: This is *only* done during plugin activation hook in this example!
 			// You should *NEVER EVER* do this on every page load!!
 			flush_rewrite_rules( );
@@ -1455,29 +1432,22 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function vehicles_table_columns_orderbys( $vars ) {
-			if ( isset( $vars['orderby'] ) && apply_filters( 'translate_meta_field_key', 'color' ) == $vars['orderby'] ) {
-				return array_merge( $vars, array(
-					'meta_key' => apply_filters( 'translate_meta_field_key', 'color' ),
-					'orderby' => 'meta_value'
-				) );
-			}
-			if ( isset( $vars['orderby'] ) && apply_filters( 'translate_meta_field_key', 'odometer' ) == $vars['orderby'] ) {
-				return array_merge( $vars, array(
-					'meta_key' => apply_filters( 'translate_meta_field_key', 'odometer' ),
-					'orderby' => 'meta_value'
-				) );
-			}
-			if ( isset( $vars['orderby'] ) && apply_filters( 'translate_meta_field_key', 'price' ) == $vars['orderby'] ) {
-				return array_merge( $vars, array(
-					'meta_key' => apply_filters( 'translate_meta_field_key', 'price' ),
-					'orderby' => 'meta_value_num'
-				) );
-			}
-			if ( isset( $vars['orderby'] ) && apply_filters( 'translate_meta_field_key', 'stock_number' ) == $vars['orderby'] ) {
-				return array_merge( $vars, array(
-					'meta_key' => apply_filters( 'translate_meta_field_key', 'stock_number' ),
-					'orderby' => 'meta_value'
-				) );
+			$columns = array(
+				'color',
+				'odometer',
+				'price',
+				'stock_number',
+			);
+			$vehicle = new Inventory_Presser_Vehicle();
+			foreach( $columns as $column ) {
+				$meta_key = apply_filters( 'translate_meta_field_key', $column );
+				$meta_value_is_number = $vehicle->post_meta_value_is_number( $meta_key );
+				if ( isset( $vars['orderby'] ) && $meta_key == $vars['orderby'] ) {
+					return array_merge( $vars, array(
+						'meta_key' => $meta_key,
+						'orderby' => 'meta_value' . ( $meta_value_is_number ? '_num' : '')
+					) );
+				}
 			}
 			return $vars;
 		}
