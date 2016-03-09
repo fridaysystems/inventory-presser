@@ -111,7 +111,7 @@ class Inventory_Presser_Modify_Imports {
 			 * A post_meta key called `_inventory_presser_photo_number` specifies the photo number.
 			 * This is useful here, where we want to make photo number one the thumbnail for the parent post.
 			 */
-			if( '1' === get_post_meta( $attachment->ID, '_inventory_presser_photo_number', true ) ) {
+			if( '1' == get_post_meta( $attachment->ID, '_inventory_presser_photo_number', true ) ) {
 				set_post_thumbnail( $attachment->post_parent, $attachment->ID );
 			}
 			//save the post with the updated post_parent value
