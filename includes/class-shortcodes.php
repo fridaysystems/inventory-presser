@@ -5,7 +5,8 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 	function __construct() {
 
-		add_shortcode('invp-simple-listing', array($this, 'output'));
+		add_shortcode('invp-simple-listing', array($this, 'simple_listing'));
+		add_shortcode('invp-inventory-slider', array($this, 'inventory_slider'));
 		add_action('wp_enqueue_scripts', array($this, 'load_scripts'));
 		add_action('wp_ajax_get_simple_listing', array($this, 'simple_json') );
 		add_action('wp_ajax_nopriv_get_simple_listing', array($this, 'simple_json') );
@@ -50,8 +51,55 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		}
 
 	}
+
+	function inventory_slider($atts) {
+		// process shortcode attributes
+		$atts = shortcode_atts(array(
+			'per_page' => 10,
+		), $atts);
+
+		$args=array(
+			'numberposts'=>$atts['per_page'],
+			'post_type'=>'inventory_vehicle',
+			'meta_key'=>'_thumbnail_id',
+			'fields' => 'ids',
+			'orderby'=>'rand'
+		);
+
+		$inventory_ids = get_posts( $args );
+
+		$flexHtml = '';
+
+		if ($inventory_ids) {
+
+			$flexHtml .= "<div class=\"flexslider flex-native\">\n";
+			$flexHtml .= "<ul class=\"slides\">\n";
+
+			foreach ($inventory_ids as $inventory_id) {
+
+				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
+
+
+				$flexHtml .= '<li><a class=\"flex-link\" href="'.$vehicle->url.'">';
+				$flexHtml .= wp_get_attachment_image(get_post_thumbnail_id($inventory_id), 'full');
+
+				$flexHtml .= "<p class=\"flex-caption\">";
+				$flexHtml .= $vehicle->post_title;
+				$flexHtml .= "</p>";
+
+				$flexHtml .= "</a></li>\n";
+
+			}
+
+			$flexHtml .= "</ul></div>";
+
+		}
+
+		return $flexHtml;
+
+	}
 	
-	function output($atts) {
+	function simple_listing($atts) {
 		// process shortcode attributes
 		$atts = shortcode_atts(array(
 			'per_page' => 10,
