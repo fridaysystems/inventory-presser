@@ -7,6 +7,8 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 		add_shortcode('invp-simple-listing', array($this, 'simple_listing'));
 		add_shortcode('invp-inventory-slider', array($this, 'inventory_slider'));
+		add_shortcode( 'iframe', array($this, 'iframe_unqprfx_embed_shortcode'));
+
 		add_action('wp_enqueue_scripts', array($this, 'load_scripts'));
 		add_action('wp_ajax_get_simple_listing', array($this, 'simple_json') );
 		add_action('wp_ajax_nopriv_get_simple_listing', array($this, 'simple_json') );
@@ -253,6 +255,53 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		return $content;
 
 	}
+
+	function iframe_unqprfx_embed_shortcode( $atts ) {
+		$defaults = array(
+			'src' => 'http://www.youtube.com/embed/4qsGTXLnmKs',
+			'width' => '100%',
+			'height' => '500',
+			'scrolling' => 'yes',
+			'class' => 'iframe-class',
+			'frameborder' => '0'
+		);
+
+		foreach ( $defaults as $default => $value ) { // add defaults
+			if ( ! @array_key_exists( $default, $atts ) ) { // mute warning with "@" when no params at all
+				$atts[$default] = $value;
+			}
+		}
+
+		$html = "\n".'<!-- iframe plugin v.4.2 wordpress.org/plugins/iframe/ -->'."\n";
+		$html .= '<iframe';
+		foreach( $atts as $attr => $value ) {
+			if ( strtolower($attr) != 'same_height_as' AND strtolower($attr) != 'onload'
+				AND strtolower($attr) != 'onpageshow' AND strtolower($attr) != 'onclick') { // remove some attributes
+				if ( $value != '' ) { // adding all attributes
+					$html .= ' ' . esc_attr( $attr ) . '="' . esc_attr( $value ) . '"';
+				} else { // adding empty attributes
+					$html .= ' ' . esc_attr( $attr );
+				}
+			}
+		}
+		$html .= '></iframe>'."\n";
+
+		if ( isset( $atts["same_height_as"] ) ) {
+			$html .= '
+				<script>
+				document.addEventListener("DOMContentLoaded", function(){
+					var target_element, iframe_element;
+					iframe_element = document.querySelector("iframe.' . esc_attr( $atts["class"] ) . '");
+					target_element = document.querySelector("' . esc_attr( $atts["same_height_as"] ) . '");
+					iframe_element.style.height = target_element.offsetHeight + "px";
+				});
+				</script>
+			';
+		}
+
+		return $html;
+	}
+
 
 }
 
