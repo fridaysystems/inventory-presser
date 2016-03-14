@@ -229,6 +229,11 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 			}
 
+			$before.= '<ul>';
+			$before.= '	<li>'.$vehicle->color.'</li>';
+			$before.= '	<li>'.$vehicle->engine.'</li>';
+			$before.= '</ul>';
+
 			$after = '';
 
 			$after .= '<ul class="vehicle-features">';
