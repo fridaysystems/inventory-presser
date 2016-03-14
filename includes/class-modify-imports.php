@@ -27,7 +27,7 @@ class Inventory_Presser_Modify_Imports {
 		$this_site_URL_parts = parse_url( $upload_dir['url'] );
 		$same_host = $this_site_URL_parts['host'] == $attachment_URL_parts['host'];
 		// They live on different servers, go fetch it
-		if( !$same_host ){ return true; }
+		if( !$same_host ){ die('not same host'); return true; }
 		/**
 		 * Change the attachment path to match the format of the upload_dir path
 		 * by removing the file name and the slash right before it
@@ -35,7 +35,7 @@ class Inventory_Presser_Modify_Imports {
 		$attachment_path = substr( $attachment_URL_parts['path'], 0, strlen( $attachment_URL_parts['path'] ) - ( 1 + strlen( basename( $attachment_URL_parts['path'] ) ) ) );
 		$same_path = $this_site_URL_parts['path'] == $attachment_path;
 		//both paths point to the same location, do not fetch
-		if( $same_path ){ return false; }
+		if( $same_path ){ die('same path'); return false; }
 		/**
 		 * Perhaps the file is in a subfolder of the uploads folder.
 		 * Does the path to the attachment start with the path to the uploads folder?
@@ -56,6 +56,10 @@ class Inventory_Presser_Modify_Imports {
 			return false;
 		}
 		return true;
+	}
+
+	function alter_fetched_file_url( $url ) {
+		return str_replace( '/' . self::PENDING_DIR_NAME, '', $url );
 	}
 
 	function associate_parentless_attachments_with_parents( ) {
@@ -111,7 +115,7 @@ class Inventory_Presser_Modify_Imports {
 			 * A post_meta key called `_inventory_presser_photo_number` specifies the photo number.
 			 * This is useful here, where we want to make photo number one the thumbnail for the parent post.
 			 */
-			if( '1' == get_post_meta( $attachment->ID, '_inventory_presser_photo_number', true ) ) {
+			if( '1' === get_post_meta( $attachment->ID, '_inventory_presser_photo_number', true ) ) {
 				set_post_thumbnail( $attachment->post_parent, $attachment->ID );
 			}
 			//save the post with the updated post_parent value
@@ -125,6 +129,14 @@ class Inventory_Presser_Modify_Imports {
 
 		//don't actually download attachments during imports if they are already on this server
 		add_filter( 'import_allow_fetch_file', array( &$this, 'allow_fetch_attachments' ), 10, 2 ) ;
+
+		/**
+		 * Go all in on our lie to the importer. When we tell it not to really
+		 * go download attachment payloads, we want to massage the URL to remove
+		 * our pending directory folder as if it was downloaded into the uploads
+		 * folder.
+		 */
+		add_filter( 'import_fetched_file_url', array( &$this, 'alter_fetched_file_url' ) );
 
 		//after an import is completed, try to match attachments with their parent posts
 		add_action( 'import_end', array( &$this, 'associate_parentless_attachments_with_parents' ) );
