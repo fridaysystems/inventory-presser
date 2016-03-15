@@ -257,8 +257,10 @@ class Inventory_Presser_Vehicle_Shortcodes {
 	}
 
 	function iframe_unqprfx_embed_shortcode( $atts ) {
+
+		// qstring variable is 'stock'
+
 		$defaults = array(
-			'src' => 'http://www.youtube.com/embed/4qsGTXLnmKs',
 			'width' => '100%',
 			'height' => '500',
 			'scrolling' => 'yes',
@@ -270,6 +272,10 @@ class Inventory_Presser_Vehicle_Shortcodes {
 			if ( ! @array_key_exists( $default, $atts ) ) { // mute warning with "@" when no params at all
 				$atts[$default] = $value;
 			}
+		}
+
+		if (isset($_GET['stock'])) {
+			$atts['src'] .= '&stock='.$_GET['stock'];
 		}
 
 		$html = "\n".'<!-- iframe plugin v.4.2 wordpress.org/plugins/iframe/ -->'."\n";
