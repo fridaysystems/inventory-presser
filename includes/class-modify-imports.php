@@ -27,7 +27,7 @@ class Inventory_Presser_Modify_Imports {
 		$this_site_URL_parts = parse_url( $upload_dir['url'] );
 		$same_host = $this_site_URL_parts['host'] == $attachment_URL_parts['host'];
 		// They live on different servers, go fetch it
-		if( !$same_host ){ die('not same host'); return true; }
+		if( ! $same_host ){ die('not same host'); return true; }
 		/**
 		 * Change the attachment path to match the format of the upload_dir path
 		 * by removing the file name and the slash right before it
@@ -37,21 +37,28 @@ class Inventory_Presser_Modify_Imports {
 		//both paths point to the same location, do not fetch
 		if( $same_path ){ die('same path'); return false; }
 		/**
-		 * Perhaps the file is in a subfolder of the uploads folder.
-		 * Does the path to the attachment start with the path to the uploads folder?
+	     * Perhaps the file is in a subfolder of the uploads folder.
+	     * Does the path to the attachment start with the path to the uploads folder?
 		 */
 		if( substr( $attachment_URL_parts['path'], 0, strlen( $this_site_URL_parts['path'] ) ) == $this_site_URL_parts['path'] ) {
 			/**
 			 * Yes, the file lives in a sub-folder of the uploads folder. Such as...
 			 * http://localhost/test-site/wp-content/uploads/{PENDING_DIR_NAME}/H517718-2.jpg
-			 * Copy the file to the uploads folder.
+			 * or, more recently,
+			 * http://localhost/test-site/wp-content/uploads/{PENDING_DIR_NAME}/{VIN}/H517718-2.jpg
+			 *
+			 * Copy the file to the uploads folder, preserving the path after the
+			 * pending directory.
 			 */
 			$source = $upload_dir['basedir'] . substr( $attachment_URL_parts['path'], strlen( $this_site_URL_parts['path'] ) );
-			$destination = $upload_dir['basedir'] . '/' . basename( $attachment_URL_parts['path'] );
 			if( is_file( $source ) ) {
+				$destination = str_replace( '/' . self::PENDING_DIR_NAME, '', $source );
+				//Does the directory exist?
+				if( ! is_dir( dirname( $destination ) ) ) {
+					//no
+					mkdir( dirname( $destination ), 0777, true );
+				}
 				copy( $source, $destination );
-				//do not delete the file beginning december 30, 2015, we're going to maintain the pending folder differently
-				//unlink( $source );
 			}
 			return false;
 		}
@@ -99,11 +106,11 @@ class Inventory_Presser_Modify_Imports {
 				$find_parent_args = array(
 					'post_type'  => $this->post_type,
 					'meta_query' => array(
-								array(
-									'key'   => '_inventory_presser_photo_file_name_base',
-									'value' => $file_name_base,
-								)
-							),
+						array(
+							'key'   => '_inventory_presser_photo_file_name_base',
+							'value' => $file_name_base,
+						)
+					),
 				);
 				$parent_query = new WP_Query( $find_parent_args );
 				if( $parent_query->have_posts() && 1 == count( $parent_query->posts ) ) {
@@ -121,7 +128,7 @@ class Inventory_Presser_Modify_Imports {
 			//save the post with the updated post_parent value
 			wp_update_post( $attachment );
 			$last_file_name_base = $file_name_base;
-		 }
+		}
 	}
 
 	function __construct( $post_type, $delete_vehicles_not_in_new_feeds ) {
