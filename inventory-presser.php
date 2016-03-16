@@ -387,15 +387,19 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$posts = get_posts( $args );
 			$deleted_count = 0;
 			if ( $posts ){
+				$upload_dir = wp_upload_dir();
 				foreach( $posts as $post ){
 					//delete post attachments
 					$attachment = array(
 						'posts_per_page' => -1,
 						'post_type'      => 'attachment',
-						'post_parent'    => $post->ID
+						'post_parent'    => $post->ID,
 					);
 
+					$attachment_dir = '';
+
 					foreach( get_posts( $attachment ) as $attached ){
+						$attachment_dir = get_attached_file( $attached->ID );
 						//delete the attachment
 						wp_delete_attachment( $attached->ID, true );
 					}
@@ -403,6 +407,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					//delete the parent post or vehicle
 					wp_delete_post( $post->ID, true );
 					$deleted_count++;
+
+					//delete the photo folder if it exists (and is empty)
+					if( '' != $attachment_dir ) {
+						$dir_path = dirname( $attachment_dir );
+						if( is_dir( $dir_path ) && $dir_path != $upload_dir['basedir'] ) {
+							@rmdir( $dir_path );
+						}
+					}
 				}
 			}
 			return $deleted_count;

@@ -172,7 +172,7 @@ class Inventory_Presser_Modify_Imports {
 		 * is optimal. Users that aren't using import files created by our BirdFeeder app may need
 		 * a different implementation.
 		 */
-		add_filter( '_inventory_presser_create_photo_file_name_base', array( &$this, 'take_left_seven_characters' ) );
+		add_filter( '_inventory_presser_create_photo_file_name_base', array( &$this, 'take_left_seventeen_characters' ) );
 
 		/**
 		 * Delete the pending import folder when the user deletes all plugin data
@@ -310,7 +310,7 @@ class Inventory_Presser_Modify_Imports {
 		return $post;
 	}
 
-	function take_left_seven_characters( $a_string ) {
-		return substr( $a_string, 0, 7 );
+	function take_left_seventeen_characters( $a_string ) {
+		return substr( $a_string, 0, 17 );
 	}
 }
