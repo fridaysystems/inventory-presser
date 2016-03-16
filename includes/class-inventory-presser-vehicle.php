@@ -53,6 +53,9 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$this->post_title = get_the_title($this->post_ID);
 			$this->url = get_permalink($this->post_ID);
 			$this->image_url = wp_get_attachment_url(get_post_thumbnail_id($this->post_ID, 'medium'));
+			if( false === $this->image_url ) {
+				$this->image_url = plugins_url( '../assets/no-photo.png', __FILE__ );
+			}
 
 			//get all data using the post ID
 			$meta = get_post_meta($this->post_ID);

@@ -6,7 +6,7 @@
 		top_adjust = 100;
 
 	function populate_inventory() {
-		
+
 		$.ajax({
 			method: "POST",
 			url: invp_options.ajax_url,
@@ -36,8 +36,8 @@
 						cur_page = $(this).index()-1;
 						populate_inventory();
 						$('html, body').animate({
-					        scrollTop: $(this).closest('.invp-wrapper').offset().top - top_adjust
-					    }, 1000);
+							scrollTop: $(this).closest('.invp-wrapper').offset().top - top_adjust
+						}, 1000);
 					});
 				}
 
@@ -50,9 +50,9 @@
 						var re = new RegExp('{{'+key+'}}', 'g');
 						html = html.replace(re, value);
 					});
-			        // append to div wrapper
-			        $('.invp-listing').append(html);
-			    });
+					// append to div wrapper
+					$('.invp-listing').append(html);
+				});
 			} else {
 				alert ('Error retrieving inventory, please try again!');
 				console.log(response.message);
@@ -67,9 +67,9 @@
 		// if we're on the shortcode page, show listing
 		if (invp_options.is_archive) {
 			$.get(invp_options.template, function(response) {
-			     template = response;
-			     per_page = invp_options.per_page;
-			     populate_inventory();
+				template = response;
+				per_page = invp_options.per_page;
+				populate_inventory();
 			});
 		}
 
@@ -83,27 +83,26 @@
 	});
 
 	$(window).load(function() {
-	  // The slider being synced must be initialized first
-	  $('#carousel').flexslider({
-	    animation: "slide",
-	    controlNav: false,
-	    animationLoop: false,
-	    smoothHeight: true,
-	    slideshow: false,
-	    itemWidth: 150,
-	    itemMargin: 10,
-	    asNavFor: '#slider'
-	  });
-	 
-	  $('#slider').flexslider({
-	    animation: "fade",
-	    controlNav: false,
-	    animationLoop: false,
-	   	smoothHeight: true,
-	    slideshow: false,
-	    sync: "#carousel"
-	  });
+		// The slider being synced must be initialized first
+		$('#carousel').flexslider({
+			animation: "slide",
+			controlNav: false,
+			animationLoop: false,
+			smoothHeight: true,
+			slideshow: false,
+			itemWidth: 150,
+			itemMargin: 10,
+			asNavFor: '#slider'
+		});
 
+		$('#slider').flexslider({
+			animation: "fade",
+			controlNav: false,
+			animationLoop: false,
+			smoothHeight: true,
+			slideshow: false,
+			sync: "#carousel"
+		});
 	});
 
 })(jQuery);
