@@ -341,13 +341,25 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 		}
 
-		function delete_rewrite_rules_option( ) {
-			/* this is called during plugin deactivation
-			 * delete the rewrite_rules option so the rewrite rules
-			 * are generated on the next page load without ours.
-			 * this is a weird thing and is described here http://wordpress.stackexchange.com/a/44337/13090
-			 */
-			delete_option('rewrite_rules');
+		function create_delete_all_post_attachments_button( ) {
+			global $post;
+			if( ! is_object( $post ) || ! isset( $post->ID ) ) {
+				return '';
+			}
+			//does this post have attachments?
+			$post = get_post( $post->ID );
+			if( $this->post_type() != $post->post_type ) {
+				return '';
+			}
+			$attachments = get_children( array(
+				'post_parent'    => $post->ID,
+				'post_type'      => 'attachment',
+				'posts_per_page' => -1,
+			) );
+			if( 0 === sizeof( $attachments ) ) {
+				return '';
+			}
+			return '<button type="button" id="delete-media-button" class="button" onclick="delete_all_post_attachments( );">Delete All Media</button>';
 		}
 
 		function delete_all_data_and_deactivate( ) {
@@ -443,6 +455,49 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			wp_die();
 		}
 
+		function delete_all_post_attachments( ) {
+
+			$post_id = isset( $_POST['post_ID'] ) ? $_POST['post_ID'] : 0;
+
+			if( ! isset( $post_id ) ) {
+
+				return; // Will die in case you run a function like this: delete_post_media($post_id); if you will remove this line - ALL ATTACHMENTS WHO HAS A PARENT WILL BE DELETED PERMANENTLY!
+
+			} elseif ( 0 == $post_id ) {
+
+				return; // Will die in case you have 0 set. there's no page id called 0 :)
+
+			} elseif( is_array( $post_id ) ) {
+
+				return; // Will die in case you place there an array of pages.
+
+			} else {
+
+			    $attachments = get_posts( array(
+			        'post_type'      => 'attachment',
+			        'posts_per_page' => -1,
+			        'post_status'    => 'any',
+			        'post_parent'    => $post_id
+			    ) );
+
+			    foreach ( $attachments as $attachment ) {
+			        if ( false === wp_delete_attachment( $attachment->ID ) ) {
+			            // Log failure to delete attachment.
+			           	error_log( 'Failed to delete attachment ' . $attachment->ID . ' in ' . __FILE__ );
+			        }
+			    }
+			}
+		}
+
+		function delete_rewrite_rules_option( ) {
+			/* this is called during plugin deactivation
+			 * delete the rewrite_rules option so the rewrite rules
+			 * are generated on the next page load without ours.
+			 * this is a weird thing and is described here http://wordpress.stackexchange.com/a/44337/13090
+			 */
+			delete_option('rewrite_rules');
+		}
+
 		function enhance_administrator_dashboard( ) {
 			//This function is added to the 'admin_init' hook
 
@@ -486,6 +541,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Add some content next to the "Add Media" button
 			add_action( 'media_buttons_context', array( &$this, 'annotate_add_media_button' ) );
+
+			//Add some more content next to the "Add Media" button
+			add_action( 'media_buttons_context', array( &$this, 'create_delete_all_post_attachments_button' ) );
+
+			//Define an AJAX handler for the 'Delete All Media' button
+			add_action( 'wp_ajax_delete_all_post_attachments', array( &$this, 'delete_all_post_attachments' ) );
 
 			//'add_attachment'
 			//'delete_attachment'

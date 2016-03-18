@@ -1,3 +1,15 @@
+function delete_all_post_attachments( ) {
+	if( confirm('Are you sure you want to delete all attachments?') ) {
+		var data = {
+			'action': 'delete_all_post_attachments',
+			'post_ID': document.getElementById('post_ID').value
+		};
+		jQuery.post( ajaxurl, data, function( response ) {
+			update_add_media_button_annotation( );
+		});
+	}
+}
+
 function delete_all_data() {
 	//call delete_all_inventory(), then wait until #busy-notice is cleared to
 	delete_all_inventory( 'delete-all-notice' );
@@ -10,7 +22,7 @@ function maybe_finish_delete_all_data() {
 	if( '' !== el.html()) {
 		//yes? set another timeout
 		var timeoutID = setTimeout( maybe_finish_delete_all_data, 2000 );
-		console.log('setting another check');
+		//console.log('setting another check');
 	} else {
 		//no, submit our form that will perform the rest of the data delete
 		el.html(' <img src="images/loading.gif" /> Deleting other plugin data...');

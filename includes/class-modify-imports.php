@@ -27,7 +27,7 @@ class Inventory_Presser_Modify_Imports {
 		$this_site_URL_parts = parse_url( $upload_dir['url'] );
 		$same_host = $this_site_URL_parts['host'] == $attachment_URL_parts['host'];
 		// They live on different servers, go fetch it
-		if( ! $same_host ){ die('not same host'); return true; }
+		if( ! $same_host ){ return true; }
 		/**
 		 * Change the attachment path to match the format of the upload_dir path
 		 * by removing the file name and the slash right before it
@@ -35,7 +35,7 @@ class Inventory_Presser_Modify_Imports {
 		$attachment_path = substr( $attachment_URL_parts['path'], 0, strlen( $attachment_URL_parts['path'] ) - ( 1 + strlen( basename( $attachment_URL_parts['path'] ) ) ) );
 		$same_path = $this_site_URL_parts['path'] == $attachment_path;
 		//both paths point to the same location, do not fetch
-		if( $same_path ){ die('same path'); return false; }
+		if( $same_path ){ return false; }
 		/**
 	     * Perhaps the file is in a subfolder of the uploads folder.
 	     * Does the path to the attachment start with the path to the uploads folder?
@@ -96,14 +96,18 @@ class Inventory_Presser_Modify_Imports {
 		$last_file_name_base = $last_post_ID = '';
 		foreach( $attachments as $attachment ) {
 			//the post guid is a URL to the attachment, we need the file name without extension
-			$file_name = basename( $attachment->guid );
-			$info = pathinfo( $file_name );
-			$file_name_base = apply_filters( '_inventory_presser_create_photo_file_name_base', basename( $file_name, '.' . $info['extension'] ) );
+			//$file_name = basename( $attachment->guid );
+			//$info = pathinfo( $file_name );
+			//$file_name_base = apply_filters( '_inventory_presser_create_photo_file_name_base', basename( $file_name, '.' . $info['extension'] ) );
+			$file_name_base = apply_filters( '_inventory_presser_create_photo_file_name_base', basename( $attachment->guid ) );
+			/*
+
 			if( $file_name_base == $last_file_name_base && '' != $file_name_base ) {
 				//do not need to query, we are looking for the same parent as last
 				$attachment->post_parent = $last_post_ID;
 				error_log( 'Adding photo ' . $file_name_base . ' to post ID ' . $attachment->post_parent );
 			} else {
+			*/
 				/**
 				 * Do we have a post that uses our custom post type and has a meta
 				 * key named `inventory_presser_photo_file_name_base` that contains
@@ -121,10 +125,11 @@ class Inventory_Presser_Modify_Imports {
 				$parent_query = new WP_Query( $find_parent_args );
 				if( $parent_query->have_posts() && 1 == count( $parent_query->posts ) ) {
 					//only one post was found, great, use it's ID as our parent
-					$attachment->post_parent = $last_post_ID = $parent_query->posts[0]->ID;
-					error_log( 'Found a single post ' . $attachment->post_parent . ' for photo ' . $file_name_base );
+					//$attachment->post_parent = $last_post_ID = $parent_query->posts[0]->ID;
+					$attachment->post_parent = $parent_query->posts[0]->ID;
+					//error_log( 'Found a single post ' . $attachment->post_parent . ' for photo ' . $file_name_base );
 				}
-			}
+			//}
 			/**
 			 * A post_meta key called `_inventory_presser_photo_number` specifies the photo number.
 			 * This is useful here, where we want to make photo number one the thumbnail for the parent post.
@@ -134,7 +139,7 @@ class Inventory_Presser_Modify_Imports {
 			}
 			//save the post with the updated post_parent value
 			wp_update_post( $attachment );
-			$last_file_name_base = $file_name_base;
+			//$last_file_name_base = $file_name_base;
 		}
 	}
 
