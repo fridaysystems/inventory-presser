@@ -362,7 +362,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			if( 0 === sizeof( $attachments ) ) {
 				return '';
 			}
-			return '<button type="button" id="delete-media-button" class="button insert-media add_media" onclick="delete_all_post_attachments( );">' .
+			return '<button type="button" id="delete-media-button" class="button" onclick="delete_all_post_attachments( );">' .
 				'<span class="wp-media-buttons-icon"></span> Delete All Media</button>';
 		}
 
