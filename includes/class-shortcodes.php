@@ -65,7 +65,8 @@ class Inventory_Presser_Vehicle_Shortcodes {
 			'post_type'=>'inventory_vehicle',
 			'meta_key'=>'_thumbnail_id',
 			'fields' => 'ids',
-			'orderby'=>'rand'
+			'orderby'=>'rand',
+			'order' => 'ASC'
 		);
 
 		$inventory_ids = get_posts( $args );
