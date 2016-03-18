@@ -65,6 +65,11 @@ class Inventory_Presser_Modify_Imports {
 		return true;
 	}
 
+	function allow_set_object_terms( $allow, $post_id, $term_ids, $taxonomy ) {
+		//only erase all the terms on the object if we have new ones to add
+		return 0 < sizeof( $term_ids );
+	}
+
 	function alter_fetched_file_url( $url ) {
 		return str_replace( '/' . self::PENDING_DIR_NAME, '', $url );
 	}
@@ -87,7 +92,7 @@ class Inventory_Presser_Modify_Imports {
 			'post_parent'    => '0',
 			'post_type'      => 'attachment',
 			'posts_per_page' => -1,
-		));
+		) );
 		$last_file_name_base = $last_post_ID = '';
 		foreach( $attachments as $attachment ) {
 			//the post guid is a URL to the attachment, we need the file name without extension
@@ -97,6 +102,7 @@ class Inventory_Presser_Modify_Imports {
 			if( $file_name_base == $last_file_name_base && '' != $file_name_base ) {
 				//do not need to query, we are looking for the same parent as last
 				$attachment->post_parent = $last_post_ID;
+				error_log( 'Adding photo ' . $file_name_base . ' to post ID ' . $attachment->post_parent );
 			} else {
 				/**
 				 * Do we have a post that uses our custom post type and has a meta
@@ -116,6 +122,7 @@ class Inventory_Presser_Modify_Imports {
 				if( $parent_query->have_posts() && 1 == count( $parent_query->posts ) ) {
 					//only one post was found, great, use it's ID as our parent
 					$attachment->post_parent = $last_post_ID = $parent_query->posts[0]->ID;
+					error_log( 'Found a single post ' . $attachment->post_parent . ' for photo ' . $file_name_base );
 				}
 			}
 			/**
@@ -136,6 +143,9 @@ class Inventory_Presser_Modify_Imports {
 
 		//don't actually download attachments during imports if they are already on this server
 		add_filter( 'import_allow_fetch_file', array( &$this, 'allow_fetch_attachments' ), 10, 2 ) ;
+
+		//decide if we want to let the importer replace all the terms on an object
+		add_filter( 'wp_import_set_object_terms', array( &$this, 'allow_set_object_terms'), 10, 4 );
 
 		/**
 		 * Go all in on our lie to the importer. When we tell it not to really
