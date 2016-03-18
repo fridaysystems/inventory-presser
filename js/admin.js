@@ -6,6 +6,10 @@ function delete_all_post_attachments( ) {
 		};
 		jQuery.post( ajaxurl, data, function( response ) {
 			update_add_media_button_annotation( );
+			//clobber the currently shown featured image
+			WPSetThumbnailHTML( '<p class="hide-if-no-js"><a title="Set featured image" href="media-upload.php?post_id=' +
+				document.getElementById('post_ID').value +
+				'&amp;type=image&amp;TB_iframe=1" id="set-post-thumbnail" class="thickbox">Set featured image</a></p>' );
 		});
 	}
 }
