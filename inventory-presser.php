@@ -127,7 +127,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function annotate_add_media_button( $context ) {
-			return $context . '<span id="media-annotation" class="annotation">' . $this->create_add_media_button_annotation( ) . '</span>';
+			return $context .
+				$this->create_delete_all_post_attachments_button() .
+				'<span id="media-annotation" class="annotation">' .
+				$this->create_add_media_button_annotation( ) . '</span>';
 		}
 
 		function __construct( ) {
@@ -542,11 +545,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//Add some content next to the "Add Media" button
 			add_action( 'media_buttons_context', array( &$this, 'annotate_add_media_button' ) );
 
-			//Add some more content next to the "Add Media" button
-			add_action( 'media_buttons_context', array( &$this, 'create_delete_all_post_attachments_button' ) );
-
 			//Define an AJAX handler for the 'Delete All Media' button
-			add_action( 'wp_ajax_delete_all_post_attachments', array( &$this, 'delete_all_post_attachments' ) );
+			add_filter( 'wp_ajax_delete_all_post_attachments', array( &$this, 'delete_all_post_attachments' ) );
 
 			//'add_attachment'
 			//'delete_attachment'
