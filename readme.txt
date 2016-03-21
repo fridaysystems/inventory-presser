@@ -59,6 +59,17 @@ and at this time there is no VIN decoder or support for vehicle options.
 
 == Changelog ==
 
+= 1.2.1 =
+* Preserves images when deleting vehicles that no longer appear in import files by dissociating them with
+their parents. This was a weird bug where a vehicle can come through the import with the same VIN but a
+different unique post slug. Adding this and deleting the old vehicle will lose the photos until the next
+import runs because they were in the database but deleted at the end of the import. Dissociating the photos
+allows the new vehicle post to be united with its photos.
+* Bug fixes to allow attachments to live in sub-folders of the uploads folder, or now saving vehicle photos
+in folders per vehicle instead of polluting the uploads folder.
+* Attempt to delete the folder that a pending attachment lives in when it is deleted. This will clean up those
+per vehicle folders in the pending directory.
+
 = 1.2.0 =
 * Now implements custom rewrite rules for filtering our post type. These rules lived in a widget until now.
 * Added a widget to allow users to reorder vehicles by post meta keys. This enables sorting by year, make, model,

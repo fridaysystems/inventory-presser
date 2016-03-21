@@ -93,53 +93,44 @@ class Inventory_Presser_Modify_Imports {
 			'post_type'      => 'attachment',
 			'posts_per_page' => -1,
 		) );
-		$last_file_name_base = $last_post_ID = '';
 		foreach( $attachments as $attachment ) {
 			//the post guid is a URL to the attachment, we need the file name without extension
-			//$file_name = basename( $attachment->guid );
-			//$info = pathinfo( $file_name );
-			//$file_name_base = apply_filters( '_inventory_presser_create_photo_file_name_base', basename( $file_name, '.' . $info['extension'] ) );
 			$file_name_base = apply_filters( '_inventory_presser_create_photo_file_name_base', basename( $attachment->guid ) );
-			/*
 
-			if( $file_name_base == $last_file_name_base && '' != $file_name_base ) {
-				//do not need to query, we are looking for the same parent as last
-				$attachment->post_parent = $last_post_ID;
-				error_log( 'Adding photo ' . $file_name_base . ' to post ID ' . $attachment->post_parent );
-			} else {
-			*/
-				/**
-				 * Do we have a post that uses our custom post type and has a meta
-				 * key named `inventory_presser_photo_file_name_base` that contains
-				 * the value $file_name_base? If so, that's this attachment's parent.
-				 */
-				$find_parent_args = array(
-					'post_type'  => $this->post_type,
-					'meta_query' => array(
-						array(
-							'key'   => '_inventory_presser_photo_file_name_base',
-							'value' => $file_name_base,
-						)
-					),
-				);
-				$parent_query = new WP_Query( $find_parent_args );
-				if( $parent_query->have_posts() && 1 == count( $parent_query->posts ) ) {
-					//only one post was found, great, use it's ID as our parent
-					//$attachment->post_parent = $last_post_ID = $parent_query->posts[0]->ID;
-					$attachment->post_parent = $parent_query->posts[0]->ID;
-					//error_log( 'Found a single post ' . $attachment->post_parent . ' for photo ' . $file_name_base );
-				}
-			//}
 			/**
-			 * A post_meta key called `_inventory_presser_photo_number` specifies the photo number.
-			 * This is useful here, where we want to make photo number one the thumbnail for the parent post.
+			 * Do we have a post that uses our custom post type and has a meta
+			 * key named `inventory_presser_photo_file_name_base` that contains
+			 * the value $file_name_base? If so, that's this attachment's parent.
 			 */
-			if( '1' === get_post_meta( $attachment->ID, '_inventory_presser_photo_number', true ) ) {
-				set_post_thumbnail( $attachment->post_parent, $attachment->ID );
+			$find_parent_args = array(
+				'post_type'  => $this->post_type,
+				'meta_query' => array(
+					array(
+						'key'   => '_inventory_presser_photo_file_name_base',
+						'value' => $file_name_base,
+					)
+				),
+			);
+			$parent_query = new WP_Query( $find_parent_args );
+			if( $parent_query->have_posts() ) {
+				if( 1 == count( $parent_query->posts ) ) {
+					//only one post was found, great, use it's ID as our parent
+					$attachment->post_parent = $parent_query->posts[0]->ID;
+
+					if( '1' === get_post_meta( $attachment->ID, '_inventory_presser_photo_number', true ) ) {
+						set_post_thumbnail( $attachment->post_parent, $attachment->ID );
+					}
+
+					wp_update_post( $attachment );
+				}
+			} else {
+				/**
+				 * No posts found. This attachment has our meta value that
+				 * defines which photo it is in a series, but no vehicle was
+				 * found that to which it could be attached. It's doomed.
+				 */
+
 			}
-			//save the post with the updated post_parent value
-			wp_update_post( $attachment );
-			//$last_file_name_base = $file_name_base;
 		}
 	}
 
@@ -328,6 +319,10 @@ class Inventory_Presser_Modify_Imports {
 			if( ! $this->have_attachment_with_file_name( basename( $file ) ) ) {
 				//no? delete the file
 				unlink( $file );
+				//attempt to delete the directory it lives in if it is a subfolder
+				if( $upload_dir['path'] != basename( $file ) ) {
+					@rmdir( basename( $file ) );
+				}
 				//make not of this deletion via the importer's error logging mechanism
 				add_filter( 'wp_import_errors_before_end', function( $arr ) {
 					array_push( $arr, 'A pending attachment that is no longer associated with any active inventory unit has been deleted: ' . $file );
