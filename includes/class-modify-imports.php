@@ -160,8 +160,12 @@ class Inventory_Presser_Modify_Imports {
 		 */
 		add_filter( 'import_fetched_file_url', array( &$this, 'alter_fetched_file_url' ) );
 
-		//after an import is completed, try to match attachments with their parent posts
-		add_action( 'import_end', array( &$this, 'associate_parentless_attachments_with_parents' ) );
+		/**
+		 * After an import is completed, try to match attachments with their
+		 * parent posts. Priority 11 so it runs after
+		 * delete_posts_not_found_in_new_import()
+		 */
+		add_action( 'import_end', array( &$this, 'associate_parentless_attachments_with_parents' ), 11 );
 
 		//After an import is completed, prune the pending folder for attachments we no longer need
 		add_action( 'import_end', array( &$this, 'prune_pending_attachments' ) );
@@ -234,12 +238,42 @@ class Inventory_Presser_Modify_Imports {
 	}
 
 	function delete_posts_not_found_in_new_import() {
-		/* $this->existing_posts_before_an_import should now contain only posts
+		/**
+		 * $this->existing_posts_before_an_import should now contain only posts
 		 * that were in the database before the import ran and that were
 		 * not contained in the import. this function is only called if the
 		 * user wants to delete these posts, so delete them.
 		 */
 		 foreach( $this->existing_posts_before_an_import as $post ) {
+		 	/**
+		 	 * Before we delete the post, decide if it's photos should be kept.
+		 	 * If the unique slug of this post has changed, there might actually
+		 	 * be two posts that represent this vehicle in the database at this
+		 	 * moment. Changing the year, make model or trim, or adding another
+		 	 * vehicle that has those same attributes results in a new unique
+		 	 * slug being created for the same VIN. That means we are about to
+		 	 * delete a post, but the photos should actually be dettached and
+		 	 * preserved so they can be associated with the other post.
+		 	 */
+		 	$key = 'inventory_presser_vin';
+		 	$args = array(
+		 		'posts_per_page' => -1,
+				'meta_query' => array(
+					array(
+						'key'     => $key,
+						'value'   => get_post_meta( $post->ID, $key, true ),
+						'compare' => '=',
+					)
+				)
+			);
+			$duplicates = new WP_Query( $args );
+			if( 1 < $duplicates->found_posts ) {
+				/**
+				 * There is at least one other post in the database with the
+				 * same VIN, dettach this post's photos before deleting.
+				 */
+				dissociate_attachments( $post->ID );
+			}
 			wp_delete_post( $post->ID, true );
 			//make not of this deletion via the importer's error logging mechanism
 			add_filter( 'wp_import_errors_before_end', function( $arr ) {
@@ -248,6 +282,19 @@ class Inventory_Presser_Modify_Imports {
 			});
 		 }
 		 $this->existing_posts_before_an_import = array();
+	}
+
+	function dissociate_attachments( $post_id ) {
+		$args = array(
+			'post_parent'    => $post_id,
+			'post_type'      => 'attachment',
+			'posts_per_page' => -1,
+			'post_status'    => 'any'
+		);
+		foreach( get_posts( $args ) as $attachment ) {
+			$attachment->post_parent = 0;
+			wp_update_post( $attachment );
+		}
 	}
 
 	/**
@@ -315,7 +362,7 @@ class Inventory_Presser_Modify_Imports {
 		 * remember_posts_before_an_import()
 		 */
 		for( $p = 0; $p < sizeof( $this->existing_posts_before_an_import ); $p++ ) {
-			//if the title and date match
+			//if the title and guid match
 			if( $post['post_title'] == $this->existing_posts_before_an_import[$p]->post_title && $post['guid'] == $this->existing_posts_before_an_import[$p]->guid ) {
 				//remove this one, it's in the new file
 				array_splice( $this->existing_posts_before_an_import, $p, 1 );
