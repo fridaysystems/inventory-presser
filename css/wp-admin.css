@@ -34,3 +34,7 @@ button#delete-media-button span:before {
     -moz-osx-font-smoothing: grayscale;
     content: "\f182";
 }
+
+.repeat-group input{
+	
+}
