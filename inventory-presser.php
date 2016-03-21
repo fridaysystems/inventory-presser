@@ -1468,6 +1468,29 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							'12' => '12',
 						),
 					),
+					array (
+						'args' => array (
+							'hierarchical'   => false,
+							'label'          => 'Locations',
+							'labels'         => array (
+								'name'          => 'Location',
+								'singular_name' => 'Location',
+								'search_items'  => 'Search Locations',
+								'popular_items' => 'Popular Locations',
+								'all_items'     => 'All Locations',
+								'edit_item'     => __( 'Edit Location' ),
+								'update_item'   => __( 'Update Location' ),
+								'add_new_item'  => __( 'Add New Location' ),
+								'new_item_name' => __( 'New Location Name' ),
+								'menu_name'     => __( 'Locations' ),
+							),
+							//'meta_box_cb'    => array( $this, 'meta_box_addresses' ),
+							'query_var'      => 'location',
+							'singular_label' => 'Location',
+							'show_in_menu'   => true,
+						),
+						'term_data' => array(),
+					),
 				)
 			);
 		}
