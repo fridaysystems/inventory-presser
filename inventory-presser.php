@@ -1547,13 +1547,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'car_id',
 				'dealer_id'
 			);
-			if( in_array( $nice_name, $prefixed_fields ) ) {
-				return '_inventory_presser_' . $nice_name;
-			}
-			return 'inventory_presser_' . $nice_name;
+			return ( in_array( $nice_name, $prefixed_fields ) ? '_' : '' ) . 'inventory_presser_' . $nice_name;
 		}
 
 		function vehicles_table_columns_orderbys( $vars ) {
+
+			//This is hooked on the 'request' filter, so it runs all the time.
+			if( ! is_admin() ) { return; }
+
 			$columns = array(
 				'color',
 				'odometer',
