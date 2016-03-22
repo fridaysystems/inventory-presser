@@ -894,8 +894,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'Xenon Headlights' => false,
 			) );
 			$options_arr = get_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'option_array' ), true );
-			foreach( $options_arr as $option ) {
-				$options[$option] = true;
+			if( is_array( $options_arr ) ) {
+				foreach( $options_arr as $option ) {
+					$options[$option] = true;
+				}
 			}
 			//sort the array by key
 			ksort( $options );
@@ -1612,10 +1614,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function edit_location_field( $term, $taxonomy ){
-		          
+
 		    // get current term meta
 		    $location_meta = get_term_meta( $term->term_id, 'location-phone-hours', true );
-		                
+
 		    ?><tr class="form-field term-group-wrap">
 		        <th scope="row"><label>Location Info</label></th>
 		        <td>
@@ -1626,7 +1628,7 @@ foreach ($location_meta['phones'] as $index => $phone) {
 	echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Description" />', $phone['phone_description']);
 	echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="Number" required />', $phone['phone_number']);
 }
-			        
+
 			        ?>
 		        </td>
 		    </tr><?php
