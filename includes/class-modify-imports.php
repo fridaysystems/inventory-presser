@@ -84,15 +84,16 @@ class Inventory_Presser_Modify_Imports {
 			'meta_query'     => array(
 				array(
 					'key'     => '_inventory_presser_photo_number',
-					'value'   => '',
-					'compare' => '!='
+					'compare' => 'EXISTS'
 				)
 	        ),
 	        'orderby'        => 'guid',
 			'post_parent'    => '0',
+			'post_status'    => 'inherit',
 			'post_type'      => 'attachment',
 			'posts_per_page' => -1,
 		) );
+
 		foreach( $attachments as $attachment ) {
 			//the post guid is a URL to the attachment, we need the file name without extension
 			$file_name_base = apply_filters( '_inventory_presser_create_photo_file_name_base', basename( $attachment->guid ) );
@@ -102,7 +103,7 @@ class Inventory_Presser_Modify_Imports {
 			 * key named `inventory_presser_photo_file_name_base` that contains
 			 * the value $file_name_base? If so, that's this attachment's parent.
 			 */
-			$find_parent_args = array(
+			$parent_query = new WP_Query( array(
 				'post_type'  => $this->post_type,
 				'meta_query' => array(
 					array(
@@ -110,18 +111,17 @@ class Inventory_Presser_Modify_Imports {
 						'value' => $file_name_base,
 					)
 				),
-			);
-			$parent_query = new WP_Query( $find_parent_args );
+			) );
 			if( $parent_query->have_posts() ) {
 				if( 1 == count( $parent_query->posts ) ) {
 					//only one post was found, great, use it's ID as our parent
 					$attachment->post_parent = $parent_query->posts[0]->ID;
+					wp_update_post( $attachment );
 
-					if( '1' === get_post_meta( $attachment->ID, '_inventory_presser_photo_number', true ) ) {
+					$photo_num = get_post_meta( $attachment->ID, '_inventory_presser_photo_number', true );
+					if( '1' === $photo_num ) {
 						set_post_thumbnail( $attachment->post_parent, $attachment->ID );
 					}
-
-					wp_update_post( $attachment );
 				}
 			} else {
 				/**
@@ -129,7 +129,7 @@ class Inventory_Presser_Modify_Imports {
 				 * defines which photo it is in a series, but no vehicle was
 				 * found that to which it could be attached. It's doomed.
 				 */
-
+				wp_delete_attachment( $attachment->ID, true );
 			}
 		}
 	}
@@ -159,7 +159,7 @@ class Inventory_Presser_Modify_Imports {
 		add_action( 'import_end', array( &$this, 'associate_parentless_attachments_with_parents' ), 11 );
 
 		//After an import is completed, prune the pending folder for attachments we no longer need
-		add_action( 'import_end', array( &$this, 'prune_pending_attachments' ) );
+		add_action( 'import_end', array( &$this, 'prune_pending_attachments' ), 12 );
 
 		if( $delete_vehicles_not_in_new_feeds ) {
 			/* build a list of posts in a class member variable that identifies
@@ -177,12 +177,7 @@ class Inventory_Presser_Modify_Imports {
 			add_action( 'import_end', array( &$this, 'delete_posts_not_found_in_new_import' ) );
 		}
 
-		/**
-		 * In our implementation, checking only the first 7 characters of the photo file name base
-		 * is optimal. Users that aren't using import files created by our BirdFeeder app may need
-		 * a different implementation.
-		 */
-		add_filter( '_inventory_presser_create_photo_file_name_base', array( &$this, 'take_left_seventeen_characters' ) );
+		add_filter( '_inventory_presser_create_photo_file_name_base', array( &$this, 'extract_file_name_base' ) );
 
 		/**
 		 * Delete the pending import folder when the user deletes all plugin data
@@ -217,7 +212,6 @@ class Inventory_Presser_Modify_Imports {
 			if ( !$this->delete_directory( $dir . DIRECTORY_SEPARATOR . $item ) ) {
 				return false;
 			}
-
 		}
 
 		return rmdir( $dir );
@@ -286,6 +280,17 @@ class Inventory_Presser_Modify_Imports {
 			$attachment->post_parent = 0;
 			wp_update_post( $attachment );
 		}
+	}
+
+	function extract_file_name_base( $a_string ) {
+		//remove the extension
+		$file_name = pathinfo( $a_string, PATHINFO_FILENAME );
+		//if there is a hyphen, ditch it and everything after
+		$hyphen_pos = strpos( $file_name, '-' );
+		if( false === $hyphen_pos ) {
+			return $file_name;
+		}
+		return substr( $a_string, 0, $hyphen_pos );
 	}
 
 	/**
@@ -365,9 +370,5 @@ class Inventory_Presser_Modify_Imports {
 			}
 		}
 		return $post;
-	}
-
-	function take_left_seventeen_characters( $a_string ) {
-		return substr( $a_string, 0, 17 );
 	}
 }
