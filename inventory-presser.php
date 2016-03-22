@@ -211,6 +211,15 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				add_action( 'pre_get_posts', array( &$this, 'add_orderby_to_query' ) );
 			}
 
+			//Allow custom fields to be searched
+			if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
+				$class_search = plugin_dir_path( __FILE__ ) . 'includes/class-add-custom-fields-to-search.php';
+				if ( file_exists( $class_search ) ) {
+					require $class_search;
+					$add_custom_fields_to_search = new Add_Custom_Fields_To_Search();
+				}
+			}
+
 			// location taxonomy admin actions
 			add_action( 'location_add_form_fields', array( &$this, 'add_location_fields'), 10, 2 );
 			add_action( 'created_location', array( &$this, 'save_location_meta'), 10, 2 );
