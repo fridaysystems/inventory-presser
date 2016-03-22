@@ -198,10 +198,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * Make a widget available to sort vehicles by post meta fields.
 			 * Or, enable order by year, make, price, odometer, etc.
 			 */
-			require plugin_dir_path( __FILE__ ) . 'includes/class-order-by-post-meta-widget.php';
-			$widget = new Order_By_Widget();
-			//Register the widget
-		 	add_action( 'widgets_init', create_function( '', 'return register_widget( "Order_By_Widget" );' ) );
+			$class_order_by_widget = plugin_dir_path( __FILE__ ) . 'includes/class-order-by-post-meta-widget.php';
+			if( file_exists( $class_order_by_widget ) ) {
+				require $class_order_by_widget;
+				$widget_available = new Order_By_Widget();
+				//Register the widget
+		 		add_action( 'widgets_init', create_function( '', 'return register_widget( "Order_By_Widget" );' ) );
+			}
 
 			/**
 			 * Deliver our promise to order posts, change the ORDER BY clause of
