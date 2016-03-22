@@ -210,6 +210,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			if( ! is_admin() && ( isset( $_GET['orderby'] ) || isset( $options['default-sort-key'] ) ) ) {
 				add_action( 'pre_get_posts', array( &$this, 'add_orderby_to_query' ) );
 			}
+
+			// location taxonomy admin actions
+			add_action( 'location_add_form_fields', array( &$this, 'add_location_fields'), 10, 2 );
+			add_action( 'created_location', array( &$this, 'save_location_meta'), 10, 2 );
+			add_action( 'location_edit_form_fields', array( &$this, 'edit_location_field'), 10, 2 );
+			add_action( 'edited_location', array( &$this, 'update_location_meta'), 10, 2 );
+
 		}
 
 		function create_add_media_button_annotation( ) {
@@ -537,11 +544,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//Move the "Tags" metabox below the meta boxes for vehicle custom taxonomies
 			add_action( 'add_meta_boxes', array( &$this, 'move_tags_meta_box' ), 0 );
 
-			//Load our stylesheet that modifies the dashboard
-			add_action( 'admin_enqueue_scripts', array( &$this, 'my_admin_style' ) );
-
-			//Load our javascript that modifies the dashboard
-			add_action( 'admin_enqueue_scripts', array( &$this, 'my_admin_javascript' ) );
+			//Load our scripts
+			add_action( 'admin_enqueue_scripts', array( &$this, 'load_scripts' ) );
 
 			//Add some content next to the "Add Media" button
 			add_action( 'media_buttons_context', array( &$this, 'annotate_add_media_button' ) );
@@ -1050,13 +1054,19 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_meta_box( 'tagsdiv-post_tag', 'Tags', 'post_tags_meta_box', $this->post_type(), 'side', 'core', array( 'taxonomy' => 'post_tag' ));
 		}
 
-		function my_admin_javascript( ) {
+		function load_scripts($hook) {
+
+			wp_enqueue_style( 'my-admin-theme', plugins_url( 'css/wp-admin.css', __FILE__ ) );
+
 			wp_register_script( 'inventory-presser-javascript', plugins_url( '/js/admin.js', __FILE__ ) );
 			wp_enqueue_script( 'inventory-presser-javascript' );
-		}
 
-		function my_admin_style( ) {
-			wp_enqueue_style( 'my-admin-theme', plugins_url( 'css/wp-admin.css', __FILE__ ) );
+			// jquery for location taxonomy only
+			global $current_screen;
+			if ($hook == 'edit-tags.php' && $current_screen->post_type == $this->post_type() && $current_screen->taxonomy == 'location') {
+				wp_enqueue_script('inventory-presser-location', plugins_url( '/js/tax-location.js', __FILE__ ), array('jquery'));
+			}
+
 		}
 
 		function my_rewrite_flush( ) {
@@ -1486,6 +1496,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							),
 							//'meta_box_cb'    => array( $this, 'meta_box_addresses' ),
 							'query_var'      => 'location',
+							'show_ui'			=> true,
 							'singular_label' => 'Location',
 							'show_in_menu'   => true,
 						),
@@ -1547,6 +1558,98 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				}
 			}
 			return $vars;
+		}
+
+		/* location taxonomy */
+		function add_location_fields($taxonomy) {
+		    ?>
+
+		    <div id="location-tax" class="form-field term-group">
+			    <div class="form-wrap form-field">
+			        <label>Phone Numbers</label>
+			        <div class="repeat-group">
+			        	<div class="repeat-container"></div>
+			        	<div class="repeat-this">
+					        <input type="text" name="phone_description[]" placeholder="Description" />
+					        <input type="text" name="phone_number[]" placeholder="Number" required />
+				        </div>
+				        <button type="button" class="repeat-add">Add Phone</button>
+			        </div>
+			    </div>
+			    <div class="form-wrap form-field">
+			        <label>Hours</label>
+			        <div class="repeat-group">
+			        	<div class="repeat-container"></div>
+			        	<div class="repeat-this">
+					        <input type="text" name="hours[]" placeholder="Temp testing" />
+				        </div>
+				        <button type="button" class="repeat-add">Add Hours</button>
+			        </div>
+		        </div>
+		    </div>
+
+		    <?php
+		}
+
+		function save_location_meta( $term_id, $tt_id ){
+
+		    if( isset( $_POST['phone_number'] )){
+
+		    	$meta_final = array('phones' => array());
+
+		    	foreach ($_POST['phone_number'] as $index => $phone_number) {
+		    		if ($phone_number != '') {
+		    			$meta_final['phones'][] = array(
+		    				'phone_description' => sanitize_text_field($_POST['phone_description'][$index]),
+		    				'phone_number' => sanitize_text_field($phone_number)
+		    			);
+		    		}
+		    	}
+
+		        add_term_meta( $term_id, 'location-phone-hours', $meta_final, true );
+		    }
+
+		}
+
+		function edit_location_field( $term, $taxonomy ){
+		          
+		    // get current term meta
+		    $location_meta = get_term_meta( $term->term_id, 'location-phone-hours', true );
+		                
+		    ?><tr class="form-field term-group-wrap">
+		        <th scope="row"><label>Location Info</label></th>
+		        <td>
+					<label>Phone Numbers</label>
+					<?php
+
+foreach ($location_meta['phones'] as $index => $phone) {
+	echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Description" />', $phone['phone_description']);
+	echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="Number" required />', $phone['phone_number']);
+}
+			        
+			        ?>
+		        </td>
+		    </tr><?php
+		}
+
+		function update_location_meta( $term_id, $tt_id ){
+
+			if( isset( $_POST['phone_number'] )){
+
+		    	$meta_final = array('phones' => array());
+
+		    	foreach ($_POST['phone_number'] as $index => $phone_number) {
+		    		if ($phone_number != '') {
+		    			$meta_final['phones'][] = array(
+		    				'phone_description' => sanitize_text_field($_POST['phone_description'][$index]),
+		    				'phone_number' => sanitize_text_field($phone_number)
+		    			);
+		    		}
+		    	}
+
+		        update_term_meta( $term_id, 'location-phone-hours', $meta_final);
+		    }
+
 		}
 
 	} //end class
