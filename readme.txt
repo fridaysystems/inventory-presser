@@ -59,6 +59,10 @@ and at this time there is no VIN decoder or support for vehicle options.
 
 == Changelog ==
 
+= 1.3.0 =
+* Add custom fields to searches, so searches for a VIN or the color blue work
+* Introduce VIN-based URLs that redirect to proper permalinks so that it's easy to link to vehicles
+
 = 1.2.1 =
 * Preserves images when deleting vehicles that no longer appear in import files by dissociating them with
 their parents. This was a weird bug where a vehicle can come through the import with the same VIN but a
