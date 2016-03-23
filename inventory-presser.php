@@ -544,7 +544,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_filter( 'manage_edit-' . $this->post_type() . '_sortable_columns', array( &$this, 'make_vehicles_table_columns_sortable' ) );
 
 			//Implement the orderby for each of these added columns
-			add_filter( 'request', array( &$this, 'vehicles_table_columns_orderbys' ) );
+			add_filter( 'admin_init', array( &$this, 'vehicles_table_columns_orderbys' ) );
 
 			//Add a meta box to the New/Edit post page
 			add_meta_box('vehicle-meta', 'Vehicle attributes', array( &$this, 'meta_box_html_vehicle' ), $this->post_type(), 'advanced', 'high' );
@@ -812,6 +812,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'inventory_presser_odometer'     => 'inventory_presser_odometer',
 				'inventory_presser_price'        => 'inventory_presser_price',
 				'inventory_presser_stock_number' => 'inventory_presser_stock_number',
+				'inventory_presser_photo_count'  => 'inventory_presser_photo_count',
 			);
 			return wp_parse_args( $custom, $columns );
 		}
@@ -1558,9 +1559,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function vehicles_table_columns_orderbys( $vars ) {
-
-			//This is hooked on the 'request' filter, so it runs all the time.
-			if( ! is_admin() ) { return; }
 
 			$columns = array(
 				'color',
