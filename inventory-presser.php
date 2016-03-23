@@ -223,6 +223,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				}
 			}
 
+			//Redirect URLs by VINs to proper vehicle permalinks
+			$class_vin_urls = plugin_dir_path( __FILE__ ) . 'includes/class-vehicle-urls-by-vin.php';
+			if( file_exists( $class_vin_urls ) ) {
+				require $class_vin_urls;
+				$allow_urls_by_vin = new Vehicle_URLs_By_VIN();
+			}
+
 			// location taxonomy admin actions
 			add_action( 'location_add_form_fields', array( &$this, 'add_location_fields'), 10, 2 );
 			add_action( 'created_location', array( &$this, 'save_location_meta'), 10, 2 );
