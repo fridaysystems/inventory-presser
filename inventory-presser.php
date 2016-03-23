@@ -1077,6 +1077,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function load_scripts($hook) {
 
+			global $wp_styles;
+//die(print_r($wp_styles,true));
+
 			wp_enqueue_style( 'my-admin-theme', plugins_url( 'css/wp-admin.css', __FILE__ ) );
 
 			wp_register_script( 'inventory-presser-javascript', plugins_url( '/js/admin.js', __FILE__ ) );
@@ -1625,74 +1628,89 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					        		<tbody>
 						        		<tr>
 						        			<th>MON</th>
-						        			<td><input name="hours[0][0]" type="text"></td>
+						        			<td><input name="hours[mon][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[0][1]" type="text"></td>
-						        			<td nowrap>
-						        				<input type="hidden" name="hours[0][appt]" value="no">
-						        				<input type="checkbox" name="hours[0][appt]" value="yes">
+						        			<td><input name="hours[mon][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[mon][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
 						        			</td> 
 						        		</tr>
 						        		<tr>
 						        			<th>TUE</th>
-						        			<td><input name="hours[1][0]" type="text"></td>
+						        			<td><input name="hours[tue][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[1][1]" type="text"></td>
+						        			<td><input name="hours[tue][close][]" class="timepick" type="text"></td>
 						        			<td>
-						        				<input type="hidden" name="hours[1][appt]" value="no">
-						        				<input type="checkbox" name="hours[1][appt]" value="yes">
+												<select name="hours[tue][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
 						        			</td> 
 						        		</tr>
 						        		<tr>
 						        			<th>WED</th>
-						        			<td><input name="hours[2][0]" type="text"></td>
+						        			<td><input name="hours[wed][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[2][1]" type="text"></td>
+						        			<td><input name="hours[wed][close][]" class="timepick" type="text"></td>
 						        			<td>
-						        				<input type="hidden" name="hours[2][appt]" value="no">
-						        				<input type="checkbox" name="hours[2][appt]" value="yes">
+												<select name="hours[wed][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
 						        			</td> 
 						        		</tr>
 						        		<tr>
 						        			<th>THU</th>
-						        			<td><input name="hours[3][0]" type="text"></td>
+						        			<td><input name="hours[thu][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[3][1]" type="text"></td>
+						        			<td><input name="hours[thu][close][]" class="timepick" type="text"></td>
 						        			<td>
-						        				<input type="hidden" name="hours[3][appt]" value="no">
-						        				<input type="checkbox" name="hours[3][appt]" value="yes">
+												<select name="hours[thu][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
 						        			</td> 
 						        		</tr>
 						        		<tr>
 						        			<th>FRI</th>
-						        			<td><input name="hours[4][0]" type="text"></td>
+						        			<td><input name="hours[fri][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[4][1]" type="text"></td>
+						        			<td><input name="hours[fri][close][]" class="timepick" type="text"></td>
 						        			<td>
-						        				<input type="hidden" name="hours[4][appt]" value="no">
-						        				<input type="checkbox" name="hours[4][appt]" value="yes">
+												<select name="hours[fri][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
 						        			</td> 
 						        		</tr>
 						        		<tr>
 						        			<th>SAT</th>
-						        			<td><input name="hours[5][0]" type="text"></td>
+						        			<td><input name="hours[sat][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[5][1]" type="text"></td>
+						        			<td><input name="hours[sat][close][]" class="timepick" type="text"></td>
 						        			<td>
-						        				<input type="hidden" name="hours[5][appt]" value="no">
-						        				<input type="checkbox" name="hours[5][appt]" value="yes">
+												<select name="hours[sat][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
 						        			</td> 
 						        		</tr>
 						        		<tr>
 						        			<th>SUN</th>
-						        			<td><input name="hours[6][0]" type="text"></td>
+						        			<td><input name="hours[sun][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[6][1]" type="text"></td>
+						        			<td><input name="hours[sun][close][]" class="timepick" type="text"></td>
 						        			<td>
-						        				<input type="hidden" name="hours[6][appt]" value="no">
-						        				<input type="checkbox" name="hours[6][appt]" value="yes">
+												<select name="hours[sun][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
 						        			</td> 
 						        		</tr>
+
 						        	</tbody>
 					        	</table>
 
@@ -1797,52 +1815,87 @@ echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="N
 					        		<tbody>
 						        		<tr>
 						        			<td>MON</td>
-						        			<td><input name="hours[0][0]" type="text"></td>
+						        			<td><input name="hours[mon][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[0][1]" type="text"></td>
-						        			<td nowrap><input type="checkbox" name="hours[0][appt]" value="yes"></td> 
+						        			<td><input name="hours[mon][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[mon][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
 						        		</tr>
 						        		<tr>
 						        			<td>TUE</td>
-						        			<td><input name="hours[1][0]" type="text"></td>
+						        			<td><input name="hours[tue][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[1][1]" type="text"></td>
-						        			<td><input type="checkbox" name="hours[1][appt]" value="yes"></td> 
+						        			<td><input name="hours[tue][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[tue][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
 						        		</tr>
 						        		<tr>
 						        			<td>WED</td>
-						        			<td><input name="hours[2][0]" type="text"></td>
+						        			<td><input name="hours[wed][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[2][1]" type="text"></td>
-						        			<td><input type="checkbox" name="hours[2][appt]" value="yes"></td> 
+						        			<td><input name="hours[wed][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[wed][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
 						        		</tr>
 						        		<tr>
 						        			<td>THU</td>
-						        			<td><input name="hours[3][0]" type="text"></td>
+						        			<td><input name="hours[thu][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[3][1]" type="text"></td>
-						        			<td><input type="checkbox" name="hours[3][appt]" value="yes"></td> 
+						        			<td><input name="hours[thu][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[thu][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
 						        		</tr>
 						        		<tr>
 						        			<td>FRI</td>
-						        			<td><input name="hours[4][0]" type="text"></td>
+						        			<td><input name="hours[fri][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[4][1]" type="text"></td>
-						        			<td><input type="checkbox" name="hours[4][appt]" value="yes"></td> 
+						        			<td><input name="hours[fri][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[fri][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
 						        		</tr>
 						        		<tr>
 						        			<td>SAT</td>
-						        			<td><input name="hours[5][0]" type="text"></td>
+						        			<td><input name="hours[sat][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[5][1]" type="text"></td>
-						        			<td><input type="checkbox" name="hours[5][appt]" value="yes"></td> 
+						        			<td><input name="hours[sat][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[sat][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
 						        		</tr>
 						        		<tr>
 						        			<td>SUN</td>
-						        			<td><input name="hours[6][0]" type="text"></td>
+						        			<td><input name="hours[sun][open][]" class="timepick" type="text"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[6][1]" type="text"></td>
-						        			<td><input type="checkbox" name="hours[6][appt]" value="yes"></td> 
+						        			<td><input name="hours[sun][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[sun][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
 						        		</tr>
 						        	</tbody>
 					        	</table>
@@ -1862,8 +1915,6 @@ echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="N
 		function update_location_meta( $term_id, $tt_id ){
 
 			if( isset( $_POST['phone_number'] )){
-
-				die(print_r($_POST,true));
 
 		    	$meta_final = array('phones' => array());
 

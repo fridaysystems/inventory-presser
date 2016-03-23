@@ -39,7 +39,7 @@ button#delete-media-button span:before {
 	max-width: 700px;
 }
 
-.repeat-group input {
+.repeat-group input[type=text] {
 	width: 100% !important;
 }
 
