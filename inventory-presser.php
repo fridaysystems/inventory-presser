@@ -1730,6 +1730,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function save_location_meta( $term_id, $tt_id ){
 
+			foreach ($_POST['hours'] as $index => $value) {
+				# code...
+			}
+
 		    if( isset( $_POST['phone_number'] )){
 
 		    	$meta_final = array('phones' => array());
@@ -1743,7 +1747,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		    		}
 		    	}
 
-		        add_term_meta( $term_id, 'location-phone-hours', $meta_final, true );
+		        //add_term_meta( $term_id, 'location-phone-hours', $meta_final, true );
 		    }
 
 		}
@@ -1914,9 +1918,25 @@ echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="N
 
 		function update_location_meta( $term_id, $tt_id ){
 
-			if( isset( $_POST['phone_number'] )){
+			if (isset($_POST['name'])) {
 
-		    	$meta_final = array('phones' => array());
+				$meta_final = array('phones' => array(), 'hours' => array());
+
+				$count = count($_POST['hours_title']) - 2;
+
+				for ($i = 0; $i <= $count; $i++) {
+
+					$this_hours = array();
+
+					$this_hours['title'] = sanitize_text_field($_POST['hours_title'][$i]);
+
+					$meta_final['hours'][] = $this_hours;
+					
+				}
+
+			}
+
+			if( isset( $_POST['phone_number'] )){
 
 		    	foreach ($_POST['phone_number'] as $index => $phone_number) {
 		    		if ($phone_number != '') {
@@ -1927,8 +1947,12 @@ echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="N
 		    		}
 		    	}
 
-		        update_term_meta( $term_id, 'location-phone-hours', $meta_final);
+		        
 		    }
+
+		    die(print_r($meta_final, true));
+
+		    //update_term_meta( $term_id, 'location-phone-hours', $meta_final);
 
 		}
 
