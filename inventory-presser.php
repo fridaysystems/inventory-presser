@@ -1085,7 +1085,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// jquery for location taxonomy only
 			global $current_screen;
 			if ($hook == 'edit-tags.php' && $current_screen->post_type == $this->post_type() && $current_screen->taxonomy == 'location') {
-				wp_enqueue_script('inventory-presser-location', plugins_url( '/js/tax-location.js', __FILE__ ), array('jquery'));
+				wp_enqueue_script('jquery-ui-sortable');
+				wp_enqueue_script('inventory-presser-location', plugins_url( '/js/tax-location.js', __FILE__ ), array('jquery-ui-sortable'));
 			}
 
 		}
@@ -1586,14 +1587,20 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		function add_location_fields($taxonomy) {
 		    ?>
 
-		    <div id="location-tax" class="form-field term-group">
+		    <div class="form-field term-group location-tax">
 			    <div class="form-wrap form-field">
 			        <label>Phone Numbers</label>
 			        <div class="repeat-group">
 			        	<div class="repeat-container"></div>
 			        	<div class="repeat-this">
-					        <input type="text" name="phone_description[]" placeholder="Description" />
-					        <input type="text" name="phone_number[]" placeholder="Number" required />
+			        		<div class="repeat-form">
+						        <input type="text" name="phone_description[]" placeholder="Description" />
+						        <input type="text" name="phone_number[]" placeholder="Number" required />
+					        </div>
+					        <div class="repeat-buttons">
+					        	<span class="dashicons dashicons-menu repeat-move"></span>
+					        	<span class="dashicons dashicons-trash repeat-delete"></span>
+					        </div>
 				        </div>
 				        <button type="button" class="repeat-add">Add Phone</button>
 			        </div>
@@ -1603,7 +1610,97 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			        <div class="repeat-group">
 			        	<div class="repeat-container"></div>
 			        	<div class="repeat-this">
-					        <input type="text" name="hours[]" placeholder="Temp testing" />
+			        		<div class="repeat-form">
+
+					        	<input type="text" name="hours_title[]" placeholder="Title" />
+
+					        	<table>
+					        		<thead>
+					        			<th></th>
+					        			<th>Open</th>
+					        			<th></th>
+					        			<th>Close</th>
+					        			<th>Appt Only</th>
+					        		</thead>
+					        		<tbody>
+						        		<tr>
+						        			<th>MON</th>
+						        			<td><input name="hours[0][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[0][1]" type="text"></td>
+						        			<td nowrap>
+						        				<input type="hidden" name="hours[0][appt]" value="no">
+						        				<input type="checkbox" name="hours[0][appt]" value="yes">
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<th>TUE</th>
+						        			<td><input name="hours[1][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[1][1]" type="text"></td>
+						        			<td>
+						        				<input type="hidden" name="hours[1][appt]" value="no">
+						        				<input type="checkbox" name="hours[1][appt]" value="yes">
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<th>WED</th>
+						        			<td><input name="hours[2][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[2][1]" type="text"></td>
+						        			<td>
+						        				<input type="hidden" name="hours[2][appt]" value="no">
+						        				<input type="checkbox" name="hours[2][appt]" value="yes">
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<th>THU</th>
+						        			<td><input name="hours[3][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[3][1]" type="text"></td>
+						        			<td>
+						        				<input type="hidden" name="hours[3][appt]" value="no">
+						        				<input type="checkbox" name="hours[3][appt]" value="yes">
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<th>FRI</th>
+						        			<td><input name="hours[4][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[4][1]" type="text"></td>
+						        			<td>
+						        				<input type="hidden" name="hours[4][appt]" value="no">
+						        				<input type="checkbox" name="hours[4][appt]" value="yes">
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<th>SAT</th>
+						        			<td><input name="hours[5][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[5][1]" type="text"></td>
+						        			<td>
+						        				<input type="hidden" name="hours[5][appt]" value="no">
+						        				<input type="checkbox" name="hours[5][appt]" value="yes">
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<th>SUN</th>
+						        			<td><input name="hours[6][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[6][1]" type="text"></td>
+						        			<td>
+						        				<input type="hidden" name="hours[6][appt]" value="no">
+						        				<input type="checkbox" name="hours[6][appt]" value="yes">
+						        			</td> 
+						        		</tr>
+						        	</tbody>
+					        	</table>
+
+					        </div>
+					        <div class="repeat-buttons">
+					        	<span class="dashicons dashicons-menu repeat-move"></span>
+					        	<span class="dashicons dashicons-trash repeat-delete"></span>
+					        </div>
 				        </div>
 				        <button type="button" class="repeat-add">Add Hours</button>
 			        </div>
@@ -1634,22 +1731,130 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function edit_location_field( $term, $taxonomy ){
-
+		          
 		    // get current term meta
 		    $location_meta = get_term_meta( $term->term_id, 'location-phone-hours', true );
-
-		    ?><tr class="form-field term-group-wrap">
-		        <th scope="row"><label>Location Info</label></th>
-		        <td>
-					<label>Phone Numbers</label>
-					<?php
-
+		                
+		    ?>
+		    <tr class="form-field term-group-wrap">
+		        <th scope="row"><label>Phone Numbers</label></th>
+		        <td>        
+			        <div class="repeat-group">
+			        	<div class="repeat-container">
+<?php
 foreach ($location_meta['phones'] as $index => $phone) {
-	echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Description" />', $phone['phone_description']);
-	echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="Number" required />', $phone['phone_number']);
-}
+?>
+			        	
+				        	<div class="repeated">
+				        		<div class="repeat-form">
 
-			        ?>
+<?php
+echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Description" />', $phone['phone_description']);
+echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="Number" />', $phone['phone_number']);
+?>
+						        </div>
+						        <div class="repeat-buttons">
+						        	<span class="dashicons dashicons-menu repeat-move"></span>
+						        	<span class="dashicons dashicons-trash repeat-delete"></span>
+						        </div>
+					        </div>
+<?php
+}
+?>
+						</div>
+						<div class="repeat-this">
+			        		<div class="repeat-form">
+						        <input type="text" name="phone_description[]" placeholder="Description" />
+						        <input type="text" name="phone_number[]" placeholder="Number" />
+					        </div>
+					        <div class="repeat-buttons">
+					        	<span class="dashicons dashicons-menu repeat-move"></span>
+					        	<span class="dashicons dashicons-trash repeat-delete"></span>
+					        </div>
+				        </div>
+				        <button type="button" class="repeat-add">Add Phone</button>
+			        </div>
+				</td>
+		    </tr>
+		    <tr class="form-field term-group-wrap">
+		        <th scope="row"><label>Hours</label></th>
+		        <td>
+			        <div class="repeat-group">
+			        	<div class="repeat-container"></div>
+			        	<div class="repeat-this">
+			        		<div class="repeat-form">
+
+			       				<input type="text" name="hours_title[]" placeholder="Title" />
+
+					        	<table class="repeater-table">
+					        		<thead>
+					        			<td></td>
+					        			<td>Open</td>
+					        			<td></td>
+					        			<td>Close</td>
+					        			<td>Appt Only</td>
+					        		</thead>
+					        		<tbody>
+						        		<tr>
+						        			<td>MON</td>
+						        			<td><input name="hours[0][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[0][1]" type="text"></td>
+						        			<td nowrap><input type="checkbox" name="hours[0][appt]" value="yes"></td> 
+						        		</tr>
+						        		<tr>
+						        			<td>TUE</td>
+						        			<td><input name="hours[1][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[1][1]" type="text"></td>
+						        			<td><input type="checkbox" name="hours[1][appt]" value="yes"></td> 
+						        		</tr>
+						        		<tr>
+						        			<td>WED</td>
+						        			<td><input name="hours[2][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[2][1]" type="text"></td>
+						        			<td><input type="checkbox" name="hours[2][appt]" value="yes"></td> 
+						        		</tr>
+						        		<tr>
+						        			<td>THU</td>
+						        			<td><input name="hours[3][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[3][1]" type="text"></td>
+						        			<td><input type="checkbox" name="hours[3][appt]" value="yes"></td> 
+						        		</tr>
+						        		<tr>
+						        			<td>FRI</td>
+						        			<td><input name="hours[4][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[4][1]" type="text"></td>
+						        			<td><input type="checkbox" name="hours[4][appt]" value="yes"></td> 
+						        		</tr>
+						        		<tr>
+						        			<td>SAT</td>
+						        			<td><input name="hours[5][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[5][1]" type="text"></td>
+						        			<td><input type="checkbox" name="hours[5][appt]" value="yes"></td> 
+						        		</tr>
+						        		<tr>
+						        			<td>SUN</td>
+						        			<td><input name="hours[6][0]" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[6][1]" type="text"></td>
+						        			<td><input type="checkbox" name="hours[6][appt]" value="yes"></td> 
+						        		</tr>
+						        	</tbody>
+					        	</table>
+
+					        </div>
+					        <div class="repeat-buttons">
+					        	<span class="dashicons dashicons-menu repeat-move"></span>
+					        	<span class="dashicons dashicons-trash repeat-delete"></span>
+					        </div>
+				        </div>
+				        <button type="button" class="repeat-add">Add Hours</button>
+			        </div>
 		        </td>
 		    </tr><?php
 		}
@@ -1657,6 +1862,8 @@ foreach ($location_meta['phones'] as $index => $phone) {
 		function update_location_meta( $term_id, $tt_id ){
 
 			if( isset( $_POST['phone_number'] )){
+
+				die(print_r($_POST,true));
 
 		    	$meta_final = array('phones' => array());
 
