@@ -329,7 +329,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 									'thumbnail',
 								  ),
 						'taxonomies'   => array (
-									'post_tag', //Allow tags
+									//'post_tag', //Allow tags
 									'Model year',
 									'Make',
 									'Model',
