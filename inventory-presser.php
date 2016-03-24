@@ -329,7 +329,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 									'thumbnail',
 								  ),
 						'taxonomies'   => array (
-									'post_tag', //Allow tags
+									//'post_tag', //Allow tags
 									'Model year',
 									'Make',
 									'Model',
@@ -945,6 +945,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			echo $this->taxonomy_meta_box_html( 'type', apply_filters( 'translate_meta_field_key', 'type' ), $post );
 		}
 
+		function meta_box_html_locations( $post ) {
+			echo $this->taxonomy_meta_box_html( 'location', 'inventory_presser_location', $post );
+		}
+
 		function meta_box_html_vehicle( $post, $meta_box ) {
 			//HTML output for vehicle data meta box
 			$custom = get_post_custom( $post->ID );
@@ -1078,6 +1082,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function load_scripts($hook) {
 
+			global $wp_styles;
+//die(print_r($wp_styles,true));
+
 			wp_enqueue_style( 'my-admin-theme', plugins_url( 'css/wp-admin.css', __FILE__ ) );
 
 			wp_register_script( 'inventory-presser-javascript', plugins_url( '/js/admin.js', __FILE__ ) );
@@ -1086,7 +1093,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// jquery for location taxonomy only
 			global $current_screen;
 			if ($hook == 'edit-tags.php' && $current_screen->post_type == $this->post_type() && $current_screen->taxonomy == 'location') {
-				wp_enqueue_script('inventory-presser-location', plugins_url( '/js/tax-location.js', __FILE__ ), array('jquery'));
+				wp_enqueue_script('jquery-ui-sortable');
+				wp_enqueue_script('inventory-presser-location', plugins_url( '/js/tax-location.js', __FILE__ ), array('jquery-ui-sortable'));
 			}
 
 		}
@@ -1516,7 +1524,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 								'new_item_name' => __( 'New Location Name' ),
 								'menu_name'     => __( 'Locations' ),
 							),
-							//'meta_box_cb'    => array( $this, 'meta_box_addresses' ),
+							'meta_box_cb'    => array( $this, 'meta_box_html_locations' ),
 							'query_var'      => 'location',
 							'show_ui'			=> true,
 							'singular_label' => 'Location',
@@ -1584,14 +1592,20 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		function add_location_fields($taxonomy) {
 		    ?>
 
-		    <div id="location-tax" class="form-field term-group">
+		    <div class="form-field term-group location-tax">
 			    <div class="form-wrap form-field">
 			        <label>Phone Numbers</label>
 			        <div class="repeat-group">
 			        	<div class="repeat-container"></div>
 			        	<div class="repeat-this">
-					        <input type="text" name="phone_description[]" placeholder="Description" />
-					        <input type="text" name="phone_number[]" placeholder="Number" required />
+			        		<div class="repeat-form">
+						        <input type="text" name="phone_description[]" placeholder="Description" />
+						        <input type="text" name="phone_number[]" placeholder="Number" required />
+					        </div>
+					        <div class="repeat-buttons">
+					        	<span class="dashicons dashicons-menu repeat-move"></span>
+					        	<span class="dashicons dashicons-trash repeat-delete"></span>
+					        </div>
 				        </div>
 				        <button type="button" class="repeat-add">Add Phone</button>
 			        </div>
@@ -1601,7 +1615,112 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			        <div class="repeat-group">
 			        	<div class="repeat-container"></div>
 			        	<div class="repeat-this">
-					        <input type="text" name="hours[]" placeholder="Temp testing" />
+			        		<div class="repeat-form">
+
+					        	<input type="text" name="hours_title[]" placeholder="Title" />
+
+					        	<table>
+					        		<thead>
+					        			<th></th>
+					        			<th>Open</th>
+					        			<th></th>
+					        			<th>Close</th>
+					        			<th>Appt Only</th>
+					        		</thead>
+					        		<tbody>
+						        		<tr>
+						        			<th>MON</th>
+						        			<td><input name="hours[mon][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[mon][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[mon][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<th>TUE</th>
+						        			<td><input name="hours[tue][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[tue][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[tue][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<th>WED</th>
+						        			<td><input name="hours[wed][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[wed][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[wed][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<th>THU</th>
+						        			<td><input name="hours[thu][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[thu][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[thu][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<th>FRI</th>
+						        			<td><input name="hours[fri][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[fri][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[fri][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<th>SAT</th>
+						        			<td><input name="hours[sat][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[sat][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[sat][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<th>SUN</th>
+						        			<td><input name="hours[sun][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[sun][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[sun][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+
+						        	</tbody>
+					        	</table>
+
+					        </div>
+					        <div class="repeat-buttons">
+					        	<span class="dashicons dashicons-menu repeat-move"></span>
+					        	<span class="dashicons dashicons-trash repeat-delete"></span>
+					        </div>
 				        </div>
 				        <button type="button" class="repeat-add">Add Hours</button>
 			        </div>
@@ -1613,62 +1732,381 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function save_location_meta( $term_id, $tt_id ){
 
-		    if( isset( $_POST['phone_number'] )){
+			if (isset($_POST['tag-name'])) {
 
-		    	$meta_final = array('phones' => array());
+				$meta_final = array('phones' => array(), 'hours' => array());
 
-		    	foreach ($_POST['phone_number'] as $index => $phone_number) {
-		    		if ($phone_number != '') {
+				$count = count($_POST['hours_title']) - 2;
+
+				for ($i = 0; $i <= $count; $i++) {
+
+					$has_data = false;
+
+					$this_hours = array();
+					$this_hours['title'] = sanitize_text_field($_POST['hours_title'][$i]);
+
+					foreach ($_POST['hours'] as $day => $harray) {
+						$open = sanitize_text_field($harray['open'][$i]);
+						$close = sanitize_text_field($harray['close'][$i]);
+						$appt = sanitize_text_field($harray['appt'][$i]);
+						if (!$has_data && ($open || $close || $appt == '1')) {
+							$has_data = true;
+						}
+						$this_hours[$day] = array('open' => $open, 'close' => $close, 'appt'=> $appt);
+					}
+
+					if ($has_data) {
+						$meta_final['hours'][] = $this_hours;
+					}
+					
+				}
+
+				foreach ($_POST['phone_number'] as $index => $phone_number) {
+
+					$phone_description = sanitize_text_field($_POST['phone_description'][$index]);
+					$phone_number = sanitize_text_field($phone_number);
+
+		    		if ($phone_number) {
 		    			$meta_final['phones'][] = array(
-		    				'phone_description' => sanitize_text_field($_POST['phone_description'][$index]),
-		    				'phone_number' => sanitize_text_field($phone_number)
+		    				'phone_description' => $phone_description,
+		    				'phone_number' => $phone_number
 		    			);
 		    		}
 		    	}
 
-		        add_term_meta( $term_id, 'location-phone-hours', $meta_final, true );
-		    }
+		    	add_term_meta( $term_id, 'location-phone-hours', $meta_final, true );
+
+			}
 
 		}
 
 		function edit_location_field( $term, $taxonomy ){
-
+		          
 		    // get current term meta
 		    $location_meta = get_term_meta( $term->term_id, 'location-phone-hours', true );
-
-		    ?><tr class="form-field term-group-wrap">
-		        <th scope="row"><label>Location Info</label></th>
-		        <td>
-					<label>Phone Numbers</label>
-					<?php
-
+		                
+		    ?>
+		    <tr class="form-field term-group-wrap">
+		        <th scope="row"><label>Phone Numbers</label></th>
+		        <td>        
+			        <div class="repeat-group">
+			        	<div class="repeat-container">
+<?php
 foreach ($location_meta['phones'] as $index => $phone) {
-	echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Description" />', $phone['phone_description']);
-	echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="Number" required />', $phone['phone_number']);
-}
+?>
+			        	
+				        	<div class="repeated">
+				        		<div class="repeat-form">
 
-			        ?>
+<?php
+echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Description" />', $phone['phone_description']);
+echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="Number" />', $phone['phone_number']);
+?>
+						        </div>
+						        <div class="repeat-buttons">
+						        	<span class="dashicons dashicons-menu repeat-move"></span>
+						        	<span class="dashicons dashicons-trash repeat-delete"></span>
+						        </div>
+					        </div>
+<?php
+}
+?>
+						</div>
+						<div class="repeat-this">
+			        		<div class="repeat-form">
+						        <input type="text" name="phone_description[]" placeholder="Description" />
+						        <input type="text" name="phone_number[]" placeholder="Number" />
+					        </div>
+					        <div class="repeat-buttons">
+					        	<span class="dashicons dashicons-menu repeat-move"></span>
+					        	<span class="dashicons dashicons-trash repeat-delete"></span>
+					        </div>
+				        </div>
+				        <button type="button" class="repeat-add">Add Phone</button>
+			        </div>
+				</td>
+		    </tr>
+		    <tr class="form-field term-group-wrap">
+		        <th scope="row"><label>Hours</label></th>
+		        <td>
+			        <div class="repeat-group">
+			        	<div class="repeat-container">
+<?php
+foreach ($location_meta['hours'] as $index => $hours) {
+?>
+							<div class="repeated">
+				        		<div class="repeat-form">
+
+				       				<input type="text" name="hours_title[]" placeholder="Title" value="<?php echo $hours['title'] ?>" />
+
+						        	<table class="repeater-table">
+						        		<thead>
+						        			<td></td>
+						        			<td>Open</td>
+						        			<td></td>
+						        			<td>Close</td>
+						        			<td>Appt Only</td>
+						        		</thead>
+						        		<tbody>
+							        		<tr>
+							        			<td>MON</td>
+							        			<td><input name="hours[mon][open][]" class="timepick" type="text" value="<?php echo $hours['mon']['open'] ?>"></td>
+							        			<td>to</td>
+							        			<td><input name="hours[mon][close][]" class="timepick" type="text" value="<?php echo $hours['mon']['close'] ?>"></td>
+							        			<td>
+													<select name="hours[mon][appt][]" autocomplete="off">
+														<option value="0"<?php echo ($hours['mon']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
+														<option value="1"<?php echo ($hours['mon']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
+													</select>
+							        			</td> 
+							        		</tr>
+							        		<tr>
+							        			<td>TUE</td>
+							        			<td><input name="hours[tue][open][]" class="timepick" type="text" value="<?php echo $hours['tue']['open'] ?>"></td>
+							        			<td>to</td>
+							        			<td><input name="hours[tue][close][]" class="timepick" type="text" value="<?php echo $hours['tue']['close'] ?>"></td>
+							        			<td>
+													<select name="hours[tue][appt][]" autocomplete="off">
+														<option value="0"<?php echo ($hours['tue']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
+														<option value="1"<?php echo ($hours['tue']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
+													</select>
+							        			</td> 
+							        		</tr>
+							        		<tr>
+							        			<td>WED</td>
+							        			<td><input name="hours[wed][open][]" class="timepick" type="text" value="<?php echo $hours['wed']['open'] ?>"></td>
+							        			<td>to</td>
+							        			<td><input name="hours[wed][close][]" class="timepick" type="text" value="<?php echo $hours['wed']['close'] ?>"></td>
+							        			<td>
+													<select name="hours[wed][appt][]" autocomplete="off">
+														<option value="0"<?php echo ($hours['wed']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
+														<option value="1"<?php echo ($hours['wed']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
+													</select>
+							        			</td> 
+							        		</tr>
+							        		<tr>
+							        			<td>THU</td>
+							        			<td><input name="hours[thu][open][]" class="timepick" type="text" value="<?php echo $hours['thu']['open'] ?>"></td>
+							        			<td>to</td>
+							        			<td><input name="hours[thu][close][]" class="timepick" type="text" value="<?php echo $hours['thu']['close'] ?>"></td>
+							        			<td>
+													<select name="hours[thu][appt][]" autocomplete="off">
+														<option value="0"<?php echo ($hours['thu']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
+														<option value="1"<?php echo ($hours['thu']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
+													</select>
+							        			</td> 
+							        		</tr>
+							        		<tr>
+							        			<td>FRI</td>
+							        			<td><input name="hours[fri][open][]" class="timepick" type="text" value="<?php echo $hours['fri']['open'] ?>"></td>
+							        			<td>to</td>
+							        			<td><input name="hours[fri][close][]" class="timepick" type="text" value="<?php echo $hours['fri']['close'] ?>"></td>
+							        			<td>
+													<select name="hours[fri][appt][]" autocomplete="off">
+														<option value="0"<?php echo ($hours['fri']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
+														<option value="1"<?php echo ($hours['fri']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
+													</select>
+							        			</td> 
+							        		</tr>
+							        		<tr>
+							        			<td>SAT</td>
+							        			<td><input name="hours[sat][open][]" class="timepick" type="text" value="<?php echo $hours['sat']['open'] ?>"></td>
+							        			<td>to</td>
+							        			<td><input name="hours[sat][close][]" class="timepick" type="text" value="<?php echo $hours['sat']['close'] ?>"></td>
+							        			<td>
+													<select name="hours[sat][appt][]" autocomplete="off">
+														<option value="0"<?php echo ($hours['sat']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
+														<option value="1"<?php echo ($hours['sat']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
+													</select>
+							        			</td> 
+							        		</tr>
+							        		<tr>
+							        			<td>SUN</td>
+							        			<td><input name="hours[sun][open][]" class="timepick" type="text" value="<?php echo $hours['sun']['open'] ?>"></td>
+							        			<td>to</td>
+							        			<td><input name="hours[sun][close][]" class="timepick" type="text" value="<?php echo $hours['sun']['close'] ?>"></td>
+							        			<td>
+													<select name="hours[sun][appt][]" autocomplete="off">
+														<option value="0"<?php echo ($hours['sun']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
+														<option value="1"<?php echo ($hours['sun']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
+													</select>
+							        			</td> 
+							        		</tr>
+							        	</tbody>
+						        	</table>
+
+						        </div>
+						        <div class="repeat-buttons">
+						        	<span class="dashicons dashicons-menu repeat-move"></span>
+						        	<span class="dashicons dashicons-trash repeat-delete"></span>
+						        </div>
+					        </div>
+<?php
+}
+?>
+			        	</div>
+			        	<div class="repeat-this">
+			        		<div class="repeat-form">
+
+			       				<input type="text" name="hours_title[]" placeholder="Title" />
+
+					        	<table class="repeater-table">
+					        		<thead>
+					        			<td></td>
+					        			<td>Open</td>
+					        			<td></td>
+					        			<td>Close</td>
+					        			<td>Appt Only</td>
+					        		</thead>
+					        		<tbody>
+						        		<tr>
+						        			<td>MON</td>
+						        			<td><input name="hours[mon][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[mon][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[mon][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<td>TUE</td>
+						        			<td><input name="hours[tue][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[tue][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[tue][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<td>WED</td>
+						        			<td><input name="hours[wed][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[wed][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[wed][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<td>THU</td>
+						        			<td><input name="hours[thu][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[thu][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[thu][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<td>FRI</td>
+						        			<td><input name="hours[fri][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[fri][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[fri][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<td>SAT</td>
+						        			<td><input name="hours[sat][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[sat][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[sat][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        		<tr>
+						        			<td>SUN</td>
+						        			<td><input name="hours[sun][open][]" class="timepick" type="text"></td>
+						        			<td>to</td>
+						        			<td><input name="hours[sun][close][]" class="timepick" type="text"></td>
+						        			<td>
+												<select name="hours[sun][appt][]">
+													<option value="0">No</option>
+													<option value="1">Yes</option>
+												</select>
+						        			</td> 
+						        		</tr>
+						        	</tbody>
+					        	</table>
+
+					        </div>
+					        <div class="repeat-buttons">
+					        	<span class="dashicons dashicons-menu repeat-move"></span>
+					        	<span class="dashicons dashicons-trash repeat-delete"></span>
+					        </div>
+				        </div>
+				        <button type="button" class="repeat-add">Add Hours</button>
+			        </div>
 		        </td>
 		    </tr><?php
 		}
 
 		function update_location_meta( $term_id, $tt_id ){
 
-			if( isset( $_POST['phone_number'] )){
+			if (isset($_POST['name'])) {
 
-		    	$meta_final = array('phones' => array());
+				$meta_final = array('phones' => array(), 'hours' => array());
 
-		    	foreach ($_POST['phone_number'] as $index => $phone_number) {
-		    		if ($phone_number != '') {
+				$count = count($_POST['hours_title']) - 2;
+
+				for ($i = 0; $i <= $count; $i++) {
+
+					$has_data = false;
+
+					$this_hours = array();
+					$this_hours['title'] = sanitize_text_field($_POST['hours_title'][$i]);
+
+					foreach ($_POST['hours'] as $day => $harray) {
+						$open = sanitize_text_field($harray['open'][$i]);
+						$close = sanitize_text_field($harray['close'][$i]);
+						$appt = sanitize_text_field($harray['appt'][$i]);
+						if (!$has_data && ($open || $close || $appt == '1')) {
+							$has_data = true;
+						}
+						$this_hours[$day] = array('open' => $open, 'close' => $close, 'appt'=> $appt);
+					}
+
+					if ($has_data) {
+						$meta_final['hours'][] = $this_hours;
+					}
+					
+				}
+
+				foreach ($_POST['phone_number'] as $index => $phone_number) {
+
+					$phone_description = sanitize_text_field($_POST['phone_description'][$index]);
+					$phone_number = sanitize_text_field($phone_number);
+
+		    		if ($phone_number) {
 		    			$meta_final['phones'][] = array(
-		    				'phone_description' => sanitize_text_field($_POST['phone_description'][$index]),
-		    				'phone_number' => sanitize_text_field($phone_number)
+		    				'phone_description' => $phone_description,
+		    				'phone_number' => $phone_number
 		    			);
 		    		}
 		    	}
 
-		        update_term_meta( $term_id, 'location-phone-hours', $meta_final);
-		    }
+		    	update_term_meta( $term_id, 'location-phone-hours', $meta_final);
+
+			}
+
+		    //die(print_r($meta_final, true));
 
 		}
 
