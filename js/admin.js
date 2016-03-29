@@ -52,9 +52,12 @@ function delete_all_inventory( wait_notice_element_id ) {
 	};
 	jQuery.post( ajaxurl, data, function( response ) {
 		var success_pos = response.indexOf( 'setting-error-settings_updated' );
+		//<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"><p><strong>Deleted 24 vehicles.</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>
 		if( -1 >= success_pos ) {
-			delete_all_inventory();
+			delete_all_inventory( status_element_id );
 		} else {
+			//Hide the swirly wait gif
+			jQuery('#'+status_element_id).html('');
 			//Report to the user that the import is complete.
 			var h1_elements = jQuery('div.wrap').find('h1');
 			if( 1 == h1_elements.length ) {
@@ -73,11 +76,9 @@ function delete_all_inventory( wait_notice_element_id ) {
 					});
 				});
 			}
-			//Hide the swirly wait gif
-			jQuery('#'+status_element_id).html('');
 		}
 	}).fail(function() {
-		delete_all_inventory();
+		delete_all_inventory( status_element_id );
 	});
 }
 
