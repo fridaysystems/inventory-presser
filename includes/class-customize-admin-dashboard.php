@@ -57,7 +57,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		add_action( 'admin_menu', array( &$this, 'add_menu_to_settings' ) );
 
 		//Save custom post data when posts are saved
-		//add_action( 'save_post', array( &$this, 'save_vehicle_post_meta' ) );
 		add_action( 'save_post', array( &$this, 'save_vehicle_post_meta' ), 10, 2 );
 
 		//Add columns to the table that lists all the Vehicles on edit.php
@@ -104,15 +103,13 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 		//Define an AJAX handler for the 'Delete all inventory' button
 		add_action( 'wp_ajax_delete_all_inventory', array( &$this, 'delete_all_inventory_ajax' ) );
-
-		//Sort some taxonomy terms as numbers
-		add_filter( 'get_terms_orderby', array( &$this, 'sort_terms_as_numbers' ), 10,  3 );
 	}
 
 	function create_add_media_button_annotation( ) {
 		global $post;
 		if( !is_object( $post ) && isset( $_POST['post_ID'] ) ) {
-			/* this function is being called via AJAX and the
+			/**
+			 * This function is being called via AJAX and the
 			 * post_id is incoming, so get the post
 			 */
 			$post = get_post( $_POST['post_ID'] );
@@ -321,35 +318,15 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		return '<div class="'. $type .' notice"><p><strong>'. __( $message, 'inventory_presser' ) . '</strong></p></div>';
 	}
 
-	function get_term_slug( $taxonomy_name, $post_id ) {
-		$terms = wp_get_object_terms( $post_id, $taxonomy_name, array( 'orderby' => 'term_id', 'order' => 'ASC' ) );
-		if ( ! is_wp_error( $terms ) ) {
-			if ( isset( $terms[0] ) && isset( $terms[0]->name ) ) {
-				return $terms[0]->slug;
-			}
-		}
-		return '';
-	}
-
 	function insert_settings_link( $links ) {
 		$links[] = '<a href="options-general.php?page=' . $this->product_name_slug() . '_settings">Settings</a>';
 		return $links;
 	}
 
 	function load_scripts($hook) {
-
 		wp_enqueue_style( 'my-admin-theme', plugins_url( '/css/wp-admin.css', dirname( __FILE__ ) ) );
-
 		wp_register_script( 'inventory-presser-javascript', plugins_url( '/js/admin.js', dirname( __FILE__ ) ) );
 		wp_enqueue_script( 'inventory-presser-javascript' );
-
-		// jquery for location taxonomy only
-		global $current_screen;
-		if ($hook == 'edit-tags.php' && $current_screen->post_type == $this->post_type() && $current_screen->taxonomy == 'location') {
-			wp_enqueue_script('jquery-ui-sortable');
-			wp_enqueue_script('inventory-presser-location', plugins_url( '/js/tax-location.js', dirname( __FILE__ ) ), array('jquery-ui-sortable'));
-		}
-
 	}
 
 	function make_vehicles_table_columns_sortable( $columns ) {
@@ -604,24 +581,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		return strtolower( str_replace( ' ', '_', self::PRODUCT_NAME ) . $suffix );
 	}
 
-	function save_taxonomy_term( $post_id, $taxonomy_name, $element_name ) {
-		$taxonomy_name = str_replace( ' ', '_', str_replace( '-', '_', strtolower( $taxonomy_name ) ) );
-		if ( isset( $_POST[$element_name] ) ) {
-			wp_remove_object_terms( $post_id, $this->get_term_slug( $taxonomy_name, $post_id ), $taxonomy_name );
-			$term_slug = sanitize_text_field( $_POST[$element_name] );
-			if ( '' == $term_slug ) {
-				// the user is setting the vehicle type to empty string, remove only
-				return;
-			}
-			$term = get_term_by( 'slug', $term_slug, $taxonomy_name );
-			if ( ! empty( $term ) && ! is_wp_error( $term ) ) {
-				if ( is_wp_error( wp_set_object_terms( $post_id, $term->term_id, $taxonomy_name, false ) ) ) {
-					//There was an error setting the term
-				}
-			}
-		}
-	}
-
 	function save_vehicle_post_meta( $post_id, $is_update ) {
 
 		//only do this if the post is our custom type
@@ -634,26 +593,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		if( ! isset( $_POST['post_title'] ) ) {
 			return;
 		}
-
-		// save post_meta values and custom taxonomy terms when vehicles are saved
-
-		//Condition custom taxonomy
-		$this->save_taxonomy_term( $post_id, 'Condition', 'inventory_presser_condition' );
-
-		//Availability custom taxonomy
-		$this->save_taxonomy_term( $post_id, 'Availability', 'inventory_presser_availability' );
-
-		//Drive type custom taxonomy
-		$this->save_taxonomy_term( $post_id, 'Drive type', 'inventory_presser_drive_type' );
-
-		//Fuel custom taxonomy
-		$this->save_taxonomy_term( $post_id, 'Fuel', 'inventory_presser_fuel' );
-
-		//Transmission custom taxonomy
-		$this->save_taxonomy_term( $post_id, 'Transmission', 'inventory_presser_transmission' );
-
-		//Type custom taxonomy
-		$this->save_taxonomy_term( $post_id, 'Type', 'inventory_presser_type' );
 
 		/**
 		 * Loop over the post meta keys we manage and save their values
@@ -811,14 +750,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 				<input type="button" class="button-primary" value="<?php _e('Delete all Plugin Data') ?>" onclick="delete_all_data();" /><span id="delete-all-notice"></span>
 			</form>
 		</div><?php
-	}
-
-	function sort_terms_as_numbers( $order_by, $args, $taxonomies ) {
-		$taxonomy_to_sort = 'cylinders';
-		if( in_array( $taxonomy_to_sort, $taxonomies ) ) {
-			$order_by .=  '+0';
-		}
-		return $order_by;
 	}
 
 	function vehicles_table_columns_orderbys( $vars ) {
