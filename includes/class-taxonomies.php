@@ -11,6 +11,32 @@
 class Inventory_Presser_Taxonomies {
 
 	var $post_type;
+	var $days = array('MON','TUE','WED','THU','FRI','SAT','SUN');
+
+	function __construct( $post_type ) {
+
+		$this->post_type = $post_type;
+
+		//create custom taxonomies for vehicles
+		add_action( 'init', array( &$this, 'create_custom_taxonomies' ) );
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_term_data' ) );
+
+		// location taxonomy admin actions
+		add_action( 'location_add_form_fields', array( &$this, 'add_location_fields'), 10, 2 );
+		add_action( 'created_location', array( &$this, 'save_location_meta'), 10, 2 );
+		add_action( 'location_edit_form_fields', array( &$this, 'edit_location_field'), 10, 2 );
+		add_action( 'edited_location', array( &$this, 'save_location_meta'), 10, 2 );
+
+		//Sort some taxonomy terms as numbers
+		add_filter( 'get_terms_orderby', array( &$this, 'sort_terms_as_numbers' ), 10,  3 );
+
+		//Save custom taxonomy terms when posts are saved
+		add_action( 'save_post', array( &$this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
+
+		//Load our scripts
+		add_action( 'admin_enqueue_scripts', array( &$this, 'load_scripts' ) );
+	}
 
 	/* location taxonomy */
 	function add_location_fields( $taxonomy ) {
@@ -52,91 +78,20 @@ class Inventory_Presser_Taxonomies {
 				        			<th>Appt Only</th>
 				        		</thead>
 				        		<tbody>
+				        			<?php foreach ($this->days as $index => $day) { ?>
 					        		<tr>
-					        			<th>MON</th>
-					        			<td><input name="hours[mon][open][]" class="timepick" type="text"></td>
+					        			<th><?php echo $day ?></th>
+					        			<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text"></td>
 					        			<td>to</td>
-					        			<td><input name="hours[mon][close][]" class="timepick" type="text"></td>
+					        			<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text"></td>
 					        			<td>
-											<select name="hours[mon][appt][]">
+											<select name="hours[<?php echo $index ?>][appt][]">
 												<option value="0">No</option>
 												<option value="1">Yes</option>
 											</select>
 					        			</td>
 					        		</tr>
-					        		<tr>
-					        			<th>TUE</th>
-					        			<td><input name="hours[tue][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[tue][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[tue][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</select>
-					        			</td>
-					        		</tr>
-					        		<tr>
-					        			<th>WED</th>
-					        			<td><input name="hours[wed][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[wed][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[wed][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</select>
-					        			</td>
-					        		</tr>
-					        		<tr>
-					        			<th>THU</th>
-					        			<td><input name="hours[thu][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[thu][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[thu][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</select>
-					        			</td>
-					        		</tr>
-					        		<tr>
-					        			<th>FRI</th>
-					        			<td><input name="hours[fri][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[fri][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[fri][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</select>
-					        			</td>
-					        		</tr>
-					        		<tr>
-					        			<th>SAT</th>
-					        			<td><input name="hours[sat][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[sat][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[sat][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</select>
-					        			</td>
-					        		</tr>
-					        		<tr>
-					        			<th>SUN</th>
-					        			<td><input name="hours[sun][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[sun][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[sun][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</select>
-					        			</td>
-					        		</tr>
-
+					        		<?php } ?>
 					        	</tbody>
 				        	</table>
 
@@ -152,31 +107,6 @@ class Inventory_Presser_Taxonomies {
 	    </div>
 
 	    <?php
-	}
-
-	function __construct( $post_type ) {
-
-		$this->post_type = $post_type;
-
-		//create custom taxonomies for vehicles
-		add_action( 'init', array( &$this, 'create_custom_taxonomies' ) );
-
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_term_data' ) );
-
-		// location taxonomy admin actions
-		add_action( 'location_add_form_fields', array( &$this, 'add_location_fields'), 10, 2 );
-		add_action( 'created_location', array( &$this, 'save_location_meta'), 10, 2 );
-		add_action( 'location_edit_form_fields', array( &$this, 'edit_location_field'), 10, 2 );
-		add_action( 'edited_location', array( &$this, 'update_location_meta'), 10, 2 );
-
-		//Sort some taxonomy terms as numbers
-		add_filter( 'get_terms_orderby', array( &$this, 'sort_terms_as_numbers' ), 10,  3 );
-
-		//Save custom taxonomy terms when posts are saved
-		add_action( 'save_post', array( &$this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
-
-		//Load our scripts
-		add_action( 'admin_enqueue_scripts', array( &$this, 'load_scripts' ) );
 	}
 
 	function create_custom_taxonomies( ) {
@@ -226,26 +156,21 @@ class Inventory_Presser_Taxonomies {
 	        <td>
 		        <div class="repeat-group">
 		        	<div class="repeat-container">
-<?php
-foreach ($location_meta['phones'] as $index => $phone) {
-?>
+					<?php foreach ($location_meta['phones'] as $index => $phone) { ?>
 
 			        	<div class="repeated">
 			        		<div class="repeat-form">
-
-<?php
-echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Description" />', $phone['phone_description']);
-echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="Number" />', $phone['phone_number']);
-?>
+							<?php
+							echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Description" />', $phone['phone_description']);
+							echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="Number" />', $phone['phone_number']);
+							?>
 					        </div>
 					        <div class="repeat-buttons">
 					        	<span class="dashicons dashicons-menu repeat-move"></span>
 					        	<span class="dashicons dashicons-trash repeat-delete"></span>
 					        </div>
 				        </div>
-<?php
-}
-?>
+					<?php } ?>
 					</div>
 					<div class="repeat-this">
 		        		<div class="repeat-form">
@@ -266,9 +191,7 @@ echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="N
 	        <td>
 		        <div class="repeat-group">
 		        	<div class="repeat-container">
-<?php
-foreach ($location_meta['hours'] as $index => $hours) {
-?>
+					<?php foreach ($location_meta['hours'] as $index => $hours) { ?>
 						<div class="repeated">
 			        		<div class="repeat-form">
 
@@ -283,90 +206,20 @@ foreach ($location_meta['hours'] as $index => $hours) {
 					        			<td>Appt Only</td>
 					        		</thead>
 					        		<tbody>
+					        			<?php foreach ($this->days as $index => $day) { ?>
 						        		<tr>
-						        			<td>MON</td>
-						        			<td><input name="hours[mon][open][]" class="timepick" type="text" value="<?php echo $hours['mon']['open'] ?>"></td>
+						        			<td><?php echo $day ?></td>
+						        			<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text" value="<?php echo $hours[$index]['open'] ?>"></td>
 						        			<td>to</td>
-						        			<td><input name="hours[mon][close][]" class="timepick" type="text" value="<?php echo $hours['mon']['close'] ?>"></td>
+						        			<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text" value="<?php echo $hours[$index]['close'] ?>"></td>
 						        			<td>
-												<select name="hours[mon][appt][]" autocomplete="off">
-													<option value="0"<?php echo ($hours['mon']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
-													<option value="1"<?php echo ($hours['mon']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
+												<select name="hours[<?php echo $index ?>][appt][]" autocomplete="off">
+													<option value="0"<?php echo ($hours[$index]['appt'] == '0') ? ' selected' : ''; ?>>No</option>
+													<option value="1"<?php echo ($hours[$index]['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
 												</select>
 						        			</td>
 						        		</tr>
-						        		<tr>
-						        			<td>TUE</td>
-						        			<td><input name="hours[tue][open][]" class="timepick" type="text" value="<?php echo $hours['tue']['open'] ?>"></td>
-						        			<td>to</td>
-						        			<td><input name="hours[tue][close][]" class="timepick" type="text" value="<?php echo $hours['tue']['close'] ?>"></td>
-						        			<td>
-												<select name="hours[tue][appt][]" autocomplete="off">
-													<option value="0"<?php echo ($hours['tue']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
-													<option value="1"<?php echo ($hours['tue']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
-												</select>
-						        			</td>
-						        		</tr>
-						        		<tr>
-						        			<td>WED</td>
-						        			<td><input name="hours[wed][open][]" class="timepick" type="text" value="<?php echo $hours['wed']['open'] ?>"></td>
-						        			<td>to</td>
-						        			<td><input name="hours[wed][close][]" class="timepick" type="text" value="<?php echo $hours['wed']['close'] ?>"></td>
-						        			<td>
-												<select name="hours[wed][appt][]" autocomplete="off">
-													<option value="0"<?php echo ($hours['wed']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
-													<option value="1"<?php echo ($hours['wed']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
-												</select>
-						        			</td>
-						        		</tr>
-						        		<tr>
-						        			<td>THU</td>
-						        			<td><input name="hours[thu][open][]" class="timepick" type="text" value="<?php echo $hours['thu']['open'] ?>"></td>
-						        			<td>to</td>
-						        			<td><input name="hours[thu][close][]" class="timepick" type="text" value="<?php echo $hours['thu']['close'] ?>"></td>
-						        			<td>
-												<select name="hours[thu][appt][]" autocomplete="off">
-													<option value="0"<?php echo ($hours['thu']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
-													<option value="1"<?php echo ($hours['thu']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
-												</select>
-						        			</td>
-						        		</tr>
-						        		<tr>
-						        			<td>FRI</td>
-						        			<td><input name="hours[fri][open][]" class="timepick" type="text" value="<?php echo $hours['fri']['open'] ?>"></td>
-						        			<td>to</td>
-						        			<td><input name="hours[fri][close][]" class="timepick" type="text" value="<?php echo $hours['fri']['close'] ?>"></td>
-						        			<td>
-												<select name="hours[fri][appt][]" autocomplete="off">
-													<option value="0"<?php echo ($hours['fri']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
-													<option value="1"<?php echo ($hours['fri']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
-												</select>
-						        			</td>
-						        		</tr>
-						        		<tr>
-						        			<td>SAT</td>
-						        			<td><input name="hours[sat][open][]" class="timepick" type="text" value="<?php echo $hours['sat']['open'] ?>"></td>
-						        			<td>to</td>
-						        			<td><input name="hours[sat][close][]" class="timepick" type="text" value="<?php echo $hours['sat']['close'] ?>"></td>
-						        			<td>
-												<select name="hours[sat][appt][]" autocomplete="off">
-													<option value="0"<?php echo ($hours['sat']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
-													<option value="1"<?php echo ($hours['sat']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
-												</select>
-						        			</td>
-						        		</tr>
-						        		<tr>
-						        			<td>SUN</td>
-						        			<td><input name="hours[sun][open][]" class="timepick" type="text" value="<?php echo $hours['sun']['open'] ?>"></td>
-						        			<td>to</td>
-						        			<td><input name="hours[sun][close][]" class="timepick" type="text" value="<?php echo $hours['sun']['close'] ?>"></td>
-						        			<td>
-												<select name="hours[sun][appt][]" autocomplete="off">
-													<option value="0"<?php echo ($hours['sun']['appt'] == '0') ? ' selected' : ''; ?>>No</option>
-													<option value="1"<?php echo ($hours['sun']['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
-												</select>
-						        			</td>
-						        		</tr>
+						        		<?php } ?>
 						        	</tbody>
 					        	</table>
 
@@ -376,9 +229,7 @@ foreach ($location_meta['hours'] as $index => $hours) {
 					        	<span class="dashicons dashicons-trash repeat-delete"></span>
 					        </div>
 				        </div>
-<?php
-}
-?>
+					<?php } ?>
 		        	</div>
 		        	<div class="repeat-this">
 		        		<div class="repeat-form">
@@ -394,90 +245,20 @@ foreach ($location_meta['hours'] as $index => $hours) {
 				        			<td>Appt Only</td>
 				        		</thead>
 				        		<tbody>
+					        		<?php foreach ($this->days as $index => $day) { ?>
 					        		<tr>
-					        			<td>MON</td>
-					        			<td><input name="hours[mon][open][]" class="timepick" type="text"></td>
+					        			<td><?php echo $day ?></td>
+					        			<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text"></td>
 					        			<td>to</td>
-					        			<td><input name="hours[mon][close][]" class="timepick" type="text"></td>
+					        			<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text"></td>
 					        			<td>
-											<select name="hours[mon][appt][]">
+											<select name="hours[<?php echo $index ?>][appt][]">
 												<option value="0">No</option>
 												<option value="1">Yes</option>
 											</select>
 					        			</td>
 					        		</tr>
-					        		<tr>
-					        			<td>TUE</td>
-					        			<td><input name="hours[tue][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[tue][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[tue][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</select>
-					        			</td>
-					        		</tr>
-					        		<tr>
-					        			<td>WED</td>
-					        			<td><input name="hours[wed][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[wed][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[wed][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</select>
-					        			</td>
-					        		</tr>
-					        		<tr>
-					        			<td>THU</td>
-					        			<td><input name="hours[thu][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[thu][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[thu][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</select>
-					        			</td>
-					        		</tr>
-					        		<tr>
-					        			<td>FRI</td>
-					        			<td><input name="hours[fri][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[fri][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[fri][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</select>
-					        			</td>
-					        		</tr>
-					        		<tr>
-					        			<td>SAT</td>
-					        			<td><input name="hours[sat][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[sat][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[sat][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</select>
-					        			</td>
-					        		</tr>
-					        		<tr>
-					        			<td>SUN</td>
-					        			<td><input name="hours[sun][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[sun][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[sun][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
-											</select>
-					        			</td>
-					        		</tr>
+					        		<?php } ?>
 					        	</tbody>
 				        	</table>
 
@@ -549,9 +330,9 @@ foreach ($location_meta['hours'] as $index => $hours) {
 		return $this->post_type;
 	}
 
-	function save_location_meta( $term_id, $tt_id ){
+	function save_location_meta( $term_id, $tt_id ) {
 
-		if (isset($_POST['tag-name'])) {
+		if (isset($_POST)) {
 
 			$meta_final = array('phones' => array(), 'hours' => array());
 
@@ -593,10 +374,11 @@ foreach ($location_meta['hours'] as $index => $hours) {
 	    		}
 	    	}
 
-	    	add_term_meta( $term_id, 'location-phone-hours', $meta_final, true );
+	    	update_term_meta( $term_id, 'location-phone-hours', $meta_final);
 
 		}
 	}
+
 
 	//save custom taxonomy terms when vehicles are saved
 	function save_vehicle_taxonomy_terms( $post_id, $is_update ) {
@@ -935,52 +717,4 @@ foreach ($location_meta['hours'] as $index => $hours) {
 		return $HTML . '</select>';
 	}
 
-	function update_location_meta( $term_id, $tt_id ){
-
-		if (isset($_POST['name'])) {
-
-			$meta_final = array('phones' => array(), 'hours' => array());
-
-			$count = count($_POST['hours_title']) - 2;
-
-			for ($i = 0; $i <= $count; $i++) {
-
-				$has_data = false;
-
-				$this_hours = array();
-				$this_hours['title'] = sanitize_text_field($_POST['hours_title'][$i]);
-
-				foreach ($_POST['hours'] as $day => $harray) {
-					$open = sanitize_text_field($harray['open'][$i]);
-					$close = sanitize_text_field($harray['close'][$i]);
-					$appt = sanitize_text_field($harray['appt'][$i]);
-					if (!$has_data && ($open || $close || $appt == '1')) {
-						$has_data = true;
-					}
-					$this_hours[$day] = array('open' => $open, 'close' => $close, 'appt'=> $appt);
-				}
-
-				if ($has_data) {
-					$meta_final['hours'][] = $this_hours;
-				}
-
-			}
-
-			foreach ($_POST['phone_number'] as $index => $phone_number) {
-
-				$phone_description = sanitize_text_field($_POST['phone_description'][$index]);
-				$phone_number = sanitize_text_field($phone_number);
-
-	    		if ($phone_number) {
-	    			$meta_final['phones'][] = array(
-	    				'phone_description' => $phone_description,
-	    				'phone_number' => $phone_number
-	    			);
-	    		}
-	    	}
-
-	    	update_term_meta( $term_id, 'location-phone-hours', $meta_final);
-
-		}
-	}
 }
