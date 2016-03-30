@@ -69,7 +69,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		add_filter( 'manage_edit-' . $this->post_type() . '_sortable_columns', array( &$this, 'make_vehicles_table_columns_sortable' ) );
 
 		//Implement the orderby for each of these added columns
-		add_filter( 'admin_init', array( &$this, 'vehicles_table_columns_orderbys' ) );
+		add_filter( 'pre_get_posts', array( &$this, 'vehicles_table_columns_orderbys' ) );
 
 		add_action( 'add_meta_boxes', array( &$this, 'add_meta_boxes_to_cpt' ) );
 
@@ -550,23 +550,17 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$val = ( isset( $custom_fields[$column_name] ) ? $custom_fields[$column_name][0] : '' );
 		switch( $column_name ) {
 			case 'inventory_presser_odometer':
-				if( class_exists( 'Vehicle_Data_Formatter' ) ) {
-					$formatter = new Vehicle_Data_Formatter;
-					echo $formatter->odometer( $val );
-				} else {
-					echo $val;
-				}
+				$vehicle = new Inventory_Presser_Vehicle();
+				$vehicle->odometer = $val;
+				echo $vehicle->odometer();
 				break;
 			case 'inventory_presser_photo_count':
 				echo count( get_children( array( 'post_parent' => $post_id ) ) );
 				break;
 			case 'inventory_presser_price':
-				if( class_exists( 'Vehicle_Data_Formatter' ) ) {
-					$formatter = new Vehicle_Data_Formatter;
-					echo $formatter->price( $val );
-				} else {
-					echo $val;
-				}
+				$vehicle = new Inventory_Presser_Vehicle();
+				$vehicle->price = $val;
+				echo $vehicle->price( '-' );
 				break;
 			default:
 				echo $val;
@@ -752,7 +746,9 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		</div><?php
 	}
 
-	function vehicles_table_columns_orderbys( $vars ) {
+	function vehicles_table_columns_orderbys( $query ) {
+
+		if( ! is_admin() || ! $query->is_main_query() ) { return; }
 
 		$columns = array(
 			'color',
@@ -761,16 +757,15 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			'stock_number',
 		);
 		$vehicle = new Inventory_Presser_Vehicle();
+		$orderby = $query->get( 'orderby' );
 		foreach( $columns as $column ) {
 			$meta_key = apply_filters( 'translate_meta_field_key', $column );
 			$meta_value_is_number = $vehicle->post_meta_value_is_number( $meta_key );
-			if ( isset( $vars['orderby'] ) && $meta_key == $vars['orderby'] ) {
-				return array_merge( $vars, array(
-					'meta_key' => $meta_key,
-					'orderby' => 'meta_value' . ( $meta_value_is_number ? '_num' : '')
-				) );
+			if ( $orderby == $meta_key ) {
+	            $query->set( 'meta_key', $meta_key );
+	            $query->set( 'orderby', 'meta_value' . ( $meta_value_is_number ? '_num' : '') );
+	            return;
 			}
 		}
-		return $vars;
 	}
 }

@@ -184,14 +184,14 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 
 		//if numeric, format the odometer with thousands separators
-		function odometer($append = '') {
+		function odometer( $append = '' ) {
 			$odometer = '';
 			if( is_numeric( $this->odometer ) ) {
 				$odometer .= number_format( $this->odometer, 0, '.', ',' );
 			} else {
 				$odometer .= $this->odometer;
 			}
-			if($odometer && $append) {
+			if( $odometer && $append ) {
 				$odometer .= $append;
 			}
 			return $odometer;
@@ -201,7 +201,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 * Return the price as a dollar amount except when it is zero.
 		 * Return the $zero_string when the price is zero.
 		 */
-		function price( $zero_string ) {
+		function price( $zero_string = '' ) {
 			if( 0 == $this->price ) { return $zero_string; }
 			$result = '$' . number_format( $this->price, 0, '.', ',' );
 			return $result;
