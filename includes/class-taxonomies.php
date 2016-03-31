@@ -276,7 +276,6 @@ class Inventory_Presser_Taxonomies {
 			        </div>
 			        <button type="button" class="repeat-add">Add Hours</button>
 		        </div>
-		        <pre><?php echo print_r($location_meta, true); ?></pre>
 	        </td>
 	    </tr><?php
 	}
