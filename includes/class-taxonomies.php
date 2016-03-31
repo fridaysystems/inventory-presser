@@ -150,7 +150,9 @@ class Inventory_Presser_Taxonomies {
 	    // get current term meta
 	    $location_meta = get_term_meta( $term->term_id, 'location-phone-hours', true );
 	    // make sure the current term meta has unique id's
-	    $location_meta = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term->term_id, $location_meta);
+	    if ($location_meta) {
+    		$location_meta = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term->term_id, $location_meta);
+    	}
 
 	    ?>
 	    <tr class="form-field term-group-wrap">

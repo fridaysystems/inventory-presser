@@ -93,11 +93,8 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 			
 	// Widget Backend 
 	public function form( $instance ) {
-
-		// get current term meta
-	    //$location_meta = get_term_meta( $term->term_id, 'location-phone-hours', true );
-	    // make sure the current term meta has unique id's
-	    //$location_meta = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term->term_id, $location_meta);
+	    
+	    //$term_ids = get_terms('location', array('fields'=>'ids', 'hide_empty'=>false));
 
 		if ( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ];
@@ -183,10 +180,30 @@ class Inventory_Presser_Location_Widgets {
 
 	function __construct( ) {
 		add_action( 'widgets_init', array( &$this, 'widgets_init' ) );
+		add_action( 'current_screen', array( &$this, 'thisScreen' ) );
 	}
 
 	function widgets_init() {
 		register_widget('Inventory_Presser_Location_Hours');
+	}
+
+	function thisScreen() {
+
+	    $currentScreen = get_current_screen();
+	    // if on the widget admin page
+	    if( $currentScreen->id === "widgets" ) {
+
+			// loop through all locations and make sure the location term meta has unique id's
+		    $term_ids = get_terms('location', array('fields'=>'ids', 'hide_empty'=>false));
+		    foreach ($term_ids as $i => $term_id) {
+		    	$location_meta = get_term_meta($term_id, 'location-phone-hours', true);
+		    	if ($location_meta) {
+		    		$location_meta = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term_id, $location_meta);
+		    	}
+		    }
+
+	    }
+	    
 	}
 
 }
