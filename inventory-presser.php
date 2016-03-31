@@ -32,6 +32,13 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle_Shortcodes' ) ) {
 	}
 }
 
+if ( ! class_exists( 'Inventory_Presser_Location_Widgets' ) ) {
+	$class_location_widgets = plugin_dir_path( __FILE__ ) . 'includes/class-location-widgets.php';
+	if ( file_exists( $class_location_widgets ) ) {
+		require $class_location_widgets;
+	}
+}
+
 if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	class Inventory_Presser_Plugin {
 
