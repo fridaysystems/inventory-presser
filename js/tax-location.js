@@ -44,6 +44,8 @@
 
 		});
 
+		$('.timepick').timepicker({ 'timeFormat': 'h:i A', 'scrollDefault': 'now' });
+
 	});
 
 	// listen for WP ajax call to add location tag, reset the term meta forms when it happens
@@ -55,33 +57,6 @@
 				var group = $(this);
 				$(group).find('.repeat-container').empty();
 				add_block(group);
-
-				
-
-				/*$(group).find('.repeat-container').sortable({
-					handle: '.repeat-move',
-					containment: 'parent'
-				});
-
-				if ($(group).find('.repeat-container').children().length == 0) {
-					add_block(group);
-				}
-
-				// add buttons click event
-				$(group).find('.repeat-add').on('click', function(e) {
-					add_block(group);
-				});
-
-				$(group).find('.repeat-delete').on('click', function(e) {
-					var container = $(this).closest('.repeat-container');
-					if ($(container).children().length > 1) {
-						$(this).closest('.repeated').remove();
-					} else {
-						$(this).closest('.repeated').find('input:text').val('');
-						$(this).closest('.repeated').find('input:checkbox').prop('checked', false);
-					}
-					$(container).sortable('refresh');
-				});*/
 
 			});
 		}
