@@ -36,6 +36,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	class Inventory_Presser_Plugin {
 
 		const CUSTOM_POST_TYPE = 'inventory_vehicle';
+		var $taxonomies;
 
 		function add_orderby_to_query( $query ) {
 			//Do not mess with the query if it's not the main one and our CPT
@@ -133,7 +134,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$class_taxonomies = plugin_dir_path( __FILE__ ) . 'includes/class-taxonomies.php';
 				if ( file_exists( $class_taxonomies ) ) {
 					require $class_taxonomies;
-					$taxonomies = new Inventory_Presser_Taxonomies( $this->post_type() );
+					$this->taxonomies = new Inventory_Presser_Taxonomies( $this->post_type() );
 				}
 			}
 
@@ -219,7 +220,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function create_custom_post_type( ) {
 			//we need an array of our taxonomy slugs
-			$taxonomies = new Inventory_Presser_Taxonomies( $this->post_type() );
+			//$taxonomies = Inventory_Presser_Taxonomies( $this->post_type() );
 			//creates a custom post type that will be used by this plugin
 			register_post_type(
 				$this->post_type(),
@@ -247,7 +248,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 									'title',
 									'thumbnail',
 								  ),
-						'taxonomies'   => $taxonomies->slugs_array(),
+						'taxonomies'   => $this->taxonomies->slugs_array(),
 					)
 				)
 			);
