@@ -889,7 +889,7 @@ foreach ($location_meta['hours'] as $index => $hours) {
 				array (
 					'args' => array (
 						'hierarchical'   => false,
-						'label'          => 'Locations',
+						'label'          => 'Location',
 						'labels'         => array (
 							'name'          => 'Location',
 							'singular_name' => 'Location',
