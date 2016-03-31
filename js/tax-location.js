@@ -10,6 +10,7 @@
 	//on page load
 	$(document).ready(function() {
 
+		// hijack the built in taxonomy description for the location address.
 		$('.term-description-wrap label').text('Address');
 		$('.term-description-wrap p').text('Enter the address as you would like it to appear on your site.');
 
@@ -17,11 +18,13 @@
 
 			var group = $(this);
 
+			// make sortable
 			$(group).find('.repeat-container').sortable({
 				handle: '.repeat-move',
 				containment: 'parent'
 			});
 
+			// initial setup - add a repeat group
 			if ($(group).find('.repeat-container').children().length == 0) {
 				add_block(group);
 			}
@@ -31,13 +34,14 @@
 				add_block(group);
 			});
 
+			// bind event - delete button
 			$(group).find('.repeat-delete').on('click', function(e) {
+				var group = $(this).closest('.repeat-group');
 				var container = $(this).closest('.repeat-container');
-				if ($(container).children().length > 1) {
-					$(this).closest('.repeated').remove();
-				} else {
-					$(this).closest('.repeated').find('input:text').val('');
-					$(this).closest('.repeated').find('input:checkbox').prop('checked', false);
+				$(this).closest('.repeated').remove();
+				// if there are no repeat groups, add a fresh one
+				if ($(container).children().length == 0) {
+					add_block(group);
 				}
 				$(container).sortable('refresh');
 			});
@@ -53,11 +57,9 @@
 		if ((settings.data.indexOf('action=add-tag') >= 0) && (settings.data.indexOf('taxonomy=location') >= 0) && (settings.data.indexOf('post_type=inventory_vehicle') >= 0)) {
 
 			$('.repeat-group').each(function(index,group){
-
 				var group = $(this);
 				$(group).find('.repeat-container').empty();
 				add_block(group);
-
 			});
 		}
 	});
