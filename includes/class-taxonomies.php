@@ -149,6 +149,8 @@ class Inventory_Presser_Taxonomies {
 
 	    // get current term meta
 	    $location_meta = get_term_meta( $term->term_id, 'location-phone-hours', true );
+	    // make sure the current term meta has unique id's
+	    $location_meta = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term->term_id, $location_meta);
 
 	    ?>
 	    <tr class="form-field term-group-wrap">
@@ -161,6 +163,7 @@ class Inventory_Presser_Taxonomies {
 			        	<div class="repeated">
 			        		<div class="repeat-form">
 							<?php
+							echo sprintf('<input type="hidden" name="phone_uid[]" value="%s" placeholder="Description" />', $phone['uid']);
 							echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Description" />', $phone['phone_description']);
 							echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="Number" />', $phone['phone_number']);
 							?>
@@ -196,6 +199,7 @@ class Inventory_Presser_Taxonomies {
 			        		<div class="repeat-form">
 
 			       				<input type="text" name="hours_title[]" placeholder="Title" value="<?php echo $hours['title'] ?>" />
+			       				<input type="text" name="hours_uid[]" placeholder="Title" value="<?php echo $hours['uid'] ?>" />
 
 					        	<table class="repeater-table">
 					        		<thead>
@@ -270,6 +274,7 @@ class Inventory_Presser_Taxonomies {
 			        </div>
 			        <button type="button" class="repeat-add">Add Hours</button>
 		        </div>
+		        <pre><?php echo print_r($location_meta, true); ?></pre>
 	        </td>
 	    </tr><?php
 	}
@@ -337,6 +342,7 @@ class Inventory_Presser_Taxonomies {
 
 			$meta_final = array('phones' => array(), 'hours' => array());
 
+			// HOURS
 			$count = count($_POST['hours_title']) - 2;
 
 			for ($i = 0; $i <= $count; $i++) {
@@ -344,9 +350,17 @@ class Inventory_Presser_Taxonomies {
 				$has_data = false;
 
 				$this_hours = array();
+
+				// if this is an update, carry the id through
+				if (isset($_POST['uid'][$i])) {
+					$this_hours['uid'] = $_POST['hours_uid'][$i];
+				}
+				// title of hours set
 				$this_hours['title'] = sanitize_text_field($_POST['hours_title'][$i]);
 
+				// add daily hours info to the final array, check to make sure there's data
 				foreach ($_POST['hours'] as $day => $harray) {
+
 					$open = sanitize_text_field($harray['open'][$i]);
 					$close = sanitize_text_field($harray['close'][$i]);
 					$appt = sanitize_text_field($harray['appt'][$i]);
@@ -362,18 +376,28 @@ class Inventory_Presser_Taxonomies {
 
 			}
 
-			foreach ($_POST['phone_number'] as $index => $phone_number) {
+			// PHONE NUMBERS
+			foreach ($_POST['phone_number'] as $i => $phone_number) {
 
-				$phone_description = sanitize_text_field($_POST['phone_description'][$index]);
 				$phone_number = sanitize_text_field($phone_number);
 
-	    		if ($phone_number) {
-	    			$meta_final['phones'][] = array(
-	    				'phone_description' => $phone_description,
-	    				'phone_number' => $phone_number
-	    			);
-	    		}
+				if ($phone_number) {
+					$this_phone = array(
+						'phone_number' => $phone_number,
+						'phone_description' => sanitize_text_field($_POST['phone_description'][$i])
+					);
+					// if this is an update, carry the id through
+					if (isset($_POST['uid'][$i])) {
+						$this_phone['uid'] = $_POST['phone_uid'][$i];
+					}
+					// add this phone number to meta array
+					$meta_final['phones'][] = $this_phone;
+				}
+
 	    	}
+
+	    	// add uid's if we don't have them
+	    	$meta_final = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term->term_id, $meta_final, false);
 
 	    	update_term_meta( $term_id, 'location-phone-hours', $meta_final);
 
