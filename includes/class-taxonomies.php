@@ -57,7 +57,7 @@ class Inventory_Presser_Taxonomies {
 				        	<span class="dashicons dashicons-trash repeat-delete"></span>
 				        </div>
 			        </div>
-			        <button type="button" class="repeat-add">Add Phone Block</button>
+			        <button type="button" class="repeat-add">Add Phone</button>
 		        </div>
 		    </div>
 		    <div class="form-wrap form-field">
@@ -67,7 +67,7 @@ class Inventory_Presser_Taxonomies {
 		        	<div class="repeat-this">
 		        		<div class="repeat-form">
 
-				        	<input type="text" name="hours_title[]" placeholder="Label" />
+				        	<input type="text" name="hours_title[]" placeholder="Title" />
 
 				        	<table>
 				        		<thead>
@@ -101,7 +101,7 @@ class Inventory_Presser_Taxonomies {
 				        	<span class="dashicons dashicons-trash repeat-delete"></span>
 				        </div>
 			        </div>
-			        <button type="button" class="repeat-add">Add Hours Block</button>
+			        <button type="button" class="repeat-add">Add Hours</button>
 		        </div>
 	        </div>
 	    </div>
@@ -187,7 +187,7 @@ class Inventory_Presser_Taxonomies {
 				        	<span class="dashicons dashicons-trash repeat-delete"></span>
 				        </div>
 			        </div>
-			        <button type="button" class="repeat-add">Add Phone Block</button>
+			        <button type="button" class="repeat-add">Add Phone</button>
 		        </div>
 			</td>
 	    </tr>
@@ -200,8 +200,8 @@ class Inventory_Presser_Taxonomies {
 						<div class="repeated">
 			        		<div class="repeat-form">
 
-			       				<input type="text" name="hours_title[]" placeholder="Label" value="<?php echo $hours['title'] ?>" />
-			       				<input type="hidden" name="hours_uid[]" value="<?php echo $hours['uid'] ?>" />
+			       				<input type="text" name="hours_title[]" placeholder="Title" value="<?php echo $hours['title'] ?>" />
+			       				<input type="hidden" name="hours_uid[]" placeholder="Title" value="<?php echo $hours['uid'] ?>" />
 
 					        	<table class="repeater-table">
 					        		<thead>
@@ -240,7 +240,7 @@ class Inventory_Presser_Taxonomies {
 		        	<div class="repeat-this">
 		        		<div class="repeat-form">
 
-		       				<input type="text" name="hours_title[]" placeholder="Label" />
+		       				<input type="text" name="hours_title[]" placeholder="Title" />
 
 				        	<table class="repeater-table">
 				        		<thead>
@@ -274,7 +274,7 @@ class Inventory_Presser_Taxonomies {
 				        	<span class="dashicons dashicons-trash repeat-delete"></span>
 				        </div>
 			        </div>
-			        <button type="button" class="repeat-add">Add Hours Block</button>
+			        <button type="button" class="repeat-add">Add Hours</button>
 		        </div>
 	        </td>
 	    </tr><?php
