@@ -16,6 +16,7 @@ class Inventory_Presser_Modify_Imports {
 
 	var $existing_posts_before_an_import;
 	var $post_type;
+	var $post_titles_that_were_deleted = array();
 
 	function allow_fetch_attachments( $value /* boolean */, $URL ) {
 		/**
@@ -162,32 +163,36 @@ class Inventory_Presser_Modify_Imports {
 		add_action( 'import_end', array( &$this, 'prune_pending_attachments' ), 12 );
 
 		if( $delete_vehicles_not_in_new_feeds ) {
-			/* build a list of posts in a class member variable that identifies
-			 * posts that exist before an import. the next action hook will remove some items
-			 * from said list (that are in the import), and the third action hook will delete
-			 * the remaining members because they are units that were not found in the new feed
+			/**
+			 * Build a list of posts in a class member variable that identifies
+			 * posts that exist before an import. the next action hook will
+			 * remove some items from said list (that are in the import), and
+			 * the third action hook will delete the remaining members because
+			 * they are units that were not found in the new feed.
 			 */
 			add_filter( 'wp_import_posts', array( &$this, 'remember_posts_before_an_import' ) );
 
 			//remove the posts from the list of posts to delete as they come through the import
 			add_action( 'wp_import_post_and_type_exist', array( &$this, 'remove_existing_post_from_import_purge_list' ) );
 
-			//list left over should be the posts that are of our post type and not in the new feed
-			//delete them by id means you need to find them by slug
+			/**
+			 * Posts left over should be of our post type and not in the new
+			 * feed. Delete them.
+			 */
 			add_action( 'import_end', array( &$this, 'delete_posts_not_found_in_new_import' ) );
 		}
 
 		add_filter( '_inventory_presser_create_photo_file_name_base', array( &$this, 'extract_file_name_base' ) );
 
-		/**
-		 * Delete the pending import folder when the user deletes all plugin data
-		 */
+		//Delete the pending import folder when the user deletes all plugin data
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
 
 		//All our meta keys are unique, so tell the importer so, and...
 		add_filter( 'wp_import_post_meta_unique', '__return_true' );
-		//also make sure these unique post keys get updated, because they will
-		//be ignored by the importer because they are unique and already exist
+		/**
+		 * Also make sure these unique post keys get updated, because they will
+		 * be ignored by the importer because they are unique and already exist
+		 */
 		add_action( 'import_post_meta', array( &$this, 'update_existing_unique_post_meta_values' ), 10, 3 );
 	}
 
@@ -222,6 +227,18 @@ class Inventory_Presser_Modify_Imports {
 		$result = $this->delete_directory( $upload_dir['basedir'] . '\\' . self::PENDING_DIR_NAME );
 	}
 
+	function append_about_to_delete_posts_message( $arr ) {
+		array_push( $arr, 'About to delete ' . sizeof( $this->existing_posts_before_an_import ) . ' posts that were not found in the current import file.' );
+		return $arr;
+	}
+
+	function append_list_of_post_titles_we_deleted( $arr ) {
+		foreach( $this->post_titles_that_were_deleted as $post_title ) {
+			array_push( $arr, 'This post was not contained in the latest import file and has been deleted: ' . $post_title );
+		}
+		return $arr;
+	}
+
 	function delete_posts_not_found_in_new_import() {
 		/**
 		 * $this->existing_posts_before_an_import should now contain only posts
@@ -229,20 +246,24 @@ class Inventory_Presser_Modify_Imports {
 		 * not contained in the import. this function is only called if the
 		 * user wants to delete these posts, so delete them.
 		 */
-		 foreach( $this->existing_posts_before_an_import as $post ) {
-		 	/**
-		 	 * Before we delete the post, decide if it's photos should be kept.
-		 	 * If the unique slug of this post has changed, there might actually
-		 	 * be two posts that represent this vehicle in the database at this
-		 	 * moment. Changing the year, make model or trim, or adding another
-		 	 * vehicle that has those same attributes results in a new unique
-		 	 * slug being created for the same VIN. That means we are about to
-		 	 * delete a post, but the photos should actually be dettached and
-		 	 * preserved so they can be associated with the other post.
-		 	 */
-		 	$key = 'inventory_presser_vin';
-		 	$args = array(
-		 		'posts_per_page' => -1,
+		if( 0 < sizeof( $this->existing_posts_before_an_import ) ) {
+			add_filter( 'wp_import_errors_before_end', array( &$this, 'append_about_to_delete_posts_message' ));
+		}
+
+		foreach( $this->existing_posts_before_an_import as $post ) {
+			/**
+			 * Before we delete the post, decide if it's photos should be kept.
+			 * If the unique slug of this post has changed, there might actually
+			 * be two posts that represent this vehicle in the database at this
+			 * moment. Changing the year, make model or trim, or adding another
+			 * vehicle that has those same attributes results in a new unique
+			 * slug being created for the same VIN. That means we are about to
+			 * delete a post, but the photos should actually be dettached and
+			 * preserved so they can be associated with the other post.
+			 */
+			$key = 'inventory_presser_vin';
+			$args = array(
+				'posts_per_page' => -1,
 				'meta_query' => array(
 					array(
 						'key'     => $key,
@@ -260,13 +281,14 @@ class Inventory_Presser_Modify_Imports {
 				dissociate_attachments( $post->ID );
 			}
 			wp_delete_post( $post->ID, true );
-			//make not of this deletion via the importer's error logging mechanism
-			add_filter( 'wp_import_errors_before_end', function( $arr ) {
-				array_push( $arr, 'This post was not contained in the latest import and has been deleted: ' . $post->post_title );
-				return $arr;
-			});
-		 }
-		 $this->existing_posts_before_an_import = array();
+
+			//save this post title for later
+			array_push( $this->post_titles_that_were_deleted, $post->post_title );
+			//make sure our filter is in place but only once
+			if ( ! has_filter( 'wp_import_errors_before_end', array( &$this, 'append_list_of_post_titles_we_deleted' ) ) ) {
+    			add_filter( 'wp_import_errors_before_end', array( &$this, 'append_list_of_post_titles_we_deleted' ) );
+    		}
+		}
 	}
 
 	function dissociate_attachments( $post_id ) {
