@@ -150,7 +150,9 @@ class Inventory_Presser_Taxonomies {
 	    // get current term meta
 	    $location_meta = get_term_meta( $term->term_id, 'location-phone-hours', true );
 	    // make sure the current term meta has unique id's
-	    $location_meta = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term->term_id, $location_meta);
+	    if ($location_meta) {
+    		$location_meta = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term->term_id, $location_meta);
+    	}
 
 	    ?>
 	    <tr class="form-field term-group-wrap">
@@ -199,7 +201,7 @@ class Inventory_Presser_Taxonomies {
 			        		<div class="repeat-form">
 
 			       				<input type="text" name="hours_title[]" placeholder="Title" value="<?php echo $hours['title'] ?>" />
-			       				<input type="text" name="hours_uid[]" placeholder="Title" value="<?php echo $hours['uid'] ?>" />
+			       				<input type="hidden" name="hours_uid[]" placeholder="Title" value="<?php echo $hours['uid'] ?>" />
 
 					        	<table class="repeater-table">
 					        		<thead>
@@ -274,7 +276,6 @@ class Inventory_Presser_Taxonomies {
 			        </div>
 			        <button type="button" class="repeat-add">Add Hours</button>
 		        </div>
-		        <pre><?php echo print_r($location_meta, true); ?></pre>
 	        </td>
 	    </tr><?php
 	}
@@ -402,7 +403,7 @@ class Inventory_Presser_Taxonomies {
 	    	}
 
 	    	// add uid's if we don't have them
-	    	$meta_final = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term->term_id, $meta_final, false);
+	    	$meta_final = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term_id, $meta_final, false);
 
 	    	update_term_meta( $term_id, 'location-phone-hours', $meta_final);
 
