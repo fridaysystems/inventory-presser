@@ -82,7 +82,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		parent::__construct(
 			'_invp_hours', 
 			'Dealer Hours', 
-			array( 'description' => 'Sample widget based on WPBeginner Tutorial', ) 
+			array( 'description' => 'Select and display hours of operation.', ) 
 		);
 	}
 
@@ -103,27 +103,62 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 			
 	// Widget Backend 
 	public function form( $instance ) {
-	    
-	    //$term_ids = get_terms('location', array('fields'=>'ids', 'hide_empty'=>false));
 
-		if ( isset( $instance[ 'title' ] ) ) {
-			$title = $instance[ 'title' ];
-		} else {
-			$title = 'Hours';
-		}
+		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : 'Hours';
+		$cb_display = isset($instance['cb_display']) ? $instance['cb_display'] : array();
+		$cb_title = isset($instance['cb_title']) ? $instance['cb_title'] : array();
+
+		// get all locations
+		$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
+
+	    $hours_table = '<table><tbody>';
+
+	    // loop through each location, set up form
+	    foreach ($location_info as $term_id => $name) {
+	    	$location_meta = get_term_meta( $term_id, 'location-phone-hours', true );
+	    	if (count($location_meta['hours']) > 0) {
+	    		$hours_table .= sprintf('<tr><td>%s</td><td>Display</td><td>Title</td></tr>', $name);
+	    		foreach ($location_meta['hours'] as $index => $hourset) {
+
+	    			$uid = $hourset['uid'];
+
+	    			$hourset_title = ($hourset['title']) ? $hourset['title'] : 'No title entered';
+
+	    			$cb_display_checked = (isset($cb_display[$term_id]) && is_array($cb_display[$term_id]) && in_array($uid, $cb_display[$term_id])) ? ' checked' : '';
+	    			$cb_display_text = sprintf('<input type="checkbox" id="%s" name="%s" value="%s"%s />', $this->get_field_id('cb_display'), $this->get_field_name('cb_display['.$term_id.'][]'), $uid, $cb_display_checked);
+	    			
+	    			$cb_title_checked = (isset($cb_title[$term_id]) && is_array($cb_title[$term_id]) && in_array($uid, $cb_title[$term_id])) ? ' checked' : '';
+	    			$cb_title_text = sprintf('<input type="checkbox" id="%s" name="%s" value="%s"%s />', $this->get_field_id('cb_title'), $this->get_field_name('cb_title['.$term_id.'][]'), $uid, $cb_title_checked);
+	    			
+	    			$hours_table .= sprintf('<tr><td><strong>%s</strong></td><td>%s</td><td>%s</td></tr>',
+	    									$hourset_title,
+	    									$cb_display_text,
+	    									$cb_title_text);
+	    		}
+	    	}
+
+	    }
+
+	    $hours_table .= '</tbody></table>';
+
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
-		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		<label for="<?php echo $this->get_field_id('title'); ?>">Main Title</label>
+		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
 		</p>
-		<?php 
+		<?php
+		echo $hours_table;
 	}
 		
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
+
 		$instance = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['cb_display'] = ( !empty( $new_instance['cb_display'] ) ) ? $new_instance['cb_display'] : array();
+		$instance['cb_title'] = ( !empty( $new_instance['cb_title'] ) ) ? $new_instance['cb_title'] : array();
+
 		return $instance;
 	}
 
