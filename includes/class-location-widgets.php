@@ -82,7 +82,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		parent::__construct(
 			'_invp_hours', 
 			'Dealer Hours', 
-			array( 'description' => 'Sample widget based on WPBeginner Tutorial', ) 
+			array( 'description' => 'Select and display hours of operation.', ) 
 		);
 	}
 
@@ -104,20 +104,42 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 	// Widget Backend 
 	public function form( $instance ) {
 	    
-	    //$term_ids = get_terms('location', array('fields'=>'ids', 'hide_empty'=>false));
-
 		if ( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ];
 		} else {
 			$title = 'Hours';
 		}
+
+		$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
+
+	    $hours_table = '<table><tbody>';
+	    $has_hours = false;
+	    foreach ($location_info as $term_id => $name) {
+	    	$location_meta = get_term_meta( $term_id, 'location-phone-hours', true );
+	    	if (count($location_meta['hours']) > 0) {
+	    		$hours_table .= sprintf('<tr><td>%s</td><td>Display</td><td>Title</td></tr>', $name);
+	    		foreach ($location_meta['hours'] as $index => $hourset) {
+	    			$hourset_title = ($hourset['title']) ? $hourset['title'] : 'No title entered';
+	    			$cb_display_checked = '';
+	    			$hours_table .= sprintf('<tr><td>%s</td><td>%s</td><td>%s</td></tr>',
+	    									$hourset_title,
+	    									sprintf('<input type="checkbox" id="%s" name="%s" />',$this->get_field_id('cb-display'),$this->get_field_name('cb-display[]')),
+	    									sprintf('<input type="checkbox" id="%s" name="%s" />',$this->get_field_id('cb-label'),$this->get_field_name('cb-label[]')));
+	    		}
+	    	}
+
+	    }
+
+	    $hours_table .= '</tbody></table>';
+
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
-		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		<label for="<?php echo $this->get_field_id('title'); ?>">Main Title</label>
+		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
 		</p>
-		<?php 
+		<?php
+		echo $hours_table;
 	}
 		
 	// Updating widget replacing old instances with new
