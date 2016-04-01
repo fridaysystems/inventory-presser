@@ -201,7 +201,7 @@ class Inventory_Presser_Taxonomies {
 			        		<div class="repeat-form">
 
 			       				<input type="text" name="hours_title[]" placeholder="Title" value="<?php echo $hours['title'] ?>" />
-			       				<input type="text" name="hours_uid[]" placeholder="Title" value="<?php echo $hours['uid'] ?>" />
+			       				<input type="hidden" name="hours_uid[]" placeholder="Title" value="<?php echo $hours['uid'] ?>" />
 
 					        	<table class="repeater-table">
 					        		<thead>

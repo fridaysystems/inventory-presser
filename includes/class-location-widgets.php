@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * Various classes to deal with location taxonomy widgets and checks
+ *
+ *
+ * @since      1.3.1
+ * @package    Inventory_Presser
+ * @subpackage Inventory_Presser/includes
+ * @author     Corey Salzano <corey@fridaynet.com>, John Norton <norton@fridaynet.com>
+ */
 class Inventory_Presser_Location_Helper {
 
 	private static $instance;
@@ -46,7 +54,9 @@ class Inventory_Presser_Location_Helper {
     	foreach ($meta_array as $key => $meta_groups) {
     		foreach ($meta_groups as $index => $value_array) {
     			if (!array_key_exists('uid', $value_array)) {
-    				$meta_array[$key][$index]['uid'] = $this->get_random_string($existing_ids[$key]);
+    				$random =  = $this->get_random_string($existing_ids[$key]);
+    				$meta_array[$key][$index]['uid'] = $random;
+    				$existing_ids[$key][] = $random;
     				if (!$meta_updated ) {
     					$meta_updated  = true;
     				}
