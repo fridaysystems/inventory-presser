@@ -398,7 +398,7 @@ class Inventory_Presser_Taxonomies {
 	    	}
 
 	    	// add uid's if we don't have them
-	    	$meta_final = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term->term_id, $meta_final, false);
+	    	$meta_final = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term_id, $meta_final, false);
 
 	    	update_term_meta( $term_id, 'location-phone-hours', $meta_final);
 

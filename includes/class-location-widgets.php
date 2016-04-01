@@ -54,7 +54,7 @@ class Inventory_Presser_Location_Helper {
     	foreach ($meta_array as $key => $meta_groups) {
     		foreach ($meta_groups as $index => $value_array) {
     			if (!array_key_exists('uid', $value_array)) {
-    				$random =  = $this->get_random_string($existing_ids[$key]);
+    				$random = $this->get_random_string($existing_ids[$key]);
     				$meta_array[$key][$index]['uid'] = $random;
     				$existing_ids[$key][] = $random;
     				if (!$meta_updated ) {
