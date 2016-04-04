@@ -78,6 +78,8 @@ class Inventory_Presser_Location_Helper {
 // Hours Widget
 class Inventory_Presser_Location_Hours extends WP_Widget {
 
+	var $days = array('MON','TUE','WED','THU','FRI','SAT','SUN');
+
 	function __construct() {
 		parent::__construct(
 			'_invp_hours', 
@@ -90,15 +92,60 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 	// This is where the action happens
 	public function widget( $args, $instance ) {
 
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		// before and after widget arguments are defined by themes
-		echo $args['before_widget'];
-		if ( ! empty( $title ) )
-		echo $args['before_title'] . $title . $args['after_title'];
+		if (is_array($instance['cb_display']) && count($instance['cb_display']) > 0) {
 
-		// This is where you run the code and display the output
-		echo 'hi';
-		echo $args['after_widget'];
+			$title = apply_filters( 'widget_title', $instance['title'] );
+			// before and after widget arguments are defined by themes TODO??
+			echo $args['before_widget'];
+			echo '<div class="invp-hours">';
+			if ( ! empty( $title ) )
+			echo $args['before_title'] . $title . $args['after_title'];
+
+			// get all locations
+			$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
+
+			// loop through each location
+			foreach ($location_info as $term_id => $name) {
+
+				// get term meta for location
+				$location_meta = get_term_meta( $term_id, 'location-phone-hours', true );
+
+				if (isset($instance['cb_display'][$term_id]) && is_array($instance['cb_display'][$term_id]) && count($instance['cb_display'][$term_id]) > 0 && count($location_meta['hours']) > 0) {
+
+					foreach ($location_meta['hours'] as $index => $hourset) {
+
+						if (isset($instance['cb_display'][$term_id]) && is_array($instance['cb_display'][$term_id]) && in_array($hourset['uid'], $instance['cb_display'][$term_id])) {
+
+							$current_day = jddayofweek(0) - 1;
+
+							echo '<table>';
+
+							for ($i = 0; $i < 7; $i++) {
+								$current_row_class = ($current_day == $i) ? ' class="day-highlight"' : '';
+								echo sprintf('<tr%s>',$current_row_class);
+								echo sprintf('<td>%s</td>',$this->days[$i]);
+								
+							    echo sprintf('<td>%s</td>',$hourset[$i]['open']);
+							    echo sprintf('<td>%s</td>',$hourset[$i]['close']);
+							    echo '</tr>';
+							}
+
+							echo '</table>';
+
+						}
+
+					}
+
+				}
+
+			}
+
+			echo '</div>';
+
+			echo $args['after_widget'];
+
+		}
+
 	}
 			
 	// Widget Backend 

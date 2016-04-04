@@ -57,7 +57,7 @@ class Inventory_Presser_Taxonomies {
 				        	<span class="dashicons dashicons-trash repeat-delete"></span>
 				        </div>
 			        </div>
-			        <button type="button" class="repeat-add">Add Phone</button>
+			        <button type="button" class="repeat-add">Add Phone Block</button>
 		        </div>
 		    </div>
 		    <div class="form-wrap form-field">
@@ -101,7 +101,7 @@ class Inventory_Presser_Taxonomies {
 				        	<span class="dashicons dashicons-trash repeat-delete"></span>
 				        </div>
 			        </div>
-			        <button type="button" class="repeat-add">Add Hours</button>
+			        <button type="button" class="repeat-add">Add Hours Block</button>
 		        </div>
 	        </div>
 	    </div>
@@ -187,7 +187,7 @@ class Inventory_Presser_Taxonomies {
 				        	<span class="dashicons dashicons-trash repeat-delete"></span>
 				        </div>
 			        </div>
-			        <button type="button" class="repeat-add">Add Phone</button>
+			        <button type="button" class="repeat-add">Add Phone Block</button>
 		        </div>
 			</td>
 	    </tr>
@@ -274,7 +274,7 @@ class Inventory_Presser_Taxonomies {
 				        	<span class="dashicons dashicons-trash repeat-delete"></span>
 				        </div>
 			        </div>
-			        <button type="button" class="repeat-add">Add Hours</button>
+			        <button type="button" class="repeat-add">Add Hours Block</button>
 		        </div>
 	        </td>
 	    </tr><?php
