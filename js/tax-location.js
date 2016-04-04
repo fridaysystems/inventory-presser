@@ -50,7 +50,7 @@
 
 		$('table.tags tbody').sortable();
 
-		$('.timepick').timepicker({ 'timeFormat': 'h:i A', 'scrollDefault': 'now' });
+		$('.timepick').timepicker({ 'timeFormat': 'g:i A', 'scrollDefault': 'now' });
 
 	});
 

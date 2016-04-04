@@ -110,11 +110,18 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 				// get term meta for location
 				$location_meta = get_term_meta( $term_id, 'location-phone-hours', true );
 
+				// if any hour sets have been selected for this location
 				if (isset($instance['cb_display'][$term_id]) && is_array($instance['cb_display'][$term_id]) && count($instance['cb_display'][$term_id]) > 0 && count($location_meta['hours']) > 0) {
 
+					// loop through each hour set from term meta
 					foreach ($location_meta['hours'] as $index => $hourset) {
 
+						//  
 						if (isset($instance['cb_display'][$term_id]) && is_array($instance['cb_display'][$term_id]) && in_array($hourset['uid'], $instance['cb_display'][$term_id])) {
+
+							if (isset($instance['cb_title'][$term_id]) && is_array($instance['cb_title'][$term_id]) && in_array($hourset['uid'], $instance['cb_title'][$term_id])) {
+								echo sprintf('<strong>%s</strong>',$hourset['title']);
+							}
 
 							$current_day = jddayofweek(0) - 1;
 
@@ -124,9 +131,16 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 								$current_row_class = ($current_day == $i) ? ' class="day-highlight"' : '';
 								echo sprintf('<tr%s>',$current_row_class);
 								echo sprintf('<td>%s</td>',$this->days[$i]);
-								
-							    echo sprintf('<td>%s</td>',$hourset[$i]['open']);
-							    echo sprintf('<td>%s</td>',$hourset[$i]['close']);
+
+								if ($hourset[$i]['appt'] == 1) {
+									echo '<td colspan="2">Appointment Only</td>';
+								} elseif (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
+									echo sprintf('<td>%s</td>',$hourset[$i]['open']);
+							    	echo sprintf('<td>%s</td>',$hourset[$i]['close']);
+								} else {
+									echo '<td colspan="2">Closed</td>';
+								}
+							    
 							    echo '</tr>';
 							}
 
@@ -272,14 +286,15 @@ class Inventory_Presser_Location_Widgets {
 
 	function __construct( ) {
 		add_action( 'widgets_init', array( &$this, 'widgets_init' ) );
-		add_action( 'current_screen', array( &$this, 'thisScreen' ) );
+		add_action( 'current_screen', array( &$this, 'check_ids' ) );
 	}
 
 	function widgets_init() {
 		register_widget('Inventory_Presser_Location_Hours');
+		//register_widget('Inventory_Presser_Location_Hours');
 	}
 
-	function thisScreen() {
+	function check_ids() {
 
 	    $currentScreen = get_current_screen();
 	    // if on the widget admin page

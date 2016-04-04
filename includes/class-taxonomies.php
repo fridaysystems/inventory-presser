@@ -49,7 +49,7 @@ class Inventory_Presser_Taxonomies {
 		        	<div class="repeat-container"></div>
 		        	<div class="repeat-this">
 		        		<div class="repeat-form">
-					        <input type="text" name="phone_description[]" placeholder="Description" />
+					        <input type="text" name="phone_description[]" placeholder="Label" />
 					        <input type="text" name="phone_number[]" placeholder="Number" required />
 				        </div>
 				        <div class="repeat-buttons">
@@ -165,8 +165,8 @@ class Inventory_Presser_Taxonomies {
 			        	<div class="repeated">
 			        		<div class="repeat-form">
 							<?php
-							echo sprintf('<input type="hidden" name="phone_uid[]" value="%s" placeholder="Description" />', $phone['uid']);
-							echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Description" />', $phone['phone_description']);
+							echo sprintf('<input type="hidden" name="phone_uid[]" value="%s" />', $phone['uid']);
+							echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Label" />', $phone['phone_description']);
 							echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="Number" />', $phone['phone_number']);
 							?>
 					        </div>
@@ -179,7 +179,7 @@ class Inventory_Presser_Taxonomies {
 					</div>
 					<div class="repeat-this">
 		        		<div class="repeat-form">
-					        <input type="text" name="phone_description[]" placeholder="Description" />
+					        <input type="text" name="phone_description[]" placeholder="Label" />
 					        <input type="text" name="phone_number[]" placeholder="Number" />
 				        </div>
 				        <div class="repeat-buttons">
@@ -358,7 +358,7 @@ class Inventory_Presser_Taxonomies {
 				$this_hours = array();
 
 				// if this is an update, carry the id through
-				if (isset($_POST['uid'][$i])) {
+				if (isset($_POST['hours_uid'][$i])) {
 					$this_hours['uid'] = $_POST['hours_uid'][$i];
 				}
 				// title of hours set
