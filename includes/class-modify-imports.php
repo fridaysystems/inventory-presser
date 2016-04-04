@@ -187,17 +187,25 @@ class Inventory_Presser_Modify_Imports {
 		//Delete the pending import folder when the user deletes all plugin data
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
 
-		//All our meta keys are unique, so tell the importer so, and...
+		//All our meta keys are unique, so tell the importer so
 		add_filter( 'wp_import_post_meta_unique', '__return_true' );
+		//Likewise with term meta keys, they are unique
+		add_filter( 'wp_import_term_meta_unique', '__return_true' );
 		/**
 		 * Also make sure these unique post keys get updated, because they will
 		 * be ignored by the importer because they are unique and already exist
 		 */
 		add_action( 'import_post_meta', array( &$this, 'update_existing_unique_post_meta_values' ), 10, 3 );
+		//Likewise with term meta
+		add_action( 'import_term_meta', array( &$this, 'update_existing_unique_term_meta_values' ), 10, 3 );
 	}
 
 	function update_existing_unique_post_meta_values( $post_id, $key, $value ) {
 		update_post_meta( $post_id, $key, $value );
+	}
+
+	function update_existing_unique_term_meta_values( $term_id, $key, $value ) {
+		update_term_meta( $term_id, $key, $value );
 	}
 
 	function delete_directory( $dir ) {
@@ -228,13 +236,13 @@ class Inventory_Presser_Modify_Imports {
 	}
 
 	function append_about_to_delete_posts_message( $arr ) {
-		array_push( $arr, 'About to delete ' . sizeof( $this->existing_posts_before_an_import ) . ' posts that were not found in the current import file.' );
+		array_push( $arr, 'About to delete ' . sizeof( $this->existing_posts_before_an_import ) . ' posts that were not found in the current import file.<br />' );
 		return $arr;
 	}
 
 	function append_list_of_post_titles_we_deleted( $arr ) {
 		foreach( $this->post_titles_that_were_deleted as $post_title ) {
-			array_push( $arr, 'This post was not contained in the latest import file and has been deleted: ' . $post_title );
+			array_push( $arr, 'This post was not contained in the latest import file and has been deleted: ' . $post_title . '<br />' );
 		}
 		return $arr;
 	}
@@ -352,7 +360,7 @@ class Inventory_Presser_Modify_Imports {
 				}
 				//make not of this deletion via the importer's error logging mechanism
 				add_filter( 'wp_import_errors_before_end', function( $arr ) {
-					array_push( $arr, 'A pending attachment that is no longer associated with any active inventory unit has been deleted: ' . $file );
+					array_push( $arr, 'A pending attachment that is no longer associated with any active inventory unit has been deleted: ' . $file . '<br />' );
 					return $arr;
 				});
 			}
