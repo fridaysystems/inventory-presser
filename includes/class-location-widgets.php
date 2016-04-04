@@ -88,8 +88,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		);
 	}
 
-	// Creating widget front-end
-	// This is where the action happens
+	// widget front-end
 	public function widget( $args, $instance ) {
 
 		if (is_array($instance['cb_display']) && count($instance['cb_display']) > 0) {
@@ -123,6 +122,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 								echo sprintf('<strong>%s</strong>',$hourset['title']);
 							}
 
+							// get current day number, starting on a monday
 							$current_day = jddayofweek(0) - 1;
 
 							echo '<table>';
@@ -227,19 +227,106 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 
 
-// Hours Widget
+// Address Widget
 class Inventory_Presser_Location_Address extends WP_Widget {
 
 	function __construct() {
 		parent::__construct(
-			'_invp_hours',
-			'Dealer Hours', 
-			array( 'description' => 'Sample widget based on WPBeginner Tutorial', ) 
+			'_invp_adress',
+			'Dealer Address', 
+			array( 'description' => 'Select and display addresses.', ) 
 		);
 	}
 
-	// Creating widget front-end
-	// This is where the action happens
+	// front-end
+	public function widget( $args, $instance ) {
+
+		$title = apply_filters( 'widget_title', $instance['title'] );
+		// before and after widget arguments are defined by themes
+		echo $args['before_widget'];
+		if (!empty( $title ))
+		echo $args['before_title'] . $title . $args['after_title'];
+
+		foreach ($instance['cb_display'] as $i => $term_id) {
+			$location = get_term($term_id, 'location');
+			echo '<div>'.nl2br($location->description).'</div>';
+		}
+		
+		echo $args['after_widget'];
+	}
+			
+	// Widget Backend 
+	public function form( $instance ) {
+
+		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
+
+		// get all locations
+		$location_terms = get_terms('location', array('hide_empty'=>false));
+
+		// set 
+		if (isset($instance['cb_display'])) {
+			$cb_display = $instance['cb_display'];
+		} else {
+			// majority of dealers will have one address, let's precheck it for them
+			if (count($location_terms) == 1) {
+				$cb_display = array($location_terms[0]->term_id);
+			} else {
+				$cb_display = array();
+			}
+		}
+		
+	    $address_table = '<table><tbody>';
+	    $address_table .= '<tr><td colspan="2">Select Addresses to Display</td></tr>';
+
+	    // loop through each location, set up form
+	   	foreach ($location_terms as $index => $term_object) {
+
+	   		$check_text = (in_array($term_object->term_id, $cb_display)) ? ' checked' : '';
+	   		$address_checkbox = sprintf('<input id="%s" name="%s" value="%s" type="checkbox"%s>',
+	   			$this->get_field_id('cb_title'),
+	   			$this->get_field_name('cb_display[]'),
+	   			$term_object->term_id,
+	   			$check_text);
+	   		$address_table .= sprintf('<tr><td>%s</td><td>%s</td></tr>', $address_checkbox, nl2br($term_object->description));
+
+	    }
+
+	    $address_table .= '</tbody></table>';
+
+
+		// Widget admin form
+		?>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+		<?php
+		echo $address_table;
+	}
+		
+	// Updating widget replacing old instances with new
+	public function update( $new_instance, $old_instance ) {
+		$instance = array();
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['cb_display'] = ( !empty( $new_instance['cb_display'] ) ) ? $new_instance['cb_display'] : array();
+		return $instance;
+	}
+
+} // Class Inventory_Presser_Location_Address
+
+
+// Phone Widget
+class Inventory_Presser_Location_Phones extends WP_Widget {
+
+	function __construct() {
+		parent::__construct(
+			'_invp_phone',
+			'Dealer Phone Numbers', 
+			array( 'description' => 'Select and display phone numbers.', ) 
+		);
+	}
+
+	// widget front-end
 	public function widget( $args, $instance ) {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
@@ -249,7 +336,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		echo $args['before_title'] . $title . $args['after_title'];
 
 		// This is where you run the code and display the output
-		echo __( 'Hello, World!', '_dealer' );
+		echo 'Hello, World!';
 		echo $args['after_widget'];
 	}
 			
@@ -258,7 +345,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		if ( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ];
 		} else {
-			$title = 'Hours';
+			$title = '';
 		}
 		// Widget admin form
 		?>
@@ -276,7 +363,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		return $instance;
 	}
 
-} // Class Inventory_Presser_Location_Address
+} // Class Inventory_Presser_Location_Phones
 
 
 
@@ -291,7 +378,8 @@ class Inventory_Presser_Location_Widgets {
 
 	function widgets_init() {
 		register_widget('Inventory_Presser_Location_Hours');
-		//register_widget('Inventory_Presser_Location_Hours');
+		register_widget('Inventory_Presser_Location_Address');
+		register_widget('Inventory_Presser_Location_Phones');
 	}
 
 	function check_ids() {
