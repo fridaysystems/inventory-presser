@@ -397,7 +397,7 @@ class Inventory_Presser_Taxonomies {
 						'phone_description' => sanitize_text_field($_POST['phone_description'][$i])
 					);
 					// if this is an update, carry the id through
-					if (isset($_POST['uid'][$i])) {
+					if (isset($_POST['phone_uid'][$i])) {
 						$this_phone['uid'] = $_POST['phone_uid'][$i];
 					}
 					// add this phone number to meta array

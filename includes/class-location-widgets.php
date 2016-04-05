@@ -127,21 +127,47 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 							echo '<table>';
 
+							// output a row for each day
 							for ($i = 0; $i < 7; $i++) {
-								$current_row_class = ($current_weekday == $i) ? ' class="day-highlight"' : '';
-								echo sprintf('<tr%s>',$current_row_class);
-								echo sprintf('<td>%s</td>',$this->days[$i]);
 
-								if ($hourset[$i]['appt'] == 1) {
-									echo '<td colspan="2">Appointment Only</td>';
-								} elseif (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
-									echo sprintf('<td>%s</td>',$hourset[$i]['open']);
-							    	echo sprintf('<td>%s</td>',$hourset[$i]['close']);
-								} else {
-									echo '<td colspan="2">Closed</td>';
+								// do a check to make sure we want to output this row
+								$echo_row = false;
+								if (($hourset[$i]['appt'] == 1) || (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close']))) {
+									$echo_row = true;
+								} elseif ($i < 6) {
+									// check the remaining days, output current day if there are other displayed days following
+									for ($r=($i+1); $r < 7; $r++) {
+										if (($hourset[$r]['appt'] == 1) || (!empty($hourset[$r]['open']) && !empty($hourset[$r]['close']))) {
+											$echo_row = true;
+										}
+									}
+									// if there are no remaining days to display, break out of loop
+									if (!$echo_row) {
+										break;
+									}
 								}
-							    
-							    echo '</tr>';
+								
+								// output row
+								if ($echo_row) {
+
+									$current_row_class = ($current_weekday == $i) ? ' class="day-highlight"' : '';
+									echo sprintf('<tr%s>',$current_row_class);
+									echo sprintf('<td>%s</td>',$this->days[$i]);
+
+									if ($hourset[$i]['appt'] == 1) {
+										echo '<td colspan="2">Appointment Only</td>';
+									} elseif (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
+										echo sprintf('<td>%s</td>',$hourset[$i]['open']);
+								    	echo sprintf('<td>%s</td>',$hourset[$i]['close']);
+									} else {
+										echo '<td colspan="2">Closed</td>';
+									}
+								    
+								    echo '</tr>';
+
+								}
+
+
 							}
 
 							echo '</table>';
