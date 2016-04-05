@@ -350,7 +350,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			'selector' => 'Small, left label',
 			'uses_labels' => true,
 			'before' => '<table>',
-			'repeater' => '<tr><td>%1$s</td><td><a href="tel:%2$s">%2$s</a></td><tr>',
+			'repeater' => '<tr><td>%1$s</td><td class="phone-link"><a href="tel:%2$s">%2$s</a></td><tr>',
 			'after' => '</table>',
 			),
 		'large_no_label' => array(
@@ -365,7 +365,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'_invp_phone',
-			'Dealer Phone Numbers', 
+			'Dealer Phone Number', 
 			array( 'description' => 'Select and display phone numbers.', ) 
 		);
 	}
