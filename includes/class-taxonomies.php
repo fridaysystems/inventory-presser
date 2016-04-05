@@ -160,6 +160,7 @@ class Inventory_Presser_Taxonomies {
 	        <td>
 		        <div class="repeat-group">
 		        	<div class="repeat-container">
+					<?php if (isset($location_meta['phones'])) { ?>
 					<?php foreach ($location_meta['phones'] as $index => $phone) { ?>
 
 			        	<div class="repeated">
@@ -175,6 +176,7 @@ class Inventory_Presser_Taxonomies {
 					        	<span class="dashicons dashicons-trash repeat-delete"></span>
 					        </div>
 				        </div>
+					<?php } ?>
 					<?php } ?>
 					</div>
 					<div class="repeat-this">
@@ -196,6 +198,7 @@ class Inventory_Presser_Taxonomies {
 	        <td>
 		        <div class="repeat-group">
 		        	<div class="repeat-container">
+					<?php if (isset($location_meta['hours'])) { ?>
 					<?php foreach ($location_meta['hours'] as $index => $hours) { ?>
 						<div class="repeated">
 			        		<div class="repeat-form">
@@ -235,6 +238,7 @@ class Inventory_Presser_Taxonomies {
 					        	<span class="dashicons dashicons-trash repeat-delete"></span>
 					        </div>
 				        </div>
+					<?php } ?>
 					<?php } ?>
 		        	</div>
 		        	<div class="repeat-this">
