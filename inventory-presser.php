@@ -3,39 +3,31 @@ defined( 'ABSPATH' ) OR exit;
 /**
  * Plugin Name: Inventory Presser
  * Plugin URI: http://inventorypresser.com
- * Description: An inventory management plugin for Car Dealers. Import or create an automobile or powersports dealership inventory.
+ * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
  * Version: 1.4.0
- * Author: Corey Salzano
+ * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-if ( ! class_exists( 'Inventory_Presser_Option_Manager' ) ) {
-	$class_option_manager = plugin_dir_path( __FILE__ ) . 'includes/class-option-manager.php';
-	if ( file_exists( $class_option_manager ) ) {
-		require $class_option_manager;
-	}
-}
-
-if ( ! class_exists( 'Inventory_Presser_Vehicle' ) ) {
-	$class_vehicle = plugin_dir_path( __FILE__ ) . 'includes/class-inventory-presser-vehicle.php';
-	if ( file_exists( $class_vehicle ) ) {
-		require $class_vehicle;
-	}
-}
-
-if ( ! class_exists( 'Inventory_Presser_Vehicle_Shortcodes' ) ) {
-	$class_shortcode = plugin_dir_path( __FILE__ ) . 'includes/class-shortcodes.php';
-	if ( file_exists( $class_shortcode ) ) {
-		require $class_shortcode;
-	}
-}
-
-if ( ! class_exists( 'Inventory_Presser_Location_Widgets' ) ) {
-	$class_location_widgets = plugin_dir_path( __FILE__ ) . 'includes/class-location-widgets.php';
-	if ( file_exists( $class_location_widgets ) ) {
-		require $class_location_widgets;
+//Include our object definition dependencies
+$inventory_presser_include_paths = array(
+	'includes/class-add-custom-fields-to-search.php',
+	'includes/class-customize-admin-dashboard.php',
+	'includes/class-inventory-presser-vehicle.php',
+	'includes/class-location-widgets.php',
+	'includes/class-modify-imports.php',
+	'includes/class-option-manager.php',
+	'includes/class-order-by-post-meta-widget.php',
+	'includes/class-shortcodes.php',
+	'includes/class-taxonomies.php',
+	'includes/class-vehicle-urls-by-vin.php',
+);
+foreach( $inventory_presser_include_paths as $path ) {
+	$path = plugin_dir_path( __FILE__ ) . $path;
+	if( file_exists( $path ) ) {
+		require $path;
 	}
 }
 
@@ -119,15 +111,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function __construct( ) {
 
-			/**
-			 * Modify the administrator dashboard
-			 */
-			$class_customize_dashboard = plugin_dir_path( __FILE__ ) . 'includes/class-customize-admin-dashboard.php';
-			if( file_exists( $class_customize_dashboard ) ) {
-				require $class_customize_dashboard;
-				$customize_dashboard = new Inventory_Presser_Customize_Admin_Dashboard( $this->post_type() );
-			}
-
+			//Modify the administrator dashboard
+			$customize_dashboard = new Inventory_Presser_Customize_Admin_Dashboard( $this->post_type() );
 
 			/**
 			 * Create our post type and taxonomies
@@ -137,13 +122,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_action( 'init', array( &$this, 'create_custom_post_type' ) );
 
 			//Create custom taxonomies
-			if ( ! class_exists( 'Inventory_Presser_Taxonomies' ) ) {
-				$class_taxonomies = plugin_dir_path( __FILE__ ) . 'includes/class-taxonomies.php';
-				if ( file_exists( $class_taxonomies ) ) {
-					require $class_taxonomies;
-					$this->taxonomies = new Inventory_Presser_Taxonomies( $this->post_type() );
-				}
-			}
+			$this->taxonomies = new Inventory_Presser_Taxonomies( $this->post_type() );
 
 			/**
 			 * Some custom rewrite rules are created and destroyed
@@ -173,7 +152,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			/**
 			 * Affect the way some importers work
 			 */
-			require plugin_dir_path( __FILE__ ) . 'includes/class-modify-imports.php';
 			$option_manager = new Inventory_Presser_Option_Manager();
 			$options = $option_manager->get_options( );
 			if( ! isset( $options['delete-vehicles-not-in-new-feeds'] ) ) {
@@ -187,13 +165,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * Make a widget available to sort vehicles by post meta fields.
 			 * Or, enable order by year, make, price, odometer, etc.
 			 */
-			$class_order_by_widget = plugin_dir_path( __FILE__ ) . 'includes/class-order-by-post-meta-widget.php';
-			if( file_exists( $class_order_by_widget ) ) {
-				require $class_order_by_widget;
-				$widget_available = new Order_By_Widget();
-				//Register the widget
-		 		add_action( 'widgets_init', create_function( '', 'return register_widget( "Order_By_Widget" );' ) );
-			}
+			$widget_available = new Order_By_Widget();
+			//Register the widget
+	 		add_action( 'widgets_init', create_function( '', 'return register_widget( "Order_By_Widget" );' ) );
 
 			/**
 			 * Deliver our promise to order posts, change the ORDER BY clause of
@@ -204,20 +178,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 
 			//Allow custom fields to be searched
-			if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
-				$class_search = plugin_dir_path( __FILE__ ) . 'includes/class-add-custom-fields-to-search.php';
-				if ( file_exists( $class_search ) ) {
-					require $class_search;
-					$add_custom_fields_to_search = new Add_Custom_Fields_To_Search();
-				}
-			}
+			$add_custom_fields_to_search = new Add_Custom_Fields_To_Search();
 
 			//Redirect URLs by VINs to proper vehicle permalinks
-			$class_vin_urls = plugin_dir_path( __FILE__ ) . 'includes/class-vehicle-urls-by-vin.php';
-			if( file_exists( $class_vin_urls ) ) {
-				require $class_vin_urls;
-				$allow_urls_by_vin = new Vehicle_URLs_By_VIN();
-			}
+			$allow_urls_by_vin = new Vehicle_URLs_By_VIN();
 
 			add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_options' ) );
 			//deactivate so the next page load doesn't restore the option & terms
