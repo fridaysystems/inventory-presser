@@ -96,9 +96,10 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 			$title = apply_filters( 'widget_title', $instance['title'] );
 			// before and after widget arguments are defined by themes TODO??
 			echo $args['before_widget'];
-			echo '<div class="invp-hours">';
+			
 			if ( ! empty( $title ) )
 			echo $args['before_title'] . $title . $args['after_title'];
+			echo '<div class="invp-hours">';
 
 			// get all locations
 			$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
