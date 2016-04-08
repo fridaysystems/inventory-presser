@@ -31,6 +31,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $transmission;
 		var $drivetrain;
 		var $fuel;
+		var $location;
 
 		// images
 		var $images = array();
@@ -86,6 +87,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$this->transmission = $this->get_term_string('transmission');
 			$this->drivetype = $this->get_term_string('drive_type');
 			$this->fuel = $this->get_term_string('fuel');
+			$this->location = $this->get_term_string('location');
 
 
 		}
