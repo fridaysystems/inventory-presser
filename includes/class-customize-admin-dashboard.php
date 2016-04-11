@@ -40,6 +40,9 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 		//Add another meta box to the New/Edit post page
 		add_meta_box('options-meta', 'Optional equipment', array( &$this, 'meta_box_html_options' ), $this->post_type(), 'normal', 'low' );
+
+		//Add a meta box to the side column for a featured vehicle checkbox
+		add_meta_box('featured', 'Featured Vehicle', array( &$this, 'meta_box_html_featured' ), $this->post_type(), 'side', 'low' );
 	}
 
 	function annotate_add_media_button( $context ) {
@@ -341,6 +344,12 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		return wp_parse_args( $custom, $columns );
 	}
 
+	function meta_box_html_featured( $post ) {
+		echo '<input type="checkbox" id="inventory_presser_featured" name="inventory_presser_featured" ' .
+			checked( '1', get_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'featured' ), true ), false ) .
+			' value="1"><label for="inventory_presser_featured">Featured in slideshows</label>';
+	}
+
 	function meta_box_html_options( $post ) {
 		$options = apply_filters( 'inventory_presser_default_options', array(
 			'3rd Row Seats' => false,
@@ -592,6 +601,9 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			return;
 		}
 
+		//Clear this value that is defined by a checkbox
+		update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'featured' ), '0' );
+
 		/**
 		 * Loop over the post meta keys we manage and save their values
 		 * if we find them coming over as part of the post to save.
@@ -610,7 +622,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		 */
 		$options = array();
 		foreach( $_POST as $key => $val ) {
-			if( 'option-' == substr( $key, 0, 7) ) {
+			if( 'option-' == substr( $key, 0, 7 ) ) {
 				array_push( $options, $val );
 			}
 		}

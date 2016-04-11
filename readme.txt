@@ -62,6 +62,7 @@ and at this time there is no VIN decoder or support for vehicle options.
 = 1.4.0 =
 * Location taxonomy added to manage single or multi-lot inventories' addresses, phone numbers and hours
 * Update term meta during imports when terms aready exist
+* Force term recounts when a post is inserted or updated during an import
 
 = 1.3.0 =
 * Add custom fields to searches, so searches for a VIN or the color blue work

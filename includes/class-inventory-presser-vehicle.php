@@ -157,6 +157,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				'color',
 				'dealer_ID',
 				'engine',
+				'featured',
 				'interior_color',
 				'make',
 				'model',
