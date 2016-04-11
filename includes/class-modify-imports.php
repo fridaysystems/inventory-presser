@@ -75,6 +75,18 @@ class Inventory_Presser_Modify_Imports {
 		return str_replace( '/' . self::PENDING_DIR_NAME, '', $url );
 	}
 
+	function append_about_to_delete_posts_message( $arr ) {
+		array_push( $arr, 'About to delete ' . sizeof( $this->existing_posts_before_an_import ) . ' posts that were not found in the current import file.<br />' );
+		return $arr;
+	}
+
+	function append_list_of_post_titles_we_deleted( $arr ) {
+		foreach( $this->post_titles_that_were_deleted as $post_title ) {
+			array_push( $arr, 'This post was not contained in the latest import file and has been deleted: ' . $post_title . '<br />' );
+		}
+		return $arr;
+	}
+
 	function associate_parentless_attachments_with_parents( ) {
 		/**
 		 * Loop over post_type == 'attachment' where no post_parent, and
@@ -198,14 +210,9 @@ class Inventory_Presser_Modify_Imports {
 		add_action( 'import_post_meta', array( &$this, 'update_existing_unique_post_meta_values' ), 10, 3 );
 		//Likewise with term meta
 		add_action( 'import_term_meta', array( &$this, 'update_existing_unique_term_meta_values' ), 10, 3 );
-	}
 
-	function update_existing_unique_post_meta_values( $post_id, $key, $value ) {
-		update_post_meta( $post_id, $key, $value );
-	}
-
-	function update_existing_unique_term_meta_values( $term_id, $key, $value ) {
-		update_term_meta( $term_id, $key, $value );
+		//Recount term relationships when a post's terms are updated during imports
+		add_action( 'wp_import_set_post_terms', array( &$this, 'force_term_recount' ), 10, 5 );
 	}
 
 	function delete_directory( $dir ) {
@@ -233,18 +240,6 @@ class Inventory_Presser_Modify_Imports {
 	function delete_pending_import_folder( ) {
 		$upload_dir = wp_upload_dir();
 		$result = $this->delete_directory( $upload_dir['basedir'] . '\\' . self::PENDING_DIR_NAME );
-	}
-
-	function append_about_to_delete_posts_message( $arr ) {
-		array_push( $arr, 'About to delete ' . sizeof( $this->existing_posts_before_an_import ) . ' posts that were not found in the current import file.<br />' );
-		return $arr;
-	}
-
-	function append_list_of_post_titles_we_deleted( $arr ) {
-		foreach( $this->post_titles_that_were_deleted as $post_title ) {
-			array_push( $arr, 'This post was not contained in the latest import file and has been deleted: ' . $post_title . '<br />' );
-		}
-		return $arr;
 	}
 
 	function delete_posts_not_found_in_new_import() {
@@ -321,6 +316,10 @@ class Inventory_Presser_Modify_Imports {
 			return $file_name;
 		}
 		return substr( $a_string, 0, $hyphen_pos );
+	}
+
+	function force_term_recount( $term_taxonomy_ids, $term_ids, $taxonomy, $post_id, $post ) {
+		wp_update_term_count_now( $term_taxonomy_ids, $taxonomy );
 	}
 
 	/**
@@ -400,5 +399,13 @@ class Inventory_Presser_Modify_Imports {
 			}
 		}
 		return $post;
+	}
+
+	function update_existing_unique_post_meta_values( $post_id, $key, $value ) {
+		update_post_meta( $post_id, $key, $value );
+	}
+
+	function update_existing_unique_term_meta_values( $term_id, $key, $value ) {
+		update_term_meta( $term_id, $key, $value );
 	}
 }

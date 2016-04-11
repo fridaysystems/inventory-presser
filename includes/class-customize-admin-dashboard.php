@@ -662,7 +662,10 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		}
 
 		//did the user click the Delete all plugin data button?
-		if ( isset( $_POST['delete'] ) && 'yes' == sanitize_text_field( $_POST['delete'] ) && check_admin_referer( 'delete-nonce' ) ) {
+		if ( isset( $_POST['delete'] ) &&
+			'yes' == sanitize_text_field( $_POST['delete'] ) &&
+			check_admin_referer( 'delete-nonce' ) )
+		{
 			$delete_result = $this->delete_all_data_and_deactivate( );
 			if ( is_wp_error( $delete_result ) ) {
 				//output error
@@ -730,23 +733,12 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 			<p>&nbsp;</p>
 
-			<h3><?php _e( 'Delete data' ) ?></h3>
-
-			<p><?php _e( 'Remove all vehicle data and photos.' ) ?></p>
-			<form method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings">
-				<!--
-				<?php wp_nonce_field('delete-vehicles-nonce'); ?>
-				<input type="hidden" name="delete-vehicles" value="yes">
-				//-->
-				<input type="button" class="button-primary" value="<?php _e('Delete all Inventory') ?>" onclick="delete_all_inventory( 'delete-vehicles-notice' );" /><span id="delete-vehicles-notice"></span>
-			</form>
+			<h2><?php _e( 'Delete data' ); ?></h2>
+			<p><?php _e( 'Remove all vehicle data and photos.' ); ?></p>
+			<input type="button" class="button-primary" value="<?php _e('Delete all Inventory') ?>" onclick="delete_all_inventory( 'delete-vehicles-notice' );" /><span id="delete-vehicles-notice"></span>
 
 			<p><?php _e( 'Remove all ' . self::PRODUCT_NAME . ' plugin data (including vehicles and photos) and deactivate.' ) ?></p>
-			<form id="delete-all-data" method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings">
-				<?php wp_nonce_field('delete-nonce'); ?>
-				<input type="hidden" name="delete" value="yes">
-				<input type="button" class="button-primary" value="<?php _e('Delete all Plugin Data') ?>" onclick="delete_all_data();" /><span id="delete-all-notice"></span>
-			</form>
+			<input type="button" class="button-primary" value="<?php _e('Delete all Plugin Data') ?>" onclick="delete_all_data();" /><span id="delete-all-notice"></span>
 		</div><?php
 	}
 
