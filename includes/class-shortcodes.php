@@ -58,7 +58,10 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		// process shortcode attributes
 		$atts = shortcode_atts(array(
 			'per_page' => 10,
+			'captions' => 'true',
 		), $atts);
+
+		$atts['captions'] = 'true' === $atts['captions'];
 
 		$args=array(
 			'numberposts'=>$atts['per_page'],
@@ -86,9 +89,11 @@ class Inventory_Presser_Vehicle_Shortcodes {
 				$flexHtml .= '<li><a class=\"flex-link\" href="'.$vehicle->url.'">';
 				$flexHtml .= wp_get_attachment_image(get_post_thumbnail_id($inventory_id), 'full');
 
-				$flexHtml .= "<p class=\"flex-caption\">";
-				$flexHtml .= $vehicle->post_title;
-				$flexHtml .= "</p>";
+				if ($atts['captions']) {
+					$flexHtml .= "<p class=\"flex-caption\">";
+					$flexHtml .= $vehicle->post_title;
+					$flexHtml .= "</p>";
+				}
 
 				$flexHtml .= "</a></li>\n";
 
