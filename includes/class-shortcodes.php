@@ -87,11 +87,13 @@ class Inventory_Presser_Vehicle_Shortcodes {
 				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
 
 
-				$flexHtml .= '<li><a class=\"flex-link\" href="'.$vehicle->url.'">';
-				$flexHtml .= wp_get_attachment_image(get_post_thumbnail_id($inventory_id), 'full');
+				$flexHtml .= '<li><a class="flex-link" href="'.$vehicle->url.'">';
+
+				$flexHtml .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large').');">';
+				$flexHtml .= "</div>";
 
 				if ($atts['captions']) {
-					$flexHtml .= "<p class=\"flex-caption\">";
+					$flexHtml .= '<p class="flex-caption">';
 					$flexHtml .= $vehicle->post_title;
 					$flexHtml .= "</p>";
 				}
@@ -133,14 +135,14 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		if ($inventory_ids) {
 
 			$grid_html .= "<div class=\"invp-grid\">\n";
-			$grid_html .= "<ul class=\"grid-slides\">\n";
+			$grid_html .= '<ul class="grid-slides clear">';
 
 			foreach ($inventory_ids as $inventory_id) {
 
 				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
 
 
-				$grid_html .= '<li><a class=\"grid-link\" href="'.$vehicle->url.'">';
+				$grid_html .= '<li><a class="grid-link" href="'.$vehicle->url.'">';
 
 				$grid_html .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large').');">';
 				$grid_html .= "</div>";
