@@ -13,6 +13,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $color = '';
 		var $dealer_ID = 0;
 		var $engine = ''; //3.9L 8 cylinder
+		var $featured = '0';
 		var $interior_color = '';
 		var $make = '';
 		var $model = '';
