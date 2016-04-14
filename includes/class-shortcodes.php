@@ -7,6 +7,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 		add_shortcode('invp-simple-listing', array($this, 'simple_listing'));
 		add_shortcode('invp-inventory-slider', array($this, 'inventory_slider'));
+		add_shortcode('invp-inventory-grid', array($this, 'inventory_grid'));
 		add_shortcode( 'iframe', array($this, 'iframe_unqprfx_embed_shortcode'));
 
 		add_action('wp_enqueue_scripts', array($this, 'load_scripts'));
@@ -58,7 +59,10 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		// process shortcode attributes
 		$atts = shortcode_atts(array(
 			'per_page' => 10,
+			'captions' => 'true',
 		), $atts);
+
+		$atts['captions'] = 'true' === $atts['captions'];
 
 		$args=array(
 			'numberposts'=>$atts['per_page'],
@@ -83,12 +87,16 @@ class Inventory_Presser_Vehicle_Shortcodes {
 				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
 
 
-				$flexHtml .= '<li><a class=\"flex-link\" href="'.$vehicle->url.'">';
-				$flexHtml .= wp_get_attachment_image(get_post_thumbnail_id($inventory_id), 'full');
+				$flexHtml .= '<li><a class="flex-link" href="'.$vehicle->url.'">';
 
-				$flexHtml .= "<p class=\"flex-caption\">";
-				$flexHtml .= $vehicle->post_title;
-				$flexHtml .= "</p>";
+				$flexHtml .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large').');">';
+				$flexHtml .= "</div>";
+
+				if ($atts['captions']) {
+					$flexHtml .= '<p class="flex-caption">';
+					$flexHtml .= $vehicle->post_title;
+					$flexHtml .= "</p>";
+				}
 
 				$flexHtml .= "</a></li>\n";
 
@@ -99,6 +107,61 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		}
 
 		return $flexHtml;
+
+	}
+
+	function inventory_grid($atts) {
+		// process shortcode attributes
+		$atts = shortcode_atts(array(
+			'per_page' => 15,
+			'captions' => 'true',
+		), $atts);
+
+		$atts['captions'] = 'true' === $atts['captions'];
+
+		$args=array(
+			'numberposts'=>$atts['per_page'],
+			'post_type'=>'inventory_vehicle',
+			'meta_key'=>'_thumbnail_id',
+			'fields' => 'ids',
+			'orderby'=>'rand',
+			'order' => 'ASC'
+		);
+
+		$inventory_ids = get_posts( $args );
+
+		$grid_html = '';
+
+		if ($inventory_ids) {
+
+			$grid_html .= "<div class=\"invp-grid\">\n";
+			$grid_html .= '<ul class="grid-slides clear">';
+
+			foreach ($inventory_ids as $inventory_id) {
+
+				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
+
+
+				$grid_html .= '<li><a class="grid-link" href="'.$vehicle->url.'">';
+
+				$grid_html .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large').');">';
+				$grid_html .= "</div>";
+
+				if ($atts['captions']) {
+					$grid_html .= "<p class=\"grid-caption\">";
+					$grid_html .= $vehicle->post_title;
+					$grid_html .= "</p>";
+				}
+
+				$grid_html .= "</a></li>\n";
+
+			}
+
+			$grid_html .= "</ul></div>";
+
+		}
+
+		return $grid_html;
 
 	}
 	
