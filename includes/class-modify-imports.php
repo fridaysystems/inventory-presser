@@ -75,6 +75,11 @@ class Inventory_Presser_Modify_Imports {
 		return str_replace( '/' . self::PENDING_DIR_NAME, '', $url );
 	}
 
+	function append_aborting_deletions_message( $arr ) {
+		array_push( $arr, 'Not going to delete '. sizeof( $this->existing_posts_before_an_import ) .' posts after an import.<br />' );
+		return $arr;
+	}
+
 	function append_about_to_delete_posts_message( $arr ) {
 		array_push( $arr, 'About to delete ' . sizeof( $this->existing_posts_before_an_import ) . ' posts that were not found in the current import file.<br />' );
 		return $arr;
@@ -253,6 +258,12 @@ class Inventory_Presser_Modify_Imports {
 			add_filter( 'wp_import_errors_before_end', array( &$this, 'append_about_to_delete_posts_message' ));
 		}
 
+		//do not proceed if the deletions will wipe out all vehicles
+		if( $this->vehicle_count() == sizeof( $this->existing_posts_before_an_import ) ) {
+			add_filter( 'wp_import_errors_before_end', array( &$this, 'append_aborting_deletions_message' ));
+			return;
+		}
+
 		foreach( $this->existing_posts_before_an_import as $post ) {
 			/**
 			 * Before we delete the post, decide if it's photos should be kept.
@@ -407,5 +418,25 @@ class Inventory_Presser_Modify_Imports {
 
 	function update_existing_unique_term_meta_values( $term_id, $key, $value ) {
 		update_term_meta( $term_id, $key, $value );
+	}
+
+	//How many vehicles are in the database?
+	function vehicle_count() {
+		$counts = wp_count_posts( $this->post_type );
+		/*
+			var_dump( $counts );
+
+			object(stdClass)#957 (8) {
+				["publish"]=> string(2) "37"
+	  			["future"]=> int(0)
+	 			["draft"]=> int(0)
+	 			["pending"]=>  int(0)
+	 			["private"]=>  int(0)
+	 			["trash"]=> int(0)
+	 			["auto-draft"]=>  int(0)
+	 			["inherit"]=>  int(0)
+			}
+		*/
+		return intval( $counts->publish ) + intval( $counts->future ) + intval( $counts->private );
 	}
 }
