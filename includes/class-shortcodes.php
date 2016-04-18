@@ -135,7 +135,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		if ($inventory_ids) {
 
 			$grid_html .= "<div class=\"invp-grid\">\n";
-			$grid_html .= '<ul class="grid-slides clear">';
+			$grid_html .= '<ul class="grid-slides">';
 
 			foreach ($inventory_ids as $inventory_id) {
 
@@ -157,7 +157,8 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 			}
 
-			$grid_html .= "</ul></div>";
+			$grid_html .= '</ul><div class="clear"></div>';
+			$grid_html .= "</div>";
 
 		}
 
