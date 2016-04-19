@@ -491,7 +491,67 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 } // Class Inventory_Presser_Location_Phones
 
 
+// Address Widget
+class Carfax_Widget extends WP_Widget {
 
+	function __construct() {
+		parent::__construct(
+			'_invp_carfax',
+			'Carfax Reports', 
+			array( 'description' => 'Advertise Carfax Report with Inventory Link', ) 
+		);
+	}
+
+	// front-end
+	public function widget( $args, $instance ) {
+
+		$title = apply_filters( 'widget_title', $instance['title'] );
+		// before and after widget arguments are defined by themes
+		echo $args['before_widget'];
+		if (!empty( $title ))
+		echo $args['before_title'] . $title . $args['after_title'];
+
+		echo wpautop($instance['before_image']);
+		echo sprintf('<a href="%s"><img src="%s"></a>',get_post_type_archive_link( 'inventory_vehicle' ),plugins_url( '../assets/show_me_the_carfax.png', __FILE__ ));
+		echo wpautop($instance['after_image']);
+		
+		echo $args['after_widget'];
+	}
+			
+	// Widget Backend 
+	public function form( $instance ) {
+
+		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
+		$before_image = isset($instance[ 'before_image' ]) ? $instance[ 'before_image' ] : '';
+		$after_image = isset($instance[ 'after_image' ]) ? $instance[ 'after_image' ] : '';
+
+		// Widget admin form
+		?>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:' ); ?></label> 
+		<textarea class="widefat" id="<?php echo $this->get_field_id('before_image'); ?>" name="<?php echo $this->get_field_name('before_image'); ?>"><?php echo esc_attr( $before_image ); ?></textarea>
+		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'after_image' ); ?>"><?php _e( 'Text after image:' ); ?></label> 
+		<textarea class="widefat" id="<?php echo $this->get_field_id('after_image'); ?>" name="<?php echo $this->get_field_name('after_image'); ?>"><?php echo esc_attr( $after_image ); ?></textarea>
+		</p>
+		<?php
+	}
+		
+	// Updating widget replacing old instances with new
+	public function update( $new_instance, $old_instance ) {
+		$instance = array();
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['before_image'] = ( ! empty( $new_instance['before_image'] ) ) ? strip_tags( $new_instance['before_image'] ) : '';
+		$instance['after_image'] = ( ! empty( $new_instance['after_image'] ) ) ? strip_tags( $new_instance['after_image'] ) : '';
+		return $instance;
+	}
+
+} // Class Carfax_Widget
 
 // bootstrap class for these widgets
 class Inventory_Presser_Location_Widgets {
@@ -505,6 +565,7 @@ class Inventory_Presser_Location_Widgets {
 		register_widget('Inventory_Presser_Location_Hours');
 		register_widget('Inventory_Presser_Location_Address');
 		register_widget('Inventory_Presser_Location_Phones');
+		register_widget('Carfax_Widget');
 	}
 
 	function check_ids() {

@@ -16,13 +16,13 @@ $inventory_presser_include_paths = array(
 	'includes/class-add-custom-fields-to-search.php',
 	'includes/class-customize-admin-dashboard.php',
 	'includes/class-inventory-presser-vehicle.php',
-	'includes/class-location-widgets.php',
 	'includes/class-modify-imports.php',
 	'includes/class-option-manager.php',
 	'includes/class-order-by-post-meta-widget.php',
 	'includes/class-shortcodes.php',
 	'includes/class-taxonomies.php',
 	'includes/class-vehicle-urls-by-vin.php',
+	'includes/class-widgets.php',
 );
 foreach( $inventory_presser_include_paths as $path ) {
 	$path = plugin_dir_path( __FILE__ ) . $path;
