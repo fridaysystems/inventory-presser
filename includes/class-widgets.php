@@ -381,9 +381,9 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 
 			// before and after widget arguments are defined by themes
 			echo $args['before_widget'];
-			echo sprintf('<div class="invp-%s">', $format);
 			if (!empty( $title ))
 			echo $args['before_title'] . $title . $args['after_title'];
+			echo sprintf('<div class="invp-%s">', $format);
 
 			// get all locations
 			$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
