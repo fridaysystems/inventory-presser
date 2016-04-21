@@ -20,6 +20,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $odometer = '';
 		var $option_array = array();
 		var $price = 0;
+		var $prices = array();
 		var $stock_number = '';
 		var $trim = '';
 		var $vin = '';
