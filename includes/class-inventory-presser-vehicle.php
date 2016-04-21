@@ -166,6 +166,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				'odometer',
 				'option_array',
 				'price',
+				'prices',
 				'stock_number',
 				'trim',
 				'vin',
@@ -210,6 +211,18 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			if( 0 == $this->price ) { return $zero_string; }
 			$result = '$' . number_format( $this->price, 0, '.', ',' );
 			return $result;
+		}
+
+		function payments( $zero_string = '' ) {
+
+			if (isset($this->prices['down_payment'])) {
+				$result = sprintf('$%s Down / $%s %s',number_format($this->prices['down_payment'], 0, '.', ',' ), number_format($this->prices['payment'], 0, '.', ',' ), ucfirst($this->prices['payment_frequency']));
+			} else {
+				$result = $this->price($zero_string);
+			}
+
+			return $result;
+
 		}
 
 		//return taxonomy terms as a comma delimited string
