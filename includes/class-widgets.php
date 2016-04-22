@@ -347,7 +347,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 
 	// formats for widget display.  To add more, just follow the pattern
 	var $formats = array(
-		'small_top_label' => array(
+		'small_left_label' => array(
 			'selector' => 'Small, left label',
 			'uses_labels' => true,
 			'before' => '<table>',
@@ -360,6 +360,13 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			'before' => '',
 			'repeater' => '<h2><a href="tel:%1$s">%1$s</a></h2>',
 			'after' => '',
+			),
+		'large_left_label' => array(
+			'selector' => 'Large, small left label',
+			'uses_labels' => true,
+			'before' => '<table>',
+			'repeater' => '<tr><td>%1$s</td><td><h2><a href="tel:%2$s">%2$s</a></h2></td><tr>',
+			'after' => '</table>',
 			),
 		);
 
@@ -377,7 +384,9 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		if (is_array($instance['cb_display']) && count($instance['cb_display']) > 0) {
 
 			$title = apply_filters( 'widget_title', $instance['title'] );
-			$format = $instance['format'];
+
+			$format_slugs = array_keys($this->formats);
+			$format = in_array($instance['format'], $format_slugs) ? $instance['format'] : $format_slugs[0];
 
 			// before and after widget arguments are defined by themes
 			echo $args['before_widget'];
