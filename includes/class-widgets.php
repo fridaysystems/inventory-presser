@@ -276,7 +276,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 
 		foreach ($instance['cb_display'] as $i => $term_id) {
 			$location = get_term($term_id, 'location');
-			echo '<div>'.nl2br($location->description).'</div>';
+			echo '<div class="alignright">'.nl2br($location->description).'</div>';
 		}
 		
 		echo $args['after_widget'];
@@ -366,6 +366,13 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			'uses_labels' => true,
 			'before' => '<table>',
 			'repeater' => '<tr><td>%1$s</td><td><h2><a href="tel:%2$s">%2$s</a></h2></td><tr>',
+			'after' => '</table>',
+			),
+		'large_right_label' => array(
+			'selector' => 'Large, small right label',
+			'uses_labels' => true,
+			'before' => '<table>',
+			'repeater' => '<tr><td><h2><a href="tel:%2$s">%2$s</a></h2></td><td>%1$s</td><tr>',
 			'after' => '</table>',
 			),
 		);
