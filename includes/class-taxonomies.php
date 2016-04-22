@@ -11,7 +11,7 @@
 class Inventory_Presser_Taxonomies {
 
 	var $post_type;
-	var $days = array('MON','TUE','WED','THU','FRI','SAT','SUN');
+	var $days = array('Mon','Tue','Wed','Thu','Fri','Sat','Sun');
 
 	function __construct( $post_type ) {
 
@@ -296,7 +296,7 @@ class Inventory_Presser_Taxonomies {
 
 	function load_scripts($hook) {
 		global $current_screen;
-		if ($hook == 'edit-tags.php' && $current_screen->post_type == $this->post_type() && $current_screen->taxonomy == 'location') {
+		if (($hook == 'edit-tags.php' || $hook == 'term.php') && $current_screen->post_type == $this->post_type() && $current_screen->taxonomy == 'location') {
 			wp_enqueue_script('inventory-presser-timepicker', plugins_url( '/js/jquery.timepicker.min.js', dirname( __FILE__ ) ), array('jquery'), '1.8.10');
 			wp_enqueue_script('jquery-ui-sortable');
 			wp_enqueue_script('inventory-presser-location', plugins_url( '/js/tax-location.js', dirname( __FILE__ ) ), array('inventory-presser-timepicker','jquery-ui-sortable'));

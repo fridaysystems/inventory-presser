@@ -78,7 +78,7 @@ class Inventory_Presser_Location_Helper {
 // Hours Widget
 class Inventory_Presser_Location_Hours extends WP_Widget {
 
-	var $days = array('MON','TUE','WED','THU','FRI','SAT','SUN');
+	var $days = array('Mon','Tue','Wed','Thu','Fri','Sat','Sun');
 
 	function __construct() {
 		parent::__construct(
