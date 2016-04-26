@@ -120,7 +120,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		$atts['captions'] = 'true' === $atts['captions'];
 
 		$args=array(
-			'numberposts'=>$atts['per_page'],
+			'posts_per_page'=>$atts['per_page'],
 			'post_type'=>'inventory_vehicle',
 			'meta_key'=>'_thumbnail_id',
 			'fields' => 'ids',
