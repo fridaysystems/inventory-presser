@@ -276,7 +276,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 
 		foreach ($instance['cb_display'] as $i => $term_id) {
 			$location = get_term($term_id, 'location');
-			echo '<div class="alignright">'.nl2br($location->description).'</div>';
+			echo '<div>'.nl2br($location->description).'</div>';
 		}
 		
 		echo $args['after_widget'];
