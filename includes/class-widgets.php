@@ -404,6 +404,8 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			// get all locations
 			$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
 
+			echo $this->formats[$format]['before'];
+
 			// loop through each location
 			foreach ($location_info as $term_id => $name) {
 
@@ -412,8 +414,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 
 				// if any hour sets have been selected for this location
 				if (isset($instance['cb_display'][$term_id]) && is_array($instance['cb_display'][$term_id]) && count($instance['cb_display'][$term_id]) > 0 && isset($location_meta['phones']) && count($location_meta['phones']) > 0) {
-					
-					echo $this->formats[$format]['before'];
+
 					// loop through each hour set from term meta
 					foreach ($location_meta['phones'] as $index => $phoneset) {
 
@@ -424,11 +425,11 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 
 					}
 
-					echo $this->formats[$format]['after'];
-
 				}
 
 			}
+
+			echo $this->formats[$format]['after'];
 
 			echo '</div>';
 			echo $args['after_widget'];
