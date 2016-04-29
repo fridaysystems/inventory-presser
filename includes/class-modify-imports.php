@@ -14,9 +14,92 @@ class Inventory_Presser_Modify_Imports {
 
 	const PENDING_DIR_NAME = '_pending_import';
 
+	var $attachment_counts = array();
 	var $existing_posts_before_an_import;
 	var $post_type;
 	var $post_titles_that_were_deleted = array();
+
+	function __construct( $post_type, $delete_vehicles_not_in_new_feeds ) {
+		$this->post_type = $post_type;
+
+		//don't actually download attachments during imports if they are already on this server
+		add_filter( 'import_allow_fetch_file', array( &$this, 'allow_fetch_attachments' ), 10, 2 ) ;
+
+		//decide if we want to let the importer replace all the terms on an object
+		add_filter( 'wp_import_set_object_terms', array( &$this, 'allow_set_object_terms'), 10, 4 );
+
+		/**
+		 * Go all in on our lie to the importer. When we tell it not to really
+		 * go download attachment payloads, we want to massage the URL to remove
+		 * our pending directory folder as if it was downloaded into the uploads
+		 * folder.
+		 */
+		add_filter( 'import_fetched_file_url', array( &$this, 'alter_fetched_file_url' ) );
+
+		/**
+		 * After an import is completed, try to match attachments with their
+		 * parent posts. Priority 11 so it runs after
+		 * delete_posts_not_found_in_new_import()
+		 */
+		add_action( 'import_end', array( &$this, 'associate_parentless_attachments_with_parents' ), 11 );
+
+		//After an import is completed, prune the pending folder for attachments we no longer need
+		add_action( 'import_end', array( &$this, 'prune_pending_attachments' ), 12 );
+
+		if( $delete_vehicles_not_in_new_feeds ) {
+			/**
+			 * Build a list of posts in a class member variable that identifies
+			 * posts that exist before an import. the next action hook will
+			 * remove some items from said list (that are in the import), and
+			 * the third action hook will delete the remaining members because
+			 * they are units that were not found in the new feed.
+			 */
+			add_filter( 'wp_import_posts', array( &$this, 'remember_posts_before_an_import' ) );
+
+			//remove the posts from the list of posts to delete as they come through the import
+			add_action( 'wp_import_post_and_type_exist', array( &$this, 'remove_existing_post_from_import_purge_list' ) );
+
+			/**
+			 * Posts left over should be of our post type and not in the new
+			 * feed. Delete them.
+			 */
+			add_action( 'import_end', array( &$this, 'delete_posts_not_found_in_new_import' ) );
+		}
+
+		//this filter wraps the output of a post_exists() call
+		add_filter( 'post_exists', array( &$this, 'inventory_post_exists' ), 10, 2 );
+
+		add_action( 'wp_import_parsing_attachment', array( &$this, 'keep_track_of_attachment_counts' ), 10, 1 );
+
+		/**
+		 * After the import runs, make sure we don't leave vehicles with too
+		 * many photos. The importer was never designed to delete content, so
+		 * if an import comes through with less attachments, some code has to
+		 * delete some attachments. Priority >10 required to run after all our
+		 * other hooks onto import_end.
+		 */
+		add_action( 'import_end', array( &$this, 'delete_extra_attachments' ), 11 );
+
+		add_filter( '_inventory_presser_create_photo_file_name_base', array( &$this, 'extract_file_name_base' ) );
+
+		//Delete the pending import folder when the user deletes all plugin data
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
+
+		//All our meta keys are unique, so tell the importer so
+		add_filter( 'wp_import_post_meta_unique', '__return_true' );
+		//Likewise with term meta keys, they are unique
+		add_filter( 'wp_import_term_meta_unique', '__return_true' );
+		/**
+		 * Also make sure these unique post keys get updated, because they will
+		 * be ignored by the importer because they are unique and already exist
+		 */
+		add_action( 'import_post_meta', array( &$this, 'update_existing_unique_post_meta_values' ), 10, 3 );
+		//Likewise with term meta
+		add_action( 'import_term_meta', array( &$this, 'update_existing_unique_term_meta_values' ), 10, 3 );
+
+		//Recount term relationships when a post's terms are updated during imports
+		add_action( 'wp_import_set_post_terms', array( &$this, 'force_term_recount' ), 10, 5 );
+	}
 
 	function allow_fetch_attachments( $value /* boolean */, $URL ) {
 		/**
@@ -113,8 +196,9 @@ class Inventory_Presser_Modify_Imports {
 		) );
 
 		foreach( $attachments as $attachment ) {
+
 			//the post guid is a URL to the attachment, we need the file name without extension
-			$file_name_base = apply_filters( '_inventory_presser_create_photo_file_name_base', basename( $attachment->guid ) );
+			$file_name_base = $this->extract_vin_from_attachment_url( $attachment->guid );
 
 			/**
 			 * Do we have a post that uses our custom post type and has a meta
@@ -152,72 +236,39 @@ class Inventory_Presser_Modify_Imports {
 		}
 	}
 
-	function __construct( $post_type, $delete_vehicles_not_in_new_feeds ) {
-		$this->post_type = $post_type;
+	function get_post_ID_from_guid( $guid ){
+		global $wpdb;
+		return $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE guid=%s", $guid ) );
+	}
 
-		//don't actually download attachments during imports if they are already on this server
-		add_filter( 'import_allow_fetch_file', array( &$this, 'allow_fetch_attachments' ), 10, 2 ) ;
-
-		//decide if we want to let the importer replace all the terms on an object
-		add_filter( 'wp_import_set_object_terms', array( &$this, 'allow_set_object_terms'), 10, 4 );
-
-		/**
-		 * Go all in on our lie to the importer. When we tell it not to really
-		 * go download attachment payloads, we want to massage the URL to remove
-		 * our pending directory folder as if it was downloaded into the uploads
-		 * folder.
-		 */
-		add_filter( 'import_fetched_file_url', array( &$this, 'alter_fetched_file_url' ) );
-
-		/**
-		 * After an import is completed, try to match attachments with their
-		 * parent posts. Priority 11 so it runs after
-		 * delete_posts_not_found_in_new_import()
-		 */
-		add_action( 'import_end', array( &$this, 'associate_parentless_attachments_with_parents' ), 11 );
-
-		//After an import is completed, prune the pending folder for attachments we no longer need
-		add_action( 'import_end', array( &$this, 'prune_pending_attachments' ), 12 );
-
-		if( $delete_vehicles_not_in_new_feeds ) {
-			/**
-			 * Build a list of posts in a class member variable that identifies
-			 * posts that exist before an import. the next action hook will
-			 * remove some items from said list (that are in the import), and
-			 * the third action hook will delete the remaining members because
-			 * they are units that were not found in the new feed.
-			 */
-			add_filter( 'wp_import_posts', array( &$this, 'remember_posts_before_an_import' ) );
-
-			//remove the posts from the list of posts to delete as they come through the import
-			add_action( 'wp_import_post_and_type_exist', array( &$this, 'remove_existing_post_from_import_purge_list' ) );
-
-			/**
-			 * Posts left over should be of our post type and not in the new
-			 * feed. Delete them.
-			 */
-			add_action( 'import_end', array( &$this, 'delete_posts_not_found_in_new_import' ) );
+	function inventory_post_exists ( $value, $post ) {
+		if( 'attachment' == $post['post_type'] ) {
+			//does an attachment exist with the same guid?
+			$post_id = $this->get_post_ID_from_guid( $post['guid'] );
+			if( null != $post_id ) { return $post_id; }
+		} else {
+			//check for a VIN match
+			if ( isset( $post['postmeta'] ) ){
+				foreach ( $post['postmeta'] as $meta ) {
+					if( 'inventory_presser_vin' == $meta['key'] ) {
+						$args = array(
+							'post_type'  => $this->post_type,
+							'meta_query' => array(
+								array(
+									'key'   => $meta['key'],
+									'value' => $meta['value'],
+								)
+							)
+						);
+						$posts = get_posts( $args );
+						if( 0 < count( $posts ) ) {
+							return $posts[0]->ID;
+						}
+					}
+				}
+			}
 		}
-
-		add_filter( '_inventory_presser_create_photo_file_name_base', array( &$this, 'extract_file_name_base' ) );
-
-		//Delete the pending import folder when the user deletes all plugin data
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
-
-		//All our meta keys are unique, so tell the importer so
-		add_filter( 'wp_import_post_meta_unique', '__return_true' );
-		//Likewise with term meta keys, they are unique
-		add_filter( 'wp_import_term_meta_unique', '__return_true' );
-		/**
-		 * Also make sure these unique post keys get updated, because they will
-		 * be ignored by the importer because they are unique and already exist
-		 */
-		add_action( 'import_post_meta', array( &$this, 'update_existing_unique_post_meta_values' ), 10, 3 );
-		//Likewise with term meta
-		add_action( 'import_term_meta', array( &$this, 'update_existing_unique_term_meta_values' ), 10, 3 );
-
-		//Recount term relationships when a post's terms are updated during imports
-		add_action( 'wp_import_set_post_terms', array( &$this, 'force_term_recount' ), 10, 5 );
+		return $value;
 	}
 
 	function delete_directory( $dir ) {
@@ -286,7 +337,7 @@ class Inventory_Presser_Modify_Imports {
 					)
 				)
 			);
-			$duplicates = new WP_Query( $args );
+			$duplicates = get_posts( $args );
 			if( 1 < $duplicates->found_posts ) {
 				/**
 				 * There is at least one other post in the database with the
@@ -305,6 +356,42 @@ class Inventory_Presser_Modify_Imports {
 		}
 	}
 
+	function delete_extra_attachments() {
+		/*
+			$attachment_counts looks like
+
+			array(21) {
+			  ["4S2CY58Z4N4320884"]=> int(7)
+			  ["1G1YY25U065127435"]=> int(1)
+			  ["WBABD53465PL16510"]=> int(2)
+			}
+
+		*/
+		foreach( $this->attachment_counts as $vin => $attachment_count ) {
+
+			$vin_matches = get_posts( array(
+				'post_type'  => $this->post_type,
+				'meta_key'   => '_inventory_presser_photo_file_name_base',
+				'meta_value' => $vin
+			));
+
+			if( 1 == sizeof( $vin_matches ) ) {
+
+				//get the attachments to this post
+				$my_attachments = get_posts( array(
+					'post_type'      => 'attachment',
+					'posts_per_page' => -1,
+					'post_parent'    => $vin_matches[0]->ID,
+					'post_status' => 'inherit',
+				) );
+
+				foreach ( array_slice( $my_attachments, $attachment_count ) as $attachment ) {
+					wp_delete_attachment( $attachment->ID );
+				}
+			}
+		}
+	}
+
 	function dissociate_attachments( $post_id ) {
 		$args = array(
 			'post_parent'    => $post_id,
@@ -312,12 +399,13 @@ class Inventory_Presser_Modify_Imports {
 			'posts_per_page' => -1,
 			'post_status'    => 'any'
 		);
+
 		foreach( get_posts( $args ) as $attachment ) {
 			$attachment->post_parent = 0;
 			wp_update_post( $attachment );
 		}
 	}
-
+/*
 	function extract_file_name_base( $a_string ) {
 		//remove the extension
 		$file_name = pathinfo( $a_string, PATHINFO_FILENAME );
@@ -327,6 +415,19 @@ class Inventory_Presser_Modify_Imports {
 			return $file_name;
 		}
 		return substr( $a_string, 0, $hyphen_pos );
+	}
+*/
+	function extract_vin_from_attachment_url( $url ) {
+		$file_slug = pathinfo( basename( $url ), PATHINFO_FILENAME );
+
+		//this might be a VIN, it might be a VIN-#
+		$hyphen_pos = strrpos( $file_slug, '-' );
+
+		if( false === $hyphen_pos ) {
+			return $file_slug;
+		}
+
+		return $file_slug = substr( $file_slug, 0, $hyphen_pos );
 	}
 
 	function force_term_recount( $term_taxonomy_ids, $term_ids, $taxonomy, $post_id, $post ) {
@@ -345,6 +446,25 @@ class Inventory_Presser_Modify_Imports {
 	}
 
 	/**
+	 * Saves inserted or updated attachment image counts by VIN in a class
+	 * variable called $this->attachment_counts
+	 */
+	function keep_track_of_attachment_counts( /* mixed */ $post ) {
+
+		if( ! is_array( $post ) ) { return; }
+
+		//extract VIN from payload URL
+		$vin = $this->extract_vin_from_attachment_url( $post['attachment_url'] );
+
+		//maintain our array of vin->counts
+		if( isset( $this->attachment_counts[$vin] ) ) {
+			$this->attachment_counts[$vin]++;
+		} else {
+			$this->attachment_counts[$vin] = 1;
+		}
+	}
+
+	/**
 	 * We keep a copy of all attachments that arrive alongside imports in a folder
 	 * (whose name is stored in the constant PENDING_DIR_NAME) in the uploads folder.
 	 * I use the word 'alongside' in
@@ -358,21 +478,39 @@ class Inventory_Presser_Modify_Imports {
 	function prune_pending_attachments( ) {
 		//need the allowed upload file extensions
 		$upload_dir = wp_upload_dir();
-		$files = glob( $upload_dir['path'] . '/' . self::PENDING_DIR_NAME . '/*.*', GLOB_BRACE );
+
+		//get all VINs because our attachments are in VIN-named subfolders
+		global $wpdb;
+		$rows = $wpdb->get_results( 'SELECT DISTINCT meta_value FROM wp_postmeta WHERE meta_key LIKE "inventory_presser_vin"', OBJECT );
+		$files = glob( $upload_dir['path'] . '/' . self::PENDING_DIR_NAME . '/*.*', GLOB_NOSORT | GLOB_NOESCAPE ) or array();
+		foreach( $rows as $row ) {
+			$path = $upload_dir['path'] . '/' . self::PENDING_DIR_NAME . '/' . $row->meta_value . '/*.*';
+			$more = ( glob( $path, GLOB_NOSORT | GLOB_NOESCAPE ) or array() );
+
+			if( ! is_array( $files ) ) { $files = array(); }
+			if( ! is_array( $more ) ) { $more = array(); }
+
+			$files = array_merge(
+				$files,
+				$more
+			);
+		}
+
 		foreach( $files as $file ) {
 			//do we have an attachment for this filename?
 			if( ! $this->have_attachment_with_file_name( basename( $file ) ) ) {
 				//no? delete the file
 				unlink( $file );
-				//attempt to delete the directory it lives in if it is a subfolder
+
+				/**
+				 * Attempt to delete the directory it lives in if it is a
+				 * subfolder of the uploads folder. This will fail if the
+				 * directory is not empty, so suppress warnings.
+				 */
+
 				if( $upload_dir['path'] != basename( $file ) ) {
 					@rmdir( basename( $file ) );
 				}
-				//make not of this deletion via the importer's error logging mechanism
-				add_filter( 'wp_import_errors_before_end', function( $arr ) {
-					array_push( $arr, 'A pending attachment that is no longer associated with any active inventory unit has been deleted: ' . $file . '<br />' );
-					return $arr;
-				});
 			}
 		}
 	}
