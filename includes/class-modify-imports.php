@@ -80,8 +80,6 @@ class Inventory_Presser_Modify_Imports {
 		 */
 		add_action( 'import_end', array( &$this, 'delete_extra_attachments' ), 11 );
 
-		add_filter( '_inventory_presser_create_photo_file_name_base', array( &$this, 'extract_file_name_base' ) );
-
 		//Delete the pending import folder when the user deletes all plugin data
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
 
@@ -242,6 +240,9 @@ class Inventory_Presser_Modify_Imports {
 	}
 
 	function inventory_post_exists ( $value, $post ) {
+
+		if( 0 != $value ) { return $value; }
+
 		if( 'attachment' == $post['post_type'] ) {
 			//does an attachment exist with the same guid?
 			$post_id = $this->get_post_ID_from_guid( $post['guid'] );
@@ -251,7 +252,7 @@ class Inventory_Presser_Modify_Imports {
 			if ( isset( $post['postmeta'] ) ){
 				foreach ( $post['postmeta'] as $meta ) {
 					if( 'inventory_presser_vin' == $meta['key'] ) {
-						$args = array(
+						$posts = get_posts( array(
 							'post_type'  => $this->post_type,
 							'meta_query' => array(
 								array(
@@ -259,8 +260,7 @@ class Inventory_Presser_Modify_Imports {
 									'value' => $meta['value'],
 								)
 							)
-						);
-						$posts = get_posts( $args );
+						) );
 						if( 0 < count( $posts ) ) {
 							return $posts[0]->ID;
 						}
@@ -327,7 +327,8 @@ class Inventory_Presser_Modify_Imports {
 			 * preserved so they can be associated with the other post.
 			 */
 			$key = 'inventory_presser_vin';
-			$args = array(
+
+			$duplicates = get_posts( array(
 				'posts_per_page' => -1,
 				'meta_query' => array(
 					array(
@@ -336,8 +337,8 @@ class Inventory_Presser_Modify_Imports {
 						'compare' => '=',
 					)
 				)
-			);
-			$duplicates = get_posts( $args );
+			) );
+
 			if( 1 < $duplicates->found_posts ) {
 				/**
 				 * There is at least one other post in the database with the
@@ -405,18 +406,7 @@ class Inventory_Presser_Modify_Imports {
 			wp_update_post( $attachment );
 		}
 	}
-/*
-	function extract_file_name_base( $a_string ) {
-		//remove the extension
-		$file_name = pathinfo( $a_string, PATHINFO_FILENAME );
-		//if there is a hyphen, ditch it and everything after
-		$hyphen_pos = strpos( $file_name, '-' );
-		if( false === $hyphen_pos ) {
-			return $file_name;
-		}
-		return substr( $a_string, 0, $hyphen_pos );
-	}
-*/
+
 	function extract_vin_from_attachment_url( $url ) {
 		$file_slug = pathinfo( basename( $url ), PATHINFO_FILENAME );
 
@@ -520,12 +510,11 @@ class Inventory_Presser_Modify_Imports {
 		 * Store all the post titles and dates for our post type
 		 * as they exist before the import runs
 		 */
-		$args = array(
+		$this->existing_posts_before_an_import = get_posts( array(
 			'post_status'    => 'publish',
 			'post_type'      => $this->post_type,
 			'posts_per_page' => -1,
-		);
-		$this->existing_posts_before_an_import = get_posts( $args );
+		) );
 		/**
 		 * Do not modify the posts coming into this function, and return them
 		 * back to the importer.
