@@ -159,7 +159,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 			$grid_html .= '</ul><div class="clear"></div>';
 			$grid_html .= "</div>";
-			$grid_html .= '<a href="'.get_post_type_archive_link( 'inventory_vehicle' ).'" class="vehicle-contact-us">Full Inventory</a>';
+			$grid_html .= '<a href="'.get_post_type_archive_link( 'inventory_vehicle' ).'" class="_button _button-med">Full Inventory</a>';
 
 		}
 
