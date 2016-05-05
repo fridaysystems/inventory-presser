@@ -206,7 +206,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						'labels' => array (
 							'name'          => __( 'Vehicles' ),
 							'singular_name' => __( 'Vehicle' ),
-							'all_items'     => __( 'All Vehicles' ),
+							'all_items'     => __( 'Inventory' ),
 							'add_new_item'  => __( 'Add New Vehicle' ),
 							'edit_item'     => __( 'Edit Vehicle' ),
 						),
