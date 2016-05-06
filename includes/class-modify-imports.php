@@ -200,22 +200,23 @@ class Inventory_Presser_Modify_Imports {
 
 			/**
 			 * Do we have a post that uses our custom post type and has a meta
-			 * key named `inventory_presser_photo_file_name_base` that contains
+			 * key named `inventory_presser_vin` that contains
 			 * the value $file_name_base? If so, that's this attachment's parent.
 			 */
-			$parent_query = new WP_Query( array(
+			$parent_posts = get_posts( array(
 				'post_type'  => $this->post_type,
 				'meta_query' => array(
 					array(
-						'key'   => '_inventory_presser_photo_file_name_base',
+						'key'   => 'inventory_presser_vin',
 						'value' => $file_name_base,
 					)
 				),
 			) );
-			if( $parent_query->have_posts() ) {
-				if( 1 == count( $parent_query->posts ) ) {
+
+			if( 0 < sizeof( $parent_posts ) ) {
+				if( 1 == sizeof( $parent_posts ) ) {
 					//only one post was found, great, use it's ID as our parent
-					$attachment->post_parent = $parent_query->posts[0]->ID;
+					$attachment->post_parent = $parent_posts[0]->ID;
 					wp_update_post( $attachment );
 
 					$photo_num = get_post_meta( $attachment->ID, '_inventory_presser_photo_number', true );
@@ -241,7 +242,9 @@ class Inventory_Presser_Modify_Imports {
 
 	function inventory_post_exists ( $value, $post ) {
 
-		if( 0 != $value ) { return $value; }
+		if( 0 != $value ) {
+			return $value;
+		}
 
 		if( 'attachment' == $post['post_type'] ) {
 			//does an attachment exist with the same guid?
@@ -372,7 +375,7 @@ class Inventory_Presser_Modify_Imports {
 
 			$vin_matches = get_posts( array(
 				'post_type'  => $this->post_type,
-				'meta_key'   => '_inventory_presser_photo_file_name_base',
+				'meta_key'   => '_inventory_presser_vin',
 				'meta_value' => $vin
 			));
 
@@ -522,6 +525,21 @@ class Inventory_Presser_Modify_Imports {
 		return $posts;
 	}
 
+	function find_post_meta_value( $post_array, $meta_key ) {
+
+		if( ! isset( $post_array['postmeta'] ) ) {
+			return;
+		}
+
+		foreach( $post_array['postmeta'] as $meta ) {
+			if( $meta['key'] == $meta_key ) {
+				return $meta['value'];
+			}
+		}
+
+		return false;
+	}
+
 	function remove_existing_post_from_import_purge_list( $post ) {
 		/**
 		 * Loop through all the posts the importer is about to import that we
@@ -529,8 +547,11 @@ class Inventory_Presser_Modify_Imports {
 		 * remember_posts_before_an_import()
 		 */
 		for( $p = 0; $p < sizeof( $this->existing_posts_before_an_import ); $p++ ) {
-			//if the title and guid match
-			if( $post['post_title'] == $this->existing_posts_before_an_import[$p]->post_title && $post['guid'] == $this->existing_posts_before_an_import[$p]->guid ) {
+
+			$this_vin = $this->find_post_meta_value( $post, 'inventory_presser_vin' );
+			$that_vin = get_post_meta( $this->existing_posts_before_an_import[$p]->ID, 'inventory_presser_vin', true );
+
+			if( $this_vin == $that_vin ) {
 				//remove this one, it's in the new file
 				array_splice( $this->existing_posts_before_an_import, $p, 1 );
 				return;
