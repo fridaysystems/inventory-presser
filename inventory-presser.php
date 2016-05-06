@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) OR exit;
 $inventory_presser_include_paths = array(
 	'includes/class-add-custom-fields-to-search.php',
 	'includes/class-customize-admin-dashboard.php',
+	'includes/class-dealership-options.php', // This handles a couple options for _dealer theme, will likely combine this with import options
 	'includes/class-inventory-presser-vehicle.php',
 	'includes/class-modify-imports.php',
 	'includes/class-option-manager.php',
@@ -206,7 +207,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						'labels' => array (
 							'name'          => __( 'Vehicles' ),
 							'singular_name' => __( 'Vehicle' ),
-							'all_items'     => __( 'All Vehicles' ),
+							'all_items'     => __( 'Inventory' ),
 							'add_new_item'  => __( 'Add New Vehicle' ),
 							'edit_item'     => __( 'Edit Vehicle' ),
 						),

@@ -34,6 +34,10 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $drivetrain;
 		var $fuel;
 		var $location;
+		var $availability;
+		//availability-sold
+
+		var $is_sold = false;
 
 		// images
 		var $images = array();
@@ -90,6 +94,12 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$this->drivetype = $this->get_term_string('drive_type');
 			$this->fuel = $this->get_term_string('fuel');
 			$this->location = $this->get_term_string('location');
+			$this->availability = $this->get_term_string('availability');
+
+			$pos = strpos(strtolower($this->availability), 'sold');
+			if ($pos !== false) {
+				$this->is_sold = true;
+			}
 
 
 		}
@@ -208,8 +218,13 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 * Return the $zero_string when the price is zero.
 		 */
 		function price( $zero_string = '' ) {
-			if( 0 == $this->price ) { return $zero_string; }
-			$result = '$' . number_format( $this->price, 0, '.', ',' );
+			if (!$this->is_sold) {
+				if( 0 == $this->price ) { return $zero_string; }
+				$result = '$' . number_format( $this->price, 0, '.', ',' );
+			} else {
+				$result = 'SOLD!';
+			}
+			
 			return $result;
 		}
 
