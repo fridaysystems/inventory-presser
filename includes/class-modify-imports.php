@@ -18,9 +18,11 @@ class Inventory_Presser_Modify_Imports {
 	var $existing_posts_before_an_import;
 	var $post_type;
 	var $post_titles_that_were_deleted = array();
+	var $upload_dir;
 
 	function __construct( $post_type, $delete_vehicles_not_in_new_feeds ) {
 		$this->post_type = $post_type;
+		$this->upload_dir = wp_upload_dir();
 
 		//don't actually download attachments during imports if they are already on this server
 		add_filter( 'import_allow_fetch_file', array( &$this, 'allow_fetch_attachments' ), 10, 2 ) ;
@@ -104,9 +106,8 @@ class Inventory_Presser_Modify_Imports {
 		 * Avoid downloading files that are 1) already in the uploads folder
 		 * and 2) already in a subfolder of the uploads folder.
 		 */
-		$upload_dir = wp_upload_dir( );
 		$attachment_URL_parts = parse_url( $URL );
-		$this_site_URL_parts = parse_url( $upload_dir['url'] );
+		$this_site_URL_parts = parse_url( $this->upload_dir['url'] );
 		$same_host = $this_site_URL_parts['host'] == $attachment_URL_parts['host'];
 		// They live on different servers, go fetch it
 		if( ! $same_host ){ return true; }
@@ -132,7 +133,7 @@ class Inventory_Presser_Modify_Imports {
 			 * Copy the file to the uploads folder, preserving the path after the
 			 * pending directory.
 			 */
-			$source = $upload_dir['basedir'] . substr( $attachment_URL_parts['path'], strlen( $this_site_URL_parts['path'] ) );
+			$source = $this->upload_dir['basedir'] . substr( $attachment_URL_parts['path'], strlen( $this_site_URL_parts['path'] ) );
 			if( is_file( $source ) ) {
 				$destination = str_replace( '/' . self::PENDING_DIR_NAME, '', $source );
 				//Does the directory exist?
@@ -204,13 +205,14 @@ class Inventory_Presser_Modify_Imports {
 			 * the value $file_name_base? If so, that's this attachment's parent.
 			 */
 			$parent_posts = get_posts( array(
-				'post_type'  => $this->post_type,
 				'meta_query' => array(
 					array(
 						'key'   => 'inventory_presser_vin',
 						'value' => $file_name_base,
 					)
 				),
+				'post_type'  => $this->post_type,
+				'posts_per_page' => -1,
 			) );
 
 			if( 0 < sizeof( $parent_posts ) ) {
@@ -297,8 +299,7 @@ class Inventory_Presser_Modify_Imports {
 	}
 
 	function delete_pending_import_folder( ) {
-		$upload_dir = wp_upload_dir();
-		$result = $this->delete_directory( $upload_dir['basedir'] . '\\' . self::PENDING_DIR_NAME );
+		$result = $this->delete_directory( $this->upload_dir['basedir'] . '\\' . self::PENDING_DIR_NAME );
 	}
 
 	function delete_posts_not_found_in_new_import() {
@@ -469,28 +470,39 @@ class Inventory_Presser_Modify_Imports {
 	 * part of the most recent import.
 	 */
 	function prune_pending_attachments( ) {
-		//need the allowed upload file extensions
-		$upload_dir = wp_upload_dir();
 
-		//get all VINs because our attachments are in VIN-named subfolders
-		global $wpdb;
-		$rows = $wpdb->get_results( 'SELECT DISTINCT meta_value FROM wp_postmeta WHERE meta_key LIKE "inventory_presser_vin"', OBJECT );
-		$files = glob( $upload_dir['path'] . '/' . self::PENDING_DIR_NAME . '/*.*', GLOB_NOSORT | GLOB_NOESCAPE ) or array();
-		foreach( $rows as $row ) {
-			$path = $upload_dir['path'] . '/' . self::PENDING_DIR_NAME . '/' . $row->meta_value . '/*.*';
-			$more = ( glob( $path, GLOB_NOSORT | GLOB_NOESCAPE ) or array() );
+		$files = glob( $this->upload_dir['path'] . '/' . self::PENDING_DIR_NAME . '/*', GLOB_MARK | GLOB_NOSORT | GLOB_NOESCAPE ) or array();
+		$photo_paths = $files;
 
-			if( ! is_array( $files ) ) { $files = array(); }
-			if( ! is_array( $more ) ) { $more = array(); }
+		foreach( $files as $file ) {
 
-			$files = array_merge(
-				$files,
+			$path = $this->upload_dir['path'] . '/' . self::PENDING_DIR_NAME . '/' . basename( $file ) . '/*';
+			$more = glob( $path, GLOB_NOSORT | GLOB_NOESCAPE );
+
+			if( ! is_array( $more ) ) { continue; }
+
+			$photo_paths = array_merge(
+				$photo_paths,
 				$more
 			);
 		}
 
-		foreach( $files as $file ) {
-			//do we have an attachment for this filename?
+		foreach( $photo_paths as $file ) {
+			//is this "file" actually a directory? skip it
+			if( '/' == strrev( $file )[0] || '\\' == strrev( $file )[0] ) {
+
+				/**
+				 * Attempt to delete the directory it lives in if it is a
+				 * subfolder of the uploads folder. This will fail if the
+				 * directory is not empty, so suppress warnings.
+				 */
+
+				if( $this->upload_dir['path'] != $file ) {
+					@rmdir( $file );
+				}
+				continue;
+			}
+
 			if( ! $this->have_attachment_with_file_name( basename( $file ) ) ) {
 				//no? delete the file
 				unlink( $file );
@@ -501,8 +513,8 @@ class Inventory_Presser_Modify_Imports {
 				 * directory is not empty, so suppress warnings.
 				 */
 
-				if( $upload_dir['path'] != basename( $file ) ) {
-					@rmdir( basename( $file ) );
+				if( $this->upload_dir['path'] != dirname( $file ) ) {
+					@rmdir( dirname( $file ) );
 				}
 			}
 		}

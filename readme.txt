@@ -61,6 +61,7 @@ and at this time there is no VIN decoder or support for vehicle options.
 
 = 1.4.2 =
 * Obsoleted the postmeta key _inventory_presser_file_name_base now that we live in a world where our photo file name bases are VINs
+* Stop relying on post title and guid to decide if a vehicle exists. Always use the VIN.
 
 = 1.4.1 =
 * Fixed a bug where function_exists() was not used to always make sure get_current_screen() is defined before using it
