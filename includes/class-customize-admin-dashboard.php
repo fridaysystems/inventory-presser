@@ -56,6 +56,8 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 		$this->post_type = $post_type;
 
+		add_filter( 'posts_clauses', array( &$this, 'enable_order_by_attachment_count' ), 1, 2 );
+
 		//add a menu to the admin settings menu
 		add_action( 'admin_menu', array( &$this, 'add_menu_to_settings' ) );
 
@@ -301,6 +303,35 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		        }
 		    }
 		}
+	}
+
+	//Handle the ORDER BY on the vehicle list (edit.php) when sorting by photo count
+	function enable_order_by_attachment_count( $pieces, $query ) {
+		if( ! is_admin() ) { return $pieces; }
+
+		global $wpdb;
+
+		/**
+		 * We only want our code to run in the main WP query
+		 * AND if an orderby query variable is designated.
+		 */
+		if ( $query->is_main_query() && ( $orderby = $query->get( 'orderby' ) ) ) {
+
+			if( 'inventory_presser_photo_count' != $orderby ) {
+				return $pieces ;
+			}
+
+			// Get the order query variable - ASC or DESC
+			$order = strtoupper( $query->get( 'order' ) );
+
+			// Make sure the order setting qualifies. If not, set default as ASC
+			if ( ! in_array( $order, array( 'ASC', 'DESC' ) ) ) {
+				$order = 'ASC';
+			}
+
+			$pieces[ 'orderby' ] = "( SELECT COUNT( ID ) FROM {$wpdb->posts} forget WHERE post_parent = {$wpdb->posts}.ID ) $order, " . $pieces[ 'orderby' ];
+	   }
+	   return $pieces;
 	}
 
 	/**

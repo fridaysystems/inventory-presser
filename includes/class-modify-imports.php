@@ -15,13 +15,16 @@ class Inventory_Presser_Modify_Imports {
 	const PENDING_DIR_NAME = '_pending_import';
 
 	var $attachment_counts = array();
+	var $delete_vehicles_not_in_new_feeds;
 	var $existing_posts_before_an_import;
 	var $post_type;
 	var $post_titles_that_were_deleted = array();
 	var $upload_dir;
+	var $vin_to_parent_post_id = array();
 
 	function __construct( $post_type, $delete_vehicles_not_in_new_feeds ) {
 		$this->post_type = $post_type;
+		$this->delete_vehicles_not_in_new_feeds = $delete_vehicles_not_in_new_feeds;
 		$this->upload_dir = wp_upload_dir();
 
 		//don't actually download attachments during imports if they are already on this server
@@ -39,48 +42,27 @@ class Inventory_Presser_Modify_Imports {
 		add_filter( 'import_fetched_file_url', array( &$this, 'alter_fetched_file_url' ) );
 
 		/**
-		 * After an import is completed, try to match attachments with their
-		 * parent posts. Priority 11 so it runs after
-		 * delete_posts_not_found_in_new_import()
+		 * Build a list of posts in a class member variable that identifies
+		 * posts that exist before an import. the next action hook will
+		 * remove some items from said list (that are in the import), and
+		 * the third action hook will delete the remaining members because
+		 * they are units that were not found in the new feed.
 		 */
-		add_action( 'import_end', array( &$this, 'associate_parentless_attachments_with_parents' ), 11 );
+		add_filter( 'wp_import_posts', array( &$this, 'remember_posts_before_an_import' ) );
 
-		//After an import is completed, prune the pending folder for attachments we no longer need
-		add_action( 'import_end', array( &$this, 'prune_pending_attachments' ), 12 );
+		//remove the posts from the list of posts to delete as they come through the import
+		add_action( 'wp_import_post_and_type_exist', array( &$this, 'remove_existing_post_from_import_purge_list' ) );
 
-		if( $delete_vehicles_not_in_new_feeds ) {
-			/**
-			 * Build a list of posts in a class member variable that identifies
-			 * posts that exist before an import. the next action hook will
-			 * remove some items from said list (that are in the import), and
-			 * the third action hook will delete the remaining members because
-			 * they are units that were not found in the new feed.
-			 */
-			add_filter( 'wp_import_posts', array( &$this, 'remember_posts_before_an_import' ) );
-
-			//remove the posts from the list of posts to delete as they come through the import
-			add_action( 'wp_import_post_and_type_exist', array( &$this, 'remove_existing_post_from_import_purge_list' ) );
-
-			/**
-			 * Posts left over should be of our post type and not in the new
-			 * feed. Delete them.
-			 */
-			add_action( 'import_end', array( &$this, 'delete_posts_not_found_in_new_import' ) );
-		}
+		/**
+		 * Posts left over should be of our post type and not in the new
+		 * feed. Delete them.
+		 */
+		add_action( 'import_end', array( &$this, 'delete_posts_not_found_in_new_import' ) );
 
 		//this filter wraps the output of a post_exists() call
 		add_filter( 'post_exists', array( &$this, 'inventory_post_exists' ), 10, 2 );
 
 		add_action( 'wp_import_parsing_attachment', array( &$this, 'keep_track_of_attachment_counts' ), 10, 1 );
-
-		/**
-		 * After the import runs, make sure we don't leave vehicles with too
-		 * many photos. The importer was never designed to delete content, so
-		 * if an import comes through with less attachments, some code has to
-		 * delete some attachments. Priority >10 required to run after all our
-		 * other hooks onto import_end.
-		 */
-		add_action( 'import_end', array( &$this, 'delete_extra_attachments' ), 11 );
 
 		//Delete the pending import folder when the user deletes all plugin data
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
@@ -99,6 +81,41 @@ class Inventory_Presser_Modify_Imports {
 
 		//Recount term relationships when a post's terms are updated during imports
 		add_action( 'wp_import_set_post_terms', array( &$this, 'force_term_recount' ), 10, 5 );
+
+		add_filter( 'wp_import_find_parent_id', array( &$this, 'find_attachment_parent_id' ), 10, 2 );
+	}
+
+	function find_attachment_parent_id( $value, $post ) {
+		//get VIN out of guid
+		$vin = $this->extract_vin_from_attachment_url( $post['guid'] );
+
+		if( isset( $this->vin_to_parent_post_id[$vin] ) ) {
+			return $this->vin_to_parent_post_id[$vin];
+		}
+
+		/**
+		 * Do we have a post that uses our custom post type and has a meta
+		 * key named `inventory_presser_vin` that contains
+		 * the value $file_name_base? If so, that's this attachment's parent.
+		 */
+		$parent_posts = get_posts( array(
+			'meta_query' => array(
+				array(
+					'key'   => 'inventory_presser_vin',
+					'value' => $vin,
+				)
+			),
+			'post_type'  => $this->post_type,
+			'posts_per_page' => -1,
+		) );
+
+		if( 1 == sizeof( $parent_posts ) ) {
+			//only one post was found, great
+			$this->vin_to_parent_post_id[$vin] = $parent_posts[0]->ID;
+			return $parent_posts[0]->ID;
+		}
+
+		return $value;
 	}
 
 	function allow_fetch_attachments( $value /* boolean */, $URL ) {
@@ -134,11 +151,11 @@ class Inventory_Presser_Modify_Imports {
 			 * pending directory.
 			 */
 			$source = $this->upload_dir['basedir'] . substr( $attachment_URL_parts['path'], strlen( $this_site_URL_parts['path'] ) );
-			if( is_file( $source ) ) {
-				$destination = str_replace( '/' . self::PENDING_DIR_NAME, '', $source );
+			$destination = str_replace( '/' . self::PENDING_DIR_NAME, '', $source );
+
+			if( is_file( $source ) && ( ! file_exists( $destination ) || filemtime( $source ) > filemtime( $destination ) ) ) {
 				//Does the directory exist?
 				if( ! is_dir( dirname( $destination ) ) ) {
-					//no
 					mkdir( dirname( $destination ), 0777, true );
 				}
 				copy( $source, $destination );
@@ -175,6 +192,7 @@ class Inventory_Presser_Modify_Imports {
 	}
 
 	function associate_parentless_attachments_with_parents( ) {
+
 		/**
 		 * Loop over post_type == 'attachment' where no post_parent, and
 		 * require that attachments found contain our meta key.
@@ -186,8 +204,8 @@ class Inventory_Presser_Modify_Imports {
 					'key'     => '_inventory_presser_photo_number',
 					'compare' => 'EXISTS'
 				)
-	        ),
-	        'orderby'        => 'guid',
+			),
+			'orderby'        => 'guid',
 			'post_parent'    => '0',
 			'post_status'    => 'inherit',
 			'post_type'      => 'attachment',
@@ -237,45 +255,6 @@ class Inventory_Presser_Modify_Imports {
 		}
 	}
 
-	function get_post_ID_from_guid( $guid ){
-		global $wpdb;
-		return $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE guid=%s", $guid ) );
-	}
-
-	function inventory_post_exists ( $value, $post ) {
-
-		if( 0 != $value ) {
-			return $value;
-		}
-
-		if( 'attachment' == $post['post_type'] ) {
-			//does an attachment exist with the same guid?
-			$post_id = $this->get_post_ID_from_guid( $post['guid'] );
-			if( null != $post_id ) { return $post_id; }
-		} else {
-			//check for a VIN match
-			if ( isset( $post['postmeta'] ) ){
-				foreach ( $post['postmeta'] as $meta ) {
-					if( 'inventory_presser_vin' == $meta['key'] ) {
-						$posts = get_posts( array(
-							'post_type'  => $this->post_type,
-							'meta_query' => array(
-								array(
-									'key'   => $meta['key'],
-									'value' => $meta['value'],
-								)
-							)
-						) );
-						if( 0 < count( $posts ) ) {
-							return $posts[0]->ID;
-						}
-					}
-				}
-			}
-		}
-		return $value;
-	}
-
 	function delete_directory( $dir ) {
 		if ( !file_exists( $dir ) ) {
 			return true;
@@ -303,6 +282,7 @@ class Inventory_Presser_Modify_Imports {
 	}
 
 	function delete_posts_not_found_in_new_import() {
+
 		/**
 		 * $this->existing_posts_before_an_import should now contain only posts
 		 * that were in the database before the import ran and that were
@@ -311,12 +291,6 @@ class Inventory_Presser_Modify_Imports {
 		 */
 		if( 0 < sizeof( $this->existing_posts_before_an_import ) ) {
 			add_filter( 'wp_import_errors_before_end', array( &$this, 'append_about_to_delete_posts_message' ));
-		}
-
-		//do not proceed if the deletions will wipe out all vehicles
-		if( $this->vehicle_count() == sizeof( $this->existing_posts_before_an_import ) ) {
-			add_filter( 'wp_import_errors_before_end', array( &$this, 'append_aborting_deletions_message' ));
-			return;
 		}
 
 		foreach( $this->existing_posts_before_an_import as $post ) {
@@ -330,26 +304,29 @@ class Inventory_Presser_Modify_Imports {
 			 * delete a post, but the photos should actually be dettached and
 			 * preserved so they can be associated with the other post.
 			 */
-			$key = 'inventory_presser_vin';
+			if( 'attachment' != $post->post_type ) {
+				$key = 'inventory_presser_vin';
 
-			$duplicates = get_posts( array(
-				'posts_per_page' => -1,
-				'meta_query' => array(
-					array(
-						'key'     => $key,
-						'value'   => get_post_meta( $post->ID, $key, true ),
-						'compare' => '=',
+				$duplicates = get_posts( array(
+					'posts_per_page' => -1,
+					'meta_query' => array(
+						array(
+							'key'     => $key,
+							'value'   => get_post_meta( $post->ID, $key, true ),
+							'compare' => '=',
+						)
 					)
-				)
-			) );
+				) );
 
-			if( 1 < $duplicates->found_posts ) {
-				/**
-				 * There is at least one other post in the database with the
-				 * same VIN, dettach this post's photos before deleting.
-				 */
-				dissociate_attachments( $post->ID );
+				if( 1 < $duplicates->found_posts ) {
+					/**
+					 * There is at least one other post in the database with the
+					 * same VIN, dettach this post's photos before deleting.
+					 */
+					dissociate_attachments( $post->ID );
+				}
 			}
+
 			wp_delete_post( $post->ID, true );
 
 			//save this post title for later
@@ -358,42 +335,6 @@ class Inventory_Presser_Modify_Imports {
 			if ( ! has_filter( 'wp_import_errors_before_end', array( &$this, 'append_list_of_post_titles_we_deleted' ) ) ) {
     			add_filter( 'wp_import_errors_before_end', array( &$this, 'append_list_of_post_titles_we_deleted' ) );
     		}
-		}
-	}
-
-	function delete_extra_attachments() {
-		/*
-			$attachment_counts looks like
-
-			array(21) {
-			  ["4S2CY58Z4N4320884"]=> int(7)
-			  ["1G1YY25U065127435"]=> int(1)
-			  ["WBABD53465PL16510"]=> int(2)
-			}
-
-		*/
-		foreach( $this->attachment_counts as $vin => $attachment_count ) {
-
-			$vin_matches = get_posts( array(
-				'post_type'  => $this->post_type,
-				'meta_key'   => '_inventory_presser_vin',
-				'meta_value' => $vin
-			));
-
-			if( 1 == sizeof( $vin_matches ) ) {
-
-				//get the attachments to this post
-				$my_attachments = get_posts( array(
-					'post_type'      => 'attachment',
-					'posts_per_page' => -1,
-					'post_parent'    => $vin_matches[0]->ID,
-					'post_status' => 'inherit',
-				) );
-
-				foreach ( array_slice( $my_attachments, $attachment_count ) as $attachment ) {
-					wp_delete_attachment( $attachment->ID );
-				}
-			}
 		}
 	}
 
@@ -428,6 +369,11 @@ class Inventory_Presser_Modify_Imports {
 		wp_update_term_count_now( $term_taxonomy_ids, $taxonomy );
 	}
 
+	function get_post_ID_from_guid( $guid ){
+		global $wpdb;
+		return $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE guid=%s", $guid ) );
+	}
+
 	/**
 	 * True or false: there is an attachment with a $file_name like file.jpg
 	 *
@@ -437,6 +383,40 @@ class Inventory_Presser_Modify_Imports {
 		global $wpdb;
 		$id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND guid LIKE %s", '%%/' .$file_name ) );
 		return '' != $id;
+	}
+
+	function inventory_post_exists ( $value, $post ) {
+
+		if( 0 != $value ) {
+			return $value;
+		}
+
+		if( 'attachment' == $post['post_type'] ) {
+			//does an attachment exist with the same guid?
+			$post_id = $this->get_post_ID_from_guid( $post['guid'] );
+			if( null != $post_id ) { return $post_id; }
+		} else {
+			//check for a VIN match
+			if ( isset( $post['postmeta'] ) ){
+				foreach ( $post['postmeta'] as $meta ) {
+					if( 'inventory_presser_vin' == $meta['key'] ) {
+						$posts = get_posts( array(
+							'post_type'  => $this->post_type,
+							'meta_query' => array(
+								array(
+									'key'   => $meta['key'],
+									'value' => $meta['value'],
+								)
+							)
+						) );
+						if( 0 < count( $posts ) ) {
+							return $posts[0]->ID;
+						}
+					}
+				}
+			}
+		}
+		return $value;
 	}
 
 	/**
@@ -522,14 +502,45 @@ class Inventory_Presser_Modify_Imports {
 
 	function remember_posts_before_an_import( $posts ) {
 		/**
-		 * Store all the post titles and dates for our post type
-		 * as they exist before the import runs
+		 * Get a list of all vehicle photos in the database before this
+		 * import runs. We'll prune the list as we import, and the remaining
+		 * items will be deleted when the import is over.
 		 */
+
 		$this->existing_posts_before_an_import = get_posts( array(
-			'post_status'    => 'publish',
-			'post_type'      => $this->post_type,
+			'meta_query'     => array(
+				array(
+					'key'     => '_inventory_presser_photo_number',
+					'compare' => 'EXISTS'
+				)
+			),
+			'post_status'    => 'inherit',
+			'post_type'      => 'attachment',
 			'posts_per_page' => -1,
 		) );
+
+		/**
+		 * There exists a setting that determines whether or not we delete
+		 * vehicles that aren't in the file we are importing. It's the only
+		 * automated removal mechanism. Add posts to this array if it's on.
+		 */
+
+		if( $this->delete_vehicles_not_in_new_feeds ) {
+
+			/**
+			 * Also store all the post titles and dates for our post type
+			 * as they exist before the import runs
+			 */
+			$this->existing_posts_before_an_import = array_merge(
+				$this->existing_posts_before_an_import,
+				get_posts( array(
+					'post_status'    => 'publish',
+					'post_type'      => $this->post_type,
+					'posts_per_page' => -1,
+				) )
+			);
+		}
+
 		/**
 		 * Do not modify the posts coming into this function, and return them
 		 * back to the importer.
@@ -578,25 +589,5 @@ class Inventory_Presser_Modify_Imports {
 
 	function update_existing_unique_term_meta_values( $term_id, $key, $value ) {
 		update_term_meta( $term_id, $key, $value );
-	}
-
-	//How many vehicles are in the database?
-	function vehicle_count() {
-		$counts = wp_count_posts( $this->post_type );
-		/*
-			var_dump( $counts );
-
-			object(stdClass)#957 (8) {
-				["publish"]=> string(2) "37"
-	  			["future"]=> int(0)
-	 			["draft"]=> int(0)
-	 			["pending"]=>  int(0)
-	 			["private"]=>  int(0)
-	 			["trash"]=> int(0)
-	 			["auto-draft"]=>  int(0)
-	 			["inherit"]=>  int(0)
-			}
-		*/
-		return intval( $counts->publish ) + intval( $counts->future ) + intval( $counts->private );
 	}
 }
