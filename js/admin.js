@@ -92,12 +92,14 @@ function update_add_media_button_annotation( ) {
 	});
 }
 
+/* This bit of code below breaks image uploading in some places, commented out til a later date */
+
 //Execute some code when the media uploader is closed
-jQuery(document).ready( function() {
+/*jQuery(document).ready( function() {
 	if(typeof wp !== 'undefined' && typeof wp.media !== 'undefined' && typeof wp.media.editor !== 'undefined' ){
 		var frame = wp.media.editor.add('content');
 		frame.on('escape', function(){
 			update_add_media_button_annotation();
 		});
 	}
-});
+});*/
