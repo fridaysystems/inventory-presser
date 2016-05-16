@@ -53,12 +53,6 @@ class Inventory_Presser_Modify_Imports {
 		//remove the posts from the list of posts to delete as they come through the import
 		add_action( 'wp_import_post_and_type_exist', array( &$this, 'remove_existing_post_from_import_purge_list' ) );
 
-		/**
-		 * Posts left over should be of our post type and not in the new
-		 * feed. Delete them.
-		 */
-		add_action( 'import_end', array( &$this, 'delete_posts_not_found_in_new_import' ) );
-
 		//this filter wraps the output of a post_exists() call
 		add_filter( 'post_exists', array( &$this, 'inventory_post_exists' ), 10, 2 );
 
@@ -83,39 +77,14 @@ class Inventory_Presser_Modify_Imports {
 		add_action( 'wp_import_set_post_terms', array( &$this, 'force_term_recount' ), 10, 5 );
 
 		add_filter( 'wp_import_find_parent_id', array( &$this, 'find_attachment_parent_id' ), 10, 2 );
-	}
-
-	function find_attachment_parent_id( $value, $post ) {
-		//get VIN out of guid
-		$vin = $this->extract_vin_from_attachment_url( $post['guid'] );
-
-		if( isset( $this->vin_to_parent_post_id[$vin] ) ) {
-			return $this->vin_to_parent_post_id[$vin];
-		}
 
 		/**
-		 * Do we have a post that uses our custom post type and has a meta
-		 * key named `inventory_presser_vin` that contains
-		 * the value $file_name_base? If so, that's this attachment's parent.
+		 * Posts left over should be of our post type and not in the new
+		 * feed. Delete them.
 		 */
-		$parent_posts = get_posts( array(
-			'meta_query' => array(
-				array(
-					'key'   => 'inventory_presser_vin',
-					'value' => $vin,
-				)
-			),
-			'post_type'  => $this->post_type,
-			'posts_per_page' => -1,
-		) );
+		add_action( 'import_end', array( &$this, 'delete_posts_not_found_in_new_import' ) );
 
-		if( 1 == sizeof( $parent_posts ) ) {
-			//only one post was found, great
-			$this->vin_to_parent_post_id[$vin] = $parent_posts[0]->ID;
-			return $parent_posts[0]->ID;
-		}
-
-		return $value;
+		add_action( 'import_end', array( &$this, 'set_thumbnails' ), 13 );
 	}
 
 	function allow_fetch_attachments( $value /* boolean */, $URL ) {
@@ -365,6 +334,54 @@ class Inventory_Presser_Modify_Imports {
 		return $file_slug = substr( $file_slug, 0, $hyphen_pos );
 	}
 
+	function find_attachment_parent_id( $value, $post ) {
+		//get VIN out of guid
+		$vin = $this->extract_vin_from_attachment_url( $post['guid'] );
+
+		if( isset( $this->vin_to_parent_post_id[$vin] ) ) {
+			return $this->vin_to_parent_post_id[$vin];
+		}
+
+		/**
+		 * Do we have a post that uses our custom post type and has a meta
+		 * key named `inventory_presser_vin` that contains
+		 * the value $file_name_base? If so, that's this attachment's parent.
+		 */
+		$parent_posts = get_posts( array(
+			'meta_query' => array(
+				array(
+					'key'   => 'inventory_presser_vin',
+					'value' => $vin,
+				)
+			),
+			'post_type'  => $this->post_type,
+			'posts_per_page' => -1,
+		) );
+
+		if( 1 == sizeof( $parent_posts ) ) {
+			//only one post was found, great
+			$this->vin_to_parent_post_id[$vin] = $parent_posts[0]->ID;
+			return $parent_posts[0]->ID;
+		}
+
+		return $value;
+	}
+
+	function find_post_meta_value( $post_array, $meta_key ) {
+
+		if( ! isset( $post_array['postmeta'] ) ) {
+			return;
+		}
+
+		foreach( $post_array['postmeta'] as $meta ) {
+			if( $meta['key'] == $meta_key ) {
+				return $meta['value'];
+			}
+		}
+
+		return false;
+	}
+
 	function force_term_recount( $term_taxonomy_ids, $term_ids, $taxonomy, $post_id, $post ) {
 		wp_update_term_count_now( $term_taxonomy_ids, $taxonomy );
 	}
@@ -548,21 +565,6 @@ class Inventory_Presser_Modify_Imports {
 		return $posts;
 	}
 
-	function find_post_meta_value( $post_array, $meta_key ) {
-
-		if( ! isset( $post_array['postmeta'] ) ) {
-			return;
-		}
-
-		foreach( $post_array['postmeta'] as $meta ) {
-			if( $meta['key'] == $meta_key ) {
-				return $meta['value'];
-			}
-		}
-
-		return false;
-	}
-
 	function remove_existing_post_from_import_purge_list( $post ) {
 		/**
 		 * Loop through all the posts the importer is about to import that we
@@ -581,6 +583,32 @@ class Inventory_Presser_Modify_Imports {
 			}
 		}
 		return $post;
+	}
+
+	//Set thumbnail IDs for vehicles that should have them.
+	function set_thumbnails() {
+
+		//get all post IDs that do not have thumbnails and the ID of the thumbnail that we want
+		global $wpdb;
+		$rows = $wpdb->get_results(
+			"SELECT $wpdb->posts.ID AS post_id, attachments.ID AS thumbnail_id
+
+		    FROM $wpdb->posts LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = '_thumbnail_id' )
+		    LEFT JOIN $wpdb->postmeta vinmeta ON ($wpdb->posts.ID = vinmeta.post_id AND vinmeta.meta_key = 'inventory_presser_vin' )
+		    LEFT JOIN $wpdb->posts attachments ON ($wpdb->posts.ID = attachments.post_parent and attachments.guid LIKE CONCAT( '%', vinmeta.meta_value, '.%' ) )
+
+		    WHERE 1=1
+		    AND ( $wpdb->postmeta.post_id IS NULL ) AND $wpdb->posts.post_type = 'inventory_vehicle'
+		    AND ( $wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'future' OR $wpdb->posts.post_status = 'draft' OR $wpdb->posts.post_status = 'pending' OR $wpdb->posts.post_status = 'private')
+		    AND 0 < ( SELECT COUNT(ID) FROM $wpdb->posts attachments WHERE post_parent = $wpdb->posts.ID GROUP BY attachments.post_parent )
+
+		    GROUP BY $wpdb->posts.ID
+		    ORDER BY $wpdb->posts.post_date DESC"
+		);
+
+		foreach( $rows as $row ) {
+			update_post_meta( $row->post_id, '_thumbnail_id', $row->thumbnail_id );
+		}
 	}
 
 	function update_existing_unique_post_meta_values( $post_id, $key, $value ) {
