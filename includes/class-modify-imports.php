@@ -585,20 +585,22 @@ class Inventory_Presser_Modify_Imports {
 		return $post;
 	}
 
-	//Set thumbnail IDs for vehicles that should have them.
+	//Set thumbnail IDs for vehicles that should have them. This data may not
+	//arrive via the import when post IDs are not specified in the WXR file.
 	function set_thumbnails() {
 
-		//get all post IDs that do not have thumbnails and the ID of the thumbnail that we want
 		global $wpdb;
+		$wpdb->show_errors = true;
 		$rows = $wpdb->get_results(
 			"SELECT $wpdb->posts.ID AS post_id, attachments.ID AS thumbnail_id
 
-		    FROM $wpdb->posts LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = '_thumbnail_id' )
+			FROM $wpdb->posts LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = '_thumbnail_id' )
 		    LEFT JOIN $wpdb->postmeta vinmeta ON ($wpdb->posts.ID = vinmeta.post_id AND vinmeta.meta_key = 'inventory_presser_vin' )
 		    LEFT JOIN $wpdb->posts attachments ON ($wpdb->posts.ID = attachments.post_parent and attachments.guid LIKE CONCAT( '%', vinmeta.meta_value, '.%' ) )
 
 		    WHERE 1=1
-		    AND ( $wpdb->postmeta.post_id IS NULL ) AND $wpdb->posts.post_type = 'inventory_vehicle'
+		    AND $wpdb->posts.post_type = 'inventory_vehicle'
+		    AND $wpdb->postmeta.post_id IS NULL
 		    AND ( $wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'future' OR $wpdb->posts.post_status = 'draft' OR $wpdb->posts.post_status = 'pending' OR $wpdb->posts.post_status = 'private')
 		    AND 0 < ( SELECT COUNT(ID) FROM $wpdb->posts attachments WHERE post_parent = $wpdb->posts.ID GROUP BY attachments.post_parent )
 
@@ -606,8 +608,47 @@ class Inventory_Presser_Modify_Imports {
 		    ORDER BY $wpdb->posts.post_date DESC"
 		);
 
-		foreach( $rows as $row ) {
-			update_post_meta( $row->post_id, '_thumbnail_id', $row->thumbnail_id );
+			/*
+			 * Find post IDs that have attachments but no thumbnail, and the
+			 * post ID of the thumbnail we want to drop in place.
+
+
+			SELECT $wpdb->posts.ID AS post_id, attachments.ID AS thumbnail_id
+
+			/**
+			 * Join the posts table to postmeta so we can find out if the posts
+			 * have thumbnails. Join the posts table to postmeta again so we can
+			 * use the VIN. Join the posts table to itself to find out if
+			 * the posts have attachments.
+			 *
+
+		    FROM $wpdb->posts LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = '_thumbnail_id' )
+		    LEFT JOIN $wpdb->postmeta vinmeta ON ($wpdb->posts.ID = vinmeta.post_id AND vinmeta.meta_key = 'inventory_presser_vin' )
+		    LEFT JOIN $wpdb->posts attachments ON ($wpdb->posts.ID = attachments.post_parent and attachments.guid LIKE CONCAT( '%', vinmeta.meta_value, '.%' ) )
+
+		    /**
+		     * Make sure we are acting on our vehicles only via post_type.
+		     * If the postmeta post_id is null, that means the post has no post
+		     * meta key _thumbnail_id, and has no thumbnail.
+		     * The post_status conditions mean anything but autodrafts and
+		     * trashed posts.
+		     * Make sure the number of attachments is greater than zero.
+		     *
+
+		    WHERE 1=1
+		    AND $wpdb->posts.post_type = 'inventory_vehicle'
+		    AND $wpdb->postmeta.post_id IS NULL
+		    AND ( $wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'future' OR $wpdb->posts.post_status = 'draft' OR $wpdb->posts.post_status = 'pending' OR $wpdb->posts.post_status = 'private')
+		    AND 0 < ( SELECT COUNT(ID) FROM $wpdb->posts attachments WHERE post_parent = $wpdb->posts.ID GROUP BY attachments.post_parent )
+
+		    GROUP BY $wpdb->posts.ID
+		    ORDER BY $wpdb->posts.post_date DESC
+			*/
+
+		if( 0 < $wpdb->num_rows ) {
+			foreach( $rows as $row ) {
+				update_post_meta( $row->post_id, '_thumbnail_id', $row->thumbnail_id );
+			}
 		}
 	}
 
