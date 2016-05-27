@@ -114,6 +114,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		// process shortcode attributes
 		$atts = shortcode_atts(array(
 			'per_page' => 15,
+			'columns' => 3,
 			'captions' => 'true',
 		), $atts);
 
@@ -144,7 +145,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 				$grid_html .= '<li><a class="grid-link" href="'.$vehicle->url.'">';
 
-				$grid_html .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large').');">';
+				$grid_html .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'medium').');">';
 				$grid_html .= "</div>";
 
 				if ($atts['captions']) {
