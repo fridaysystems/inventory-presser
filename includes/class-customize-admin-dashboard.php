@@ -45,6 +45,17 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		add_meta_box('featured', 'Featured Vehicle', array( &$this, 'meta_box_html_featured' ), $this->post_type(), 'side', 'low' );
 	}
 
+	function add_vehicles_to_admin_bar() {
+		global $wp_admin_bar;
+
+		$wp_admin_bar->add_node( array(
+			'id'     => 'wp-admin-bar-vehicles',
+			'title'  => 'Vehicles',
+			'href'   => admin_url( 'edit.php?post_type=' . $this->post_type ),
+			'parent' => 'site-name',
+		) );
+	}
+
 	function annotate_add_media_button( $context ) {
 		return $context .
 			$this->create_delete_all_post_attachments_button() .
@@ -108,6 +119,9 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 		//Define an AJAX handler for the 'Delete all inventory' button
 		add_action( 'wp_ajax_delete_all_inventory', array( &$this, 'delete_all_inventory_ajax' ) );
+
+		//Add a link to the main menu of the Admin bar
+		add_action( 'admin_bar_menu', array( &$this, 'add_vehicles_to_admin_bar' ), 11 );
 	}
 
 	function create_add_media_button_annotation( ) {
