@@ -4,6 +4,7 @@
  * at http://jeremyhixon.com/wp-tools/option-page/
  *
  * This handles a couple options for _dealer theme, will likely combine this with import options
+ * Found in admin under Settings -> Dealership Options
  *
  */
 
@@ -79,6 +80,14 @@ class _dealer_settings {
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
 		);
+
+		add_settings_field( 
+			'hide_contact_button_single', 
+			'Availability Button', 
+			array( $this, 'contact_button_single_callback'), 
+			'dealership-options-admin', 
+			'dealership_options_setting_section' 
+		);
 	}
 
 	public function dealership_options_sanitize($input) {
@@ -93,6 +102,10 @@ class _dealer_settings {
 
 		if ( isset( $input['use_carfax'] ) ) {
 			$sanitary_values['use_carfax'] = $input['use_carfax'];
+		}
+
+		if ( isset( $input['hide_contact_button_single'] ) ) {
+			$sanitary_values['hide_contact_button_single'] = $input['hide_contact_button_single'];
 		}
 
 		return $sanitary_values;
@@ -138,6 +151,13 @@ class _dealer_settings {
 		printf(
 			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">Display CarFax Links</label>',
 			( isset( $this->_dealer_settings['use_carfax'] ) && $this->_dealer_settings['use_carfax'] === 'use_carfax' ) ? 'checked' : ''
+		);
+	}
+
+	public function contact_button_single_callback() {
+		printf(
+			'<input type="checkbox" name="_dealer_settings[hide_contact_button_single]" id="hide_contact_button_single" value="hide_contact_button_single" %s> <label for="hide_contact_button_single">Hide check availability button on single vehicle page</label>',
+			( isset( $this->_dealer_settings['hide_contact_button_single'] ) && $this->_dealer_settings['hide_contact_button_single'] === 'hide_contact_button_single' ) ? 'checked' : ''
 		);
 	}
 
