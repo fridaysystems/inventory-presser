@@ -46,6 +46,10 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 	}
 
 	function add_vehicles_to_admin_bar() {
+
+		//do not do this if we are already looking at the dashboard
+		if( is_admin() ) { return; }
+
 		global $wp_admin_bar;
 
 		$wp_admin_bar->add_node( array(
