@@ -688,56 +688,103 @@ class KBB_Widget extends WP_Widget {
 // Stock Photo Slider
 class Stock_Photo_Slider extends WP_Widget {
 
-	var $images = array(
-		'default' => array('text'=>'Bordered Rectangle', 'img'=>'kelley-blue-book.jpg'),
+	// the image sets, follow the pattern to add more
+	private $image_sets = array(
+		'audi' => array(
+			'label' => 'Audi',
+			'photos' => array(
+				'audi-1.jpg',
+				'audi-2.jpg',
+				),
+			),
+		'bmw' => array(
+			'label' => 'BMW',
+			'photos' => array(
+				'bmw-1.jpg',
+				'bmw-2.jpg',
+				'bmw-3.jpg',
+				),
+			),
+		'ford' => array(
+			'label' => 'Ford',
+			'photos' => array(
+				'ford-2013-taurus.jpg',
+				'ford-2015-explorer.jpg',
+				'ford-2015-taurus.jpg',
+				'ford-2016-focus.jpg',
+				'ford-2017-escape.jpg',
+				),
+			),
+		'hyundai' => array(
+			'label' => 'Hyundai',
+			'photos' => array(
+				'hyundai-2016-elantra.jpg',
+				'hyundai-2016-genesis.jpg',
+				'hyundai-2016-santa-fe.jpg',
+				),
+			),
+		'mercedes' => array(
+			'label' => 'Mercedes-Benz',
+			'photos' => array(
+				'mercedes-1.jpg',
+				'mercedes-2.jpg',
+				'mercedes-3.jpg',
+				),
+			),
+		'nissan' => array(
+			'label' => 'Nissan',
+			'photos' => array(
+				'nissan-2013-altima.jpg',
+				'nissan-2016-altima.jpg',
+				'nissan-2016-pulsar.jpg',
+				'nissan-2016-sentra.jpg',
+				),
+			),
 		);
 
 	function __construct() {
 		parent::__construct(
 			'_invp_sps',
-			'Stock Photo Slider', 
-			array( 'description' => 'KBB image with link to kbb.com', ) 
+			'Dealer Stock Photo Slider', 
+			array( 'description' => 'Full width slider, choose various image sets to display.', ) 
 		);
 	}
 
 	// front-end
 	public function widget( $args, $instance ) {
 
+		$image_pool = array();
+		// merge each photo set into one array
+		foreach ($instance['image_sets'] as $set) {
+			$image_pool = array_merge($image_pool, $this->image_sets[$set]['photos']);
+		}
+		// mix em up for random display
+		shuffle($image_pool);
+		// take the first 5
+		$display_images = array_slice($image_pool, 0, 5);
+		// base url of photos
+		$base_url = plugins_url( '/assets/stock-slider/', dirname(__FILE__));
+
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		// before and after widget arguments are defined by themes
 		echo $args['before_widget'];
+
 		if (!empty( $title ))
 		echo $args['before_title'] . $title . $args['after_title'];
 
 		?>
 
-<div class="flexslider flex-native">
-<ul class="slides">
-<li><?php echo sprintf('<img src="%s">',plugins_url( '/assets/sliders/german/slider-1.jpg', dirname(__FILE__))); ?></li>
-<li><?php echo sprintf('<img src="%s">',plugins_url( '/assets/sliders/german/slider-2.jpg', dirname(__FILE__))); ?></li>
-<li><?php echo sprintf('<img src="%s">',plugins_url( '/assets/sliders/german/slider-3.jpg', dirname(__FILE__))); ?></li>
-<li><?php echo sprintf('<img src="%s">',plugins_url( '/assets/sliders/german/slider-4.jpg', dirname(__FILE__))); ?></li>
-<li><?php echo sprintf('<img src="%s">',plugins_url( '/assets/sliders/german/slider-5.jpg', dirname(__FILE__))); ?></li>
-<li><?php echo sprintf('<img src="%s">',plugins_url( '/assets/sliders/german/slider-6.jpg', dirname(__FILE__))); ?></li>
-<li><?php echo sprintf('<img src="%s">',plugins_url( '/assets/sliders/german/slider-7.jpg', dirname(__FILE__))); ?></li>
-<li><?php echo sprintf('<img src="%s">',plugins_url( '/assets/sliders/german/slider-8.jpg', dirname(__FILE__))); ?></li>
-</ul>
-</div>
+		<div class="flexslider flex-native">
+		<ul class="slides">
+		<?php foreach ($display_images as $filename) {
+			echo sprintf('<li><img src="%s"></li>',$base_url.$filename);
+		}
+		?>
+		
+		</ul>
+		</div>
 
 		<?php
-
-		/*$image_keys = array_keys($this->images);
-		$image = (in_array($instance['image'], $image_keys)) ? $instance['image'] : $image_keys[0];
-
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		// before and after widget arguments are defined by themes
-		echo $args['before_widget'];
-		if (!empty( $title ))
-		echo $args['before_title'] . $title . $args['after_title'];
-
-		echo wpautop($instance['before_image']);
-		echo sprintf('<a href="%s" target="_blank"><img src="%s"></a>','http://kbb.com',plugins_url( '/assets/'.$this->images[$image]['img'], dirname(__FILE__)));
-		echo wpautop($instance['after_image']);*/
 		
 		echo $args['after_widget'];
 	}
@@ -745,12 +792,10 @@ class Stock_Photo_Slider extends WP_Widget {
 	// Widget Backend 
 	public function form( $instance ) {
 
-		$image_keys = array_keys($this->images);
+		$image_keys = array_keys($this->image_sets);
 
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
-		$before_image = isset($instance[ 'before_image' ]) ? $instance[ 'before_image' ] : '';
-		$image = isset($instance[ 'image' ]) ? $instance[ 'image' ] : $image_keys[0];
-		$after_image = isset($instance[ 'after_image' ]) ? $instance[ 'after_image' ] : '';
+		$selected_sets = isset($instance[ 'image_sets' ]) ? $instance[ 'image_sets' ] : $image_keys;
 
 		// Widget admin form
 		?>
@@ -758,37 +803,38 @@ class Stock_Photo_Slider extends WP_Widget {
 		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
-		<p>
-		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:' ); ?></label> 
-		<textarea class="widefat" id="<?php echo $this->get_field_id('before_image'); ?>" name="<?php echo $this->get_field_name('before_image'); ?>"><?php echo esc_attr( $before_image ); ?></textarea>
-		</p>
-		<p>
-		<label for="<?php echo $this->get_field_id( 'image' ); ?>"><?php _e( 'Image:' ); ?></label> 
-
-		<select class="widefat" id="<?php echo $this->get_field_id('image'); ?>" name="<?php echo $this->get_field_name('image'); ?>">
-		<?php foreach ($this->images as $key => $imginfo) {
-			$select_text = ($key == $image) ? ' selected' : '';
-			echo sprintf('<option value="%s"%s>%s</option>',$key,$select_text,$imginfo['text']);
-		} ?>
-		</select>
-
-		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'after_image' ); ?>"><?php _e( 'Text after image:' ); ?></label> 
-		<textarea class="widefat" id="<?php echo $this->get_field_id('after_image'); ?>" name="<?php echo $this->get_field_name('after_image'); ?>"><?php echo esc_attr( $after_image ); ?></textarea>
+		<label for="<?php echo $this->get_field_id( 'image_sets[]' ); ?>"><?php _e( 'Image Sets:' ); ?></label> 
+
+		<table>
+		<?php
+
+		foreach ($this->image_sets as $slug => $info) {
+			$checked = in_array($slug, $selected_sets) ? ' checked' : '';
+			echo sprintf('<tr><td><input type="checkbox" id="%s" name="%s" value="%s"%s></td><td>%s</td></tr>',
+				$this->get_field_id('image_sets'),
+				$this->get_field_name('image_sets[]'),
+				$slug,
+				$checked,
+				$info['label'].' ('.count($info['photos']).')'
+				);
+		}
+
+		?>
+		</table>
+
 		</p>
+
 		<?php
 	}
 		
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
-		$image_keys = array_keys($this->images);
+		$image_keys = array_keys($this->image_sets);
 		$instance = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['before_image'] = ( ! empty( $new_instance['before_image'] ) ) ? strip_tags( $new_instance['before_image'] ) : '';
-		$instance['image'] = ( ! empty( $new_instance['image'] ) ) ? strip_tags( $new_instance['image'] ) : $image_keys[0];
-		$instance['after_image'] = ( ! empty( $new_instance['after_image'] ) ) ? strip_tags( $new_instance['after_image'] ) : '';
+		$instance['image_sets'] = ( ! empty( $new_instance['image_sets'] ) ) ? $new_instance['image_sets'] : $image_keys;
 		return $instance;
 	}
 

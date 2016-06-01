@@ -114,10 +114,13 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		// process shortcode attributes
 		$atts = shortcode_atts(array(
 			'per_page' => 15,
+			'columns' => 3,
 			'captions' => 'true',
+			'button' => 'true',
 		), $atts);
 
 		$atts['captions'] = 'true' === $atts['captions'];
+		$atts['button'] = 'true' === $atts['button'];
 
 		$args=array(
 			'posts_per_page'=>$atts['per_page'],
@@ -144,7 +147,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 				$grid_html .= '<li><a class="grid-link" href="'.$vehicle->url.'">';
 
-				$grid_html .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large').');">';
+				$grid_html .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'medium').');">';
 				$grid_html .= "</div>";
 
 				if ($atts['captions']) {
@@ -159,7 +162,9 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 			$grid_html .= '</ul><div class="clear"></div>';
 			$grid_html .= "</div>";
-			$grid_html .= '<a href="'.get_post_type_archive_link( 'inventory_vehicle' ).'" class="_button _button-med">Full Inventory</a>';
+			if ($atts['button']) {
+				$grid_html .= '<a href="'.get_post_type_archive_link( 'inventory_vehicle' ).'" class="_button _button-med">Full Inventory</a>';
+			}
 
 		}
 
