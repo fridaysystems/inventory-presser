@@ -600,7 +600,7 @@ class Inventory_Presser_Modify_Imports {
 
 		    WHERE 1=1
 		    AND $wpdb->posts.post_type = 'inventory_vehicle'
-		    AND $wpdb->postmeta.post_id IS NULL
+		    AND $wpdb->postmeta.meta_value IS NULL
 		    AND ( $wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'future' OR $wpdb->posts.post_status = 'draft' OR $wpdb->posts.post_status = 'pending' OR $wpdb->posts.post_status = 'private')
 		    AND 0 < ( SELECT COUNT(ID) FROM $wpdb->posts attachments WHERE post_parent = $wpdb->posts.ID GROUP BY attachments.post_parent )
 
@@ -628,8 +628,8 @@ class Inventory_Presser_Modify_Imports {
 
 		    /**
 		     * Make sure we are acting on our vehicles only via post_type.
-		     * If the postmeta post_id is null, that means the post has no post
-		     * meta key _thumbnail_id, and has no thumbnail.
+		     * If the postmeta value is null, that means the post has no post
+		     * meta key _thumbnail_id (or has the row but the value contains null), and has no thumbnail.
 		     * The post_status conditions mean anything but autodrafts and
 		     * trashed posts.
 		     * Make sure the number of attachments is greater than zero.
@@ -637,7 +637,7 @@ class Inventory_Presser_Modify_Imports {
 
 		    WHERE 1=1
 		    AND $wpdb->posts.post_type = 'inventory_vehicle'
-		    AND $wpdb->postmeta.post_id IS NULL
+		    AND $wpdb->postmeta.meta_value IS NULL
 		    AND ( $wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'future' OR $wpdb->posts.post_status = 'draft' OR $wpdb->posts.post_status = 'pending' OR $wpdb->posts.post_status = 'private')
 		    AND 0 < ( SELECT COUNT(ID) FROM $wpdb->posts attachments WHERE post_parent = $wpdb->posts.ID GROUP BY attachments.post_parent )
 
@@ -647,6 +647,7 @@ class Inventory_Presser_Modify_Imports {
 
 		if( 0 < $wpdb->num_rows ) {
 			foreach( $rows as $row ) {
+				if( null == $row->thumbnail_id ) { continue; }
 				update_post_meta( $row->post_id, '_thumbnail_id', $row->thumbnail_id );
 			}
 		}
