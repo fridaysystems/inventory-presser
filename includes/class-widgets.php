@@ -742,14 +742,10 @@ class Stock_Photo_Slider extends WP_Widget {
 			),
 		);
 
-	var $images = array(
-		'default' => array('text'=>'Bordered Rectangle', 'img'=>'kelley-blue-book.jpg'),
-		);
-
 	function __construct() {
 		parent::__construct(
 			'_invp_sps',
-			'Stock Photo Slider', 
+			'Dealer Stock Photo Slider', 
 			array( 'description' => 'Full width slider, choose various image sets to display.', ) 
 		);
 	}
