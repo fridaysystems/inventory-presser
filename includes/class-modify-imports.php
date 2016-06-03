@@ -85,6 +85,7 @@ class Inventory_Presser_Modify_Imports {
 		add_action( 'import_end', array( &$this, 'delete_posts_not_found_in_new_import' ) );
 
 		add_action( 'import_end', array( &$this, 'set_thumbnails' ), 13 );
+		add_action( 'skipped_import', array( &$this, 'set_thumbnails' ) );
 	}
 
 	function allow_fetch_attachments( $value /* boolean */, $URL ) {
