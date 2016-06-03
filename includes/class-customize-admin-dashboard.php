@@ -125,7 +125,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		add_action( 'wp_ajax_delete_all_inventory', array( &$this, 'delete_all_inventory_ajax' ) );
 
 		//Add a link to the main menu of the Admin bar
-		add_action( 'admin_bar_menu', array( &$this, 'add_vehicles_to_admin_bar' ), 11 );
+		add_action( 'admin_bar_menu', array( &$this, 'add_vehicles_to_admin_bar' ), 100 );
 	}
 
 	function create_add_media_button_annotation( ) {
