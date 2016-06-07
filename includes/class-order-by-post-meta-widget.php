@@ -13,8 +13,10 @@ class Order_By_Widget extends WP_Widget {
  			array( 'description' => __( 'A widget that allows users to sort posts by post meta values', 'inventory_presser' ), ) // Args
  		);
 
- 		//Load our JavaScript
- 		add_action( 'wp_enqueue_scripts', array( &$this, 'load_javascript' ) );
+		//include scripts if widget is used
+		if( is_active_widget( false, false, self::ID_BASE ) ) {
+ 			add_action( 'wp_enqueue_scripts', array( &$this, 'load_javascript' ) );
+ 		}
  	}
 
 	/**
@@ -23,11 +25,7 @@ class Order_By_Widget extends WP_Widget {
 	 * @param array $instance The widget options
 	 */
 	public function form( $instance ) {
-		if ( isset( $instance[ 'title' ] ) ) {
-			$title = $instance[ 'title' ];
-		} else {
-			$title = '';
-		}
+		$title = ( isset( $instance[ 'title' ] ) ? $instance[ 'title' ] : '' );
         ?>
          <p>
           <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
@@ -35,7 +33,7 @@ class Order_By_Widget extends WP_Widget {
         </p>
         <?php
 		$args = array(
-			'public'   => true,
+			'public' => true,
 		);
 		$already_turned_on_keys = array();
 		if( isset( $instance['post-meta-keys'] ) ) {
@@ -122,10 +120,8 @@ class Order_By_Widget extends WP_Widget {
 	}
 
 	function load_javascript( ) {
-		if( is_active_widget( false, false, self::ID_BASE ) ) {
-			wp_register_script( 'order-by-widget-javascript', plugins_url( 'js/order-by-post-meta-widget.js', dirname( __FILE__ ) ) );
-			wp_enqueue_script( 'order-by-widget-javascript' );
-		}
+		wp_register_script( 'order-by-widget-javascript', plugins_url( 'js/order-by-post-meta-widget.js', dirname( __FILE__ ) ) );
+		wp_enqueue_script( 'order-by-widget-javascript' );
 	}
 
 	/**
@@ -136,7 +132,7 @@ class Order_By_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
-		$instance['title'] = strip_tags($new_instance['title']);
+		$instance['title'] = strip_tags( $new_instance['title'] );
 		$tax_args = array(
 			'public'   => true,
 			'_builtin' => false,
