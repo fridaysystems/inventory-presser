@@ -94,6 +94,8 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		if (is_array($instance['cb_display']) && count($instance['cb_display']) > 0) {
 
 			$title = apply_filters( 'widget_title', $instance['title'] );
+			$cb_showclosed = (isset($instance['cb_showclosed']) && $instance['cb_showclosed'] == 'true');
+
 			// before and after widget arguments are defined by themes TODO??
 			echo $args['before_widget'];
 			
@@ -133,7 +135,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 								// do a check to make sure we want to output this row
 								$echo_row = false;
-								if (($hourset[$i]['appt'] == 1) || (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close']))) {
+								if (($hourset[$i]['appt'] == 1) || (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) || $cb_showclosed) {
 									$echo_row = true;
 								} elseif ($i < 6) {
 									// check the remaining days, output current day if there are other displayed days following
@@ -155,7 +157,9 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 									echo sprintf('<tr%s>',$current_row_class);
 									echo sprintf('<td>%s</td>',$this->days[$i]);
 
-									if ($hourset[$i]['appt'] == 1) {
+									if ($hourset[$i]['appt'] == 1 && !empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
+										echo sprintf('<td colspan="2">%s - %s & Appointment</td>',$hourset[$i]['open'],$hourset[$i]['close']);
+									} elseif ($hourset[$i]['appt'] == 1) {
 										echo '<td colspan="2">Appointment Only</td>';
 									} elseif (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
 										echo sprintf('<td>%s</td>',$hourset[$i]['open']);
@@ -195,6 +199,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : 'Hours';
 		$cb_display = isset($instance['cb_display']) ? $instance['cb_display'] : array();
 		$cb_title = isset($instance['cb_title']) ? $instance['cb_title'] : array();
+		$cb_showclosed = isset($instance[ 'cb_showclosed' ]) ? ' checked' : '';
 
 		// get all locations
 		$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
@@ -235,6 +240,11 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		<label for="<?php echo $this->get_field_id('title'); ?>">Main Title</label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
 		</p>
+		
+		<p>
+		<label for="<?php echo $this->get_field_id('cb_showclosed'); ?>">Show All Closed Days</label>
+		<input type="checkbox" id="<?php echo $this->get_field_id('cb_showclosed'); ?>" name="<?php echo $this->get_field_name('cb_showclosed'); ?>" value="true"<?php echo $cb_showclosed; ?>>
+		</p>
 		<p><?php echo $hours_table; ?></p>
 		<?php
 	}
@@ -246,6 +256,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['cb_display'] = ( !empty( $new_instance['cb_display'] ) ) ? $new_instance['cb_display'] : array();
 		$instance['cb_title'] = ( !empty( $new_instance['cb_title'] ) ) ? $new_instance['cb_title'] : array();
+		$instance['cb_showclosed'] = ( !empty( $new_instance['cb_showclosed'] ) ) ? $new_instance['cb_showclosed'] : '';
 
 		return $instance;
 	}
@@ -857,8 +868,6 @@ class Inventory_Slider extends WP_Widget {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$showcount = $instance['showcount'];
 
-		//$atts['captions'] = 'true' === $atts['captions'];
-
 		$gpargs=array(
 			'numberposts'=> $showcount * 5,
 			'post_type'=>'inventory_vehicle',
@@ -915,7 +924,7 @@ class Inventory_Slider extends WP_Widget {
 			
 			for ($i=1; $i < 8; $i++) { 
 				$select_text = ($i == $showcount) ? ' selected' : '';
-				echo sprintf('<option value="%1$d"%2$s>%1$d</option>',$i,$select_text,$i);
+				echo sprintf('<option value="%1$d"%2$s>%1$d</option>',$i,$select_text);
 			}
 
 		?>
