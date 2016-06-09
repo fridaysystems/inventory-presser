@@ -840,6 +840,104 @@ class Stock_Photo_Slider extends WP_Widget {
 
 } // Class Stock_Photo_Slider
 
+// Inventory Slider
+class Inventory_Slider extends WP_Widget {
+
+	function __construct() {
+		parent::__construct(
+			'_invp_slick',
+			'Dealer Inventory Slider',
+			array( 'description' => 'Shows random linked inventory featured images', ) 
+		);
+	}
+
+	// front-end
+	public function widget( $args, $instance ) {
+
+		$title = apply_filters( 'widget_title', $instance['title'] );
+		$showcount = $instance['showcount'];
+
+		//$atts['captions'] = 'true' === $atts['captions'];
+
+		$gpargs=array(
+			'numberposts'=> $showcount * 5,
+			'post_type'=>'inventory_vehicle',
+			'meta_key'=>'_thumbnail_id',
+			'fields' => 'ids',
+			'orderby'=>'rand',
+			'order' => 'ASC'
+		);
+
+		$inventory_ids = get_posts( $gpargs );
+
+		if ($inventory_ids) {
+
+			// before and after widget arguments are defined by themes
+			echo $args['before_widget'];
+			if (!empty( $title ))
+				echo $args['before_title'] . $title . $args['after_title'];
+
+
+			echo sprintf('<div class="widget-inventory-slide" data-slick=\'{"slidesToShow": %1$d, "slidesToScroll": %1$d}\'>', $showcount);
+
+			foreach ($inventory_ids as $inventory_id) {
+
+				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
+				echo sprintf('<div class="widget-inventory-slide-wrap"><a href="%s"><div class="slick-background-image" style="background-image: url(%s);">',$vehicle->url,wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large'));
+				// add optional text - $vehicle->post_title
+				echo '</div></a></div>';
+				
+			}
+
+			echo '</div>';
+
+		}
+	
+		echo $args['after_widget'];
+	}
+			
+	// Widget Backend 
+	public function form( $instance ) {
+
+		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
+		$showcount = isset($instance[ 'showcount' ]) ? $instance[ 'showcount' ] : 3;
+
+		// Widget admin form
+		?>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'showcount' ); ?>"><?php _e( 'Vehicles to show:' ); ?></label>
+		<select class="widefat" id="<?php echo $this->get_field_id('showcount'); ?>" name="<?php echo $this->get_field_name('showcount'); ?>">
+		<?php
+			
+			for ($i=1; $i < 8; $i++) { 
+				$select_text = ($i == $showcount) ? ' selected' : '';
+				echo sprintf('<option value="%1$d"%2$s>%1$d</option>',$i,$select_text,$i);
+			}
+
+		?>
+		</select>
+		</p>
+
+		<?php
+	}
+		
+	// Updating widget replacing old instances with new
+	public function update( $new_instance, $old_instance ) {
+		$instance = array();
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['showcount'] = ( ! empty( $new_instance['showcount'] ) ) ? strip_tags( $new_instance['showcount'] ) : 3;
+		return $instance;
+	}
+
+} // Class Inventory_Slider
+
+
+
+
 // bootstrap class for these widgets
 class Inventory_Presser_Location_Widgets {
 
@@ -855,6 +953,7 @@ class Inventory_Presser_Location_Widgets {
 		register_widget('Carfax_Widget');
 		register_widget('KBB_Widget');
 		register_widget('Stock_Photo_Slider');
+		register_widget('Inventory_Slider');
 	}
 
 	function check_ids() {
