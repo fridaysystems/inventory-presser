@@ -288,7 +288,7 @@ class Inventory_Presser_Modify_Imports {
 					)
 				) );
 
-				if( 1 < $duplicates->found_posts ) {
+				if( 1 < sizeof( $duplicates ) ) {
 					/**
 					 * There is at least one other post in the database with the
 					 * same VIN, dettach this post's photos before deleting.
