@@ -900,9 +900,10 @@ class Inventory_Slider extends WP_Widget {
 
 			echo '</div>';
 
+			echo $args['after_widget'];
+
 		}
 	
-		echo $args['after_widget'];
 	}
 			
 	// Widget Backend 
