@@ -269,6 +269,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		 */
 		$orphan_media = get_posts( array(
 			'posts_per_page' => -1,
+			'post_status'    => 'inherit',
 			'post_type'      => 'attachment',
 			'meta_query'     => array(
 				array(
