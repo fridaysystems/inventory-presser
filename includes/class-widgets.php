@@ -372,6 +372,13 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			'repeater' => '<h2><a href="tel:%1$s">%1$s</a></h2>',
 			'after' => '',
 			),
+		'large_table_left' => array(
+			'selector' => 'Large tabled, left label',
+			'uses_labels' => true,
+			'before' => '<table>',
+			'repeater' => '<tr><td>%1$s</td><td class="phone-link"><a href="tel:%2$s">%2$s</a></td><tr>',
+			'after' => '</table>',
+			),
 		'large_left_label' => array(
 			'selector' => 'Large, small left label',
 			'uses_labels' => true,
@@ -948,6 +955,163 @@ class Inventory_Slider extends WP_Widget {
 
 
 
+// Inventory Grid
+class Inventory_Grid extends WP_Widget {
+
+	private $column_options = array(3,4,5);
+
+	function __construct() {
+		parent::__construct(
+			'_invp_inventory_grid',
+			'Dealer Inventory Grid', 
+			array( 'description' => 'Display a grid of linked inventory images.', ) 
+		);
+	}
+
+	 private function get_column_options_html($selected_term) {
+ 		$html = '';
+ 		foreach ($this->column_options as $index => $columns) {
+ 			$selected = ($selected_term == $columns) ? ' selected' : '';
+ 			$html .= sprintf('<option value="%1$d"%2$s>%1$d columns</option>', $columns, $selected);
+ 		}
+ 		return $html;
+ 	}
+
+	// front-end
+	public function widget( $args, $instance ) {
+
+		$title = apply_filters( 'widget_title', $instance['title'] );
+		$columns = (isset($instance['columns'])) ? $instance['columns'] : 5;
+		$limit = (isset($instance['limit'])) ? $instance['limit'] : $columns * 3;
+		$show_captions = (isset($instance['cb_showcaptions']) && $instance['cb_showcaptions'] == 'true');
+		$show_button = (isset($instance['cb_showbutton']) && $instance['cb_showbutton'] == 'true');
+
+		switch ($columns) {
+		    case 3:
+		        $col_class = 'one-third';
+		        break;
+		    case 4:
+		        $col_class = 'one-fourth';
+		        break;
+		    case 5:
+		        $col_class = 'one-fifth';
+		        break;
+		}
+
+		$limit = ($limit != 0) ? $limit : -1;
+
+		// before and after widget arguments are defined by themes
+		echo $args['before_widget'];
+		if (!empty( $title ))
+		echo $args['before_title'] . $title . $args['after_title'];
+
+		$gp_args=array(
+			'posts_per_page'=>$limit,
+			'post_type'=>'inventory_vehicle',
+			'meta_key'=>'_thumbnail_id',
+			'fields' => 'ids',
+			'orderby'=>'rand',
+			'order' => 'ASC'
+		);
+
+		$inventory_ids = get_posts( $gp_args );
+
+		$grid_html = '';
+
+		if ($inventory_ids) {
+
+			$grid_html .= '<div class="invp-grid pad cf">';
+			$grid_html .= '<ul class="grid-slides">';
+
+			foreach ($inventory_ids as $inventory_id) {
+
+				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
+
+
+				$grid_html .= '<li class="grid '.$col_class.'"><a class="grid-link" href="'.$vehicle->url.'">';
+
+				$grid_html .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large').');">';
+				$grid_html .= "</div>";
+
+				if ($show_captions) {
+					$grid_html .= "<p class=\"grid-caption\">";
+					$grid_html .= $vehicle->post_title;
+					$grid_html .= "</p>";
+				}
+
+				$grid_html .= "</a></li>\n";
+
+			}
+
+			$grid_html .= '</ul>';
+			$grid_html .= "</div>";
+			if ($show_button) {
+				$grid_html .= '<div class="invp-grid-button"><a href="'.get_post_type_archive_link( 'inventory_vehicle' ).'" class="_button _button-med">Full Inventory</a></div>';
+			}
+
+		}
+
+		echo $grid_html;
+
+		echo $args['after_widget'];
+	}
+			
+	// Widget Backend 
+	public function form( $instance ) {
+
+		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
+		$columns = (isset($instance['columns'])) ? $instance['columns'] : 5;
+		$limit = (isset($instance['limit'])) ? $instance['limit'] : $columns * 3;
+		$cb_showcaptions = (isset($instance['cb_showcaptions']) && $instance['cb_showcaptions'] == 'true') ? ' checked' : '';
+		$cb_showbutton = (isset($instance['cb_showbutton']) && $instance['cb_showbutton'] == 'true') ? ' checked' : '';
+
+		// Widget admin form
+		?>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>">Title:</label> 
+		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+
+		<p>
+		<label for="<?php echo $this->get_field_id('columns'); ?>">Display Format:</label> 
+		<select class="widefat" id="<?php echo $this->get_field_id('columns'); ?>" name="<?php echo $this->get_field_name('columns'); ?>">
+		<?php echo $this->get_column_options_html($columns); ?>
+		</select>
+		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'limit' ); ?>">Maximum:</label>
+		<input class="widefat" id="<?php echo $this->get_field_id('limit'); ?>" name="<?php echo $this->get_field_name('limit'); ?>" type="number" value="<?php echo esc_attr( $limit ); ?>" />
+		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id('cb_showcaptions'); ?>">Show Captions:</label>
+		<input type="checkbox" id="<?php echo $this->get_field_id('cb_showcaptions'); ?>" name="<?php echo $this->get_field_name('cb_showcaptions'); ?>" value="true"<?php echo $cb_showcaptions; ?>>
+		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id('cb_showbutton'); ?>">Show Inventory Button:</label>
+		<input type="checkbox" id="<?php echo $this->get_field_id('cb_showbutton'); ?>" name="<?php echo $this->get_field_name('cb_showbutton'); ?>" value="true"<?php echo $cb_showbutton; ?>>
+		</p>
+
+		<?php
+	}
+		
+	// Updating widget replacing old instances with new
+	public function update( $new_instance, $old_instance ) {
+
+		$instance = array();
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['columns'] = ( ! empty( $new_instance['columns'] ) ) ? strip_tags( $new_instance['columns'] ) : 5;
+		$instance['limit'] = ( ! empty( $new_instance['limit'] ) ) ? strip_tags( $new_instance['limit'] ) : 15;
+		$instance['cb_showcaptions'] = ( !empty( $new_instance['cb_showcaptions'] ) ) ? $new_instance['cb_showcaptions'] : '';
+		$instance['cb_showbutton'] = ( !empty( $new_instance['cb_showbutton'] ) ) ? $new_instance['cb_showbutton'] : '';
+
+		return $instance;
+	}
+
+} // Class Inventory_Grid
+
+
+
+
 // bootstrap class for these widgets
 class Inventory_Presser_Location_Widgets {
 
@@ -964,6 +1128,7 @@ class Inventory_Presser_Location_Widgets {
 		register_widget('KBB_Widget');
 		register_widget('Stock_Photo_Slider');
 		register_widget('Inventory_Slider');
+		register_widget('Inventory_Grid');
 	}
 
 	function check_ids() {
