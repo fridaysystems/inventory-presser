@@ -263,6 +263,25 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 				}
 			}
 		}
+		/**
+		 * Delete media that is managed by this plugin but may not be attached
+		 * to a vehicle at this time.
+		 */
+		$orphan_media = get_posts( array(
+			'posts_per_page' => -1,
+			'post_status'    => 'any',
+			'post_type'      => 'attachment',
+			'meta_query'     => array(
+				array(
+					'key'     => '_inventory_presser_photo_number',
+					'compare' => 'EXISTS'
+				)
+			),
+		) );
+		foreach( $orphan_media as $post ) {
+			wp_delete_post( $post->ID );
+		}
+
 		return $deleted_count;
 	}
 

@@ -53,18 +53,11 @@ class Inventory_Presser_Modify_Imports {
 		//remove the posts from the list of posts to delete as they come through the import
 		add_action( 'wp_import_post_and_type_exist', array( &$this, 'remove_existing_post_from_import_purge_list' ) );
 
-		//this filter wraps the output of a post_exists() call
-		add_filter( 'post_exists', array( &$this, 'inventory_post_exists' ), 10, 2 );
-
 		add_action( 'wp_import_parsing_attachment', array( &$this, 'keep_track_of_attachment_counts' ), 10, 1 );
 
 		//Delete the pending import folder when the user deletes all plugin data
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
 
-		//All our meta keys are unique, so tell the importer so
-		add_filter( 'wp_import_post_meta_unique', '__return_true' );
-		//Likewise with term meta keys, they are unique
-		add_filter( 'wp_import_term_meta_unique', '__return_true' );
 		/**
 		 * Also make sure these unique post keys get updated, because they will
 		 * be ignored by the importer because they are unique and already exist
@@ -83,9 +76,6 @@ class Inventory_Presser_Modify_Imports {
 		 * feed. Delete them.
 		 */
 		add_action( 'import_end', array( &$this, 'delete_posts_not_found_in_new_import' ) );
-
-		add_action( 'import_end', array( &$this, 'set_thumbnails' ), 13 );
-		add_action( 'skipped_import', array( &$this, 'set_thumbnails' ) );
 	}
 
 	function allow_fetch_attachments( $value /* boolean */, $URL ) {
@@ -288,7 +278,7 @@ class Inventory_Presser_Modify_Imports {
 					)
 				) );
 
-				if( 1 < $duplicates->found_posts ) {
+				if( 1 < sizeof( $duplicates ) ) {
 					/**
 					 * There is at least one other post in the database with the
 					 * same VIN, dettach this post's photos before deleting.
@@ -387,11 +377,6 @@ class Inventory_Presser_Modify_Imports {
 		wp_update_term_count_now( $term_taxonomy_ids, $taxonomy );
 	}
 
-	function get_post_ID_from_guid( $guid ){
-		global $wpdb;
-		return $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE guid=%s", $guid ) );
-	}
-
 	/**
 	 * True or false: there is an attachment with a $file_name like file.jpg
 	 *
@@ -401,40 +386,6 @@ class Inventory_Presser_Modify_Imports {
 		global $wpdb;
 		$id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND guid LIKE %s", '%%/' .$file_name ) );
 		return '' != $id;
-	}
-
-	function inventory_post_exists ( $value, $post ) {
-
-		if( 0 != $value ) {
-			return $value;
-		}
-
-		if( 'attachment' == $post['post_type'] ) {
-			//does an attachment exist with the same guid?
-			$post_id = $this->get_post_ID_from_guid( $post['guid'] );
-			if( null != $post_id ) { return $post_id; }
-		} else {
-			//check for a VIN match
-			if ( isset( $post['postmeta'] ) ){
-				foreach ( $post['postmeta'] as $meta ) {
-					if( 'inventory_presser_vin' == $meta['key'] ) {
-						$posts = get_posts( array(
-							'post_type'  => $this->post_type,
-							'meta_query' => array(
-								array(
-									'key'   => $meta['key'],
-									'value' => $meta['value'],
-								)
-							)
-						) );
-						if( 0 < count( $posts ) ) {
-							return $posts[0]->ID;
-						}
-					}
-				}
-			}
-		}
-		return $value;
 	}
 
 	/**
@@ -584,74 +535,6 @@ class Inventory_Presser_Modify_Imports {
 			}
 		}
 		return $post;
-	}
-
-	//Set thumbnail IDs for vehicles that should have them. This data may not
-	//arrive via the import when post IDs are not specified in the WXR file.
-	function set_thumbnails() {
-
-		global $wpdb;
-		$wpdb->show_errors = true;
-		$rows = $wpdb->get_results(
-			"SELECT $wpdb->posts.ID AS post_id, attachments.ID AS thumbnail_id
-
-			FROM $wpdb->posts LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = '_thumbnail_id' )
-		    LEFT JOIN $wpdb->postmeta vinmeta ON ($wpdb->posts.ID = vinmeta.post_id AND vinmeta.meta_key = 'inventory_presser_vin' )
-		    LEFT JOIN $wpdb->posts attachments ON ($wpdb->posts.ID = attachments.post_parent and attachments.guid LIKE CONCAT( '%', vinmeta.meta_value, '.%' ) )
-
-		    WHERE 1=1
-		    AND $wpdb->posts.post_type = 'inventory_vehicle'
-		    AND $wpdb->postmeta.meta_value IS NULL
-		    AND ( $wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'future' OR $wpdb->posts.post_status = 'draft' OR $wpdb->posts.post_status = 'pending' OR $wpdb->posts.post_status = 'private')
-		    AND 0 < ( SELECT COUNT(ID) FROM $wpdb->posts attachments WHERE post_parent = $wpdb->posts.ID GROUP BY attachments.post_parent )
-
-		    GROUP BY $wpdb->posts.ID
-		    ORDER BY $wpdb->posts.post_date DESC"
-		);
-
-			/*
-			 * Find post IDs that have attachments but no thumbnail, and the
-			 * post ID of the thumbnail we want to drop in place.
-
-
-			SELECT $wpdb->posts.ID AS post_id, attachments.ID AS thumbnail_id
-
-			/**
-			 * Join the posts table to postmeta so we can find out if the posts
-			 * have thumbnails. Join the posts table to postmeta again so we can
-			 * use the VIN. Join the posts table to itself to find out if
-			 * the posts have attachments.
-			 *
-
-		    FROM $wpdb->posts LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = '_thumbnail_id' )
-		    LEFT JOIN $wpdb->postmeta vinmeta ON ($wpdb->posts.ID = vinmeta.post_id AND vinmeta.meta_key = 'inventory_presser_vin' )
-		    LEFT JOIN $wpdb->posts attachments ON ($wpdb->posts.ID = attachments.post_parent and attachments.guid LIKE CONCAT( '%', vinmeta.meta_value, '.%' ) )
-
-		    /**
-		     * Make sure we are acting on our vehicles only via post_type.
-		     * If the postmeta value is null, that means the post has no post
-		     * meta key _thumbnail_id (or has the row but the value contains null), and has no thumbnail.
-		     * The post_status conditions mean anything but autodrafts and
-		     * trashed posts.
-		     * Make sure the number of attachments is greater than zero.
-		     *
-
-		    WHERE 1=1
-		    AND $wpdb->posts.post_type = 'inventory_vehicle'
-		    AND $wpdb->postmeta.meta_value IS NULL
-		    AND ( $wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'future' OR $wpdb->posts.post_status = 'draft' OR $wpdb->posts.post_status = 'pending' OR $wpdb->posts.post_status = 'private')
-		    AND 0 < ( SELECT COUNT(ID) FROM $wpdb->posts attachments WHERE post_parent = $wpdb->posts.ID GROUP BY attachments.post_parent )
-
-		    GROUP BY $wpdb->posts.ID
-		    ORDER BY $wpdb->posts.post_date DESC
-			*/
-
-		if( 0 < $wpdb->num_rows ) {
-			foreach( $rows as $row ) {
-				if( null == $row->thumbnail_id ) { continue; }
-				update_post_meta( $row->post_id, '_thumbnail_id', $row->thumbnail_id );
-			}
-		}
 	}
 
 	function update_existing_unique_post_meta_values( $post_id, $key, $value ) {

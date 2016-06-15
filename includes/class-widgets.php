@@ -68,7 +68,7 @@ class Inventory_Presser_Location_Helper {
     	if ($meta_updated && $update) {
     		update_term_meta($term_id, 'location-phone-hours', $meta_array);
     	}
-    	
+
     	return $meta_array;
 
     }
@@ -82,9 +82,9 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 	function __construct() {
 		parent::__construct(
-			'_invp_hours', 
-			'Dealer Hours', 
-			array( 'description' => 'Select and display hours of operation.', ) 
+			'_invp_hours',
+			'Dealer Hours',
+			array( 'description' => 'Select and display hours of operation.', )
 		);
 	}
 
@@ -98,9 +98,10 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 			// before and after widget arguments are defined by themes TODO??
 			echo $args['before_widget'];
-			
-			if ( ! empty( $title ) )
-			echo $args['before_title'] . $title . $args['after_title'];
+
+			if ( ! empty( $title ) ) {
+				echo $args['before_title'] . $title . $args['after_title'];
+			}
 			echo '<div class="invp-hours">';
 
 			// get all locations
@@ -149,7 +150,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 										break;
 									}
 								}
-								
+
 								// output row
 								if ($echo_row) {
 
@@ -167,7 +168,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 									} else {
 										echo '<td colspan="2">Closed</td>';
 									}
-								    
+
 								    echo '</tr>';
 
 								}
@@ -192,8 +193,8 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		}
 
 	}
-			
-	// Widget Backend 
+
+	// Widget Backend
 	public function form( $instance ) {
 
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : 'Hours';
@@ -219,10 +220,10 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 	    			$cb_display_checked = (isset($cb_display[$term_id]) && is_array($cb_display[$term_id]) && in_array($uid, $cb_display[$term_id])) ? ' checked' : '';
 	    			$cb_display_text = sprintf('<input type="checkbox" id="%s" name="%s" value="%s"%s />', $this->get_field_id('cb_display'), $this->get_field_name('cb_display['.$term_id.'][]'), $uid, $cb_display_checked);
-	    			
+
 	    			$cb_title_checked = (isset($cb_title[$term_id]) && is_array($cb_title[$term_id]) && in_array($uid, $cb_title[$term_id])) ? ' checked' : '';
 	    			$cb_title_text = sprintf('<input type="checkbox" id="%s" name="%s" value="%s"%s />', $this->get_field_id('cb_title'), $this->get_field_name('cb_title['.$term_id.'][]'), $uid, $cb_title_checked);
-	    			
+
 	    			$hours_table .= sprintf('<tr><td><strong>%s</strong></td><td>%s</td><td>%s</td></tr>',
 	    									$hourset_title,
 	    									$cb_display_text,
@@ -248,7 +249,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		<p><?php echo $hours_table; ?></p>
 		<?php
 	}
-		
+
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
 
@@ -271,8 +272,8 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'_invp_adress',
-			'Dealer Address', 
-			array( 'description' => 'Select and display addresses.', ) 
+			'Dealer Address',
+			array( 'description' => 'Select and display addresses.', )
 		);
 	}
 
@@ -282,18 +283,19 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		// before and after widget arguments are defined by themes
 		echo $args['before_widget'];
-		if (!empty( $title ))
-		echo $args['before_title'] . $title . $args['after_title'];
+		if (!empty( $title )) {
+			echo $args['before_title'] . $title . $args['after_title'];
+		}
 
 		foreach ($instance['cb_display'] as $i => $term_id) {
 			$location = get_term($term_id, 'location');
 			echo '<div>'.nl2br($location->description).'</div>';
 		}
-		
+
 		echo $args['after_widget'];
 	}
-			
-	// Widget Backend 
+
+	// Widget Backend
 	public function form( $instance ) {
 
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
@@ -301,7 +303,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		// get all locations
 		$location_terms = get_terms('location', array('hide_empty'=>false));
 
-		// set 
+		// set
 		if (isset($instance['cb_display'])) {
 			$cb_display = $instance['cb_display'];
 		} else {
@@ -312,7 +314,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 				$cb_display = array();
 			}
 		}
-		
+
 	    $address_table = '<table><tbody>';
 	    $address_table .= '<tr><td colspan="2">Select Addresses to Display</td></tr>';
 
@@ -335,13 +337,13 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p><?php echo $address_table; ?></p>
 		<?php
 	}
-		
+
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
@@ -398,8 +400,8 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'_invp_phone',
-			'Dealer Phone Number', 
-			array( 'description' => 'Select and display phone numbers.', ) 
+			'Dealer Phone Number',
+			array( 'description' => 'Select and display phone numbers.', )
 		);
 	}
 
@@ -455,8 +457,8 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		}
 
 	}
-			
-	// Widget Backend 
+
+	// Widget Backend
 	public function form( $instance ) {
 		$title = isset($instance['title']) ? $instance['title'] : '';
 		$format = isset($instance['format']) ? $instance['format'] : current(array_keys($this->formats));
@@ -496,11 +498,11 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>">Title (optional):</label> 
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>">Title (optional):</label>
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('format'); ?>">Display Format:</label> 
+			<label for="<?php echo $this->get_field_id('format'); ?>">Display Format:</label>
 			<select class="widefat" id="<?php echo $this->get_field_id('format'); ?>" name="<?php echo $this->get_field_name('format'); ?>">
 			<?php
 			foreach ($this->formats as $key => $format_array) {
@@ -513,7 +515,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		<p><?php echo $phones_table; ?></p>
 		<?php
 	}
-		
+
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
@@ -541,8 +543,8 @@ class Carfax_Widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'_invp_carfax',
-			'Carfax Reports', 
-			array( 'description' => 'Advertise Carfax Report with Inventory Link', ) 
+			'Carfax Reports',
+			array( 'description' => 'Advertise Carfax Report with Inventory Link', )
 		);
 	}
 
@@ -561,11 +563,11 @@ class Carfax_Widget extends WP_Widget {
 		echo wpautop($instance['before_image']);
 		echo sprintf('<a href="%s"><img src="%s"></a>',get_post_type_archive_link( 'inventory_vehicle' ),plugins_url( '/assets/'.$this->images[$image]['img'], dirname(__FILE__)));
 		echo wpautop($instance['after_image']);
-		
+
 		echo $args['after_widget'];
 	}
-			
-	// Widget Backend 
+
+	// Widget Backend
 	public function form( $instance ) {
 
 		$image_keys = array_keys($this->images);
@@ -578,15 +580,15 @@ class Carfax_Widget extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:' ); ?></label>
 		<textarea class="widefat" id="<?php echo $this->get_field_id('before_image'); ?>" name="<?php echo $this->get_field_name('before_image'); ?>"><?php echo esc_attr( $before_image ); ?></textarea>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'image' ); ?>"><?php _e( 'Image:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'image' ); ?>"><?php _e( 'Image:' ); ?></label>
 
 		<select class="widefat" id="<?php echo $this->get_field_id('image'); ?>" name="<?php echo $this->get_field_name('image'); ?>">
 		<?php foreach ($this->images as $key => $imginfo) {
@@ -598,12 +600,12 @@ class Carfax_Widget extends WP_Widget {
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'after_image' ); ?>"><?php _e( 'Text after image:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'after_image' ); ?>"><?php _e( 'Text after image:' ); ?></label>
 		<textarea class="widefat" id="<?php echo $this->get_field_id('after_image'); ?>" name="<?php echo $this->get_field_name('after_image'); ?>"><?php echo esc_attr( $after_image ); ?></textarea>
 		</p>
 		<?php
 	}
-		
+
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
 		$image_keys = array_keys($this->images);
@@ -627,8 +629,8 @@ class KBB_Widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'_invp_kbb',
-			'Kelly Blue Book', 
-			array( 'description' => 'KBB image with link to kbb.com', ) 
+			'Kelly Blue Book',
+			array( 'description' => 'KBB image with link to kbb.com', )
 		);
 	}
 
@@ -647,11 +649,11 @@ class KBB_Widget extends WP_Widget {
 		echo wpautop($instance['before_image']);
 		echo sprintf('<a href="%s" target="_blank"><img src="%s"></a>','http://kbb.com',plugins_url( '/assets/'.$this->images[$image]['img'], dirname(__FILE__)));
 		echo wpautop($instance['after_image']);
-		
+
 		echo $args['after_widget'];
 	}
-			
-	// Widget Backend 
+
+	// Widget Backend
 	public function form( $instance ) {
 
 		$image_keys = array_keys($this->images);
@@ -664,15 +666,15 @@ class KBB_Widget extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:' ); ?></label>
 		<textarea class="widefat" id="<?php echo $this->get_field_id('before_image'); ?>" name="<?php echo $this->get_field_name('before_image'); ?>"><?php echo esc_attr( $before_image ); ?></textarea>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'image' ); ?>"><?php _e( 'Image:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'image' ); ?>"><?php _e( 'Image:' ); ?></label>
 
 		<select class="widefat" id="<?php echo $this->get_field_id('image'); ?>" name="<?php echo $this->get_field_name('image'); ?>">
 		<?php foreach ($this->images as $key => $imginfo) {
@@ -684,12 +686,12 @@ class KBB_Widget extends WP_Widget {
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'after_image' ); ?>"><?php _e( 'Text after image:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'after_image' ); ?>"><?php _e( 'Text after image:' ); ?></label>
 		<textarea class="widefat" id="<?php echo $this->get_field_id('after_image'); ?>" name="<?php echo $this->get_field_name('after_image'); ?>"><?php echo esc_attr( $after_image ); ?></textarea>
 		</p>
 		<?php
 	}
-		
+
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
 		$image_keys = array_keys($this->images);
@@ -763,8 +765,8 @@ class Stock_Photo_Slider extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'_invp_sps',
-			'Dealer Stock Photo Slider', 
-			array( 'description' => 'Full width slider, choose various image sets to display.', ) 
+			'Dealer Stock Photo Slider',
+			array( 'description' => 'Full width slider, choose various image sets to display.', )
 		);
 	}
 
@@ -798,16 +800,16 @@ class Stock_Photo_Slider extends WP_Widget {
 			echo sprintf('<li><img src="%s"></li>',$base_url.$filename);
 		}
 		?>
-		
+
 		</ul>
 		</div>
 
 		<?php
-		
+
 		echo $args['after_widget'];
 	}
-			
-	// Widget Backend 
+
+	// Widget Backend
 	public function form( $instance ) {
 
 		$image_keys = array_keys($this->image_sets);
@@ -818,12 +820,12 @@ class Stock_Photo_Slider extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'image_sets[]' ); ?>"><?php _e( 'Image Sets:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'image_sets[]' ); ?>"><?php _e( 'Image Sets:' ); ?></label>
 
 		<table>
 		<?php
@@ -846,7 +848,7 @@ class Stock_Photo_Slider extends WP_Widget {
 
 		<?php
 	}
-		
+
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
 		$image_keys = array_keys($this->image_sets);
@@ -1147,7 +1149,7 @@ class Inventory_Presser_Location_Widgets {
 		    }
 
 	    }
-	    
+
 	}
 
 }
