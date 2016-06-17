@@ -11,7 +11,6 @@ class Inventory_Presser_Option_Manager {
 		$options = array(
 			'default-sort-key'                 => apply_filters( 'translate_meta_field_key', 'make' ),
 			'default-sort-order'               => 'ASC',
-			'delete-vehicles-not-in-new-feeds' => true,
 		);
 		return apply_filters( 'inventory_presser_default_options', $options );
 	}

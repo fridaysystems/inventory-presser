@@ -107,7 +107,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function add_pretty_search_urls( ) {
 			global $wp_rewrite;
-			$wp_rewrite->rules = $this->generate_rewrite_rules(self::CUSTOM_POST_TYPE) + $wp_rewrite->rules;
+			$wp_rewrite->rules = $this->generate_rewrite_rules( self::CUSTOM_POST_TYPE ) + $wp_rewrite->rules;
 		}
 
 		function __construct( ) {
@@ -153,14 +153,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			/**
 			 * Affect the way some importers work
 			 */
-			$option_manager = new Inventory_Presser_Option_Manager();
-			$options = $option_manager->get_options( );
-			if( ! isset( $options['delete-vehicles-not-in-new-feeds'] ) ) {
-				$default_options = $option_manager->get_default_options();
-				$options['delete-vehicles-not-in-new-feeds'] = $default_options['delete-vehicles-not-in-new-feeds'];
-				$option_manager->save_options( $options );
-			}
-			$modify_imports = new Inventory_Presser_Modify_Imports( $this->post_type(), $options['delete-vehicles-not-in-new-feeds'] );
+			$modify_imports = new Inventory_Presser_Modify_Imports( $this->post_type() );
 
 			/**
 			 * Make a widget available to sort vehicles by post meta fields.

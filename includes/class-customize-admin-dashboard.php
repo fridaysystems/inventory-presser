@@ -184,9 +184,8 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 					}
 				}
 				return $note;
-			} else {
-				return '0 photos';
 			}
+			return '0 photos';
 		}
 	}
 
@@ -355,7 +354,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		if ( $query->is_main_query() && ( $orderby = $query->get( 'orderby' ) ) ) {
 
 			if( 'inventory_presser_photo_count' != $orderby ) {
-				return $pieces ;
+				return $pieces;
 			}
 
 			// Get the order query variable - ASC or DESC
@@ -630,19 +629,23 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$custom_fields = get_post_custom( $post_id );
 		$val = ( isset( $custom_fields[$column_name] ) ? $custom_fields[$column_name][0] : '' );
 		switch( $column_name ) {
+
 			case 'inventory_presser_odometer':
 				$vehicle = new Inventory_Presser_Vehicle();
 				$vehicle->odometer = $val;
 				echo $vehicle->odometer();
 				break;
+
 			case 'inventory_presser_photo_count':
 				echo count( get_children( array( 'post_parent' => $post_id ) ) );
 				break;
+
 			case 'inventory_presser_price':
 				$vehicle = new Inventory_Presser_Vehicle();
 				$vehicle->price = $val;
 				echo $vehicle->price( '-' );
 				break;
+
 			default:
 				echo $val;
 		}
@@ -836,10 +839,9 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$orderby = $query->get( 'orderby' );
 		foreach( $columns as $column ) {
 			$meta_key = apply_filters( 'translate_meta_field_key', $column );
-			$meta_value_is_number = $vehicle->post_meta_value_is_number( $meta_key );
 			if ( $orderby == $meta_key ) {
 	            $query->set( 'meta_key', $meta_key );
-	            $query->set( 'orderby', 'meta_value' . ( $meta_value_is_number ? '_num' : '') );
+	            $query->set( 'orderby', 'meta_value' . ( $vehicle->post_meta_value_is_number( $meta_key ) ? '_num' : '' ) );
 	            return;
 			}
 		}
