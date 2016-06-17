@@ -114,7 +114,6 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		// process shortcode attributes
 		$atts = shortcode_atts(array(
 			'per_page' => 15,
-			'columns' => 3,
 			'captions' => 'true',
 			'button' => 'true',
 		), $atts);
