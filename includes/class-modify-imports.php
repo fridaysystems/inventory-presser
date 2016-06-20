@@ -14,11 +14,8 @@ class Inventory_Presser_Modify_Imports {
 
 	const PENDING_DIR_NAME = '_pending_import';
 
-	var $existing_posts_before_an_import;
 	var $post_type;
-	var $post_titles_that_were_deleted = array();
 	var $upload_dir;
-	var $vin_to_parent_post_id = array();
 
 	function __construct( $post_type ) {
 		$this->post_type = $post_type;
