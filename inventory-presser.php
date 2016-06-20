@@ -179,7 +179,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_options' ) );
 			//deactivate so the next page load doesn't restore the option & terms
-			add_action( 'inventory_presser_delete_all_data', array( &$this, 'deactivate' ) );
+			add_action( 'inventory_presser_delete_all_data', array( &$this, 'deactivate' ), 99 );
 
 		}
 

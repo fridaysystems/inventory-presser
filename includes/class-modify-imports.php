@@ -23,9 +23,6 @@ class Inventory_Presser_Modify_Imports {
 	function __construct( $post_type ) {
 		$this->post_type = $post_type;
 		$this->upload_dir = wp_upload_dir();
-
-		//Delete the pending import folder when the user deletes all plugin data
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
 	}
 
 	function associate_parentless_attachments_with_parents( ) {
@@ -90,32 +87,6 @@ class Inventory_Presser_Modify_Imports {
 				wp_delete_attachment( $attachment->ID, true );
 			}
 		}
-	}
-
-	function delete_directory( $dir ) {
-		if ( !file_exists( $dir ) ) {
-			return true;
-		}
-
-		if ( !is_dir( $dir ) ) {
-			return unlink( $dir );
-		}
-
-		foreach ( scandir( $dir ) as $item ) {
-			if ( $item == '.' || $item == '..' ) {
-				continue;
-			}
-
-			if ( !$this->delete_directory( $dir . DIRECTORY_SEPARATOR . $item ) ) {
-				return false;
-			}
-		}
-
-		return rmdir( $dir );
-	}
-
-	function delete_pending_import_folder( ) {
-		$result = $this->delete_directory( $this->upload_dir['basedir'] . '\\' . self::PENDING_DIR_NAME );
 	}
 
 	function extract_vin_from_attachment_url( $url ) {
