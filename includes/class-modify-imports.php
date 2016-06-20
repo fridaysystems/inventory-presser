@@ -24,61 +24,11 @@ class Inventory_Presser_Modify_Imports {
 		$this->post_type = $post_type;
 		$this->upload_dir = wp_upload_dir();
 
-		//don't actually download attachments during imports if they are already on this server
-		add_filter( 'import_allow_fetch_file', array( &$this, 'allow_fetch_attachments' ), 10, 2 ) ;
-
 		//Delete the pending import folder when the user deletes all plugin data
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
 
 		//Recount term relationships when a post's terms are updated during imports
 		add_action( 'wp_import_set_post_terms', array( &$this, 'force_term_recount' ), 10, 5 );
-	}
-
-	function allow_fetch_attachments( $value /* boolean */, $URL ) {
-		/**
-		 * Avoid downloading files that are 1) already in the uploads folder
-		 * and 2) already in a subfolder of the uploads folder.
-		 */
-		$attachment_URL_parts = parse_url( $URL );
-		$this_site_URL_parts = parse_url( $this->upload_dir['url'] );
-		$same_host = $this_site_URL_parts['host'] == $attachment_URL_parts['host'];
-		// They live on different servers, go fetch it
-		if( ! $same_host ){ return true; }
-		/**
-		 * Change the attachment path to match the format of the upload_dir path
-		 * by removing the file name and the slash right before it
-		 */
-		$attachment_path = substr( $attachment_URL_parts['path'], 0, strlen( $attachment_URL_parts['path'] ) - ( 1 + strlen( basename( $attachment_URL_parts['path'] ) ) ) );
-		$same_path = $this_site_URL_parts['path'] == $attachment_path;
-		//both paths point to the same location, do not fetch
-		if( $same_path ){ return false; }
-		/**
-	     * Perhaps the file is in a subfolder of the uploads folder.
-	     * Does the path to the attachment start with the path to the uploads folder?
-		 */
-		if( substr( $attachment_URL_parts['path'], 0, strlen( $this_site_URL_parts['path'] ) ) == $this_site_URL_parts['path'] ) {
-			/**
-			 * Yes, the file lives in a sub-folder of the uploads folder. Such as...
-			 * http://localhost/test-site/wp-content/uploads/{PENDING_DIR_NAME}/H517718-2.jpg
-			 * or, more recently,
-			 * http://localhost/test-site/wp-content/uploads/{PENDING_DIR_NAME}/{VIN}/H517718-2.jpg
-			 *
-			 * Copy the file to the uploads folder, preserving the path after the
-			 * pending directory.
-			 */
-			$source = $this->upload_dir['basedir'] . substr( $attachment_URL_parts['path'], strlen( $this_site_URL_parts['path'] ) );
-			$destination = str_replace( '/' . self::PENDING_DIR_NAME, '', $source );
-
-			if( is_file( $source ) && ( ! file_exists( $destination ) || filemtime( $source ) > filemtime( $destination ) ) ) {
-				//Does the directory exist?
-				if( ! is_dir( dirname( $destination ) ) ) {
-					mkdir( dirname( $destination ), 0777, true );
-				}
-				copy( $source, $destination );
-			}
-			return false;
-		}
-		return true;
 	}
 
 	function append_aborting_deletions_message( $arr ) {
