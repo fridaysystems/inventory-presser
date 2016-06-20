@@ -26,9 +26,6 @@ class Inventory_Presser_Modify_Imports {
 
 		//Delete the pending import folder when the user deletes all plugin data
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
-
-		//Recount term relationships when a post's terms are updated during imports
-		add_action( 'wp_import_set_post_terms', array( &$this, 'force_term_recount' ), 10, 5 );
 	}
 
 	function append_aborting_deletions_message( $arr ) {
@@ -137,10 +134,6 @@ class Inventory_Presser_Modify_Imports {
 		}
 
 		return $file_slug = substr( $file_slug, 0, $hyphen_pos );
-	}
-
-	function force_term_recount( $term_taxonomy_ids, $term_ids, $taxonomy, $post_id, $post ) {
-		wp_update_term_count_now( $term_taxonomy_ids, $taxonomy );
 	}
 
 	/**
