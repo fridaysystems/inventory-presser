@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: http://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 1.5.0
+ * Version: 2.0.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * License: GPLv2 or later
@@ -17,7 +17,6 @@ $inventory_presser_include_paths = array(
 	'includes/class-customize-admin-dashboard.php',
 	'includes/class-dealership-options.php', // This handles a couple options for _dealer theme, will likely combine this with import options
 	'includes/class-inventory-presser-vehicle.php',
-	'includes/class-modify-imports.php',
 	'includes/class-option-manager.php',
 	'includes/class-order-by-post-meta-widget.php',
 	'includes/class-shortcodes.php',
@@ -149,11 +148,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Translate friendly names to actual custom field keys
 			add_filter( 'translate_meta_field_key', array( &$this, 'translate_custom_field_names' ) );
-
-			/**
-			 * Affect the way some importers work
-			 */
-			$modify_imports = new Inventory_Presser_Modify_Imports( $this->post_type() );
 
 			/**
 			 * Make a widget available to sort vehicles by post meta fields.

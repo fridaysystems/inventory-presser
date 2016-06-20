@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.4
-Stable tag: 1.5.0
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,6 +58,9 @@ Vehicles or All Vehicles menu items. This screen shot was taken on version 0.4.
 and at this time there is no VIN decoder or support for vehicle options.
 
 == Changelog ==
+
+= 2.0.0 =
+* Stop manipulating imports. All import related code has been moved to another plugin where it belongs. Lots of code has been deleted.
 
 = 1.5.0 =
 * Stop pruning the pending attachments folder during every import via the import_end hook.
@@ -150,6 +153,9 @@ routine operates according to the photo naming convention we employ at Friday Sy
 * Edit.php is customized for our custom post type to list stock number, color, odometer, price & photo count
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+We are still in a private beta, but this version is the new stable tag.
 
 = 1 4.0 =
 The new location taxonomy links a vehicle to the address where a vehicle is located, making multi-lot management simple
