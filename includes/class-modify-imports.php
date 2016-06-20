@@ -28,11 +28,6 @@ class Inventory_Presser_Modify_Imports {
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_pending_import_folder' ) );
 	}
 
-	function append_aborting_deletions_message( $arr ) {
-		array_push( $arr, 'Not going to delete '. sizeof( $this->existing_posts_before_an_import ) .' posts after an import.<br />' );
-		return $arr;
-	}
-
 	function associate_parentless_attachments_with_parents( ) {
 
 		/**
