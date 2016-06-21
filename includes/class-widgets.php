@@ -79,13 +79,20 @@ class Inventory_Presser_Location_Helper {
 class Inventory_Presser_Location_Hours extends WP_Widget {
 
 	var $days = array('Mon','Tue','Wed','Thu','Fri','Sat','Sun');
+	const ID_BASE = '_invp_hours';
 
 	function __construct() {
 		parent::__construct(
-			'_invp_hours',
+			self::ID_BASE,
 			'Dealer Hours',
 			array( 'description' => 'Select and display hours of operation.', )
 		);
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+	}
+
+	public function delete_option() {
+		delete_option( 'widget_' . self::ID_BASE );
 	}
 
 	// widget front-end
@@ -241,7 +248,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		<label for="<?php echo $this->get_field_id('title'); ?>">Main Title</label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
 		</p>
-		
+
 		<p>
 		<label for="<?php echo $this->get_field_id('cb_showclosed'); ?>">Show All Closed Days</label>
 		<input type="checkbox" id="<?php echo $this->get_field_id('cb_showclosed'); ?>" name="<?php echo $this->get_field_name('cb_showclosed'); ?>" value="true"<?php echo $cb_showclosed; ?>>
@@ -269,12 +276,20 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 // Address Widget
 class Inventory_Presser_Location_Address extends WP_Widget {
 
+	const ID_BASE = 'invp_address';
+
 	function __construct() {
 		parent::__construct(
-			'_invp_adress',
+			self::ID_BASE,
 			'Dealer Address',
 			array( 'description' => 'Select and display addresses.', )
 		);
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+	}
+
+	public function delete_option() {
+		delete_option( 'widget_' . self::ID_BASE );
 	}
 
 	// front-end
@@ -397,12 +412,20 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			),
 		);
 
+	const ID_BASE = '_invp_phone';
+
 	function __construct() {
 		parent::__construct(
-			'_invp_phone',
+			self::ID_BASE,
 			'Dealer Phone Number',
 			array( 'description' => 'Select and display phone numbers.', )
 		);
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+	}
+
+	public function delete_option() {
+		delete_option( 'widget_' . self::ID_BASE );
 	}
 
 	// widget front-end
@@ -540,12 +563,20 @@ class Carfax_Widget extends WP_Widget {
 		'landscape' => array('text'=>'Landscape Blue', 'img'=>'carfax-show-me-landscape.jpg'),
 		);
 
+	const ID_BASE = '_invp_carfax';
+
 	function __construct() {
 		parent::__construct(
-			'_invp_carfax',
+			self::ID_BASE,
 			'Carfax Reports',
 			array( 'description' => 'Advertise Carfax Report with Inventory Link', )
 		);
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+	}
+
+	public function delete_option() {
+		delete_option( 'widget_' . self::ID_BASE );
 	}
 
 	// front-end
@@ -624,14 +655,22 @@ class KBB_Widget extends WP_Widget {
 
 	var $images = array(
 		'default' => array('text'=>'Bordered Rectangle', 'img'=>'kelley-blue-book.jpg'),
-		);
+	);
+
+	const ID_BASE = '_invp_kbb';
 
 	function __construct() {
 		parent::__construct(
-			'_invp_kbb',
+			self::ID_BASE,
 			'Kelly Blue Book',
 			array( 'description' => 'KBB image with link to kbb.com', )
 		);
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+	}
+
+	public function delete_option() {
+		delete_option( 'widget_' . self::ID_BASE );
 	}
 
 	// front-end
@@ -762,12 +801,20 @@ class Stock_Photo_Slider extends WP_Widget {
 			),
 		);
 
+	const ID_BASE = '_invp_sps';
+
 	function __construct() {
 		parent::__construct(
-			'_invp_sps',
+			self::ID_BASE,
 			'Dealer Stock Photo Slider',
 			array( 'description' => 'Full width slider, choose various image sets to display.', )
 		);
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+	}
+
+	public function delete_option() {
+		delete_option( 'widget_' . self::ID_BASE );
 	}
 
 	// front-end
@@ -863,12 +910,20 @@ class Stock_Photo_Slider extends WP_Widget {
 // Inventory Slider
 class Inventory_Slider extends WP_Widget {
 
+	const ID_BASE = '_invp_slick';
+
 	function __construct() {
 		parent::__construct(
-			'_invp_slick',
+			self::ID_BASE,
 			'Dealer Inventory Slider',
-			array( 'description' => 'Shows random linked inventory featured images', ) 
+			array( 'description' => 'Shows random linked inventory featured images', )
 		);
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+	}
+
+	public function delete_option() {
+		delete_option( 'widget_' . self::ID_BASE );
 	}
 
 	// front-end
@@ -904,7 +959,7 @@ class Inventory_Slider extends WP_Widget {
 				echo sprintf('<div class="widget-inventory-slide-wrap"><a href="%s"><div class="slick-background-image" style="background-image: url(%s);">',$vehicle->url,wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large'));
 				// add optional text - $vehicle->post_title
 				echo '</div></a></div>';
-				
+
 			}
 
 			echo '</div>';
@@ -912,10 +967,10 @@ class Inventory_Slider extends WP_Widget {
 			echo $args['after_widget'];
 
 		}
-	
+
 	}
-			
-	// Widget Backend 
+
+	// Widget Backend
 	public function form( $instance ) {
 
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
@@ -924,15 +979,15 @@ class Inventory_Slider extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'showcount' ); ?>"><?php _e( 'Vehicles to show:' ); ?></label>
 		<select class="widefat" id="<?php echo $this->get_field_id('showcount'); ?>" name="<?php echo $this->get_field_name('showcount'); ?>">
 		<?php
-			
-			for ($i=1; $i < 8; $i++) { 
+
+			for ($i=1; $i < 8; $i++) {
 				$select_text = ($i == $showcount) ? ' selected' : '';
 				echo sprintf('<option value="%1$d"%2$s>%1$d</option>',$i,$select_text);
 			}
@@ -943,7 +998,7 @@ class Inventory_Slider extends WP_Widget {
 
 		<?php
 	}
-		
+
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
@@ -962,15 +1017,23 @@ class Inventory_Grid extends WP_Widget {
 
 	private $column_options = array(3,4,5);
 
+	const ID_BASE = '_invp_inventory_grid';
+
 	function __construct() {
 		parent::__construct(
-			'_invp_inventory_grid',
-			'Dealer Inventory Grid', 
-			array( 'description' => 'Display a grid of linked inventory images.', ) 
+			self::ID_BASE,
+			'Dealer Inventory Grid',
+			array( 'description' => 'Display a grid of linked inventory images.', )
 		);
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
 	}
 
-	 private function get_column_options_html($selected_term) {
+	public function delete_option() {
+		delete_option( 'widget_' . self::ID_BASE );
+	}
+
+	private function get_column_options_html($selected_term) {
  		$html = '';
  		foreach ($this->column_options as $index => $columns) {
  			$selected = ($selected_term == $columns) ? ' selected' : '';
@@ -1057,8 +1120,8 @@ class Inventory_Grid extends WP_Widget {
 
 		echo $args['after_widget'];
 	}
-			
-	// Widget Backend 
+
+	// Widget Backend
 	public function form( $instance ) {
 
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
@@ -1070,12 +1133,12 @@ class Inventory_Grid extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>">Title:</label> 
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>">Title:</label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id('columns'); ?>">Display Format:</label> 
+		<label for="<?php echo $this->get_field_id('columns'); ?>">Display Format:</label>
 		<select class="widefat" id="<?php echo $this->get_field_id('columns'); ?>" name="<?php echo $this->get_field_name('columns'); ?>">
 		<?php echo $this->get_column_options_html($columns); ?>
 		</select>
@@ -1095,7 +1158,7 @@ class Inventory_Grid extends WP_Widget {
 
 		<?php
 	}
-		
+
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
 
