@@ -216,7 +216,19 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		//removes all the data we have added to the database
 
 		//delete all the vehicles
-		$deleted_count = $this->delete_all_inventory( );
+		$deleted_count = $this->delete_all_inventory();
+
+		//delete all terms
+		$taxonomies = new Inventory_Presser_Taxonomies( $this->post_type );
+		foreach( $taxonomies->slugs_array() as $taxonomy ) {
+			$terms = get_terms( array(
+				'taxonomy'   => $taxonomy,
+				'hide_empty' => false,
+			) );
+			foreach( $terms as $term ) {
+				wp_delete_term( $term->term_id, $taxonomy );
+			}
+		}
 
 		do_action( 'inventory_presser_delete_all_data' );
 	}

@@ -112,7 +112,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		function __construct( ) {
 
 			//Modify the administrator dashboard
-			$customize_dashboard = new Inventory_Presser_Customize_Admin_Dashboard( $this->post_type() );
+			$customize_dashboard = new Inventory_Presser_Customize_Admin_Dashboard( self::CUSTOM_POST_TYPE );
 
 			/**
 			 * Create our post type and taxonomies
@@ -122,7 +122,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_action( 'init', array( &$this, 'create_custom_post_type' ) );
 
 			//Create custom taxonomies
-			$this->taxonomies = new Inventory_Presser_Taxonomies( $this->post_type() );
+			$this->taxonomies = new Inventory_Presser_Taxonomies( self::CUSTOM_POST_TYPE );
 
 			/**
 			 * Some custom rewrite rules are created and destroyed
@@ -178,11 +178,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function create_custom_post_type( ) {
-			//we need an array of our taxonomy slugs
-			//$taxonomies = Inventory_Presser_Taxonomies( $this->post_type() );
 			//creates a custom post type that will be used by this plugin
 			register_post_type(
-				$this->post_type(),
+				self::CUSTOM_POST_TYPE,
 				apply_filters(
 					'inventory_presser_post_type_args',
 					array (
@@ -346,10 +344,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// ATTENTION: This is *only* done during plugin activation hook in this example!
 			// You should *NEVER EVER* do this on every page load!!
 			flush_rewrite_rules( );
-		}
-
-		function post_type() {
-			return apply_filters( 'inventory_presser_post_type', self::CUSTOM_POST_TYPE );
 		}
 
 		function translate_custom_field_names( $nice_name ) {
