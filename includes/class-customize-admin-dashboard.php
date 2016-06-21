@@ -723,13 +723,12 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 	function settings_page_html( ) {
 
 		$option_manager = new Inventory_Presser_Option_Manager();
-		$options = $option_manager->get_options( );
+		$options = $option_manager->get_options();
 
 		//only take action if we find the nonce
 		if( isset( $_POST['save-options'] ) && check_admin_referer( $this->product_name_slug() . '-nonce' ) ) {
 			//save changes to the plugin's options
 			$new_options = $options;
-			$new_options['delete-vehicles-not-in-new-feeds'] = isset( $_POST['delete-vehicles-not-in-new-feeds'] );
 			if( isset( $_POST['default-sort-key'] ) ) {
 				$new_options['default-sort-key'] = $_POST['default-sort-key'];
 			}
@@ -767,14 +766,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 				<table class="form-table">
 				<tbody>
 				<tr>
-					<th scope="row"><label for="Imports">Imports</label></th>
-					<td>
-						<label for="delete-vehicles-not-in-new-feeds">
-							<input type="checkbox" name="delete-vehicles-not-in-new-feeds" id="delete-vehicles-not-in-new-feeds" <?php if( isset( $options['delete-vehicles-not-in-new-feeds'] ) && $options['delete-vehicles-not-in-new-feeds'] ) { echo 'checked="checked"'; } ?>/> <?php _e( 'When importing a feed, delete units not contained in the new feed' ) ?>
-						</label>
-					</td>
-				</tr>
-				<tr>
 					<th scope="row"><label for="Sort-vehicles-by">Sort vehicles by</label></th>
 					<td>
 						<label for="default-sort-key">
@@ -801,7 +792,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 							foreach( array( 'ascending' => 'ASC', 'descending' => 'DESC' ) as $direction => $abbr ) {
 								echo '<option value="'. $abbr . '"';
 								if( isset( $options['default-sort-order'] ) ) {
-									selected( $options['default-sort-order'], $direction );
+									selected( $options['default-sort-order'], $abbr );
 								}
 								echo '>' . $direction . '</option>';
 							}
@@ -822,6 +813,10 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 			<p><?php _e( 'Remove all ' . self::PRODUCT_NAME . ' plugin data (including vehicles and photos) and deactivate.' ) ?></p>
 			<input type="button" class="button-primary" value="<?php _e('Delete all Plugin Data') ?>" onclick="delete_all_data();" /><span id="delete-all-notice"></span>
+			<form id="delete-all-data" method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings">
+				<?php wp_nonce_field('delete-nonce'); ?>
+				<input type="hidden" name="delete" value="yes">
+			</form>
 		</div><?php
 	}
 

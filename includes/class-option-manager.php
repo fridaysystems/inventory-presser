@@ -9,18 +9,17 @@ class Inventory_Presser_Option_Manager {
 
 	function get_default_options( ) {
 		$options = array(
-			'default-sort-key'                 => apply_filters( 'translate_meta_field_key', 'make' ),
-			'default-sort-order'               => 'ASC',
+			'default-sort-key'   => apply_filters( 'translate_meta_field_key', 'make' ),
+			'default-sort-order' => 'ASC',
 		);
 		return apply_filters( 'inventory_presser_default_options', $options );
 	}
 
 	function get_options( ) {
 		$options = get_option( self::OPTION_NAME );
-		if( !$options ) {
+		if( ! $options ) {
 			$options = $this->get_default_options( );
 			$this->save_options( $options );
-			return $options;
 		}
 		return $options;
 	}
