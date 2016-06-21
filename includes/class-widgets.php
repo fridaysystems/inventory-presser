@@ -276,7 +276,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 // Address Widget
 class Inventory_Presser_Location_Address extends WP_Widget {
 
-	const ID_BASE = 'invp_address';
+	const ID_BASE = '_invp_address';
 
 	function __construct() {
 		parent::__construct(
