@@ -89,6 +89,14 @@ class _dealer_settings {
 			'dealership_options_setting_section' // section
 		);
 
+		add_settings_field(
+			'cargurus_badge', // id
+			'Cargurus', // title
+			array( $this, 'cargurus_badge_callback' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
 		add_settings_field( 
 			'hide_contact_button_single', 
 			'Availability Button', 
@@ -114,6 +122,14 @@ class _dealer_settings {
 
 		if ( isset( $input['use_carfax'] ) ) {
 			$sanitary_values['use_carfax'] = $input['use_carfax'];
+		}
+
+		if ( isset( $input['cargurus_badge_archive'] ) ) {
+			$sanitary_values['cargurus_badge_archive'] = $input['cargurus_badge_archive'];
+		}
+
+		if ( isset( $input['cargurus_badge_single'] ) ) {
+			$sanitary_values['cargurus_badge_single'] = $input['cargurus_badge_single'];
 		}
 
 		if ( isset( $input['hide_contact_button_single'] ) ) {
@@ -179,6 +195,18 @@ class _dealer_settings {
 		printf(
 			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">Display CarFax Links</label>',
 			( isset( $this->_dealer_settings['use_carfax'] ) && $this->_dealer_settings['use_carfax'] === 'use_carfax' ) ? 'checked' : ''
+		);
+	}
+
+	public function cargurus_badge_callback() {
+		printf(
+			'<input type="checkbox" name="_dealer_settings[cargurus_badge_archive]" id="cargurus_badge_archive" value="cargurus_badge_archive" %s> <label for="cargurus_badge_archive">Show Cargurus Badge on Vehicle Archive</label>',
+			( isset( $this->_dealer_settings['cargurus_badge_archive'] ) && $this->_dealer_settings['cargurus_badge_archive'] === 'cargurus_badge_archive' ) ? 'checked' : ''
+		);
+		print '<br/>';
+		printf(
+			'<input type="checkbox" name="_dealer_settings[cargurus_badge_single]" id="cargurus_badge_single" value="cargurus_badge_single" %s> <label for="cargurus_badge_single">Show Cargurus Badge on Vehicle Single</label>',
+			( isset( $this->_dealer_settings['cargurus_badge_single'] ) && $this->_dealer_settings['cargurus_badge_single'] === 'cargurus_badge_single' ) ? 'checked' : ''
 		);
 	}
 
