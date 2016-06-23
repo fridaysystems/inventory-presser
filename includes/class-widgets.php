@@ -950,8 +950,8 @@ class Inventory_Slider extends WP_Widget {
 			if (!empty( $title ))
 				echo $args['before_title'] . $title . $args['after_title'];
 
-
-			echo sprintf('<div class="widget-inventory-slide" data-slick=\'{"slidesToShow": %1$d, "slidesToScroll": %1$d}\'>', $showcount);
+			echo sprintf('<div class="slick-slider-element" data-slick=\'{"slidesToShow": %1$d, "slidesToScroll": %1$d, "easing": "ease", "autoplaySpeed": 4000, "speed": 2000}\'>', $showcount);
+			//echo sprintf('<div class="widget-inventory-slide" data-slick=\'{"slidesToShow": %1$d, "slidesToScroll": %1$d}\'>', $showcount);
 
 			foreach ($inventory_ids as $inventory_id) {
 
