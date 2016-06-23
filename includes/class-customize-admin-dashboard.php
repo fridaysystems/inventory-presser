@@ -20,7 +20,8 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$column['inventory_presser_color'] = 'Color';
 		$column['inventory_presser_odometer'] = 'Odometer';
 		$column['inventory_presser_price'] = 'Price';
-		$column['inventory_presser_photo_count'] = 'Photo count';
+		$column['inventory_presser_photo_count'] = 'Photos';
+		$column['inventory_presser_thumbnail'] = 'Thumbnail';
 		//remove the date and tags columns
 		unset( $column['date'] );
 		unset( $column['tags'] );
@@ -357,17 +358,11 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 	function enable_order_by_attachment_count( $pieces, $query ) {
 		if( ! is_admin() ) { return $pieces; }
 
-		global $wpdb;
-
 		/**
 		 * We only want our code to run in the main WP query
 		 * AND if an orderby query variable is designated.
 		 */
 		if ( $query->is_main_query() && ( $orderby = $query->get( 'orderby' ) ) ) {
-
-			if( 'inventory_presser_photo_count' != $orderby ) {
-				return $pieces;
-			}
 
 			// Get the order query variable - ASC or DESC
 			$order = strtoupper( $query->get( 'order' ) );
@@ -377,7 +372,10 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 				$order = 'ASC';
 			}
 
-			$pieces[ 'orderby' ] = "( SELECT COUNT( ID ) FROM {$wpdb->posts} forget WHERE post_parent = {$wpdb->posts}.ID ) $order, " . $pieces[ 'orderby' ];
+			if( 'inventory_presser_photo_count' == $orderby || 'inventory_presser_thumbnail' == $orderby ) {
+				global $wpdb;
+				$pieces[ 'orderby' ] = "( SELECT COUNT( ID ) FROM {$wpdb->posts} forget WHERE post_parent = {$wpdb->posts}.ID ) $order, " . $pieces[ 'orderby' ];
+			}
 	   }
 	   return $pieces;
 	}
@@ -419,6 +417,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			'inventory_presser_price'        => 'inventory_presser_price',
 			'inventory_presser_stock_number' => 'inventory_presser_stock_number',
 			'inventory_presser_photo_count'  => 'inventory_presser_photo_count',
+			'inventory_presser_thumbnail'    => 'inventory_presser_thumbnail',
 		);
 		return wp_parse_args( $custom, $columns );
 	}
@@ -641,6 +640,10 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$custom_fields = get_post_custom( $post_id );
 		$val = ( isset( $custom_fields[$column_name] ) ? $custom_fields[$column_name][0] : '' );
 		switch( $column_name ) {
+
+			case 'inventory_presser_thumbnail':
+				echo get_the_post_thumbnail( $post_id, 'thumbnail' );
+				break;
 
 			case 'inventory_presser_odometer':
 				$vehicle = new Inventory_Presser_Vehicle();
