@@ -161,6 +161,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * Deliver our promise to order posts, change the ORDER BY clause of
 			 * the query that's fetching post objects.
 			 */
+			$option_manager = new Inventory_Presser_Option_Manager();
+			$options = $option_manager->get_options();
 			if( ! is_admin() && ( isset( $_GET['orderby'] ) || isset( $options['default-sort-key'] ) ) ) {
 				add_action( 'pre_get_posts', array( &$this, 'add_orderby_to_query' ) );
 			}
