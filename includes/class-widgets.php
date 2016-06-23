@@ -207,7 +207,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : 'Hours';
 		$cb_display = isset($instance['cb_display']) ? $instance['cb_display'] : array();
 		$cb_title = isset($instance['cb_title']) ? $instance['cb_title'] : array();
-		$cb_showclosed = isset($instance[ 'cb_showclosed' ]) ? ' checked' : '';
+		$cb_showclosed = (isset($instance[ 'cb_showclosed' ]) && $instance[ 'cb_showclosed' ] == 'true') ? ' checked' : '';
 
 		// get all locations
 		$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
