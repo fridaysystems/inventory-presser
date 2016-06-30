@@ -799,6 +799,16 @@ class Stock_Photo_Slider extends WP_Widget {
 				'nissan-2016-sentra.jpg',
 				),
 			),
+		'boats' => array(
+			'label' => 'Boats',
+			'photos' => array(
+				'boat-1.jpg',
+				'boat-2.jpg',
+				'boat-3.jpg',
+				'boat-4.jpg',
+				'boat-5.jpg',
+				),
+			),
 		);
 
 	const ID_BASE = '_invp_sps';
