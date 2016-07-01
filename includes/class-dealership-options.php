@@ -82,6 +82,14 @@ class _dealer_settings {
 		);
 
 		add_settings_field(
+			'append_page', // id
+			'Vehicle Append Page', // title
+			array( $this, 'append_page_callback' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
+		add_settings_field(
 			'use_carfax', // id
 			'Use CarFax', // title
 			array( $this, 'use_carfax_callback' ), // callback
@@ -118,6 +126,10 @@ class _dealer_settings {
 
 		if ( isset( $input['privacy_page'] ) ) {
 			$sanitary_values['privacy_page'] = $input['privacy_page'];
+		}
+
+		if ( isset( $input['append_page'] ) ) {
+			$sanitary_values['append_page'] = $input['append_page'];
 		}
 
 		if ( isset( $input['use_carfax'] ) ) {
@@ -183,6 +195,22 @@ class _dealer_settings {
 		    'selected'              => isset($this->_dealer_settings['privacy_page']) ? $this->_dealer_settings['privacy_page'] : 0,
 		    'echo'                  => 1,
 		    'name'                  => '_dealer_settings[privacy_page]',
+		    'show_option_none'      => 'Not Set',
+		    'option_none_value'     => '0'
+		); 
+
+		wp_dropdown_pages($args);
+
+	}
+
+	public function append_page_callback() {
+
+		$args = array(
+		    'depth'                 => 0,
+		    'child_of'              => 0,
+		    'selected'              => isset($this->_dealer_settings['append_page']) ? $this->_dealer_settings['append_page'] : 0,
+		    'echo'                  => 1,
+		    'name'                  => '_dealer_settings[append_page]',
 		    'show_option_none'      => 'Not Set',
 		    'option_none_value'     => '0'
 		); 

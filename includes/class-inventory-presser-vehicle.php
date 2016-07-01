@@ -25,6 +25,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $trim = '';
 		var $vin = '';
 		var $year = 0;
+		var $youtube = '';
 
 		var $carfax_have_report = '0';
 		var $carfax_one_owner = '0';
@@ -181,6 +182,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				'trim',
 				'vin',
 				'year',
+				'youtube',
 			);
 		}
 
