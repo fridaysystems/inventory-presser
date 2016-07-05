@@ -112,6 +112,22 @@ class _dealer_settings {
 			'dealership-options-admin', 
 			'dealership_options_setting_section' 
 		);
+
+		add_settings_field( 
+			'autocheck_id', 
+			'Autocheck ID', 
+			array( $this, 'autocheck_callback'), 
+			'dealership-options-admin', 
+			'dealership_options_setting_section' 
+		);
+
+		add_settings_field( 
+			'msrp_label', 
+			'MSRP Label', 
+			array( $this, 'msrp_label_callback'), 
+			'dealership-options-admin', 
+			'dealership_options_setting_section' 
+		);
 	}
 
 	public function dealership_options_sanitize($input) {
@@ -146,6 +162,14 @@ class _dealer_settings {
 
 		if ( isset( $input['hide_contact_button_single'] ) ) {
 			$sanitary_values['hide_contact_button_single'] = $input['hide_contact_button_single'];
+		}
+
+		if ( isset( $input['autocheck_id'] ) ) {
+			$sanitary_values['autocheck_id'] = $input['autocheck_id'];
+		}
+
+		if ( isset( $input['msrp_label'] ) ) {
+			$sanitary_values['msrp_label'] = $input['msrp_label'];
 		}
 
 		return $sanitary_values;
@@ -242,6 +266,20 @@ class _dealer_settings {
 		printf(
 			'<input type="checkbox" name="_dealer_settings[hide_contact_button_single]" id="hide_contact_button_single" value="hide_contact_button_single" %s> <label for="hide_contact_button_single">Hide check availability button on single vehicle page</label>',
 			( isset( $this->_dealer_settings['hide_contact_button_single'] ) && $this->_dealer_settings['hide_contact_button_single'] === 'hide_contact_button_single' ) ? 'checked' : ''
+		);
+	}
+
+	public function autocheck_callback() {
+		printf(
+			'<input type="text" name="_dealer_settings[autocheck_id]" id="autocheck_id" value="%s">',
+			( isset( $this->_dealer_settings['autocheck_id'] )) ? $this->_dealer_settings['autocheck_id'] : ''
+		);
+	}
+
+	public function msrp_label_callback() {
+		printf(
+			'<input type="text" name="_dealer_settings[msrp_label]" id="msrp_label" value="%s">',
+			( isset( $this->_dealer_settings['msrp_label'] )) ? $this->_dealer_settings['msrp_label'] : ''
 		);
 	}
 

@@ -134,6 +134,12 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return '1' == $this->carfax_have_report;
 		}
 
+		function autocheck_icon_html() {
+			$autocheck_link = admin_url('admin-ajax.php?action=autocheck&vin='.$this->vin);
+			$autocheck_image = '<img src="' . plugins_url( '../assets/autocheck-button.png', __FILE__ ) . '">';
+			return sprintf('<div class="autocheck-wrapper-center"><a href="%s" target="_blank">%s</a></div>',$autocheck_link,$autocheck_image);
+		}
+
 		function post_meta_value_is_number( $post_meta_key ) {
 			return in_array( $post_meta_key, array(
 				'_inventory_presser_car_ID',
