@@ -1185,6 +1185,93 @@ class Inventory_Grid extends WP_Widget {
 } // Class Inventory_Grid
 
 
+// Price Filters
+class Price_Filters extends WP_Widget {
+
+	var $defaults = array(5000,10000,15000,20000);
+
+	const ID_BASE = '_invp_price_filters';
+	const CUSTOM_POST_TYPE = 'inventory_vehicle';
+
+	function __construct() {
+		parent::__construct(
+			self::ID_BASE,
+			'Dealer Price Filters',
+			array( 'description' => 'Set maximum price query, automatically sort by price', )
+		);
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+
+		if (!is_admin() && isset($_GET['max_price'])) {
+			add_action( 'pre_get_posts', array( &$this, 'set_max_price' ));
+		}
+	}
+
+	public function delete_option() {
+		delete_option( 'widget_' . self::ID_BASE );
+	}
+
+	public function set_max_price($query) {
+		//Do not mess with the query if it's not the main one and our CPT
+		if ( !$query->is_main_query() || !is_post_type_archive( self::CUSTOM_POST_TYPE ) ) {
+			return;
+		}
+
+		$max_price = (int)$_GET['max_price'];
+
+		//Get original meta query
+		$meta_query = $query->get('meta_query');
+
+		//Add our meta query to the original meta queries
+		$meta_query[] = array(
+		                    'key'=>'inventory_presser_price',
+		                    'value'=>$max_price,
+		                    'compare'=>'<=',
+		                    'type'=> 'numeric'
+		                );
+		$query->set('meta_query',$meta_query);
+
+	}
+
+	// front-end
+	public function widget( $args, $instance ) {
+
+		$base_link = add_query_arg( array(
+		    'orderby' => 'inventory_presser_price',
+		    'order' => 'DESC',
+		), get_post_type_archive_link(self::CUSTOM_POST_TYPE));
+
+		$price_points = $this->defaults;
+
+		foreach ($price_points as $price_point) {
+			$this_link = add_query_arg( 'max_price', $price_point, $base_link);
+			echo sprintf('<a href="%s">%s</a><br/>',$this_link,$price_point);
+		}
+
+	}
+
+	// Widget Backend
+	public function form( $instance ) {
+
+		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
+
+		// Widget admin form
+		?>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+		<?php
+	}
+
+	// Updating widget replacing old instances with new
+	public function update( $new_instance, $old_instance ) {
+		$instance = array();
+		$instance['title'] = ( !empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		return $instance;
+	}
+
+} // Class Price_Filters
 
 
 // bootstrap class for these widgets
@@ -1204,6 +1291,7 @@ class Inventory_Presser_Location_Widgets {
 		register_widget('Stock_Photo_Slider');
 		register_widget('Inventory_Slider');
 		register_widget('Inventory_Grid');
+		register_widget('Price_Filters');
 	}
 
 	function check_ids() {

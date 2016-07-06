@@ -90,6 +90,14 @@ class _dealer_settings {
 		);
 
 		add_settings_field(
+			'archive_show_content', // id
+			'Archive Page Content', // title
+			array( $this, 'archive_show_content_callback' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
+		add_settings_field(
 			'use_carfax', // id
 			'Use CarFax', // title
 			array( $this, 'use_carfax_callback' ), // callback
@@ -146,6 +154,10 @@ class _dealer_settings {
 
 		if ( isset( $input['append_page'] ) ) {
 			$sanitary_values['append_page'] = $input['append_page'];
+		}
+
+		if ( isset( $input['archive_show_content'] ) ) {
+			$sanitary_values['archive_show_content'] = $input['archive_show_content'];
 		}
 
 		if ( isset( $input['use_carfax'] ) ) {
@@ -241,6 +253,13 @@ class _dealer_settings {
 
 		wp_dropdown_pages($args);
 
+	}
+
+	public function archive_show_content_callback() {
+		printf(
+			'<input type="checkbox" name="_dealer_settings[archive_show_content]" id="archive_show_content" value="archive_show_content" %s> <label for="archive_show_content">Display Post Content on Vehicle Archive</label>',
+			( isset( $this->_dealer_settings['archive_show_content'] ) && $this->_dealer_settings['archive_show_content'] === 'archive_show_content' ) ? 'checked' : ''
+		);
 	}
 
 	public function use_carfax_callback() {

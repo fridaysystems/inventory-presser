@@ -23,6 +23,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $prices = array();
 		var $stock_number = '';
 		var $trim = '';
+		var $type = '';
 		var $vin = '';
 		var $year = 0;
 		var $youtube = '';
@@ -102,6 +103,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				$this->is_sold = true;
 			}
 
+			$type_array = wp_get_post_terms($this->post_ID, 'type', array("fields" => "slugs"));
+			$this->type = $type_array[0];
 
 		}
 
@@ -212,11 +215,11 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$odometer = '';
 			if( is_numeric( $this->odometer ) ) {
 				$odometer .= number_format( $this->odometer, 0, '.', ',' );
+				if ($append) {
+					$odometer .= $append;
+				}
 			} else {
 				$odometer .= $this->odometer;
-			}
-			if( $odometer && $append ) {
-				$odometer .= $append;
 			}
 			return $odometer;
 		}

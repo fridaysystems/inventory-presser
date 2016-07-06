@@ -344,15 +344,6 @@ class Inventory_Presser_Taxonomies {
 
 	function save_location_meta( $term_id, $tt_id ) {
 
-		if( ! function_exists( 'get_current_screen' ) ) {
-			return;
-		}
-
-		$screen = get_current_screen();
-		if( null == $screen || ( 'edit-tags' != $screen->base || 'location' != $screen->taxonomy ) ) {
-			return;
-		}
-
 		if (isset($_POST)) {
 
 			$meta_final = array('phones' => array(), 'hours' => array());
