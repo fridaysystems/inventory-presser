@@ -121,6 +121,14 @@ class _dealer_settings {
 			'dealership_options_setting_section' 
 		);
 
+		add_settings_field(
+			'hide_footer_credit', // id
+			'Footer Credit', // title
+			array( $this, 'hide_footer_credit_callback' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
 		add_settings_field( 
 			'autocheck_id', 
 			'Autocheck ID', 
@@ -163,6 +171,11 @@ class _dealer_settings {
 		if ( isset( $input['use_carfax'] ) ) {
 			$sanitary_values['use_carfax'] = $input['use_carfax'];
 		}
+
+		if ( isset( $input['hide_footer_credit'] ) ) {
+			$sanitary_values['hide_footer_credit'] = $input['hide_footer_credit'];
+		}
+
 
 		if ( isset( $input['cargurus_badge_archive'] ) ) {
 			$sanitary_values['cargurus_badge_archive'] = $input['cargurus_badge_archive'];
@@ -285,6 +298,13 @@ class _dealer_settings {
 		printf(
 			'<input type="checkbox" name="_dealer_settings[hide_contact_button_single]" id="hide_contact_button_single" value="hide_contact_button_single" %s> <label for="hide_contact_button_single">Hide check availability button on single vehicle page</label>',
 			( isset( $this->_dealer_settings['hide_contact_button_single'] ) && $this->_dealer_settings['hide_contact_button_single'] === 'hide_contact_button_single' ) ? 'checked' : ''
+		);
+	}
+
+	public function hide_footer_credit_callback() {
+		printf(
+			'<input type="checkbox" name="_dealer_settings[hide_footer_credit]" id="hide_footer_credit" value="hide_footer_credit" %s> <label for="hide_footer_credit">Hide link to Friday Systems in Footer</label>',
+			( isset( $this->_dealer_settings['hide_footer_credit'] ) && $this->_dealer_settings['hide_footer_credit'] === 'hide_footer_credit' ) ? 'checked' : ''
 		);
 	}
 
