@@ -104,7 +104,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			}
 
 			$type_array = wp_get_post_terms($this->post_ID, 'type', array("fields" => "slugs"));
-			$this->type = $type_array[0];
+			$this->type = (isset($type_array[0])) ? $type_array[0] : '';
 
 		}
 
