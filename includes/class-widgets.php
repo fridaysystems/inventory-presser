@@ -1188,10 +1188,18 @@ class Inventory_Grid extends WP_Widget {
 // Price Filters
 class Price_Filters extends WP_Widget {
 
-	var $defaults = array(5000,10000,15000,20000);
-
 	const ID_BASE = '_invp_price_filters';
 	const CUSTOM_POST_TYPE = 'inventory_vehicle';
+
+	var $price_defaults = array(5000,10000,15000,20000);
+	var $display_types = array(
+			'buttons'=>'Buttons',
+			'text'=>'Text',
+		);
+	var $orientations = array(
+			'horizontal'=>'Horizontal',
+			'vertical'=>'Vertical',
+		);
 
 	function __construct() {
 		parent::__construct(
@@ -1212,6 +1220,7 @@ class Price_Filters extends WP_Widget {
 	}
 
 	public function set_max_price($query) {
+
 		//Do not mess with the query if it's not the main one and our CPT
 		if ( !$query->is_main_query() || !is_post_type_archive( self::CUSTOM_POST_TYPE ) ) {
 			return;
@@ -1231,35 +1240,77 @@ class Price_Filters extends WP_Widget {
 		                );
 		$query->set('meta_query',$meta_query);
 
+		return $query;
+
 	}
 
 	// front-end
 	public function widget( $args, $instance ) {
+
+		$title = apply_filters( 'widget_title', $instance['title'] );
+		echo $args['before_widget'];
+		if (!empty( $title ))
+		echo $args['before_title'] . $title . $args['after_title'];
 
 		$base_link = add_query_arg( array(
 		    'orderby' => 'inventory_presser_price',
 		    'order' => 'DESC',
 		), get_post_type_archive_link(self::CUSTOM_POST_TYPE));
 
-		$price_points = $this->defaults;
+		$price_points = (isset($instance['prices']) && is_array($instance['prices'])) ? $instance['prices'] : $this->price_defaults;
 
+		echo sprintf('<ul class="%s">',$instance['orientation']);
 		foreach ($price_points as $price_point) {
 			$this_link = add_query_arg( 'max_price', $price_point, $base_link);
-			echo sprintf('<a href="%s">%s</a><br/>',$this_link,$price_point);
+			echo sprintf('<li><a href="%s" class="_button _button-med"><i class="fa fa-arrow-circle-down"></i>&nbsp;&nbsp;%s</a></li>',$this_link,'$' . number_format($price_point, 0, '.', ',' ));
 		}
+		echo '</ul>';
+
+		echo $args['after_widget'];
 
 	}
 
 	// Widget Backend
 	public function form( $instance ) {
 
-		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
+		$title = isset($instance['title']) ? $instance[ 'title' ] : 'Price Filter';
+		$prices = (isset($instance['prices']) && is_array($instance['prices'])) ? implode(',', $instance['prices']) : implode(',', $this->price_defaults);
+		$display_type_slugs = array_keys($this->display_types);
+		$display_type = isset($instance['display_type']) ? $instance[ 'display_type' ] : $display_type_slugs[0];
+		$orientation_slugs = array_keys($this->orientations);
+		$orientation = isset($instance['orientation']) ? $instance[ 'orientation' ] : $orientation_slugs[0];
 
 		// Widget admin form
 		?>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id('prices'); ?>">Price Points (separated by commas)</label>
+		<textarea class="widefat" id="<?php echo $this->get_field_id('prices'); ?>" name="<?php echo $this->get_field_name('prices'); ?>"><?php echo esc_attr( $prices ); ?></textarea>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id('display_type'); ?>">Display Format:</label>
+			<select class="widefat" id="<?php echo $this->get_field_id('display_type'); ?>" name="<?php echo $this->get_field_name('display_type'); ?>">
+			<?php
+			foreach ($this->display_types as $key => $label) {
+				$selected = ($display_type == $key) ? ' selected' : '';
+				echo sprintf('<option value="%s"%s>%s</option>', $key, $selected, $label);
+			}
+			?>
+			</select>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id('orientation'); ?>">Orientation:</label>
+			<select class="widefat" id="<?php echo $this->get_field_id('orientation'); ?>" name="<?php echo $this->get_field_name('orientation'); ?>">
+			<?php
+			foreach ($this->orientations as $key => $label) {
+				$selected = ($orientation == $key) ? ' selected' : '';
+				echo sprintf('<option value="%s"%s>%s</option>', $key, $selected, $label);
+			}
+			?>
+			</select>
 		</p>
 		<?php
 	}
@@ -1268,6 +1319,9 @@ class Price_Filters extends WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
 		$instance['title'] = ( !empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['prices'] = (!empty($new_instance['prices'])) ? array_map('intval', explode(',', $new_instance['prices'])) : $this->price_defaults;
+		$instance['display_type'] = ( !empty( $new_instance['display_type'] ) ) ? strip_tags( $new_instance['display_type'] ) : '';
+		$instance['orientation'] = ( !empty( $new_instance['orientation'] ) ) ? strip_tags( $new_instance['orientation'] ) : '';
 		return $instance;
 	}
 
