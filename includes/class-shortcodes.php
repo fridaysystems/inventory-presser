@@ -136,15 +136,14 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 		if ($inventory_ids) {
 
-			$grid_html .= "<div class=\"invp-grid\">\n";
+			$grid_html .= '<div class="invp-grid pad cf">';
 			$grid_html .= '<ul class="grid-slides">';
 
 			foreach ($inventory_ids as $inventory_id) {
 
 				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
 
-
-				$grid_html .= '<li><a class="grid-link" href="'.$vehicle->url.'">';
+				$grid_html .= '<li class="grid one-third"><a class="grid-link" href="'.$vehicle->url.'">';
 
 				$grid_html .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'medium').');">';
 				$grid_html .= "</div>";
