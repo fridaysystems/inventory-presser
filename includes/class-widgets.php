@@ -1249,8 +1249,6 @@ class Price_Filters extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		echo $args['before_widget'];
-		if (!empty( $title ))
-		echo $args['before_title'] . $title . $args['after_title'];
 
 		$base_link = add_query_arg( array(
 		    'orderby' => 'inventory_presser_price',
@@ -1259,12 +1257,15 @@ class Price_Filters extends WP_Widget {
 
 		$price_points = (isset($instance['prices']) && is_array($instance['prices'])) ? $instance['prices'] : $this->price_defaults;
 
-		echo sprintf('<ul class="%s">',$instance['orientation']);
+		echo sprintf('<div class="border-bottom price-filter price-filter-%s">',$instance['orientation']);
+		if (!empty( $title )) {
+			echo '<div class="price-title">'.$args['before_title'] . $title . $args['after_title'].'</div>';
+		}
 		foreach ($price_points as $price_point) {
 			$this_link = add_query_arg( 'max_price', $price_point, $base_link);
-			echo sprintf('<li><a href="%s" class="_button _button-med"><i class="fa fa-arrow-circle-down"></i>&nbsp;&nbsp;%s</a></li>',$this_link,'$' . number_format($price_point, 0, '.', ',' ));
+			echo sprintf('<div><a href="%s" class="_button _button-med"><i class="fa fa-arrow-circle-down"></i>&nbsp;&nbsp;%s</a></div>',$this_link,'$' . number_format($price_point, 0, '.', ',' ));
 		}
-		echo '</ul>';
+		echo '</div>';
 
 		echo $args['after_widget'];
 
