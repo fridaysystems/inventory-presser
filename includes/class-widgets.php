@@ -1247,24 +1247,42 @@ class Price_Filters extends WP_Widget {
 	// front-end
 	public function widget( $args, $instance ) {
 
-		$title = apply_filters( 'widget_title', $instance['title'] );
+		$reset_link_only = (isset($instance['cb_reset_link_only']) && $instance['cb_reset_link_only'] == 'true');
+
+		if ($reset_link_only && !isset($_GET['max_price']))
+			return;
+
 		echo $args['before_widget'];
 
-		$base_link = add_query_arg( array(
-		    'orderby' => 'inventory_presser_price',
-		    'order' => 'DESC',
-		), get_post_type_archive_link(self::CUSTOM_POST_TYPE));
+		$title = apply_filters( 'widget_title', $instance['title'] );
 
-		$price_points = (isset($instance['prices']) && is_array($instance['prices'])) ? $instance['prices'] : $this->price_defaults;
-
-		echo sprintf('<div class="border-bottom price-filter price-filter-%s">',$instance['orientation']);
+		echo sprintf('<div class="price-filter price-filter-%s">',$instance['orientation']);
 		if (!empty( $title )) {
 			echo '<div class="price-title">'.$args['before_title'] . $title . $args['after_title'].'</div>';
 		}
-		foreach ($price_points as $price_point) {
-			$this_link = add_query_arg( 'max_price', $price_point, $base_link);
-			echo sprintf('<div><a href="%s" class="_button _button-med"><i class="fa fa-arrow-circle-down"></i>&nbsp;&nbsp;%s</a></div>',$this_link,'$' . number_format($price_point, 0, '.', ',' ));
+
+		if (!$reset_link_only) {
+
+			$price_points = (isset($instance['prices']) && is_array($instance['prices'])) ? $instance['prices'] : $this->price_defaults;
+
+			$base_link = add_query_arg( array(
+			    'orderby' => 'inventory_presser_price',
+			    'order' => 'DESC',
+			), get_post_type_archive_link(self::CUSTOM_POST_TYPE));
+
+			$class_string = ($instance['display_type'] == 'buttons') ? ' class="_button _button-med"' : ' class="price-filter-text"';
+			
+			foreach ($price_points as $price_point) {
+				$this_link = add_query_arg( 'max_price', $price_point, $base_link);
+				echo sprintf('<div><a href="%s"%s><i class="fa fa-arrow-circle-down"></i>&nbsp;&nbsp;%s</a></div>',$this_link,$class_string,'$' . number_format($price_point, 0, '.', ',' ));
+			}
+
 		}
+
+		if (isset($_GET['max_price'])) {
+			echo sprintf('<div><a href="%s">Remove Price Filter</a></div>', remove_query_arg('max_price'));
+		}
+
 		echo '</div>';
 
 		echo $args['after_widget'];
@@ -1280,6 +1298,7 @@ class Price_Filters extends WP_Widget {
 		$display_type = isset($instance['display_type']) ? $instance[ 'display_type' ] : $display_type_slugs[0];
 		$orientation_slugs = array_keys($this->orientations);
 		$orientation = isset($instance['orientation']) ? $instance[ 'orientation' ] : $orientation_slugs[0];
+		$cb_reset_link_only = (isset($instance[ 'cb_reset_link_only' ]) && $instance[ 'cb_reset_link_only' ] == 'true') ? ' checked' : '';
 
 		// Widget admin form
 		?>
@@ -1313,6 +1332,10 @@ class Price_Filters extends WP_Widget {
 			?>
 			</select>
 		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id('cb_reset_link_only'); ?>">Show Reset Link Only</label>
+		<input type="checkbox" id="<?php echo $this->get_field_id('cb_reset_link_only'); ?>" name="<?php echo $this->get_field_name('cb_reset_link_only'); ?>" value="true"<?php echo $cb_reset_link_only; ?>>
+		</p>
 		<?php
 	}
 
@@ -1323,6 +1346,7 @@ class Price_Filters extends WP_Widget {
 		$instance['prices'] = (!empty($new_instance['prices'])) ? array_map('intval', explode(',', $new_instance['prices'])) : $this->price_defaults;
 		$instance['display_type'] = ( !empty( $new_instance['display_type'] ) ) ? strip_tags( $new_instance['display_type'] ) : '';
 		$instance['orientation'] = ( !empty( $new_instance['orientation'] ) ) ? strip_tags( $new_instance['orientation'] ) : '';
+		$instance['cb_reset_link_only'] = ( !empty( $new_instance['cb_reset_link_only'] ) ) ? $new_instance['cb_reset_link_only'] : '';
 		return $instance;
 	}
 
