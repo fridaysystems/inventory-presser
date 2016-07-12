@@ -1280,7 +1280,7 @@ class Price_Filters extends WP_Widget {
 		}
 
 		if (isset($_GET['max_price'])) {
-			echo sprintf('<div><a href="%s">Remove Price Filter</a></div>', remove_query_arg('max_price'));
+			echo sprintf('<div><a href="%s">Remove %s Price Filter</a></div>', remove_query_arg('max_price'),'$' . number_format((int)$_GET['max_price'], 0, '.', ',' ));
 		}
 
 		echo '</div>';
