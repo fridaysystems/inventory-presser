@@ -562,6 +562,7 @@ class Inventory_Presser_Taxonomies {
 					),
 					'term_data' =>	array (
 								'ATV' => 'All Terrain Vehicle',
+								'BUS' => 'Bus',
 								'CAR' => 'Passenger Car',
 								'MOT' => 'Motorcycle',
 								'OTH' => 'Other',
