@@ -344,7 +344,7 @@ class Inventory_Presser_Taxonomies {
 
 	function save_location_meta( $term_id, $tt_id ) {
 
-		if (isset($_POST)) {
+		if (isset($_POST['hours_title']) && isset($_POST['phone_number'])) {
 
 			$meta_final = array('phones' => array(), 'hours' => array());
 

@@ -169,7 +169,7 @@ class Order_By_Widget extends WP_Widget {
  		 	echo $before_widget;
 	 		if ( $title )
 	        	echo $before_title . $title . $after_title;
- 		 	echo '<ul class="order-by-list">';
+ 		 	echo '<ul class="order-by-list list-nostyle">';
 			foreach( $keys_to_list as $key ) {
 				echo '<li><a href="javascript:order_by_post_meta(\'' . $key . '\');">';
 				echo isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $key;
