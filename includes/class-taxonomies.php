@@ -724,6 +724,25 @@ class Inventory_Presser_Taxonomies {
 					),
 					'term_data' => array(),
 				),
+				array (
+					'args' => array (
+						'hierarchical'   => true,
+						'label'          => 'Body styles',
+						'labels'         => array (
+						       'name'          => 'Body styles',
+						       'singular_name' => 'Body style',
+						       'search_items'  => 'Search body styles',
+						       'popular_items' => 'Popular body styles',
+						       'all_items'     => 'All body styles',
+						),
+						'meta_box_cb'    => null,
+						'query_var'      => 'style',
+						'singular_label' => 'Body style',
+						'show_in_menu'   => false,
+						'show_ui'        => false,
+					),
+					'term_data' => array (	),
+				),
 			)
 		);
 	}
