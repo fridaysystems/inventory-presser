@@ -188,9 +188,15 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					'inventory_presser_post_type_args',
 					array (
 						'description'  => __('Vehicles for sale in an automobile or powersports dealership'),
-						// check if the theme has a CPT archive template.  If not, we will assume that the inventory is going to
-						// be displayed via shortcode, and we won't be using the theme archive
-						'has_archive'  => file_exists( get_stylesheet_directory().'/archive-'.self::CUSTOM_POST_TYPE.'.php' ),
+						/**
+						 * Check if the theme (or the parent theme) has a CPT
+						 * archive template.  If not, we will assume that the
+						 * inventory is going to be displayed via shortcode, and
+						 * we won't be using the theme archive
+						 */
+						'has_archive'  => file_exists( get_template_directory().'/archive-'.self::CUSTOM_POST_TYPE.'.php' )
+							|| file_exists( get_stylesheet_directory().'/archive-'.self::CUSTOM_POST_TYPE.'.php' ),
+
 						'hierarchical' => false,
 						'labels' => array (
 							'name'          => __( 'Vehicles' ),
