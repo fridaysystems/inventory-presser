@@ -233,7 +233,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				if( 0 == $this->price ) { return $zero_string; }
 				$result = '$' . number_format( $this->price, 0, '.', ',' );
 			} else {
-				$result = 'SOLD!';
+				$result = '<span class="vehicle-sold">SOLD!</span>';
 			}
 			
 			return $result;
