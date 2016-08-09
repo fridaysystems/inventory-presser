@@ -12,6 +12,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $car_ID = 0;
 		var $color = '';
 		var $dealer_ID = 0;
+		var $edmunds_style_ID = 0;
 		var $engine = ''; //3.9L 8 cylinder
 		var $featured = '0';
 		var $interior_color = '';
@@ -178,6 +179,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				'carfax_one_owner',
 				'color',
 				'dealer_ID',
+				'edmunds_style_ID',
 				'engine',
 				'featured',
 				'interior_color',
@@ -235,7 +237,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			} else {
 				$result = 'SOLD!';
 			}
-			
+
 			return $result;
 		}
 

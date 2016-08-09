@@ -359,7 +359,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$nice_name = strtolower( $nice_name );
 			$prefixed_fields = array(
 				'car_id',
-				'dealer_id'
+				'dealer_id',
+				'edmunds_style_id'
 			);
 			return ( in_array( $nice_name, $prefixed_fields ) ? '_' : '' ) . 'inventory_presser_' . $nice_name;
 		}
