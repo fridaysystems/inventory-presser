@@ -258,7 +258,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 	// if singular inventory_vehicle post and a theme with no template for vehicles, add output to the content
 	function filter_single_content($content) {
 
-		if (is_singular('inventory_vehicle') && !file_exists(get_stylesheet_directory().'/single-inventory_vehicle.php')) {
+		if (is_singular('inventory_vehicle') && !file_exists(get_template_directory().'/single-inventory_vehicle.php') && !file_exists(get_stylesheet_directory().'/single-inventory_vehicle.php')) {
 
 			global $post;
 
