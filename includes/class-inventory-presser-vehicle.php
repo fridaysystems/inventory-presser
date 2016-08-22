@@ -14,6 +14,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $dealer_ID = 0;
 		var $edmunds_style_ID = 0;
 		var $engine = ''; //3.9L 8 cylinder
+		var $epa_fuel_economy = array();
 		var $featured = '0';
 		var $interior_color = '';
 		var $make = '';
@@ -126,12 +127,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				$link = '<a href="http://www.carfax.com/cfm/check_order.cfm?partner=DCS_2&VIN=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-report.png', __FILE__ ) . '" alt="'.$text.'" title="'.$text.'" class="carfax-icon"></a>';
 			}
 
-			if ($wrap) {
-				return '<div class="carfax-wrap">'.$link.'<br/>'.$text.'</div>';
-			} else {
-				return $link;
-			}
-
+			return $wrap ? '<div class="carfax-wrap">'.$link.'<br/>'.$text.'</div>' : $link;
 		}
 
 		function have_carfax_report() {
@@ -181,6 +177,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				'dealer_ID',
 				'edmunds_style_ID',
 				'engine',
+				'epa_fuel_economy',
 				'featured',
 				'interior_color',
 				'make',
@@ -244,13 +241,9 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		function payments( $zero_string = '' ) {
 
 			if (isset($this->prices['down_payment'])) {
-				$result = sprintf('$%s Down / $%s %s',number_format($this->prices['down_payment'], 0, '.', ',' ), number_format($this->prices['payment'], 0, '.', ',' ), ucfirst($this->prices['payment_frequency']));
-			} else {
-				$result = $this->price($zero_string);
+				return sprintf('$%s Down / $%s %s',number_format($this->prices['down_payment'], 0, '.', ',' ), number_format($this->prices['payment'], 0, '.', ',' ), ucfirst($this->prices['payment_frequency']));
 			}
-
-			return $result;
-
+			return $this->price($zero_string);
 		}
 
 		//return taxonomy terms as a comma delimited string
@@ -277,8 +270,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			endforeach;
 
 			return $this->images[$size];
-
 		}
-
 	}
 }
