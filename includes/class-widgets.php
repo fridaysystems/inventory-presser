@@ -922,6 +922,8 @@ class Inventory_Slider extends WP_Widget {
 
 	const ID_BASE = '_invp_slick';
 
+	var $text_displays = array('none' => 'None','top' => 'Top', 'bottom'=>'Bottom');
+
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
@@ -941,6 +943,9 @@ class Inventory_Slider extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$showcount = $instance['showcount'];
+		$showtext = $instance['showtext'];
+		$showtitle = (isset($instance['cb_showtitle']) && $instance['cb_showtitle'] == 'true');
+		$showprice = (isset($instance['cb_showprice']) && $instance['cb_showprice'] == 'true');
 
 		$gpargs=array(
 			'numberposts'=> $showcount * 5,
@@ -967,8 +972,19 @@ class Inventory_Slider extends WP_Widget {
 
 				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
 				echo sprintf('<div class="widget-inventory-slide-wrap"><a href="%s"><div class="slick-background-image" style="background-image: url(%s);">',$vehicle->url,wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large'));
-				// add optional text - $vehicle->post_title
+				if ($showtext != 'none') {
+					echo sprintf('<div class="slick-text slick-text-%s">', $showtext);
+					if ($showtitle) {
+						echo sprintf('<h3>%s %s %s</h3>', $vehicle->year, $vehicle->make, $vehicle->model);
+					}
+					if ($showprice) {
+						echo sprintf('<h2>%s</h2>',$vehicle->price('Call For Price'));
+					}
+					echo '</div>';
+				}
+
 				echo '</div></a></div>';
+
 
 			}
 
@@ -985,6 +1001,12 @@ class Inventory_Slider extends WP_Widget {
 
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
 		$showcount = isset($instance[ 'showcount' ]) ? $instance[ 'showcount' ] : 3;
+
+		$text_displays_slugs = array_keys($this->text_displays);
+		$showtext = isset($instance['showtext']) ? $instance[ 'showtext' ] : $text_displays_slugs[0];
+
+		$cb_showtitle = (isset($instance['cb_showtitle']) && $instance['cb_showtitle'] == 'true') ? ' checked' : '';
+		$cb_showprice = (isset($instance['cb_showprice']) && $instance['cb_showprice'] == 'true') ? ' checked' : '';
 
 		// Widget admin form
 		?>
@@ -1006,6 +1028,24 @@ class Inventory_Slider extends WP_Widget {
 		</select>
 		</p>
 
+		<p>
+		<label for="<?php echo $this->get_field_id( 'showtext' ); ?>"><?php _e( 'Text Overlay:' ); ?></label>
+		<select class="widefat" id="<?php echo $this->get_field_id('showtext'); ?>" name="<?php echo $this->get_field_name('showtext'); ?>">
+		<?php
+			foreach ($this->text_displays as $slug => $label) {
+				$select_text = ($slug == $showtext) ? ' selected' : '';
+				echo sprintf('<option value="%s"%s>%s</option>',$slug,$select_text,$label);
+			}
+		?>
+		</select>
+		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id('cb_showtitle'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showtitle'); ?>" name="<?php echo $this->get_field_name('cb_showtitle'); ?>" value="true"<?php echo $cb_showtitle; ?>> Show Vehicle Title</label>
+		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id('cb_showprice'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showprice'); ?>" name="<?php echo $this->get_field_name('cb_showprice'); ?>" value="true"<?php echo $cb_showprice; ?>> Show Vehicle Price</label>
+		</p>
+
 		<?php
 	}
 
@@ -1014,6 +1054,9 @@ class Inventory_Slider extends WP_Widget {
 		$instance = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['showcount'] = ( ! empty( $new_instance['showcount'] ) ) ? strip_tags( $new_instance['showcount'] ) : 3;
+		$instance['showtext'] = ( ! empty( $new_instance['showtext'] ) ) ? strip_tags( $new_instance['showtext'] ) : '';
+		$instance['cb_showtitle'] = ( !empty( $new_instance['cb_showtitle'] ) ) ? $new_instance['cb_showtitle'] : '';
+		$instance['cb_showprice'] = ( !empty( $new_instance['cb_showprice'] ) ) ? $new_instance['cb_showprice'] : '';
 		return $instance;
 	}
 
