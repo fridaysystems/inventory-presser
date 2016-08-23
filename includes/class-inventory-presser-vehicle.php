@@ -42,6 +42,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		//availability-sold
 
 		var $is_sold = false;
+		var $is_used = true;
 
 		// images
 		var $images = array();
@@ -104,6 +105,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			if ($pos !== false) {
 				$this->is_sold = true;
 			}
+
+			$this->is_used = has_term( 'used', 'condition', $this->post_ID );
 
 			$type_array = wp_get_post_terms($this->post_ID, 'type', array("fields" => "slugs"));
 			$this->type = (isset($type_array[0])) ? $type_array[0] : '';
