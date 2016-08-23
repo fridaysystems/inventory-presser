@@ -69,7 +69,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			}
 
 			//get all data using the post ID
-			$meta = get_post_meta($this->post_ID);
+			$meta = get_post_meta( $this->post_ID );
 
 			//get these post meta values
 			foreach( $this->keys() as $key ) {
@@ -107,7 +107,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 			$type_array = wp_get_post_terms($this->post_ID, 'type', array("fields" => "slugs"));
 			$this->type = (isset($type_array[0])) ? $type_array[0] : '';
-
 		}
 
 		function carfax_icon_HTML($wrap = false) {

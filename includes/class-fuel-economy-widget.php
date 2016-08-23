@@ -107,24 +107,6 @@ class Fuel_Economy_Widget extends WP_Widget {
 				. ( $have_combined ? 'combined' : '' ) . '</td><td>'
 				. ( $have_city ? 'city' : '' ) . '</td><td>'
 				. ( $have_highway ? 'highway' : '' ) . '</td></tr></table>';
-/*
-			//combined mpg
-			if( isset( $fuel['Attributes'] ) && isset( $fuel['Attributes']['Combined MPG'] ) ) {
-				echo $this->mpg_number_html( $fuel['Attributes']['Combined MPG'], 'Combined' );
-			}
-
-			echo '<span class="mpg">MPG</span>';
-
-			//city mpg
-			if( isset( $fuel['Attributes'] ) && isset( $fuel['Attributes']['City MPG'] ) ) {
-				echo $this->mpg_number_html( $fuel['Attributes']['City MPG'], 'City' );
-			}
-
-			//highway mpg
-			if( isset( $fuel['Attributes'] ) && isset( $fuel['Attributes']['Highway MPG'] ) ) {
-				echo $this->mpg_number_html( $fuel['Attributes']['Highway MPG'], 'Highway' );
-			}
-*/
 			echo '</div>';
 		}
 
