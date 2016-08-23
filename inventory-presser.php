@@ -16,6 +16,7 @@ $inventory_presser_include_paths = array(
 	'includes/class-add-custom-fields-to-search.php',
 	'includes/class-customize-admin-dashboard.php',
 	'includes/class-dealership-options.php', // This handles a couple options for _dealer theme, will likely combine this with import options
+	'includes/class-fuel-economy-widget.php',
 	'includes/class-inventory-presser-vehicle.php',
 	'includes/class-option-manager.php',
 	'includes/class-order-by-post-meta-widget.php',
@@ -157,6 +158,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$widget_available = new Order_By_Widget();
 			//Register the widget
 	 		add_action( 'widgets_init', create_function( '', 'return register_widget( "Order_By_Widget" );' ) );
+
+			/**
+			 * Make a widget available to show EPA Fuel Economy data
+			 */
+			$widget_available = new Fuel_Economy_Widget();
+			//Register the widget
+	 		add_action( 'widgets_init', create_function( '', 'return register_widget( "Fuel_Economy_Widget" );' ) );
 
 			/**
 			 * Deliver our promise to order posts, change the ORDER BY clause of
