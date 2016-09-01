@@ -454,9 +454,15 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	function sort_terms_as_numbers( $order_by, $args, $taxonomies ) {
-		$taxonomy_to_sort = 'cylinders';
-		if( in_array( $taxonomy_to_sort, $taxonomies ) ) {
-			$order_by .=  '+0';
+		$taxonomies_to_sort = array(
+			'cylinders',
+			'model_year',
+		);
+		foreach( $taxonomies_to_sort as $taxonomy_to_sort ) {
+			if( in_array( $taxonomy_to_sort, $taxonomies ) ) {
+				$order_by .=  '+0';
+				break;
+			}
 		}
 		return $order_by;
 	}
