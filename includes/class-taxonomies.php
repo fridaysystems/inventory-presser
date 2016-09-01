@@ -713,9 +713,9 @@ class Inventory_Presser_Taxonomies {
 						'labels'         => array (
 							'name'          => 'Location',
 							'singular_name' => 'Location',
-							'search_items'  => 'Search Locations',
-							'popular_items' => 'Popular Locations',
-							'all_items'     => 'All Locations',
+							'search_items'  => 'Search locations',
+							'popular_items' => 'Popular locations',
+							'all_items'     => 'All locations',
 							'edit_item'     => __( 'Edit Location' ),
 							'update_item'   => __( 'Update Location' ),
 							'add_new_item'  => __( 'Add New Location' ),
