@@ -11,6 +11,11 @@
 class _dealer_settings {
 	private $_dealer_settings;
 
+	var $price_display_types = array(
+			'default' => 'Price / Call for Price',
+			'genes' => 'Down Payment = Was Price / MSRP = Now Price',
+		);
+
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'dealership_options_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'dealership_options_page_init' ) );
@@ -90,6 +95,14 @@ class _dealer_settings {
 		);
 
 		add_settings_field(
+			'price_display_type', // id
+			'Price Display Type', // title
+			array( $this, 'price_display_type_callback' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
+		add_settings_field(
 			'archive_show_content', // id
 			'Archive Page Content', // title
 			array( $this, 'archive_show_content_callback' ), // callback
@@ -162,6 +175,10 @@ class _dealer_settings {
 
 		if ( isset( $input['append_page'] ) ) {
 			$sanitary_values['append_page'] = $input['append_page'];
+		}
+
+		if ( isset( $input['price_display_type'] ) ) {
+			$sanitary_values['price_display_type'] = $input['price_display_type'];
 		}
 
 		if ( isset( $input['archive_show_content'] ) ) {
@@ -268,6 +285,24 @@ class _dealer_settings {
 
 	}
 
+	public function price_display_type_callback() {
+
+		// array to set optins is defined in this file, top of class
+
+		if (isset($this->_dealer_settings['price_display_type'])) {
+			$selected_val = $this->_dealer_settings['price_display_type'];
+		} else {
+			$price_display_type_slugs = array_keys($this->price_display_types);
+			$selected_val = $price_display_type_slugs[0];
+		}
+		echo '<select name="_dealer_settings[price_display_type]" id="price_display_type">';
+		foreach ($this->price_display_types as $val => $name) {
+			$selected_text = $val == $selected_val ? ' selected' : '';
+			printf('<option value="%s"%s>%s</option>',$val,$selected_text,$name);
+		}
+		echo '</select>';
+	}
+
 	public function archive_show_content_callback() {
 		printf(
 			'<input type="checkbox" name="_dealer_settings[archive_show_content]" id="archive_show_content" value="archive_show_content" %s> <label for="archive_show_content">Display Post Content on Vehicle Archive</label>',
@@ -325,11 +360,3 @@ class _dealer_settings {
 }
 if ( is_admin() )
 	$dealership_options = new _dealer_settings();
-
-/* 
- * Retrieve this value with:
- * $_dealer_settings = get_option( '_dealer_settings' ); // Array of All Options
- * $financing_page = $_dealer_settings['financing_page']; // Financing Page
- * $contact_page = $_dealer_settings['contact_page']; // Contact Page
- * $use_carfax = $_dealer_settings['use_carfax']; // Use CarFax
- */
