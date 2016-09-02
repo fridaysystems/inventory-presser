@@ -1,7 +1,7 @@
 <?php
 class Fuel_Economy_Widget extends WP_Widget {
 
- 	const ID_BASE = 'fuel_economy_widget';
+ 	const ID_BASE = '_invp_fuel_economy_widget';
 
 	/**
 	 * Sets up the widgets name etc
@@ -12,7 +12,13 @@ class Fuel_Economy_Widget extends WP_Widget {
  			__( 'EPA Fuel Economy', 'inventory_presser' ), // Name
  			array( 'description' => __( 'A widget that shows EPA fuel economy data for a vehicle', 'inventory_presser' ), ) // Args
  		);
- 	}
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+	}
+
+	public function delete_option() {
+		delete_option( 'widget_' . self::ID_BASE );
+	}
 
 	/**
 	 * Outputs the options form on admin

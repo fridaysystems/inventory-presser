@@ -1,7 +1,7 @@
 <?php
 class Order_By_Widget extends WP_Widget {
 
- 	const ID_BASE = 'order_by_widget';
+ 	const ID_BASE = '_invp_order_by';
 
 	/**
 	 * Sets up the widgets name etc
@@ -17,7 +17,13 @@ class Order_By_Widget extends WP_Widget {
 		if( is_active_widget( false, false, self::ID_BASE ) ) {
  			add_action( 'wp_enqueue_scripts', array( &$this, 'load_javascript' ) );
  		}
- 	}
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+	}
+
+	public function delete_option() {
+		delete_option( 'widget_' . self::ID_BASE );
+	}
 
 	/**
 	 * Outputs the options form on admin
