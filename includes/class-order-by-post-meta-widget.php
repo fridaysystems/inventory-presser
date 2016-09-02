@@ -53,19 +53,20 @@ class Order_By_Widget extends WP_Widget {
 			//output checkbox for each one
 			echo '<dt>';
 			$title = 'Allow users to order by ' . $key; //title attribute for checkbox and label
-			echo '<input type="checkbox" id="obpm-key-' . $key . '" name="obpm-key-' . $key . '"';
+			echo '<input type="checkbox" id="' . $this->get_field_id('obpm-key-' . $key)
+				. '" name="obpm-key-' . $key . '"';
 			if( in_array( $key, $already_turned_on_keys ) ) {
 				echo ' checked="checked"';
 			}
-			echo ' title="' . $title . '"/>';
-			echo '<label for="obpm-key-' . $key . '" title="' . $title . '">' . $key . '</label>';
-			echo '</dt>';
-			//and a text box for a label
-			echo '<dd>';
-			echo '<label for="obpm-label-' . $key . '">Label</label> ';
-			echo '<input type="text" id="obpm-label-' . $key . '" name="obpm-label-' . $key . '" ';
-			echo 'value="' . $label . '" title="Label for ' . $key . '" />';
-			echo '</dd>';
+			echo ' title="' . $title . '"/>'
+				. '<label for="' . $this->get_field_id('obpm-key-' . $key) . '" title="' . $title . '">' . $key . '</label>'
+				. '</dt>' //and a text box for a label
+				. '<dd>'
+				. '<label for="' . $this->get_field_id('obpm-label-' . $key) . '">Label</label> '
+				. '<input type="text" id="' . $this->get_field_id('obpm-label-' . $key) . '"'
+				. ' name="obpm-label-' . $key . '" '
+				. 'value="' . $label . '" title="Label for ' . $key . '" />'
+				. '</dd>';
 		}
 		echo '</dl>';
 	}
@@ -99,6 +100,7 @@ class Order_By_Widget extends WP_Widget {
 			'inventory_presser_engine',
 			'inventory_presser_interior_color',
 			'inventory_presser_option_array',
+			'inventory_presser_prices',
 			'inventory_presser_trim',
 			'inventory_presser_vin',
 		);
@@ -173,13 +175,14 @@ class Order_By_Widget extends WP_Widget {
  		$keys_to_list = explode( '|', $instance['post-meta-keys'] );
  		if( 0 < sizeof( $keys_to_list ) ) {
  		 	echo $before_widget;
-	 		if ( $title )
+	 		if ( $title ) {
 	        	echo $before_title . $title . $after_title;
- 		 	echo '<ul class="order-by-list list-nostyle">';
+			}
+			echo '<ul class="order-by-list list-nostyle">';
 			foreach( $keys_to_list as $key ) {
-				echo '<li><a href="javascript:order_by_post_meta(\'' . $key . '\');">';
-				echo isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $key;
-				echo '</a></li>';
+				echo '<li><a href="javascript:order_by_post_meta(\'' . $key . '\');">'
+					. isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $key
+					. '</a></li>';
 			}
 			echo '</ul>' . $after_widget;
  		}
