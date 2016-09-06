@@ -489,7 +489,7 @@ class Inventory_Presser_Taxonomies {
 				array (
 					'args' => array (
 						'hierarchical'   => true,
-						'label'          => 'Model year',
+						'label'          => 'Model years',
 						'labels'         => array (
 						       'name'          => 'Model years',
 						       'singular_name' => 'Model year',
@@ -508,7 +508,7 @@ class Inventory_Presser_Taxonomies {
 				array (
 					'args' => array (
 						'hierarchical'   => true,
-						'label'          => 'Make',
+						'label'          => 'Makes',
 						'labels'         => array (
 						       'name'          => 'Makes',
 						       'singular_name' => 'Make',
@@ -527,7 +527,7 @@ class Inventory_Presser_Taxonomies {
 				array (
 					'args' => array (
 						'hierarchical'   => true,
-						'label'          => 'Model',
+						'label'          => 'Models',
 						'labels'         => array (
 						       'name'          => 'Models',
 						       'singular_name' => 'Model',
@@ -546,7 +546,7 @@ class Inventory_Presser_Taxonomies {
 				array (
 					'args' => array (
 						'hierarchical'   => true,
-						'label'          => 'Condition',
+						'label'          => 'Conditions',
 						'labels'         => array (
 						       'name'          => 'Conditions',
 						       'singular_name' => 'Condition',
@@ -567,7 +567,7 @@ class Inventory_Presser_Taxonomies {
 				array (
 					'args' => array (
 						'hierarchical'   => true,
-						'label'          => 'Type',
+						'label'          => 'Types',
 						'labels'         => array (
 						       'name'          => 'Types',
 						       'singular_name' => 'Type',
@@ -596,7 +596,7 @@ class Inventory_Presser_Taxonomies {
 				array (
 					'args' => array (
 						'hierarchical'   => true,
-						'label'          => 'Availability',
+						'label'          => 'Availabilities',
 						'labels'         => array (
 						       'name'          => 'Availabilities',
 						       'singular_name' => 'Availability',
@@ -617,7 +617,7 @@ class Inventory_Presser_Taxonomies {
 				array (
 					'args' => array (
 						'hierarchical'   => true,
-						'label'          => 'Drive type',
+						'label'          => 'Drive types',
 						'labels'         => array (
 						       'name'          => 'Drive types',
 						       'singular_name' => 'Drive type',
@@ -643,7 +643,7 @@ class Inventory_Presser_Taxonomies {
 				array (
 					'args' => array (
 						'hierarchical'   => true,
-						'label'          => 'Fuel',
+						'label'          => 'Fuels',
 						'labels'         => array (
 						       'name'          => 'Fuel types',
 						       'singular_name' => 'Fuel type',
@@ -658,10 +658,11 @@ class Inventory_Presser_Taxonomies {
 					),
 					'term_data' =>	array (
 								'B' => 'Electric and Gas Hybrid',
+								'C' => 'Convertible',
 								'D' => 'Diesel',
 								'E' => 'Electric',
 								'F' => 'Flexible',
-								'C' => 'Gas',
+								'G' => 'Gas',
 								'N' => 'Compressed Natural Gas',
 								'P' => 'Propane',
 								'R' => 'Hydrogen Fuel Cell',
@@ -672,13 +673,13 @@ class Inventory_Presser_Taxonomies {
 				array (
 					'args' => array (
 						'hierarchical'   => true,
-						'label'          => 'Transmission',
+						'label'          => 'Transmissions',
 						'labels'         => array (
-						       'name'          => 'Transmissions',
-						       'singular_name' => 'Transmission',
-						       'search_items'  => 'Search transmissions',
-						       'popular_items' => 'Popular transmissions',
-						       'all_items'     => 'All transmissions',
+							'name'          => 'Transmissions',
+							'singular_name' => 'Transmission',
+							'search_items'  => 'Search transmissions',
+							'popular_items' => 'Popular transmissions',
+							'all_items'     => 'All transmissions',
 						),
 						'meta_box_cb'    => array( $this, 'meta_box_html_transmission' ),
 						'query_var'      => 'transmission',
@@ -723,7 +724,7 @@ class Inventory_Presser_Taxonomies {
 				array (
 					'args' => array (
 						'hierarchical'   => false,
-						'label'          => 'Location',
+						'label'          => 'Locations',
 						'labels'         => array (
 							'name'          => 'Location',
 							'singular_name' => 'Location',
@@ -749,11 +750,11 @@ class Inventory_Presser_Taxonomies {
 						'hierarchical'   => true,
 						'label'          => 'Body styles',
 						'labels'         => array (
-						       'name'          => 'Body styles',
-						       'singular_name' => 'Body style',
-						       'search_items'  => 'Search body styles',
-						       'popular_items' => 'Popular body styles',
-						       'all_items'     => 'All body styles',
+							'name'          => 'Body styles',
+							'singular_name' => 'Body style',
+							'search_items'  => 'Search body styles',
+							'popular_items' => 'Popular body styles',
+							'all_items'     => 'All body styles',
 						),
 						'meta_box_cb'    => null,
 						'query_var'      => 'style',
