@@ -24,6 +24,7 @@ class Inventory_Presser_Taxonomies {
 
 		// location taxonomy admin actions
 		add_action( 'location_add_form_fields', array( &$this, 'add_location_fields'), 10, 2 );
+		add_action( 'location_add_form_fields', array( &$this, 'add_location_fields_javascript'), 11, 1 );
 		add_action( 'created_location', array( &$this, 'save_location_meta'), 10, 2 );
 		add_action( 'location_edit_form_fields', array( &$this, 'edit_location_field'), 10, 2 );
 		add_action( 'edited_location', array( &$this, 'save_location_meta'), 10, 2 );
@@ -107,6 +108,19 @@ class Inventory_Presser_Taxonomies {
 	    </div>
 
 	    <?php
+	}
+
+	/**
+	 * When the user is manually adding a location term, populate the slug
+	 * while they type the name.
+	 */
+	function add_location_fields_javascript() {
+		?><script type="text/javascript"><!--
+		jQuery('#tag-name').on('input', function(){
+			jQuery('#tag-slug').val( jQuery(this).val().replace(' ', '-').replace(/[^a-z\-0-9]/gi,'').toLowerCase());
+		});
+		//-->
+		</script><?php
 	}
 
 	function create_custom_taxonomies( ) {

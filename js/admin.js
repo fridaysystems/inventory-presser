@@ -92,14 +92,33 @@ function update_add_media_button_annotation( ) {
 	});
 }
 
-/* This bit of code below breaks image uploading in some places, commented out til a later date */
+/**
+ * Update the attachment count after uploads
+ * http://stackoverflow.com/questions/14279786/how-to-run-some-code-as-soon-as-new-image-gets-uploaded-in-wordpress-3-5-uploade#14515707
+ */
+jQuery(document).ready( function(){
 
-//Execute some code when the media uploader is closed
-/*jQuery(document).ready( function() {
-	if(typeof wp !== 'undefined' && typeof wp.media !== 'undefined' && typeof wp.media.editor !== 'undefined' ){
-		var frame = wp.media.editor.add('content');
-		frame.on('escape', function(){
+	// Hack for "Upload New Media" Page (old uploader)
+	// Overriding the uploadSuccess function:
+	if (typeof uploadSuccess !== 'undefined') {
+		// First backup the function into a new variable.
+		var uploadSuccess_original = uploadSuccess;
+		// The original uploadSuccess function with has two arguments: fileObj, serverData
+		// So we globally declare and override the function with two arguments (argument names shouldn't matter)
+		uploadSuccess = function(fileObj, serverData)
+		{
+			// Fire the original procedure with the same arguments
+			uploadSuccess_original(fileObj, serverData);
+			// Execute whatever you want here:
+			update_add_media_button_annotation();
+		}
+	}
+
+	// Hack for "Insert Media" Dialog (new plupload uploader)
+	// Hooking on the uploader queue (on reset):
+	if (typeof wp.Uploader !== 'undefined' && typeof wp.Uploader.queue !== 'undefined') {
+		wp.Uploader.queue.on('reset', function() {
 			update_add_media_button_annotation();
 		});
 	}
-});*/
+});
