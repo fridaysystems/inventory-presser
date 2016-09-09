@@ -722,7 +722,9 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 	}
 
 	function scan_for_recommended_settings_and_create_warnings() {
-		/** Suggest values for WordPress internal settings if the user has the values we do not prefer
+		/**
+		 * Suggest values for WordPress internal settings if the user has values
+		 * we do not prefer
 		 */
 
 		if( '1' == get_option('uploads_use_yearmonth_folders') ) {
