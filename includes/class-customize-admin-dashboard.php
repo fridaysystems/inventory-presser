@@ -687,6 +687,12 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			return;
 		}
 
+		/**
+		 * Tick the last modified date of this vehicle since we're saving changes.
+		 * It looks like this: Tue, 06 Sep 2016 09:26:12 -0400
+		 */
+		update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'last_modified' ), date('D, d M Y h:i:s O' ) );
+
 		//Clear this value that is defined by a checkbox
 		update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'featured' ), '0' );
 

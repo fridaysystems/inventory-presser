@@ -369,7 +369,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'car_id',
 				'dealer_id',
 				'edmunds_style_id',
-				'epa_fuel_economy'
+				'epa_fuel_economy',
+				'last_modified'
 			);
 			return ( in_array( $nice_name, $prefixed_fields ) ? '_' : '' ) . 'inventory_presser_' . $nice_name;
 		}
