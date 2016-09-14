@@ -30,6 +30,11 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $year = 0;
 		var $youtube = '';
 
+		//boat items
+		var $beam = '';
+		var $length = '';
+		var $hull_material = '';
+
 		var $carfax_have_report = '0';
 		var $carfax_one_owner = '0';
 
@@ -142,11 +147,14 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		function post_meta_value_is_number( $post_meta_key ) {
 			return in_array( $post_meta_key, array(
+				'inventory_presser_beam',
 				'_inventory_presser_car_ID',
 				'_inventory_presser_dealer_ID',
+				'inventory_presser_length',
 				'inventory_presser_odometer',
 				'inventory_presser_price',
-				'inventory_presser_year',
+				'inventory_presser_year'
+
 			) );
 		}
 
@@ -169,6 +177,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 */
 		function keys( ) {
 			return array(
+				'beam',
 				'body_style',
 				'car_ID',
 				'carfax_have_report',
@@ -179,7 +188,9 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				'engine',
 				'epa_fuel_economy',
 				'featured',
+				'hull_material',
 				'interior_color',
+				'length',
 				'make',
 				'model',
 				'odometer',

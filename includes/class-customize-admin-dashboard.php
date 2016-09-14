@@ -549,19 +549,25 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$VIN = ( isset( $custom['inventory_presser_vin'] ) ? $custom['inventory_presser_vin'][0] : '' );
 		$year = ( isset( $custom['inventory_presser_year'] ) ? $custom['inventory_presser_year'][0] : '' );
 
-		echo '<table class="form-table"><tbody>';
+		//boat items
+		$beam = ( isset( $custom['inventory_presser_beam'] ) ? $custom['inventory_presser_beam'][0] : '' );
+		$length = ( isset( $custom['inventory_presser_length'] ) ? $custom['inventory_presser_length'][0] : '' );
+		$hull_material = ( isset( $custom['inventory_presser_hull_material'] ) ? $custom['inventory_presser_hull_material'][0] : '' );
+
+		echo '<table class="form-table"><tbody>'
 
 		//VIN
-		echo '<tr><th scope="row"><label for="inventory_presser_vin">VIN</label></th>';
-		echo '<td><input type="text" name="inventory_presser_vin" maxlength="17" value="'. $VIN .'"></td>';
+			. '<tr><th scope="row"><label for="inventory_presser_vin">VIN</label></th>'
+			. '<td><input type="text" name="inventory_presser_vin" maxlength="17" value="'. $VIN .'"></td>'
 
 		//Stock number
-		echo '<tr><th scope="row"><label for="inventory_presser_stock_number">Stock number</label></th>';
-		echo '<td><input type="text" name="inventory_presser_stock_number" value="'. $stock_number .'"></td>';
+			. '<tr><th scope="row"><label for="inventory_presser_stock_number">Stock number</label></th>'
+			. '<td><input type="text" name="inventory_presser_stock_number" value="'. $stock_number .'"></td>'
 
 		//Year
-		echo '<tr><th scope="row"><label for="inventory_presser_year">Year</label></th>';
-		echo '<td><select name="inventory_presser_year">';
+			. '<tr><th scope="row"><label for="inventory_presser_year">Year</label></th>'
+			. '<td><select name="inventory_presser_year">';
+
 		for( $y=date('Y')+2; $y>=1920; $y-- ) {
 			echo '<option';
 			if ( $y == $year ) {
@@ -569,45 +575,93 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			}
 			echo '>' .$y. '</option> ';
 		}
-		echo '</select></td></tr>';
+
+		echo '</select></td></tr>'
 
 		//Make
-		echo '<tr><th scope="row"><label for="inventory_presser_make">Make</label></th>';
-		echo '<td><input type="text" name="inventory_presser_make" value="' .$make. '"></td></tr>';
+			. '<tr><th scope="row"><label for="inventory_presser_make">Make</label></th>'
+			. '<td><input type="text" name="inventory_presser_make" value="' .$make. '"></td></tr>'
 
 		//Model
-		echo '<tr><th scope="row"><label for="inventory_presser_model">Model</label></th>';
-		echo '<td><input type="text" name="inventory_presser_model" value="' .$model. '"></td></tr>';
+			. '<tr><th scope="row"><label for="inventory_presser_model">Model</label></th>'
+			. '<td><input type="text" name="inventory_presser_model" value="' .$model. '"></td></tr>'
 
 		//Trim level
-		echo '<tr><th scope="row"><label for="inventory_presser_trim">Trim</label></th>';
-		echo '<td><input type="text" name="inventory_presser_trim" value="' .$trim. '"></td></tr>';
+			. '<tr><th scope="row"><label for="inventory_presser_trim">Trim</label></th>'
+			. '<td><input type="text" name="inventory_presser_trim" value="' .$trim. '"></td></tr>'
 
 		//Engine
-		echo '<tr><th scope="row"><label for="inventory_presser_engine">Engine</label></th>';
-		echo '<td><input type="text" name="inventory_presser_engine" value="' .$engine. '"></td></tr>';
+			. '<tr><th scope="row"><label for="inventory_presser_engine">Engine</label></th>'
+			. '<td><input type="text" name="inventory_presser_engine" value="' .$engine. '"></td></tr>'
 
 		//Body style
-		echo '<tr><th scope="row"><label for="inventory_presser_body_style">Body style</label></th>';
-		echo '<td><input type="text" name="inventory_presser_body_style" value="' .$body_style. '"></td></tr>';
+			. '<tr><th scope="row"><label for="inventory_presser_body_style">Body style</label></th>'
+			. '<td><input type="text" name="inventory_presser_body_style" id="inventory_presser_body_style" value="' .$body_style. '">'
+
+			. '<select name="inventory_presser_body_style_hidden" id="inventory_presser_body_style_hidden">';
+
+			$boat_styles = array(
+				'Bass boat',
+				'Bow Rider',
+				'Cabin Cruiser',
+				'Center Console',
+				'Cuddy Cabin',
+				'Deck boat',
+				'Performance',
+				'Pontoon',
+			);
+			foreach( $boat_styles as $s ) {
+				echo '<option' . selected( $s, $body_style ) . '>' .$s. '</option>';
+			}
+
+			echo '</select></td></tr>'
 
 		//Color
-		echo '<tr><th scope="row"><label for="inventory_presser_color">Color</label></th>';
-		echo '<td><input type="text" name="inventory_presser_color" value="' .$color. '"></td></tr>';
+			. '<tr><th scope="row"><label for="inventory_presser_color">Color</label></th>'
+			. '<td><input type="text" name="inventory_presser_color" value="' .$color. '"></td></tr>'
 
 		//Interior color
-		echo '<tr><th scope="row"><label for="inventory_presser_interior_color">Interior color</label></th>';
-		echo '<td><input type="text" name="inventory_presser_interior_color" value="' .$interior_color. '"></td></tr>';
+			. '<tr><th scope="row"><label for="inventory_presser_interior_color">Interior color</label></th>'
+			. '<td><input type="text" name="inventory_presser_interior_color" value="' .$interior_color. '"></td></tr>'
 
 		//Odometer
-		echo '<tr><th scope="row"><label for="inventory_presser_odometer">Odometer</label></th>';
-		echo '<td><input type="text" name="inventory_presser_odometer" value="' .$odometer. '"></td></tr>';
+			. '<tr><th scope="row"><label for="inventory_presser_odometer">Odometer</label></th>'
+			. '<td><input type="text" name="inventory_presser_odometer" value="' .$odometer. '"> <span class="invp_odometer_units">miles</span></td></tr>'
 
 		//Price
-		echo '<tr><th scope="row"><label for="inventory_presser_price">Price</label></th>';
-		echo '<td><input type="text" name="inventory_presser_price" value="' .$price. '"></td></tr>';
+			. '<tr><th scope="row"><label for="inventory_presser_price">Price</label></th>'
+			. '<td><input type="text" name="inventory_presser_price" value="' .$price. '"></td></tr>'
 
-		echo '</tbody></table>';
+		//Beam (boats)
+			. '<tr class="boat-postmeta"><th scope="row"><label for="inventory_presser_beam">Beam</label></th>'
+			. '<td><input type="text" name="inventory_presser_beam" value="' .$beam. '"></td></tr>'
+
+		//Length (boats)
+			. '<tr class="boat-postmeta"><th scope="row"><label for="inventory_presser_length">Length</label></th>'
+			. '<td><input type="text" name="inventory_presser_length" value="' .$length. '"></td></tr>'
+
+		//Hull material
+			. '<tr class="boat-postmeta"><th scope="row"><label for="inventory_presser_hull_material">Hull material</label></th>'
+			. '<td><select name="inventory_presser_hull_material"><option></option>';
+
+			$hull_materials = array(
+				'Aluminum',
+				'Carbon Fiber',
+				'Composite',
+				'Ferro-Cement',
+				'Fiberglass',
+				'Hypalon',
+				'Other',
+				'PVC',
+				'Steel',
+				'Wood',
+			);
+			foreach( $hull_materials as $m ) {
+				echo '<option' . selected( $m, $hull_material ) . '>' .$m. '</option>';
+			}
+			echo '</select>'
+
+			. '</tbody></table>';
 	}
 
 	function move_tags_meta_box( ) {

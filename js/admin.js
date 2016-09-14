@@ -1,3 +1,9 @@
+function delete_all_data() {
+	//call delete_all_inventory(), then wait until #busy-notice is cleared to
+	delete_all_inventory( 'delete-all-notice' );
+	var timeoutID = setTimeout( maybe_finish_delete_all_data, 2000 );
+}
+
 function delete_all_post_attachments( ) {
 	if( confirm('Are you sure you want to delete all attachments?') ) {
 		var data = {
@@ -11,26 +17,6 @@ function delete_all_post_attachments( ) {
 				document.getElementById('post_ID').value +
 				'&amp;type=image&amp;TB_iframe=1" id="set-post-thumbnail" class="thickbox">Set featured image</a></p>' );
 		});
-	}
-}
-
-function delete_all_data() {
-	//call delete_all_inventory(), then wait until #busy-notice is cleared to
-	delete_all_inventory( 'delete-all-notice' );
-	var timeoutID = setTimeout( maybe_finish_delete_all_data, 2000 );
-}
-
-function maybe_finish_delete_all_data() {
-	//are the cars still deleting?
-	var el = jQuery('#'+status_element_id);
-	if( '' !== el.html()) {
-		//yes? set another timeout
-		var timeoutID = setTimeout( maybe_finish_delete_all_data, 2000 );
-		//console.log('setting another check');
-	} else {
-		//no, submit our form that will perform the rest of the data delete
-		el.html(' <img src="images/loading.gif" /> Deleting other plugin data...');
-		jQuery('#delete-all-data').submit();
 	}
 }
 
@@ -82,6 +68,72 @@ function delete_all_inventory( wait_notice_element_id ) {
 	});
 }
 
+function invp_vehicle_type_changed( type_slug ) {
+	if( 'boat' == type_slug ) {
+
+		/**
+		 * Change the interface for boats
+		 */
+
+		//HIN instead of VIN
+		jQuery('label[for="inventory_presser_vin"]').html('HIN');
+
+		//odometer units are hours
+		jQuery('.invp_odometer_units').html('hours');
+
+		//show the propulsion type taxonomy meta box and boat-specific fields
+		jQuery('#propulsion_typediv,tr.boat-postmeta').show();
+
+		//hide the drive type taxonomy meta box
+		jQuery('#drive_typediv').hide();
+
+		jQuery('select#inventory_presser_body_style_hidden')
+			.attr('name', 'inventory_presser_body_style')
+			.attr('id', 'inventory_presser_body_style');
+
+		jQuery('input#inventory_presser_body_style')
+			.attr('name', 'inventory_presser_body_style_hidden')
+			.attr('id', 'inventory_presser_body_style_hidden');
+	} else {
+
+		//Reverse all those boat changes
+
+		//HIN instead of VIN
+		jQuery('label[for="inventory_presser_vin"]').html('VIN');
+
+		//odometer units are miles
+		jQuery('.invp_odometer_units').html('miles');
+
+		//hide the propulsion type taxonomy meta box and boat-specific fields
+		jQuery('#propulsion_typediv,tr.boat-postmeta').hide();
+
+		//show the drive type taxonomy meta box
+		jQuery('#drive_typediv').show();
+
+		jQuery('input#inventory_presser_body_style_hidden')
+			.attr('name', 'inventory_presser_body_style')
+			.attr('id', 'inventory_presser_body_style');
+
+		jQuery('select#inventory_presser_body_style')
+			.attr('name', 'inventory_presser_body_style_hidden')
+			.attr('id', 'inventory_presser_body_style_hidden');
+	}
+}
+
+function maybe_finish_delete_all_data() {
+	//are the cars still deleting?
+	var el = jQuery('#'+status_element_id);
+	if( '' !== el.html()) {
+		//yes? set another timeout
+		var timeoutID = setTimeout( maybe_finish_delete_all_data, 2000 );
+		//console.log('setting another check');
+	} else {
+		//no, submit our form that will perform the rest of the data delete
+		el.html(' <img src="images/loading.gif" /> Deleting other plugin data...');
+		jQuery('#delete-all-data').submit();
+	}
+}
+
 function update_add_media_button_annotation( ) {
 	var data = {
 		'action': 'output_add_media_button_annotation',
@@ -97,6 +149,9 @@ function update_add_media_button_annotation( ) {
  * http://stackoverflow.com/questions/14279786/how-to-run-some-code-as-soon-as-new-image-gets-uploaded-in-wordpress-3-5-uploade#14515707
  */
 jQuery(document).ready( function(){
+
+	//set up the edit screen for vehicle entry (hides boat fields)
+	invp_vehicle_type_changed( jQuery('#inventory_presser_type').val() );
 
 	// Hack for "Upload New Media" Page (old uploader)
 	// Overriding the uploadSuccess function:

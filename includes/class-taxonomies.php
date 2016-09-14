@@ -339,12 +339,19 @@ class Inventory_Presser_Taxonomies {
 		echo $this->taxonomy_meta_box_html( 'fuel', 'inventory_presser_fuel', $post );
 	}
 
+	function meta_box_html_propulsion_type( $post ) {
+		echo $this->taxonomy_meta_box_html( 'propulsion_type', 'inventory_presser_propulsion_type', $post );
+	}
+
 	function meta_box_html_transmission( $post ) {
 		echo $this->taxonomy_meta_box_html( 'transmission', apply_filters( 'translate_meta_field_key', 'transmission' ), $post );
 	}
 
 	function meta_box_html_type( $post ) {
-		echo $this->taxonomy_meta_box_html( 'type', apply_filters( 'translate_meta_field_key', 'type' ), $post );
+		$html = $this->taxonomy_meta_box_html( 'type', apply_filters( 'translate_meta_field_key', 'type' ), $post );
+		//add an onchange attribute to the select
+		$html = str_replace( '<select', '<select onchange="invp_vehicle_type_changed( this.value );" ', $html );
+		echo $html;
 	}
 
 	function meta_box_html_locations( $post ) {
@@ -424,25 +431,32 @@ class Inventory_Presser_Taxonomies {
 		}
 	}
 
-
 	//save custom taxonomy terms when vehicles are saved
 	function save_vehicle_taxonomy_terms( $post_id, $is_update ) {
 		foreach( $this->slugs_array() as $slug ) {
-			$this->save_taxonomy_term( $post_id, $slug, 'inventory_presser_' . $slug );
+			$taxonomy_name = $slug;
+			if( 'model-year' == $slug ) {
+				$taxonomy_name = 'model_year';
+				$slug = 'year';
+			}
+			$this->save_taxonomy_term( $post_id, $taxonomy_name, 'inventory_presser_' . $slug );
 		}
 	}
 
 	function save_taxonomy_term( $post_id, $taxonomy_name, $element_name ) {
+		//remove always
+		wp_remove_object_terms( $post_id, $this->get_term_slug( $taxonomy_name, $post_id ), $taxonomy_name );
+
 		if ( isset( $_POST[$element_name] ) ) {
-			wp_remove_object_terms( $post_id, $this->get_term_slug( $taxonomy_name, $post_id ), $taxonomy_name );
 			$term_slug = sanitize_text_field( $_POST[$element_name] );
 			if ( '' == $term_slug ) {
-				// the user is setting the vehicle type to empty string, remove only
+				// the user is setting the vehicle type to empty string
 				return;
 			}
 			$term = get_term_by( 'slug', $term_slug, $taxonomy_name );
 			if ( ! empty( $term ) && ! is_wp_error( $term ) ) {
-				if ( is_wp_error( wp_set_object_terms( $post_id, $term->term_id, $taxonomy_name, false ) ) ) {
+				$set = wp_set_object_terms( $post_id, $term->term_id, $taxonomy_name, false );
+				if ( is_wp_error( $set ) ) {
 					//There was an error setting the term
 				}
 			}
@@ -459,10 +473,10 @@ class Inventory_Presser_Taxonomies {
 	function slugs_array() {
 		$arr = array();
 		foreach( $this->taxonomy_data() as $taxonomy_array ) {
-			if( ! isset( $taxonomy_array['args'] ) || ! isset( $taxonomy_array['args']['label'] ) ) {
+			if( ! isset( $taxonomy_array['args'] ) || ! isset( $taxonomy_array['args']['query_var'] ) ) {
 				continue;
 			}
-			array_push( $arr, $this->slug( $taxonomy_array['args']['label'] ) );
+			array_push( $arr, $this->slug( $taxonomy_array['args']['query_var'] ) );
 		}
 		return $arr;
 	}
@@ -582,6 +596,7 @@ class Inventory_Presser_Taxonomies {
 					),
 					'term_data' =>	array (
 								'ATV' => 'All Terrain Vehicle',
+								'BOAT'=> 'Boat',
 								'BUS' => 'Bus',
 								'CAR' => 'Passenger Car',
 								'MOT' => 'Motorcycle',
@@ -640,6 +655,35 @@ class Inventory_Presser_Taxonomies {
 								'RWD' => 'Rear Wheel Drive',
 							),
 				),
+
+				/**
+				 * Propulsion type is essentially drive type for boats
+				 */
+
+				array (
+					'args' => array (
+						'hierarchical'   => true,
+						'label'          => 'Propulsion types',
+						'labels'         => array (
+						       'name'          => 'Propulsion types',
+						       'singular_name' => 'Propulsion type',
+						       'search_items'  => 'Search propulsion types',
+						       'popular_items' => 'Popular propulsion types',
+						       'all_items'     => 'All propulsion types',
+						),
+						'meta_box_cb'    => array( $this, 'meta_box_html_propulsion_type' ),
+						'query_var'      => 'propulsion-type',
+						'singular_label' => 'Propulsion type',
+						'show_in_menu'   => false,
+					),
+					'term_data' =>	array (
+								'IN'  => 'Inboard',
+								'OUT' => 'Outboard',
+								'IO'  => 'Inboard/Outboard',
+								'JET' => 'Jet',
+							),
+				),
+
 				array (
 					'args' => array (
 						'hierarchical'   => true,
@@ -775,8 +819,8 @@ class Inventory_Presser_Taxonomies {
 		 */
 		//get the saved term for this taxonomy
 		$saved_term_slug = $this->get_term_slug( $taxonomy_name, $post->ID );
-		$HTML  = '<select name="' . $element_name . '">';
-		$HTML .= '<option></option>'; //offering a blank value is the only way a user can remove the value
+		$HTML  = '<select name="' . $element_name . '" id="' . $element_name . '">'
+			. '<option></option>'; //offering a blank value is the only way a user can remove the value
 		//get all the term names and slugs for $taxonomy_name
 		$terms = get_terms( $taxonomy_name,  array( 'hide_empty' => false ) );
 		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
