@@ -434,11 +434,11 @@ class Inventory_Presser_Taxonomies {
 	//save custom taxonomy terms when vehicles are saved
 	function save_vehicle_taxonomy_terms( $post_id, $is_update ) {
 		foreach( $this->slugs_array() as $slug ) {
-			$taxonomy_name = $slug;
-			if( 'model-year' == $slug ) {
-				$taxonomy_name = 'model_year';
+			$taxonomy_name = $slug = str_replace( '-', '_', $slug );
+			if( 'model_year' == $slug ) {
 				$slug = 'year';
 			}
+
 			$this->save_taxonomy_term( $post_id, $taxonomy_name, 'inventory_presser_' . $slug );
 		}
 	}
@@ -469,7 +469,7 @@ class Inventory_Presser_Taxonomies {
 		return str_replace( ' ', '_', strtolower( $label ) );
 	}
 
-	//returns an array of all our taxonomy slugs
+	//returns an array of all our taxonomy slugs (also called query_vars)
 	function slugs_array() {
 		$arr = array();
 		foreach( $this->taxonomy_data() as $taxonomy_array ) {
@@ -814,16 +814,20 @@ class Inventory_Presser_Taxonomies {
 
 	function taxonomy_meta_box_html( $taxonomy_name, $element_name, $post ) {
 		/**
-		 *  Creates HTML output for a meta box that turns a taxonomy into
+		 * Creates HTML output for a meta box that turns a taxonomy into
 		 * a select drop-down list instead of the typical checkboxes
 		 */
-		//get the saved term for this taxonomy
-		$saved_term_slug = $this->get_term_slug( $taxonomy_name, $post->ID );
 		$HTML  = '<select name="' . $element_name . '" id="' . $element_name . '">'
 			. '<option></option>'; //offering a blank value is the only way a user can remove the value
+
 		//get all the term names and slugs for $taxonomy_name
 		$terms = get_terms( $taxonomy_name,  array( 'hide_empty' => false ) );
+
 		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+
+			//get the saved term for this taxonomy
+			$saved_term_slug = $this->get_term_slug( $taxonomy_name, $post->ID );
+
 			foreach( $terms as $term ) {
 				$HTML .= '<option value="' . $term->slug . '"'
 					. selected( strtolower( $term->slug ), strtolower( $saved_term_slug ), false )
