@@ -370,7 +370,7 @@ class Inventory_Presser_Taxonomies {
 			$meta_final = array('phones' => array(), 'hours' => array());
 
 			// HOURS
-			$count = count($_POST['hours_title']) - 2;
+			$count = count( $_POST['hours_title'] ) - 2;
 
 			for ($i = 0; $i <= $count; $i++) {
 
@@ -435,16 +435,20 @@ class Inventory_Presser_Taxonomies {
 	function save_vehicle_taxonomy_terms( $post_id, $is_update ) {
 		foreach( $this->slugs_array() as $slug ) {
 			$taxonomy_name = $slug = str_replace( '-', '_', $slug );
-			if( 'model_year' == $slug ) {
-				$slug = 'year';
+			switch( $slug ) {
+				case 'style':
+					$slug = 'body_style';
+					break;
+				case 'model_year':
+					$slug = 'year';
+					break;
 			}
-
 			$this->save_taxonomy_term( $post_id, $taxonomy_name, 'inventory_presser_' . $slug );
 		}
 	}
 
 	function save_taxonomy_term( $post_id, $taxonomy_name, $element_name ) {
-		//remove always
+		//always remove the term that is current saved in this taxonomy
 		wp_remove_object_terms( $post_id, $this->get_term_slug( $taxonomy_name, $post_id ), $taxonomy_name );
 
 		if ( isset( $_POST[$element_name] ) ) {
@@ -454,11 +458,21 @@ class Inventory_Presser_Taxonomies {
 				return;
 			}
 			$term = get_term_by( 'slug', $term_slug, $taxonomy_name );
-			if ( ! empty( $term ) && ! is_wp_error( $term ) ) {
-				$set = wp_set_object_terms( $post_id, $term->term_id, $taxonomy_name, false );
-				if ( is_wp_error( $set ) ) {
-					//There was an error setting the term
+			if ( empty( $term ) || is_wp_error( $term ) ) {
+				//the term does not exist. create it
+				$term_arr = array(
+					'slug'        => sanitize_title( $term_slug ),
+					'description' => $term_slug,
+					'name'        => $term_slug,
+				);
+				$id_arr = wp_insert_term( $term_slug, $taxonomy_name, $term_arr );
+				if( ! is_wp_error( $id_arr ) ) {
+					$term->term_id = $id_arr['term_id'];
 				}
+			}
+			$set = wp_set_object_terms( $post_id, $term->term_id, $taxonomy_name, false );
+			if ( is_wp_error( $set ) ) {
+				//There was an error setting the term
 			}
 		}
 	}
