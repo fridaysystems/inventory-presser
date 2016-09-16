@@ -222,8 +222,10 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		//if numeric, format the odometer with thousands separators
 		function odometer( $append = '' ) {
+			if( '0' == $this->odometer ) { return ''; }
+
 			$odometer = '';
-			if( is_numeric( $this->odometer ) && '0' != $this->odometer ) {
+			if( is_numeric( $this->odometer ) ) {
 				$odometer .= number_format( $this->odometer, 0, '.', ',' );
 				if ($append) {
 					$odometer .= $append;
