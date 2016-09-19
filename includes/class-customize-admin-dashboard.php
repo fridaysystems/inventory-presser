@@ -812,6 +812,9 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			if( isset( $_POST['default-sort-order'] ) ) {
 				$new_options['default-sort-order'] = $_POST['default-sort-order'];
 			}
+			if( isset( $_POST['license-key'] ) ) {
+				$new_options['license-key'] = $_POST['license-key'];
+			}
 			if( $options != $new_options ) {
 				//save changes
 				$option_manager->save_options( $new_options );
@@ -843,42 +846,48 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 				<table class="form-table">
 				<tbody>
 				<tr>
-					<th scope="row"><label for="Sort-vehicles-by">Sort vehicles by</label></th>
+					<th scope="row"><label for="default-sort-key">Sort vehicles by</label></th>
 					<td>
-						<label for="default-sort-key">
-							<select name="default-sort-key" id="default-sort-key"><?php
+						<select name="default-sort-key" id="default-sort-key"><?php
 
-							/**
-							 * Get a list of all the post meta keys in our
-							 * CPT. Let the user choose one as a default
-							 * sort.
-							 */
-							$vehicle = new Inventory_Presser_Vehicle();
-							foreach( $vehicle->keys() as $key ) {
+						/**
+						 * Get a list of all the post meta keys in our
+						 * CPT. Let the user choose one as a default
+						 * sort.
+						 */
+						$vehicle = new Inventory_Presser_Vehicle();
+						foreach( $vehicle->keys() as $key ) {
 
-								//Skip hidden postmeta keys
-								if( '_' == $key[0] ) { continue; }
+							$key = apply_filters( 'translate_meta_field_key', $key );
 
-								$key = apply_filters( 'translate_meta_field_key', $key );
-								echo '<option value="'. $key . '"';
-								if( isset( $options['default-sort-key'] ) ) {
-									selected( $options['default-sort-key'], $key );
-								}
-								echo '>' . $vehicle->make_post_meta_key_readable( $key ) . '</option>';
+							//Skip hidden postmeta keys
+							if( '_' == $key[0] ) { continue; }
+
+							echo '<option value="'. $key . '"';
+							if( isset( $options['default-sort-key'] ) ) {
+								selected( $options['default-sort-key'], $key );
 							}
+							echo '>' . $vehicle->make_post_meta_key_readable( $key ) . '</option>';
+						}
 
 
-							?></select> in <select name="default-sort-order" id="default-sort-order"><?php
+						?></select> in <select name="default-sort-order" id="default-sort-order"><?php
 
-							foreach( array( 'ascending' => 'ASC', 'descending' => 'DESC' ) as $direction => $abbr ) {
-								echo '<option value="'. $abbr . '"';
-								if( isset( $options['default-sort-order'] ) ) {
-									selected( $options['default-sort-order'], $abbr );
-								}
-								echo '>' . $direction . '</option>';
+						foreach( array( 'ascending' => 'ASC', 'descending' => 'DESC' ) as $direction => $abbr ) {
+							echo '<option value="'. $abbr . '"';
+							if( isset( $options['default-sort-order'] ) ) {
+								selected( $options['default-sort-order'], $abbr );
 							}
-							?></select> order
-						</label>
+							echo '>' . $direction . '</option>';
+						}
+						?></select> order
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><label for="license-key">License key</label></th>
+					<td>
+						<input type="text" name="license-key" id="license-key" value="<?php if ( isset( $options['license-key'] ) ) { echo $options['license-key']; } ?>" />
+						<p class="description">To receive plugin updates, obtain a key at <a href="https://inventorypresser.com/">https://inventorypresser.com</a>.</p>
 					</td>
 				</tr>
 				</table>
