@@ -190,6 +190,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				'featured',
 				'hull_material',
 				'interior_color',
+				'last_modified',
 				'length',
 				'make',
 				'model',

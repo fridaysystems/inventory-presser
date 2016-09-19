@@ -855,6 +855,10 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 							 */
 							$vehicle = new Inventory_Presser_Vehicle();
 							foreach( $vehicle->keys() as $key ) {
+
+								//Skip hidden postmeta keys
+								if( '_' == $key[0] ) { continue; }
+
 								$key = apply_filters( 'translate_meta_field_key', $key );
 								echo '<option value="'. $key . '"';
 								if( isset( $options['default-sort-key'] ) ) {
