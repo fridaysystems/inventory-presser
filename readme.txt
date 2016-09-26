@@ -54,7 +54,8 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 == Changelog ==
 
 = 2.2.0 =
-* This version brings new features for boat dealers. We have added a propulsion type taxonomy and vehicle fields for beam, length, and hull material. The edit screen will change to accomodate this data when the vehicle type boat is chosen or loaded.
+* New features for boat dealers. We have added a propulsion type taxonomy and vehicle fields for beam, length, and hull material. The edit screen will change to accomodate this data when the vehicle type boat is chosen or loaded.
+* Adds a filter on the text that tells users at which location a vehicle is located, primary for our new plugin "Hours Today Shortcode" to append information to this sentence about whether or not the dealership is currently open.
 
 = 2.1.0 =
 * Now supports child themes
