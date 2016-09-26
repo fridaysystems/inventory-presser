@@ -128,9 +128,11 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 						if (in_array($hourset['uid'], $instance['cb_display'][$term_id])) {
 
+							$hours_title = '';
 							if (isset($instance['cb_title'][$term_id]) && is_array($instance['cb_title'][$term_id]) && in_array($hourset['uid'], $instance['cb_title'][$term_id])) {
-								echo sprintf('<strong>%s</strong>',$hourset['title']);
+								$hours_title = sprintf( '<strong>%s</strong>', $hourset['title'] );
 							}
+							echo apply_filters( 'invp_hours_title', $hours_title, $hourset['uid'] );
 
 							// get current day number, starting on a monday
 							$current_weekday = date('w') - 1;
@@ -1314,7 +1316,7 @@ class Price_Filters extends WP_Widget {
 			), get_post_type_archive_link(self::CUSTOM_POST_TYPE));
 
 			$class_string = ($instance['display_type'] == 'buttons') ? ' class="_button _button-med"' : ' class="price-filter-text"';
-			
+
 			foreach ($price_points as $price_point) {
 				$this_link = add_query_arg( 'max_price', $price_point, $base_link);
 				echo sprintf('<div><a href="%s"%s><i class="fa fa-arrow-circle-down"></i>&nbsp;&nbsp;%s</a></div>',$this_link,$class_string,'$' . number_format($price_point, 0, '.', ',' ));

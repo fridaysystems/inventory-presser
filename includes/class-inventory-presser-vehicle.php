@@ -17,6 +17,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $epa_fuel_economy = array();
 		var $featured = '0';
 		var $interior_color = '';
+		var $last_modified = '';
 		var $make = '';
 		var $model = '';
 		var $odometer = '';

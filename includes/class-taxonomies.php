@@ -102,7 +102,8 @@ class Inventory_Presser_Taxonomies {
 				        	<span class="dashicons dashicons-trash repeat-delete"></span>
 				        </div>
 			        </div>
-			        <button type="button" class="repeat-add">Add Hours Block</button>
+			        <p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory_presser' ); ?></p>
+			        <p><button type="button" class="repeat-add">Add Hours Block</button></p>
 		        </div>
 	        </div>
 	    </div>
@@ -292,7 +293,8 @@ class Inventory_Presser_Taxonomies {
 				        	<span class="dashicons dashicons-trash repeat-delete"></span>
 				        </div>
 			        </div>
-			        <button type="button" class="repeat-add">Add Hours Block</button>
+			        <p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory_presser' ); ?></p>
+			        <p><button type="button" class="repeat-add">Add Hours Block</button></p>
 		        </div>
 	        </td>
 	    </tr><?php
