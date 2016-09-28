@@ -116,6 +116,12 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$this->type = (isset($type_array[0])) ? $type_array[0] : '';
 		}
 
+		function autocheck_icon_html() {
+			$autocheck_link = admin_url('admin-ajax.php?action=autocheck&vin='.$this->vin);
+			$autocheck_image = '<img src="' . plugins_url( '../assets/autocheck-button.png', __FILE__ ) . '">';
+			return sprintf('<div class="autocheck-wrapper-center"><a href="%s" target="_blank">%s</a></div>',$autocheck_link,$autocheck_image);
+		}
+
 		function carfax_icon_HTML($wrap = false) {
 
 			$link = '';
@@ -136,27 +142,34 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return $wrap ? '<div class="carfax-wrap">'.$link.'<br/>'.$text.'</div>' : $link;
 		}
 
+		// fill arrays of thumb and large image URI's
+		function get_images_html_array( $size ) {
+
+			$this->images[$size] = array();
+
+			$image_args = array('post_parent' =>$this->post_ID,
+					'numberposts' => -1,
+					'post_type' => 'attachment',
+					'post_mime_type' => 'image',
+					'order' => 'ASC',
+					'orderby' => 'menu_order ID');
+
+			$images = get_children($image_args);
+			foreach($images as $image):
+				$this->images[$size][] = wp_get_attachment_image($image->ID, $size, false, array('class'=>"attachment-$size size-$size invp-image"));
+			endforeach;
+
+			return $this->images[$size];
+		}
+
+		//return taxonomy terms as a comma delimited string
+		function get_term_string( $taxonomy ) {
+			$term_list = wp_get_post_terms($this->post_ID, $taxonomy, array("fields" => "names"));
+			return implode(', ', $term_list);
+		}
+
 		function have_carfax_report() {
 			return '1' == $this->carfax_have_report;
-		}
-
-		function autocheck_icon_html() {
-			$autocheck_link = admin_url('admin-ajax.php?action=autocheck&vin='.$this->vin);
-			$autocheck_image = '<img src="' . plugins_url( '../assets/autocheck-button.png', __FILE__ ) . '">';
-			return sprintf('<div class="autocheck-wrapper-center"><a href="%s" target="_blank">%s</a></div>',$autocheck_link,$autocheck_image);
-		}
-
-		function post_meta_value_is_number( $post_meta_key ) {
-			return in_array( $post_meta_key, array(
-				'inventory_presser_beam',
-				'_inventory_presser_car_ID',
-				'_inventory_presser_dealer_ID',
-				'inventory_presser_length',
-				'inventory_presser_odometer',
-				'inventory_presser_price',
-				'inventory_presser_year'
-
-			) );
 		}
 
 		/**
@@ -238,6 +251,27 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return $odometer;
 		}
 
+		function payments( $zero_string = '' ) {
+
+			if (isset($this->prices['down_payment'])) {
+				return sprintf('$%s Down / $%s %s',number_format($this->prices['down_payment'], 0, '.', ',' ), number_format($this->prices['payment'], 0, '.', ',' ), ucfirst($this->prices['payment_frequency']));
+			}
+			return $this->price($zero_string);
+		}
+
+		function post_meta_value_is_number( $post_meta_key ) {
+			return in_array( $post_meta_key, array(
+				'inventory_presser_beam',
+				'_inventory_presser_car_ID',
+				'_inventory_presser_dealer_ID',
+				'inventory_presser_length',
+				'inventory_presser_odometer',
+				'inventory_presser_price',
+				'inventory_presser_year'
+
+			) );
+		}
+
 		/**
 		 * Return the price as a dollar amount except when it is zero.
 		 * Return the $zero_string when the price is zero.
@@ -251,40 +285,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			}
 
 			return $result;
-		}
-
-		function payments( $zero_string = '' ) {
-
-			if (isset($this->prices['down_payment'])) {
-				return sprintf('$%s Down / $%s %s',number_format($this->prices['down_payment'], 0, '.', ',' ), number_format($this->prices['payment'], 0, '.', ',' ), ucfirst($this->prices['payment_frequency']));
-			}
-			return $this->price($zero_string);
-		}
-
-		//return taxonomy terms as a comma delimited string
-		function get_term_string( $taxonomy ) {
-			$term_list = wp_get_post_terms($this->post_ID, $taxonomy, array("fields" => "names"));
-			return implode(', ', $term_list);
-		}
-
-		// fill arrays of thumb and large image URI's
-		function get_images_html_array( $size ) {
-
-			$this->images[$size] = array();
-
-			$image_args = array('post_parent' =>$this->post_ID,
-					'numberposts' => -1,
-					'post_type' => 'attachment',
-					'post_mime_type' => 'image',
-					'order' => 'ASC',
-					'orderby' => 'menu_order ID');
-
-			$images = get_children($image_args);
-			foreach($images as $image):
-				$this->images[$size][] = wp_get_attachment_image($image->ID, $size, false, array('class'=>"attachment-$size size-$size invp-image"));
-			endforeach;
-
-			return $this->images[$size];
 		}
 	}
 }
