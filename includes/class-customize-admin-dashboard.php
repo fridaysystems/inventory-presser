@@ -239,8 +239,9 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		//and their associated meta data
 		//returns the number of vehicles deleted
 		$args = array(
+			'post_status'    => 'any',
+			'post_type'      => $this->post_type(),
 			'posts_per_page' => -1,
-			'post_type'      => $this->post_type()
 		);
 		$posts = get_posts( $args );
 		$deleted_count = 0;
@@ -293,6 +294,8 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		foreach( $orphan_media as $post ) {
 			wp_delete_post( $post->ID );
 		}
+
+		do_action( 'inventory_presser_delete_all_inventory' );
 
 		return $deleted_count;
 	}

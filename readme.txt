@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.6.1
-Stable tag: 2.2.0
+Stable tag: 2.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,10 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 2. This is the edit screen that adds or edits a single vehicle. This screen shot was taken on version 0.4, and at this time there is no VIN decoder or support for vehicle options.
 
 == Changelog ==
+
+= 2.3.0 =
+* Delete all inventory feature now ignores post status and deletes any and all
+* Delete all inventory method now runs an action hook after the deletions occur, inventory_presser_delete_all_inventory
 
 = 2.2.0 =
 * New features for boat dealers. We have added a propulsion type taxonomy and vehicle fields for beam, length, and hull material. The edit screen will change to accomodate this data when the vehicle type boat is chosen or loaded.
