@@ -213,8 +213,11 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 	}
 
 	function delete_all_data_and_deactivate( ) {
-		//this function will operate as an uninstall utility
-		//removes all the data we have added to the database
+		/**
+		 * This function will operate as an uninstall utility. Removes all the
+		 * data we have added to the database.
+		 */
+		set_time_limit( 0 );
 
 		//delete all the vehicles
 		$deleted_count = $this->delete_all_inventory();
@@ -235,9 +238,13 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 	}
 
 	function delete_all_inventory( ) {
-		//this function deletes all posts that exist of our custom post type
-		//and their associated meta data
-		//returns the number of vehicles deleted
+		/**
+		 * This function deletes all posts that exist of our custom post type
+		 * and their associated meta data. Returns the number of vehicles
+		 * deleted.
+		 */
+		set_time_limit( 0 );
+
 		$args = array(
 			'post_status'    => 'any',
 			'post_type'      => $this->post_type(),
@@ -312,13 +319,13 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			echo "<div id='import-error' class='settings-error'><p><strong>" . $delete_result->get_error_message( ) . "</strong></p></div>";
 		} else {
 			//output the success result, it's a string of html
-			echo '<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"><p><strong>';
-			if( 0 == $delete_result ) {
-				echo 'There are no vehicles to delete.';
-			} else {
-				echo 'Deleted '.$delete_result.' vehicles.';
-			}
-			echo '</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+			echo '
+				<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible">
+					<p><strong>' .
+					( 0 == $delete_result ? 'There are no vehicles to delete.' : 'Deleted all vehicles.' )
+					. '</strong></p>
+					<button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
+				</div>';
 		}
 		wp_die();
 	}
@@ -520,18 +527,17 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		//sort the array by key
 		ksort( $options );
 		//output a bunch of checkboxes
-		$HTML = '<div class="list-with-columns">';
-		$HTML .= '<ul class="optional-equipment">';
+		$HTML = '<div class="list-with-columns"><ul class="optional-equipment">';
 		foreach( $options as $key => $value ) {
 			//element IDs cannot contain slashes, spaces or parentheses
-			$id = 'option-' . preg_replace( '/\/\(\)/i', '', str_replace( ' ', '_', $key ) );
-			$HTML .= '<li><input type="checkbox" id="'. $id .'" name="'. $id .'" value="'. $key .'"';
-			$HTML .= checked( true, $value, false );
-			$HTML .= '>';
-			$HTML .= '<label for="'. $id .'">' . $key . '</label></li>';
+			$id = 'option-' . preg_replace( '/\/\(\)/i', '', str_replace( ' ', '_', $key ) )
+				. '<li><input type="checkbox" id="'. $id .'" name="'. $id .'" value="'. $key .'"'
+				. checked( true, $value, false )
+				. '>'
+				. '<label for="'. $id .'">' . $key . '</label></li>';
 		}
-		$HTML .= '</ul>';
-		$HTML .= '</div>';
+		$HTML .= '</ul></div>';
+
 		echo $HTML;
 	}
 
