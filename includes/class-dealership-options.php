@@ -165,6 +165,14 @@ class _dealer_settings {
 			'dealership-options-admin', 
 			'dealership_options_setting_section' 
 		);
+
+		add_settings_field( 
+			'footer_link_text', 
+			'Footer Link Text', 
+			array( $this, 'footer_link_text_callback'), 
+			'dealership-options-admin', 
+			'dealership_options_setting_section' 
+		);
 	}
 
 	public function dealership_options_sanitize($input) {
@@ -224,6 +232,10 @@ class _dealer_settings {
 
 		if ( isset( $input['msrp_label'] ) ) {
 			$sanitary_values['msrp_label'] = $input['msrp_label'];
+		}
+
+		if ( isset( $input['footer_link_text'] ) ) {
+			$sanitary_values['footer_link_text'] = $input['footer_link_text'];
 		}
 
 		return $sanitary_values;
@@ -373,6 +385,13 @@ class _dealer_settings {
 		printf(
 			'<input type="text" name="_dealer_settings[msrp_label]" id="msrp_label" value="%s">',
 			( isset( $this->_dealer_settings['msrp_label'] )) ? $this->_dealer_settings['msrp_label'] : ''
+		);
+	}
+
+	public function footer_link_text_callback() {
+		printf(
+			'<input type="text" name="_dealer_settings[footer_link_text]" id="footer_link_text" value="%s">',
+			( isset( $this->_dealer_settings['footer_link_text'] )) ? $this->_dealer_settings['footer_link_text'] : ''
 		);
 	}
 
