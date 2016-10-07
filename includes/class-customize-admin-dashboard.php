@@ -530,8 +530,8 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$HTML = '<div class="list-with-columns"><ul class="optional-equipment">';
 		foreach( $options as $key => $value ) {
 			//element IDs cannot contain slashes, spaces or parentheses
-			$id = 'option-' . preg_replace( '/\/\(\)/i', '', str_replace( ' ', '_', $key ) )
-				. '<li><input type="checkbox" id="'. $id .'" name="'. $id .'" value="'. $key .'"'
+			$id = 'option-' . preg_replace( '/\/\(\)/i', '', str_replace( ' ', '_', $key ) );
+			$HTML .= '<li><input type="checkbox" id="'. $id .'" name="'. $id .'" value="'. $key .'"'
 				. checked( true, $value, false )
 				. '>'
 				. '<label for="'. $id .'">' . $key . '</label></li>';

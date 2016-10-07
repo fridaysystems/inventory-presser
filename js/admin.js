@@ -171,7 +171,7 @@ jQuery(document).ready( function(){
 
 	// Hack for "Insert Media" Dialog (new plupload uploader)
 	// Hooking on the uploader queue (on reset):
-	if (typeof wp.Uploader !== 'undefined' && typeof wp.Uploader.queue !== 'undefined') {
+	if (typeof wp !== 'undefined' && typeof wp.Uploader !== 'undefined' && typeof wp.Uploader.queue !== 'undefined') {
 		wp.Uploader.queue.on('reset', function() {
 			update_add_media_button_annotation();
 		});
