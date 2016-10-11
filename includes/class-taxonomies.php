@@ -20,7 +20,7 @@ class Inventory_Presser_Taxonomies {
 		//create custom taxonomies for vehicles
 		add_action( 'init', array( &$this, 'create_custom_taxonomies' ) );
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_term_data' ) );
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_term_data' ));
 
 		// location taxonomy admin actions
 		add_action( 'location_add_form_fields', array( &$this, 'add_location_fields'), 10, 2 );
