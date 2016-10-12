@@ -380,30 +380,30 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 	} //end class
 	$inventory_presser = new Inventory_Presser_Plugin;
-} //end if
 
-//Populate our taxonomies with terms if they do not already exist
-function invp_populate_default_terms() {
+	//Populate our taxonomies with terms if they do not already exist
+	function invp_populate_default_terms() {
 
-	$taxonomies_obj = new Inventory_Presser_Taxonomies();
+		$taxonomies_obj = new Inventory_Presser_Taxonomies();
 
-	//create the taxonomies or else our wp_insert_term calls will fail
-	$taxonomies_obj->create_custom_taxonomies();
+		//create the taxonomies or else our wp_insert_term calls will fail
+		$taxonomies_obj->create_custom_taxonomies();
 
-	$taxonomy_data = $taxonomies_obj->taxonomy_data();
-	for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
-		foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
-			$taxonomy_name = $taxonomies_obj->convert_hyphens_to_underscores( $taxonomy_data[$i]['args']['query_var'] );
-			if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) ) {
-				$term_exists = wp_insert_term(
-					$desc,
-					$taxonomy_name,
-					array (
-						'description' => $desc,
-						'slug' => $abbr,
-					)
-				);
+		$taxonomy_data = $taxonomies_obj->taxonomy_data();
+		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
+			foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
+				$taxonomy_name = $taxonomies_obj->convert_hyphens_to_underscores( $taxonomy_data[$i]['args']['query_var'] );
+				if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) ) {
+					$term_exists = wp_insert_term(
+						$desc,
+						$taxonomy_name,
+						array (
+							'description' => $desc,
+							'slug' => $abbr,
+						)
+					);
+				}
 			}
 		}
 	}
-}
+} //end if
