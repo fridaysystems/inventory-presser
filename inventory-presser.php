@@ -144,6 +144,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//Do some things during deactivation
 			register_deactivation_hook( __FILE__, array( &$this, 'delete_rewrite_rules_option' ) );
 
+			//Populate our custom taxonomies with default terms
+			register_activation_hook( __FILE__, 'invp_populate_default_terms' );
+
 			/**
 			 * These items make it easier to create themes based on our custom post type
 			 */
@@ -378,3 +381,29 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	} //end class
 	$inventory_presser = new Inventory_Presser_Plugin;
 } //end if
+
+//Populate our taxonomies with terms if they do not already exist
+function invp_populate_default_terms() {
+
+	$taxonomies_obj = new Inventory_Presser_Taxonomies();
+
+	//create the taxonomies or else our wp_insert_term calls will fail
+	$taxonomies_obj->create_custom_taxonomies();
+
+	$taxonomy_data = $taxonomies_obj->taxonomy_data();
+	for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
+		foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
+			$taxonomy_name = $taxonomies_obj->convert_hyphens_to_underscores( $taxonomy_data[$i]['args']['query_var'] );
+			if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) ) {
+				$term_exists = wp_insert_term(
+					$desc,
+					$taxonomy_name,
+					array (
+						'description' => $desc,
+						'slug' => $abbr,
+					)
+				);
+			}
+		}
+	}
+}

@@ -56,6 +56,7 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 = 2.3.0 =
 * Delete all inventory feature now ignores post status and deletes any and all
 * Delete all inventory method now runs an action hook after the deletions occur, inventory_presser_delete_all_inventory
+* Only insert the default terms into our custom taxonomies during plugin activation instead of on every page load when the taxonomies are created
 
 = 2.2.0 =
 * New features for boat dealers. We have added a propulsion type taxonomy and vehicle fields for beam, length, and hull material. The edit screen will change to accomodate this data when the vehicle type boat is chosen or loaded.

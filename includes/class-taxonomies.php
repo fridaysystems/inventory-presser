@@ -13,7 +13,7 @@ class Inventory_Presser_Taxonomies {
 	var $post_type;
 	var $days = array('Mon','Tue','Wed','Thu','Fri','Sat','Sun');
 
-	function __construct( $post_type ) {
+	function __construct( $post_type='inventory_vehicle' ) {
 
 		$this->post_type = $post_type;
 
@@ -124,27 +124,17 @@ class Inventory_Presser_Taxonomies {
 		</script><?php
 	}
 
-	function create_custom_taxonomies( ) {
+	function convert_hyphens_to_underscores( $str ) {
+		return str_replace( '-', '_', $str );
+	}
+
+	function create_custom_taxonomies() {
 		//loop over this data, register the taxonomies, and populate the terms if needed
 		$taxonomy_data = $this->taxonomy_data();
 		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
 			//create the taxonomy
-			$taxonomy_name = str_replace( '-', '_', $taxonomy_data[$i]['args']['query_var'] );
+			$taxonomy_name = $this->convert_hyphens_to_underscores( $taxonomy_data[$i]['args']['query_var'] );
 			register_taxonomy( $taxonomy_name, $this->post_type(), $taxonomy_data[$i]['args'] );
-
-			/* populate the taxonomy we just created with terms if they do not
-			 * already exist
-			 */
-			foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
-				if ( !is_array( term_exists( $desc, $taxonomy_name ) ) ) {
-					wp_insert_term( $desc, $taxonomy_name,
-						array (
-							'description' => $desc,
-							'slug' => $abbr,
-						)
-					);
-				}
-			}
 		}
 	}
 
