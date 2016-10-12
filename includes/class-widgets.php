@@ -1256,7 +1256,7 @@ class Price_Filters extends WP_Widget {
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
 
 		if (!is_admin() && isset($_GET['max_price'])) {
-			add_action( 'pre_get_posts', array( &$this, 'set_max_price' ));
+			add_action( 'pre_get_posts', array( &$this, 'set_max_price'));
 		}
 	}
 

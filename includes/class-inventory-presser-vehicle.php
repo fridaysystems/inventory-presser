@@ -136,7 +136,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				}
 			} else {
 				$text = 'CARFAX Record Check';
-				$link = '<a href="http://www.carfax.com/cfm/check_order.cfm?partner=DCS_2&VIN=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-report.png', __FILE__ ) . '" alt="'.$text.'" title="'.$text.'" class="carfax-icon"></a>';
+				$link = '<a href="https://www.carfax.com/VehicleHistory/p/Report.cfx?vin=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-report.png', __FILE__ ) . '" alt="'.$text.'" title="'.$text.'" class="carfax-icon"></a>';
 			}
 
 			return $wrap ? '<div class="carfax-wrap">'.$link.'<br/>'.$text.'</div>' : $link;
