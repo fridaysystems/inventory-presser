@@ -20,7 +20,10 @@ class Inventory_Presser_Vehicle_Shortcodes {
 	function load_scripts() {
 
 		wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
-		wp_enqueue_style('invp-simple-listing-style', plugins_url('/css/invp-simple-listing.css', dirname(__FILE__)));
+
+		if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'invp-simple-listing') || is_post_type_archive('inventory_vehicle')) {
+			wp_enqueue_style('invp-simple-listing-style', plugins_url('/css/invp-simple-listing.css', dirname(__FILE__)));
+		}
 
 		wp_register_script('flexslider', plugins_url('/js/jquery.flexslider.min.js', dirname(__FILE__)), array('jquery'));
 		wp_register_script('invp-simple-listing', plugins_url('/js/invp-simple-listing.js', dirname(__FILE__)), array('flexslider'));
