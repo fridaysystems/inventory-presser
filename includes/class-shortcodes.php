@@ -22,14 +22,13 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
 
 		global $post;
-
 		if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'invp-simple-listing') || is_post_type_archive('inventory_vehicle')) {
 			wp_enqueue_style('invp-simple-listing-style', plugins_url('/css/invp-simple-listing.css', dirname(__FILE__)));
 		}
 
 		wp_register_script('flexslider', plugins_url('/js/jquery.flexslider.min.js', dirname(__FILE__)), array('jquery'));
 		wp_register_script('invp-simple-listing', plugins_url('/js/invp-simple-listing.js', dirname(__FILE__)), array('flexslider'));
-
+		
 		if (is_singular('inventory_vehicle') && !file_exists(get_stylesheet_directory().'/single-inventory_vehicle.php')) {
 
 			// generate an array of all featured image size urls.  This will be used by jquery to remove all instances
@@ -173,7 +172,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		return $grid_html;
 
 	}
-
+	
 	function simple_listing($atts) {
 		// process shortcode attributes
 		$atts = shortcode_atts(array(
@@ -243,7 +242,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 						'image_url' => $vehicle->image_url,
 					);
 			}
-
+			
 			$output['status'] = 'ok';
 
 		} catch (Exception $e) {
@@ -290,7 +289,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 				$before.=		  '</ul>';
 				$before.=		'</div>';
 
-
+				
 				// if only 1 image, skip the nav
 				if (count($thumb_image_list) > 1) {
 					$before.=		'<div id="carousel" class="flexslider">';
@@ -299,7 +298,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 					$before.=		    '<li>'.$image.'</li>';
 					endforeach;
 					$before.=		  '</ul>';
-					$before.=		'</div>';
+					$before.=		'</div>';				
 				}
 
 			}
