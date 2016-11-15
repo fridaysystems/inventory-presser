@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.6.1
-Stable tag: 2.3.2
+Stable tag: 2.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,9 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 2. This is the edit screen that adds or edits a single vehicle. This screen shot was taken on version 0.4, and at this time there is no VIN decoder or support for vehicle options.
 
 == Changelog ==
+
+= 2.3.3 =
+* Bug fix in Order By Post Meta widget. A bad string concatenation prevented the output of list items and links.
 
 = 2.3.2 =
 * Bug fix when queuing scripts for our shortcodes. Previously, we were using a $post variable before a global $post; call.

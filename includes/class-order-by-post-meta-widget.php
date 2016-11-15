@@ -181,7 +181,7 @@ class Order_By_Widget extends WP_Widget {
 			echo '<ul class="order-by-list list-nostyle">';
 			foreach( $keys_to_list as $key ) {
 				echo '<li><a href="javascript:order_by_post_meta(\'' . $key . '\');">'
-					. isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $key
+					. ( isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $key )
 					. '</a></li>';
 			}
 			echo '</ul>' . $after_widget;
