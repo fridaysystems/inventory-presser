@@ -754,7 +754,8 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		 * Tick the last modified date of this vehicle since we're saving changes.
 		 * It looks like this: Tue, 06 Sep 2016 09:26:12 -0400
 		 */
-		update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'last_modified' ), date('D, d M Y h:i:s O' ) );
+		$offset = sprintf( '%+03d00', intval( get_option('gmt_offset') ) );
+		update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'last_modified' ), current_time( 'D, d M Y h:i:s' ) . ' ' . $offset );
 
 		//Clear this value that is defined by a checkbox
 		update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'featured' ), '0' );

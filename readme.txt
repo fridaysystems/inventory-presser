@@ -55,6 +55,7 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 
 = 2.3.3 =
 * Bug fix in Order By Post Meta widget. A bad string concatenation prevented the output of list items and links.
+* Bug fix while editing vehicles in the Dashboard. The last modified date was not being saved with the correct timezone offset.
 
 = 2.3.2 =
 * Bug fix when queuing scripts for our shortcodes. Previously, we were using a $post variable before a global $post; call.
