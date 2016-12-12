@@ -820,6 +820,17 @@ class Stock_Photo_Slider extends WP_Widget {
 				'truck-4.jpg',
 				),
 			),
+		'italian' => array(
+			'label' => 'Italian',
+			'photos' => array(
+				'italian-01.jpg',
+				'italian-02.jpg',
+				'italian-03.jpg',
+				'italian-04.jpg',
+				'italian-05.jpg',
+				'italian-06.jpg',
+				),
+			),
 		);
 
 	const ID_BASE = '_invp_sps';

@@ -162,6 +162,18 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return $this->images[$size];
 		}
 
+		function get_image_count() {
+
+			$image_args = array('post_parent' =>$this->post_ID,
+					'numberposts' => -1,
+					'post_type' => 'attachment',
+					'post_mime_type' => 'image',
+					);
+			$images = get_children($image_args);
+			return count($images);
+			
+		}
+
 		//return taxonomy terms as a comma delimited string
 		function get_term_string( $taxonomy ) {
 			$term_list = wp_get_post_terms($this->post_ID, $taxonomy, array("fields" => "names"));
