@@ -53,6 +53,9 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 
 == Changelog ==
 
+= 2.3.4 =
+* Bug fix to not modify ORDER BY clauses on term queries for model years and cylinder counts when no order is specified
+
 = 2.3.3 =
 * Bug fix in Order By Post Meta widget. A bad string concatenation prevented the output of list items and links.
 * Bug fix while editing vehicles in the Dashboard. The last modified date was not being saved with the correct timezone offset.
