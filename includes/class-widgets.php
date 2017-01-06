@@ -304,10 +304,18 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		foreach ($instance['cb_display'] as $i => $term_id) {
-			$location = get_term($term_id, 'location');
-			echo '<div>'.nl2br($location->description).'</div>';
+		if (isset($instance['cb_single_line']) && $instance['cb_single_line'] == 'true') {
+			foreach ($instance['cb_display'] as $i => $term_id) {
+				$location = get_term($term_id, 'location');
+				echo '<span>'.preg_replace('/\r|\n/',', ',trim($location->description)).'</span>'; 
+			}
+		} else {
+			foreach ($instance['cb_display'] as $i => $term_id) {
+				$location = get_term($term_id, 'location');
+				echo '<div>'.nl2br($location->description).'</div>';
+			}
 		}
+		
 
 		echo $args['after_widget'];
 	}
@@ -316,6 +324,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 	public function form( $instance ) {
 
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
+		$cb_single_line = (isset($instance['cb_single_line']) && $instance['cb_single_line'] == 'true') ? ' checked' : '';
 
 		// get all locations
 		$location_terms = get_terms('location', array('hide_empty'=>false));
@@ -357,6 +366,10 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
+		<p>
+		<input type="checkbox" id="<?php echo $this->get_field_id('cb_single_line'); ?>" name="<?php echo $this->get_field_name('cb_single_line'); ?>" value="true"<?php echo $cb_single_line; ?>>
+		<label for="<?php echo $this->get_field_id('cb_single_line'); ?>">Single Line Display</label>
+		</p>
 		<p><?php echo $address_table; ?></p>
 		<?php
 	}
@@ -366,6 +379,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		$instance = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['cb_display'] = ( !empty( $new_instance['cb_display'] ) ) ? $new_instance['cb_display'] : array();
+		$instance['cb_single_line'] = ( !empty( $new_instance['cb_single_line'] ) ) ? $new_instance['cb_single_line'] : '';
 		return $instance;
 	}
 
@@ -411,6 +425,20 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			'before' => '<table>',
 			'repeater' => '<tr><td><h2><a href="tel:%2$s">%2$s</a></h2></td><td>%1$s</td><tr>',
 			'after' => '</table>',
+			),
+		'single_line_labels' => array(
+			'selector' => 'Single line with labels',
+			'uses_labels' => true,
+			'before' => '',
+			'repeater' => '<span>%1$s: <a href="tel:%2$s">%2$s</a></span>',
+			'after' => '',
+			),
+		'single_line_no_labels' => array(
+			'selector' => 'Single line no labels',
+			'uses_labels' => false,
+			'before' => '',
+			'repeater' => '<span><a href="tel:%1$s">%1$s</a></span>',
+			'after' => '',
 			),
 		);
 
