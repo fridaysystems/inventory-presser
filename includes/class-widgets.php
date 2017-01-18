@@ -848,6 +848,18 @@ class Stock_Photo_Slider extends WP_Widget {
 				'truck-4.jpg',
 				),
 			),
+		'suvs' => array(
+			'label' => 'SUVs',
+			'photos' => array(
+				'suv-01.jpg',
+				'suv-02.jpg',
+				'suv-03.jpg',
+				'suv-04.jpg',
+				'suv-05.jpg',
+				'suv-06.jpg',
+				'suv-07.jpg',
+				),
+			),
 		'italian' => array(
 			'label' => 'Italian',
 			'photos' => array(
