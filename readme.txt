@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.6.1
-Stable tag: 2.3.3
+Stable tag: 2.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,11 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 2. This is the edit screen that adds or edits a single vehicle. This screen shot was taken on version 0.4, and at this time there is no VIN decoder or support for vehicle options.
 
 == Changelog ==
+
+= 2.3.5 =
+* Use save_post_inventory_vehicle instead of save_post and then a check to make sure we are working on our post type
+* Bug fix for the parameters passed into the save_post/save_post_{post-type} action handler
+* Skip the extra stuff that happens when vehicles are saved if the vehicle was just moved to the trash
 
 = 2.3.4 =
 * Bug fix to not modify ORDER BY clauses on term queries for model years and cylinder counts when no order is specified
