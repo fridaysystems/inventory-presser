@@ -119,10 +119,12 @@ class Inventory_Presser_Vehicle_Shortcodes {
 			'per_page' => 15,
 			'captions' => 'true',
 			'button' => 'true',
+			'show_price' => 'false',
 		), $atts);
 
 		$atts['captions'] = 'true' === $atts['captions'];
 		$atts['button'] = 'true' === $atts['button'];
+		$atts['show_price'] = 'true' === $atts['show_price'];
 
 		$args=array(
 			'posts_per_page'=>$atts['per_page'],
@@ -154,6 +156,9 @@ class Inventory_Presser_Vehicle_Shortcodes {
 				if ($atts['captions']) {
 					$grid_html .= "<p class=\"grid-caption\">";
 					$grid_html .= $vehicle->post_title;
+					if ($atts['show_price']) {
+						$grid_html .= '&nbsp;&nbsp;'.$vehicle->price(' ');
+					}
 					$grid_html .= "</p>";
 				}
 
