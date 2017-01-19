@@ -78,7 +78,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		add_action( 'admin_menu', array( &$this, 'add_menu_to_settings' ) );
 
 		//Save custom post data when posts are saved
-		add_action( 'save_post', array( &$this, 'save_vehicle_post_meta' ), 10, 2 );
+		add_action( 'save_post_inventory_vehicle', array( &$this, 'save_vehicle_post_meta' ), 10, 2 );
 
 		//Add columns to the table that lists all the Vehicles on edit.php
 		add_filter( 'manage_' . $this->post_type() . '_posts_columns', array( &$this, 'add_columns_to_vehicles_table' ) );
@@ -738,12 +738,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 	}
 
 	function save_vehicle_post_meta( $post_id, $is_update ) {
-
-		//only do this if the post is our custom type
-		$post = get_post( $post_id );
-		if ( null == $post || $post->post_type != $this->post_type() ) {
-			return;
-		}
 
 		//if we are not coming from the new/edit post page, we want to abort
 		if( ! isset( $_POST['post_title'] ) ) {
