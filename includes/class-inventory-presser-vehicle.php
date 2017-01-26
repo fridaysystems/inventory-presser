@@ -298,5 +298,21 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 			return $result;
 		}
+
+		function get_book_value() {
+			/**
+			 * Book value lives in the prices array under
+			 * array key 'NADA Book Value' or 'KBB Book Value'
+			 */
+
+			$nada = $kbb = 0;
+			if( isset( $this->prices['NADA Book Value'])) {
+				$nada = intval( $this->prices['NADA Book Value'] );
+			}
+			if( isset( $this->prices['KBB Book Value'])) {
+				$kbb = intval( $this->prices['KBB Book Value'] );
+			}
+			return max( $nada, $kbb );
+		}
 	}
 }
