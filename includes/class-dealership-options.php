@@ -14,6 +14,7 @@ class _dealer_settings {
 	var $price_display_types = array(
 			'default' => 'Price / Call for Price',
 			'genes' => 'Down Payment = Was Price / MSRP = Now Price',
+			'full_or_down' => '$Full or $Payment Down',
 		);
 
 	public function __construct() {
