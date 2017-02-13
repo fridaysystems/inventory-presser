@@ -782,16 +782,16 @@ class Stock_Photo_Slider extends WP_Widget {
 		'audi' => array(
 			'label' => 'Audi',
 			'photos' => array(
-				'audi-1.jpg',
-				'audi-2.jpg',
+				'audi-01.jpg',
+				'audi-02.jpg',
 				),
 			),
 		'bmw' => array(
 			'label' => 'BMW',
 			'photos' => array(
-				'bmw-1.jpg',
-				'bmw-2.jpg',
-				'bmw-3.jpg',
+				'bmw-01.jpg',
+				'bmw-02.jpg',
+				'bmw-03.jpg',
 				),
 			),
 		'ford' => array(
@@ -815,9 +815,9 @@ class Stock_Photo_Slider extends WP_Widget {
 		'mercedes' => array(
 			'label' => 'Mercedes-Benz',
 			'photos' => array(
-				'mercedes-1.jpg',
-				'mercedes-2.jpg',
-				'mercedes-3.jpg',
+				'mercedes-01.jpg',
+				'mercedes-02.jpg',
+				'mercedes-03.jpg',
 				),
 			),
 		'nissan' => array(
