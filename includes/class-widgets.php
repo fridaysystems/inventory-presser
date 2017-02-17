@@ -1007,7 +1007,7 @@ class Inventory_Slider extends WP_Widget {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$showcount = $instance['showcount'];
 		$showtext = $instance['showtext'];
-		$featured_select_slugs = array_keys($this->text_displays);
+		$featured_select_slugs = array_keys($this->featured_select);
 		$featured_select = isset($instance['featured_select']) ? $instance[ 'featured_select' ] : $featured_select_slugs[0];
 		$showtitle = (isset($instance['cb_showtitle']) && $instance['cb_showtitle'] == 'true');
 		$showprice = (isset($instance['cb_showprice']) && $instance['cb_showprice'] == 'true');
@@ -1125,7 +1125,7 @@ class Inventory_Slider extends WP_Widget {
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
 		$showcount = isset($instance[ 'showcount' ]) ? $instance[ 'showcount' ] : 3;
 
-		$featured_select_slugs = array_keys($this->text_displays);
+		$featured_select_slugs = array_keys($this->featured_select);
 		$featured_select = isset($instance['featured_select']) ? $instance[ 'featured_select' ] : $featured_select_slugs[0];
 
 		$text_displays_slugs = array_keys($this->text_displays);
