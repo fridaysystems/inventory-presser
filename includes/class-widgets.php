@@ -984,6 +984,7 @@ class Inventory_Slider extends WP_Widget {
 
 	const ID_BASE = '_invp_slick';
 
+	var $featured_select = array('featured_priority'=>'Priority for Featured Vehicles', 'featured_only'=>'Featured Vehicles Only', 'random'=>'Random' );
 	var $text_displays = array('none' => 'None','top' => 'Top', 'bottom'=>'Bottom');
 
 	function __construct() {
@@ -1006,21 +1007,82 @@ class Inventory_Slider extends WP_Widget {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$showcount = $instance['showcount'];
 		$showtext = $instance['showtext'];
+		$featured_select_slugs = array_keys($this->text_displays);
+		$featured_select = isset($instance['featured_select']) ? $instance[ 'featured_select' ] : $featured_select_slugs[0];
 		$showtitle = (isset($instance['cb_showtitle']) && $instance['cb_showtitle'] == 'true');
 		$showprice = (isset($instance['cb_showprice']) && $instance['cb_showprice'] == 'true');
 
-		$gpargs=array(
-			'numberposts'=> $showcount * 5,
-			'post_type'=>'inventory_vehicle',
-			'meta_key'=>'_thumbnail_id',
-			'fields' => 'ids',
-			'orderby'=>'rand',
-			'order' => 'ASC'
-		);
+		$inventory_ids = array();
 
-		$inventory_ids = get_posts( $gpargs );
+		if ($featured_select == 'random') {
+
+			$gpargs = array(
+				'numberposts'=> $showcount * 5,
+				'post_type'=>'inventory_vehicle',
+				'meta_key'=>'_thumbnail_id',
+				'fields' => 'ids',
+				'orderby'=>'rand',
+				'order' => 'ASC'
+			);
+
+			$inventory_ids = get_posts($gpargs);
+
+		} else {
+
+			$gpargs = array(
+				'numberposts' => $showcount * 5,
+				'post_type' => 'inventory_vehicle',
+				'meta_query' => array(
+					'relation' => 'AND',
+					array(
+						'key'     => 'inventory_presser_featured',
+						'value'   => 1,
+						'compare' => '=',
+					),
+					array(
+						'key'	  => '_thumbnail_id',
+						'compare' => 'EXISTS',
+					)
+				),
+				'fields' => 'ids',
+				'orderby'=>'rand',
+				'order' => 'ASC'
+			);
+
+			$inventory_ids = get_posts($gpargs);
+
+
+			if (count($inventory_ids) < ($showcount * 5) && $featured_select == 'featured_priority') {
+
+				$gpargs = array(
+					'numberposts'=> ($showcount * 5) - (count($inventory_ids)),
+					'post_type'=>'inventory_vehicle',
+					'meta_query' => array(
+						'relation' => 'AND',
+						array(
+							'key'     => 'inventory_presser_featured',
+							'value'   => 0,
+							'compare' => '='
+						),
+						array(
+							'key'	  => '_thumbnail_id',
+							'compare' => 'EXISTS'
+						)
+					),
+					'fields' => 'ids',
+					'orderby'=>'rand',
+					'order' => 'ASC'
+				);
+
+				$inventory_ids += get_posts($gpargs);
+
+			}
+
+		}
 
 		if ($inventory_ids) {
+
+			shuffle($inventory_ids);
 
 			// before and after widget arguments are defined by themes
 			echo $args['before_widget'];
@@ -1028,7 +1090,6 @@ class Inventory_Slider extends WP_Widget {
 				echo $args['before_title'] . $title . $args['after_title'];
 
 			echo sprintf('<div class="slick-slider-element" data-slick=\'{"slidesToShow": %1$d, "slidesToScroll": %1$d, "easing": "ease", "autoplaySpeed": %2$d, "speed": 4000}\'>', $showcount, ($showcount * 1000) +1000);
-			//echo sprintf('<div class="widget-inventory-slide" data-slick=\'{"slidesToShow": %1$d, "slidesToScroll": %1$d}\'>', $showcount);
 
 			foreach ($inventory_ids as $inventory_id) {
 
@@ -1064,6 +1125,9 @@ class Inventory_Slider extends WP_Widget {
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
 		$showcount = isset($instance[ 'showcount' ]) ? $instance[ 'showcount' ] : 3;
 
+		$featured_select_slugs = array_keys($this->text_displays);
+		$featured_select = isset($instance['featured_select']) ? $instance[ 'featured_select' ] : $featured_select_slugs[0];
+
 		$text_displays_slugs = array_keys($this->text_displays);
 		$showtext = isset($instance['showtext']) ? $instance[ 'showtext' ] : $text_displays_slugs[0];
 
@@ -1086,6 +1150,18 @@ class Inventory_Slider extends WP_Widget {
 				echo sprintf('<option value="%1$d"%2$s>%1$d</option>',$i,$select_text);
 			}
 
+		?>
+		</select>
+		</p>
+
+		<p>
+		<label for="<?php echo $this->get_field_id( 'featured_select' ); ?>"><?php _e( 'Vehicle Selection:' ); ?></label>
+		<select class="widefat" id="<?php echo $this->get_field_id('featured_select'); ?>" name="<?php echo $this->get_field_name('featured_select'); ?>">
+		<?php
+			foreach ($this->featured_select as $slug => $label) {
+				$select_text = ($slug == $featured_select) ? ' selected' : '';
+				echo sprintf('<option value="%s"%s>%s</option>',$slug,$select_text,$label);
+			}
 		?>
 		</select>
 		</p>
@@ -1116,6 +1192,7 @@ class Inventory_Slider extends WP_Widget {
 		$instance = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['showcount'] = ( ! empty( $new_instance['showcount'] ) ) ? strip_tags( $new_instance['showcount'] ) : 3;
+		$instance['featured_select'] = ( ! empty( $new_instance['featured_select'] ) ) ? strip_tags( $new_instance['featured_select'] ) : '';
 		$instance['showtext'] = ( ! empty( $new_instance['showtext'] ) ) ? strip_tags( $new_instance['showtext'] ) : '';
 		$instance['cb_showtitle'] = ( !empty( $new_instance['cb_showtitle'] ) ) ? $new_instance['cb_showtitle'] : '';
 		$instance['cb_showprice'] = ( !empty( $new_instance['cb_showprice'] ) ) ? $new_instance['cb_showprice'] : '';
