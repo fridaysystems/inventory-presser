@@ -430,7 +430,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			'selector' => 'Single line with labels',
 			'uses_labels' => true,
 			'before' => '',
-			'repeater' => '<span>%1$s: <a href="tel:%2$s">%2$s</a></span>',
+			'repeater' => '<span>%1$s:</span> <a href="tel:%2$s">%2$s</a>',
 			'after' => '',
 			),
 		'single_line_no_labels' => array(
