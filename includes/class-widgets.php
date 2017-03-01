@@ -779,6 +779,15 @@ class Stock_Photo_Slider extends WP_Widget {
 
 	// the image sets, follow the pattern to add more
 	private $image_sets = array(
+		'acura' => array(
+			'label' => 'Acura',
+			'photos' => array(
+				'acura-01.jpg',
+				'acura-02.jpg',
+				'acura-03.jpg',
+				'acura-04.jpg',
+				),
+			),
 		'audi' => array(
 			'label' => 'Audi',
 			'photos' => array(
