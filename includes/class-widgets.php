@@ -1401,39 +1401,10 @@ class Price_Filters extends WP_Widget {
 		);
 
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
-
-		if (!is_admin() && isset($_GET['max_price'])) {
-			add_action( 'pre_get_posts', array( &$this, 'set_max_price'));
-		}
 	}
 
 	public function delete_option() {
 		delete_option( 'widget_' . self::ID_BASE );
-	}
-
-	public function set_max_price($query) {
-
-		//Do not mess with the query if it's not the main one and our CPT
-		if ( !$query->is_main_query() || !is_post_type_archive( self::CUSTOM_POST_TYPE ) ) {
-			return;
-		}
-
-		$max_price = (int)$_GET['max_price'];
-
-		//Get original meta query
-		$meta_query = $query->get('meta_query');
-
-		//Add our meta query to the original meta queries
-		$meta_query[] = array(
-		                    'key'=>'inventory_presser_price',
-		                    'value'=>$max_price,
-		                    'compare'=>'<=',
-		                    'type'=> 'numeric'
-		                );
-		$query->set('meta_query',$meta_query);
-
-		return $query;
-
 	}
 
 	// front-end
@@ -1548,9 +1519,59 @@ class Price_Filters extends WP_Widget {
 // bootstrap class for these widgets
 class Inventory_Presser_Location_Widgets {
 
+	const CUSTOM_POST_TYPE = 'inventory_vehicle';
+
 	function __construct( ) {
 		add_action( 'widgets_init', array( &$this, 'widgets_init' ) );
 		add_action( 'current_screen', array( &$this, 'check_ids' ) );
+		if (!is_admin() && (isset($_GET['min_price']) || isset($_GET['max_price']))) {
+			add_action( 'pre_get_posts', array( &$this, 'set_price_range'),99);
+		}
+	}
+
+	public function set_price_range($query) {
+
+		//Do not mess with the query if it's not the main one and our CPT
+		if ( !$query->is_main_query() || $query->query_vars['post_type'] != self::CUSTOM_POST_TYPE ) {
+			return;
+		}
+
+		//Get original meta query
+		$meta_query = $query->get('meta_query');
+
+		if (isset($_GET['max_price']) && isset($_GET['min_price'])) {
+			$meta_query['relation'] = 'AND';
+		}
+
+		if (isset($_GET['max_price'])) {
+
+			$max_price = (int)$_GET['max_price'];
+
+			//Add our meta query to the original meta queries
+			$meta_query[] = array(
+					            'key'=>'inventory_presser_price',
+					            'value'=>$max_price,
+					            'compare'=>'<=',
+					            'type'=> 'numeric'
+					        );
+		}
+
+		if (isset($_GET['min_price'])) {
+
+			$min_price = (int)$_GET['min_price'];
+
+			//Add our meta query to the original meta queries
+			$meta_query[] = array(
+					            'key'=>'inventory_presser_price',
+					            'value'=>$min_price,
+					            'compare'=>'>=',
+					            'type'=> 'numeric'
+					        );
+		}
+
+		$query->set('meta_query',$meta_query);
+		return $query;
+
 	}
 
 	function widgets_init() {
