@@ -1515,6 +1515,159 @@ class Price_Filters extends WP_Widget {
 
 } // Class Price_Filters
 
+// Extended Search (range selector)
+class Extended_Search extends WP_Widget {
+
+	const ID_BASE = 'invp_extended_search';
+
+	function __construct() {
+		parent::__construct(
+			self::ID_BASE,
+			'Dealer Extended Search',
+			array( 'description' => 'Price Range Selector and Search Form', )
+		);
+
+		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+		if( is_active_widget( false, false, 'invp_extended_search' && !is_admin() )) {
+			add_action( 'wp_enqueue_scripts', array( &$this, 'register_scripts_and_styles' ) );
+		}
+	}
+
+	public function delete_option() {
+		delete_option( 'widget_' . self::ID_BASE );
+	}
+
+	function register_scripts_and_styles( ) {
+		wp_enqueue_style('noui-style', plugins_url( 'css/nouislider.min.css', dirname(__FILE__) ));
+		wp_enqueue_script('noui-javascript', plugins_url( 'js/nouislider.min.js', dirname(__FILE__) ), null, false, true );
+		wp_enqueue_script('noui-wnumb', '//cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js');
+	}
+
+	// front-end
+	public function widget( $args, $instance ) {
+
+		// get the maximum vehicle price from post meta
+	    global $wpdb;
+	    $query = $wpdb->prepare( 
+	        "SELECT max(cast( meta_value as UNSIGNED)) FROM {$wpdb->postmeta} WHERE meta_key='%s'",
+	        'inventory_presser_price'
+	    );
+	    $price = $wpdb->get_var( $query );
+
+	    $title = 'sup'; //apply_filters( 'widget_title', $instance['title'] );
+		// before and after widget arguments are defined by themes
+		echo $args['before_widget'];
+		if (!empty( $title ))
+		echo $args['before_title'] . $title . $args['after_title'];
+
+	    // if the price is > 0, output the slider and relevant js
+	    if ($price > 0) {
+
+	    	// round up to the nearest 5k
+	    	$rangemax = ceil($price/5000) * 5000;
+
+	    	$sel_range_low = max((isset($_GET['min_price']) ? (int)$_GET['min_price'] : 0),0);
+	    	$sel_range_high = min((isset($_GET['max_price']) ? (int)$_GET['max_price'] : $rangemax), $rangemax);
+
+
+
+
+
+	    			$js = sprintf('
+
+var resultElement = document.getElementById("result"),
+	sliders = document.getElementsByClassName("price-range-slider");
+
+for ( var i = 0; i < sliders.length; i++ ) {
+
+	noUiSlider.create(sliders[i], {
+		start: [ %d, %d ],
+		step: 100,
+		connect: true,
+		tooltips: true,
+		range: {
+			"min": 0,
+			"max": %d
+		},
+		format: wNumb({
+	        decimals: 0,
+	        thousand: ",",
+	        prefix: "$"
+	    }),
+	});
+
+	// Bind the color changing function
+	// to the slide event.
+	// sliders[i].noUiSlider.on("slide", setColor);
+}
+
+',
+$sel_range_low,
+$sel_range_high,
+$rangemax
+);
+	    	
+	    	
+
+			echo '<div id="range_'.$this->id.'" class="price-range-slider"></div>';
+
+	    	wp_add_inline_script('noui-javascript', $js);
+
+	    }
+
+		echo $args['after_widget'];
+
+	}
+
+	// Widget Backend
+	public function form( $instance ) {
+
+		/*$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
+		$before_image = isset($instance[ 'before_image' ]) ? $instance[ 'before_image' ] : '';
+		$image = isset($instance[ 'image' ]) ? $instance[ 'image' ] : $image_keys[0];
+		$after_image = isset($instance[ 'after_image' ]) ? $instance[ 'after_image' ] : '';
+
+		// Widget admin form
+		?>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:' ); ?></label>
+		<textarea class="widefat" id="<?php echo $this->get_field_id('before_image'); ?>" name="<?php echo $this->get_field_name('before_image'); ?>"><?php echo esc_attr( $before_image ); ?></textarea>
+		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'image' ); ?>"><?php _e( 'Image:' ); ?></label>
+
+		<select class="widefat" id="<?php echo $this->get_field_id('image'); ?>" name="<?php echo $this->get_field_name('image'); ?>">
+		<?php foreach ($this->images as $key => $imginfo) {
+			$select_text = ($key == $image) ? ' selected' : '';
+			echo sprintf('<option value="%s"%s>%s</option>',$key,$select_text,$imginfo['text']);
+		} ?>
+		</select>
+
+		</p>
+
+		<p>
+		<label for="<?php echo $this->get_field_id( 'after_image' ); ?>"><?php _e( 'Text after image:' ); ?></label>
+		<textarea class="widefat" id="<?php echo $this->get_field_id('after_image'); ?>" name="<?php echo $this->get_field_name('after_image'); ?>"><?php echo esc_attr( $after_image ); ?></textarea>
+		</p>
+		<?php */
+	}
+
+	// Updating widget replacing old instances with new
+	public function update( $new_instance, $old_instance ) {
+		$instance = array();
+		/*$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['before_image'] = ( ! empty( $new_instance['before_image'] ) ) ? strip_tags( $new_instance['before_image'] ) : '';
+		$instance['image'] = ( ! empty( $new_instance['image'] ) ) ? strip_tags( $new_instance['image'] ) : $image_keys[0];
+		$instance['after_image'] = ( ! empty( $new_instance['after_image'] ) ) ? strip_tags( $new_instance['after_image'] ) : '';*/
+		return $instance;
+	}
+
+} // Class Extended_Search
+
 
 // bootstrap class for these widgets
 class Inventory_Presser_Location_Widgets {
@@ -1584,6 +1737,7 @@ class Inventory_Presser_Location_Widgets {
 		register_widget('Inventory_Slider');
 		register_widget('Inventory_Grid');
 		register_widget('Price_Filters');
+		register_widget('Extended_Search');
 	}
 
 	function check_ids() {
