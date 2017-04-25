@@ -1566,53 +1566,97 @@ class Extended_Search extends WP_Widget {
 	    	// round up to the nearest 5k
 	    	$rangemax = ceil($price/5000) * 5000;
 
+	    	// prep low and high bounds in noUI js
 	    	$sel_range_low = max((isset($_GET['min_price']) ? (int)$_GET['min_price'] : 0),0);
-	    	$sel_range_high = min((isset($_GET['max_price']) ? (int)$_GET['max_price'] : $rangemax), $rangemax);
+	    	$sel_range_high = min((isset($_GET['max_price']) ? (int)$_GET['max_price'] : ceil($price/1000) * 1000), ceil($price/1000) * 1000);
 
+			$js = sprintf('
+				var min = document.getElementById("min_%1$s"),
+					max = document.getElementById("max_%1$s"),
+					sorter = document.getElementById("sorter_%1$s"),
+					order = document.getElementById("order_%1$s"),
+					sliders = document.getElementsByClassName("price-range-slider");
 
+				for ( var i = 0; i < sliders.length; i++ ) {
 
+					noUiSlider.create(sliders[i], {
+						start: [ %2$d, %3$d ],
+						step: 250,
+						margin: 1000,
+						connect: true,
+						tooltips: true,
+						range: {
+							"min": 0,
+							"max": %4$d
+						},
+						format: wNumb({
+					        decimals: 0,
+					        thousand: ",",
+					        prefix: "$"
+					    }),
+					});
 
+					sliders[i].noUiSlider.on("update", function( values, handle, unencoded ) {
 
-	    			$js = sprintf('
+						var value = unencoded[handle];
 
-var resultElement = document.getElementById("result"),
-	sliders = document.getElementsByClassName("price-range-slider");
+						if (handle) {
+							max.value = value;
+						} else {
+							min.value = value;
+						}
+					});
 
-for ( var i = 0; i < sliders.length; i++ ) {
+				}
 
-	noUiSlider.create(sliders[i], {
-		start: [ %d, %d ],
-		step: 100,
-		connect: true,
-		tooltips: true,
-		range: {
-			"min": 0,
-			"max": %d
-		},
-		format: wNumb({
-	        decimals: 0,
-	        thousand: ",",
-	        prefix: "$"
-	    }),
-	});
+				sorter.addEventListener("change", function(e) {
+					e.preventDefault();
+					order.value = this.options[this.selectedIndex].getAttribute("data-order");
+				});
 
-	// Bind the color changing function
-	// to the slide event.
-	// sliders[i].noUiSlider.on("slide", setColor);
-}
+				',
+				$this->id,
+				$sel_range_low,
+				$sel_range_high,
+				$rangemax
+			);
 
-',
-$sel_range_low,
-$sel_range_high,
-$rangemax
-);
-	    	
-	    	
-
+			// add js into page
+			wp_add_inline_script('noui-javascript', $js);    	
+	    	echo '<form>';
+	    	echo '<div>';
+			
 			echo '<div id="range_'.$this->id.'" class="price-range-slider"></div>';
+			echo sprintf('<input type="hidden" name="min_price" id="min_%s" value="%d" />', $this->id, $sel_range_low);
+			echo sprintf('<input type="hidden" name="max_price" id="max_%s" value="%d" />', $this->id, $sel_range_high);
+			echo sprintf('<input type="hidden" name="order" id="order_%s" value="ASC" />', $this->id);
+			
+			echo '</div>';
 
-	    	wp_add_inline_script('noui-javascript', $js);
 
+			// sorter
+			$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : '';
+			$order = isset($_GET['order']) ? $_GET['order'] : '';
+			echo sprintf('<select name="orderby" id="sorter_%s" />', $this->id);
+			echo sprintf('<option data-order="ASC" value="inventory_presser_make"%s>Make A-Z</option>', ($orderby=='inventory_presser_make' && $order=='ASC') ? ' selected' : '' );
+			echo sprintf('<option data-order="DESC" value="inventory_presser_make"%s>Make Z-A</option>', ($orderby=='inventory_presser_make' && $order=='DESC') ? ' selected' : '' );
+			echo sprintf('<option data-order="ASC" value="inventory_presser_price"%s>Price Low</option>', ($orderby=='inventory_presser_price' && $order=='ASC') ? ' selected' : '' );
+			echo sprintf('<option data-order="DESC" value="inventory_presser_price"%s>Price High</option>', ($orderby=='inventory_presser_price' && $order=='DESC') ? ' selected' : '' );
+			echo sprintf('<option data-order="ASC" value="inventory_presser_odometer"%s>Mileage Low</option>', ($orderby=='inventory_presser_odometer' && $order=='ASC') ? ' selected' : '' );
+			echo sprintf('<option data-order="DESC" value="inventory_presser_odometer"%s>Mileage High</option>', ($orderby=='inventory_presser_odometer' && $order=='DESC') ? ' selected' : '' );
+			echo sprintf('<option data-order="ASC" value="inventory_presser_year"%s>Year Oldest</option>', ($orderby=='inventory_presser_year' && $order=='ASC') ? ' selected' : '' );
+			echo sprintf('<option data-order="DESC" value="inventory_presser_year"%s>Year Newest</option>', ($orderby=='inventory_presser_year' && $order=='DESC') ? ' selected' : '' );
+			echo '</select>';
+
+			echo '<button type="submit">Update</button>';
+			echo '</form>';
+
+			// reset link
+			echo sprintf('<a href="%s">Reset</a>',get_post_type_archive_link(AUTOMOSAIC_CPT));
+
+			// favorite vehicles
+			$vehicle_count = isset($_COOKIE['vehicle_favorites']) ? count(json_decode($_COOKIE['vehicle_favorites'])) : 0;
+			echo sprintf('<div class="vehicle-favorite-nav"><i class="fa fa-heart vehicle-favorite-color"></i> Favorites (<span class="vehicle-favorites-count">%d</span>)</div>', $vehicle_count);
 	    }
 
 		echo $args['after_widget'];
@@ -1677,16 +1721,20 @@ class Inventory_Presser_Location_Widgets {
 	function __construct( ) {
 		add_action( 'widgets_init', array( &$this, 'widgets_init' ) );
 		add_action( 'current_screen', array( &$this, 'check_ids' ) );
-		if (!is_admin() && (isset($_GET['min_price']) || isset($_GET['max_price']))) {
-			add_action( 'pre_get_posts', array( &$this, 'set_price_range'),99);
+		if (!is_admin() && (isset($_GET['min_price']) || isset($_GET['max_price']) || isset($_GET['favorites']))) {
+			add_action( 'pre_get_posts', array( &$this, 'pre_get_posts'),99);
 		}
 	}
 
-	public function set_price_range($query) {
+	public function pre_get_posts($query) {
 
 		//Do not mess with the query if it's not the main one and our CPT
 		if ( !$query->is_main_query() || $query->query_vars['post_type'] != self::CUSTOM_POST_TYPE ) {
 			return;
+		}
+
+		if (isset($_GET['favorites']) && isset($_COOKIE['vehicle_favorites'])) {
+			$query->set('post__in', json_decode($_COOKIE['vehicle_favorites']));
 		}
 
 		//Get original meta query
