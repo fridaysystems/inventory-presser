@@ -18,7 +18,7 @@ This plugin modifies the WordPress administrator dashboard to make managing a ve
 * Modifies the all posts screen for the custom post type to show stock number, color, odometer, price and photo count columns
 * Puts media counts next to the Add Media button while editing vehicles
 * Creates custom taxonomies to group vehicles by type, fuel, transmission, drive type, availability, and condition
-* Affects the way WordPress importers function to work optimally with WordPress Importer For CRON, also written by salzano
+* Affects the way WordPress importers function to work optimally with WordPress Importer For CRON
 * Creates an options page to allow the bulk deletion of vehicles and plugin data
 * Defines a vehicle object (includes/class-inventory-presser-vehicle.php) that makes accessing all of the post meta fields consistent and easy for theme development
 * Creates a shortcode [vehicle_field] that simplifies getting one piece of vehicle data
