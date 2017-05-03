@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: http://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 2.3.5
+ * Version: 3.0.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * License: GPLv2 or later
@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) OR exit;
 $inventory_presser_include_paths = array(
 	'includes/class-add-custom-fields-to-search.php',
 	'includes/class-customize-admin-dashboard.php',
-	'includes/class-dealership-options.php', // This handles a couple options for _dealer theme, will likely combine this with import options
+	'includes/class-dealership-options.php',
 	'includes/class-fuel-economy-widget.php',
 	'includes/class-inventory-presser-vehicle.php',
 	'includes/class-option-manager.php',
@@ -57,10 +57,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$key = $_GET['orderby'];
 				$direction = $_GET['order'];
 			} else {
-				$option_manager = new Inventory_Presser_Option_Manager();
-				$options = $option_manager->get_options();
-				$key = $options['default-sort-key'];
-				$direction = $options['default-sort-order'];
+				$_dealer_settings = $this->settings();
+				$key = $_dealer_settings['sort_vehicles_by'];
+				$direction = $_dealer_settings['sort_vehicles_order'];
 			}
 
 			$query->set( 'meta_key', $key );
@@ -173,9 +172,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * Deliver our promise to order posts, change the ORDER BY clause of
 			 * the query that's fetching post objects.
 			 */
-			$option_manager = new Inventory_Presser_Option_Manager();
-			$options = $option_manager->get_options();
-			if( ! is_admin() && ( isset( $_GET['orderby'] ) || isset( $options['default-sort-key'] ) ) ) {
+
+			$settings = $this->settings();
+			if( ! is_admin() && ( isset( $_GET['orderby'] ) || isset( $settings['sort_vehicles_by'] ) ) ) {
 				add_action( 'pre_get_posts', array( &$this, 'add_orderby_to_query' ) );
 			}
 
@@ -244,8 +243,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function delete_options() {
-			$option_manager = new Inventory_Presser_Option_Manager();
-			$option_manager->delete_options();
+			delete_option( '_dealer_settings' );
+			delete_option( '_dealer_settings_edmunds' );
 		}
 
 		function delete_rewrite_rules_option( ) {
@@ -382,6 +381,15 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'last_modified'
 			);
 			return ( in_array( $nice_name, $prefixed_fields ) ? '_' : '' ) . 'inventory_presser_' . $nice_name;
+		}
+
+		//Get this plugin's Options page settings mingled with default values
+		function settings() {
+			$defaults = array(
+				'sort_vehicles_by' => apply_filters( 'translate_meta_field_key', 'make' ),
+				'sort_vehicles_order' => 'ASC',
+			);
+			return wp_parse_args( get_option( '_dealer_settings' ), $defaults );
 		}
 
 	} //end class

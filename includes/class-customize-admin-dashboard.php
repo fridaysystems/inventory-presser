@@ -28,12 +28,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		return $column;
 	}
 
-	function add_menu_to_settings( ) {
-		$menu_slug = $this->product_name_slug( '_settings' );
-		$my_admin_page = add_options_page( self::PRODUCT_NAME . ' settings', self::PRODUCT_NAME, 'manage_options', $menu_slug, array( &$this, 'settings_page_html'));
-		//when our options page is loaded, run a scan that checks settings values that we recommend
-		add_action('load-'.$my_admin_page, array( &$this, 'scan_for_recommended_settings_and_create_warnings' ) );
-	}
 
 	function add_meta_boxes_to_cpt( ) {
 		//Add a meta box to the New/Edit post page
@@ -73,9 +67,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$this->post_type = $post_type;
 
 		add_filter( 'posts_clauses', array( &$this, 'enable_order_by_attachment_count' ), 1, 2 );
-
-		//add a menu to the admin settings menu
-		add_action( 'admin_menu', array( &$this, 'add_menu_to_settings' ) );
 
 		//Save custom post data when posts are saved
 		add_action( 'save_post_inventory_vehicle', array( &$this, 'save_vehicle_post_meta' ), 10, 3 );
@@ -804,119 +795,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			//At least one thumbnail size is not 4:3
 			add_action( 'admin_notices', array( &$this, 'output_thumbnail_size_error_html' ) );
 		}
-	}
-
-	function settings_page_html( ) {
-
-		$option_manager = new Inventory_Presser_Option_Manager();
-		$options = $option_manager->get_options();
-
-		//only take action if we find the nonce
-		if( isset( $_POST['save-options'] ) && check_admin_referer( $this->product_name_slug() . '-nonce' ) ) {
-			//save changes to the plugin's options
-			$new_options = $options;
-			if( isset( $_POST['default-sort-key'] ) ) {
-				$new_options['default-sort-key'] = $_POST['default-sort-key'];
-			}
-			if( isset( $_POST['default-sort-order'] ) ) {
-				$new_options['default-sort-order'] = $_POST['default-sort-order'];
-			}
-			if( isset( $_POST['license-key'] ) ) {
-				$new_options['license-key'] = $_POST['license-key'];
-			}
-			if( $options != $new_options ) {
-				//save changes
-				$option_manager->save_options( $new_options );
-				//use the changed set
-				$options = $new_options;
-			}
-		}
-
-		//did the user click the Delete all plugin data button?
-		if ( isset( $_POST['delete'] ) &&
-			'yes' == sanitize_text_field( $_POST['delete'] ) &&
-			check_admin_referer( 'delete-nonce' ) )
-		{
-			$delete_result = $this->delete_all_data_and_deactivate( );
-			if ( is_wp_error( $delete_result ) ) {
-				//output error
-				echo "<div id='import-error' class='settings-error'><p><strong>" . $delete_result->get_error_message( ) . "</strong></p></div>";
-			} else {
-				//redirect to plugins page to show that we've deactivated
-				?><script type="text/javascript"> location.href='plugins.php'; </script><?php
-			}
-		}
-
-		//output the admin settings page
-		?><div class="wrap">
-			<h1><?php echo self::PRODUCT_NAME ?> Settings</h1>
-			<form method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings"><?php
-				wp_nonce_field( $this->product_name_slug() . '-nonce'); ?>
-				<table class="form-table">
-				<tbody>
-				<tr>
-					<th scope="row"><label for="default-sort-key">Sort vehicles by</label></th>
-					<td>
-						<select name="default-sort-key" id="default-sort-key"><?php
-
-						/**
-						 * Get a list of all the post meta keys in our
-						 * CPT. Let the user choose one as a default
-						 * sort.
-						 */
-						$vehicle = new Inventory_Presser_Vehicle();
-						foreach( $vehicle->keys() as $key ) {
-
-							$key = apply_filters( 'translate_meta_field_key', $key );
-
-							//Skip hidden postmeta keys
-							if( '_' == $key[0] ) { continue; }
-
-							echo '<option value="'. $key . '"';
-							if( isset( $options['default-sort-key'] ) ) {
-								selected( $options['default-sort-key'], $key );
-							}
-							echo '>' . $vehicle->make_post_meta_key_readable( $key ) . '</option>';
-						}
-
-
-						?></select> in <select name="default-sort-order" id="default-sort-order"><?php
-
-						foreach( array( 'ascending' => 'ASC', 'descending' => 'DESC' ) as $direction => $abbr ) {
-							echo '<option value="'. $abbr . '"';
-							if( isset( $options['default-sort-order'] ) ) {
-								selected( $options['default-sort-order'], $abbr );
-							}
-							echo '>' . $direction . '</option>';
-						}
-						?></select> order
-					</td>
-				</tr>
-				<!--
-				<tr>
-					<th scope="row"><label for="license-key">License key</label></th>
-					<td>
-						<input type="text" name="license-key" id="license-key" value="<?php if ( isset( $options['license-key'] ) ) { echo $options['license-key']; } ?>" />
-						<p class="description">To receive plugin updates, obtain a key at <a href="https://inventorypresser.com/">https://inventorypresser.com</a>.</p>
-					</td>
-				</tr>
-				//-->
-				</table>
-
-				<input type="submit" id="save-options" name="save-options" class="button-primary" value="<?php _e( 'Save Changes' ) ?>" />
-			</form>
-
-			<p>&nbsp;</p>
-
-			<h2><?php _e( 'Delete data' ); ?></h2>
-
-			<p><?php _e( 'Remove all ' . self::PRODUCT_NAME . ' plugin data (including vehicles and photos) and deactivate.' ) ?></p>
-			<input type="button" class="button-primary" value="<?php _e('Delete all Plugin Data') ?>" onclick="delete_all_data();" /><span id="delete-all-notice"></span>
-			<form id="delete-all-data" method="post" action="options-general.php?page=<?php echo $this->product_name_slug() ?>_settings">
-				<?php wp_nonce_field('delete-nonce'); ?>
-				<input type="hidden" name="delete" value="yes">
-			</form>
-		</div><?php
 	}
 
 	function vehicles_table_columns_orderbys( $query ) {

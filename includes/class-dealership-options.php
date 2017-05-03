@@ -41,7 +41,7 @@ class _dealer_settings {
 			);
 		}
 
-		
+
 	}
 
 	public function dealership_options_create_admin_page() {
@@ -123,6 +123,15 @@ class _dealer_settings {
 			'dealership_options_setting_section' // section
 		);
 
+		//Sort vehicles by [Field] in [Ascending] order
+		add_settings_field(
+			'sort_vehicles_by', // id
+			'Sort vehicles by', // title
+			array( $this, 'sort_vehicles_by_callback' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
 		add_settings_field(
 			'archive_show_content', // id
 			'Archive Page Content', // title
@@ -155,12 +164,12 @@ class _dealer_settings {
 			'dealership_options_setting_section' // section
 		);
 
-		add_settings_field( 
-			'hide_contact_button_single', 
-			'Availability Button', 
-			array( $this, 'contact_button_single_callback'), 
-			'dealership-options-admin', 
-			'dealership_options_setting_section' 
+		add_settings_field(
+			'hide_contact_button_single',
+			'Availability Button',
+			array( $this, 'contact_button_single_callback'),
+			'dealership-options-admin',
+			'dealership_options_setting_section'
 		);
 
 		add_settings_field(
@@ -171,28 +180,28 @@ class _dealer_settings {
 			'dealership_options_setting_section' // section
 		);
 
-		add_settings_field( 
-			'autocheck_id', 
-			'Autocheck ID', 
-			array( $this, 'autocheck_callback'), 
-			'dealership-options-admin', 
-			'dealership_options_setting_section' 
+		add_settings_field(
+			'autocheck_id',
+			'Autocheck ID',
+			array( $this, 'autocheck_callback'),
+			'dealership-options-admin',
+			'dealership_options_setting_section'
 		);
 
-		add_settings_field( 
-			'msrp_label', 
-			'MSRP Label', 
-			array( $this, 'msrp_label_callback'), 
-			'dealership-options-admin', 
-			'dealership_options_setting_section' 
+		add_settings_field(
+			'msrp_label',
+			'MSRP Label',
+			array( $this, 'msrp_label_callback'),
+			'dealership-options-admin',
+			'dealership_options_setting_section'
 		);
 
-		add_settings_field( 
-			'footer_link_text', 
-			'Footer Link Text', 
-			array( $this, 'footer_link_text_callback'), 
-			'dealership-options-admin', 
-			'dealership_options_setting_section' 
+		add_settings_field(
+			'footer_link_text',
+			'Footer Link Text',
+			array( $this, 'footer_link_text_callback'),
+			'dealership-options-admin',
+			'dealership_options_setting_section'
 		);
 	}
 
@@ -220,6 +229,14 @@ class _dealer_settings {
 
 		if ( isset( $input['price_display_type'] ) ) {
 			$sanitary_values['price_display_type'] = $input['price_display_type'];
+		}
+
+		if ( isset( $input['sort_vehicles_by'] ) ) {
+			$sanitary_values['sort_vehicles_by'] = $input['sort_vehicles_by'];
+		}
+
+		if ( isset( $input['sort_vehicles_order'] ) ) {
+			$sanitary_values['sort_vehicles_order'] = $input['sort_vehicles_order'];
 		}
 
 		if ( isset( $input['archive_show_content'] ) ) {
@@ -267,7 +284,7 @@ class _dealer_settings {
 	}
 
 	public function dealership_options_section_info() {
-		
+
 	}
 
 	public function financing_page_callback() {
@@ -280,7 +297,7 @@ class _dealer_settings {
 		    'name'                  => '_dealer_settings[financing_page]',
 		    'show_option_none'      => 'Not Set',
 		    'option_none_value'     => '0'
-		); 
+		);
 
 		wp_dropdown_pages($args);
 
@@ -296,7 +313,7 @@ class _dealer_settings {
 		    'name'                  => '_dealer_settings[contact_page]',
 		    'show_option_none'      => 'Not Set',
 		    'option_none_value'     => '0'
-		); 
+		);
 
 		wp_dropdown_pages($args);
 
@@ -312,7 +329,7 @@ class _dealer_settings {
 		    'name'                  => '_dealer_settings[privacy_page]',
 		    'show_option_none'      => 'Not Set',
 		    'option_none_value'     => '0'
-		); 
+		);
 
 		wp_dropdown_pages($args);
 
@@ -328,7 +345,7 @@ class _dealer_settings {
 		    'name'                  => '_dealer_settings[append_page]',
 		    'show_option_none'      => 'Not Set',
 		    'option_none_value'     => '0'
-		); 
+		);
 
 		wp_dropdown_pages($args);
 
@@ -344,7 +361,7 @@ class _dealer_settings {
 		    'name'                  => '_dealer_settings[valley_custom_link]',
 		    'show_option_none'      => 'Not Set',
 		    'option_none_value'     => '0'
-		); 
+		);
 
 		wp_dropdown_pages($args);
 
@@ -366,6 +383,50 @@ class _dealer_settings {
 			printf('<option value="%s"%s>%s</option>',$val,$selected_text,$name);
 		}
 		echo '</select>';
+	}
+
+	public function sort_vehicles_by_callback() {
+
+		//use these default values if we have none
+		if( ! isset( $this->_dealer_settings['sort_vehicles_by'] ) ) {
+			$this->_dealer_settings['sort_vehicles_by'] = apply_filters( 'translate_meta_field_key', 'make' );
+		}
+		if( ! isset( $this->_dealer_settings['sort_vehicles_order'] ) ) {
+			$this->_dealer_settings['sort_vehicles_order'] = 'ASC';
+		}
+
+		echo '<select name="_dealer_settings[sort_vehicles_by]" id="sort_vehicles_by">';
+
+		/**
+		 * Get a list of all the post meta keys in our
+		 * CPT. Let the user choose one as a default
+		 * sort.
+		 */
+		$vehicle = new Inventory_Presser_Vehicle();
+		foreach( $vehicle->keys() as $key ) {
+
+			$key = apply_filters( 'translate_meta_field_key', $key );
+
+			//Skip hidden postmeta keys
+			if( '_' == $key[0] ) { continue; }
+
+			echo '<option value="'. $key . '"';
+			if( isset( $this->_dealer_settings['sort_vehicles_by'] ) ) {
+				selected( $this->_dealer_settings['sort_vehicles_by'], $key );
+			}
+			echo '>' . $vehicle->make_post_meta_key_readable( $key ) . '</option>';
+		}
+
+		echo '</select> in <select name="_dealer_settings[sort_vehicles_order]" id="sort_vehicles_order">';
+
+		foreach( array( 'ascending' => 'ASC', 'descending' => 'DESC' ) as $direction => $abbr ) {
+			echo '<option value="'. $abbr . '"';
+			if( isset( $this->_dealer_settings['sort_vehicles_order'] ) ) {
+				selected( $this->_dealer_settings['sort_vehicles_order'], $abbr );
+			}
+			echo '>' . $direction . '</option>';
+		}
+		echo '</select> order';
 	}
 
 	public function archive_show_content_callback() {
