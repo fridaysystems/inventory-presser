@@ -23,13 +23,25 @@ class _dealer_settings {
 	}
 
 	public function dealership_options_add_plugin_page() {
-		add_options_page(
-			'Dealership Options', // page_title
-			'Dealership Options', // menu_title
-			'manage_options', // capability
-			'dealership-options', // menu_slug
-			array( $this, 'dealership_options_create_admin_page' ) // function
-		);
+		if (post_type_exists( 'inventory_vehicle' )) {
+			add_submenu_page('edit.php?post_type=inventory_vehicle',
+				'Options', // page_title
+				'Options', // menu_title
+				'manage_options', // capability
+				'dealership-options', // menu_slug
+				array( $this, 'dealership_options_create_admin_page' ) // function
+			);
+		} else {
+			add_options_page(
+				'Dealership Options', // page_title
+				'Dealership Options', // menu_title
+				'manage_options', // capability
+				'dealership-options', // menu_slug
+				array( $this, 'dealership_options_create_admin_page' ) // function
+			);
+		}
+
+		
 	}
 
 	public function dealership_options_create_admin_page() {
@@ -37,7 +49,7 @@ class _dealer_settings {
 
 		<div class="wrap">
 			<h2>Dealership Options</h2>
-			<p></p>
+			<?php settings_errors(); ?>
 
 			<form method="post" action="options.php">
 				<?php
