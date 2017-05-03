@@ -892,6 +892,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 						?></select> order
 					</td>
 				</tr>
+				<!--
 				<tr>
 					<th scope="row"><label for="license-key">License key</label></th>
 					<td>
@@ -899,6 +900,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 						<p class="description">To receive plugin updates, obtain a key at <a href="https://inventorypresser.com/">https://inventorypresser.com</a>.</p>
 					</td>
 				</tr>
+				//-->
 				</table>
 
 				<input type="submit" id="save-options" name="save-options" class="button-primary" value="<?php _e( 'Save Changes' ) ?>" />
@@ -907,8 +909,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			<p>&nbsp;</p>
 
 			<h2><?php _e( 'Delete data' ); ?></h2>
-			<p><?php _e( 'Remove all vehicle data and photos.' ); ?></p>
-			<input type="button" class="button-primary" value="<?php _e('Delete all Inventory') ?>" onclick="delete_all_inventory( 'delete-vehicles-notice' );" /><span id="delete-vehicles-notice"></span>
 
 			<p><?php _e( 'Remove all ' . self::PRODUCT_NAME . ' plugin data (including vehicles and photos) and deactivate.' ) ?></p>
 			<input type="button" class="button-primary" value="<?php _e('Delete all Plugin Data') ?>" onclick="delete_all_data();" /><span id="delete-all-notice"></span>
