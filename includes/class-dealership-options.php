@@ -96,6 +96,14 @@ class _dealer_settings {
 		);
 
 		add_settings_field(
+			'valley_custom_link', // id
+			'Valley Custom Link', // title
+			array( $this, 'valley_custom_link_callback' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
+		add_settings_field(
 			'price_display_type', // id
 			'Price Display Type', // title
 			array( $this, 'price_display_type_callback' ), // callback
@@ -192,6 +200,10 @@ class _dealer_settings {
 
 		if ( isset( $input['append_page'] ) ) {
 			$sanitary_values['append_page'] = $input['append_page'];
+		}
+
+		if ( isset( $input['valley_custom_link'] ) ) {
+			$sanitary_values['valley_custom_link'] = $input['valley_custom_link'];
 		}
 
 		if ( isset( $input['price_display_type'] ) ) {
@@ -302,6 +314,22 @@ class _dealer_settings {
 		    'selected'              => isset($this->_dealer_settings['append_page']) ? $this->_dealer_settings['append_page'] : 0,
 		    'echo'                  => 1,
 		    'name'                  => '_dealer_settings[append_page]',
+		    'show_option_none'      => 'Not Set',
+		    'option_none_value'     => '0'
+		); 
+
+		wp_dropdown_pages($args);
+
+	}
+
+	public function valley_custom_link_callback() {
+
+		$args = array(
+		    'depth'                 => 0,
+		    'child_of'              => 0,
+		    'selected'              => isset($this->_dealer_settings['valley_custom_link']) ? $this->_dealer_settings['valley_custom_link'] : 0,
+		    'echo'                  => 1,
+		    'name'                  => '_dealer_settings[valley_custom_link]',
 		    'show_option_none'      => 'Not Set',
 		    'option_none_value'     => '0'
 		); 
