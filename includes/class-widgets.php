@@ -901,6 +901,8 @@ class Stock_Photo_Slider extends WP_Widget {
 	// front-end
 	public function widget( $args, $instance ) {
 
+		$link_slides = (isset($instance['link_slides']) && $instance['link_slides'] == 'true');
+
 		$image_pool = array();
 		// merge each photo set into one array
 		foreach ($instance['image_sets'] as $set) {
@@ -924,8 +926,14 @@ class Stock_Photo_Slider extends WP_Widget {
 
 		<div class="flexslider flex-native">
 		<ul class="slides">
-		<?php foreach ($display_images as $filename) {
-			echo sprintf('<li><img src="%s"></li>',$base_url.$filename);
+		<?php
+		$inventory_link = get_post_type_archive_link('inventory_vehicle');
+		foreach ($display_images as $filename) {
+			if ($link_slides) {
+				echo sprintf('<li><a href="%s"><img src="%s"></a></li>',$inventory_link,$base_url.$filename);
+			} else {
+				echo sprintf('<li><img src="%s"></li>',$base_url.$filename);
+			}
 		}
 		?>
 
@@ -944,6 +952,7 @@ class Stock_Photo_Slider extends WP_Widget {
 
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
 		$selected_sets = isset($instance[ 'image_sets' ]) ? $instance[ 'image_sets' ] : $image_keys;
+		$link_slides = (isset($instance['link_slides']) && $instance['link_slides'] == 'true') ? ' checked' : '';
 
 		// Widget admin form
 		?>
@@ -951,7 +960,9 @@ class Stock_Photo_Slider extends WP_Widget {
 		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
-
+		<p>
+		<label for="<?php echo $this->get_field_id('link_slides'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('link_slides'); ?>" name="<?php echo $this->get_field_name('link_slides'); ?>" value="true"<?php echo $link_slides; ?>> Link slides to Inventory</label>
+		</p>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'image_sets[]' ); ?>"><?php _e( 'Image Sets:' ); ?></label>
 
@@ -983,6 +994,7 @@ class Stock_Photo_Slider extends WP_Widget {
 		$instance = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['image_sets'] = ( ! empty( $new_instance['image_sets'] ) ) ? $new_instance['image_sets'] : $image_keys;
+		$instance['link_slides'] = ( !empty( $new_instance['link_slides'] ) ) ? $new_instance['link_slides'] : '';
 		return $instance;
 	}
 
