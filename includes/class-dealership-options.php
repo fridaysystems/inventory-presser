@@ -15,6 +15,7 @@ class _dealer_settings {
 			'default' => 'Price / Call for Price',
 			'genes' => 'Down Payment = Was Price / MSRP = Now Price',
 			'full_or_down' => '$Full or $Payment Down',
+			'down_only' => '$Payment Down',
 		);
 
 	public function __construct() {
