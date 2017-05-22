@@ -206,8 +206,9 @@ class _dealer_settings {
 		);
 	}
 
-	public function dealership_options_sanitize($input) {
+	public function dealership_options_sanitize( $input ) {
 		$sanitary_values = array();
+
 		if ( isset( $input['financing_page'] ) ) {
 			$sanitary_values['financing_page'] = $input['financing_page'];
 		}
@@ -256,7 +257,6 @@ class _dealer_settings {
 			$sanitary_values['hide_footer_credit'] = $input['hide_footer_credit'];
 		}
 
-
 		if ( isset( $input['cargurus_badge_archive'] ) ) {
 			$sanitary_values['cargurus_badge_archive'] = $input['cargurus_badge_archive'];
 		}
@@ -270,7 +270,7 @@ class _dealer_settings {
 		}
 
 		if ( isset( $input['autocheck_id'] ) ) {
-			$sanitary_values['autocheck_id'] = $input['autocheck_id'];
+			$sanitary_values['autocheck_id'] = sanitize_text_field( $input['autocheck_id'] );
 		}
 
 		if ( isset( $input['msrp_label'] ) ) {
@@ -278,7 +278,7 @@ class _dealer_settings {
 		}
 
 		if ( isset( $input['footer_link_text'] ) ) {
-			$sanitary_values['footer_link_text'] = $input['footer_link_text'];
+			$sanitary_values['footer_link_text'] = sanitize_text_field( $input['footer_link_text'] );
 		}
 
 		return $sanitary_values;
