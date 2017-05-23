@@ -558,7 +558,9 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 		//VIN
 			. '<tr><th scope="row"><label for="inventory_presser_vin">VIN</label></th>'
-			. '<td><input type="text" name="inventory_presser_vin" maxlength="17" value="'. $VIN .'"></td>'
+			. '<td>'
+			. apply_filters( 'inventory_presser_edit_control_vin', '<input type="text" name="inventory_presser_vin" maxlength="17" value="'. $VIN .'">' )
+			. '</td>'
 
 		//Stock number
 			. '<tr><th scope="row"><label for="inventory_presser_stock_number">Stock number</label></th>'
