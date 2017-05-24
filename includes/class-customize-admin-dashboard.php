@@ -568,7 +568,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 		//Year
 			. '<tr><th scope="row"><label for="inventory_presser_year">Year</label></th>'
-			. '<td><select name="inventory_presser_year">';
+			. '<td><select name="inventory_presser_year"><option></option>';
 
 		for( $y=date('Y')+2; $y>=1920; $y-- ) {
 			echo '<option';
@@ -757,6 +757,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		 * if we find them coming over as part of the post to save.
 		 */
 		$vehicle = new Inventory_Presser_Vehicle( $post_id );
+
 		foreach( $vehicle->keys() as $key ) {
 			$key = apply_filters( 'translate_meta_field_key', $key );
 			if ( isset( $_POST[$key] ) ) {
@@ -775,6 +776,8 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			}
 		}
 		update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'option_array' ), $options );
+
+		$vehicle = apply_filters( 'inventory_presser_save_vehicle_post', $vehicle );
 	}
 
 	function scan_for_recommended_settings_and_create_warnings() {
