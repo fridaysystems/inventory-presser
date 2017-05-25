@@ -62,14 +62,14 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			$this->create_add_media_button_annotation( ) . '</span>';
 	}
 
-	function __construct( $post_type ) {
+	function __construct( $post_type='inventory_vehicle' ) {
 
 		$this->post_type = $post_type;
 
 		add_filter( 'posts_clauses', array( &$this, 'enable_order_by_attachment_count' ), 1, 2 );
 
 		//Save custom post data when posts are saved
-		add_action( 'save_post_inventory_vehicle', array( &$this, 'save_vehicle_post_meta' ), 10, 3 );
+		add_action( 'save_post_' . $post_type, array( &$this, 'save_vehicle_post_meta' ), 10, 3 );
 
 		//Add columns to the table that lists all the Vehicles on edit.php
 		add_filter( 'manage_' . $this->post_type() . '_posts_columns', array( &$this, 'add_columns_to_vehicles_table' ) );
