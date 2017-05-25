@@ -776,8 +776,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			}
 		}
 		update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'option_array' ), $options );
-
-		$vehicle = apply_filters( 'inventory_presser_save_vehicle_post', $vehicle );
 	}
 
 	function scan_for_recommended_settings_and_create_warnings() {
