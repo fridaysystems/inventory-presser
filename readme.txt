@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
-Tested up to: 4.7.4
-Stable tag: 3.0.0
+Tested up to: 4.7.5
+Stable tag: 3.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,10 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 2. This is the edit screen that adds or edits a single vehicle. This screen shot was taken on version 0.4, and at this time there is no VIN decoder or support for vehicle options.
 
 == Changelog ==
+
+= 3.1.0 =
+* Adds a filter hook to the VIN input box on the edit vehicle screen in the dashboard. This permits our newest add-on plugin, [a VIN decoder](https://inventorypresser.com/products/plugins/vin-decoder/), to place a "Decode VIN" button adjacent to the VIN text box.
+* Adds an empty drop down option to the model year selector on the edit vehicle screen in the dashboard. Previously, new vehicle entries would save the current year if the user makes no selection.
 
 = 3.0.0 =
 * Consolidates all settings under the Vehicles custom post type menu submenu Options. This saves the default sort field and order in a different location, so those values will need to be migrated when upgrading.
@@ -165,6 +169,9 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 * Edit.php is customized for our custom post type to list stock number, color, odometer, price & photo count
 
 == Upgrade Notice ==
+
+= 3.1.0 =
+This is the required minimum version for compatibility with our [VIN decoder add-on](https://inventorypresser.com/products/plugins/vin-decoder/).
 
 = 2.3.1 =
 Dashicons were being included by a companion widget until said widget was rewritten. They are used by this plugin but were not enqueued until this version.
