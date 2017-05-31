@@ -69,7 +69,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		add_filter( 'posts_clauses', array( &$this, 'enable_order_by_attachment_count' ), 1, 2 );
 
 		//Save custom post data when posts are saved
-		add_action( 'save_post_' . $post_type, array( &$this, 'save_vehicle_post_meta' ), 10, 3 );
+		add_action( 'save_post_' . $this->post_type(), array( &$this, 'save_vehicle_post_meta' ), 10, 3 );
 
 		//Add columns to the table that lists all the Vehicles on edit.php
 		add_filter( 'manage_' . $this->post_type() . '_posts_columns', array( &$this, 'add_columns_to_vehicles_table' ) );
