@@ -46,14 +46,15 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 
 == Screenshots ==
 
-1. This is a list of vehicles in the administrator dashboard that the user sees when she clicks the Vehicles or All Vehicles menu items. This screen shot was taken on version 0.4.
-2. This is the edit screen that adds or edits a single vehicle. This screen shot was taken on version 0.4, and at this time there is no VIN decoder or support for vehicle options.
+1. This is a list of vehicles in the administrator dashboard that the user sees when she clicks the Vehicles or All Vehicles menu items. Each vehicle is listed by year, make, model, trim, stock number, color, odometer, price, and photo count. If the vehicle has photos, a thumbnail is also shown. This screen shot was taken on version 3.1.0.
+2. This is the edit screen that adds or edits a single vehicle. The post content box is demoted to handle only the sentence-form vehicle description, and the entire edit screen is enhanced to support vehicle attributes. This screen shot was taken on version 3.1.0.
 
 == Changelog ==
 
 = 3.1.0 =
 * Adds a filter hook to the VIN input box on the edit vehicle screen in the dashboard. This permits our newest add-on plugin, [a VIN decoder](https://inventorypresser.com/products/plugins/vin-decoder/), to place a "Decode VIN" button adjacent to the VIN text box.
 * Adds an empty drop down option to the model year selector on the edit vehicle screen in the dashboard. Previously, new vehicle entries would save the current year if the user makes no selection.
+* Screenshots are updated
 
 = 3.0.0 =
 * Consolidates all settings under the Vehicles custom post type menu submenu Options. This saves the default sort field and order in a different location, so those values will need to be migrated when upgrading.
