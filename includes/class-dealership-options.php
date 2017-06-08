@@ -16,6 +16,7 @@ class _dealer_settings {
 			'genes' => 'Down Payment = Was Price / MSRP = Now Price',
 			'full_or_down' => '$Full or $Payment Down',
 			'down_only' => '$Payment Down',
+			'call_for_price' => 'Call For Price (hide prices)',
 		);
 
 	var $valley_custom_icons = array(
