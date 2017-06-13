@@ -16,6 +16,12 @@ class _dealer_settings {
 			'genes' => 'Down Payment = Was Price / MSRP = Now Price',
 			'full_or_down' => '$Full or $Payment Down',
 			'down_only' => '$Payment Down',
+			'call_for_price' => 'Call For Price (hide prices)',
+		);
+
+	var $valley_custom_icons = array(
+			'fa-dollar' => 'Dollar Sign',
+			'fa-comment' => 'Speech Bubble',
 		);
 
 	public function __construct() {
@@ -112,6 +118,14 @@ class _dealer_settings {
 			'valley_custom_link', // id
 			'Valley Custom Link', // title
 			array( $this, 'valley_custom_link_callback' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
+		add_settings_field(
+			'valley_custom_icon', // id
+			'Valley Custom Icon', // title
+			array( $this, 'valley_custom_icon_callback' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
 		);
@@ -227,6 +241,10 @@ class _dealer_settings {
 
 		if ( isset( $input['valley_custom_link'] ) ) {
 			$sanitary_values['valley_custom_link'] = $input['valley_custom_link'];
+		}
+
+		if ( isset( $input['valley_custom_icon'] ) ) {
+			$sanitary_values['valley_custom_icon'] = $input['valley_custom_icon'];
 		}
 
 		if ( isset( $input['price_display_type'] ) ) {
@@ -366,6 +384,24 @@ class _dealer_settings {
 
 		wp_dropdown_pages($args);
 
+	}
+
+	public function valley_custom_icon_callback() {
+
+		// array to set optins is defined in this file, top of class
+
+		if (isset($this->_dealer_settings['valley_custom_icon'])) {
+			$selected_val = $this->_dealer_settings['valley_custom_icon'];
+		} else {
+			$price_display_type_slugs = array_keys($this->valley_custom_icons);
+			$selected_val = $price_display_type_slugs[0];
+		}
+		echo '<select name="_dealer_settings[valley_custom_icon]" id="valley_custom_icon">';
+		foreach ($this->valley_custom_icons as $val => $name) {
+			$selected_text = $val == $selected_val ? ' selected' : '';
+			printf('<option value="%s"%s>%s</option>',$val,$selected_text,$name);
+		}
+		echo '</select>';
 	}
 
 	public function price_display_type_callback() {
