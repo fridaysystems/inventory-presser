@@ -22,6 +22,7 @@ class _dealer_settings {
 	var $valley_custom_icons = array(
 			'fa-dollar' => 'Dollar Sign',
 			'fa-comment' => 'Speech Bubble',
+			'fa-star' => 'Star',
 		);
 
 	public function __construct() {
