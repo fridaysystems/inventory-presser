@@ -212,14 +212,6 @@ class _dealer_settings {
 			'dealership-options-admin',
 			'dealership_options_setting_section'
 		);
-
-		add_settings_field(
-			'footer_link_text',
-			'Footer Link Text',
-			array( $this, 'footer_link_text_callback'),
-			'dealership-options-admin',
-			'dealership_options_setting_section'
-		);
 	}
 
 	public function dealership_options_sanitize( $input ) {
@@ -295,10 +287,6 @@ class _dealer_settings {
 
 		if ( isset( $input['msrp_label'] ) ) {
 			$sanitary_values['msrp_label'] = $input['msrp_label'];
-		}
-
-		if ( isset( $input['footer_link_text'] ) ) {
-			$sanitary_values['footer_link_text'] = sanitize_text_field( $input['footer_link_text'] );
 		}
 
 		return $sanitary_values;
@@ -510,7 +498,7 @@ class _dealer_settings {
 
 	public function hide_footer_credit_callback() {
 		printf(
-			'<input type="checkbox" name="_dealer_settings[hide_footer_credit]" id="hide_footer_credit" value="hide_footer_credit" %s> <label for="hide_footer_credit">Hide link to Friday Systems in Footer</label>',
+			'<input type="checkbox" name="_dealer_settings[hide_footer_credit]" id="hide_footer_credit" value="hide_footer_credit" %s> <label for="hide_footer_credit">Hide links to Inventory Presser and WordPress in the Footer</label>',
 			( isset( $this->_dealer_settings['hide_footer_credit'] ) && $this->_dealer_settings['hide_footer_credit'] === 'hide_footer_credit' ) ? 'checked' : ''
 		);
 	}
@@ -528,14 +516,6 @@ class _dealer_settings {
 			( isset( $this->_dealer_settings['msrp_label'] )) ? $this->_dealer_settings['msrp_label'] : ''
 		);
 	}
-
-	public function footer_link_text_callback() {
-		printf(
-			'<input type="text" name="_dealer_settings[footer_link_text]" id="footer_link_text" value="%s">',
-			( isset( $this->_dealer_settings['footer_link_text'] )) ? $this->_dealer_settings['footer_link_text'] : ''
-		);
-	}
-
 }
 if ( is_admin() )
 	$dealership_options = new _dealer_settings();
