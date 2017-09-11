@@ -138,10 +138,14 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 							$current_weekday = date('w') - 1;
 							$current_weekday = ($current_weekday == -1) ? 6 : $current_weekday;
 
+							$start_of_week = get_option('start_of_week') -1;
+
 							echo '<table>';
 
 							// output a row for each day
-							for ($i = 0; $i < 7; $i++) {
+							for ($z = $start_of_week; $z < ($start_of_week + 7); $z++) {
+
+								$i = ($z > 6) ? $z - 7 : $z;
 
 								// do a check to make sure we want to output this row
 								$echo_row = false;
