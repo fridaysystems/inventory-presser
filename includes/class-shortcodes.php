@@ -67,16 +67,56 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 		$atts['captions'] = 'true' === $atts['captions'];
 
-		$args=array(
-			'numberposts'=>$atts['per_page'],
-			'post_type'=>'inventory_vehicle',
-			'meta_key'=>'_thumbnail_id',
+		$gpargs = array(
+			'numberposts' => 10,
+			'post_type' => 'inventory_vehicle',
+			'meta_query' => array(
+				'relation' => 'AND',
+				array(
+					'key'     => 'inventory_presser_featured',
+					'value'   => 1,
+					'compare' => '=',
+				),
+				array(
+					'key'	  => '_thumbnail_id',
+					'compare' => 'EXISTS',
+				)
+			),
 			'fields' => 'ids',
 			'orderby'=>'rand',
 			'order' => 'ASC'
 		);
 
-		$inventory_ids = get_posts( $args );
+		$inventory_ids = get_posts($gpargs);
+
+
+		if (count($inventory_ids) < 10) {
+
+			$gpargs = array(
+				'numberposts'=> 10 - (count($inventory_ids)),
+				'post_type'=>'inventory_vehicle',
+				'meta_query' => array(
+					'relation' => 'AND',
+					array(
+						'key'     => 'inventory_presser_featured',
+						'value'   => 0,
+						'compare' => '='
+					),
+					array(
+						'key'	  => '_thumbnail_id',
+						'compare' => 'EXISTS'
+					)
+				),
+				'fields' => 'ids',
+				'orderby'=>'rand',
+				'order' => 'ASC'
+			);
+
+			$inventory_ids += get_posts($gpargs);
+
+		}
+
+		shuffle($inventory_ids);
 
 		$flexHtml = '';
 
