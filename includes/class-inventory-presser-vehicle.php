@@ -41,7 +41,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		// taxonomy terms
 		var $transmission;
-		var $drivetrain;
+		var $drivetype;
 		var $fuel;
 		var $location;
 		var $availability;
