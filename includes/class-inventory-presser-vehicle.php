@@ -142,6 +142,22 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return $wrap ? '<div class="carfax-wrap">'.$link.'<br/>'.$text.'</div>' : $link;
 		}
 
+		function get_book_value() {
+			/**
+			 * Book value lives in the prices array under
+			 * array key 'NADA Book Value' or 'KBB Book Value'
+			 */
+
+			$nada = $kbb = 0;
+			if( isset( $this->prices['NADA Book Value'])) {
+				$nada = intval( $this->prices['NADA Book Value'] );
+			}
+			if( isset( $this->prices['KBB Book Value'])) {
+				$kbb = intval( $this->prices['KBB Book Value'] );
+			}
+			return max( $nada, $kbb );
+		}
+
 		// fill arrays of thumb and large image URI's
 		function get_images_html_array( $size ) {
 
@@ -171,7 +187,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 					);
 			$images = get_children($image_args);
 			return count($images);
-			
+
 		}
 
 		//return taxonomy terms as a comma delimited string
@@ -297,22 +313,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			}
 
 			return $result;
-		}
-
-		function get_book_value() {
-			/**
-			 * Book value lives in the prices array under
-			 * array key 'NADA Book Value' or 'KBB Book Value'
-			 */
-
-			$nada = $kbb = 0;
-			if( isset( $this->prices['NADA Book Value'])) {
-				$nada = intval( $this->prices['NADA Book Value'] );
-			}
-			if( isset( $this->prices['KBB Book Value'])) {
-				$kbb = intval( $this->prices['KBB Book Value'] );
-			}
-			return max( $nada, $kbb );
 		}
 	}
 }
