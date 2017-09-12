@@ -142,6 +142,10 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return $wrap ? '<div class="carfax-wrap">'.$link.'<br/>'.$text.'</div>' : $link;
 		}
 
+		function extract_digits( $str ) {
+			return abs( (int) filter_var( $str, FILTER_SANITIZE_NUMBER_INT ) );
+		}
+
 		function get_book_value() {
 			/**
 			 * Book value lives in the prices array under
@@ -313,6 +317,108 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			}
 
 			return $result;
+		}
+
+		function schema_org_drive_type( $drive_type ) {
+
+			switch( $drive_type ) {
+
+				case 'Front Wheel Drive w/4x4':
+				case 'Rear Wheel Drive w/4x4':
+					return 'FourWheelDriveConfiguration';
+
+				case 'Two Wheel Drive':
+				case 'Rear Wheel Drive':
+					return 'RearWheelDriveConfiguration';
+
+				case 'Front Wheel Drive':
+					return 'FrontWheelDriveConfiguration';
+
+				case 'All Wheel Drive':
+					return 'AllWheelDriveConfiguration';
+			}
+			return null;
+		}
+
+		/**
+		 * Returns Schema.org markup for this Vehicle as a JSON-LD code block
+		 */
+		function schema_org_json_ld() {
+
+			$obj = [
+				'@context' => 'http://schema.org/',
+				'@type' => 'Vehicle'
+			];
+
+			if( isset( $this->post_title ) && '' != $this->post_title ) {
+				$obj['name'] = $this->post_title;
+			}
+
+			if( '' != $this->make ) {
+				$obj['brand'] = [
+					'@type' => 'Thing',
+					'name' => $this->make
+				];
+			}
+
+			if( '' != $this->vin ) {
+				$obj['vehicleIdentificationNumber'] = $this->vin;
+			}
+
+			if( 0 != $this->year ) {
+				$obj['vehicleModelDate'] = $this->year;
+			}
+
+			//if the image does not end with 'no-photo.png'
+			if( 'no-photo.png' != substr( $this->image_url, 12 ) ) {
+				$obj['image'] = $this->image_url;
+			}
+
+			if( '' != $this->odometer ) {
+				$obj['mileageFromOdometer'] = [
+					'@type' => 'QuantitativeValue',
+					'value' => $this->extract_digits( $this->odometer ),
+					'unitCode' => 'SMI'
+				];
+			}
+
+			if( '' != $this->engine || ( isset( $this->fuel ) && '' != $this->fuel ) ) {
+				$obj['vehicleEngine'] = [];
+				if( '' != $this->engine ) {
+					$obj['vehicleEngine']['engineType'] = $this->engine;
+				}
+				if( isset( $this->fuel ) && '' != $this->fuel ) {
+					$obj['vehicleEngine']['fuelType'] = $this->fuel;
+				}
+			}
+
+			if( '' != $this->body_style ) {
+				$obj['bodyType'] = $this->body_style;
+			}
+
+			if( '' != $this->color ){
+				$obj['color'] = $this->color;
+			}
+
+			if( '' != $this->interior_color ) {
+				$obj['vehicleInteriorColor'] = $this->interior_color;
+			}
+
+			global $post;
+			if( isset( $post->post_content ) && '' != $post->post_content ) {
+				$obj['description'] = $post->post_content;
+			}
+
+			$schema_drive_type = $this->schema_org_drive_type( $this->drivetype );
+			if( null !== $schema_drive_type ) {
+				$obj['driveWheelConfiguration'] = $schema_drive_type;
+			}
+
+			if( isset( $this->transmission ) && '' != $this->transmission ) {
+				$obj['vehicleTransmission'] = $this->transmission;
+			}
+
+			return '<script type="application/ld+json">' . json_encode( $obj ) . '</script>';
 		}
 	}
 }
