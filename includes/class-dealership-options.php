@@ -117,6 +117,14 @@ class _dealer_settings {
 		);
 
 		add_settings_field(
+			'cf7_redirect', // id
+			'CF7 Redirect', // title
+			array( $this, 'cf7_redirect_callback' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
+		add_settings_field(
 			'valley_custom_link', // id
 			'Valley Custom Link', // title
 			array( $this, 'valley_custom_link_callback' ), // callback
@@ -231,6 +239,10 @@ class _dealer_settings {
 
 		if ( isset( $input['append_page'] ) ) {
 			$sanitary_values['append_page'] = $input['append_page'];
+		}
+
+		if ( isset( $input['cf7_redirect'] ) ) {
+			$sanitary_values['cf7_redirect'] = $input['cf7_redirect'];
 		}
 
 		if ( isset( $input['valley_custom_link'] ) ) {
@@ -352,6 +364,22 @@ class _dealer_settings {
 		    'selected'              => isset($this->_dealer_settings['append_page']) ? $this->_dealer_settings['append_page'] : 0,
 		    'echo'                  => 1,
 		    'name'                  => '_dealer_settings[append_page]',
+		    'show_option_none'      => 'Not Set',
+		    'option_none_value'     => '0'
+		);
+
+		wp_dropdown_pages($args);
+
+	}
+
+	public function cf7_redirect_callback() {
+
+		$args = array(
+		    'depth'                 => 0,
+		    'child_of'              => 0,
+		    'selected'              => isset($this->_dealer_settings['cf7_redirect']) ? $this->_dealer_settings['cf7_redirect'] : 0,
+		    'echo'                  => 1,
+		    'name'                  => '_dealer_settings[cf7_redirect]',
 		    'show_option_none'      => 'Not Set',
 		    'option_none_value'     => '0'
 		);
