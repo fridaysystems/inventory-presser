@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
-Tested up to: 4.7.5
-Stable tag: 3.1.0
+Tested up to: 4.8.1
+Stable tag: 3.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,13 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 2. This is the edit screen that adds or edits a single vehicle. The post content box is demoted to handle only the sentence-form vehicle description, and the entire edit screen is enhanced to support vehicle attributes. This screen shot was taken on version 3.1.0.
 
 == Changelog ==
+
+= 3.2.0 =
+* [Added] Make it easy for themes to include Schema.org structured data for vehicles via a new method on our vehicle class
+* [Changed] Now prioritizes featured vehicles when filling the slider
+* [Changed] The tested up to date to 4.8.1
+* [Fixed] A vehicle class member was typoed as drivetrain and changed to drivetype
+* [Removed] An unused theme-specific setting that allowed the footer link text to be overriden has been removed from the options page
 
 = 3.1.0 =
 * Adds a filter hook to the VIN input box on the edit vehicle screen in the dashboard. This permits our newest add-on plugin, [a VIN decoder](https://inventorypresser.com/products/plugins/vin-decoder/), to place a "Decode VIN" button adjacent to the VIN text box.
