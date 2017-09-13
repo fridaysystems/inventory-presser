@@ -53,6 +53,7 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 
 = 3.2.0 =
 * [Added] Make it easy for themes to include Schema.org structured data for vehicles via a new method on our vehicle class
+* [Added] Include custom taxonomy names and slugs in searches, so searches for "suv" and "diesel" are now possible
 * [Changed] Now prioritizes featured vehicles when filling the slider
 * [Changed] Tested up to date to 4.8.1
 * [Fixed] A vehicle class member was typoed as drivetrain and changed to drivetype
