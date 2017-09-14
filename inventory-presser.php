@@ -20,6 +20,7 @@ $inventory_presser_include_paths = array(
 	'includes/class-inventory-presser-vehicle.php',
 	'includes/class-option-manager.php',
 	'includes/class-order-by-post-meta-widget.php',
+	'includes/class-redirect-404-vehicles.php',
 	'includes/class-reports.php',
 	'includes/class-shortcodes.php',
 	'includes/class-taxonomies.php',
@@ -183,6 +184,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Redirect URLs by VINs to proper vehicle permalinks
 			$allow_urls_by_vin = new Vehicle_URLs_By_VIN();
+
+			//Redirect 404 vehicles to make archives
+			$redirect_404_vehicles = new Redirect_404_Vehicles();
+			$redirect_404_vehicles->hooks();
 
 			add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_options' ) );
 			//deactivate so the next page load doesn't restore the option & terms
