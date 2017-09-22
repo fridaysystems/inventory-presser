@@ -609,6 +609,7 @@ class Inventory_Presser_Taxonomies {
 								'BUS' => 'Bus',
 								'CAR' => 'Passenger Car',
 								'MOT' => 'Motorcycle',
+								'MOW' => 'Mower'
 								'OTH' => 'Other',
 								'RV'  => 'Recreational Vehicle',
 								'SUV' => 'Sport Utility Vehicle',
