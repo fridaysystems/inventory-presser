@@ -51,6 +51,9 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 
 == Changelog ==
 
+= 3.3.0 =
+* [Changed] AutoCheck report fetching is rewritten to use a newer end-point at Friday Systems
+
 = 3.2.0 =
 * [Added] When shoppers navigate to vehicles that are no longer on the site, redirect them to an archive page of all vehicles of the same make
 * [Added] Make it easy for themes to include Schema.org structured data for vehicles via a new method on our vehicle class
