@@ -121,7 +121,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 				$location_meta = get_term_meta( $term_id, 'location-phone-hours', true );
 
 				// if any hour sets have been selected for this location
-				if (isset($instance['cb_display'][$term_id]) && is_array($instance['cb_display'][$term_id]) && count($instance['cb_display'][$term_id]) > 0 && count($location_meta['hours']) > 0) {
+				if (isset($instance['cb_display'][$term_id]) && is_array($instance['cb_display'][$term_id]) && count($instance['cb_display'][$term_id]) > 0 && isset( $location_meta['hours'] ) && count($location_meta['hours']) > 0) {
 
 					// loop through each hour set from term meta
 					foreach ($location_meta['hours'] as $index => $hourset) {

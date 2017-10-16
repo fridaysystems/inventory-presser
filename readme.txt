@@ -52,6 +52,7 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 == Changelog ==
 
 = 3.3.1 =
+* [Fixed] Do not assume we have sets of hours for a location
 * [Fixed] Also update vehicle price in prices array when the price is changed via the dashboard
 * [Fixed] Make sure a location term query does not return an error before trying to output that term's details
 * [Changed] Create the body styles taxonomy before the location taxonomy so they load in that order, purely for appearance and usability
