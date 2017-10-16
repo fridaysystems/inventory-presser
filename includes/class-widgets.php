@@ -311,15 +311,17 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		if (isset($instance['cb_single_line']) && $instance['cb_single_line'] == 'true') {
 			foreach ($instance['cb_display'] as $i => $term_id) {
 				$location = get_term($term_id, 'location');
-				echo '<span>'.preg_replace('/\r|\n/',', ',trim($location->description)).'</span>'; 
+				echo '<span>'.preg_replace('/\r|\n/',', ',trim($location->description)).'</span>';
 			}
 		} else {
 			foreach ($instance['cb_display'] as $i => $term_id) {
 				$location = get_term($term_id, 'location');
-				echo '<div>'.nl2br($location->description).'</div>';
+				if( ! is_wp_error( $location ) ) {
+					echo '<div>'.nl2br($location->description).'</div>';
+				}
 			}
 		}
-		
+
 
 		echo $args['after_widget'];
 	}
@@ -1564,7 +1566,7 @@ class Extended_Search extends WP_Widget {
 
 		// get the maximum vehicle price from post meta
 	    global $wpdb;
-	    $query = $wpdb->prepare( 
+	    $query = $wpdb->prepare(
 	        "SELECT max(cast( meta_value as UNSIGNED)) FROM {$wpdb->postmeta} WHERE meta_key='%s'",
 	        'inventory_presser_price'
 	    );
@@ -1638,15 +1640,15 @@ class Extended_Search extends WP_Widget {
 			);
 
 			// add js into page
-			wp_add_inline_script('noui-javascript', $js);    	
+			wp_add_inline_script('noui-javascript', $js);
 	    	echo '<form>';
 	    	echo '<div>';
-			
+
 			echo '<div id="range_'.$this->id.'" class="price-range-slider"></div>';
 			echo sprintf('<input type="hidden" name="min_price" id="min_%s" value="%d" />', $this->id, $sel_range_low);
 			echo sprintf('<input type="hidden" name="max_price" id="max_%s" value="%d" />', $this->id, $sel_range_high);
 			echo sprintf('<input type="hidden" name="order" id="order_%s" value="ASC" />', $this->id);
-			
+
 			echo '</div>';
 
 

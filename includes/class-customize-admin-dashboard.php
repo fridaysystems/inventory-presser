@@ -762,6 +762,15 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			$key = apply_filters( 'translate_meta_field_key', $key );
 			if ( isset( $_POST[$key] ) ) {
 				update_post_meta( $post->ID, $key, sanitize_text_field( $_POST[$key] ) );
+
+				//if price
+				if( apply_filters( 'translate_meta_field_key', 'price' ) == $key ) {
+					//value also saved in another meta key. update that, too
+					$price_arr_key = apply_filters( 'translate_meta_field_key', 'prices' );
+					$price_arr = get_post_meta( $post->ID, $price_arr_key, true );
+					$price_arr['price'] = sanitize_text_field( $_POST[$key] );
+					update_post_meta( $post->ID, $price_arr_key, $price_arr );
+				}
 			}
 		}
 
