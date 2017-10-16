@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.8.1
-Stable tag: 3.2.0
+Stable tag: 3.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,11 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 2. This is the edit screen that adds or edits a single vehicle. The post content box is demoted to handle only the sentence-form vehicle description, and the entire edit screen is enhanced to support vehicle attributes. This screen shot was taken on version 3.1.0.
 
 == Changelog ==
+
+= 3.3.1 =
+* [Fixed] Also update vehicle price in prices array when the price is changed via the dashboard
+* [Fixed] Make sure a location term query does not return an error before trying to output that term's details
+* [Changed] Create the body styles taxonomy before the location taxonomy so they load in that order, purely for appearance and usability
 
 = 3.3.0 =
 * [Changed] AutoCheck report fetching is rewritten to use a newer end-point at Friday Systems
