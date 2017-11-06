@@ -22,6 +22,7 @@ $inventory_presser_include_paths = array(
 	'includes/class-order-by-post-meta-widget.php',
 	'includes/class-redirect-404-vehicles.php',
 	'includes/class-reports.php',
+	'includes/class-seo.php',
 	'includes/class-shortcodes.php',
 	'includes/class-taxonomies.php',
 	'includes/class-vehicle-urls-by-vin.php',
@@ -125,6 +126,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Create custom taxonomies
 			$this->taxonomies = new Inventory_Presser_Taxonomies( self::CUSTOM_POST_TYPE );
+			$this->taxonomies->hooks();
 
 			/**
 			 * Some custom rewrite rules are created and destroyed
@@ -199,6 +201,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_action( 'wp_enqueue_scripts', function() {
 				wp_enqueue_style( 'dashicons' );
 			});
+
+			$seo = new Inventory_Presser_SEO();
+			$seo->hooks();
 		}
 
 		function create_custom_post_type( ) {

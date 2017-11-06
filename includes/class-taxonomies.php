@@ -14,8 +14,10 @@ class Inventory_Presser_Taxonomies {
 	var $days = array('Mon','Tue','Wed','Thu','Fri','Sat','Sun');
 
 	function __construct( $post_type='inventory_vehicle' ) {
-
 		$this->post_type = $post_type;
+	}
+
+	function hooks() {
 
 		//create custom taxonomies for vehicles
 		add_action( 'init', array( &$this, 'create_custom_taxonomies' ) );
@@ -37,9 +39,6 @@ class Inventory_Presser_Taxonomies {
 
 		//Load our scripts
 		add_action( 'admin_enqueue_scripts', array( &$this, 'load_scripts' ) );
-
-		//Do not include our taxonomies in Yoast SEO XML sitemaps
-		add_filter( 'wpseo_sitemap_exclude_taxonomy', array( &$this, 'yoast_sitemap_exclude_taxonomies' ), 10, 2 );
 	}
 
 	/* location taxonomy */
@@ -857,10 +856,5 @@ class Inventory_Presser_Taxonomies {
 			}
 		}
 		return $HTML . '</select>';
-	}
-
-	//Do not include our taxonomies in Yoast SEO XML sitemaps
-	function yoast_sitemap_exclude_taxonomies( $value, $taxonomy ) {
-		return in_array( $taxonomy, $this->slugs_array() );
 	}
 }
