@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.8.1
-Stable tag: 3.3.0
+Stable tag: 3.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,9 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 2. This is the edit screen that adds or edits a single vehicle. The post content box is demoted to handle only the sentence-form vehicle description, and the entire edit screen is enhanced to support vehicle attributes. This screen shot was taken on version 3.1.0.
 
 == Changelog ==
+
+= 3.4.0 =
+* [Added] Do not allow our vehicle taxonomies to be included in Yoast SEO XML sitemaps
 
 = 3.3.1 =
 * [Fixed] Do not assume we have sets of hours for a location
