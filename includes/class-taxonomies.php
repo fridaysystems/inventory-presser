@@ -37,6 +37,9 @@ class Inventory_Presser_Taxonomies {
 
 		//Load our scripts
 		add_action( 'admin_enqueue_scripts', array( &$this, 'load_scripts' ) );
+
+		//Do not include our taxonomies in Yoast SEO XML sitemaps
+		add_filter( 'wpseo_sitemap_exclude_taxonomy', array( &$this, 'yoast_sitemap_exclude_taxonomies' ), 10, 2 );
 	}
 
 	/* location taxonomy */
@@ -426,7 +429,7 @@ class Inventory_Presser_Taxonomies {
 	//save custom taxonomy terms when vehicles are saved
 	function save_vehicle_taxonomy_terms( $post_id, $is_update ) {
 		foreach( $this->slugs_array() as $slug ) {
-			$taxonomy_name = $slug = str_replace( '-', '_', $slug );
+			$taxonomy_name = $slug;
 			switch( $slug ) {
 				case 'style':
 					$slug = 'body_style';
@@ -475,14 +478,23 @@ class Inventory_Presser_Taxonomies {
 		return str_replace( ' ', '_', strtolower( $label ) );
 	}
 
-	//returns an array of all our taxonomy slugs (also called query_vars)
-	function slugs_array() {
+	//returns an array of all our taxonomy query vars
+	function query_vars_array() {
 		$arr = array();
 		foreach( $this->taxonomy_data() as $taxonomy_array ) {
 			if( ! isset( $taxonomy_array['args'] ) || ! isset( $taxonomy_array['args']['query_var'] ) ) {
 				continue;
 			}
 			array_push( $arr, $this->slug( $taxonomy_array['args']['query_var'] ) );
+		}
+		return $arr;
+	}
+
+	//returns an array of all our taxonomy slugs
+	function slugs_array() {
+		$arr = array();
+		foreach( $this->query_vars_array() as $query_var ) {
+			array_push( $arr, str_replace( '-', '_', $query_var ) );
 		}
 		return $arr;
 	}
@@ -847,4 +859,8 @@ class Inventory_Presser_Taxonomies {
 		return $HTML . '</select>';
 	}
 
+	//Do not include our taxonomies in Yoast SEO XML sitemaps
+	function yoast_sitemap_exclude_taxonomies( $value, $taxonomy ) {
+		return in_array( $taxonomy, $this->slugs_array() );
+	}
 }

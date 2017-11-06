@@ -237,7 +237,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 									'title',
 									'thumbnail',
 								  ),
-						'taxonomies'   => $this->taxonomies->slugs_array(),
+						'taxonomies'   => $this->taxonomies->query_vars_array(),
 					)
 				)
 			);

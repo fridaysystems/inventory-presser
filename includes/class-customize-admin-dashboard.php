@@ -215,7 +215,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 		//delete all terms
 		$taxonomies = new Inventory_Presser_Taxonomies( $this->post_type );
-		foreach( $taxonomies->slugs_array() as $taxonomy ) {
+		foreach( $taxonomies->query_vars_array() as $taxonomy ) {
 			$terms = get_terms( array(
 				'taxonomy'   => $taxonomy,
 				'hide_empty' => false,
