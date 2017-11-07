@@ -35,7 +35,7 @@ class Inventory_Presser_Taxonomies {
 		add_filter( 'get_terms_orderby', array( &$this, 'sort_terms_as_numbers' ), 10,  3 );
 
 		//Save custom taxonomy terms when posts are saved
-		add_action( 'save_post_' . $post_type, array( &$this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
+		add_action( 'save_post_' . $this->post_type, array( &$this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
 
 		//Load our scripts
 		add_action( 'admin_enqueue_scripts', array( &$this, 'load_scripts' ) );
