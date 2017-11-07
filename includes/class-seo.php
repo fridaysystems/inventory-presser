@@ -1,7 +1,7 @@
 <?php
 /**
- * A class that implements theme-agnostic search engine optimization via the
- * Yoast SEO plugin, if it is active.
+ * A class that implements theme-agnostic search engine optimization via
+ * robots.txt and the Yoast SEO plugin, if it is active.
  *
  *
  * @since      3.4.0
