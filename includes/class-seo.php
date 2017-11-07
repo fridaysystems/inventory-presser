@@ -12,20 +12,19 @@
 class Inventory_Presser_SEO {
 
 	//Adds a sitemap directive to robots.txt for a Yoast SEO XML sitemap
-	function append_sitemap_to_robots_txt( $robots ) {
-    	return $robots . '\nSitemap: ' . home_url( '/sitemap_index.xml', 'https' );
+	function append_sitemap_to_robots_txt( $robots, $public ) {
+    	return $robots . 'Crawl-delay: 10
+Sitemap: ' . home_url( '/sitemap_index.xml', 'https' );
 	}
 
 	function hooks() {
-		if( ! $this->yoast_sitemap_enabled() ) {
-			return;
+		if( $this->yoast_sitemap_enabled() ) {
+			//Do not include our taxonomies in Yoast SEO XML sitemaps
+			add_filter( 'wpseo_sitemap_exclude_taxonomy', array( &$this, 'yoast_sitemap_exclude_taxonomies' ), 10, 2 );
 		}
 
-		//Do not include our taxonomies in Yoast SEO XML sitemaps
-		add_filter( 'wpseo_sitemap_exclude_taxonomy', array( &$this, 'yoast_sitemap_exclude_taxonomies' ), 10, 2 );
-
 		if( is_multisite() ) {
-			add_filter( 'robots_txt', array( &$this, 'append_sitemap_to_robots_txt') );
+			add_filter( 'robots_txt', array( &$this, 'append_sitemap_to_robots_txt'), 10, 2 );
 		}
 	}
 

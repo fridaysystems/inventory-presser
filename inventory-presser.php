@@ -202,6 +202,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				wp_enqueue_style( 'dashicons' );
 			});
 
+			//Customize the behavior of Yoast SEO, if it is active
 			$seo = new Inventory_Presser_SEO();
 			$seo->hooks();
 		}
