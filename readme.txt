@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.8.1
-Stable tag: 3.3.1
+Stable tag: 3.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,7 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 == Changelog ==
 
 = 3.4.0 =
+* [Added] The vehicle grid widget now includes a setting to show only featured vehicles
 * [Added] Add a sitemap URL and crawl-delay to robots.txt on multisite installs when Yoast SEO XML sitemaps are enabled
 * [Added] Do not allow our vehicle taxonomies to be included in Yoast SEO XML sitemaps
 

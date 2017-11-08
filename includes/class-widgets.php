@@ -1292,11 +1292,21 @@ class Inventory_Grid extends WP_Widget {
 		$gp_args=array(
 			'posts_per_page'=>$limit,
 			'post_type'=>'inventory_vehicle',
-			'meta_key'=>'_thumbnail_id',
+			'meta_key'=>'_thumbnail_id', //has thumbnail
 			'fields' => 'ids',
 			'orderby'=>'rand',
 			'order' => 'ASC'
 		);
+
+		//Does the user want featured vehicles only?
+		if( isset($instance['cb_featured_only']) && 'true' == $instance['cb_featured_only'] ) {
+			$gp_args['meta_query'] = array(
+				array(
+					'key'     => 'inventory_presser_featured',
+					'value'   => '1',
+				),
+			);
+		}
 
 		$inventory_ids = get_posts( $gp_args );
 
@@ -1347,8 +1357,6 @@ class Inventory_Grid extends WP_Widget {
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
 		$columns = (isset($instance['columns'])) ? $instance['columns'] : 5;
 		$limit = (isset($instance['limit'])) ? $instance['limit'] : $columns * 3;
-		$cb_showcaptions = (isset($instance['cb_showcaptions']) && $instance['cb_showcaptions'] == 'true') ? ' checked' : '';
-		$cb_showbutton = (isset($instance['cb_showbutton']) && $instance['cb_showbutton'] == 'true') ? ' checked' : '';
 
 		// Widget admin form
 		?>
@@ -1368,11 +1376,14 @@ class Inventory_Grid extends WP_Widget {
 		<input class="widefat" id="<?php echo $this->get_field_id('limit'); ?>" name="<?php echo $this->get_field_name('limit'); ?>" type="number" value="<?php echo esc_attr( $limit ); ?>" />
 		</p>
 		<p>
-			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showcaptions'); ?>" name="<?php echo $this->get_field_name('cb_showcaptions'); ?>" value="true"<?php echo $cb_showcaptions; ?>>
+			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showcaptions'); ?>" name="<?php echo $this->get_field_name('cb_showcaptions'); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showcaptions'] ) ? $instance['cb_showcaptions'] : '', true ); ?>>
 			<label for="<?php echo $this->get_field_id('cb_showcaptions'); ?>">Show captions</label>
 			<br />
-			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showbutton'); ?>" name="<?php echo $this->get_field_name('cb_showbutton'); ?>" value="true"<?php echo $cb_showbutton; ?>>
+			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showbutton'); ?>" name="<?php echo $this->get_field_name('cb_showbutton'); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showbutton'] ) ? $instance['cb_showbutton'] : '', true ); ?>>
 			<label for="<?php echo $this->get_field_id('cb_showbutton'); ?>">Show inventory button</label>
+			<br />
+			<input type="checkbox" id="<?php echo $this->get_field_id('cb_featured_only'); ?>" name="<?php echo $this->get_field_name('cb_featured_only'); ?>" value="true"<?php checked( 'true', isset( $instance['cb_featured_only'] ) ? $instance['cb_featured_only'] : '', true ); ?>>
+			<label for="<?php echo $this->get_field_id('cb_featured_only'); ?>">Featured vehicles only</label>
 		</p>
 
 		<?php
@@ -1387,6 +1398,7 @@ class Inventory_Grid extends WP_Widget {
 		$instance['limit'] = ( ! empty( $new_instance['limit'] ) ) ? strip_tags( $new_instance['limit'] ) : 15;
 		$instance['cb_showcaptions'] = ( !empty( $new_instance['cb_showcaptions'] ) ) ? $new_instance['cb_showcaptions'] : '';
 		$instance['cb_showbutton'] = ( !empty( $new_instance['cb_showbutton'] ) ) ? $new_instance['cb_showbutton'] : '';
+		$instance['cb_featured_only'] = ( !empty( $new_instance['cb_featured_only'] ) ) ? $new_instance['cb_featured_only'] : '';
 
 		return $instance;
 	}
