@@ -1242,7 +1242,7 @@ class Inventory_Grid extends WP_Widget {
 		parent::__construct(
 			self::ID_BASE,
 			'Dealer Inventory Grid',
-			array( 'description' => 'Display a grid of linked inventory images.', )
+			array( 'description' => 'Display a grid of vehicle thumbnails.', )
 		);
 
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
@@ -1368,12 +1368,11 @@ class Inventory_Grid extends WP_Widget {
 		<input class="widefat" id="<?php echo $this->get_field_id('limit'); ?>" name="<?php echo $this->get_field_name('limit'); ?>" type="number" value="<?php echo esc_attr( $limit ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id('cb_showcaptions'); ?>">Show Captions:</label>
-		<input type="checkbox" id="<?php echo $this->get_field_id('cb_showcaptions'); ?>" name="<?php echo $this->get_field_name('cb_showcaptions'); ?>" value="true"<?php echo $cb_showcaptions; ?>>
-		</p>
-		<p>
-		<label for="<?php echo $this->get_field_id('cb_showbutton'); ?>">Show Inventory Button:</label>
-		<input type="checkbox" id="<?php echo $this->get_field_id('cb_showbutton'); ?>" name="<?php echo $this->get_field_name('cb_showbutton'); ?>" value="true"<?php echo $cb_showbutton; ?>>
+			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showcaptions'); ?>" name="<?php echo $this->get_field_name('cb_showcaptions'); ?>" value="true"<?php echo $cb_showcaptions; ?>>
+			<label for="<?php echo $this->get_field_id('cb_showcaptions'); ?>">Show Captions</label>
+			<br />
+			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showbutton'); ?>" name="<?php echo $this->get_field_name('cb_showbutton'); ?>" value="true"<?php echo $cb_showbutton; ?>>
+			<label for="<?php echo $this->get_field_id('cb_showbutton'); ?>">Show Inventory Button</label>
 		</p>
 
 		<?php
