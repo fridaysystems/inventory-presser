@@ -1358,7 +1358,7 @@ class Inventory_Grid extends WP_Widget {
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id('columns'); ?>">Display Format:</label>
+		<label for="<?php echo $this->get_field_id('columns'); ?>">Column count:</label>
 		<select class="widefat" id="<?php echo $this->get_field_id('columns'); ?>" name="<?php echo $this->get_field_name('columns'); ?>">
 		<?php echo $this->get_column_options_html($columns); ?>
 		</select>
@@ -1369,10 +1369,10 @@ class Inventory_Grid extends WP_Widget {
 		</p>
 		<p>
 			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showcaptions'); ?>" name="<?php echo $this->get_field_name('cb_showcaptions'); ?>" value="true"<?php echo $cb_showcaptions; ?>>
-			<label for="<?php echo $this->get_field_id('cb_showcaptions'); ?>">Show Captions</label>
+			<label for="<?php echo $this->get_field_id('cb_showcaptions'); ?>">Show captions</label>
 			<br />
 			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showbutton'); ?>" name="<?php echo $this->get_field_name('cb_showbutton'); ?>" value="true"<?php echo $cb_showbutton; ?>>
-			<label for="<?php echo $this->get_field_id('cb_showbutton'); ?>">Show Inventory Button</label>
+			<label for="<?php echo $this->get_field_id('cb_showbutton'); ?>">Show inventory button</label>
 		</p>
 
 		<?php
