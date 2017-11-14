@@ -51,6 +51,14 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 
 == Changelog ==
 
+= 3.5.0 =
+* [Added] Include Carfax buttons in this plugin like AutoCheck instead of each theme
+* [Changed] Updated the Carfax buttons to the newest style provided by Carfax in November 2017
+* [Changed] Start using new Instant Carfax Report URLs provided by Carfax in November 2017
+* [Changed] Change the Carfax image widget that shows the plain SHOW ME THE CARFAX image to use one of the new buttons instead of a near duplicate image
+* [Changed] Add rel="noopener noreferrer" to links to Carfax and AutoCheck to protect against target="_blank" vulnerability
+* [Changed] Stop using "../" in URLs to images, wrap __FILE__ in dirname() instead
+
 = 3.4.0 =
 * [Added] The vehicle grid widget now includes a setting to show only featured vehicles
 * [Added] Add a sitemap URL and crawl-delay to robots.txt on multisite installs when Yoast SEO XML sitemaps are enabled
