@@ -119,27 +119,36 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		function autocheck_icon_html() {
 			$autocheck_link = admin_url('admin-ajax.php?action=autocheck&vin='.$this->vin);
 			$autocheck_image = '<img src="' . plugins_url( '../assets/autocheck-button.png', __FILE__ ) . '">';
-			return sprintf('<div class="autocheck-wrapper-center"><a href="%s" target="_blank">%s</a></div>',$autocheck_link,$autocheck_image);
+			return sprintf('<div class="autocheck-wrapper-center"><a href="%s" target="_blank" rel="noopener noreferrer">%s</a></div>',$autocheck_link,$autocheck_image);
 		}
 
-		function carfax_icon_HTML($wrap = false) {
+		//is this a vehicle for which Carfax maintains data?
+		private function carfax_eligible() {
+			return strlen( $this->vin ) >= 17 && $this->year >= 1980;
+		}
 
-			$link = '';
-			$text = '';
+		function carfax_icon_html() {
+			if( ! $this->carfax_eligible() ) { return ''; }
+
 			if( $this->have_carfax_report() ) {
-				if( $this->is_carfax_one_owner() ) {
-					$text = 'CARFAX 1 OWNER Free Report';
-					$link = '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-one-owner.png', __FILE__ ) . '" alt="'.$text.'" title="'.$text.'" class="carfax-icon"></a>';
-				} else {
-					$text = 'CARFAX Free Report';
-					$link = '<a href="http://www.carfax.com/cfm/ccc_DisplayHistoryRpt.cfm?partner=DVW_1&vin=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-report.png', __FILE__ ) . '" alt="'.$text.'" title="'.$text.'" class="carfax-icon"></a>';
-				}
-			} else {
-				$text = 'CARFAX Record Check';
-				$link = '<a href="https://www.carfax.com/VehicleHistory/p/Report.cfx?vin=' . $this->vin . '" target="_blank"><img src="' . plugins_url( '../assets/free-carfax-report.png', __FILE__ ) . '" alt="'.$text.'" title="'.$text.'" class="carfax-icon"></a>';
-			}
+				$link = '<a href="http://www.carfax.com/VehicleHistory/p/Report.cfx?partner=FXI_0&vin='
+					. $this->vin
+					. '" target="_blank" rel="noopener noreferrer"><img src="'
+					. plugins_url( 'assets/show-me-carfax', dirname( __FILE__ ) );
 
-			return $wrap ? '<div class="carfax-wrap">'.$link.'<br/>'.$text.'</div>' : $link;
+				if( $this->is_carfax_one_owner() ) {
+					$link .= '-1-owner';
+				}
+				$link .= '.png" alt="SHOW ME THE CARFAX" title="View the Free CARFAX Report" class="carfax-icon';
+				if( $this->is_carfax_one_owner() ) {
+					$link .= ' 1-owner';
+				}
+				return $link . '"></a>';
+			} else {
+				return '<a href="http://www.carfax.com/cfm/check_order.cfm?partner=FXI_2&VIN='
+					. $this->vin
+					. '" target="_blank" rel="noopener noreferrer">Get a CARFAX Report</a>';
+			}
 		}
 
 		function extract_digits( $str ) {

@@ -591,13 +591,13 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 class Carfax_Widget extends WP_Widget {
 
 	var $images = array(
-		'default' => array('text'=>'Simple Show Me Logo', 'img'=>'carfax-show-me-plain.png'),
+		'default' => array('text'=>'Simple Show Me Logo', 'img'=>'show-me-carfax.png'),
 		'advantage' => array('text'=>'Advantage Dealer Badge', 'img'=>'carfax-advantage-dealer.png'),
 		'dealership' => array('text'=>'Car Fox Dealership', 'img'=>'carfax-portrait-blue.jpg'),
 		'foxleft' => array('text'=>'Car Fox Left', 'img'=>'carfax-show-me-blue.png'),
 		'foxoval' => array('text'=>'Car Fox Oval', 'img'=>'carfax-show-me-blue-oval.png'),
 		'landscape' => array('text'=>'Landscape Blue', 'img'=>'carfax-show-me-landscape.jpg'),
-		);
+	);
 
 	const ID_BASE = '_invp_carfax';
 
