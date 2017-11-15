@@ -133,17 +133,16 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			if( $this->have_carfax_report() ) {
 				$link = '<a href="http://www.carfax.com/VehicleHistory/p/Report.cfx?partner=FXI_0&vin='
 					. $this->vin
-					. '" target="_blank" rel="noopener noreferrer"><img src="'
-					. plugins_url( 'assets/show-me-carfax', dirname( __FILE__ ) );
+					. '" target="_blank" rel="noopener noreferrer">';
 
+				$svg_path = plugins_url( 'assets/show-me-carfax', dirname( __FILE__ ) );
 				if( $this->is_carfax_one_owner() ) {
-					$link .= '-1-owner';
+					$svg_path .= '-1-owner';
 				}
-				$link .= '.png" alt="SHOW ME THE CARFAX" title="View the Free CARFAX Report" class="carfax-icon';
-				if( $this->is_carfax_one_owner() ) {
-					$link .= ' 1-owner';
-				}
-				return $link . '"></a>';
+				$svg_path .= '.svg';
+
+				return $link . file_get_contents( $svg_path ) . '</a>';
+
 			} else {
 				return '<a href="http://www.carfax.com/cfm/check_order.cfm?partner=FXI_2&VIN='
 					. $this->vin
