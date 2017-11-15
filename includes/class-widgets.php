@@ -591,7 +591,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 class Carfax_Widget extends WP_Widget {
 
 	var $images = array(
-		'default' => array('text'=>'Simple Show Me Logo', 'img'=>'show-me-carfax.png'),
+		'default' => array('text'=>'Simple Show Me Logo', 'img'=>'show-me-carfax.svg'),
 		'advantage' => array('text'=>'Advantage Dealer Badge', 'img'=>'carfax-advantage-dealer.png'),
 		'dealership' => array('text'=>'Car Fox Dealership', 'img'=>'carfax-portrait-blue.jpg'),
 		'foxleft' => array('text'=>'Car Fox Left', 'img'=>'carfax-show-me-blue.png'),
@@ -627,10 +627,15 @@ class Carfax_Widget extends WP_Widget {
 		if (!empty( $title ))
 		echo $args['before_title'] . $title . $args['after_title'];
 
-		echo wpautop($instance['before_image']);
-		echo sprintf('<a href="%s"><img src="%s"></a>',get_post_type_archive_link( 'inventory_vehicle' ),plugins_url( '/assets/'.$this->images[$image]['img'], dirname(__FILE__)));
-		echo wpautop($instance['after_image']);
-
+		echo wpautop( $instance['before_image'] );
+		if( 'svg' == strtolower( pathinfo( $this->images[$image]['img'], PATHINFO_EXTENSION ) ) ) {
+			//Include the SVG inline instead of using an <img> element
+			$svg = file_get_contents( dirname( dirname( __FILE__ ) ) . '/assets/' . $this->images[$image]['img'] );
+			echo sprintf( '<a href="%s">' . $svg . '</a>', get_post_type_archive_link( 'inventory_vehicle' ) );
+		} else {
+			echo sprintf( '<a href="%s"><img src="%s"></a>', get_post_type_archive_link( 'inventory_vehicle' ), plugins_url( '/assets/'.$this->images[$image]['img'], dirname(__FILE__) ) );
+		}
+		echo wpautop( $instance['after_image'] );
 		echo $args['after_widget'];
 	}
 
