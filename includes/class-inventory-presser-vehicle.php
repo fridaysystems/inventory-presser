@@ -135,7 +135,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 					. $this->vin
 					. '" target="_blank" rel="noopener noreferrer">';
 
-				$svg_path = plugins_url( 'assets/show-me-carfax', dirname( __FILE__ ) );
+				$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
 				if( $this->is_carfax_one_owner() ) {
 					$svg_path .= '-1-owner';
 				}

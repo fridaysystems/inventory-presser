@@ -58,6 +58,7 @@ Yes. The best way to do this is to use a plugin we have also written called Frid
 * [Changed] Change the Carfax image widget that shows the plain SHOW ME THE CARFAX image to use one of the new buttons instead of a near duplicate image
 * [Changed] Add rel="noopener noreferrer" to links to Carfax and AutoCheck to protect against target="_blank" vulnerability
 * [Changed] Stop using "../" in URLs to images, wrap __FILE__ in dirname() instead
+* [Fixed] Bug fix in the address widget where we were assuming an address would always exist, new check for null prevents warnings
 
 = 3.4.0 =
 * [Added] The vehicle grid widget now includes a setting to show only featured vehicles
