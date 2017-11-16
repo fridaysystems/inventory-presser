@@ -321,7 +321,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function include_styles() {
 			//If show carfax buttons
-			if( isset( $GLOBALS['_dealer_settings']['use_carfax'] && isset( $GLOBALS['_dealer_settings']['use_carfax'] ) ) {
+			if( isset( $GLOBALS['_dealer_settings']['use_carfax'] ) && isset( $GLOBALS['_dealer_settings']['use_carfax'] ) ) {
 				//Add CSS for Carfax button text color, based on a Customizer setting
 				$this_theme = wp_get_theme();
 				//Append an inline style just after the current theme's stylesheet

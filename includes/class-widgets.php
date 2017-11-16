@@ -310,14 +310,16 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 
 		if (isset($instance['cb_single_line']) && $instance['cb_single_line'] == 'true') {
 			foreach ($instance['cb_display'] as $i => $term_id) {
-				$location = get_term($term_id, 'location');
-				echo '<span>'.preg_replace('/\r|\n/',', ',trim($location->description)).'</span>';
+				$location = get_term( $term_id, 'location' );
+				if( ! is_wp_error( $location ) && null != $location ) {
+					echo '<span>' . preg_replace( '/\r|\n/', ', ', trim( $location->description ) ) . '</span>';
+				}
 			}
 		} else {
 			foreach ($instance['cb_display'] as $i => $term_id) {
-				$location = get_term($term_id, 'location');
-				if( ! is_wp_error( $location ) ) {
-					echo '<div>'.nl2br($location->description).'</div>';
+				$location = get_term( $term_id, 'location' );
+				if( ! is_wp_error( $location ) && null != $location ) {
+					echo '<div>' . nl2br( $location->description ). '</div>';
 				}
 			}
 		}
