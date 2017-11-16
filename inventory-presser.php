@@ -40,6 +40,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		const CUSTOM_POST_TYPE = 'inventory_vehicle';
 		var $taxonomies;
+		var $settings; //this plugin's options
 
 		function add_orderby_to_query( $query ) {
 			//Do not mess with the query if it's not the main one and our CPT
@@ -59,9 +60,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$key = $_GET['orderby'];
 				$direction = $_GET['order'];
 			} else {
-				$_dealer_settings = $this->settings();
-				$key = $_dealer_settings['sort_vehicles_by'];
-				$direction = $_dealer_settings['sort_vehicles_order'];
+				$key = $this->settings['sort_vehicles_by'];
+				$direction = $this->settings['sort_vehicles_order'];
 			}
 
 			$query->set( 'meta_key', $key );
@@ -177,8 +177,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * the query that's fetching post objects.
 			 */
 
-			$settings = $this->settings();
-			if( ! is_admin() && ( isset( $_GET['orderby'] ) || isset( $settings['sort_vehicles_by'] ) ) ) {
+			$this->settings = $this->settings();
+			if( ! is_admin() && ( isset( $_GET['orderby'] ) || isset( $this->settings['sort_vehicles_by'] ) ) ) {
 				add_action( 'pre_get_posts', array( &$this, 'add_orderby_to_query' ) );
 			}
 
@@ -321,7 +321,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function include_styles() {
 			//If show carfax buttons
-			if( isset( $GLOBALS['_dealer_settings']['use_carfax'] ) && isset( $GLOBALS['_dealer_settings']['use_carfax'] ) ) {
+			if( isset( $this->settings['use_carfax'] ) && $this->settings['use_carfax'] ) {
 				//Add CSS for Carfax button text color, based on a Customizer setting
 				$this_theme = wp_get_theme();
 				//Append an inline style just after the current theme's stylesheet

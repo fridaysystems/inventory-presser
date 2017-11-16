@@ -175,7 +175,7 @@ class _dealer_settings {
 
 		add_settings_field(
 			'use_carfax', // id
-			'Use CarFax', // title
+			'CARFAX', // title
 			array( $this, 'use_carfax_callback' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
@@ -183,7 +183,7 @@ class _dealer_settings {
 
 		add_settings_field(
 			'cargurus_badge', // id
-			'Cargurus', // title
+			'CarGurus', // title
 			array( $this, 'cargurus_badge_callback' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
@@ -500,19 +500,19 @@ class _dealer_settings {
 
 	public function use_carfax_callback() {
 		printf(
-			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">Display CarFax Links</label>',
+			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">Display CARFAX Buttons on listings and vehicle details pages</label>',
 			( isset( $this->_dealer_settings['use_carfax'] ) && $this->_dealer_settings['use_carfax'] === 'use_carfax' ) ? 'checked' : ''
 		);
 	}
 
 	public function cargurus_badge_callback() {
 		printf(
-			'<input type="checkbox" name="_dealer_settings[cargurus_badge_archive]" id="cargurus_badge_archive" value="cargurus_badge_archive" %s> <label for="cargurus_badge_archive">Show Cargurus Badge on Vehicle Archive</label>',
+			'<input type="checkbox" name="_dealer_settings[cargurus_badge_archive]" id="cargurus_badge_archive" value="cargurus_badge_archive" %s> <label for="cargurus_badge_archive">Show CarGurus Badge on listings</label>',
 			( isset( $this->_dealer_settings['cargurus_badge_archive'] ) && $this->_dealer_settings['cargurus_badge_archive'] === 'cargurus_badge_archive' ) ? 'checked' : ''
 		);
 		print '<br/>';
 		printf(
-			'<input type="checkbox" name="_dealer_settings[cargurus_badge_single]" id="cargurus_badge_single" value="cargurus_badge_single" %s> <label for="cargurus_badge_single">Show Cargurus Badge on Vehicle Single</label>',
+			'<input type="checkbox" name="_dealer_settings[cargurus_badge_single]" id="cargurus_badge_single" value="cargurus_badge_single" %s> <label for="cargurus_badge_single">Show CarGurus Badge on vehicle details pages</label>',
 			( isset( $this->_dealer_settings['cargurus_badge_single'] ) && $this->_dealer_settings['cargurus_badge_single'] === 'cargurus_badge_single' ) ? 'checked' : ''
 		);
 	}
