@@ -128,26 +128,21 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 
 		function carfax_icon_html() {
-			if( ! $this->carfax_eligible() ) { return ''; }
-
-			if( $this->have_carfax_report() ) {
-				$link = '<a href="http://www.carfax.com/VehicleHistory/p/Report.cfx?partner=FXI_0&vin='
-					. $this->vin
-					. '" target="_blank" rel="noopener noreferrer">';
-
-				$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
-				if( $this->is_carfax_one_owner() ) {
-					$svg_path .= '-1-owner';
-				}
-				$svg_path .= '.svg';
-
-				return $link . file_get_contents( $svg_path ) . '</a>';
-
-			} else {
-				return '<a href="http://www.carfax.com/cfm/check_order.cfm?partner=FXI_2&VIN='
-					. $this->vin
-					. '" target="_blank" rel="noopener noreferrer">Get a CARFAX Report</a>';
+			if( ! $this->carfax_eligible() || ! $this->have_carfax_report() ) {
+				return '';
 			}
+
+			$link = '<a href="http://www.carfax.com/VehicleHistory/p/Report.cfx?partner=FXI_0&vin='
+				. $this->vin
+				. '" target="_blank" rel="noopener noreferrer">';
+
+			$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
+			if( $this->is_carfax_one_owner() ) {
+				$svg_path .= '-1-owner';
+			}
+			$svg_path .= '.svg';
+
+			return $link . file_get_contents( $svg_path ) . '</a>';
 		}
 
 		function extract_digits( $str ) {
