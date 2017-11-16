@@ -17,7 +17,6 @@ $inventory_presser_include_paths = array(
 	'includes/class-customize-admin-dashboard.php',
 	'includes/class-dealership-options.php',
 	'includes/class-fuel-economy-widget.php',
-	'includes/class-inventory-presser-vehicle.php',
 	'includes/class-option-manager.php',
 	'includes/class-order-by-post-meta-widget.php',
 	'includes/class-redirect-404-vehicles.php',
@@ -25,6 +24,7 @@ $inventory_presser_include_paths = array(
 	'includes/class-seo.php',
 	'includes/class-shortcodes.php',
 	'includes/class-taxonomies.php',
+	'includes/class-vehicle.php',
 	'includes/class-vehicle-urls-by-vin.php',
 	'includes/class-widgets.php',
 );
