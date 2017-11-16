@@ -116,6 +116,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Modify the administrator dashboard
 			$customize_dashboard = new Inventory_Presser_Customize_Admin_Dashboard( self::CUSTOM_POST_TYPE );
+			$customize_dashboard->hooks();
 
 			/**
 			 * Create our post type and taxonomies
@@ -195,12 +196,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//deactivate so the next page load doesn't restore the option & terms
 			add_action( 'inventory_presser_delete_all_data', array( &$this, 'deactivate' ), 99 );
 
-			/**
-			 * Enqueue Dashicons style for frontend use
-			 */
-			add_action( 'wp_enqueue_scripts', function() {
-				wp_enqueue_style( 'dashicons' );
-			});
+			//Include CSS on the frontend
+			add_action( 'wp_enqueue_scripts', array( &$this, 'include_styles' ), 11 );
 
 			//Customize the behavior of Yoast SEO, if it is active
 			$seo = new Inventory_Presser_SEO();
@@ -320,6 +317,22 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		function get_last_word( $str ) {
 			$pieces = explode( ' ', rtrim( $str ) );
 			return array_pop( $pieces );
+		}
+
+		function include_styles() {
+			//If show carfax buttons
+			if( isset( $GLOBALS['_dealer_settings']['use_carfax'] && isset( $GLOBALS['_dealer_settings']['use_carfax'] ) ) {
+				//Add CSS for Carfax button text color, based on a Customizer setting
+				$this_theme = wp_get_theme();
+				//Append an inline style just after the current theme's stylesheet
+				$style_handle = $this_theme->get( 'Template' ) . '-style';
+				$color = get_theme_mod( 'carfax_text_color', 'black' );
+				$css = '.show-me-the{ fill: #' . ( $color == 'black' ? '231F20' : 'FFFFFF' ) . '; }';
+				wp_add_inline_style( $style_handle, $css );
+			}
+
+			//Allow dashicons use on frontend
+			wp_enqueue_style( 'dashicons' );
 		}
 
 		function modify_query_orderby( $pieces ) {

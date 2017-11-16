@@ -40,6 +40,29 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		add_meta_box('featured', 'Featured Vehicle', array( &$this, 'meta_box_html_featured' ), $this->post_type(), 'side', 'low' );
 	}
 
+	//Add a setting to the customizer's Colors panel for Carfax button text
+	function add_settings_to_customizer( $wp_customize ) {
+		$wp_customize->add_setting( 'carfax_text_color', array(
+			'type' => 'theme_mod',
+			'capability' => 'edit_theme_options',
+			'default' => 'black',
+			'transport' => 'refresh',
+		) );
+
+		$wp_customize->add_control( 'carfax_text_color', array(
+			'type' => 'select',
+			'settings' => 'carfax_text_color',
+			'priority' => 40,
+			'section' => 'colors',
+			'label' => __( 'Carfax Button Text' ),
+			'description' => __( 'The color of the words "SHOW ME THE" in Carfax buttons.' ),
+            'choices'  => array(
+                'black' => 'Black',
+                'white' => 'White',
+             ),
+		) );
+	}
+
 	function add_vehicles_to_admin_bar() {
 
 		//do not do this if we are already looking at the dashboard
@@ -62,7 +85,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			$this->create_add_media_button_annotation( ) . '</span>';
 	}
 
-	function __construct( $post_type='inventory_vehicle' ) {
+	function hooks( $post_type = 'inventory_vehicle' ) {
 
 		$this->post_type = $post_type;
 
@@ -118,6 +141,8 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 		//Add a link to the main menu of the Admin bar
 		add_action( 'admin_bar_menu', array( &$this, 'add_vehicles_to_admin_bar' ), 100 );
+
+		add_action( 'customize_register', array( &$this, 'add_settings_to_customizer' ) );
 	}
 
 	function create_add_media_button_annotation( ) {
