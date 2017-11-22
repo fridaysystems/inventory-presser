@@ -63,40 +63,42 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$key = $this->settings['sort_vehicles_by'];
 				$direction = $this->settings['sort_vehicles_order'];
 			}
-
 			$query->set( 'meta_key', $key );
+
+			//maybe append to the meta_query if it is already set
+			$old = $query->get( 'meta_query', array() );
 			switch( $query->query_vars['meta_key'] ) {
 
 				//MAKE
 				case 'inventory_presser_make':
-					$query->set( 'meta_query', array(
+					$query->set( 'meta_query', array_merge( $old, array(
 							'relation' => 'AND',
 							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
 							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' ),
 						)
-					);
+					) );
 					break;
 
 				//MODEL
 				case 'inventory_presser_model':
-					$query->set( 'meta_query', array(
+					$query->set( 'meta_query', array_merge( $old, array(
 							'relation' => 'AND',
 							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
 							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' ),
 						)
-					);
+					) );
 					break;
 
 				//YEAR
 				case 'inventory_presser_year':
-					$query->set( 'meta_query', array(
+					$query->set( 'meta_query', array_merge( $old, array(
 							'relation' => 'AND',
 							array( 'key' => 'inventory_presser_year', 'compare' => 'EXISTS' ),
 							array( 'key' => 'inventory_presser_make', 'compare' => 'EXISTS' ),
 							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
 							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' ),
 						)
-					);
+					) );
 					break;
 			}
 

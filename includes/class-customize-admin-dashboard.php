@@ -532,6 +532,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			'Trailer Hitch' => false,
 			'Turbo' => false,
 			'Two Tone Paint' => false,
+			'Wheelchair Access' => false,
 			'Wide Tires' => false,
 			'Winch' => false,
 			'Wire Wheels' => false,
