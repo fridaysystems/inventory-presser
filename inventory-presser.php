@@ -321,13 +321,24 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			return array_pop( $pieces );
 		}
 
+		//What is the registered handle of the active theme's stylesheet?
+		private function find_theme_stylesheet_handle() {
+			global $wp_styles;
+
+			foreach( $wp_styles->registered as $handle => $style_obj ) {
+				if( $style_obj->src === get_template_directory_uri() . '/style.css' ) {
+					return $handle;
+				}
+			}
+			return null;
+		}
+
 		function include_styles() {
 			//If show carfax buttons
 			if( isset( $this->settings['use_carfax'] ) && $this->settings['use_carfax'] ) {
 				//Add CSS for Carfax button text color, based on a Customizer setting
-				$this_theme = wp_get_theme();
 				//Append an inline style just after the current theme's stylesheet
-				$style_handle = $this_theme->get( 'Template' ) . '-style';
+				$style_handle = $this->find_theme_stylesheet_handle();
 				$color = get_theme_mod( 'carfax_text_color', 'black' );
 				$css = '.show-me-the{ fill: #' . ( $color == 'black' ? '231F20' : 'FFFFFF' ) . '; }';
 				wp_add_inline_style( $style_handle, $css );
