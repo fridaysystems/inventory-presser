@@ -11,15 +11,6 @@
 class _dealer_settings {
 	private $_dealer_settings;
 
-	var $price_display_types = array(
-			'default' => 'Price / Call for Price',
-			'genes' => 'Down Payment = Was Price / MSRP = Now Price',
-			'full_or_down' => '$Full or $Payment Down',
-			'down_only' => '$Payment Down',
-			'was_now_discount' => '$MSRP and difference (small) $Price Now',
-			'call_for_price' => 'Call For Price (hide prices)',
-		);
-
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'dealership_options_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'dealership_options_page_init' ) );
@@ -98,22 +89,6 @@ class _dealer_settings {
 			'privacy_page', // id
 			'Privacy Page', // title
 			array( $this, 'privacy_page_callback' ), // callback
-			'dealership-options-admin', // page
-			'dealership_options_setting_section' // section
-		);
-
-		add_settings_field(
-			'append_page', // id
-			'Vehicle Append Page', // title
-			array( $this, 'append_page_callback' ), // callback
-			'dealership-options-admin', // page
-			'dealership_options_setting_section' // section
-		);
-
-		add_settings_field(
-			'price_display_type', // id
-			'Price Display Type', // title
-			array( $this, 'price_display_type_callback' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
 		);
@@ -205,14 +180,6 @@ class _dealer_settings {
 
 		if ( isset( $input['privacy_page'] ) ) {
 			$sanitary_values['privacy_page'] = $input['privacy_page'];
-		}
-
-		if ( isset( $input['append_page'] ) ) {
-			$sanitary_values['append_page'] = $input['append_page'];
-		}
-
-		if ( isset( $input['price_display_type'] ) ) {
-			$sanitary_values['price_display_type'] = $input['price_display_type'];
 		}
 
 		if ( isset( $input['sort_vehicles_by'] ) ) {
@@ -312,40 +279,6 @@ class _dealer_settings {
 
 		wp_dropdown_pages($args);
 
-	}
-
-	public function append_page_callback() {
-
-		$args = array(
-		    'depth'                 => 0,
-		    'child_of'              => 0,
-		    'selected'              => isset($this->_dealer_settings['append_page']) ? $this->_dealer_settings['append_page'] : 0,
-		    'echo'                  => 1,
-		    'name'                  => '_dealer_settings[append_page]',
-		    'show_option_none'      => 'Not Set',
-		    'option_none_value'     => '0'
-		);
-
-		wp_dropdown_pages($args);
-
-	}
-
-	public function price_display_type_callback() {
-
-		// array to set optins is defined in this file, top of class
-
-		if (isset($this->_dealer_settings['price_display_type'])) {
-			$selected_val = $this->_dealer_settings['price_display_type'];
-		} else {
-			$price_display_type_slugs = array_keys($this->price_display_types);
-			$selected_val = $price_display_type_slugs[0];
-		}
-		echo '<select name="_dealer_settings[price_display_type]" id="price_display_type">';
-		foreach ($this->price_display_types as $val => $name) {
-			$selected_text = $val == $selected_val ? ' selected' : '';
-			printf('<option value="%s"%s>%s</option>',$val,$selected_text,$name);
-		}
-		echo '</select>';
 	}
 
 	public function sort_vehicles_by_callback() {

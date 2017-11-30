@@ -49,8 +49,9 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 
 = 3.6.0 =
 * [Changed] Do not show options and prices arrays in the list of default vehicle sort keys on the options page, these are structured data fields
-* [Removed] An option that belonged in the _dealer theme to affect the way users are redirected after submitting a Contact Form 7 form
-* [Removed] An option that belonged in the _dealer theme to customize a particular layout style
+* [Removed] Removed an option that belongs in the _dealer theme to affect the way users are redirected after submitting a Contact Form 7 form
+* [Removed] Removed an option that belongs in the _dealer theme to customize a particular layout style
+* [Removed] Removed an option that belongs in the _dealer theme to append a page's content to each vehicle details page
 
 = 3.5.0 =
 * [Added] Added "Wheelchair Access" to the list of default vehicle options

@@ -313,14 +313,14 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 * Return the $zero_string when the price is zero.
 		 */
 		function price( $zero_string = '' ) {
-			if (!$this->is_sold) {
-				if( 0 == $this->price ) { return $zero_string; }
-				$result = '$' . number_format( $this->price, 0, '.', ',' );
-			} else {
-				$result = '<span class="vehicle-sold">SOLD!</span>';
+			if ( ! $this->is_sold ) {
+				if( 0 == $this->price ) {
+					return apply_filters( 'invp_zero_price_string', $zero_string );
+				}
+				return '$' . number_format( $this->price, 0, '.', ',' );
 			}
 
-			return $result;
+			return apply_filters( 'invp_sold_string', '<span class="vehicle-sold">SOLD!</span>' );
 		}
 
 		function schema_org_drive_type( $drive_type ) {
