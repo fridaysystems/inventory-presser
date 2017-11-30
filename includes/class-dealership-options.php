@@ -430,7 +430,7 @@ class _dealer_settings {
 		 * sort.
 		 */
 		$vehicle = new Inventory_Presser_Vehicle();
-		foreach( $vehicle->keys() as $key ) {
+		foreach( $vehicle->keys( false ) as $key ) {
 
 			$key = apply_filters( 'translate_meta_field_key', $key );
 

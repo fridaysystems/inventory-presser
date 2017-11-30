@@ -224,8 +224,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 * This is an array of the post meta keys this object uses. These keys
 		 * are prefixed by an apply_filters() call.
 		 */
-		function keys( ) {
-			return array(
+		function keys( $include_serialized = true ) {
+			$all_keys = array(
 				'beam',
 				'body_style',
 				'car_ID',
@@ -253,6 +253,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				'year',
 				'youtube',
 			);
+			return $include_serialized ? $all_keys : array_diff( $all_keys, array( 'option_array', 'prices' ) );
 		}
 
 	 	/**
