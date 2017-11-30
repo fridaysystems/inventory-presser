@@ -157,14 +157,6 @@ class _dealer_settings {
 			'dealership-options-admin',
 			'dealership_options_setting_section'
 		);
-
-		add_settings_field(
-			'msrp_label',
-			'MSRP Label',
-			array( $this, 'msrp_label_callback'),
-			'dealership-options-admin',
-			'dealership_options_setting_section'
-		);
 	}
 
 	public function dealership_options_sanitize( $input ) {
@@ -220,10 +212,6 @@ class _dealer_settings {
 
 		if ( isset( $input['autocheck_id'] ) ) {
 			$sanitary_values['autocheck_id'] = sanitize_text_field( $input['autocheck_id'] );
-		}
-
-		if ( isset( $input['msrp_label'] ) ) {
-			$sanitary_values['msrp_label'] = $input['msrp_label'];
 		}
 
 		return apply_filters( 'invp_options_page_sanitized_values', $input, $sanitary_values );
@@ -376,13 +364,6 @@ class _dealer_settings {
 		printf(
 			'<input type="text" name="_dealer_settings[autocheck_id]" id="autocheck_id" value="%s">',
 			( isset( $this->_dealer_settings['autocheck_id'] )) ? $this->_dealer_settings['autocheck_id'] : ''
-		);
-	}
-
-	public function msrp_label_callback() {
-		printf(
-			'<input type="text" name="_dealer_settings[msrp_label]" id="msrp_label" value="%s">',
-			( isset( $this->_dealer_settings['msrp_label'] )) ? $this->_dealer_settings['msrp_label'] : ''
 		);
 	}
 }
