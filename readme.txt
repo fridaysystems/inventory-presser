@@ -49,6 +49,7 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 
 = 3.6.0 =
 * [Added] Added two filters, `invp_sold_string` and `invp_zero_price_string` to wrap the output of the vehicle price when the value is zero or the vehicle is sold
+* [Added] Added some instructional text to the options page to help users understand the features of this plugin
 * [Changed] Do not show options and prices arrays in the list of default vehicle sort keys on the options page, these are structured data fields
 * [Removed] Removed an option that is implemented in the _dealer theme to affect the way users are redirected after submitting a Contact Form 7 form
 * [Removed] Removed an option that is implemented in the _dealer theme to customize a particular layout style
@@ -56,6 +57,9 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 * [Removed] Removed an option that is implemented in the _dealer theme to display vehicle prices in various ways to show discounts
 * [Removed] Removed an option that is implemented in the _dealer theme to change the MSRP label to custom text
 * [Removed] Removed an option that is implemented in the _dealer theme to change the way a Flexslider works
+* [Removed] Removed an option that is implemented in the _dealer theme to control where vehicle descriptions are shown
+* [Removed] Removed an option that is implemented in the _dealer theme to control where CarGurus badges are shown
+* [Removed] Removed an option that is implemented in the _dealer theme to hide footer links
 
 = 3.5.0 =
 * [Added] Added "Wheelchair Access" to the list of default vehicle options

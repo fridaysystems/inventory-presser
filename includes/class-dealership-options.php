@@ -87,7 +87,7 @@ class _dealer_settings {
 
 		add_settings_field(
 			'privacy_page', // id
-			'Privacy Page', // title
+			'Privacy Policy Page', // title
 			array( $this, 'privacy_page_callback' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
@@ -103,25 +103,9 @@ class _dealer_settings {
 		);
 
 		add_settings_field(
-			'archive_show_content', // id
-			'Descriptions on Listings', // title
-			array( $this, 'archive_show_content_callback' ), // callback
-			'dealership-options-admin', // page
-			'dealership_options_setting_section' // section
-		);
-
-		add_settings_field(
 			'use_carfax', // id
 			'CARFAX', // title
 			array( $this, 'use_carfax_callback' ), // callback
-			'dealership-options-admin', // page
-			'dealership_options_setting_section' // section
-		);
-
-		add_settings_field(
-			'cargurus_badge', // id
-			'CarGurus', // title
-			array( $this, 'cargurus_badge_callback' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
 		);
@@ -132,14 +116,6 @@ class _dealer_settings {
 			array( $this, 'contact_button_single_callback'),
 			'dealership-options-admin',
 			'dealership_options_setting_section'
-		);
-
-		add_settings_field(
-			'hide_footer_credit', // id
-			'Footer Credit', // title
-			array( $this, 'hide_footer_credit_callback' ), // callback
-			'dealership-options-admin', // page
-			'dealership_options_setting_section' // section
 		);
 
 		add_settings_field(
@@ -174,24 +150,8 @@ class _dealer_settings {
 			$sanitary_values['sort_vehicles_order'] = $input['sort_vehicles_order'];
 		}
 
-		if ( isset( $input['archive_show_content'] ) ) {
-			$sanitary_values['archive_show_content'] = $input['archive_show_content'];
-		}
-
 		if ( isset( $input['use_carfax'] ) ) {
 			$sanitary_values['use_carfax'] = $input['use_carfax'];
-		}
-
-		if ( isset( $input['hide_footer_credit'] ) ) {
-			$sanitary_values['hide_footer_credit'] = $input['hide_footer_credit'];
-		}
-
-		if ( isset( $input['cargurus_badge_archive'] ) ) {
-			$sanitary_values['cargurus_badge_archive'] = $input['cargurus_badge_archive'];
-		}
-
-		if ( isset( $input['cargurus_badge_single'] ) ) {
-			$sanitary_values['cargurus_badge_single'] = $input['cargurus_badge_single'];
 		}
 
 		if ( isset( $input['hide_contact_button_single'] ) ) {
@@ -222,7 +182,7 @@ class _dealer_settings {
 		);
 
 		wp_dropdown_pages($args);
-
+		echo '<p class="description" id="_dealer_settings[financing_page]-description">Identifying your financing application here allows themes to create "Apply Now" links and buttons near vehicles that lead to the correct page.</strong></p>';
 	}
 
 	public function contact_page_callback() {
@@ -238,7 +198,7 @@ class _dealer_settings {
 		);
 
 		wp_dropdown_pages($args);
-
+		echo '<p class="description" id="_dealer_settings[contact_page]-description">Identifying your contact page here allows themes to create "Contact Us" links and buttons near vehicles that lead to the correct page.</strong></p>';
 	}
 
 	public function privacy_page_callback() {
@@ -254,7 +214,7 @@ class _dealer_settings {
 		);
 
 		wp_dropdown_pages($args);
-
+		echo '<p class="description" id="_dealer_settings[privacy_page]-description">Identifying your privacy policy page here allows themes to create links to the correct page.</strong></p>';
 	}
 
 	public function sort_vehicles_by_callback() {
@@ -301,30 +261,10 @@ class _dealer_settings {
 		echo '</select> order';
 	}
 
-	public function archive_show_content_callback() {
-		printf(
-			'<input type="checkbox" name="_dealer_settings[archive_show_content]" id="archive_show_content" value="archive_show_content" %s> <label for="archive_show_content">Display vehicle descriptions on listings pages.</label>',
-			( isset( $this->_dealer_settings['archive_show_content'] ) && $this->_dealer_settings['archive_show_content'] === 'archive_show_content' ) ? 'checked' : ''
-		);
-		echo '<p class="description" id="_dealer_settings[archive_show_content]-description">Descriptions are always shown on vehicle details pages.</p>';
-	}
-
 	public function use_carfax_callback() {
 		printf(
-			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">Display CARFAX Buttons on listings and vehicle details pages</label>',
+			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">Display CARFAX buttons near vehicles that link to free CARFAX reports</label>',
 			( isset( $this->_dealer_settings['use_carfax'] ) && $this->_dealer_settings['use_carfax'] === 'use_carfax' ) ? 'checked' : ''
-		);
-	}
-
-	public function cargurus_badge_callback() {
-		printf(
-			'<input type="checkbox" name="_dealer_settings[cargurus_badge_archive]" id="cargurus_badge_archive" value="cargurus_badge_archive" %s> <label for="cargurus_badge_archive">Show CarGurus Badge on listings</label>',
-			( isset( $this->_dealer_settings['cargurus_badge_archive'] ) && $this->_dealer_settings['cargurus_badge_archive'] === 'cargurus_badge_archive' ) ? 'checked' : ''
-		);
-		print '<br/>';
-		printf(
-			'<input type="checkbox" name="_dealer_settings[cargurus_badge_single]" id="cargurus_badge_single" value="cargurus_badge_single" %s> <label for="cargurus_badge_single">Show CarGurus Badge on vehicle details pages</label>',
-			( isset( $this->_dealer_settings['cargurus_badge_single'] ) && $this->_dealer_settings['cargurus_badge_single'] === 'cargurus_badge_single' ) ? 'checked' : ''
 		);
 	}
 
@@ -332,13 +272,6 @@ class _dealer_settings {
 		printf(
 			'<input type="checkbox" name="_dealer_settings[hide_contact_button_single]" id="hide_contact_button_single" value="hide_contact_button_single" %s> <label for="hide_contact_button_single">Hide check availability button on single vehicle page</label>',
 			( isset( $this->_dealer_settings['hide_contact_button_single'] ) && $this->_dealer_settings['hide_contact_button_single'] === 'hide_contact_button_single' ) ? 'checked' : ''
-		);
-	}
-
-	public function hide_footer_credit_callback() {
-		printf(
-			'<input type="checkbox" name="_dealer_settings[hide_footer_credit]" id="hide_footer_credit" value="hide_footer_credit" %s> <label for="hide_footer_credit">Hide links to Inventory Presser and WordPress in the Footer</label>',
-			( isset( $this->_dealer_settings['hide_footer_credit'] ) && $this->_dealer_settings['hide_footer_credit'] === 'hide_footer_credit' ) ? 'checked' : ''
 		);
 	}
 
