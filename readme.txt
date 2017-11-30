@@ -55,6 +55,7 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 * [Removed] Removed an option that is implemented in the _dealer theme to append a page's content to each vehicle details page
 * [Removed] Removed an option that is implemented in the _dealer theme to display vehicle prices in various ways to show discounts
 * [Removed] Removed an option that is implemented in the _dealer theme to change the MSRP label to custom text
+* [Removed] Removed an option that is implemented in the _dealer theme to change the way a Flexslider works
 
 = 3.5.0 =
 * [Added] Added "Wheelchair Access" to the list of default vehicle options
