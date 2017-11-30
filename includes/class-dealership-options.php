@@ -289,7 +289,7 @@ class _dealer_settings {
 			$sanitary_values['msrp_label'] = $input['msrp_label'];
 		}
 
-		return apply_filters( 'invp_options_page_sanitized_values', $sanitary_values );
+		return apply_filters( 'invp_options_page_sanitized_values', $input, $sanitary_values );
 	}
 
 	public function dealership_options_section_info() {
