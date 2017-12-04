@@ -1757,58 +1757,77 @@ class Inventory_Presser_Location_Widgets {
 	function __construct( ) {
 		add_action( 'widgets_init', array( &$this, 'widgets_init' ) );
 		add_action( 'current_screen', array( &$this, 'check_ids' ) );
-		if (!is_admin() && (isset($_GET['min_price']) || isset($_GET['max_price']) || isset($_GET['favorites']))) {
+		if ( ! is_admin() && (
+			isset( $_GET['min_price'] )
+			|| isset( $_GET['max_price'] )
+			|| isset( $_GET['min_odometer'] )
+			|| isset( $_GET['max_odometer'] )
+			|| isset( $_GET['favorites'] )
+		) ) {
 			add_action( 'pre_get_posts', array( &$this, 'pre_get_posts'),99);
 		}
 	}
 
-	public function pre_get_posts($query) {
+	public function pre_get_posts( $query ) {
 
 		//Do not mess with the query if it's not the main one and our CPT
 		if ( !$query->is_main_query() || $query->query_vars['post_type'] != self::CUSTOM_POST_TYPE ) {
 			return;
 		}
 
-		if (isset($_GET['favorites']) && isset($_COOKIE['vehicle_favorites'])) {
-			$query->set('post__in', json_decode($_COOKIE['vehicle_favorites']));
+		if ( isset( $_GET['favorites'] ) && isset( $_COOKIE['vehicle_favorites'] ) ) {
+			$query->set( 'post__in', json_decode( $_COOKIE['vehicle_favorites'] ) );
 		}
 
 		//Get original meta query
 		$meta_query = $query->get('meta_query');
 
-		if (isset($_GET['max_price']) && isset($_GET['min_price'])) {
+		if ( isset( $_GET['max_price'] )
+			|| isset( $_GET['min_price'] )
+			|| isset( $_GET['max_odometer'] )
+			|| isset( $_GET['min_odometer'] )
+		) {
 			$meta_query['relation'] = 'AND';
 		}
 
-		if (isset($_GET['max_price'])) {
-
-			$max_price = (int)$_GET['max_price'];
-
-			//Add our meta query to the original meta queries
+		if ( isset( $_GET['max_price'] ) ) {
 			$meta_query[] = array(
-					            'key'=>'inventory_presser_price',
-					            'value'=>$max_price,
-					            'compare'=>'<=',
-					            'type'=> 'numeric'
-					        );
+	            'key'     => 'inventory_presser_price',
+	            'value'   => (int) $_GET['max_price'],
+	            'compare' => '<=',
+	            'type'    => 'numeric'
+	        );
 		}
 
-		if (isset($_GET['min_price'])) {
-
-			$min_price = (int)$_GET['min_price'];
-
-			//Add our meta query to the original meta queries
+		if ( isset( $_GET['min_price'] ) ) {
 			$meta_query[] = array(
-					            'key'=>'inventory_presser_price',
-					            'value'=>$min_price,
-					            'compare'=>'>=',
-					            'type'=> 'numeric'
-					        );
+	            'key'     => 'inventory_presser_price',
+	            'value'   => (int) $_GET['min_price'],
+	            'compare' => '>=',
+	            'type'    => 'numeric'
+	        );
 		}
 
-		$query->set('meta_query',$meta_query);
+		if ( isset( $_GET['min_odometer'] ) ) {
+			$meta_query[] = array(
+	            'key'     => 'inventory_presser_odometer',
+	            'value'   => (int) $_GET['min_odometer'],
+	            'compare' => '>=',
+	            'type'    => 'numeric'
+	        );
+		}
+
+		if ( isset( $_GET['max_odometer'] ) ) {
+			$meta_query[] = array(
+	            'key'     => 'inventory_presser_odometer',
+	            'value'   => (int) $_GET['max_odometer'],
+	            'compare' => '<=',
+	            'type'    => 'numeric'
+	        );
+		}
+
+		$query->set( 'meta_query', $meta_query );
 		return $query;
-
 	}
 
 	function widgets_init() {
