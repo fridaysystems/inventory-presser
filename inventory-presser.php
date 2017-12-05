@@ -415,7 +415,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'dealer_id',
 				'edmunds_style_id',
 				'epa_fuel_economy',
-				'last_modified'
+				'last_modified',
+				'photo_number',
 			);
 			return ( in_array( $nice_name, $prefixed_fields ) ? '_' : '' ) . 'inventory_presser_' . $nice_name;
 		}

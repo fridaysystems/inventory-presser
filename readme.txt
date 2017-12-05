@@ -49,8 +49,11 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 
 = 3.6.0 =
 * [Added] Added two filters, `invp_sold_string` and `invp_zero_price_string` to wrap the output of the vehicle price when the value is zero or the vehicle is sold
+* [Added] Added filters `invp_default_payment_frequencies`, `invp_default_boat_styles`, and `invp_default_hull_materials` to wrap arrays of default values baked into this plugin
 * [Added] Added some instructional text to the options page to help users understand the features of this plugin
+* [Added] All the values in a vehicle's prices array are now editable in the dashboard. This includes MSRP, down payment, payment, and payment frequency
 * [Changed] Do not show options and prices arrays in the list of default vehicle sort keys on the options page, these are structured data fields
+* [Changed] Move the options meta box to a higher position so it appears directly below the traditional edit box if there are other plugins creating meta boxes
 * [Removed] Removed an option that is implemented in the _dealer theme to affect the way users are redirected after submitting a Contact Form 7 form
 * [Removed] Removed an option that is implemented in the _dealer theme to customize a particular layout style
 * [Removed] Removed an option that is implemented in the _dealer theme to append a page's content to each vehicle details page
