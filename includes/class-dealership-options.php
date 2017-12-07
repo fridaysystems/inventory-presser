@@ -111,14 +111,6 @@ class _dealer_settings {
 		);
 
 		add_settings_field(
-			'hide_contact_button_single',
-			'Availability Button',
-			array( $this, 'contact_button_single_callback'),
-			'dealership-options-admin',
-			'dealership_options_setting_section'
-		);
-
-		add_settings_field(
 			'autocheck_id',
 			'Autocheck ID',
 			array( $this, 'autocheck_callback'),
@@ -152,10 +144,6 @@ class _dealer_settings {
 
 		if ( isset( $input['use_carfax'] ) ) {
 			$sanitary_values['use_carfax'] = $input['use_carfax'];
-		}
-
-		if ( isset( $input['hide_contact_button_single'] ) ) {
-			$sanitary_values['hide_contact_button_single'] = $input['hide_contact_button_single'];
 		}
 
 		if ( isset( $input['autocheck_id'] ) ) {
@@ -265,13 +253,6 @@ class _dealer_settings {
 		printf(
 			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">Display CARFAX buttons near vehicles that link to free CARFAX reports</label>',
 			( isset( $this->_dealer_settings['use_carfax'] ) && $this->_dealer_settings['use_carfax'] === 'use_carfax' ) ? 'checked' : ''
-		);
-	}
-
-	public function contact_button_single_callback() {
-		printf(
-			'<input type="checkbox" name="_dealer_settings[hide_contact_button_single]" id="hide_contact_button_single" value="hide_contact_button_single" %s> <label for="hide_contact_button_single">Hide check availability button on single vehicle page</label>',
-			( isset( $this->_dealer_settings['hide_contact_button_single'] ) && $this->_dealer_settings['hide_contact_button_single'] === 'hide_contact_button_single' ) ? 'checked' : ''
 		);
 	}
 
