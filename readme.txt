@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.1
-Stable tag: 3.6.0
+Stable tag: 3.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,9 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 2. This is the edit screen that adds or edits a single vehicle. The post content box is demoted to handle only the sentence-form vehicle description, and the entire edit screen is enhanced to support vehicle attributes. This screen shot was taken on version 3.1.0.
 
 == Changelog ==
+
+= 3.6.1 =
+* [Fixed] A bug where the order by field is passed via GET but the sort order is not
 
 = 3.6.0 =
 * [Added] Added two filters, `invp_sold_string` and `invp_zero_price_string` to wrap the output of the vehicle price when the value is zero or the vehicle is sold
