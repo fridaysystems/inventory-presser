@@ -54,14 +54,16 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * The field we want to order by is either in $_GET['orderby'] when
 			 * the user has chosen to reorder posts or saved in the plugin
 			 * settings 'default-sort-key.' The sort direction is in
-			 * $_GET['order'] or 'default-sort-order.'
+			 * $_GET['order'] or 'sort_vehicles_order.'
 			 */
+			$direction = $this->settings['sort_vehicles_order'];
 			if( isset( $_GET['orderby'] ) ) {
 				$key = $_GET['orderby'];
-				$direction = $_GET['order'];
+				if( isset( $_GET['order'] ) ) {
+					$direction = $_GET['order'];
+				}
 			} else {
 				$key = $this->settings['sort_vehicles_by'];
-				$direction = $this->settings['sort_vehicles_order'];
 			}
 			$query->set( 'meta_key', $key );
 
