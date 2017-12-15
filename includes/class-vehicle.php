@@ -119,7 +119,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		function autocheck_icon_html() {
 			$autocheck_link = admin_url('admin-ajax.php?action=autocheck&vin='.$this->vin);
 			$autocheck_image = file_get_contents( dirname( dirname( __FILE__ ) ) . '/assets/autocheck-button.svg' );
-			return sprintf('<div class="autocheck-wrapper"><a href="%s" target="_blank" rel="noopener noreferrer">%s</a></div>',$autocheck_link,$autocheck_image);
+			return sprintf('<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',$autocheck_link,$autocheck_image);
 		}
 
 		//is this a vehicle for which Carfax maintains data?
