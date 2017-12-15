@@ -48,7 +48,9 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 == Changelog ==
 
 = 3.6.1 =
+* [Changed] Updated the AutoCheck button to the latest SVG version
 * [Fixed] A bug where the order by field is passed via GET but the sort order is not
+* [Removed] A wrapping <div> element around the AutoCheck button HTML
 
 = 3.6.0 =
 * [Added] Added two filters, `invp_sold_string` and `invp_zero_price_string` to wrap the output of the vehicle price when the value is zero or the vehicle is sold
