@@ -28,7 +28,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 		wp_register_script('flexslider', plugins_url('/js/jquery.flexslider.min.js', dirname(__FILE__)), array('jquery'));
 		wp_register_script('invp-simple-listing', plugins_url('/js/invp-simple-listing.js', dirname(__FILE__)), array('flexslider'));
-		
+
 		if (is_singular('inventory_vehicle') && !file_exists(get_stylesheet_directory().'/single-inventory_vehicle.php')) {
 
 			// generate an array of all featured image size urls.  This will be used by jquery to remove all instances
@@ -155,12 +155,13 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 	function inventory_grid($atts) {
 		// process shortcode attributes
-		$atts = shortcode_atts(array(
-			'per_page' => 15,
-			'captions' => 'true',
-			'button' => 'true',
+		$atts = shortcode_atts( array(
+			'per_page'   => 15,
+			'captions'   => 'true',
+			'button'     => 'true',
 			'show_price' => 'false',
-		), $atts);
+			'size'       => 'one-third',
+		), $atts );
 
 		$atts['captions'] = 'true' === $atts['captions'];
 		$atts['button'] = 'true' === $atts['button'];
@@ -188,7 +189,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
 
-				$grid_html .= '<li class="grid one-third"><a class="grid-link" href="'.$vehicle->url.'">';
+				$grid_html .= '<li class="grid ' . $atts['size'] . '"><a class="grid-link" href="'.$vehicle->url.'">';
 
 				$grid_html .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large').');">';
 				$grid_html .= "</div>";
@@ -217,7 +218,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		return $grid_html;
 
 	}
-	
+
 	function simple_listing($atts) {
 		// process shortcode attributes
 		$atts = shortcode_atts(array(
@@ -287,7 +288,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 						'image_url' => $vehicle->image_url,
 					);
 			}
-			
+
 			$output['status'] = 'ok';
 
 		} catch (Exception $e) {
@@ -334,7 +335,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 				$before.=		  '</ul>';
 				$before.=		'</div>';
 
-				
+
 				// if only 1 image, skip the nav
 				if (count($thumb_image_list) > 1) {
 					$before.=		'<div id="carousel" class="flexslider">';
@@ -343,7 +344,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 					$before.=		    '<li>'.$image.'</li>';
 					endforeach;
 					$before.=		  '</ul>';
-					$before.=		'</div>';				
+					$before.=		'</div>';
 				}
 
 			}

@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.1
-Stable tag: 3.6.1
+Stable tag: 3.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,9 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 2. This is the edit screen that adds or edits a single vehicle. The post content box is demoted to handle only the sentence-form vehicle description, and the entire edit screen is enhanced to support vehicle attributes. This screen shot was taken on version 3.1.0.
 
 == Changelog ==
+
+= 3.7.0 =
+* [Added] A new attribute, size, is added to the `[invp-inventory-grid size="one-fourth"]` shortcode.
 
 = 3.6.1 =
 * [Changed] Updated the AutoCheck button to the latest SVG version
