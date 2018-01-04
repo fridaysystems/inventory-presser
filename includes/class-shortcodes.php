@@ -153,7 +153,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 	}
 
-	function inventory_grid($atts) {
+	function inventory_grid( $atts ) {
 		// process shortcode attributes
 		$atts = shortcode_atts( array(
 			'per_page'   => 15,
@@ -167,38 +167,37 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		$atts['button'] = 'true' === $atts['button'];
 		$atts['show_price'] = 'true' === $atts['show_price'];
 
-		$args=array(
-			'posts_per_page'=>$atts['per_page'],
-			'post_type'=>'inventory_vehicle',
-			'meta_key'=>'_thumbnail_id',
-			'fields' => 'ids',
-			'orderby'=>'rand',
-			'order' => 'ASC'
+		$args = array(
+			'posts_per_page' => $atts['per_page'],
+			'post_type'      => 'inventory_vehicle',
+			'meta_key'       => '_thumbnail_id',
+			'fields'         => 'ids',
+			'orderby'        => 'rand',
+			'order'          => 'ASC'
 		);
 
 		$inventory_ids = get_posts( $args );
 
 		$grid_html = '';
 
-		if ($inventory_ids) {
+		if ( $inventory_ids ) {
 
-			$grid_html .= '<div class="invp-grid pad cf">';
-			$grid_html .= '<ul class="grid-slides">';
+			$grid_html .= '<div class="invp-grid pad cf">'
+				. '<ul class="grid-slides">';
 
 			foreach ($inventory_ids as $inventory_id) {
 
 				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
 
-				$grid_html .= '<li class="grid ' . $atts['size'] . '"><a class="grid-link" href="'.$vehicle->url.'">';
+				$grid_html .= '<li class="grid ' . $atts['size'] . '"><a class="grid-link" href="'.$vehicle->url.'">'
+					. '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large').');">'
+					. '</div>';
 
-				$grid_html .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large').');">';
-				$grid_html .= "</div>";
-
-				if ($atts['captions']) {
-					$grid_html .= "<p class=\"grid-caption\">";
-					$grid_html .= $vehicle->post_title;
-					if ($atts['show_price']) {
-						$grid_html .= '&nbsp;&nbsp;'.$vehicle->price(' ');
+				if ( $atts['captions'] ) {
+					$grid_html .= '<p class="grid-caption">'
+						. $vehicle->post_title;
+					if ( $atts['show_price'] ) {
+						$grid_html .= '&nbsp;&nbsp;' . $vehicle->price(' ');
 					}
 					$grid_html .= "</p>";
 				}
@@ -207,16 +206,13 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 			}
 
-			$grid_html .= '</ul><div class="clear"></div>';
-			$grid_html .= "</div>";
-			if ($atts['button']) {
+			$grid_html .= '</ul><div class="clear"></div></div>';
+			if ( $atts['button'] ) {
 				$grid_html .= '<a href="'.get_post_type_archive_link( 'inventory_vehicle' ).'" class="_button _button-med">Full Inventory</a>';
 			}
 
 		}
-
 		return $grid_html;
-
 	}
 
 	function simple_listing($atts) {
