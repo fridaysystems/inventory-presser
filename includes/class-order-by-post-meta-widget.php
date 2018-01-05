@@ -97,12 +97,12 @@ class Order_By_Widget extends WP_Widget {
 		 * Some fields do not make sense to order by, such as interior color & VIN
 	 	 */
 		$ignored_keys = array(
-			'inventory_presser_engine',
-			'inventory_presser_interior_color',
-			'inventory_presser_option_array',
-			'inventory_presser_prices',
-			'inventory_presser_trim',
-			'inventory_presser_vin',
+			apply_filters( 'translate_meta_field_key', 'engine' ),
+			apply_filters( 'translate_meta_field_key', 'interior_color' ),
+			apply_filters( 'translate_meta_field_key', 'option_array' ),
+			apply_filters( 'translate_meta_field_key', 'prices' ),
+			apply_filters( 'translate_meta_field_key', 'trim' ),
+			apply_filters( 'translate_meta_field_key', 'vin' ),
 		);
 		foreach( apply_filters( 'order_by_post_meta_widget_ignored_fields', $ignored_keys ) as $ignored_key ) {
 			unset( $arr[$ignored_key] );
