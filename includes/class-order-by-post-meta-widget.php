@@ -15,10 +15,10 @@ class Order_By_Widget extends WP_Widget {
 
 		//include scripts if widget is used
 		if( is_active_widget( false, false, self::ID_BASE ) ) {
- 			add_action( 'wp_enqueue_scripts', array( &$this, 'load_javascript' ) );
+ 			add_action( 'wp_enqueue_scripts', array( $this, 'load_javascript' ) );
  		}
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
