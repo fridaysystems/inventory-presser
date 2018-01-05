@@ -45,10 +45,10 @@ class Order_By_Widget extends WP_Widget {
 		if( isset( $instance['post-meta-keys'] ) ) {
 			$already_turned_on_keys = explode( '|', $instance['post-meta-keys'] );
 		}
-		//Which post meta keys should the widget allow users to choose?
-		echo '<p>Which post meta keys should users be allowed to use as sort fields?</p>';
-		//get all post meta keys
-		echo '<dl>';
+
+		echo '<p>Which fields should users be allowed to use as sort fields?</p>'
+			. '<dl>';
+
 		foreach( $this->get_post_meta_keys_and_labels( $instance ) as $key => $label ) {
 			//output checkbox for each one
 			echo '<dt>';
@@ -97,7 +97,10 @@ class Order_By_Widget extends WP_Widget {
 		 * Some fields do not make sense to order by, such as interior color & VIN
 	 	 */
 		$ignored_keys = array(
+			apply_filters( 'translate_meta_field_key', 'car_id' ),
+			apply_filters( 'translate_meta_field_key', 'dealer_id' ),
 			apply_filters( 'translate_meta_field_key', 'engine' ),
+			apply_filters( 'translate_meta_field_key', 'featured' ),
 			apply_filters( 'translate_meta_field_key', 'interior_color' ),
 			apply_filters( 'translate_meta_field_key', 'option_array' ),
 			apply_filters( 'translate_meta_field_key', 'prices' ),
@@ -120,7 +123,8 @@ class Order_By_Widget extends WP_Widget {
 			SELECT 		DISTINCT($wpdb->postmeta.meta_key)
 			FROM 		$wpdb->posts
 						LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id
-			WHERE 		$wpdb->postmeta.meta_key LIKE 'inventory_presser_%'
+			WHERE 		$wpdb->posts.post_type = 'inventory_vehicle'
+						AND $wpdb->postmeta.meta_key LIKE '%inventory\\\\_presser\\\\_%'
 			ORDER BY 	$wpdb->postmeta.meta_key
 		";
 		return $wpdb->get_col( $query );
