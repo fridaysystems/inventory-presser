@@ -12,6 +12,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $car_ID = 0;
 		var $color = '';
 		var $dealer_ID = 0;
+		var $down_payment = 0;
 		var $edmunds_style_ID = 0;
 		var $engine = ''; //3.9L 8 cylinder
 		var $epa_fuel_economy = array();
@@ -20,8 +21,11 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $last_modified = '';
 		var $make = '';
 		var $model = '';
+		var $msrp = 0;
 		var $odometer = '';
 		var $option_array = array();
+		var $payment = 0;
+		var $payment_frequency = '';
 		var $price = 0;
 		var $prices = array();
 		var $stock_number = '';
@@ -45,7 +49,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $fuel;
 		var $location;
 		var $availability;
-		//availability-sold
 
 		var $is_sold = false;
 		var $is_used = true;
@@ -233,6 +236,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				'carfax_one_owner',
 				'color',
 				'dealer_ID',
+				'down_payment',
 				'edmunds_style_ID',
 				'engine',
 				'epa_fuel_economy',
@@ -243,8 +247,11 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				'length',
 				'make',
 				'model',
+				'msrp',
 				'odometer',
 				'option_array',
+				'payment',
+				'payment_frequency',
 				'price',
 				'prices',
 				'stock_number',
