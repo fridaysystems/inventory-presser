@@ -59,7 +59,7 @@ class Order_By_Widget extends WP_Widget {
 				echo ' checked="checked"';
 			}
 			echo ' title="' . $title . '"/>'
-				. '<label for="' . $this->get_field_id('obpm-key-' . $key) . '" title="' . $title . '">' . $key . '</label>'
+				. '<label for="' . $this->get_field_id('obpm-key-' . $key) . '" title="' . $title . '">' . ucfirst( apply_filters( 'untranslate_meta_field_key', $key ) ) . '</label>'
 				. '</dt>' //and a text box for a label
 				. '<dd>'
 				. '<label for="' . $this->get_field_id('obpm-label-' . $key) . '">Label</label> '
@@ -88,10 +88,9 @@ class Order_By_Widget extends WP_Widget {
 		 *
 		 */
 		$arr = array();
-		$vehicle = new Inventory_Presser_Vehicle();
 		foreach( $this->get_post_meta_keys_from_database() as $key ) {
 			//if we have a saved label, use that. otherwise, create a label
-			$arr[$key] = ( isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $vehicle->make_post_meta_key_readable( $key ) );
+			$arr[$key] = ( isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : ucfirst( apply_filters( 'untranslate_meta_field_key', $key ) ) );
 		}
 		/**
 		 * Some fields do not make sense to order by, such as interior color & VIN

@@ -234,7 +234,7 @@ class _dealer_settings {
 			if( isset( $this->_dealer_settings['sort_vehicles_by'] ) ) {
 				selected( $this->_dealer_settings['sort_vehicles_by'], $key );
 			}
-			echo '>' . $vehicle->make_post_meta_key_readable( $key ) . '</option>';
+			echo '>' . ucfirst( apply_filters( 'untranslate_meta_field_key', $key ) ) . '</option>';
 		}
 
 		echo '</select> in <select name="_dealer_settings[sort_vehicles_order]" id="sort_vehicles_order">';

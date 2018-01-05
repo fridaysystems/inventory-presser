@@ -256,21 +256,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return $include_serialized ? $all_keys : array_diff( $all_keys, array( 'option_array', 'prices' ) );
 		}
 
-	 	/**
-	 	 * Turn a post meta key into a more readable name that is suggested as the
-	 	 * text a user clicks on to sort vehicles by a post meta key.
-	 	 *
-	 	 * @param string $post_meta_key The key to make more friendly
-	 	 */
-		function make_post_meta_key_readable( $post_meta_key ) {
-			/**
-			 * Remove 'inventory_presser_'
-			 * Change underscores to spaces
-			 * Capitalize the first character
-			 */
-			return ucfirst( str_replace( '_', ' ', str_replace( 'inventory_presser_', '', $post_meta_key ) ) );
-		}
-
 		//if numeric, format the odometer with thousands separators
 		function odometer( $append = '' ) {
 			if( '0' == $this->odometer ) { return ''; }

@@ -42,6 +42,16 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		var $taxonomies;
 		var $settings; //this plugin's options
 
+		//some post meta keys are prefixed with an underscore to hide them
+		private $prefixed_meta_keys = array(
+			'car_id',
+			'dealer_id',
+			'edmunds_style_id',
+			'epa_fuel_economy',
+			'last_modified',
+			'photo_number',
+		);
+
 		function add_orderby_to_query( $query ) {
 			//Do not mess with the query if it's not the main one and our CPT
 			if ( ! $query->is_main_query() || ! is_post_type_archive( self::CUSTOM_POST_TYPE ) ) {
@@ -158,8 +168,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * These items make it easier to create themes based on our custom post type
 			 */
 
-			//Translate friendly names to actual custom field keys
-			add_filter( 'translate_meta_field_key', array( &$this, 'translate_custom_field_names' ) );
+			//Translate friendly names to actual custom field keys and the other way
+			add_filter( 'translate_meta_field_key', array( $this, 'translate_custom_field_names' ) );
+			add_filter( 'untranslate_meta_field_key', array( $this, 'untranslate_custom_field_names' ) );
 
 			/**
 			 * Make a widget available to sort vehicles by post meta fields.
@@ -412,15 +423,15 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function translate_custom_field_names( $nice_name ) {
 			$nice_name = strtolower( $nice_name );
-			$prefixed_fields = array(
-				'car_id',
-				'dealer_id',
-				'edmunds_style_id',
-				'epa_fuel_economy',
-				'last_modified',
-				'photo_number',
-			);
-			return ( in_array( $nice_name, $prefixed_fields ) ? '_' : '' ) . 'inventory_presser_' . $nice_name;
+			return ( in_array( $nice_name, $this->prefixed_meta_keys ) ? '_' : '' ) . 'inventory_presser_' . $nice_name;
+		}
+
+		function untranslate_custom_field_names( $meta_key ) {
+			if( empty( $meta_key ) ) { return ''; }
+			$meta_key = strtolower( $meta_key );
+			$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . 'inventory_presser_';
+			//remove the prefix
+			return substr( $meta_key, strlen( $prefix ) );
 		}
 
 		//Get this plugin's Options page settings mingled with default values
