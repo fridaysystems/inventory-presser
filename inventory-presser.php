@@ -339,7 +339,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			global $wp_styles;
 
 			foreach( $wp_styles->registered as $handle => $style_obj ) {
-				if( $style_obj->src === get_template_directory_uri() . '/style.css' ) {
+				if( $style_obj->src === get_stylesheet_directory_uri() . '/style.css' ) {
 					return $handle;
 				}
 			}
