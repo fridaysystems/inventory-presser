@@ -59,7 +59,7 @@ class Order_By_Widget extends WP_Widget {
 				echo ' checked="checked"';
 			}
 			echo ' title="' . $title . '"/>'
-				. '<label for="' . $this->get_field_id('obpm-key-' . $key) . '" title="' . $title . '">' . ucfirst( apply_filters( 'untranslate_meta_field_key', $key ) ) . '</label>'
+				. '<label for="' . $this->get_field_id('obpm-key-' . $key) . '" title="' . $title . '">' . $this->prettify_meta_key( $key ) . '</label>'
 				. '</dt>' //and a text box for a label
 				. '<dd>'
 				. '<label for="' . $this->get_field_id('obpm-label-' . $key) . '">Label</label> '
@@ -90,7 +90,7 @@ class Order_By_Widget extends WP_Widget {
 		$arr = array();
 		foreach( $this->get_post_meta_keys_from_database() as $key ) {
 			//if we have a saved label, use that. otherwise, create a label
-			$arr[$key] = ( isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : ucfirst( apply_filters( 'untranslate_meta_field_key', $key ) ) );
+			$arr[$key] = ( isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $this->prettify_meta_key( $key ) );
 		}
 		/**
 		 * Some fields do not make sense to order by, such as interior color & VIN
@@ -132,6 +132,10 @@ class Order_By_Widget extends WP_Widget {
 	function load_javascript( ) {
 		wp_register_script( 'order-by-widget-javascript', plugins_url( 'js/order-by-post-meta-widget.js', dirname( __FILE__ ) ) );
 		wp_enqueue_script( 'order-by-widget-javascript' );
+	}
+
+	function prettify_meta_key( $key ) {
+		return str_replace( '_', ' ', ucfirst( apply_filters( 'untranslate_meta_field_key', $key ) ) );
 	}
 
 	/**
