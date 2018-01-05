@@ -289,14 +289,13 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		function post_meta_value_is_number( $post_meta_key ) {
 			return in_array( $post_meta_key, array(
-				'inventory_presser_beam',
-				'_inventory_presser_car_ID',
-				'_inventory_presser_dealer_ID',
-				'inventory_presser_length',
-				'inventory_presser_odometer',
-				'inventory_presser_price',
-				'inventory_presser_year'
-
+				apply_filters( 'translate_meta_field_key', 'beam' ),
+				apply_filters( 'translate_meta_field_key', 'car_ID' ),
+				apply_filters( 'translate_meta_field_key', 'dealer_ID' ),
+				apply_filters( 'translate_meta_field_key', 'length' ),
+				apply_filters( 'translate_meta_field_key', 'odometer' ),
+				apply_filters( 'translate_meta_field_key', 'price' ),
+				apply_filters( 'translate_meta_field_key', 'year' ),
 			) );
 		}
 
