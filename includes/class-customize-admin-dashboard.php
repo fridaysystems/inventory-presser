@@ -611,35 +611,29 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 	}
 
 	function meta_box_html_prices( $post, $meta_box ) {
-		$prices_meta_key = apply_filters( 'translate_meta_field_key', 'prices' );
-		$prices = get_post_meta( $post->ID, $prices_meta_key, true );
 
-		$price = ( isset( $prices['price'] ) ? $prices['price'] : '' );
-		$down_payment = ( isset( $prices['down_payment'] ) ? $prices['down_payment'] : '' );
-		$msrp = ( isset( $prices['msrp'] ) ? $prices['msrp'] : '' );
-		$payment = ( isset( $prices['payment'] ) ? $prices['payment'] : '' );
-		$payment_frequency = ( isset( $prices['payment_frequency'] ) ? $prices['payment_frequency'] : '' );
+		$prices = array(
+			'price'        => 'Price',
+			'msrp'         => 'MSRP',
+			'down_payment' => 'Down payment',
+			'payment'      => 'Payment',
+		);
 
-		echo '<table class="form-table"><tbody>'
-		//Price
-			. '<tr><th scope="row"><label for="' . $prices_meta_key . '[price]">Price</label></th>'
-			. '<td><input type="text" name="' . $prices_meta_key . '[price]" value="' .$price. '"></td></tr>'
+		echo '<table class="form-table"><tbody>';
+		foreach( $prices as $key => $label ) {
+			$meta_key = apply_filters( 'translate_meta_field_key', $key );
+			$value = get_post_meta( $post->ID, $meta_key, true );
 
-		//MSRP
-			. '<tr><th scope="row"><label for="' . $prices_meta_key . '[msrp]">MSRP</label></th>'
-			. '<td><input type="text" name="' . $prices_meta_key . '[msrp]" value="' .$msrp. '"></td></tr>'
+			echo '<tr><th scope="row"><label for="' . $meta_key . '">' . $label . '</label></th>'
+				. '<td><input type="text" name="' . $meta_key . '" value="' . $value . '"></td></tr>';
+		}
 
-		//Down payment
-			. '<tr><th scope="row"><label for="' . $prices_meta_key . '[down_payment]">Down payment</label></th>'
-			. '<td><input type="text" name="' . $prices_meta_key . '[down_payment]" value="' .$down_payment. '"></td></tr>'
+		//Payment frequency is a drop-down
+		$meta_key = apply_filters( 'translate_meta_field_key', 'payment_frequency' );
+		$payment_frequency = get_post_meta( $post->ID, $meta_key, true );
 
-		//Payment
-			. '<tr><th scope="row"><label for="' . $prices_meta_key . '[payment]">Payment</label></th>'
-			. '<td><input type="text" name="' . $prices_meta_key . '[payment]" value="' .$payment. '"></td></tr>'
-
-		//Payment frequency
-			. '<tr><th scope="row"><label for="' . $prices_meta_key . '[payment_frequency]">Payment frequency</label></th>'
-			. '<td><select name="' . $prices_meta_key . '[payment_frequency]"><option></option>';
+		echo '<tr><th scope="row"><label for="' . $meta_key . '">Payment frequency</label></th>'
+			. '<td><select name="' . $meta_key . '"><option></option>';
 
 		$frequencies = apply_filters( 'invp_default_payment_frequencies', array(
 			'Monthly'      => 'monthly',
@@ -655,8 +649,8 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		echo '</select></td></tr>';
 
 		//handle all other keys in the prices array, could be any keys
-		if( is_array( $prices ) && 5 < sizeof( $prices ) ) {
-			//there are more prices than the default values in the prices array
+		$prices = get_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'prices' ), true );
+		if( is_array( $prices ) ) {
 			foreach( $prices as $key => $value ) {
 				if( ! in_array( $key, $this->default_price_array_keys() ) ) {
 					//this is a price we need to display
@@ -922,11 +916,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		foreach( $this->default_price_array_keys() as $key ) {
 			if( isset( $_POST[ apply_filters( 'translate_meta_field_key', 'prices' ) ][$key] ) ) {
 				$price_arr[$key] = $_POST[ apply_filters( 'translate_meta_field_key', 'prices' ) ][$key];
-
-				//price is also saved in its own meta key
-				if( 'price' == $key ) {
-					update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'price' ), $price_arr[$key] );
-				}
 			}
 		}
 

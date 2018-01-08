@@ -281,10 +281,10 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		function payments( $zero_string = '' ) {
 
-			if (isset($this->prices['down_payment'])) {
-				return sprintf('$%s Down / $%s %s',number_format($this->prices['down_payment'], 0, '.', ',' ), number_format($this->prices['payment'], 0, '.', ',' ), ucfirst($this->prices['payment_frequency']));
+			if ( isset( $this->down_payment ) ) {
+				return sprintf( '$%s Down / $%s %s', number_format( $this->down_payment, 0, '.', ',' ), number_format( $this->payment, 0, '.', ',' ), ucfirst( $this->payment_frequency ) );
 			}
-			return $this->price($zero_string);
+			return $this->price( $zero_string );
 		}
 
 		function post_meta_value_is_number( $post_meta_key ) {
