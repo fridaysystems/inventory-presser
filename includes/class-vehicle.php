@@ -63,8 +63,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		function __construct( $post_id = null ) {
 
 			//Help the order by logic determine which post meta keys are numbers
-			if( ! has_filter( 'inventory_presser_meta_value_or_meta_value_num', array( &$this, 'indicate_post_meta_values_are_numbers' ) ) ) {
-				add_filter( 'inventory_presser_meta_value_or_meta_value_num', array( &$this, 'indicate_post_meta_values_are_numbers' ), 10, 2 );
+			if( ! has_filter( 'inventory_presser_meta_value_or_meta_value_num', array( $this, 'indicate_post_meta_values_are_numbers' ) ) ) {
+				add_filter( 'inventory_presser_meta_value_or_meta_value_num', array( $this, 'indicate_post_meta_values_are_numbers' ), 10, 2 );
 			}
 
 			if( is_null( $post_id ) ) { return; }

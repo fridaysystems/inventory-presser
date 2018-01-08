@@ -50,6 +50,7 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 = 3.7.0 =
 * [Added] A new attribute, size, is added to the `[invp-inventory-grid size="one-fourth"]` shortcode. The size specifies how big each thumbnail in a row will be rendered.
 * [Changed] The Order By Post Meta widget now has a prettier form without ugly post meta key names. The widget should still be renamed to something like Vehicle Sort Controls in the future.
+* [Removed] The list of fields by which vehicles can be sorted in listings page by default has been pruned to remove fields that don't make sense as sort fields.
 
 = 3.6.1 =
 * [Changed] Updated the AutoCheck button to the latest SVG version
