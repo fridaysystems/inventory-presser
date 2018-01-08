@@ -194,7 +194,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			$this->settings = $this->settings();
 			if( ! is_admin() && ( isset( $_GET['orderby'] ) || isset( $this->settings['sort_vehicles_by'] ) ) ) {
-				add_action( 'pre_get_posts', array( &$this, 'add_orderby_to_query' ) );
+				add_action( 'pre_get_posts', array( $this, 'add_orderby_to_query' ) );
 			}
 
 			//Allow custom fields to be searched
