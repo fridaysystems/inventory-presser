@@ -58,7 +58,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				return;
 			}
 
-			add_filter( 'posts_clauses', array( &$this, 'modify_query_orderby' ) );
+			add_filter( 'posts_clauses', array( $this, 'modify_query_orderby' ) );
 
 			/**
 			 * The field we want to order by is either in $_GET['orderby'] when
