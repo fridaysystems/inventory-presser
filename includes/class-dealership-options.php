@@ -225,16 +225,29 @@ class _dealer_settings {
 		$vehicle = new Inventory_Presser_Vehicle();
 		foreach( $vehicle->keys( false ) as $key ) {
 
-			$key = apply_filters( 'translate_meta_field_key', $key );
+			//Skip post meta keys that make no sense as a sort key
+			$non_sortable_keys = array(
+				'color',
+				'engine',
+				'hull_material',
+				'interior_color',
+				'stock_number',
+				'trim',
+				'vin',
+				'youtube',
+			);
+			if( in_array( $key, $non_sortable_keys ) ) { continue; }
 
-			//Skip hidden postmeta keys
-			if( '_' == $key[0] ) { continue; }
+			$meta_key = apply_filters( 'translate_meta_field_key', $key );
 
-			echo '<option value="'. $key . '"';
+			//Skip hidden post meta keys
+			if( '_' == $meta_key[0] ) { continue; }
+
+			echo '<option value="'. $meta_key . '"';
 			if( isset( $this->_dealer_settings['sort_vehicles_by'] ) ) {
-				selected( $this->_dealer_settings['sort_vehicles_by'], $key );
+				selected( $this->_dealer_settings['sort_vehicles_by'], $meta_key );
 			}
-			echo '>' . ucfirst( apply_filters( 'untranslate_meta_field_key', $key ) ) . '</option>';
+			echo '>' . str_replace( '_', ' ', ucfirst( apply_filters( 'untranslate_meta_field_key', $key ) ) ) . '</option>';
 		}
 
 		echo '</select> in <select name="_dealer_settings[sort_vehicles_order]" id="sort_vehicles_order">';
