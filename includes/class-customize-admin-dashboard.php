@@ -649,7 +649,8 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		echo '</select></td></tr>';
 
 		//handle all other keys in the prices array, could be any keys
-		$prices = get_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'prices' ), true );
+		$prices_meta_key = apply_filters( 'translate_meta_field_key', 'prices' );
+		$prices = get_post_meta( $post->ID, $prices_meta_key, true );
 		if( is_array( $prices ) ) {
 			foreach( $prices as $key => $value ) {
 				if( ! in_array( $key, $this->default_price_array_keys() ) ) {
@@ -913,10 +914,16 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$price_arr = get_post_meta( $post->ID, $price_arr_key, true );
 		if( '' == $price_arr ) { $price_arr = []; }
 
+		//our built-in prices should also live in the prices array
 		foreach( $this->default_price_array_keys() as $key ) {
-			if( isset( $_POST[ apply_filters( 'translate_meta_field_key', 'prices' ) ][$key] ) ) {
-				$price_arr[$key] = $_POST[ apply_filters( 'translate_meta_field_key', 'prices' ) ][$key];
+			if( isset( $_POST[ apply_filters( 'translate_meta_field_key', $key ) ] ) ) {
+				$price_arr[$key] = $_POST[ apply_filters( 'translate_meta_field_key', $key ) ];
 			}
+		}
+
+		//other custom prices
+		foreach( $_POST[ apply_filters( 'translate_meta_field_key', 'prices' ) ] as $key => $value ) {
+			$price_arr[$key] = $value;
 		}
 
 		update_post_meta( $post->ID, $price_arr_key, $price_arr );
