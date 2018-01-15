@@ -247,7 +247,7 @@ class _dealer_settings {
 			if( isset( $this->_dealer_settings['sort_vehicles_by'] ) ) {
 				selected( $this->_dealer_settings['sort_vehicles_by'], $meta_key );
 			}
-			echo '>' . str_replace( '_', ' ', ucfirst( apply_filters( 'untranslate_meta_field_key', $key ) ) ) . '</option>';
+			echo '>' . str_replace( '_', ' ', ucfirst( $key ) ) . '</option>';
 		}
 
 		echo '</select> in <select name="_dealer_settings[sort_vehicles_order]" id="sort_vehicles_order">';
