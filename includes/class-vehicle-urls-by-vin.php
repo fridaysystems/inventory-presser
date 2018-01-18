@@ -20,9 +20,9 @@ if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) ) {
 		const CUSTOM_POST_TYPE = 'inventory_vehicle';
 
 		function __construct() {
-			add_action( 'init', array( &$this, 'add_vin_rewrite' ) );
-			add_filter( 'query_vars', array( &$this, 'add_query_vars' ) );
-			add_action( 'template_redirect', array( &$this, 'redirect_vin_urls' ) );
+			add_action( 'init', array( $this, 'add_vin_rewrite' ) );
+			add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
+			add_action( 'template_redirect', array( $this, 'redirect_vin_urls' ) );
 		}
 
 		function add_vin_rewrite() {

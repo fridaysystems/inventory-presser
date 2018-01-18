@@ -88,7 +88,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 			array( 'description' => 'Select and display hours of operation.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -291,7 +291,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 			array( 'description' => 'Select and display addresses.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -459,7 +459,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			array( 'description' => 'Select and display phone numbers.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -610,7 +610,7 @@ class Carfax_Widget extends WP_Widget {
 			array( 'description' => 'Advertise Carfax Report with Inventory Link', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -709,7 +709,7 @@ class KBB_Widget extends WP_Widget {
 			array( 'description' => 'KBB image with link to kbb.com', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -904,7 +904,7 @@ class Stock_Photo_Slider extends WP_Widget {
 			array( 'description' => 'Full width slider, choose various image sets to display.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -1028,7 +1028,7 @@ class Inventory_Slider extends WP_Widget {
 			array( 'description' => 'Shows random linked inventory featured images', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -1252,7 +1252,7 @@ class Inventory_Grid extends WP_Widget {
 			array( 'description' => 'Display a grid of vehicle thumbnails.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -1436,7 +1436,7 @@ class Price_Filters extends WP_Widget {
 			array( 'description' => 'Set maximum price query, automatically sort by price', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -1563,9 +1563,9 @@ class Extended_Search extends WP_Widget {
 			array( 'description' => 'Price Range Selector and Search Form', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );
+		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
 		if( is_active_widget( false, false, 'invp_extended_search' && !is_admin() )) {
-			add_action( 'wp_enqueue_scripts', array( &$this, 'register_scripts_and_styles' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts_and_styles' ) );
 		}
 	}
 
@@ -1755,8 +1755,8 @@ class Inventory_Presser_Location_Widgets {
 	const CUSTOM_POST_TYPE = 'inventory_vehicle';
 
 	function __construct( ) {
-		add_action( 'widgets_init', array( &$this, 'widgets_init' ) );
-		add_action( 'current_screen', array( &$this, 'check_ids' ) );
+		add_action( 'widgets_init', array( $this, 'widgets_init' ) );
+		add_action( 'current_screen', array( $this, 'check_ids' ) );
 		if ( ! is_admin() && (
 			isset( $_GET['min_price'] )
 			|| isset( $_GET['max_price'] )
@@ -1764,7 +1764,7 @@ class Inventory_Presser_Location_Widgets {
 			|| isset( $_GET['max_odometer'] )
 			|| isset( $_GET['favorites'] )
 		) ) {
-			add_action( 'pre_get_posts', array( &$this, 'pre_get_posts'),99);
+			add_action( 'pre_get_posts', array( $this, 'pre_get_posts'),99);
 		}
 	}
 

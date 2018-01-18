@@ -20,25 +20,25 @@ class Inventory_Presser_Taxonomies {
 	function hooks() {
 
 		//create custom taxonomies for vehicles
-		add_action( 'init', array( &$this, 'create_custom_taxonomies' ) );
+		add_action( 'init', array( $this, 'create_custom_taxonomies' ) );
 
-		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_term_data' ));
+		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_term_data' ));
 
 		// location taxonomy admin actions
-		add_action( 'location_add_form_fields', array( &$this, 'add_location_fields'), 10, 2 );
-		add_action( 'location_add_form_fields', array( &$this, 'add_location_fields_javascript'), 11, 1 );
-		add_action( 'created_location', array( &$this, 'save_location_meta'), 10, 2 );
-		add_action( 'location_edit_form_fields', array( &$this, 'edit_location_field'), 10, 2 );
-		add_action( 'edited_location', array( &$this, 'save_location_meta'), 10, 2 );
+		add_action( 'location_add_form_fields', array( $this, 'add_location_fields'), 10, 2 );
+		add_action( 'location_add_form_fields', array( $this, 'add_location_fields_javascript'), 11, 1 );
+		add_action( 'created_location', array( $this, 'save_location_meta'), 10, 2 );
+		add_action( 'location_edit_form_fields', array( $this, 'edit_location_field'), 10, 2 );
+		add_action( 'edited_location', array( $this, 'save_location_meta'), 10, 2 );
 
 		//Sort some taxonomy terms as numbers
-		add_filter( 'get_terms_orderby', array( &$this, 'sort_terms_as_numbers' ), 10,  3 );
+		add_filter( 'get_terms_orderby', array( $this, 'sort_terms_as_numbers' ), 10,  3 );
 
 		//Save custom taxonomy terms when posts are saved
-		add_action( 'save_post_' . $this->post_type, array( &$this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
+		add_action( 'save_post_' . $this->post_type, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
 
 		//Load our scripts
-		add_action( 'admin_enqueue_scripts', array( &$this, 'load_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 	}
 
 	/* location taxonomy */

@@ -20,11 +20,11 @@ Sitemap: ' . home_url( '/sitemap_index.xml', 'https' );
 	function hooks() {
 		if( $this->yoast_sitemap_enabled() ) {
 			//Do not include our taxonomies in Yoast SEO XML sitemaps
-			add_filter( 'wpseo_sitemap_exclude_taxonomy', array( &$this, 'yoast_sitemap_exclude_taxonomies' ), 10, 2 );
+			add_filter( 'wpseo_sitemap_exclude_taxonomy', array( $this, 'yoast_sitemap_exclude_taxonomies' ), 10, 2 );
 		}
 
 		if( is_multisite() ) {
-			add_filter( 'robots_txt', array( &$this, 'append_sitemap_to_robots_txt'), 10, 2 );
+			add_filter( 'robots_txt', array( $this, 'append_sitemap_to_robots_txt'), 10, 2 );
 		}
 	}
 

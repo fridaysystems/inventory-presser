@@ -133,7 +133,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//Allow translations
 			add_action( 'plugins_loaded', function() {
 				load_plugin_textdomain( 'inventory-presser', false, __DIR__ );
-			});
+			} );
 
 			//Modify the administrator dashboard
 			$customize_dashboard = new Inventory_Presser_Customize_Admin_Dashboard( self::CUSTOM_POST_TYPE );

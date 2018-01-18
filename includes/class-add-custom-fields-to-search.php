@@ -19,9 +19,9 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 
 			if( is_admin() ) { return; } // only front-end searches
 
-			add_filter( 'posts_distinct', array( &$this, 'cf_search_distinct' ) );
-			add_filter( 'posts_join', array( &$this, 'cf_search_join' ) );
-			add_filter( 'posts_where', array( &$this, 'cf_search_where' ) );
+			add_filter( 'posts_distinct', array( $this, 'cf_search_distinct' ) );
+			add_filter( 'posts_join', array( $this, 'cf_search_join' ) );
+			add_filter( 'posts_where', array( $this, 'cf_search_where' ) );
 		}
 
 		/**

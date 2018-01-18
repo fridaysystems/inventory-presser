@@ -31,16 +31,16 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 	function add_meta_boxes_to_cpt( ) {
 		//Add a meta box to the New/Edit post page
-		add_meta_box('vehicle-meta', 'Attributes', array( &$this, 'meta_box_html_vehicle' ), $this->post_type(), 'advanced', 'high' );
+		add_meta_box('vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), $this->post_type(), 'advanced', 'high' );
 
 		//and another for prices
-		add_meta_box('prices-meta', 'Prices', array( &$this, 'meta_box_html_prices' ), $this->post_type(), 'advanced', 'high' );
+		add_meta_box('prices-meta', 'Prices', array( $this, 'meta_box_html_prices' ), $this->post_type(), 'advanced', 'high' );
 
 		//Add another meta box to the New/Edit post page
-		add_meta_box('options-meta', 'Optional equipment', array( &$this, 'meta_box_html_options' ), $this->post_type(), 'normal', 'high' );
+		add_meta_box('options-meta', 'Optional equipment', array( $this, 'meta_box_html_options' ), $this->post_type(), 'normal', 'high' );
 
 		//Add a meta box to the side column for a featured vehicle checkbox
-		add_meta_box('featured', 'Featured Vehicle', array( &$this, 'meta_box_html_featured' ), $this->post_type(), 'side', 'low' );
+		add_meta_box('featured', 'Featured Vehicle', array( $this, 'meta_box_html_featured' ), $this->post_type(), 'side', 'low' );
 	}
 
 	//Add a setting to the customizer's Colors panel for Carfax button text
@@ -92,58 +92,58 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 		$this->post_type = $post_type;
 
-		add_filter( 'posts_clauses', array( &$this, 'enable_order_by_attachment_count' ), 1, 2 );
+		add_filter( 'posts_clauses', array( $this, 'enable_order_by_attachment_count' ), 1, 2 );
 
 		//Save custom post data when posts are saved
-		add_action( 'save_post_' . $this->post_type(), array( &$this, 'save_vehicle_post_meta' ), 10, 3 );
+		add_action( 'save_post_' . $this->post_type(), array( $this, 'save_vehicle_post_meta' ), 10, 3 );
 
 		//Add columns to the table that lists all the Vehicles on edit.php
-		add_filter( 'manage_' . $this->post_type() . '_posts_columns', array( &$this, 'add_columns_to_vehicles_table' ) );
+		add_filter( 'manage_' . $this->post_type() . '_posts_columns', array( $this, 'add_columns_to_vehicles_table' ) );
 
 		//Populate the columns we added to the Vehicles table
-		add_action( 'manage_' . $this->post_type() . '_posts_custom_column', array( &$this, 'populate_columns_we_added_to_vehicles_table' ), 10, 2 );
+		add_action( 'manage_' . $this->post_type() . '_posts_custom_column', array( $this, 'populate_columns_we_added_to_vehicles_table' ), 10, 2 );
 
 		//Make our added columns to the Vehicles table sortable
-		add_filter( 'manage_edit-' . $this->post_type() . '_sortable_columns', array( &$this, 'make_vehicles_table_columns_sortable' ) );
+		add_filter( 'manage_edit-' . $this->post_type() . '_sortable_columns', array( $this, 'make_vehicles_table_columns_sortable' ) );
 
 		//Implement the orderby for each of these added columns
-		add_filter( 'pre_get_posts', array( &$this, 'vehicles_table_columns_orderbys' ) );
+		add_filter( 'pre_get_posts', array( $this, 'vehicles_table_columns_orderbys' ) );
 
-		add_action( 'add_meta_boxes', array( &$this, 'add_meta_boxes_to_cpt' ) );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes_to_cpt' ) );
 
 		// Move all "advanced" meta boxes above the default editor
 		// http://wordpress.stackexchange.com/a/88103
 		add_action( 'edit_form_after_title', array( $this, 'move_advanced_meta_boxes' ) );
 
 		//Move the "Tags" metabox below the meta boxes for vehicle custom taxonomies
-		add_action( 'add_meta_boxes', array( &$this, 'move_tags_meta_box' ), 0 );
+		add_action( 'add_meta_boxes', array( $this, 'move_tags_meta_box' ), 0 );
 
 		//Load our scripts
-		add_action( 'admin_enqueue_scripts', array( &$this, 'load_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 
 		//Add some content next to the "Add Media" button
-		add_action( 'media_buttons_context', array( &$this, 'annotate_add_media_button' ) );
+		add_action( 'media_buttons_context', array( $this, 'annotate_add_media_button' ) );
 
 		//Define an AJAX handler for the 'Delete All Media' button
-		add_filter( 'wp_ajax_delete_all_post_attachments', array( &$this, 'delete_all_post_attachments' ) );
+		add_filter( 'wp_ajax_delete_all_post_attachments', array( $this, 'delete_all_post_attachments' ) );
 
 		//'add_attachment'
 		//'delete_attachment'
 		//Make our Add Media button annotation available from an AJAX call
-		add_action( 'wp_ajax_output_add_media_button_annotation', array( &$this, 'output_add_media_button_annotation' ) );
+		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
 
 		//Add a link to the Settings page on the plugin management page
-		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( &$this, 'insert_settings_link' ), 2, 2 );
+		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'insert_settings_link' ), 2, 2 );
 
 		//Define an AJAX handler for the 'Delete all inventory' button
-		add_action( 'wp_ajax_delete_all_inventory', array( &$this, 'delete_all_inventory_ajax' ) );
+		add_action( 'wp_ajax_delete_all_inventory', array( $this, 'delete_all_inventory_ajax' ) );
 
 		//Add a link to the main menu of the Admin bar
-		add_action( 'admin_bar_menu', array( &$this, 'add_vehicles_to_admin_bar' ), 100 );
+		add_action( 'admin_bar_menu', array( $this, 'add_vehicles_to_admin_bar' ), 100 );
 
 		$options = get_option( '_dealer_settings' );
 		if( isset( $options['use_carfax'] ) && $options['use_carfax'] ) {
-			add_action( 'customize_register', array( &$this, 'add_settings_to_customizer' ) );
+			add_action( 'customize_register', array( $this, 'add_settings_to_customizer' ) );
 		}
 
 		//Change some messages in the dashboard the user sees when updating vehicles
@@ -960,7 +960,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 		if( '1' == get_option('uploads_use_yearmonth_folders') ) {
 			//Organize uploads into yearly and monthly folders is turned on. Recommend otherwise.
-			add_action( 'admin_notices', array( &$this, 'output_upload_folder_error_html' ) );
+			add_action( 'admin_notices', array( $this, 'output_upload_folder_error_html' ) );
 		}
 
 		//Are thumbnail sizes not 4:3 aspect ratios?
@@ -970,7 +970,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			( ( 4/3 ) != ( get_option('large_size_w')/get_option('large_size_h') ) )
 		){
 			//At least one thumbnail size is not 4:3
-			add_action( 'admin_notices', array( &$this, 'output_thumbnail_size_error_html' ) );
+			add_action( 'admin_notices', array( $this, 'output_thumbnail_size_error_html' ) );
 		}
 	}
 

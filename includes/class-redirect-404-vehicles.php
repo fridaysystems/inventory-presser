@@ -32,7 +32,7 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 		}
 
 		function hooks() {
-			add_action( 'wp', array( &$this, 'maybe_redirect' ) );
+			add_action( 'wp', array( $this, 'maybe_redirect' ) );
 		}
 
 		function is_request_for_vehicle( $wp_obj ) {
