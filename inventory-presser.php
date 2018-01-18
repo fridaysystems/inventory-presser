@@ -133,7 +133,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//Allow translations
 			add_action( 'plugins_loaded', function() {
 				load_plugin_textdomain( 'inventory-presser', false, __DIR__ );
-			} );
+			});
 
 			//Modify the administrator dashboard
 			$customize_dashboard = new Inventory_Presser_Customize_Admin_Dashboard( self::CUSTOM_POST_TYPE );
@@ -144,7 +144,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 
 			//create a custom post type for the vehicles
-			add_action( 'init', array( &$this, 'create_custom_post_type' ) );
+			add_action( 'init', array( $this, 'create_custom_post_type' ) );
 
 			//Create custom taxonomies
 			$this->taxonomies = new Inventory_Presser_Taxonomies( self::CUSTOM_POST_TYPE );
@@ -155,7 +155,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 
 			//Add custom rewrite rules
-			add_action('generate_rewrite_rules', array( &$this, 'add_pretty_search_urls' ) );
+			add_action('generate_rewrite_rules', array( $this, 'add_pretty_search_urls' ) );
 
 			/**
 			 * Activation and deactivation hooks ensure that the rewrite rules are
@@ -163,10 +163,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 
 			//Flush rewrite rules when the plugin is activated
-			register_activation_hook( __FILE__, array( &$this, 'my_rewrite_flush' ) );
+			register_activation_hook( __FILE__, array( $this, 'my_rewrite_flush' ) );
 
 			//Do some things during deactivation
-			register_deactivation_hook( __FILE__, array( &$this, 'delete_rewrite_rules_option' ) );
+			register_deactivation_hook( __FILE__, array( $this, 'delete_rewrite_rules_option' ) );
 
 			//Populate our custom taxonomies with default terms
 			register_activation_hook( __FILE__, 'invp_populate_default_terms' );
@@ -214,12 +214,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$redirect_404_vehicles = new Redirect_404_Vehicles();
 			$redirect_404_vehicles->hooks();
 
-			add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_options' ) );
+			add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_options' ) );
 			//deactivate so the next page load doesn't restore the option & terms
-			add_action( 'inventory_presser_delete_all_data', array( &$this, 'deactivate' ), 99 );
+			add_action( 'inventory_presser_delete_all_data', array( $this, 'deactivate' ), 99 );
 
 			//Include CSS on the frontend
-			add_action( 'wp_enqueue_scripts', array( &$this, 'include_styles' ), 11 );
+			add_action( 'wp_enqueue_scripts', array( $this, 'include_styles' ), 11 );
 
 			//Customize the behavior of Yoast SEO, if it is active
 			$seo = new Inventory_Presser_SEO();
