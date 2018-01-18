@@ -7,6 +7,8 @@ defined( 'ABSPATH' ) OR exit;
  * Version: 3.7.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
+ * Text Domain: inventory-presser
+ * Domain Path: /languages
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -128,6 +130,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function __construct( ) {
 
+			//Allow translations
+			add_action( 'plugins_loaded', function() {
+				load_plugin_textdomain( 'inventory-presser', false, __DIR__ );
+			} );
+
 			//Modify the administrator dashboard
 			$customize_dashboard = new Inventory_Presser_Customize_Admin_Dashboard( self::CUSTOM_POST_TYPE );
 			$customize_dashboard->hooks();
@@ -226,7 +233,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				apply_filters(
 					'inventory_presser_post_type_args',
 					array (
-						'description'  => __('Vehicles for sale in an automobile or powersports dealership'),
+						'description'  => __( 'Vehicles for sale in an automobile or powersports dealership', 'inventory-presser' ),
 						/**
 						 * Check if the theme (or the parent theme) has a CPT
 						 * archive template.  If not, we will assume that the
@@ -238,11 +245,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 						'hierarchical' => false,
 						'labels' => array (
-							'name'          => __( 'Vehicles' ),
-							'singular_name' => __( 'Vehicle' ),
-							'all_items'     => __( 'Inventory' ),
-							'add_new_item'  => __( 'Add New Vehicle' ),
-							'edit_item'     => __( 'Edit Vehicle' ),
+							'name'          => __( 'Vehicles', 'inventory-presser' ),
+							'singular_name' => __( 'Vehicle', 'inventory-presser' ),
+							'all_items'     => __( 'Inventory', 'inventory-presser' ),
+							'add_new_item'  => __( 'Add New Vehicle', 'inventory-presser' ),
+							'edit_item'     => __( 'Edit Vehicle', 'inventory-presser' ),
 						),
 						'menu_icon'    => 'dashicons-admin-network',
 						'menu_position'=> 5, //below Posts

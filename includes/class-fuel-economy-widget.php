@@ -9,8 +9,8 @@ class Fuel_Economy_Widget extends WP_Widget {
  	public function __construct() {
  		parent::__construct(
  			self::ID_BASE, // Base ID
- 			__( 'EPA Fuel Economy', 'inventory_presser' ), // Name
- 			array( 'description' => __( 'A widget that shows EPA fuel economy data for a vehicle', 'inventory_presser' ), ) // Args
+ 			__( 'EPA Fuel Economy', 'inventory-presser' ), // Name
+ 			array( 'description' => __( 'A widget that shows EPA fuel economy data for a vehicle', 'inventory-presser' ), ) // Args
  		);
 
 		add_action( 'inventory_presser_delete_all_data', array( &$this, 'delete_option' ) );

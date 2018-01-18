@@ -57,8 +57,8 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			'settings' => 'carfax_text_color',
 			'priority' => 40,
 			'section' => 'colors',
-			'label' => __( 'CARFAX Button Text' ),
-			'description' => __( 'The color of the words "SHOW ME THE" in CARFAX buttons.' ),
+			'label' => __( 'CARFAX Button Text', 'inventory-presser' ),
+			'description' => __( 'The color of the words "SHOW ME THE" in CARFAX buttons.', 'inventory-presser' ),
             'choices'  => array(
                 'black' => 'Black',
                 'white' => 'White',
@@ -165,13 +165,13 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			__( 'Preview vehicle', 'inventory-presser' )
     	);
 
-    	$scheduled_date = date_i18n( __( 'M j, Y @ H:i' ), strtotime( $post->post_date ) );
+    	$scheduled_date = date_i18n( __( 'M j, Y @ H:i', 'inventory-presser' ), strtotime( $post->post_date ) );
 
 		$msgs[$this->post_type()] = array(
 			0  => '',
 			1  => __( 'Vehicle updated. ', 'inventory-presser' ) . $view_link,
-			2  => __( 'Custom field updated.' ),
-			3  => __( 'Custom field updated.' ),
+			2  => __( 'Custom field updated.', 'inventory-presser' ),
+			3  => __( 'Custom field updated.', 'inventory-presser' ),
 			4  => __( 'Vehicle updated.', 'inventory-presser' ),
 			5  => isset( $_GET['revision'] ) ? sprintf( __( 'Vehicle restored to revision from %s.', 'inventory-presser' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
     		6  => __( 'Vehicle published. ', 'inventory-presser' ) . $view_link,
@@ -471,7 +471,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 				$type = 'updated';
 				break;
 		}
-		return '<div class="'. $type .' notice"><p><strong>'. __( $message, 'inventory_presser' ) . '</strong></p></div>';
+		return '<div class="'. $type .' notice"><p><strong>'. __( $message, 'inventory-presser' ) . '</strong></p></div>';
 	}
 
 	function insert_settings_link( $links ) {
