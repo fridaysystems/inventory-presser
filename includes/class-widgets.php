@@ -84,8 +84,8 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Dealer Hours',
-			array( 'description' => 'Select and display hours of operation.', )
+			'Hours',
+			array( 'description' => 'Display hours of operation.', )
 		);
 
 		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
@@ -287,8 +287,8 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Dealer Address',
-			array( 'description' => 'Select and display addresses.', )
+			'Address',
+			array( 'description' => 'Display one or more mailing addresses.', )
 		);
 
 		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
@@ -455,8 +455,8 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Dealer Phone Number',
-			array( 'description' => 'Select and display phone numbers.', )
+			'Phone Number',
+			array( 'description' => 'Display one or more phone numbers.', )
 		);
 
 		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
@@ -606,8 +606,8 @@ class Carfax_Widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Carfax Reports',
-			array( 'description' => 'Advertise Carfax Report with Inventory Link', )
+			'Carfax Badge',
+			array( 'description' => 'Choose a CARFAX badge that links to your inventory.', )
 		);
 
 		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
@@ -705,8 +705,8 @@ class KBB_Widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Kelly Blue Book',
-			array( 'description' => 'KBB image with link to kbb.com', )
+			'Kelley Blue Book Logo',
+			array( 'description' => 'KBB logo image linked to kbb.com', )
 		);
 
 		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
@@ -900,8 +900,8 @@ class Stock_Photo_Slider extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Dealer Stock Photo Slider',
-			array( 'description' => 'Full width slider, choose various image sets to display.', )
+			'Stock Photo Slider',
+			array( 'description' => 'Full width slideshow with multiple vehicle photo sets.', )
 		);
 
 		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
@@ -1024,8 +1024,8 @@ class Inventory_Slider extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Dealer Inventory Slider',
-			array( 'description' => 'Shows random linked inventory featured images', )
+			'Vehicle Slider',
+			array( 'description' => 'A slideshow for all vehicles with at least one photo.', )
 		);
 
 		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
@@ -1248,8 +1248,8 @@ class Inventory_Grid extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Dealer Inventory Grid',
-			array( 'description' => 'Display a grid of vehicle thumbnails.', )
+			'Grid',
+			array( 'description' => 'Display a grid of vehicles.', )
 		);
 
 		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
@@ -1432,8 +1432,8 @@ class Price_Filters extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Dealer Price Filters',
-			array( 'description' => 'Set maximum price query, automatically sort by price', )
+			'Maximum Price Filter',
+			array( 'description' => 'Filter vehicles by a maximum price.', )
 		);
 
 		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
@@ -1551,204 +1551,6 @@ class Price_Filters extends WP_Widget {
 
 } // Class Price_Filters
 
-// Extended Search (range selector)
-class Extended_Search extends WP_Widget {
-
-	const ID_BASE = 'invp_extended_search';
-
-	function __construct() {
-		parent::__construct(
-			self::ID_BASE,
-			'Dealer Extended Search',
-			array( 'description' => 'Price Range Selector and Search Form', )
-		);
-
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
-		if( is_active_widget( false, false, 'invp_extended_search' && !is_admin() )) {
-			add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts_and_styles' ) );
-		}
-	}
-
-	public function delete_option() {
-		delete_option( 'widget_' . self::ID_BASE );
-	}
-
-	function register_scripts_and_styles( ) {
-		wp_enqueue_style('noui-style', plugins_url( 'css/nouislider.min.css', dirname(__FILE__) ));
-		wp_enqueue_script('noui-javascript', plugins_url( 'js/nouislider.min.js', dirname(__FILE__) ), null, false, true );
-		wp_enqueue_script('noui-wnumb', '//cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js');
-	}
-
-	// front-end
-	public function widget( $args, $instance ) {
-
-		// get the maximum vehicle price from post meta
-	    global $wpdb;
-	    $query = $wpdb->prepare(
-	        "SELECT max(cast( meta_value as UNSIGNED)) FROM {$wpdb->postmeta} WHERE meta_key='%s'",
-	        'inventory_presser_price'
-	    );
-	    $price = $wpdb->get_var( $query );
-
-	    $title = 'sup'; //apply_filters( 'widget_title', $instance['title'] );
-		// before and after widget arguments are defined by themes
-		echo $args['before_widget'];
-		if (!empty( $title ))
-		echo $args['before_title'] . $title . $args['after_title'];
-
-	    // if the price is > 0, output the slider and relevant js
-	    if ($price > 0) {
-
-	    	// round up to the nearest 5k
-	    	$rangemax = ceil($price/5000) * 5000;
-
-	    	// prep low and high bounds in noUI js
-	    	$sel_range_low = max((isset($_GET['min_price']) ? (int)$_GET['min_price'] : 0),0);
-	    	$sel_range_high = min((isset($_GET['max_price']) ? (int)$_GET['max_price'] : ceil($price/1000) * 1000), ceil($price/1000) * 1000);
-
-			$js = sprintf('
-				var min = document.getElementById("min_%1$s"),
-					max = document.getElementById("max_%1$s"),
-					sorter = document.getElementById("sorter_%1$s"),
-					order = document.getElementById("order_%1$s"),
-					sliders = document.getElementsByClassName("price-range-slider");
-
-				for ( var i = 0; i < sliders.length; i++ ) {
-
-					noUiSlider.create(sliders[i], {
-						start: [ %2$d, %3$d ],
-						step: 250,
-						margin: 1000,
-						connect: true,
-						tooltips: true,
-						range: {
-							"min": 0,
-							"max": %4$d
-						},
-						format: wNumb({
-					        decimals: 0,
-					        thousand: ",",
-					        prefix: "$"
-					    }),
-					});
-
-					sliders[i].noUiSlider.on("update", function( values, handle, unencoded ) {
-
-						var value = unencoded[handle];
-
-						if (handle) {
-							max.value = value;
-						} else {
-							min.value = value;
-						}
-					});
-
-				}
-
-				sorter.addEventListener("change", function(e) {
-					e.preventDefault();
-					order.value = this.options[this.selectedIndex].getAttribute("data-order");
-				});
-
-				',
-				$this->id,
-				$sel_range_low,
-				$sel_range_high,
-				$rangemax
-			);
-
-			// add js into page
-			wp_add_inline_script('noui-javascript', $js);
-	    	echo '<form>';
-	    	echo '<div>';
-
-			echo '<div id="range_'.$this->id.'" class="price-range-slider"></div>';
-			echo sprintf('<input type="hidden" name="min_price" id="min_%s" value="%d" />', $this->id, $sel_range_low);
-			echo sprintf('<input type="hidden" name="max_price" id="max_%s" value="%d" />', $this->id, $sel_range_high);
-			echo sprintf('<input type="hidden" name="order" id="order_%s" value="ASC" />', $this->id);
-
-			echo '</div>';
-
-
-			// sorter
-			$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : '';
-			$order = isset($_GET['order']) ? $_GET['order'] : '';
-			echo sprintf('<select name="orderby" id="sorter_%s" />', $this->id);
-			echo sprintf('<option data-order="ASC" value="inventory_presser_make"%s>Make A-Z</option>', ($orderby=='inventory_presser_make' && $order=='ASC') ? ' selected' : '' );
-			echo sprintf('<option data-order="DESC" value="inventory_presser_make"%s>Make Z-A</option>', ($orderby=='inventory_presser_make' && $order=='DESC') ? ' selected' : '' );
-			echo sprintf('<option data-order="ASC" value="inventory_presser_price"%s>Price Low</option>', ($orderby=='inventory_presser_price' && $order=='ASC') ? ' selected' : '' );
-			echo sprintf('<option data-order="DESC" value="inventory_presser_price"%s>Price High</option>', ($orderby=='inventory_presser_price' && $order=='DESC') ? ' selected' : '' );
-			echo sprintf('<option data-order="ASC" value="inventory_presser_odometer"%s>Mileage Low</option>', ($orderby=='inventory_presser_odometer' && $order=='ASC') ? ' selected' : '' );
-			echo sprintf('<option data-order="DESC" value="inventory_presser_odometer"%s>Mileage High</option>', ($orderby=='inventory_presser_odometer' && $order=='DESC') ? ' selected' : '' );
-			echo sprintf('<option data-order="ASC" value="inventory_presser_year"%s>Year Oldest</option>', ($orderby=='inventory_presser_year' && $order=='ASC') ? ' selected' : '' );
-			echo sprintf('<option data-order="DESC" value="inventory_presser_year"%s>Year Newest</option>', ($orderby=='inventory_presser_year' && $order=='DESC') ? ' selected' : '' );
-			echo '</select>';
-
-			echo '<button type="submit">Update</button>';
-			echo '</form>';
-
-			// reset link
-			echo sprintf('<a href="%s">Reset</a>',get_post_type_archive_link(AUTOMOSAIC_CPT));
-
-			// favorite vehicles
-			$vehicle_count = isset($_COOKIE['vehicle_favorites']) ? count(json_decode($_COOKIE['vehicle_favorites'])) : 0;
-			echo sprintf('<div class="vehicle-favorite-nav"><i class="fa fa-heart vehicle-favorite-color"></i> Favorites (<span class="vehicle-favorites-count">%d</span>)</div>', $vehicle_count);
-	    }
-
-		echo $args['after_widget'];
-
-	}
-
-	// Widget Backend
-	public function form( $instance ) {
-
-		/*$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
-		$before_image = isset($instance[ 'before_image' ]) ? $instance[ 'before_image' ] : '';
-		$image = isset($instance[ 'image' ]) ? $instance[ 'image' ] : $image_keys[0];
-		$after_image = isset($instance[ 'after_image' ]) ? $instance[ 'after_image' ] : '';
-
-		// Widget admin form
-		?>
-		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
-		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
-		</p>
-		<p>
-		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:' ); ?></label>
-		<textarea class="widefat" id="<?php echo $this->get_field_id('before_image'); ?>" name="<?php echo $this->get_field_name('before_image'); ?>"><?php echo esc_attr( $before_image ); ?></textarea>
-		</p>
-		<p>
-		<label for="<?php echo $this->get_field_id( 'image' ); ?>"><?php _e( 'Image:' ); ?></label>
-
-		<select class="widefat" id="<?php echo $this->get_field_id('image'); ?>" name="<?php echo $this->get_field_name('image'); ?>">
-		<?php foreach ($this->images as $key => $imginfo) {
-			$select_text = ($key == $image) ? ' selected' : '';
-			echo sprintf('<option value="%s"%s>%s</option>',$key,$select_text,$imginfo['text']);
-		} ?>
-		</select>
-
-		</p>
-
-		<p>
-		<label for="<?php echo $this->get_field_id( 'after_image' ); ?>"><?php _e( 'Text after image:' ); ?></label>
-		<textarea class="widefat" id="<?php echo $this->get_field_id('after_image'); ?>" name="<?php echo $this->get_field_name('after_image'); ?>"><?php echo esc_attr( $after_image ); ?></textarea>
-		</p>
-		<?php */
-	}
-
-	// Updating widget replacing old instances with new
-	public function update( $new_instance, $old_instance ) {
-		$instance = array();
-		/*$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['before_image'] = ( ! empty( $new_instance['before_image'] ) ) ? strip_tags( $new_instance['before_image'] ) : '';
-		$instance['image'] = ( ! empty( $new_instance['image'] ) ) ? strip_tags( $new_instance['image'] ) : $image_keys[0];
-		$instance['after_image'] = ( ! empty( $new_instance['after_image'] ) ) ? strip_tags( $new_instance['after_image'] ) : '';*/
-		return $instance;
-	}
-
-} // Class Extended_Search
-
-
 // bootstrap class for these widgets
 class Inventory_Presser_Location_Widgets {
 
@@ -1840,7 +1642,6 @@ class Inventory_Presser_Location_Widgets {
 		register_widget('Inventory_Slider');
 		register_widget('Inventory_Grid');
 		register_widget('Price_Filters');
-		register_widget('Extended_Search');
 	}
 
 	function check_ids() {
