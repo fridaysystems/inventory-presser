@@ -9,8 +9,8 @@ class Order_By_Widget extends WP_Widget {
  	public function __construct() {
  		parent::__construct(
  			self::ID_BASE, // Base ID
- 			__( 'Order By Post Meta', 'inventory-presser' ), // Name
- 			array( 'description' => __( 'A widget that allows users to sort posts by post meta values', 'inventory-presser' ), ) // Args
+ 			__( 'Sort by Vehicle Attributes', 'inventory-presser' ), // Name
+ 			array( 'description' => __( 'A list of vehicle attributes by which users can sort listings.', 'inventory-presser' ), ) // Args
  		);
 
 		//include scripts if widget is used
