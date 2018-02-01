@@ -11,6 +11,8 @@
  */
 class Inventory_Presser_SEO {
 
+	const POST_TYPE = 'inventory_vehicle';
+
 	//Adds a sitemap directive to robots.txt for a Yoast SEO XML sitemap
 	function append_sitemap_to_robots_txt( $robots, $public ) {
     	return $robots . 'Crawl-delay: 10
@@ -28,7 +30,9 @@ Sitemap: ' . home_url( '/sitemap_index.xml', 'https' );
 		}
 
 		//Hide the columns Yoast adds to edit.php, our dashboard list of vehicles
-		add_filter( 'manage_edit-inventory_vehicle_columns', array( $this, 'hide_columns_on_edit_php' ), 99 );
+		add_filter( 'manage_edit-' . self::POST_TYPE . '_columns', array( $this, 'hide_columns_on_edit_php' ), 99 );
+
+		add_action( 'current_screen', array( $this, 'hide_yoast_features_via_css' ), 10, 1 );
 	}
 
 	function hide_columns_on_edit_php( $columns ) {
@@ -37,10 +41,27 @@ Sitemap: ' . home_url( '/sitemap_index.xml', 'https' );
 		return $columns;
 	}
 
-	function yoast_sitemap_enabled() {
+	function hide_yoast_features_via_css( $current_screen ) {
+
+		if ( self::POST_TYPE != $current_screen->post_type
+			|| 'edit' != $current_screen->base
+			|| ! $this->yoast_is_active() )
+		{
+			return;
+		}
+
+		echo '<style type="text/css">#wpseo-filter,#wpseo-readability-filter{display:none;}</style>';
+	}
+
+	function yoast_is_active() {
 		//is yoast activated?
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-		if( ! is_plugin_active( 'wordpress-seo/wp-seo.php' ) ) {
+		return is_plugin_active( 'wordpress-seo/wp-seo.php' );
+	}
+
+	function yoast_sitemap_enabled() {
+		//is yoast activated?
+		if( ! $this->yoast_is_active() ) {
 			return false;
 		}
 

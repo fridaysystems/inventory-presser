@@ -50,7 +50,9 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 = 3.7.0 =
 * [Added] This plugin is now translation-ready.
 * [Added] A new attribute, size, is added to the `[invp-inventory-grid size="one-fourth"]` shortcode. The size specifies how big each thumbnail in a row will be rendered.
+* [Added] Hide some columns that Yoast SEO adds to the dashboard list of vehicles.
 * [Changed] Renamed almost every widget to remove "Dealer" prefixes and rewrote the descriptions to be less redundant.
+* [Changed] Changed some <td>s to <th>s in widgets to increase accessibility of this tabled information.
 * [Changed] The Order By Post Meta widget now has a prettier form without ugly post meta key names. The widget should still be renamed to something like Vehicle Sort Controls in the future.
 * [Removed] The list of fields by which vehicles can be sorted in listings page by default has been pruned to remove fields that don't make sense as sort fields.
 
