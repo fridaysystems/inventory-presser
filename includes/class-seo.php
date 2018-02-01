@@ -26,6 +26,15 @@ Sitemap: ' . home_url( '/sitemap_index.xml', 'https' );
 		if( is_multisite() ) {
 			add_filter( 'robots_txt', array( $this, 'append_sitemap_to_robots_txt'), 10, 2 );
 		}
+
+		//Hide the columns Yoast adds to edit.php, our dashboard list of vehicles
+		add_filter( 'manage_edit-inventory_vehicle_columns', array( $this, 'hide_columns_on_edit_php' ), 99 );
+	}
+
+	function hide_columns_on_edit_php( $columns ) {
+		unset( $columns['wpseo-score'] );
+		unset( $columns['wpseo-score-readability'] );
+		return $columns;
 	}
 
 	function yoast_sitemap_enabled() {

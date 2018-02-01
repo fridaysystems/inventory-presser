@@ -169,7 +169,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 									$current_row_class = ($current_weekday == $i) ? ' class="day-highlight"' : '';
 									echo sprintf('<tr%s>',$current_row_class);
-									echo sprintf('<td>%s</td>',$this->days[$i]);
+									echo sprintf('<th>%s</th>',$this->days[$i]);
 
 									if ($hourset[$i]['appt'] == 1 && !empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
 										echo sprintf('<td colspan="2">%s - %s & Appointment</td>',$hourset[$i]['open'],$hourset[$i]['close']);
@@ -403,7 +403,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			'selector' => 'Small, left label',
 			'uses_labels' => true,
 			'before' => '<table>',
-			'repeater' => '<tr><td>%1$s</td><td class="phone-link"><a href="tel:%2$s">%2$s</a></td><tr>',
+			'repeater' => '<tr><th>%1$s</th><td class="phone-link"><a href="tel:%2$s">%2$s</a></td><tr>',
 			'after' => '</table>',
 			),
 		'large_no_label' => array(
@@ -417,21 +417,21 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			'selector' => 'Large tabled, left label',
 			'uses_labels' => true,
 			'before' => '<table>',
-			'repeater' => '<tr><td>%1$s</td><td class="phone-link"><a href="tel:%2$s">%2$s</a></td><tr>',
+			'repeater' => '<tr><th>%1$s</th><td class="phone-link"><a href="tel:%2$s">%2$s</a></td><tr>',
 			'after' => '</table>',
 			),
 		'large_left_label' => array(
 			'selector' => 'Large, small left label',
 			'uses_labels' => true,
 			'before' => '<table>',
-			'repeater' => '<tr><td>%1$s</td><td><h2><a href="tel:%2$s">%2$s</a></h2></td><tr>',
+			'repeater' => '<tr><th>%1$s</th><td><h2><a href="tel:%2$s">%2$s</a></h2></td><tr>',
 			'after' => '</table>',
 			),
 		'large_right_label' => array(
 			'selector' => 'Large, small right label',
 			'uses_labels' => true,
 			'before' => '<table>',
-			'repeater' => '<tr><td><h2><a href="tel:%2$s">%2$s</a></h2></td><td>%1$s</td><tr>',
+			'repeater' => '<tr><td><h2><a href="tel:%2$s">%2$s</a></h2></td><th>%1$s</th><tr>',
 			'after' => '</table>',
 			),
 		'single_line_labels' => array(
