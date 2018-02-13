@@ -922,8 +922,10 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		}
 
 		//other custom prices
-		foreach( $_POST[ apply_filters( 'translate_meta_field_key', 'prices' ) ] as $key => $value ) {
-			$price_arr[$key] = $value;
+		if( isset( $_POST[ $price_arr_key ] ) ) {
+			foreach( $_POST[ $price_arr_key ] as $key => $value ) {
+				$price_arr[$key] = $value;
+			}
 		}
 
 		update_post_meta( $post->ID, $price_arr_key, $price_arr );
