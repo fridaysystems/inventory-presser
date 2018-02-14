@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: http://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 3.7.0
+ * Version: 3.8.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -15,23 +15,24 @@ defined( 'ABSPATH' ) OR exit;
 
 //Include our object definition dependencies
 $inventory_presser_include_paths = array(
-	'includes/class-add-custom-fields-to-search.php',
-	'includes/class-customize-admin-dashboard.php',
-	'includes/class-dealership-options.php',
-	'includes/class-fuel-economy-widget.php',
-	'includes/class-option-manager.php',
-	'includes/class-order-by-post-meta-widget.php',
-	'includes/class-redirect-404-vehicles.php',
-	'includes/class-reports.php',
-	'includes/class-seo.php',
-	'includes/class-shortcodes.php',
-	'includes/class-taxonomies.php',
-	'includes/class-vehicle.php',
-	'includes/class-vehicle-urls-by-vin.php',
-	'includes/class-widgets.php',
+	'class-add-custom-fields-to-search.php',
+	'class-customize-admin-dashboard.php',
+	'class-dealership-options.php',
+	'class-fuel-economy-widget.php',
+	'class-menu-item-email-a-friend.php',
+	'class-option-manager.php',
+	'class-order-by-post-meta-widget.php',
+	'class-redirect-404-vehicles.php',
+	'class-reports.php',
+	'class-seo.php',
+	'class-shortcodes.php',
+	'class-taxonomies.php',
+	'class-vehicle.php',
+	'class-vehicle-urls-by-vin.php',
+	'class-widgets.php',
 );
 foreach( $inventory_presser_include_paths as $path ) {
-	$path = plugin_dir_path( __FILE__ ) . $path;
+	$path = plugin_dir_path( __FILE__ ) . 'includes/' . $path;
 	if( file_exists( $path ) ) {
 		require $path;
 	}
@@ -224,6 +225,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//Customize the behavior of Yoast SEO, if it is active
 			$seo = new Inventory_Presser_SEO();
 			$seo->hooks();
+
+			//Modify the URL of an "Email a Friend" menu item on the "Vehicle Details Buttons" menu
+			$email_a_friend = new Inventory_Presser_Email_A_Friend();
+			$email_a_friend->hooks();
 		}
 
 		function create_custom_post_type( ) {
