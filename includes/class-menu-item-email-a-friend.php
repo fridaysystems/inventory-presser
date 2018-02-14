@@ -72,7 +72,7 @@ class Inventory_Presser_Email_A_Friend{
 
 %s',
 			$post->post_title,
-			get_bloginfo(),
+			html_entity_decode( get_bloginfo(), ENT_QUOTES ), //WordPress encodes quotes in site names
 			get_permalink( $post )
 		);
 
@@ -80,8 +80,8 @@ class Inventory_Presser_Email_A_Friend{
 			'mailto:',
 			sprintf(
 				'mailto:?subject=%s&body=%s" target="_blank',
-				urlencode( $subject ),
-				urlencode( $body )
+				rawurlencode( htmlspecialchars_decode( $subject ) ),
+				rawurlencode( htmlspecialchars_decode( $body ) )
 			),
 			$menu_item
 		);
