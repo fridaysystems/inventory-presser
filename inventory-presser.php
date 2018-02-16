@@ -229,6 +229,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//Modify the URL of an "Email a Friend" menu item on the "Vehicle Details Buttons" menu
 			$email_a_friend = new Inventory_Presser_Email_A_Friend();
 			$email_a_friend->hooks();
+
+			//Skip the trash bin and always permanently delete vehicles
+			add_action( 'trashed_post', array( $this, 'skip_trash' ) );
 		}
 
 		function create_custom_post_type( ) {
@@ -453,6 +456,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'sort_vehicles_order' => 'ASC',
 			);
 			return wp_parse_args( get_option( '_dealer_settings' ), $defaults );
+		}
+
+		function skip_trash( $post_id ) {
+			//is the post a vehicle?
+			if( self::CUSTOM_POST_TYPE == get_post_type( $post_id ) ) {
+				//force delete
+				wp_delete_post( $post_id, true );
+			}
 		}
 
 	} //end class
