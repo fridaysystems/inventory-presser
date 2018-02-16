@@ -15,10 +15,7 @@
 if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 	class Add_Custom_Fields_To_Search {
 
-		function __construct() {
-
-			if( is_admin() ) { return; } // only front-end searches
-
+		function hooks() {
 			add_filter( 'posts_distinct', array( $this, 'cf_search_distinct' ) );
 			add_filter( 'posts_join', array( $this, 'cf_search_join' ) );
 			add_filter( 'posts_where', array( $this, 'cf_search_where' ) );

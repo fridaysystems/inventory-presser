@@ -48,6 +48,7 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 == Changelog ==
 
 = 3.9.0 =
+* [Added] Modifications to searches to include vehicle data like stock numbers and VINs is extended to searches conducted in the admin dashboard.
 * [Changed] Vehicles will no longer go to Trash upon deletion and instead will be permanently deleted.
 
 = 3.8.0 =

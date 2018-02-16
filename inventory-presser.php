@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: http://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 3.8.0
+ * Version: 3.9.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -207,6 +207,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Allow custom fields to be searched
 			$add_custom_fields_to_search = new Add_Custom_Fields_To_Search();
+			$add_custom_fields_to_search->hooks();
 
 			//Redirect URLs by VINs to proper vehicle permalinks
 			$allow_urls_by_vin = new Vehicle_URLs_By_VIN();
