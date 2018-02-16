@@ -47,6 +47,9 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 
 == Changelog ==
 
+= 3.9.0 =
+* [Changed] Vehicles will no longer go to Trash upon deletion and instead will be permanently deleted.
+
 = 3.8.0 =
 * [Added] Merged a feature plugin into core that enables an "Email a Friend" button on VDP.
 * [Changed] Tested up to 4.9.4

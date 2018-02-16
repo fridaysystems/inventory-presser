@@ -129,7 +129,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$wp_rewrite->rules = $this->generate_rewrite_rules( self::CUSTOM_POST_TYPE ) + $wp_rewrite->rules;
 		}
 
-		function __construct( ) {
+		function hooks( ) {
 
 			//Allow translations
 			add_action( 'plugins_loaded', function() {
@@ -467,7 +467,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 	} //end class
-	$inventory_presser = new Inventory_Presser_Plugin;
+	$inventory_presser = new Inventory_Presser_Plugin();
+	$inventory_presser->hooks();
 
 	//Populate our taxonomies with terms if they do not already exist
 	function invp_populate_default_terms() {
