@@ -66,6 +66,29 @@ class Inventory_Presser_Email_A_Friend{
 
 		//change the link to contain vehicle information
 		global $post;
+		$menu_item = str_replace(
+			'mailto:',
+			$this->url( $post ) . '" target="_blank',
+			$menu_item
+		);
+
+		return $menu_item;
+	}
+
+	/**
+	 * Creates a mailto: url to draft an email containing vehicle information.
+	 *
+	 * @uses get_bloginfo(), get_permalink()
+	 *
+	 * @param object $post a post object of type inventory_vehicle
+	 * @return string
+	 */
+	public function url( $post ) {
+
+		if( ! isset( $post->post_title ) ) {
+			return '';
+		}
+
 		$subject = 'Check out this ' . $post->post_title;
 		$body = sprintf(
 			'Please look at this %s for sale at %s:
@@ -75,17 +98,10 @@ class Inventory_Presser_Email_A_Friend{
 			html_entity_decode( get_bloginfo(), ENT_QUOTES ), //WordPress encodes quotes in site names
 			get_permalink( $post )
 		);
-
-		$menu_item = str_replace(
-			'mailto:',
-			sprintf(
-				'mailto:?subject=%s&body=%s" target="_blank',
-				rawurlencode( htmlspecialchars_decode( $subject ) ),
-				rawurlencode( htmlspecialchars_decode( $body ) )
-			),
-			$menu_item
+		return sprintf(
+			'mailto:?subject=%s&body=%s',
+			rawurlencode( htmlspecialchars_decode( $subject ) ),
+			rawurlencode( htmlspecialchars_decode( $body ) )
 		);
-
-		return $menu_item;
 	}
 }
