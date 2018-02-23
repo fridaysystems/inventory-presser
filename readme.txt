@@ -34,7 +34,7 @@ e.g.
 
 = How much does this plugin cost? =
 
-This plugin is free, but there are paid upgrades available.
+This plugin is free, but paid add-ons are available at https://inventorypresser.com/.
 
 = Can I import my inventory into this system with a bulk feed? =
 
@@ -49,6 +49,7 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 
 = 3.9.0 =
 * [Added] Modifications to searches to include vehicle data like stock numbers and VINs is extended to searches conducted in the admin dashboard.
+* [Changed] Do not allow non-numeric characters to be entered into the price inputs while editing vehicles.
 * [Changed] Vehicles will no longer go to Trash upon deletion and instead will be permanently deleted.
 
 = 3.8.0 =
