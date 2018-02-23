@@ -85,14 +85,6 @@ class _dealer_settings {
 			'dealership_options_setting_section' // section
 		);
 
-		add_settings_field(
-			'privacy_page', // id
-			'Privacy Policy Page', // title
-			array( $this, 'privacy_page_callback' ), // callback
-			'dealership-options-admin', // page
-			'dealership_options_setting_section' // section
-		);
-
 		//Sort vehicles by [Field] in [Ascending] order
 		add_settings_field(
 			'sort_vehicles_by', // id
@@ -128,10 +120,6 @@ class _dealer_settings {
 
 		if ( isset( $input['contact_page'] ) ) {
 			$sanitary_values['contact_page'] = $input['contact_page'];
-		}
-
-		if ( isset( $input['privacy_page'] ) ) {
-			$sanitary_values['privacy_page'] = $input['privacy_page'];
 		}
 
 		if ( isset( $input['sort_vehicles_by'] ) ) {
@@ -187,22 +175,6 @@ class _dealer_settings {
 
 		wp_dropdown_pages($args);
 		echo '<p class="description" id="_dealer_settings[contact_page]-description">Identifying your contact page here allows themes to create "Contact Us" links and buttons near vehicles that lead to the correct page.</strong></p>';
-	}
-
-	public function privacy_page_callback() {
-
-		$args = array(
-		    'depth'                 => 0,
-		    'child_of'              => 0,
-		    'selected'              => isset($this->_dealer_settings['privacy_page']) ? $this->_dealer_settings['privacy_page'] : 0,
-		    'echo'                  => 1,
-		    'name'                  => '_dealer_settings[privacy_page]',
-		    'show_option_none'      => 'Not Set',
-		    'option_none_value'     => '0'
-		);
-
-		wp_dropdown_pages($args);
-		echo '<p class="description" id="_dealer_settings[privacy_page]-description">Identifying your privacy policy page here allows themes to create links to the correct page.</strong></p>';
 	}
 
 	public function sort_vehicles_by_callback() {
