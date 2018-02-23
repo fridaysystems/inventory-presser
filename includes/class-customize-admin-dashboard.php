@@ -192,56 +192,60 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			 */
 			$post = get_post( $_POST['post_ID'] );
 		}
-		if( $this->post_type() == $post->post_type ) {
-			$attachments = get_children( array(
-				'post_parent'    => $post->ID,
-				'post_type'      => 'attachment',
-				'posts_per_page' => -1,
-			) );
-			$counts = array(
-				'image' => 0,
-				'video' => 0,
-				'text'  => 0,
-				'PDF'   => 0,
-				'other' => 0,
-			);
-			foreach( $attachments as $attachment ) {
-				switch( $attachment->post_mime_type ) {
-					case 'image/jpeg':
-					case 'image/png':
-					case 'image/gif':
-						$counts['image']++;
-						break;
-					case 'video/mpeg':
-					case 'video/mp4':
-					case 'video/quicktime':
-						$counts['video']++;
-						break;
-					case 'text/csv':
-					case 'text/plain':
-					case 'text/xml':
-						$counts['text']++;
-						break;
-					case 'application/pdf':
-						$counts['PDF']++;
-						break;
-					default:
-						$counts['other']++;
-						break;
-				}
-			}
-			if( 0 < ( $counts['image'] + $counts['video'] + $counts['text'] + $counts['PDF'] + $counts['other'] ) ) {
-				$note = '';
-				foreach( $counts as $key => $count ) {
-					if( 0 < $count ) {
-						if( '' != $note ) { $note .= ', '; }
-						$note .= $count . ' ' . $key . ( 1 != $count ? 's' : '' );
-					}
-				}
-				return $note;
-			}
-			return '0 photos';
+
+		if( ! isset( $post->post_type ) || $this->post_type() != $post->post_type ) {
+			return;
 		}
+
+		$attachments = get_children( array(
+			'post_parent'    => $post->ID,
+			'post_type'      => 'attachment',
+			'posts_per_page' => -1,
+		) );
+		$counts = array(
+			'image' => 0,
+			'video' => 0,
+			'text'  => 0,
+			'PDF'   => 0,
+			'other' => 0,
+		);
+		foreach( $attachments as $attachment ) {
+			switch( $attachment->post_mime_type ) {
+				case 'image/jpeg':
+				case 'image/png':
+				case 'image/gif':
+					$counts['image']++;
+					break;
+				case 'video/mpeg':
+				case 'video/mp4':
+				case 'video/quicktime':
+					$counts['video']++;
+					break;
+				case 'text/csv':
+				case 'text/plain':
+				case 'text/xml':
+					$counts['text']++;
+					break;
+				case 'application/pdf':
+					$counts['PDF']++;
+					break;
+				default:
+					$counts['other']++;
+					break;
+			}
+		}
+		if( 0 < ( $counts['image'] + $counts['video'] + $counts['text'] + $counts['PDF'] + $counts['other'] ) ) {
+			$note = '';
+			foreach( $counts as $key => $count ) {
+				if( 0 < $count ) {
+					if( '' != $note ) { $note .= ', '; }
+					$note .= $count . ' ' . $key . ( 1 != $count ? 's' : '' );
+				}
+			}
+			return $note;
+		}
+		return '0 photos';
+
 	}
 
 	function create_delete_all_post_attachments_button( ) {
@@ -625,7 +629,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			$value = get_post_meta( $post->ID, $meta_key, true );
 
 			echo '<tr><th scope="row"><label for="' . $meta_key . '">' . $label . '</label></th>'
-				. '<td><input type="text" name="' . $meta_key . '" value="' . $value . '"></td></tr>';
+				. '<td><input type="text" name="' . $meta_key . '" value="' . $value . '" onkeypress="return is_number(event)"></td></tr>';
 		}
 
 		//Payment frequency is a drop-down

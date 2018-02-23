@@ -71,6 +71,12 @@ function invp_vehicle_type_changed( type_slug ) {
 	}
 }
 
+function is_number( evt ) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    return ! (charCode > 31 && ( charCode < 48 || charCode > 57 ) );
+}
+
 function update_add_media_button_annotation( ) {
 	var data = {
 		'action': 'output_add_media_button_annotation',
