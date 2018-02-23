@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.4
-Stable tag: 3.8.0
+Stable tag: 4.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,9 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 2. This is the edit screen that adds or edits a single vehicle. The post content box is demoted to handle only the sentence-form vehicle description, and the entire edit screen is enhanced to support vehicle attributes. This screen shot was taken on version 3.1.0.
 
 == Changelog ==
+
+= 4.0.0 =
+* [Removed] Moved Friday Systems features out of this plugin and into another. No longer save the IDs of contact and financing pages with plugin settings so that menu links to those pages can have querystring variables that identify vehicles appended.
 
 = 3.9.0 =
 * [Added] Modifications to searches to include vehicle data like stock numbers and VINs is extended to searches conducted in the admin dashboard.
