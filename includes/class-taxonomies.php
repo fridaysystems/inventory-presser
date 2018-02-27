@@ -22,7 +22,7 @@ class Inventory_Presser_Taxonomies {
 		//create custom taxonomies for vehicles
 		add_action( 'init', array( $this, 'create_custom_taxonomies' ) );
 
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_term_data' ));
+		add_action( 'invp_delete_all_data', array( $this, 'delete_term_data' ));
 
 		// location taxonomy admin actions
 		add_action( 'location_add_form_fields', array( $this, 'add_location_fields'), 10, 2 );
@@ -338,11 +338,11 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	function meta_box_html_transmission( $post ) {
-		echo $this->taxonomy_meta_box_html( 'transmission', apply_filters( 'translate_meta_field_key', 'transmission' ), $post );
+		echo $this->taxonomy_meta_box_html( 'transmission', apply_filters( 'invp_prefix_meta_key', 'transmission' ), $post );
 	}
 
 	function meta_box_html_type( $post ) {
-		$html = $this->taxonomy_meta_box_html( 'type', apply_filters( 'translate_meta_field_key', 'type' ), $post );
+		$html = $this->taxonomy_meta_box_html( 'type', apply_filters( 'invp_prefix_meta_key', 'type' ), $post );
 		//add an onchange attribute to the select
 		$html = str_replace( '<select', '<select onchange="invp_vehicle_type_changed( this.value );" ', $html );
 		echo $html;
@@ -518,7 +518,7 @@ class Inventory_Presser_Taxonomies {
 	//this is an array of taxonomy names and the corresponding arrays of term data
 	function taxonomy_data( ) {
 		return apply_filters(
-			'inventory_presser_taxonomy_data',
+			'invp_taxonomy_data',
 			array (
 				array (
 					'args' => array (

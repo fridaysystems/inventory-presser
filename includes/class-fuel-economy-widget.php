@@ -13,7 +13,7 @@ class Fuel_Economy_Widget extends WP_Widget {
  			array( 'description' => __( 'MPG ratings for the current vehicle.', 'inventory-presser' ), ) // Args
  		);
 
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
+		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {

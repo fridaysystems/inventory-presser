@@ -84,7 +84,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$old = $query->get( 'meta_query', array() );
 			switch( $query->query_vars['meta_key'] ) {
 
-				//MAKE
+				//make
 				case 'inventory_presser_make':
 					$query->set( 'meta_query', array_merge( $old, array(
 							'relation' => 'AND',
@@ -94,7 +94,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					) );
 					break;
 
-				//MODEL
+				//model
 				case 'inventory_presser_model':
 					$query->set( 'meta_query', array_merge( $old, array(
 							'relation' => 'AND',
@@ -104,7 +104,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					) );
 					break;
 
-				//YEAR
+				//year
 				case 'inventory_presser_year':
 					$query->set( 'meta_query', array_merge( $old, array(
 							'relation' => 'AND',
@@ -118,8 +118,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 
 			//Allow other developers to decide if the post meta values are numbers
-			$vehicle = new Inventory_Presser_Vehicle(); //UGLY: to add a filter before this next line
-			$meta_value_or_meta_value_num = apply_filters( 'inventory_presser_meta_value_or_meta_value_num', 'meta_value', $key );
+			$vehicle = new Inventory_Presser_Vehicle();
+			$meta_value_or_meta_value_num = apply_filters( 'invp_meta_value_or_meta_value_num', 'meta_value', $key );
 			$query->set( 'orderby', $meta_value_or_meta_value_num );
 			$query->set( 'order', $direction );
 		}
@@ -177,8 +177,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 
 			//Translate friendly names to actual custom field keys and the other way
-			add_filter( 'translate_meta_field_key', array( $this, 'translate_custom_field_names' ) );
-			add_filter( 'untranslate_meta_field_key', array( $this, 'untranslate_custom_field_names' ) );
+			add_filter( 'invp_prefix_meta_key', array( $this, 'translate_custom_field_names' ) );
+			add_filter( 'invp_unprefix_meta_key', array( $this, 'untranslate_custom_field_names' ) );
 
 			/**
 			 * Make a widget available to sort vehicles by post meta fields.
@@ -216,9 +216,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$redirect_404_vehicles = new Redirect_404_Vehicles();
 			$redirect_404_vehicles->hooks();
 
-			add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_options' ) );
+			add_action( 'invp_delete_all_data', array( $this, 'delete_options' ) );
 			//deactivate so the next page load doesn't restore the option & terms
-			add_action( 'inventory_presser_delete_all_data', array( $this, 'deactivate' ), 99 );
+			add_action( 'invp_delete_all_data', array( $this, 'deactivate' ), 99 );
 
 			//Include CSS on the frontend
 			add_action( 'wp_enqueue_scripts', array( $this, 'include_styles' ), 11 );
@@ -240,7 +240,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			register_post_type(
 				self::CUSTOM_POST_TYPE,
 				apply_filters(
-					'inventory_presser_post_type_args',
+					'invp_post_type_args',
 					array (
 						'description'  => __( 'Vehicles for sale in an automobile or powersports dealership', 'inventory-presser' ),
 						/**
@@ -378,6 +378,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function modify_query_orderby( $pieces ) {
+
 			/**
 			 * Count the number of meta fields we have added to the query by parsing
 			 * the join piece of the query
@@ -453,7 +454,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		//Get this plugin's Options page settings mingled with default values
 		function settings() {
 			$defaults = array(
-				'sort_vehicles_by' => apply_filters( 'translate_meta_field_key', 'make' ),
+				'sort_vehicles_by' => apply_filters( 'invp_prefix_meta_key', 'make' ),
 				'sort_vehicles_order' => 'ASC',
 			);
 			return wp_parse_args( get_option( '_dealer_settings' ), $defaults );

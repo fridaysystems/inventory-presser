@@ -121,7 +121,7 @@ class _dealer_settings {
 
 		//use these default values if we have none
 		if( ! isset( $this->_dealer_settings['sort_vehicles_by'] ) ) {
-			$this->_dealer_settings['sort_vehicles_by'] = apply_filters( 'translate_meta_field_key', 'make' );
+			$this->_dealer_settings['sort_vehicles_by'] = apply_filters( 'invp_prefix_meta_key', 'make' );
 		}
 		if( ! isset( $this->_dealer_settings['sort_vehicles_order'] ) ) {
 			$this->_dealer_settings['sort_vehicles_order'] = 'ASC';
@@ -150,7 +150,7 @@ class _dealer_settings {
 			);
 			if( in_array( $key, $non_sortable_keys ) ) { continue; }
 
-			$meta_key = apply_filters( 'translate_meta_field_key', $key );
+			$meta_key = apply_filters( 'invp_prefix_meta_key', $key );
 
 			//Skip hidden post meta keys
 			if( '_' == $meta_key[0] ) { continue; }

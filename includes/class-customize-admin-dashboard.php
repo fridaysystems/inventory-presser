@@ -16,12 +16,12 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 	function add_columns_to_vehicles_table( $column ) {
 		//add our columns
-		$column[apply_filters( 'translate_meta_field_key', 'stock_number' )] = 'Stock #';
-		$column[apply_filters( 'translate_meta_field_key', 'color' )] = 'Color';
-		$column[apply_filters( 'translate_meta_field_key', 'odometer' )] = 'Odometer';
-		$column[apply_filters( 'translate_meta_field_key', 'price' )] = 'Price';
-		$column[apply_filters( 'translate_meta_field_key', 'photo_count' )] = 'Photos';
-		$column[apply_filters( 'translate_meta_field_key', 'thumbnail' )] = 'Thumbnail';
+		$column[apply_filters( 'invp_prefix_meta_key', 'stock_number' )] = 'Stock #';
+		$column[apply_filters( 'invp_prefix_meta_key', 'color' )] = 'Color';
+		$column[apply_filters( 'invp_prefix_meta_key', 'odometer' )] = 'Odometer';
+		$column[apply_filters( 'invp_prefix_meta_key', 'price' )] = 'Price';
+		$column[apply_filters( 'invp_prefix_meta_key', 'photo_count' )] = 'Photos';
+		$column[apply_filters( 'invp_prefix_meta_key', 'thumbnail' )] = 'Thumbnail';
 		//remove the date and tags columns
 		unset( $column['date'] );
 		unset( $column['tags'] );
@@ -302,7 +302,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			}
 		}
 
-		do_action( 'inventory_presser_delete_all_data' );
+		do_action( 'invp_delete_all_data' );
 	}
 
 	function delete_all_inventory( ) {
@@ -361,7 +361,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			'post_type'      => 'attachment',
 			'meta_query'     => array(
 				array(
-					'key'     => apply_filters( 'translate_meta_field_key', 'photo_number' ),
+					'key'     => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
 					'compare' => 'EXISTS'
 				)
 			),
@@ -370,7 +370,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			wp_delete_post( $post->ID );
 		}
 
-		do_action( 'inventory_presser_delete_all_inventory' );
+		do_action( 'invp_delete_all_inventory' );
 
 		return $deleted_count;
 	}
@@ -450,8 +450,8 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 				$order = 'ASC';
 			}
 
-			if( apply_filters( 'translate_meta_field_key', 'photo_count' ) == $orderby
-				|| apply_filters( 'translate_meta_field_key', 'thumbnail' ) == $orderby )
+			if( apply_filters( 'invp_prefix_meta_key', 'photo_count' ) == $orderby
+				|| apply_filters( 'invp_prefix_meta_key', 'thumbnail' ) == $orderby )
 			{
 				global $wpdb;
 				$pieces[ 'orderby' ] = "( SELECT COUNT( ID ) FROM {$wpdb->posts} forget WHERE post_parent = {$wpdb->posts}.ID ) $order, " . $pieces[ 'orderby' ];
@@ -492,26 +492,26 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 	function make_vehicles_table_columns_sortable( $columns ) {
 		$custom = array(
 			// meta column id => sortby value used in query
-			apply_filters( 'translate_meta_field_key', 'color' )        => apply_filters( 'translate_meta_field_key', 'color' ),
-			apply_filters( 'translate_meta_field_key', 'odometer' )     => apply_filters( 'translate_meta_field_key', 'odometer' ),
-			apply_filters( 'translate_meta_field_key', 'price' )        => apply_filters( 'translate_meta_field_key', 'price' ),
-			apply_filters( 'translate_meta_field_key', 'stock_number' ) => apply_filters( 'translate_meta_field_key', 'stock_number' ),
-			apply_filters( 'translate_meta_field_key', 'photo_count' )  => apply_filters( 'translate_meta_field_key', 'photo_count' ),
-			apply_filters( 'translate_meta_field_key', 'thumbnail' )    => apply_filters( 'translate_meta_field_key', 'thumbnail' ),
+			apply_filters( 'invp_prefix_meta_key', 'color' )        => apply_filters( 'invp_prefix_meta_key', 'color' ),
+			apply_filters( 'invp_prefix_meta_key', 'odometer' )     => apply_filters( 'invp_prefix_meta_key', 'odometer' ),
+			apply_filters( 'invp_prefix_meta_key', 'price' )        => apply_filters( 'invp_prefix_meta_key', 'price' ),
+			apply_filters( 'invp_prefix_meta_key', 'stock_number' ) => apply_filters( 'invp_prefix_meta_key', 'stock_number' ),
+			apply_filters( 'invp_prefix_meta_key', 'photo_count' )  => apply_filters( 'invp_prefix_meta_key', 'photo_count' ),
+			apply_filters( 'invp_prefix_meta_key', 'thumbnail' )    => apply_filters( 'invp_prefix_meta_key', 'thumbnail' ),
 		);
 		return wp_parse_args( $custom, $columns );
 	}
 
 	function meta_box_html_featured( $post ) {
-		echo '<input type="checkbox" id="' . apply_filters( 'translate_meta_field_key', 'featured' )
-			. '" name="' . apply_filters( 'translate_meta_field_key', 'featured' )
+		echo '<input type="checkbox" id="' . apply_filters( 'invp_prefix_meta_key', 'featured' )
+			. '" name="' . apply_filters( 'invp_prefix_meta_key', 'featured' )
 			. '" ' .
-			checked( '1', get_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'featured' ), true ), false )
-			. ' value="1"><label for="' . apply_filters( 'translate_meta_field_key', 'featured' ) .'">Featured in slideshows</label>';
+			checked( '1', get_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'featured' ), true ), false )
+			. ' value="1"><label for="' . apply_filters( 'invp_prefix_meta_key', 'featured' ) .'">Featured in slideshows</label>';
 	}
 
 	function meta_box_html_options( $post ) {
-		$options = apply_filters( 'inventory_presser_default_options', array(
+		$options = apply_filters( 'invp_default_options', array(
 			'3rd Row Seats' => false,
 			'Air Bags' => false,
 			'Air Conditioning' => false,
@@ -591,7 +591,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			'Wire Wheels' => false,
 			'Xenon Headlights' => false,
 		) );
-		$options_arr = get_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'option_array' ), true );
+		$options_arr = get_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'option_array' ), true );
 		if( is_array( $options_arr ) ) {
 			foreach( $options_arr as $option ) {
 				$options[$option] = true;
@@ -625,7 +625,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 		echo '<table class="form-table"><tbody>';
 		foreach( $prices as $key => $label ) {
-			$meta_key = apply_filters( 'translate_meta_field_key', $key );
+			$meta_key = apply_filters( 'invp_prefix_meta_key', $key );
 			$value = get_post_meta( $post->ID, $meta_key, true );
 
 			echo '<tr><th scope="row"><label for="' . $meta_key . '">' . $label . '</label></th>'
@@ -633,7 +633,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		}
 
 		//Payment frequency is a drop-down
-		$meta_key = apply_filters( 'translate_meta_field_key', 'payment_frequency' );
+		$meta_key = apply_filters( 'invp_prefix_meta_key', 'payment_frequency' );
 		$payment_frequency = get_post_meta( $post->ID, $meta_key, true );
 
 		echo '<tr><th scope="row"><label for="' . $meta_key . '">Payment frequency</label></th>'
@@ -653,7 +653,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		echo '</select></td></tr>';
 
 		//handle all other keys in the prices array, could be any keys
-		$prices_meta_key = apply_filters( 'translate_meta_field_key', 'prices' );
+		$prices_meta_key = apply_filters( 'invp_prefix_meta_key', 'prices' );
 		$prices = get_post_meta( $post->ID, $prices_meta_key, true );
 		if( is_array( $prices ) ) {
 			foreach( $prices as $key => $value ) {
@@ -672,38 +672,38 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		//HTML output for vehicle data meta box
 		$custom = get_post_custom( $post->ID );
 
-		$body_style = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'body_style' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'body_style' )][0] : '' );
-		$color = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'color' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'color' )][0] : '' );
-		$engine = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'engine' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'engine' )][0] : '' );
-		$interior_color = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'interior_color' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'interior_color' )][0] : '' );
-		$make = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'make' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'make' )][0] : '' );
-		$model = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'model' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'model' )][0] : '' );
-		$odometer = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'odometer' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'odometer' )][0] : '' );
-		$stock_number = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'stock_number' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'stock_number' )][0] : '' );
-		$trim = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'trim' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'trim' )][0] : '' );
-		$VIN = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'vin' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'vin' )][0] : '' );
-		$year = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'year' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'year' )][0] : '' );
+		$body_style = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'body_style' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'body_style' )][0] : '' );
+		$color = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'color' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'color' )][0] : '' );
+		$engine = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'engine' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'engine' )][0] : '' );
+		$interior_color = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'interior_color' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'interior_color' )][0] : '' );
+		$make = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'make' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'make' )][0] : '' );
+		$model = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'model' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'model' )][0] : '' );
+		$odometer = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'odometer' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'odometer' )][0] : '' );
+		$stock_number = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'stock_number' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'stock_number' )][0] : '' );
+		$trim = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'trim' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'trim' )][0] : '' );
+		$VIN = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'vin' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'vin' )][0] : '' );
+		$year = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'year' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'year' )][0] : '' );
 
 		//boat items
-		$beam = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'beam' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'beam' )][0] : '' );
-		$length = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'length' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'length' )][0] : '' );
-		$hull_material = ( isset( $custom[apply_filters( 'translate_meta_field_key', 'hull_material' )] ) ? $custom[apply_filters( 'translate_meta_field_key', 'hull_material' )][0] : '' );
+		$beam = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'beam' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'beam' )][0] : '' );
+		$length = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'length' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'length' )][0] : '' );
+		$hull_material = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'hull_material' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'hull_material' )][0] : '' );
 
 		echo '<table class="form-table"><tbody>'
 
 		//VIN
-			. '<tr><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'vin' ) . '">VIN</label></th>'
+			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'vin' ) . '">VIN</label></th>'
 			. '<td>'
-			. apply_filters( 'inventory_presser_edit_control_vin', '<input type="text" name="' . apply_filters( 'translate_meta_field_key', 'vin' ) . '" maxlength="17" value="'. $VIN .'">' )
+			. apply_filters( 'invp_edit_control_vin', '<input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'vin' ) . '" maxlength="17" value="'. $VIN .'">' )
 			. '</td>'
 
 		//Stock number
-			. '<tr><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'stock_number' ) . '">Stock number</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'translate_meta_field_key', 'stock_number' ) . '" value="'. $stock_number .'"></td>'
+			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'stock_number' ) . '">Stock number</label></th>'
+			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'stock_number' ) . '" value="'. $stock_number .'"></td>'
 
 		//Year
-			. '<tr><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'year' ) . '">Year</label></th>'
-			. '<td><select name="' . apply_filters( 'translate_meta_field_key', 'year' ) . '"><option></option>';
+			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'year' ) . '">Year</label></th>'
+			. '<td><select name="' . apply_filters( 'invp_prefix_meta_key', 'year' ) . '"><option></option>';
 
 		for( $y=date('Y')+2; $y>=1920; $y-- ) {
 			echo '<option' . selected( $y, $year, false ) . '>' .$y. '</option>';
@@ -712,26 +712,26 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		echo '</select></td></tr>'
 
 		//Make
-			. '<tr><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'make' ) . '">Make</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'translate_meta_field_key', 'make' ) . '" value="' .$make. '"></td></tr>'
+			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'make' ) . '">Make</label></th>'
+			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'make' ) . '" value="' .$make. '"></td></tr>'
 
 		//Model
-			. '<tr><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'model' ) . '">Model</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'translate_meta_field_key', 'model' ) . '" value="' .$model. '"></td></tr>'
+			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'model' ) . '">Model</label></th>'
+			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'model' ) . '" value="' .$model. '"></td></tr>'
 
 		//Trim level
-			. '<tr><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'trim' ) . '">Trim</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'translate_meta_field_key', 'trim' ) . '" value="' .$trim. '"></td></tr>'
+			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'trim' ) . '">Trim</label></th>'
+			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'trim' ) . '" value="' .$trim. '"></td></tr>'
 
 		//Engine
-			. '<tr><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'engine' ) . '">Engine</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'translate_meta_field_key', 'engine' ) . '" value="' .$engine. '"></td></tr>'
+			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'engine' ) . '">Engine</label></th>'
+			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'engine' ) . '" value="' .$engine. '"></td></tr>'
 
 		//Body style
-			. '<tr><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'body_style' ) . '">Body style</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'translate_meta_field_key', 'body_style' ) . '" id="' . apply_filters( 'translate_meta_field_key', 'body_style' ). '" value="' .$body_style. '">'
+			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'body_style' ) . '">Body style</label></th>'
+			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'body_style' ) . '" id="' . apply_filters( 'invp_prefix_meta_key', 'body_style' ). '" value="' .$body_style. '">'
 
-			. '<select name="' . apply_filters( 'translate_meta_field_key', 'body_style' ) . '_hidden" id="' . apply_filters( 'translate_meta_field_key', 'body_style' ) . '_hidden">';
+			. '<select name="' . apply_filters( 'invp_prefix_meta_key', 'body_style' ) . '_hidden" id="' . apply_filters( 'invp_prefix_meta_key', 'body_style' ) . '_hidden">';
 
 			$boat_styles = apply_filters( 'invp_default_boat_styles', array(
 				'Bass boat',
@@ -750,29 +750,29 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			echo '</select></td></tr>'
 
 		//Color
-			. '<tr><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'color' ) . '">Color</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'translate_meta_field_key', 'color' ) . '" value="' .$color. '"></td></tr>'
+			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'color' ) . '">Color</label></th>'
+			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'color' ) . '" value="' .$color. '"></td></tr>'
 
 		//Interior color
-			. '<tr><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'interior_color' ) . '">Interior color</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'translate_meta_field_key', 'interior_color' ) . '" value="' .$interior_color. '"></td></tr>'
+			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'interior_color' ) . '">Interior color</label></th>'
+			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'interior_color' ) . '" value="' .$interior_color. '"></td></tr>'
 
 		//Odometer
-			. '<tr><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'odometer' ) . '">Odometer</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'translate_meta_field_key', 'odometer' ) . '" value="' .$odometer. '">'
+			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'odometer' ) . '">Odometer</label></th>'
+			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'odometer' ) . '" value="' .$odometer. '">'
 			. ' <span class="invp_odometer_units">' . apply_filters( 'invp_odometer_word', 'miles' ) . '</span></td></tr>'
 
 		//Beam (boats)
-			. '<tr class="boat-postmeta"><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'beam' ) . '">Beam</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'translate_meta_field_key', 'beam' ) . '" value="' .$beam. '"></td></tr>'
+			. '<tr class="boat-postmeta"><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'beam' ) . '">Beam</label></th>'
+			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'beam' ) . '" value="' .$beam. '"></td></tr>'
 
 		//Length (boats)
-			. '<tr class="boat-postmeta"><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'length' ) . '">Length</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'translate_meta_field_key', 'length' ) . '" value="' .$length. '"></td></tr>'
+			. '<tr class="boat-postmeta"><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'length' ) . '">Length</label></th>'
+			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'length' ) . '" value="' .$length. '"></td></tr>'
 
 		//Hull material
-			. '<tr class="boat-postmeta"><th scope="row"><label for="' . apply_filters( 'translate_meta_field_key', 'hull_material' ) . '">Hull material</label></th>'
-			. '<td><select name="' . apply_filters( 'translate_meta_field_key', 'hull_material' ) .'"><option></option>';
+			. '<tr class="boat-postmeta"><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'hull_material' ) . '">Hull material</label></th>'
+			. '<td><select name="' . apply_filters( 'invp_prefix_meta_key', 'hull_material' ) .'"><option></option>';
 
 			$hull_materials = apply_filters( 'invp_default_hull_materials', array(
 				'Aluminum',
@@ -837,21 +837,21 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$val = ( isset( $custom_fields[$column_name] ) ? $custom_fields[$column_name][0] : '' );
 		switch( true ) {
 
-			case $column_name == apply_filters( 'translate_meta_field_key', 'thumbnail' ):
+			case $column_name == apply_filters( 'invp_prefix_meta_key', 'thumbnail' ):
 				echo get_the_post_thumbnail( $post_id, 'thumbnail' );
 				break;
 
-			case $column_name == apply_filters( 'translate_meta_field_key', 'odometer' ):
+			case $column_name == apply_filters( 'invp_prefix_meta_key', 'odometer' ):
 				$vehicle = new Inventory_Presser_Vehicle();
 				$vehicle->odometer = $val;
 				echo $vehicle->odometer();
 				break;
 
-			case $column_name == apply_filters( 'translate_meta_field_key', 'photo_count' ):
+			case $column_name == apply_filters( 'invp_prefix_meta_key', 'photo_count' ):
 				echo count( get_children( array( 'post_parent' => $post_id ) ) );
 				break;
 
-			case $column_name == apply_filters( 'translate_meta_field_key', 'price' ):
+			case $column_name == apply_filters( 'invp_prefix_meta_key', 'price' ):
 				$vehicle = new Inventory_Presser_Vehicle();
 				$vehicle->price = $val;
 				echo $vehicle->price( '-' );
@@ -887,10 +887,10 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		 * It looks like this: Tue, 06 Sep 2016 09:26:12 -0400
 		 */
 		$offset = sprintf( '%+03d00', intval( get_option('gmt_offset') ) );
-		update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'last_modified' ), current_time( 'D, d M Y h:i:s' ) . ' ' . $offset );
+		update_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'last_modified' ), current_time( 'D, d M Y h:i:s' ) . ' ' . $offset );
 
 		//Clear this value that is defined by a checkbox
-		update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'featured' ), '0' );
+		update_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'featured' ), '0' );
 
 		/**
 		 * Loop over the post meta keys we manage and save their values
@@ -900,7 +900,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$price = 0;
 
 		foreach( $vehicle->keys() as $key ) {
-			$key = apply_filters( 'translate_meta_field_key', $key );
+			$key = apply_filters( 'invp_prefix_meta_key', $key );
 			if ( isset( $_POST[$key] ) ) {
 				if( is_array( $_POST[$key] ) ) {
 					$_POST[$key] = $this->sanitize_array( $_POST[$key] );
@@ -914,14 +914,14 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		/**
 		 * Update the prices array
 		 */
-		$price_arr_key = apply_filters( 'translate_meta_field_key', 'prices' );
+		$price_arr_key = apply_filters( 'invp_prefix_meta_key', 'prices' );
 		$price_arr = get_post_meta( $post->ID, $price_arr_key, true );
 		if( '' == $price_arr ) { $price_arr = []; }
 
 		//our built-in prices should also live in the prices array
 		foreach( $this->default_price_array_keys() as $key ) {
-			if( isset( $_POST[ apply_filters( 'translate_meta_field_key', $key ) ] ) ) {
-				$price_arr[$key] = $_POST[ apply_filters( 'translate_meta_field_key', $key ) ];
+			if( isset( $_POST[ apply_filters( 'invp_prefix_meta_key', $key ) ] ) ) {
+				$price_arr[$key] = $_POST[ apply_filters( 'invp_prefix_meta_key', $key ) ];
 			}
 		}
 
@@ -944,7 +944,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 				array_push( $options, $val );
 			}
 		}
-		update_post_meta( $post->ID, apply_filters( 'translate_meta_field_key', 'option_array' ), $options );
+		update_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'option_array' ), $options );
 	}
 
 	function sanitize_array( $arr ) {
@@ -993,7 +993,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$vehicle = new Inventory_Presser_Vehicle();
 		$orderby = $query->get( 'orderby' );
 		foreach( $columns as $column ) {
-			$meta_key = apply_filters( 'translate_meta_field_key', $column );
+			$meta_key = apply_filters( 'invp_prefix_meta_key', $column );
 			if ( $orderby == $meta_key ) {
 	            $query->set( 'meta_key', $meta_key );
 	            $query->set( 'orderby', 'meta_value' . ( $vehicle->post_meta_value_is_number( $meta_key ) ? '_num' : '' ) );

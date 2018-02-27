@@ -88,7 +88,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 			array( 'description' => 'Display hours of operation.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
+		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -291,7 +291,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 			array( 'description' => 'Display one or more mailing addresses.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
+		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -459,7 +459,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			array( 'description' => 'Display one or more phone numbers.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
+		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -610,7 +610,7 @@ class Carfax_Widget extends WP_Widget {
 			array( 'description' => 'Choose a CARFAX badge that links to your inventory.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
+		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -709,7 +709,7 @@ class KBB_Widget extends WP_Widget {
 			array( 'description' => 'KBB logo image linked to kbb.com', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
+		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -904,7 +904,7 @@ class Stock_Photo_Slider extends WP_Widget {
 			array( 'description' => 'Full width slideshow with multiple vehicle photo sets.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
+		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -1028,7 +1028,7 @@ class Inventory_Slider extends WP_Widget {
 			array( 'description' => 'A slideshow for all vehicles with at least one photo.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
+		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -1252,7 +1252,7 @@ class Inventory_Grid extends WP_Widget {
 			array( 'description' => 'Display a grid of vehicles.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
+		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -1436,7 +1436,7 @@ class Price_Filters extends WP_Widget {
 			array( 'description' => 'Filter vehicles by a maximum price.', )
 		);
 
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
+		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {

@@ -63,8 +63,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		function __construct( $post_id = null ) {
 
 			//Help the order by logic determine which post meta keys are numbers
-			if( ! has_filter( 'inventory_presser_meta_value_or_meta_value_num', array( $this, 'indicate_post_meta_values_are_numbers' ) ) ) {
-				add_filter( 'inventory_presser_meta_value_or_meta_value_num', array( $this, 'indicate_post_meta_values_are_numbers' ), 10, 2 );
+			if( ! has_filter( 'invp_meta_value_or_meta_value_num', array( $this, 'indicate_post_meta_values_are_numbers' ) ) ) {
+				add_filter( 'invp_meta_value_or_meta_value_num', array( $this, 'indicate_post_meta_values_are_numbers' ), 10, 2 );
 			}
 
 			if( is_null( $post_id ) ) { return; }
@@ -81,7 +81,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 			//get these post meta values
 			foreach( $this->keys() as $key ) {
-				$filtered_key = apply_filters( 'translate_meta_field_key', $key );
+				$filtered_key = apply_filters( 'invp_prefix_meta_key', $key );
 				if( isset( $meta[$filtered_key] ) && isset( $meta[$filtered_key][0])) {
 					if( is_array( $this->$key ) ) {
 						$this->$key = unserialize($meta[$filtered_key][0]);
@@ -289,13 +289,13 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		function post_meta_value_is_number( $post_meta_key ) {
 			return in_array( $post_meta_key, array(
-				apply_filters( 'translate_meta_field_key', 'beam' ),
-				apply_filters( 'translate_meta_field_key', 'car_ID' ),
-				apply_filters( 'translate_meta_field_key', 'dealer_ID' ),
-				apply_filters( 'translate_meta_field_key', 'length' ),
-				apply_filters( 'translate_meta_field_key', 'odometer' ),
-				apply_filters( 'translate_meta_field_key', 'price' ),
-				apply_filters( 'translate_meta_field_key', 'year' ),
+				apply_filters( 'invp_prefix_meta_key', 'beam' ),
+				apply_filters( 'invp_prefix_meta_key', 'car_ID' ),
+				apply_filters( 'invp_prefix_meta_key', 'dealer_ID' ),
+				apply_filters( 'invp_prefix_meta_key', 'length' ),
+				apply_filters( 'invp_prefix_meta_key', 'odometer' ),
+				apply_filters( 'invp_prefix_meta_key', 'price' ),
+				apply_filters( 'invp_prefix_meta_key', 'year' ),
 			) );
 		}
 

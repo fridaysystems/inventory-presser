@@ -18,7 +18,7 @@ class Order_By_Widget extends WP_Widget {
  			add_action( 'wp_enqueue_scripts', array( $this, 'load_javascript' ) );
  		}
 
-		add_action( 'inventory_presser_delete_all_data', array( $this, 'delete_option' ) );
+		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	public function delete_option() {
@@ -96,17 +96,17 @@ class Order_By_Widget extends WP_Widget {
 		 * Some fields do not make sense to order by, such as interior color & VIN
 	 	 */
 		$ignored_keys = array(
-			apply_filters( 'translate_meta_field_key', 'car_id' ),
-			apply_filters( 'translate_meta_field_key', 'dealer_id' ),
-			apply_filters( 'translate_meta_field_key', 'engine' ),
-			apply_filters( 'translate_meta_field_key', 'featured' ),
-			apply_filters( 'translate_meta_field_key', 'interior_color' ),
-			apply_filters( 'translate_meta_field_key', 'option_array' ),
-			apply_filters( 'translate_meta_field_key', 'prices' ),
-			apply_filters( 'translate_meta_field_key', 'trim' ),
-			apply_filters( 'translate_meta_field_key', 'vin' ),
+			apply_filters( 'invp_prefix_meta_key', 'car_id' ),
+			apply_filters( 'invp_prefix_meta_key', 'dealer_id' ),
+			apply_filters( 'invp_prefix_meta_key', 'engine' ),
+			apply_filters( 'invp_prefix_meta_key', 'featured' ),
+			apply_filters( 'invp_prefix_meta_key', 'interior_color' ),
+			apply_filters( 'invp_prefix_meta_key', 'option_array' ),
+			apply_filters( 'invp_prefix_meta_key', 'prices' ),
+			apply_filters( 'invp_prefix_meta_key', 'trim' ),
+			apply_filters( 'invp_prefix_meta_key', 'vin' ),
 		);
-		foreach( apply_filters( 'order_by_post_meta_widget_ignored_fields', $ignored_keys ) as $ignored_key ) {
+		foreach( apply_filters( 'invp_sort_by_widget_ignored_fields', $ignored_keys ) as $ignored_key ) {
 			unset( $arr[$ignored_key] );
 		}
 		return $arr;
@@ -135,7 +135,7 @@ class Order_By_Widget extends WP_Widget {
 	}
 
 	function prettify_meta_key( $key ) {
-		return str_replace( '_', ' ', ucfirst( apply_filters( 'untranslate_meta_field_key', $key ) ) );
+		return str_replace( '_', ' ', ucfirst( apply_filters( 'invp_unprefix_meta_key', $key ) ) );
 	}
 
 	/**

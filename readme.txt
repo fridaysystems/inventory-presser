@@ -48,6 +48,16 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 == Changelog ==
 
 = 4.0.0 =
+* [Changed] Changed a filter hook from 'translate_meta_field_key' to 'invp_prefix_meta_key'
+* [Changed] Changed a filter hook from 'untranslate_meta_field_key' to 'invp_unprefix_meta_key'
+* [Changed] Changed a filter hook from 'order_by_post_meta_widget_ignored_fields' to 'invp_sort_by_widget_ignored_fields'
+* [Changed] Changed an action hook from 'inventory_presser_delete_all_data' to 'invp_delete_all_data'
+* [Changed] Changed an action hook from 'inventory_presser_delete_all_inventory' to 'invp_delete_all_inventory'
+* [Changed] Changed a filter hook from 'inventory_presser_edit_control_vin' to 'invp_edit_control_vin'
+* [Changed] Changed a filter hook from 'inventory_presser_default_options' to 'invp_default_options'
+* [Changed] Changed a filter hook from 'inventory_presser_taxonomy_data' to 'invp_taxonomy_data'
+* [Changed] Changed a filter hook from 'inventory_presser_meta_value_or_meta_value_num' to 'invp_meta_value_or_meta_value_num'
+* [Changed] Changed a filter hook from 'inventory_presser_post_type_args' to 'invp_post_type_args'
 * [Removed] Moved Friday Systems features out of this plugin and into another. No longer save the IDs of contact and financing pages with plugin settings so that menu links to those pages can have querystring variables that identify vehicles appended.
 
 = 3.9.0 =
