@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.4
-Stable tag: 4.0.0
+Stable tag: 4.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,10 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 
 == Changelog ==
 
+= 4.1.0 =
+* [Added] When a search or set of taxonomy filters returns a single vehicle, redirect to that vehicle instead of an archive or results page.
+* [Fixed] Change links to terms in our taxonomies to contain /inventory, so one of our rewrite rules is used to guide the request.
+
 = 4.0.0 =
 * [Changed] Changed a filter hook from 'translate_meta_field_key' to 'invp_prefix_meta_key'
 * [Changed] Changed a filter hook from 'untranslate_meta_field_key' to 'invp_unprefix_meta_key'
@@ -58,7 +62,6 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 * [Changed] Changed a filter hook from 'inventory_presser_taxonomy_data' to 'invp_taxonomy_data'
 * [Changed] Changed a filter hook from 'inventory_presser_meta_value_or_meta_value_num' to 'invp_meta_value_or_meta_value_num'
 * [Changed] Changed a filter hook from 'inventory_presser_post_type_args' to 'invp_post_type_args'
-* [Fixed] Change links to terms in our taxonomies to contain /inventory, so one of our rewrite rules is used to guide the request.
 * [Removed] Moved Friday Systems features out of this plugin and into another. No longer save the IDs of contact and financing pages with plugin settings so that menu links to those pages can have querystring variables that identify vehicles appended.
 
 = 3.9.0 =

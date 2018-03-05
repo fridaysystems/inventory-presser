@@ -2,9 +2,9 @@
 defined( 'ABSPATH' ) OR exit;
 /**
  * Plugin Name: Inventory Presser
- * Plugin URI: http://inventorypresser.com
+ * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 4.0.0
+ * Version: 4.1.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -333,6 +333,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Change links to our taxonomy terms to insert /inventory/
 			add_filter( 'pre_term_link', array( $this, 'change_term_links' ), 10, 2 );
+
+			//If a search or post archive produces only one post, redirect to that post instead of a results page
+			add_action( 'template_redirect', array( $this, 'redirect_single_result' ) );
 		}
 
 		//Change links to terms in our taxonomies to include /inventory before /tax/term
@@ -552,6 +555,22 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// ATTENTION: This is *only* done during plugin activation hook in this example!
 			// You should *NEVER EVER* do this on every page load!!
 			flush_rewrite_rules( );
+		}
+
+		function redirect_single_result() {
+
+			//Do not affect users in the dashboard
+			if( is_admin() ) { return; }
+
+			//If this is a search result or page one of our post archive
+			if( ( is_search() && self::CUSTOM_POST_TYPE == get_query_var( 'post_type', '' ) ) || ( is_post_type_archive( self::CUSTOM_POST_TYPE ) && 0 == get_query_var( 'paged', 0 ) ) ) {
+
+				//If there is only one post in the query,
+				global $wp_query;
+				if ( $wp_query->post_count == 1 ) {
+					wp_redirect( get_permalink( $wp_query->posts['0']->ID ) );
+				}
+			}
 		}
 
 		function translate_custom_field_names( $nice_name ) {
