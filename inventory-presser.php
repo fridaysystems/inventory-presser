@@ -330,6 +330,24 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Skip the trash bin and always permanently delete vehicles
 			add_action( 'trashed_post', array( $this, 'skip_trash' ) );
+
+			//Change links to our taxonomy terms to insert /inventory/
+			add_filter( 'pre_term_link', array( $this, 'change_term_links' ), 10, 2 );
+		}
+
+		//Change links to terms in our taxonomies to include /inventory before /tax/term
+		function change_term_links( $termlink, $term ) {
+
+			$taxonomy = get_taxonomy( $term->taxonomy );
+
+			if( ! in_array( self::CUSTOM_POST_TYPE, $taxonomy->object_type ) ) {
+				return;
+			}
+
+			$post_type = get_post_type_object( self::CUSTOM_POST_TYPE );
+			$termlink = $post_type->rewrite['slug'] . $termlink;
+
+			return $termlink;
 		}
 
 		function create_custom_post_type( ) {
@@ -398,8 +416,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		function generate_rewrite_rules( $post_type, $query_vars = array() ) {
 		    global $wp_rewrite;
 
-		    if( ! is_object( $post_type ) )
+		    if( ! is_object( $post_type ) ) {
 		        $post_type = get_post_type_object( $post_type );
+		    }
 
 		    $new_rewrite_rules = array();
 
@@ -579,6 +598,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		$taxonomy_data = $taxonomies_obj->taxonomy_data();
 		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
+
+			if( ! isset( $taxonomy_data[$i]['term_data'] ) ) { continue; }
+
 			foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
 				$taxonomy_name = $taxonomies_obj->convert_hyphens_to_underscores( $taxonomy_data[$i]['args']['query_var'] );
 				if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) ) {

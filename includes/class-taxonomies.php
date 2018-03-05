@@ -537,7 +537,6 @@ class Inventory_Presser_Taxonomies {
 						'show_in_menu'   => false,
 						'show_ui'        => false,
 					),
-					'term_data' => array (	),
 				),
 				array (
 					'args' => array (
@@ -556,7 +555,6 @@ class Inventory_Presser_Taxonomies {
 						'show_in_menu'   => false,
 						'show_ui'        => false,
 					),
-					'term_data' => array (	),
 				),
 				array (
 					'args' => array (
@@ -575,7 +573,6 @@ class Inventory_Presser_Taxonomies {
 						'show_in_menu'   => false,
 						'show_ui'        => false,
 					),
-					'term_data' => array (	),
 				),
 				array (
 					'args' => array (
@@ -803,7 +800,6 @@ class Inventory_Presser_Taxonomies {
 						'show_in_menu'   => false,
 						'show_ui'        => false,
 					),
-					'term_data' => array (	),
 				),
 				array (
 					'args' => array (
@@ -827,7 +823,6 @@ class Inventory_Presser_Taxonomies {
 						'singular_label' => 'Location',
 						'show_in_menu'   => true,
 					),
-					'term_data' => array(),
 				),
 			)
 		);
