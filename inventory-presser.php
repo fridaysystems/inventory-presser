@@ -87,31 +87,128 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				//make
 				case 'inventory_presser_make':
 					$query->set( 'meta_query', array_merge( $old, array(
-							'relation' => 'AND',
-							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
-							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' ),
-						)
-					) );
+						'relation' => 'AND',
+						array(
+							'relation' => 'OR',
+							array(
+								'key'     => 'inventory_presser_model',
+								'compare' => 'NOT EXISTS'
+							),
+							array(
+								'key'     => 'inventory_presser_model',
+								'compare' => 'EXISTS'
+							),
+						),
+						array(
+							'relation' => 'OR',
+							array(
+								'key'     => 'inventory_presser_trim',
+								'compare' => 'NOT EXISTS'
+							),
+							array(
+								'key'     => 'inventory_presser_trim',
+								'compare' => 'EXISTS'
+							),
+						),
+					) ) );
 					break;
 
 				//model
 				case 'inventory_presser_model':
 					$query->set( 'meta_query', array_merge( $old, array(
 							'relation' => 'AND',
-							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
-							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' ),
-						)
-					) );
+							array(
+								'relation' => 'OR',
+								array(
+									'key'     => 'inventory_presser_model',
+									'compare' => 'NOT EXISTS'
+								),
+								array(
+									'key'     => 'inventory_presser_model',
+									'compare' => 'EXISTS'
+								),
+							),
+							array(
+								'relation' => 'OR',
+								array(
+									'key'     => 'inventory_presser_trim',
+									'compare' => 'NOT EXISTS'
+								),
+								array(
+									'key'     => 'inventory_presser_trim',
+									'compare' => 'EXISTS'
+								),
+							),
+					) ) );
 					break;
 
 				//year
 				case 'inventory_presser_year':
 					$query->set( 'meta_query', array_merge( $old, array(
 							'relation' => 'AND',
-							array( 'key' => 'inventory_presser_year', 'compare' => 'EXISTS' ),
-							array( 'key' => 'inventory_presser_make', 'compare' => 'EXISTS' ),
-							array( 'key' => 'inventory_presser_model', 'compare' => 'EXISTS' ),
-							array( 'key' => 'inventory_presser_trim', 'compare' => 'EXISTS' ),
+							array(
+								'relation' => 'OR',
+								array(
+									'key'     => 'inventory_presser_year',
+									'compare' => 'NOT EXISTS'
+								),
+								array(
+									'key'     => 'inventory_presser_year',
+									'compare' => 'EXISTS'
+								),
+							),
+							array(
+								'relation' => 'OR',
+								array(
+									'key'     => 'inventory_presser_make',
+									'compare' => 'NOT EXISTS'
+								),
+								array(
+									'key'     => 'inventory_presser_make',
+									'compare' => 'EXISTS'
+								),
+							),
+							array(
+								'relation' => 'OR',
+								array(
+									'key'     => 'inventory_presser_model',
+									'compare' => 'NOT EXISTS'
+								),
+								array(
+									'key'     => 'inventory_presser_model',
+									'compare' => 'EXISTS'
+								),
+							),
+							array(
+								'relation' => 'OR',
+								array(
+									'key'     => 'inventory_presser_trim',
+									'compare' => 'NOT EXISTS'
+								),
+								array(
+									'key'     => 'inventory_presser_trim',
+									'compare' => 'EXISTS'
+								),
+							),
+						)
+					) );
+					break;
+
+				//boat fields might not exist on all vehicles, so do not require them
+				case 'inventory_presser_beam':
+				case 'inventory_presser_length':
+				case 'inventory_presser_hull_material':
+					unset( $query->query_vars['meta_key'] );
+					$query->set( 'meta_query', array_merge( $old, array(
+							'relation' => 'OR',
+							array(
+								'key'     => $key,
+								'compare' => 'NOT EXISTS'
+							),
+							array(
+								'key'     => $key,
+								'compare' => 'EXISTS'
+							),
 						)
 					) );
 					break;
