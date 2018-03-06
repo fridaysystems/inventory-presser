@@ -30,6 +30,7 @@ $inventory_presser_include_paths = array(
 	'class-vehicle.php',
 	'class-vehicle-urls-by-vin.php',
 	'class-widgets.php',
+	'template-tags.php',
 );
 foreach( $inventory_presser_include_paths as $path ) {
 	$path = plugin_dir_path( __FILE__ ) . 'includes/' . $path;
