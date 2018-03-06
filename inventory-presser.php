@@ -378,6 +378,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							'all_items'     => __( 'Inventory', 'inventory-presser' ),
 							'add_new_item'  => __( 'Add New Vehicle', 'inventory-presser' ),
 							'edit_item'     => __( 'Edit Vehicle', 'inventory-presser' ),
+							'view_item'     => __( 'View Vehicle', 'inventory-presser' ),
 						),
 						'menu_icon'    => 'dashicons-admin-network',
 						'menu_position'=> 5, //below Posts
@@ -386,10 +387,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						'rewrite'      => array ( 'slug' => 'inventory' ),
 						'show_in_rest' => true,
 						'supports'     => array (
-									'editor',
-									'title',
-									'thumbnail',
-								  ),
+							'editor',
+							'title',
+							'thumbnail',
+						),
 						'taxonomies'   => $this->taxonomies->query_vars_array(),
 					)
 				)
