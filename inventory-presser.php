@@ -337,6 +337,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//If a search or post archive produces only one post, redirect to that post instead of a results page
 			add_action( 'template_redirect', array( $this, 'redirect_single_result' ) );
+
+			//Add all our shortcodes
+			$shortcodes = new Inventory_Presser_Shortcodes();
+			$shortcodes->hooks();
 		}
 
 		//Change links to terms in our taxonomies to include /inventory before /tax/term

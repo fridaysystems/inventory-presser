@@ -7,7 +7,7 @@ Stable tag: 4.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-An inventory management plugin for Car Dealers. Import or create an automobile or powersports dealership inventory.
+Turn WordPress into a dealership website. Import or directly manage an automobile or powersports dealer inventory.
 
 == Description ==
 
@@ -18,8 +18,13 @@ This plugin modifies the WordPress administrator dashboard to make managing a ve
 * Modifies the all posts screen for the custom post type to show stock number, color, odometer, price and photo count columns
 * Puts media counts next to the Add Media button while editing vehicles
 * Creates custom taxonomies to group vehicles by type, fuel, transmission, drive type, availability, and condition
-* Defines a vehicle object (includes/class-inventory-presser-vehicle.php) that makes accessing all of the post meta fields consistent and easy for theme development
 * Supports automobiles, motorcycles, ATVs, RVs, and boats
+
+Built the right way and developer-friendly
+
+* Hooks in all the right places
+* Vehicle object and template tags make front-end development easy
+* Supported by many add-ons both free and paid
 
 == Installation ==
 

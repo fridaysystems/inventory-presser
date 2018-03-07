@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) OR exit;
 
-class Inventory_Presser_Vehicle_Shortcodes {
+class Inventory_Presser_Shortcodes {
 
 	function hooks() {
 
@@ -422,5 +422,3 @@ class Inventory_Presser_Vehicle_Shortcodes {
 		return $html;
 	}
 }
-$my_ipvs = new Inventory_Presser_Vehicle_Shortcodes();
-$my_ipvs->hooks();
