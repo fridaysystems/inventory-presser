@@ -3,12 +3,12 @@ defined( 'ABSPATH' ) OR exit;
 
 class Inventory_Presser_Vehicle_Shortcodes {
 
-	function __construct() {
+	function hooks() {
 
 		add_shortcode('invp-simple-listing', array($this, 'simple_listing'));
 		add_shortcode('invp-inventory-slider', array($this, 'inventory_slider'));
 		add_shortcode('invp-inventory-grid', array($this, 'inventory_grid'));
-		add_shortcode( 'iframe', array($this, 'iframe_unqprfx_embed_shortcode'));
+		add_shortcode( 'iframe', array($this, 'iframe_embed_shortcode'));
 
 		add_action('wp_enqueue_scripts', array($this, 'load_scripts'));
 		add_action('wp_ajax_get_simple_listing', array($this, 'simple_json') );
@@ -370,7 +370,7 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 	}
 
-	function iframe_unqprfx_embed_shortcode( $atts ) {
+	function iframe_embed_shortcode( $atts ) {
 
 		$atts = shortcode_atts( array(
 			'width'       => '100%',
@@ -423,3 +423,4 @@ class Inventory_Presser_Vehicle_Shortcodes {
 	}
 }
 $my_ipvs = new Inventory_Presser_Vehicle_Shortcodes();
+$my_ipvs->hooks();
