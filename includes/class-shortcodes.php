@@ -372,39 +372,39 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 	function iframe_unqprfx_embed_shortcode( $atts ) {
 
-		// qstring variable is 'stock'
-
-		$defaults = array(
-			'width' => '100%',
-			'height' => '500',
-			'scrolling' => 'yes',
-			'class' => 'iframe-class',
+		$atts = shortcode_atts( array(
+			'width'       => '100%',
+			'height'      => '5000',
+			'scrolling'   => 'yes',
+			'src'         => '',
+			'class'       => 'iframe-class',
 			'frameborder' => '0'
-		);
+		), $atts );
 
-		foreach ( $defaults as $default => $value ) { // add defaults
-			if ( ! @array_key_exists( $default, $atts ) ) { // mute warning with "@" when no params at all
-				$atts[$default] = $value;
-			}
+		//Stock number may arrive in a querystring variable with key 'stock'
+		if( isset( $_GET['stock'] ) ) {
+			$atts['src'] = esc_url( add_query_arg( 'stock', $_GET['stock'], $atts['src'] ) );
 		}
 
-		if (isset($_GET['stock'])) {
-			$atts['src'] .= '&stock='.$_GET['stock'];
-		}
-
-		$html = "\n".'<!-- iframe plugin v.4.2 wordpress.org/plugins/iframe/ -->'."\n";
 		$html .= '<iframe';
 		foreach( $atts as $attr => $value ) {
-			if ( strtolower($attr) != 'same_height_as' AND strtolower($attr) != 'onload'
-				AND strtolower($attr) != 'onpageshow' AND strtolower($attr) != 'onclick') { // remove some attributes
-				if ( $value != '' ) { // adding all attributes
-					$html .= ' ' . esc_attr( $attr ) . '="' . esc_attr( $value ) . '"';
-				} else { // adding empty attributes
-					$html .= ' ' . esc_attr( $attr );
-				}
+
+			//ignore some attributes
+			$ignored_atts = array(
+				'onclick',
+				'onload',
+				'onpageshow',
+				'same_height_as',
+			);
+			if( in_array( strtolower( $attr), $ignored_atts ) ) { continue; }
+
+			if ( $value != '' ) { // adding all attributes
+				$html .= ' ' . esc_attr( $attr ) . '="' . esc_attr( $value ) . '"';
+			} else { // adding empty attributes
+				$html .= ' ' . esc_attr( $attr );
 			}
 		}
-		$html .= '></iframe>'."\n";
+		$html .= '></iframe>';
 
 		if ( isset( $atts["same_height_as"] ) ) {
 			$html .= '
@@ -421,8 +421,5 @@ class Inventory_Presser_Vehicle_Shortcodes {
 
 		return $html;
 	}
-
-
 }
-
 $my_ipvs = new Inventory_Presser_Vehicle_Shortcodes();
