@@ -387,7 +387,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						'menu_icon'    => 'dashicons-admin-network',
 						'menu_position'=> 5, //below Posts
 						'public'       => true,
-						'rest_base'    => 'vehicles',
+						'rest_base'    => 'inventory',
 						'rewrite'      => array ( 'slug' => 'inventory' ),
 						'show_in_rest' => true,
 						'supports'     => array (
