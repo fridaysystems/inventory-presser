@@ -62,7 +62,7 @@ class Fuel_Economy_Widget extends WP_Widget {
  		//if the vehicle doesn't have epa data, abort
 		$queried_object = get_queried_object();
 		if ( ! $queried_object ) { return; }
-		$epa = get_post_meta( $queried_object->ID, '_inventory_presser_epa_fuel_economy', true );
+		$epa = get_post_meta( $queried_object->ID, apply_filters( 'invp_prefix_meta_key', 'epa_fuel_economy' ), true );
 
 		if( ! isset( $epa['Fuels'] ) || 0 == sizeof( $epa['Fuels'] ) ) {
 			return;

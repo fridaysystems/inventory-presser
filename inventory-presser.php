@@ -48,12 +48,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		//some post meta keys are prefixed with an underscore to hide them
 		private $prefixed_meta_keys = array(
-			'car_id',
-			'dealer_id',
-			'edmunds_style_id',
-			'epa_fuel_economy',
-			'last_modified',
-			'photo_number',
+			//'car_id',
+			//'dealer_id',
+			//'edmunds_style_id',
+			//'epa_fuel_economy',
+			//'last_modified',
+			//'photo_number',
 		);
 
 		function add_orderby_to_query( $query ) {
@@ -245,6 +245,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//create a custom post type for the vehicles
 			add_action( 'init', array( $this, 'create_custom_post_type' ) );
 
+			//register all postmeta fields the CPT uses (mostly to expose them in the REST API)
+			add_action( 'init', array( $this, 'register_meta_fields' ), 20 );
+
 			//Create custom taxonomies
 			$this->taxonomies = new Inventory_Presser_Taxonomies( self::CUSTOM_POST_TYPE );
 			$this->taxonomies->hooks();
@@ -391,6 +394,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						'rewrite'      => array ( 'slug' => 'inventory' ),
 						'show_in_rest' => true,
 						'supports'     => array (
+							'custom-fields',
 							'editor',
 							'title',
 							'thumbnail',
@@ -576,6 +580,22 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				if ( $wp_query->post_count == 1 ) {
 					wp_redirect( get_permalink( $wp_query->posts['0']->ID ) );
 				}
+			}
+		}
+
+		//register all meta fields our CPT uses
+		function register_meta_fields() {
+			$vehicle = new Inventory_Presser_Vehicle();
+			foreach( $vehicle->keys( true ) as $key ) {
+				$key = apply_filters( 'invp_prefix_meta_key', $key );
+				$args = array(
+					'show_in_rest' => in_array( $key, array(
+						apply_filters( 'invp_prefix_meta_key', 'vin' ),
+						apply_filters( 'invp_prefix_meta_key', 'last_modified' ),
+					) ),
+					'single'       => true,
+				);
+				register_meta( 'post', $key, $args );
 			}
 		}
 
