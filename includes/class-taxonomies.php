@@ -612,6 +612,7 @@ class Inventory_Presser_Taxonomies {
 						),
 						'meta_box_cb'    => array( $this, 'meta_box_html_type' ),
 						'query_var'      => 'type',
+						'rest_base'      => 'inventory_type',
 						'singular_label' => 'Type',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
