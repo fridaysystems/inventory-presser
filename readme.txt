@@ -52,6 +52,11 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 
 == Changelog ==
 
+= 4.2.0 =
+* [Added] Register all postmeta fields for our custom post type so that they may be exposed in the REST API.
+* [Added] Expose all custom taxonomies that enable vehicle searches to the REST API.
+* [Fixed] Fixed a bug where a meta key was not being prefixed with the filter and instead had a hard-coded prefix.
+
 = 4.1.0 =
 * [Added] When a search or set of taxonomy filters returns a single vehicle, redirect to that vehicle instead of an archive or results page.
 * [Added] Add two template tags, `invp_get_the_vin()` and `invp_get_the_price()` to make access easy for themes and other items in the loop.
