@@ -53,6 +53,7 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 == Changelog ==
 
 = 4.2.0 =
+* [Added] Include term IDs for each of our custom taxonomies in the REST API responses for our posts.
 * [Added] Register all postmeta fields for our custom post type so that they may be exposed in the REST API.
 * [Added] Expose all custom taxonomies that enable vehicle searches to the REST API.
 * [Fixed] Fixed a bug where a meta key was not being prefixed with the filter and instead had a hard-coded prefix.
