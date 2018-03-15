@@ -17,6 +17,45 @@ class Inventory_Presser_Taxonomies {
 		$this->post_type = $post_type;
 	}
 
+	//Add the term ids for each of the taxonomies we maintain to the REST API response for posts of our custom post type
+	function add_terms_to_rest_response() {
+		$taxonomy_data = $this->taxonomy_data();
+		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
+			//if the taxonomy has a rest_base, great. otherwise, use the query_var and convert hyphens to underscores
+			$slug = isset( $taxonomy_data[$i]['args']['rest_base'] ) ? $taxonomy_data[$i]['args']['rest_base'] : $this->convert_hyphens_to_underscores( $taxonomy_data[$i]['args']['query_var'] );
+			register_rest_field(
+				$this->post_type,
+				$slug, //the name of the field in the response
+				array(
+					'get_callback'    => array( $this, 'get_term_id' ), //returns the value
+					'update_callback' => null,
+					'schema'          => null,
+				)
+			);
+		}
+	}
+
+	//Find the term id values and provide them to the REST API output
+	function get_term_id( $object, $rest_field_name, $request ) {
+		if( $this->post_type != $object['type'] ) {
+			return null;
+		}
+
+		/**
+		 * Our type taxonomy uses a rest_base of inventory_type so it does not
+		 * collide with post type.
+		 */
+		if( 'inventory_type' == $rest_field_name ) {
+			$rest_field_name = 'type';
+		}
+
+		$terms = wp_get_object_terms( $object['id'], $rest_field_name, array( 'fields' => 'ids' ) );
+		if( is_wp_error( $terms ) ) {
+			return null;
+		}
+		return $terms;
+	}
+
 	function hooks() {
 
 		//create custom taxonomies for vehicles
@@ -39,6 +78,9 @@ class Inventory_Presser_Taxonomies {
 
 		//Load our scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
+
+		//Add term ids to the REST API response for inventory posts
+		add_action( 'rest_api_init', array( $this, 'add_terms_to_rest_response' ) );
 	}
 
 	/* location taxonomy */
