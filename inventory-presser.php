@@ -589,10 +589,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			foreach( $vehicle->keys( true ) as $key ) {
 				$key = apply_filters( 'invp_prefix_meta_key', $key );
 				$args = array(
-					'show_in_rest' => in_array( $key, array(
-						apply_filters( 'invp_prefix_meta_key', 'vin' ),
-						apply_filters( 'invp_prefix_meta_key', 'last_modified' ),
-					) ),
+					'show_in_rest' => true,
 					'single'       => true,
 				);
 				register_meta( 'post', $key, $args );
