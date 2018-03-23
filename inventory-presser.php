@@ -586,11 +586,21 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		//register all meta fields our CPT uses
 		function register_meta_fields() {
 			$vehicle = new Inventory_Presser_Vehicle();
-			foreach( $vehicle->keys( true ) as $key ) {
+			$keys = $vehicle->keys( true );
+
+			/**
+			 * Add a couple keys that are used on media attachments to our CPT.
+			 * Do this in one swoop because there is no core way to specify the
+			 * object_subtype for the object to which these fields are registered.
+			 */
+			$keys[] = 'file_date';
+			$keys[] = 'photo_number';
+
+			foreach( $keys as $key ) {
 				$key = apply_filters( 'invp_prefix_meta_key', $key );
 				$args = array(
-					'show_in_rest' => true,
-					'single'       => true,
+					'show_in_rest'   => true,
+					'single'         => true,
 				);
 				register_meta( 'post', $key, $args );
 			}
