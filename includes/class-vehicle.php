@@ -9,11 +9,11 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $image_url;
 
 		var $body_style = '';
-		var $car_ID = 0;
+		var $car_id = 0;
 		var $color = '';
-		var $dealer_ID = 0;
+		var $dealer_id = 0;
 		var $down_payment = 0;
-		var $edmunds_style_ID = 0;
+		var $edmunds_style_id = 0;
 		var $engine = ''; //3.9L 8 cylinder
 		var $epa_fuel_economy = array();
 		var $featured = '0';
@@ -292,8 +292,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		function post_meta_value_is_number( $post_meta_key ) {
 			return in_array( $post_meta_key, array(
 				apply_filters( 'invp_prefix_meta_key', 'beam' ),
-				apply_filters( 'invp_prefix_meta_key', 'car_ID' ),
-				apply_filters( 'invp_prefix_meta_key', 'dealer_ID' ),
+				apply_filters( 'invp_prefix_meta_key', 'car_id' ),
+				apply_filters( 'invp_prefix_meta_key', 'dealer_id' ),
 				apply_filters( 'invp_prefix_meta_key', 'length' ),
 				apply_filters( 'invp_prefix_meta_key', 'odometer' ),
 				apply_filters( 'invp_prefix_meta_key', 'price' ),
