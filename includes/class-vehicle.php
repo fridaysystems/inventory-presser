@@ -29,6 +29,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $price = 0;
 		var $prices = array();
 		var $stock_number = '';
+		var $title_status = '';
 		var $trim = '';
 		var $type = '';
 		var $vin = '';
