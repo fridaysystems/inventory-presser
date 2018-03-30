@@ -21,6 +21,8 @@ class Inventory_Presser_Taxonomies {
 
 		//create custom taxonomies for vehicles
 		add_action( 'init', array( $this, 'create_custom_taxonomies' ) );
+		//add_action( 'init', array( $this, 'register_location_term_meta' ) );
+		add_action( 'rest_api_init', array( $this, 'add_api_term_meta_workaround_fields' ) );
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_term_data' ));
 
@@ -39,6 +41,33 @@ class Inventory_Presser_Taxonomies {
 
 		//Load our scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
+	}
+
+	function add_api_term_meta_workaround_fields() {
+		/**
+		 * OK. As far as I can tell, the REST API for term meta is broken in
+		 * WordPress version 4.9.4. This method creates some custom rest fields
+		 * to get and set term meta outside the way that core will someday work.
+		 */
+		$args = array(
+			'get_callback'    => array( $this, 'get_term_meta' ),
+			'update_callback' => array( $this, 'set_term_meta' ),
+			'schema'          => null,
+		);
+		register_rest_field( 'location', 'location-phone-hours', $args );
+		register_rest_field( 'location', 'dealer-id', $args );
+	}
+
+	function get_term_meta( $term, $attr, $request, $object_type ) {
+		return get_term_meta( $term->term_id, $attr, true );
+	}
+
+	function set_term_meta( $value, $term, $attr, $request, $object_type ) {
+		$value = maybe_unserialize( $value );
+		$result = update_term_meta( $term->term_id, $attr, $value, $this->get_term_meta( $term, $attr, $request, $object_type ) );
+		if( true !== $result ) {
+			$result = add_term_meta( $term->term_id, $attr, $value, true );
+		}
 	}
 
 	/* location taxonomy */
@@ -139,6 +168,16 @@ class Inventory_Presser_Taxonomies {
 			register_taxonomy( $taxonomy_name, $this->post_type(), $taxonomy_data[$i]['args'] );
 		}
 	}
+
+	//When the REST API properly supports term meta, this will probably work!
+	// function register_location_term_meta() {
+	// 	$args = array(
+	// 		 'show_in_rest' => true,
+	// 		 'single'       => true,
+	// 	);
+	// 	register_meta( 'term', 'dealer-id', $args );
+	// 	register_meta( 'term', 'location-phone-hours', $args );
+	// }
 
 	function delete_term_data() {
 		//remove the terms in taxonomies

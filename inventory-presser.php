@@ -599,8 +599,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			foreach( $keys as $key ) {
 				$key = apply_filters( 'invp_prefix_meta_key', $key );
 				$args = array(
-					'show_in_rest'   => true,
-					'single'         => true,
+					'sanitize_callback' => 'maybe_unserialize',
+					'show_in_rest'      => true,
+					'single'            => true,
 				);
 				register_meta( 'post', $key, $args );
 			}
