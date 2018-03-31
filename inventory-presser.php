@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 4.1.0
+ * Version: 5.0.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -590,7 +590,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			/**
 			 * Add a couple keys that are used on media attachments to our CPT.
-			 * Do this in one swoop because there is no core way to specify the
+			 * Do this in one swoop because there is no core way (as of 4.9.4) to specify the
 			 * object_subtype for the object to which these fields are registered.
 			 */
 			$keys[] = 'file_date';

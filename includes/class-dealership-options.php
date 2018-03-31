@@ -78,6 +78,15 @@ class _dealer_settings {
 			'dealership_options_setting_section' // section
 		);
 
+		//[x] Include sold vehicles on listings pages
+		add_settings_field(
+			'include_sold_vehicles', // id
+			'Sold Vehicles', // title
+			array( $this, 'include_sold_vehicles_callback' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
 		add_settings_field(
 			'use_carfax', // id
 			'CARFAX', // title
@@ -106,6 +115,10 @@ class _dealer_settings {
 			$sanitary_values['sort_vehicles_order'] = $input['sort_vehicles_order'];
 		}
 
+		if ( isset( $input['include_sold_vehicles'] ) ) {
+			$sanitary_values['include_sold_vehicles'] = $input['include_sold_vehicles'];
+		}
+
 		if ( isset( $input['use_carfax'] ) ) {
 			$sanitary_values['use_carfax'] = $input['use_carfax'];
 		}
@@ -115,6 +128,13 @@ class _dealer_settings {
 		}
 
 		return apply_filters( 'invp_options_page_sanitized_values', $input, $sanitary_values );
+	}
+
+	function include_sold_vehicles_callback() {
+		printf(
+			'<input type="checkbox" name="_dealer_settings[include_sold_vehicles]" id="include_sold_vehicles" value="include_sold_vehicles" %s> <label for="include_sold_vehicles">Include sold vehicles on listings pages</label>',
+			( isset( $this->_dealer_settings['include_sold_vehicles'] ) && $this->_dealer_settings['include_sold_vehicles'] === 'include_sold_vehicles' ) ? 'checked' : ''
+		);
 	}
 
 	public function sort_vehicles_by_callback() {

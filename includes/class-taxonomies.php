@@ -41,6 +41,9 @@ class Inventory_Presser_Taxonomies {
 
 		//Load our scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
+
+		//Do not include sold vehicles in listings unless an option is checked
+		add_action( 'pre_get_posts', array( $this, 'maybe_exclude_sold_vehicles' ) );
 	}
 
 	function add_api_term_meta_workaround_fields() {
@@ -333,10 +336,8 @@ class Inventory_Presser_Taxonomies {
 
 	function get_term_slug( $taxonomy_name, $post_id ) {
 		$terms = wp_get_object_terms( $post_id, $taxonomy_name, array( 'orderby' => 'term_id', 'order' => 'ASC' ) );
-		if ( ! is_wp_error( $terms ) ) {
-			if ( isset( $terms[0] ) && isset( $terms[0]->name ) ) {
-				return $terms[0]->slug;
-			}
+		if ( ! is_wp_error( $terms ) && isset( $terms[0] ) && isset( $terms[0]->name ) ) {
+			return $terms[0]->slug;
 		}
 		return '';
 	}
@@ -350,6 +351,37 @@ class Inventory_Presser_Taxonomies {
 			wp_enqueue_script('inventory-presser-location', plugins_url( '/js/tax-location.js', dirname( __FILE__ ) ), array('inventory-presser-timepicker','jquery-ui-sortable'));
 		}
 
+	}
+
+	function maybe_exclude_sold_vehicles( $query ) {
+		if( ! is_search() & ( ! $query->is_main_query() || ! is_post_type_archive( $this->post_type ) ) ) {
+			return;
+		}
+
+		//if the checkbox to include sold vehicles is checked, abort
+		$plugin_settings = get_option( '_dealer_settings' );
+		if( isset( $plugin_settings['include_sold_vehicles'] ) && $plugin_settings['include_sold_vehicles'] ) {
+			return;
+		}
+
+		$taxonomy = 'availability';
+
+		//if there is already a tax_query for taxonomy availability, abort
+		if( $query->is_tax( $taxonomy ) ) {
+			return;
+		}
+
+		//do this
+		$tax_query = array(
+			array(
+				'taxonomy' => $taxonomy,
+				'field'    => 'slug',
+				'terms'    => 'sold',
+				'operator' => 'NOT IN',
+			)
+		);
+
+		$query->set( 'tax_query', $tax_query );
 	}
 
 	function meta_box_html_condition( $post ) {
