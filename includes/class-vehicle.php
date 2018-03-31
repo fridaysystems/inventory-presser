@@ -8,10 +8,23 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $url;
 		var $image_url;
 
+
+
+		/**
+		 * A unique identifier assigned by the inventory provider, if a feed is
+		 * providing inventory updates.
+		 */
+		var $dealer_id = 0;
+
+		/**
+		 * If leads generated need to be associated with a different dealership
+		 * ID than the one stored in $dealer_id, it is stored here, in $leads_id.
+		 */
+		var $leads_id = 0;
+
 		var $body_style = '';
 		var $car_id = 0;
 		var $color = '';
-		var $dealer_id = 0;
 		var $down_payment = 0;
 		var $edmunds_style_id = 0;
 		var $engine = ''; //3.9L 8 cylinder
