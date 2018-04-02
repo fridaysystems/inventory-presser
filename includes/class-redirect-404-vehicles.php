@@ -44,27 +44,37 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 
 			//is this a request for a vehicle?
 			//is this a 404?
-			if( $this->is_request_for_vehicle( $wp_obj ) && is_404() ) {
+			if( ! $this->is_request_for_vehicle( $wp_obj ) || ! is_404() ) {
+				return;
+			}
 
-				//get the make out of the slug
-				$make = $this->extract_make( $wp_obj );
+			//base link to the inventory page
+			$url = get_post_type_archive_link( self::CUSTOM_POST_TYPE );
 
-				if( '' == $make ) { return; }
-
-				//redirect to this make's archive
-
-				$term_link = get_term_link( $make, 'make' );
-				if( is_wp_error( $term_link ) ) { return; }
-
-				$path = str_replace( site_url(), '', $term_link );
-				// 'http://inventorypresser.com/make/chevrolet/' --> 'make/chevrolet/'
-
-				$url = get_post_type_archive_link( self::CUSTOM_POST_TYPE ) . $path;
-				// 'http://inventorypresser.com/inventory/'' . 'make/chevrolet/'
-
+			//get the make out of the slug
+			$make = $this->extract_make( $wp_obj );
+			if( '' == $make ) {
 				wp_safe_redirect( $url, 302 );
 				exit;
 			}
+
+			//are there cars in this make?
+			$term = get_term_by( 'slug', $make, 'make' );
+			if( ! $term || 0 == $term->count ) {
+				//no? just go to inventory page
+				wp_safe_redirect( $url, 302 );
+				exit;
+			}
+
+			//redirect to this make's archive
+			$url = get_term_link( $make, 'make' );
+			if( is_wp_error( $url ) ) {
+				wp_safe_redirect( $url, 302 );
+				exit;
+			}
+
+			wp_safe_redirect( $url, 302 );
+			exit;
 		}
 	}
 }
