@@ -57,6 +57,7 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 * [Changed] Do not show sold units in inventory listings by default, and add an option to include them.
 * [Changed] Use lowercase meta field names all the time, and change the vehicle class to not capitalize the id in car_id.
 * [Fixed] Make sure serialized meta values (like vehicle option lists, EPA fuel economy data, and the prices array) are unserialized before saving. Edits via the REST API were resulting in twice-serialized values.
+* [Fixed] Fixed a bug in our logic that redirects users who are trying to view deleted vehicles.
 
 = 4.2.0 =
 * [Added] Include term IDs for each of our custom taxonomies in the REST API responses for our posts.
