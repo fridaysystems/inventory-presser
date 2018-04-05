@@ -227,6 +227,19 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$wp_rewrite->rules = $this->generate_rewrite_rules( self::CUSTOM_POST_TYPE ) + $wp_rewrite->rules;
 		}
 
+		function create_serialized_api_fields() {
+			$args = array(
+				'get_callback'    => function( $post, $attr ) {
+					return serialize( get_post_meta( $post['id'], $attr, true ) );
+				},
+				'update_callback' => null,
+				'schema'          => null,
+			);
+			register_rest_field( 'inventory_vehicle', 'inventory_presser_epa_fuel_economy', $args );
+			register_rest_field( 'inventory_vehicle', 'inventory_presser_option_array', $args );
+			register_rest_field( 'inventory_vehicle', 'inventory_presser_prices', $args );
+		}
+
 		function hooks( ) {
 
 			//Allow translations
@@ -247,6 +260,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//register all postmeta fields the CPT uses (mostly to expose them in the REST API)
 			add_action( 'init', array( $this, 'register_meta_fields' ), 20 );
+
+			//create workarounds to read serialized meta data from the REST API
+			add_action( 'rest_api_init', array( $this, 'create_serialized_api_fields' ) );
 
 			//Create custom taxonomies
 			$this->taxonomies = new Inventory_Presser_Taxonomies( self::CUSTOM_POST_TYPE );
