@@ -838,7 +838,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		switch( true ) {
 
 			case $column_name == apply_filters( 'invp_prefix_meta_key', 'thumbnail' ):
-				echo get_the_post_thumbnail( $post_id, 'thumbnail' );
+				echo edit_post_link( get_the_post_thumbnail( $post_id, 'thumbnail' ) );
 				break;
 
 			case $column_name == apply_filters( 'invp_prefix_meta_key', 'odometer' ):
