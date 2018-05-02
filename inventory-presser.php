@@ -46,16 +46,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		var $taxonomies;
 		var $settings; //this plugin's options
 
-		//some post meta keys are prefixed with an underscore to hide them
-		private $prefixed_meta_keys = array(
-			//'car_id',
-			//'dealer_id',
-			//'edmunds_style_id',
-			//'epa_fuel_economy',
-			//'last_modified',
-			//'photo_number',
-		);
-
 		function add_orderby_to_query( $query ) {
 			//Do not mess with the query if it's not the main one and our CPT
 			if ( ! $query->is_main_query() || ! is_post_type_archive( self::CUSTOM_POST_TYPE ) ) {
@@ -235,9 +225,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'update_callback' => null,
 				'schema'          => null,
 			);
-			register_rest_field( 'inventory_vehicle', 'inventory_presser_epa_fuel_economy', $args );
-			register_rest_field( 'inventory_vehicle', 'inventory_presser_option_array', $args );
-			register_rest_field( 'inventory_vehicle', 'inventory_presser_prices', $args );
+			register_rest_field( self::CUSTOM_POST_TYPE, 'inventory_presser_epa_fuel_economy', $args );
+			register_rest_field( self::CUSTOM_POST_TYPE, 'inventory_presser_option_array', $args );
+			register_rest_field( self::CUSTOM_POST_TYPE, 'inventory_presser_prices', $args );
 		}
 
 		function hooks( ) {
@@ -626,12 +616,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function translate_custom_field_names( $nice_name ) {
 			$nice_name = strtolower( $nice_name );
-			return ( in_array( $nice_name, $this->prefixed_meta_keys ) ? '_' : '' ) . 'inventory_presser_' . $nice_name;
+			return 'inventory_presser_' . $nice_name;
 		}
 
 		function untranslate_custom_field_names( $meta_key ) {
 			if( empty( $meta_key ) ) { return ''; }
 			$meta_key = strtolower( $meta_key );
+			//prefix may start with an underscore because previous versions hid some meta keys
 			$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . 'inventory_presser_';
 			//remove the prefix
 			return substr( $meta_key, strlen( $prefix ) );
