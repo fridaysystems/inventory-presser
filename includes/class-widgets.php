@@ -633,9 +633,9 @@ class Carfax_Widget extends WP_Widget {
 		if( 'svg' == strtolower( pathinfo( $this->images[$image]['img'], PATHINFO_EXTENSION ) ) ) {
 			//Include the SVG inline instead of using an <img> element
 			$svg = file_get_contents( dirname( dirname( __FILE__ ) ) . '/assets/' . $this->images[$image]['img'] );
-			echo sprintf( '<a href="%s">' . $svg . '</a>', get_post_type_archive_link( 'inventory_vehicle' ) );
+			echo sprintf( '<a href="%s">' . $svg . '</a>', get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) );
 		} else {
-			echo sprintf( '<a href="%s"><img src="%s"></a>', get_post_type_archive_link( 'inventory_vehicle' ), plugins_url( '/assets/'.$this->images[$image]['img'], dirname(__FILE__) ) );
+			echo sprintf( '<a href="%s"><img src="%s"></a>', get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ), plugins_url( '/assets/'.$this->images[$image]['img'], dirname(__FILE__) ) );
 		}
 		echo wpautop( $instance['after_image'] );
 		echo $args['after_widget'];
@@ -940,7 +940,7 @@ class Stock_Photo_Slider extends WP_Widget {
 		<div class="flexslider flex-native">
 		<ul class="slides">
 		<?php
-		$inventory_link = get_post_type_archive_link('inventory_vehicle');
+		$inventory_link = get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE );
 		foreach ($display_images as $filename) {
 			if ($link_slides) {
 				echo sprintf('<li><a href="%s"><img src="%s"></a></li>',$inventory_link,$base_url.$filename);
@@ -1051,12 +1051,12 @@ class Inventory_Slider extends WP_Widget {
 		if ($featured_select == 'random') {
 
 			$gpargs = array(
-				'numberposts'=> $showcount * 5,
-				'post_type'=>'inventory_vehicle',
-				'meta_key'=>'_thumbnail_id',
-				'fields' => 'ids',
-				'orderby'=>'rand',
-				'order' => 'ASC'
+				'numberposts' => $showcount * 5,
+				'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+				'meta_key'    => '_thumbnail_id',
+				'fields'      => 'ids',
+				'orderby'     => 'rand',
+				'order'       => 'ASC'
 			);
 
 			$inventory_ids = get_posts($gpargs);
@@ -1065,11 +1065,11 @@ class Inventory_Slider extends WP_Widget {
 
 			$gpargs = array(
 				'numberposts' => $showcount * 5,
-				'post_type' => 'inventory_vehicle',
-				'meta_query' => array(
+				'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+				'meta_query'  => array(
 					'relation' => 'AND',
 					array(
-						'key'     => 'inventory_presser_featured',
+						'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
 						'value'   => 1,
 						'compare' => '=',
 					),
@@ -1089,12 +1089,12 @@ class Inventory_Slider extends WP_Widget {
 			if (count($inventory_ids) < ($showcount * 5) && $featured_select == 'featured_priority') {
 
 				$gpargs = array(
-					'numberposts'=> ($showcount * 5) - (count($inventory_ids)),
-					'post_type'=>'inventory_vehicle',
-					'meta_query' => array(
+					'numberposts' => ($showcount * 5) - (count($inventory_ids)),
+					'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+					'meta_query'  => array(
 						'relation' => 'AND',
 						array(
-							'key'     => 'inventory_presser_featured',
+							'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
 							'value'   => 0,
 							'compare' => '='
 						),
@@ -1296,21 +1296,21 @@ class Inventory_Grid extends WP_Widget {
 		if (!empty( $title ))
 		echo $args['before_title'] . $title . $args['after_title'];
 
-		$gp_args=array(
-			'posts_per_page'=>$limit,
-			'post_type'=>'inventory_vehicle',
-			'meta_key'=>'_thumbnail_id', //has thumbnail
-			'fields' => 'ids',
-			'orderby'=>'rand',
-			'order' => 'ASC'
+		$gp_args = array(
+			'posts_per_page' => $limit,
+			'post_type'      => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+			'meta_key'       => '_thumbnail_id', //has thumbnail
+			'fields'         => 'ids',
+			'orderby'        => 'rand',
+			'order'          => 'ASC'
 		);
 
 		//Does the user want featured vehicles only?
 		if( isset($instance['cb_featured_only']) && 'true' == $instance['cb_featured_only'] ) {
 			$gp_args['meta_query'] = array(
 				array(
-					'key'     => 'inventory_presser_featured',
-					'value'   => '1',
+					'key'   => apply_filters( 'invp_prefix_meta_key', 'featured' ),
+					'value' => '1',
 				),
 			);
 		}
@@ -1348,7 +1348,7 @@ class Inventory_Grid extends WP_Widget {
 			$grid_html .= '</ul>';
 			$grid_html .= "</div>";
 			if ($show_button) {
-				$grid_html .= '<div class="invp-grid-button"><a href="'.get_post_type_archive_link( 'inventory_vehicle' ).'" class="_button _button-med">Full Inventory</a></div>';
+				$grid_html .= '<div class="invp-grid-button"><a href="'.get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ).'" class="_button _button-med">Full Inventory</a></div>';
 			}
 
 		}
@@ -1417,7 +1417,6 @@ class Inventory_Grid extends WP_Widget {
 class Price_Filters extends WP_Widget {
 
 	const ID_BASE = '_invp_price_filters';
-	const CUSTOM_POST_TYPE = 'inventory_vehicle';
 
 	var $price_defaults = array(5000,10000,15000,20000);
 	var $display_types = array(
@@ -1465,9 +1464,9 @@ class Price_Filters extends WP_Widget {
 			$price_points = (isset($instance['prices']) && is_array($instance['prices'])) ? $instance['prices'] : $this->price_defaults;
 
 			$base_link = add_query_arg( array(
-			    'orderby' => 'inventory_presser_price',
-			    'order' => 'DESC',
-			), get_post_type_archive_link(self::CUSTOM_POST_TYPE));
+			    'orderby' => apply_filters( 'invp_prefix_meta_key', 'price' ),
+			    'order'   => 'DESC',
+			), get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) );
 
 			$class_string = ($instance['display_type'] == 'buttons') ? ' class="_button _button-med"' : ' class="price-filter-text"';
 
@@ -1475,7 +1474,6 @@ class Price_Filters extends WP_Widget {
 				$this_link = add_query_arg( 'max_price', $price_point, $base_link);
 				echo sprintf('<div><a href="%s"%s><i class="fa fa-arrow-circle-down"></i>&nbsp;&nbsp;%s</a></div>',$this_link,$class_string,'$' . number_format($price_point, 0, '.', ',' ));
 			}
-
 		}
 
 		if (isset($_GET['max_price'])) {
@@ -1554,8 +1552,6 @@ class Price_Filters extends WP_Widget {
 // bootstrap class for these widgets
 class Inventory_Presser_Location_Widgets {
 
-	const CUSTOM_POST_TYPE = 'inventory_vehicle';
-
 	function __construct( ) {
 		add_action( 'widgets_init', array( $this, 'widgets_init' ) );
 		add_action( 'current_screen', array( $this, 'check_ids' ) );
@@ -1573,7 +1569,7 @@ class Inventory_Presser_Location_Widgets {
 	public function pre_get_posts( $query ) {
 
 		//Do not mess with the query if it's not the main one and our CPT
-		if ( !$query->is_main_query() || $query->query_vars['post_type'] != self::CUSTOM_POST_TYPE ) {
+		if ( !$query->is_main_query() || $query->query_vars['post_type'] != Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) {
 			return;
 		}
 
@@ -1594,7 +1590,7 @@ class Inventory_Presser_Location_Widgets {
 
 		if ( isset( $_GET['max_price'] ) ) {
 			$meta_query[] = array(
-	            'key'     => 'inventory_presser_price',
+	            'key'     => apply_filters( 'invp_prefix_meta_key', 'price' ),
 	            'value'   => (int) $_GET['max_price'],
 	            'compare' => '<=',
 	            'type'    => 'numeric'
@@ -1603,7 +1599,7 @@ class Inventory_Presser_Location_Widgets {
 
 		if ( isset( $_GET['min_price'] ) ) {
 			$meta_query[] = array(
-	            'key'     => 'inventory_presser_price',
+	            'key'     => apply_filters( 'invp_prefix_meta_key', 'price' ),
 	            'value'   => (int) $_GET['min_price'],
 	            'compare' => '>=',
 	            'type'    => 'numeric'
@@ -1612,7 +1608,7 @@ class Inventory_Presser_Location_Widgets {
 
 		if ( isset( $_GET['min_odometer'] ) ) {
 			$meta_query[] = array(
-	            'key'     => 'inventory_presser_odometer',
+	            'key'     => apply_filters( 'invp_prefix_meta_key', 'odometer' ),
 	            'value'   => (int) $_GET['min_odometer'],
 	            'compare' => '>=',
 	            'type'    => 'numeric'
@@ -1621,7 +1617,7 @@ class Inventory_Presser_Location_Widgets {
 
 		if ( isset( $_GET['max_odometer'] ) ) {
 			$meta_query[] = array(
-	            'key'     => 'inventory_presser_odometer',
+	            'key'     => apply_filters( 'invp_prefix_meta_key', 'odometer' ),
 	            'value'   => (int) $_GET['max_odometer'],
 	            'compare' => '<=',
 	            'type'    => 'numeric'

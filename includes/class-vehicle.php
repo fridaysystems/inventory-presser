@@ -187,12 +187,14 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 			$this->images[$size] = array();
 
-			$image_args = array('post_parent' =>$this->post_ID,
-					'numberposts' => -1,
-					'post_type' => 'attachment',
-					'post_mime_type' => 'image',
-					'order' => 'ASC',
-					'orderby' => 'menu_order ID');
+			$image_args = array(
+				'post_parent'    => $this->post_ID,
+				'numberposts'    => -1,
+				'post_type'      => 'attachment',
+				'post_mime_type' => 'image',
+				'order'          => 'ASC',
+				'orderby'        => 'menu_order ID'
+			);
 
 			$images = get_children($image_args);
 			foreach($images as $image):
@@ -203,15 +205,14 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 
 		function get_image_count() {
-
-			$image_args = array('post_parent' =>$this->post_ID,
-					'numberposts' => -1,
-					'post_type' => 'attachment',
-					'post_mime_type' => 'image',
-					);
+			$image_args = array(
+				'post_parent'    => $this->post_ID,
+				'numberposts'    => -1,
+				'post_type'      => 'attachment',
+				'post_mime_type' => 'image',
+			);
 			$images = get_children($image_args);
 			return count($images);
-
 		}
 
 		//return taxonomy terms as a comma delimited string

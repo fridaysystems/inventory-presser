@@ -17,8 +17,8 @@ class _dealer_settings {
 	}
 
 	public function dealership_options_add_plugin_page() {
-		if (post_type_exists( 'inventory_vehicle' )) {
-			add_submenu_page('edit.php?post_type=inventory_vehicle',
+		if ( post_type_exists( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) ) {
+			add_submenu_page('edit.php?post_type=' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
 				'Options', // page_title
 				'Options', // menu_title
 				'manage_options', // capability
@@ -34,8 +34,6 @@ class _dealer_settings {
 				array( $this, 'dealership_options_create_admin_page' ) // function
 			);
 		}
-
-
 	}
 
 	public function dealership_options_create_admin_page() {

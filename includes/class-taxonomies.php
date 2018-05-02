@@ -10,12 +10,7 @@
  */
 class Inventory_Presser_Taxonomies {
 
-	var $post_type;
 	var $days = array('Mon','Tue','Wed','Thu','Fri','Sat','Sun');
-
-	function __construct( $post_type='inventory_vehicle' ) {
-		$this->post_type = $post_type;
-	}
 
 	function hooks() {
 
@@ -37,7 +32,7 @@ class Inventory_Presser_Taxonomies {
 		add_filter( 'get_terms_orderby', array( $this, 'sort_terms_as_numbers' ), 10,  3 );
 
 		//Save custom taxonomy terms when posts are saved
-		add_action( 'save_post_' . $this->post_type, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
+		add_action( 'save_post_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
 
 		//Load our scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
@@ -168,7 +163,7 @@ class Inventory_Presser_Taxonomies {
 		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
 			//create the taxonomy
 			$taxonomy_name = $this->convert_hyphens_to_underscores( $taxonomy_data[$i]['args']['query_var'] );
-			register_taxonomy( $taxonomy_name, $this->post_type(), $taxonomy_data[$i]['args'] );
+			register_taxonomy( $taxonomy_name, Inventory_Presser_Plugin::CUSTOM_POST_TYPE, $taxonomy_data[$i]['args'] );
 		}
 	}
 
@@ -344,7 +339,7 @@ class Inventory_Presser_Taxonomies {
 
 	function load_scripts($hook) {
 		global $current_screen;
-		if (($hook == 'edit-tags.php' || $hook == 'term.php') && $current_screen->post_type == $this->post_type() && $current_screen->taxonomy == 'location') {
+		if (($hook == 'edit-tags.php' || $hook == 'term.php') && $current_screen->post_type == Inventory_Presser_Plugin::CUSTOM_POST_TYPE && $current_screen->taxonomy == 'location') {
 			wp_enqueue_style('inventory-presser-timepicker-css',  plugins_url( '/css/jquery.timepicker.css', dirname( __FILE__ ) ));
 			wp_enqueue_script('inventory-presser-timepicker', plugins_url( '/js/jquery.timepicker.min.js', dirname( __FILE__ ) ), array('jquery'), '1.8.10');
 			wp_enqueue_script('jquery-ui-sortable');
@@ -354,7 +349,7 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	function maybe_exclude_sold_vehicles( $query ) {
-		if( ! is_search() & ( ! $query->is_main_query() || ! is_post_type_archive( $this->post_type ) ) ) {
+		if( ! is_search() & ( ! $query->is_main_query() || ! is_post_type_archive( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) ) ) {
 			return;
 		}
 
@@ -421,11 +416,7 @@ class Inventory_Presser_Taxonomies {
 
 	function meta_box_html_locations( $post ) {
 		echo $this->taxonomy_meta_box_html( 'location', 'inventory_presser_location', $post ) .
-			'<p><a href="edit-tags.php?taxonomy=location&post_type=' . $this->post_type() . '">Manage locations</a></p>';
-	}
-
-	function post_type() {
-		return $this->post_type;
+			'<p><a href="edit-tags.php?taxonomy=location&post_type=' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '">Manage locations</a></p>';
 	}
 
 	function save_location_meta( $term_id, $tt_id ) {

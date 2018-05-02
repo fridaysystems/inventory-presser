@@ -82,22 +82,22 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						array(
 							'relation' => 'OR',
 							array(
-								'key'     => 'inventory_presser_model',
+								'key'     => apply_filters( 'invp_prefix_meta_key', 'model' ),
 								'compare' => 'NOT EXISTS'
 							),
 							array(
-								'key'     => 'inventory_presser_model',
+								'key'     => apply_filters( 'invp_prefix_meta_key', 'model' ),
 								'compare' => 'EXISTS'
 							),
 						),
 						array(
 							'relation' => 'OR',
 							array(
-								'key'     => 'inventory_presser_trim',
+								'key'     => apply_filters( 'invp_prefix_meta_key', 'trim' ),
 								'compare' => 'NOT EXISTS'
 							),
 							array(
-								'key'     => 'inventory_presser_trim',
+								'key'     => apply_filters( 'invp_prefix_meta_key', 'trim' ),
 								'compare' => 'EXISTS'
 							),
 						),
@@ -111,22 +111,22 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							array(
 								'relation' => 'OR',
 								array(
-									'key'     => 'inventory_presser_model',
+									'key'     => apply_filters( 'invp_prefix_meta_key', 'model' ),
 									'compare' => 'NOT EXISTS'
 								),
 								array(
-									'key'     => 'inventory_presser_model',
+									'key'     => apply_filters( 'invp_prefix_meta_key', 'model' ),
 									'compare' => 'EXISTS'
 								),
 							),
 							array(
 								'relation' => 'OR',
 								array(
-									'key'     => 'inventory_presser_trim',
+									'key'     => apply_filters( 'invp_prefix_meta_key', 'trim' ),
 									'compare' => 'NOT EXISTS'
 								),
 								array(
-									'key'     => 'inventory_presser_trim',
+									'key'     => apply_filters( 'invp_prefix_meta_key', 'trim' ),
 									'compare' => 'EXISTS'
 								),
 							),
@@ -140,44 +140,44 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							array(
 								'relation' => 'OR',
 								array(
-									'key'     => 'inventory_presser_year',
+									'key'     => apply_filters( 'invp_prefix_meta_key', 'year' ),
 									'compare' => 'NOT EXISTS'
 								),
 								array(
-									'key'     => 'inventory_presser_year',
+									'key'     => apply_filters( 'invp_prefix_meta_key', 'year' ),
 									'compare' => 'EXISTS'
 								),
 							),
 							array(
 								'relation' => 'OR',
 								array(
-									'key'     => 'inventory_presser_make',
+									'key'     => apply_filters( 'invp_prefix_meta_key', 'make' ),
 									'compare' => 'NOT EXISTS'
 								),
 								array(
-									'key'     => 'inventory_presser_make',
+									'key'     => apply_filters( 'invp_prefix_meta_key', 'make' ),
 									'compare' => 'EXISTS'
 								),
 							),
 							array(
 								'relation' => 'OR',
 								array(
-									'key'     => 'inventory_presser_model',
+									'key'     => apply_filters( 'invp_prefix_meta_key', 'model' ),
 									'compare' => 'NOT EXISTS'
 								),
 								array(
-									'key'     => 'inventory_presser_model',
+									'key'     => apply_filters( 'invp_prefix_meta_key', 'model' ),
 									'compare' => 'EXISTS'
 								),
 							),
 							array(
 								'relation' => 'OR',
 								array(
-									'key'     => 'inventory_presser_trim',
+									'key'     => apply_filters( 'invp_prefix_meta_key', 'trim' ),
 									'compare' => 'NOT EXISTS'
 								),
 								array(
-									'key'     => 'inventory_presser_trim',
+									'key'     => apply_filters( 'invp_prefix_meta_key', 'trim' ),
 									'compare' => 'EXISTS'
 								),
 							),
@@ -225,9 +225,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'update_callback' => null,
 				'schema'          => null,
 			);
-			register_rest_field( self::CUSTOM_POST_TYPE, 'inventory_presser_epa_fuel_economy', $args );
-			register_rest_field( self::CUSTOM_POST_TYPE, 'inventory_presser_option_array', $args );
-			register_rest_field( self::CUSTOM_POST_TYPE, 'inventory_presser_prices', $args );
+			register_rest_field( self::CUSTOM_POST_TYPE, apply_filters( 'invp_prefix_meta_key', 'epa_fuel_economy' ), $args );
+			register_rest_field( self::CUSTOM_POST_TYPE, apply_filters( 'invp_prefix_meta_key', 'option_array' ), $args );
+			register_rest_field( self::CUSTOM_POST_TYPE, apply_filters( 'invp_prefix_meta_key', 'prices' ), $args );
 		}
 
 		function hooks( ) {
@@ -238,7 +238,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			} );
 
 			//Modify the administrator dashboard
-			$customize_dashboard = new Inventory_Presser_Customize_Admin_Dashboard( self::CUSTOM_POST_TYPE );
+			$customize_dashboard = new Inventory_Presser_Customize_Admin_Dashboard();
 			$customize_dashboard->hooks();
 
 			/**
@@ -255,7 +255,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_action( 'rest_api_init', array( $this, 'create_serialized_api_fields' ) );
 
 			//Create custom taxonomies
-			$this->taxonomies = new Inventory_Presser_Taxonomies( self::CUSTOM_POST_TYPE );
+			$this->taxonomies = new Inventory_Presser_Taxonomies();
 			$this->taxonomies->hooks();
 
 			/**

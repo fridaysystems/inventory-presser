@@ -17,8 +17,6 @@
 if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) ) {
 	class Vehicle_URLs_By_VIN {
 
-		const CUSTOM_POST_TYPE = 'inventory_vehicle';
-
 		function __construct() {
 			add_action( 'init', array( $this, 'add_vin_rewrite' ) );
 			add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
@@ -45,12 +43,12 @@ if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) ) {
 		}
 
 		function find_vehicle_url( $vin ) {
-			return $this->get_permalink_by_meta_value( 'inventory_presser_vin', $vin );
+			return $this->get_permalink_by_meta_value( apply_filters( 'invp_prefix_meta_key', 'vin' ), $vin );
 		}
 
 		function get_permalink_by_meta_value( $meta_key, $meta_value ) {
 			$posts = get_posts( array(
-				'post_type'   => self::CUSTOM_POST_TYPE,
+				'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
 				'post_status' => 'publish',
 				'meta_key'    => $meta_key,
 				'meta_value'  => $meta_value,
@@ -58,7 +56,7 @@ if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) ) {
 			if( 1 === sizeof( $posts ) ) {
 				return get_permalink( $posts[0] );
 			}
-			return get_post_type_archive_link( self::CUSTOM_POST_TYPE );
+			return get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE );
 		}
 	}
 }

@@ -14,7 +14,6 @@ class Inventory_Presser_Shortcodes {
 		add_action('wp_ajax_get_simple_listing', array($this, 'simple_json') );
 		add_action('wp_ajax_nopriv_get_simple_listing', array($this, 'simple_json') );
 		add_filter('the_content', array($this, 'filter_single_content'));
-
 	}
 
 	function load_scripts() {
@@ -22,14 +21,14 @@ class Inventory_Presser_Shortcodes {
 		wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
 
 		global $post;
-		if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'invp-simple-listing') || is_post_type_archive('inventory_vehicle')) {
+		if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'invp-simple-listing') || is_post_type_archive( Inventory_Presser_Plugin::CUSTOM_POST_TYPE )) {
 			wp_enqueue_style('invp-simple-listing-style', plugins_url('/css/invp-simple-listing.css', dirname(__FILE__)));
 		}
 
 		wp_register_script('flexslider', plugins_url('/js/jquery.flexslider.min.js', dirname(__FILE__)), array('jquery'));
 		wp_register_script('invp-simple-listing', plugins_url('/js/invp-simple-listing.js', dirname(__FILE__)), array('flexslider'));
 
-		if (is_singular('inventory_vehicle') && !file_exists(get_stylesheet_directory().'/single-inventory_vehicle.php')) {
+		if (is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) && !file_exists(get_stylesheet_directory().'/single-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '.php')) {
 
 			// generate an array of all featured image size urls.  This will be used by jquery to remove all instances
 			// of a featured post image in a vehicle page, in the case that a featured image is displayed on a single page
@@ -69,11 +68,11 @@ class Inventory_Presser_Shortcodes {
 
 		$gpargs = array(
 			'numberposts' => 10,
-			'post_type' => 'inventory_vehicle',
-			'meta_query' => array(
+			'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+			'meta_query'  => array(
 				'relation' => 'AND',
 				array(
-					'key'     => 'inventory_presser_featured',
+					'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
 					'value'   => 1,
 					'compare' => '=',
 				),
@@ -82,23 +81,22 @@ class Inventory_Presser_Shortcodes {
 					'compare' => 'EXISTS',
 				)
 			),
-			'fields' => 'ids',
-			'orderby'=>'rand',
-			'order' => 'ASC'
+			'fields'  => 'ids',
+			'orderby' => 'rand',
+			'order'   => 'ASC'
 		);
 
 		$inventory_ids = get_posts($gpargs);
 
-
 		if (count($inventory_ids) < 10) {
 
 			$gpargs = array(
-				'numberposts'=> 10 - (count($inventory_ids)),
-				'post_type'=>'inventory_vehicle',
-				'meta_query' => array(
+				'numberposts' => 10 - (count($inventory_ids)),
+				'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+				'meta_query'  => array(
 					'relation' => 'AND',
 					array(
-						'key'     => 'inventory_presser_featured',
+						'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
 						'value'   => 0,
 						'compare' => '='
 					),
@@ -107,13 +105,12 @@ class Inventory_Presser_Shortcodes {
 						'compare' => 'EXISTS'
 					)
 				),
-				'fields' => 'ids',
-				'orderby'=>'rand',
-				'order' => 'ASC'
+				'fields'  => 'ids',
+				'orderby' => 'rand',
+				'order'   => 'ASC'
 			);
 
 			$inventory_ids += get_posts($gpargs);
-
 		}
 
 		shuffle($inventory_ids);
@@ -169,7 +166,7 @@ class Inventory_Presser_Shortcodes {
 
 		$args = array(
 			'posts_per_page' => $atts['per_page'],
-			'post_type'      => 'inventory_vehicle',
+			'post_type'      => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
 			'meta_key'       => '_thumbnail_id',
 			'fields'         => 'ids',
 			'orderby'        => 'rand',
@@ -208,7 +205,7 @@ class Inventory_Presser_Shortcodes {
 
 			$grid_html .= '</ul><div class="clear"></div></div>';
 			if ( $atts['button'] ) {
-				$grid_html .= '<a href="'.get_post_type_archive_link( 'inventory_vehicle' ).'" class="_button _button-med">Full Inventory</a>';
+				$grid_html .= '<a href="'.get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ).'" class="_button _button-med">Full Inventory</a>';
 			}
 
 		}
@@ -250,7 +247,7 @@ class Inventory_Presser_Shortcodes {
 		try {
 
 			// get count of published inventory
-			$total = wp_count_posts('inventory_vehicle');
+			$total = wp_count_posts( Inventory_Presser_Plugin::CUSTOM_POST_TYPE );
 			$output['total'] = $total->publish;
 
 			// get post vars from request
@@ -263,12 +260,10 @@ class Inventory_Presser_Shortcodes {
 			// get post id's only
 			$output['inventory'] = array();
 			$args = array(
-				'posts_per_page'   => $per_page,
-				'offset'           => $offset,
-				'fields'			=> 'ids',
-				//'orderby'          => 'date',
-				//'order'            => 'DESC',
-				'post_type'        => 'inventory_vehicle',
+				'posts_per_page' => $per_page,
+				'offset'         => $offset,
+				'fields'         => 'ids',
+				'post_type'      => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
 			);
 			$inventory_array = get_posts( $args );
 
@@ -300,10 +295,10 @@ class Inventory_Presser_Shortcodes {
 
 	}
 
-	// if singular inventory_vehicle post and a theme with no template for vehicles, add output to the content
+	// if singular post and a theme with no template for vehicles, add output to the content
 	function filter_single_content($content) {
 
-		if (is_singular('inventory_vehicle') && !file_exists(get_template_directory().'/single-inventory_vehicle.php') && !file_exists(get_stylesheet_directory().'/single-inventory_vehicle.php')) {
+		if (is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) && !file_exists(get_template_directory().'/single-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '.php') && !file_exists(get_stylesheet_directory().'/single-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '.php')) {
 
 			global $post;
 

@@ -12,7 +12,6 @@
 class Inventory_Presser_Customize_Admin_Dashboard {
 
 	const PRODUCT_NAME = 'Inventory Presser';
-	var $post_type;
 
 	function add_columns_to_vehicles_table( $column ) {
 		//add our columns
@@ -31,16 +30,16 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 	function add_meta_boxes_to_cpt( ) {
 		//Add a meta box to the New/Edit post page
-		add_meta_box('vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), $this->post_type(), 'advanced', 'high' );
+		add_meta_box('vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'advanced', 'high' );
 
 		//and another for prices
-		add_meta_box('prices-meta', 'Prices', array( $this, 'meta_box_html_prices' ), $this->post_type(), 'advanced', 'high' );
+		add_meta_box('prices-meta', 'Prices', array( $this, 'meta_box_html_prices' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'advanced', 'high' );
 
 		//Add another meta box to the New/Edit post page
-		add_meta_box('options-meta', 'Optional equipment', array( $this, 'meta_box_html_options' ), $this->post_type(), 'normal', 'high' );
+		add_meta_box('options-meta', 'Optional equipment', array( $this, 'meta_box_html_options' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'normal', 'high' );
 
 		//Add a meta box to the side column for a featured vehicle checkbox
-		add_meta_box('featured', 'Featured Vehicle', array( $this, 'meta_box_html_featured' ), $this->post_type(), 'side', 'low' );
+		add_meta_box('featured', 'Featured Vehicle', array( $this, 'meta_box_html_featured' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'side', 'low' );
 	}
 
 	//Add a setting to the customizer's Colors panel for Carfax button text
@@ -76,7 +75,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$wp_admin_bar->add_node( array(
 			'id'     => 'wp-admin-bar-vehicles',
 			'title'  => 'Vehicles',
-			'href'   => admin_url( 'edit.php?post_type=' . $this->post_type ),
+			'href'   => admin_url( 'edit.php?post_type=' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE ),
 			'parent' => 'site-name',
 		) );
 	}
@@ -88,23 +87,21 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			$this->create_add_media_button_annotation( ) . '</span>';
 	}
 
-	function hooks( $post_type = 'inventory_vehicle' ) {
-
-		$this->post_type = $post_type;
+	function hooks() {
 
 		add_filter( 'posts_clauses', array( $this, 'enable_order_by_attachment_count' ), 1, 2 );
 
 		//Save custom post data when posts are saved
-		add_action( 'save_post_' . $this->post_type(), array( $this, 'save_vehicle_post_meta' ), 10, 3 );
+		add_action( 'save_post_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE, array( $this, 'save_vehicle_post_meta' ), 10, 3 );
 
 		//Add columns to the table that lists all the Vehicles on edit.php
-		add_filter( 'manage_' . $this->post_type() . '_posts_columns', array( $this, 'add_columns_to_vehicles_table' ) );
+		add_filter( 'manage_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '_posts_columns', array( $this, 'add_columns_to_vehicles_table' ) );
 
 		//Populate the columns we added to the Vehicles table
-		add_action( 'manage_' . $this->post_type() . '_posts_custom_column', array( $this, 'populate_columns_we_added_to_vehicles_table' ), 10, 2 );
+		add_action( 'manage_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '_posts_custom_column', array( $this, 'populate_columns_we_added_to_vehicles_table' ), 10, 2 );
 
 		//Make our added columns to the Vehicles table sortable
-		add_filter( 'manage_edit-' . $this->post_type() . '_sortable_columns', array( $this, 'make_vehicles_table_columns_sortable' ) );
+		add_filter( 'manage_edit-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '_sortable_columns', array( $this, 'make_vehicles_table_columns_sortable' ) );
 
 		//Implement the orderby for each of these added columns
 		add_filter( 'pre_get_posts', array( $this, 'vehicles_table_columns_orderbys' ) );
@@ -167,7 +164,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
     	$scheduled_date = date_i18n( __( 'M j, Y @ H:i', 'inventory-presser' ), strtotime( $post->post_date ) );
 
-		$msgs[$this->post_type()] = array(
+		$msgs[Inventory_Presser_Plugin::CUSTOM_POST_TYPE] = array(
 			0  => '',
 			1  => __( 'Vehicle updated. ', 'inventory-presser' ) . $view_link,
 			2  => __( 'Custom field updated.', 'inventory-presser' ),
@@ -193,7 +190,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			$post = get_post( $_POST['post_ID'] );
 		}
 
-		if( ! isset( $post->post_type ) || $this->post_type() != $post->post_type ) {
+		if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post->post_type ) {
 			return;
 		}
 
@@ -255,7 +252,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		}
 		//does this post have attachments?
 		$post = get_post( $post->ID );
-		if( $this->post_type() != $post->post_type ) {
+		if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post->post_type ) {
 			return '';
 		}
 		$attachments = get_children( array(
@@ -291,7 +288,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		$deleted_count = $this->delete_all_inventory();
 
 		//delete all terms
-		$taxonomies = new Inventory_Presser_Taxonomies( $this->post_type );
+		$taxonomies = new Inventory_Presser_Taxonomies();
 		foreach( $taxonomies->query_vars_array() as $taxonomy ) {
 			$terms = get_terms( array(
 				'taxonomy'   => $taxonomy,
@@ -315,7 +312,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 
 		$args = array(
 			'post_status'    => 'any',
-			'post_type'      => $this->post_type(),
+			'post_type'      => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
 			'posts_per_page' => -1,
 		);
 		$posts = get_posts( $args );
@@ -798,7 +795,7 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		global $post, $wp_meta_boxes;
 		$post_type = get_post_type( $post );
 
-		if( $this->post_type() != $post_type ) {
+		if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post_type ) {
 			return;
 		}
 
@@ -809,8 +806,16 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 	function move_tags_meta_box( ) {
 		//Remove and re-add the "Tags" meta box so it ends up at the bottom for our CPT
 		global $wp_meta_boxes;
-		unset( $wp_meta_boxes[$this->post_type()]['side']['core']['tagsdiv-post_tag'] );
-		add_meta_box( 'tagsdiv-post_tag', 'Tags', 'post_tags_meta_box', $this->post_type(), 'side', 'core', array( 'taxonomy' => 'post_tag' ));
+		unset( $wp_meta_boxes[Inventory_Presser_Plugin::CUSTOM_POST_TYPE]['side']['core']['tagsdiv-post_tag'] );
+		add_meta_box(
+			'tagsdiv-post_tag',
+			'Tags',
+			'post_tags_meta_box',
+			Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+			'side',
+			'core',
+			array( 'taxonomy' => 'post_tag' )
+		);
 	}
 
 	function output_add_media_button_annotation( ) { //because AJAX
@@ -860,10 +865,6 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 			default:
 				echo $val;
 		}
-	}
-
-	function post_type() {
-		return $this->post_type;
 	}
 
 	function product_name_slug( $suffix = '' ) {

@@ -55,7 +55,7 @@ class Fuel_Economy_Widget extends WP_Widget {
  	public function widget( $args, $instance ) {
 
  		//if we aren't looking at a single vehicle, abort
- 		if( ! is_singular( 'inventory_vehicle' ) ) {
+ 		if( ! is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) ) {
  			return;
  		}
 

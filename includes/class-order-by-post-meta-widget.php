@@ -118,14 +118,16 @@ class Order_By_Widget extends WP_Widget {
 	 */
 	function get_post_meta_keys_from_database() {
 		global $wpdb;
-		$query = "
+		$query = $wpdb->prepare("
 			SELECT 		DISTINCT($wpdb->postmeta.meta_key)
 			FROM 		$wpdb->posts
 						LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id
-			WHERE 		$wpdb->posts.post_type = 'inventory_vehicle'
+			WHERE 		$wpdb->posts.post_type = '%s'
 						AND $wpdb->postmeta.meta_key LIKE '%inventory\\\\_presser\\\\_%'
 			ORDER BY 	$wpdb->postmeta.meta_key
-		";
+			",
+			Inventory_Presser_Plugin::CUSTOM_POST_TYPE
+		);
 		return $wpdb->get_col( $query );
 	}
 
