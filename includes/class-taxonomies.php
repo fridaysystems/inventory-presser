@@ -62,7 +62,7 @@ class Inventory_Presser_Taxonomies {
 
 	function set_term_meta( $value, $term, $attr, $request, $object_type ) {
 		$value = maybe_unserialize( $value );
-		$result = update_term_meta( $term->term_id, $attr, $value, $this->get_term_meta( $term, $attr, $request, $object_type ) );
+		$result = isset( $term->term_id ) && update_term_meta( $term->term_id, $attr, $value, $this->get_term_meta( $term, $attr, $request, $object_type ) );
 		if( true !== $result ) {
 			$result = add_term_meta( $term->term_id, $attr, $value, true );
 		}

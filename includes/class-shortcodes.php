@@ -381,7 +381,7 @@ class Inventory_Presser_Shortcodes {
 			$atts['src'] = esc_url( add_query_arg( 'stock', $_GET['stock'], $atts['src'] ) );
 		}
 
-		$html .= '<iframe';
+		$html = '<iframe';
 		foreach( $atts as $attr => $value ) {
 
 			//ignore some attributes
