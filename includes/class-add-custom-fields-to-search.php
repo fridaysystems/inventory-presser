@@ -21,6 +21,10 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 			add_filter( 'posts_where', array( $this, 'cf_search_where' ) );
 		}
 
+		function is_media_library() {
+			return 'upload.php' == basename( $_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING'] );
+		}
+
 		/**
 		 * Join posts and postmeta tables
 		 *
@@ -29,7 +33,7 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 		function cf_search_join( $join ) {
 		    global $wpdb;
 
-			if ( ! is_search() || 'upload.php' == basename( $_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING'] ) ) {
+			if ( ! is_search() || $this->is_media_library() ) {
 				return $join;
 			}
 
@@ -50,15 +54,17 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 		 * http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_where
 		 */
 		function cf_search_where( $where ) {
-		    global $wpdb;
 
-		    if ( is_search() ) {
-		        $where = preg_replace(
-		            "/\(\s*" . $wpdb->posts . ".post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
-		            "(" . $wpdb->posts . ".post_title LIKE $1) OR (" . $wpdb->postmeta . ".meta_value LIKE $1) OR (t.name LIKE $1) OR (t.slug LIKE $1)",
-		             $where
-		        );
-		    }
+			if ( ! is_search() || $this->is_media_library() ) {
+				return $where;
+			}
+
+			global $wpdb;
+			$where = preg_replace(
+				"/\(\s*" . $wpdb->posts . ".post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
+				"(" . $wpdb->posts . ".post_title LIKE $1) OR (" . $wpdb->postmeta . ".meta_value LIKE $1) OR (t.name LIKE $1) OR (t.slug LIKE $1)",
+				 $where
+			);
 
 		    return $where;
 		}

@@ -57,6 +57,9 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	function get_term_meta( $term, $attr, $request, $object_type ) {
+		if( ! isset( $term->term_id ) ) {
+			return false;
+		}
 		return get_term_meta( $term->term_id, $attr, true );
 	}
 

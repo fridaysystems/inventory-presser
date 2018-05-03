@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.4
-Stable tag: 5.3.0
+Stable tag: 5.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,10 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 2. This is the edit screen that adds or edits a single vehicle. The post content box is demoted to handle only the sentence-form vehicle description, and the entire edit screen is enhanced to support vehicle attributes. This screen shot was taken on version 3.1.0.
 
 == Changelog ==
+
+= 5.3.1 =
+* [Fixed] Fix a bug introduced in the previous version where only part of a query in the Media Library was corrected
+* [Fixed] Fix a bug by checking that a term ID exists before trying to use it
 
 = 5.3.0 =
 * [Added] Make vehicle thumbnails on edit.php links to the edit page just like the post title
