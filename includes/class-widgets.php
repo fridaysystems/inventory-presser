@@ -1579,6 +1579,9 @@ class Inventory_Presser_Location_Widgets {
 
 		//Get original meta query
 		$meta_query = $query->get('meta_query');
+		if( ! is_array( $meta_query ) ) {
+			$meta_query = array();
+		}
 
 		if ( isset( $_GET['max_price'] )
 			|| isset( $_GET['min_price'] )
