@@ -55,6 +55,7 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 = 5.3.1 =
 * [Fixed] Fix a bug introduced in the previous version where only part of a query in the Media Library was corrected
 * [Fixed] Fix a bug by checking that a term ID exists before trying to use it
+* [Fixed] Fix a bug that excluded sold vehicles outside searches and the post_type archives for our custom post type (when the option to hide sold vehicles was set)
 
 = 5.3.0 =
 * [Added] Make vehicle thumbnails on edit.php links to the edit page just like the post title

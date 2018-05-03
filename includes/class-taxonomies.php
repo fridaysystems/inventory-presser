@@ -352,7 +352,7 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	function maybe_exclude_sold_vehicles( $query ) {
-		if( ! is_search() & ( ! $query->is_main_query() || ! is_post_type_archive( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) ) ) {
+		if( is_admin() || ! $query->is_main_query() || ! ( is_search() || is_post_type_archive( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) ) ) {
 			return;
 		}
 
