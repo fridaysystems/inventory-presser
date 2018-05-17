@@ -52,6 +52,9 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 
 == Changelog ==
 
+= 5.4.0 =
+* [Added] Help our suite of add-on plugins activate licenses at inventorypresser.com and receive automatic updates
+
 = 5.3.1 =
 * [Fixed] Fix a bug introduced in the previous version where only part of a query in the Media Library was corrected
 * [Fixed] Fix a bug by checking that a term ID exists before trying to use it
