@@ -19,6 +19,7 @@ $inventory_presser_include_paths = array(
 	'class-customize-admin-dashboard.php',
 	'class-dealership-options.php',
 	'class-fuel-economy-widget.php',
+	'class-license.php',
 	'class-menu-item-email-a-friend.php',
 	'class-option-manager.php',
 	'class-order-by-post-meta-widget.php',
