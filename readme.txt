@@ -53,7 +53,8 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 == Changelog ==
 
 = 5.4.0 =
-* [Added] Help our suite of add-on plugins activate licenses at inventorypresser.com and receive automatic updates
+* [Added] Help our suite of add-on plugins activate licenses at inventorypresser.com and receive automatic updates by adding a license class
+* [Added] Pass the vehicle object into the invp_zero_price_string filter so the zero price string can be easily changed based on vehicle attributes
 
 = 5.3.1 =
 * [Fixed] Fix a bug introduced in the previous version where only part of a query in the Media Library was corrected

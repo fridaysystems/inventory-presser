@@ -323,7 +323,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		function price( $zero_string = '' ) {
 			if ( ! $this->is_sold ) {
 				if( 0 == $this->price ) {
-					return apply_filters( 'invp_zero_price_string', $zero_string );
+					return apply_filters( 'invp_zero_price_string', $zero_string, $this );
 				}
 				return '$' . number_format( $this->price, 0, '.', ',' );
 			}
