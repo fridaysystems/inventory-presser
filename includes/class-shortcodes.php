@@ -296,73 +296,63 @@ class Inventory_Presser_Shortcodes {
 	}
 
 	// if singular post and a theme with no template for vehicles, add output to the content
-	function filter_single_content($content) {
+	function filter_single_content( $content ) {
 
-		if (is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) && !file_exists(get_template_directory().'/single-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '.php') && !file_exists(get_stylesheet_directory().'/single-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '.php')) {
-
-			global $post;
-
-			$vehicle = new Inventory_Presser_Vehicle($post->ID);
-
-			$large_image_list =  $vehicle->get_images_html_array('large');
-			$thumb_image_list =  $vehicle->get_images_html_array('thumb');
-
-			$before =	'<div class="invp-single-wrapper">';
-
-			$before.=		'<div class="invp-single-subhead invp-cf">';
-			$before.=			'<div class="invp-left">'.$vehicle->odometer(' Miles').'</div>';
-			$before.=			'<div class="invp-right">'.$vehicle->price('Call For Price').'</div>';
-			$before.=			'<div class="clear"></div>';
-			$before.=		'</div>';
-
-			// if there are images, display them
-			if (count($thumb_image_list) > 0) {
-
-				$before.=		'<div id="slider" class="flexslider">';
-				$before.=		  '<ul class="slides">';
-				foreach($large_image_list as $image):
-				$before.=		    '<li>'.$image.'</li>';
-				endforeach;
-				$before.=		  '</ul>';
-				$before.=		'</div>';
-
-
-				// if only 1 image, skip the nav
-				if (count($thumb_image_list) > 1) {
-					$before.=		'<div id="carousel" class="flexslider">';
-					$before.=		  '<ul class="slides">';
-					foreach($thumb_image_list as $image):
-					$before.=		    '<li>'.$image.'</li>';
-					endforeach;
-					$before.=		  '</ul>';
-					$before.=		'</div>';
-				}
-
-			}
-
-			$before.= '<ul>';
-			$before.= '	<li>'.$vehicle->color.'</li>';
-			$before.= '	<li>'.$vehicle->engine.'</li>';
-			$before.= '</ul>';
-
-			$after = '';
-
-			$after .= '<ul class="vehicle-features">';
-			foreach($vehicle->option_array as $option):
-			$after .= '<li>'.$option.'</li>';
-			endforeach;
-			$after .= '</ul>';
-
-			$after .= '</div>';
-
-			$content = $before.$content.$after;
-
-
-
+		if ( ! is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE )
+			|| file_exists( get_template_directory()   . '/single-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '.php' )
+			|| file_exists( get_stylesheet_directory() . '/single-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '.php') )
+		{
+			return $content;
 		}
 
-		return $content;
+		global $post;
+		$vehicle = new Inventory_Presser_Vehicle( $post->ID );
 
+		$image_url_lists = $vehicle->get_images_html_array( array( 'large', 'thumb' ) );
+
+		$before = sprintf(
+			'<div class="invp-single-wrapper">'
+			. '<div class="invp-single-subhead invp-cf">'
+			. '<div class="invp-left">%s</div>'
+			. '<div class="invp-right">%s</div>'
+			. '<div class="clear"></div>'
+			. '</div>',
+			$vehicle->odometer(' Miles'),
+			$vehicle->price('Call For Price')
+		);
+
+		// if there are images, display them
+		if( 0 < count( $image_url_lists['large'] ) ) {
+
+			$before .= '<div id="slider" class="flexslider"><ul class="slides">';
+			foreach( $image_url_lists['large'] as $image ) {
+				$before .= sprintf( '<li>%s</li>', $image );
+			}
+			$before .= '</ul></div>';
+
+			// if only 1 image, skip the nav
+			if( 1 < count( $image_url_lists['thumb'] ) ) {
+				$before .= '<div id="carousel" class="flexslider"><ul class="slides">';
+				foreach( $image_url_lists['thumb'] as $image ) {
+					$before .= sprintf( '<li>%s</li>', $image );
+				}
+				$before .= '</ul></div>';
+			}
+		}
+
+		$before .= sprintf(
+			'<ul><li>%s</li><li>%s</li></ul>',
+			$vehicle->color,
+			$vehicle->engine
+		);
+
+		$after = '<ul class="vehicle-features">';
+		foreach( $vehicle->option_array as $option ) {
+			$after .= sprintf( '<li>%s</li>', $option );
+		}
+		$after .= '</ul></div>';
+
+		return $before . $content . $after;
 	}
 
 	function iframe_embed_shortcode( $atts ) {
