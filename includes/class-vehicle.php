@@ -67,9 +67,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $is_sold = false;
 		var $is_used = true;
 
-		// images
-		var $images = array();
-
 		// color string for output
 		var $color_string = '';
 
@@ -183,25 +180,49 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 
 		// fill arrays of thumb and large image URI's
-		function get_images_html_array( $size ) {
+		function get_images_html_array( $sizes ) {
 
-			$this->images[$size] = array();
+			/**
+			 * Backwards compatibility to versions before 5.4.0 where the
+			 * incoming argument was a string not an array.
+			 */
+			if( ! is_array( $sizes ) ) {
+				$sizes = array( $size );
+			}
 
 			$image_args = array(
-				'post_parent'    => $this->post_ID,
+				'meta_key'       => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
 				'numberposts'    => -1,
+				'order'          => 'ASC',
+				'orderby'        => 'meta_value_num',
+				'post_parent'    => $this->post_ID,
 				'post_type'      => 'attachment',
 				'post_mime_type' => 'image',
-				'order'          => 'ASC',
-				'orderby'        => 'menu_order ID'
 			);
 
-			$images = get_children($image_args);
-			foreach($images as $image):
-				$this->images[$size][] = wp_get_attachment_image($image->ID, $size, false, array('class'=>"attachment-$size size-$size invp-image"));
-			endforeach;
+			$images = get_children( $image_args );
 
-			return $this->images[$size];
+			$image_urls = array();
+			foreach( $images as $image ) {
+				foreach( $sizes as $size ) {
+					$image_urls[$size][] = wp_get_attachment_image(
+						$image->ID,
+						$size,
+						false,
+						array( 'class' => "attachment-$size size-$size invp-image" )
+					);
+				}
+			}
+
+			/**
+			 * Backwards compatibility to versions before 5.4.0 where the
+			 * incoming argument was a string not an array.
+			 */
+			if( 1 == sizeof( $sizes ) ) {
+				return $image_urls[$sizes[0]];
+			}
+
+			return $image_urls;
 		}
 
 		function get_image_count() {
