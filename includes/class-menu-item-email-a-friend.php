@@ -28,11 +28,6 @@ class Inventory_Presser_Email_A_Friend{
 	 * @return void
 	 */
 	function hooks() {
-		//Allow translations
-		add_action( 'plugins_loaded', function() {
-			load_plugin_textdomain( 'inventory-presser-email-button', false, __DIR__ );
-		} );
-
 		add_filter( 'walker_nav_menu_start_el', array( $this, 'maybe_change_link' ), 11, 4 );
 	}
 
