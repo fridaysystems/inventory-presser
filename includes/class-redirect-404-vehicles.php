@@ -1,4 +1,8 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * A class that detects when requests are made for vehicles that are no longer
  * on the site and redirects the user to that vehicle's make archive. So, a
@@ -8,24 +12,29 @@
  * @since      3.2.0
  * @package    Inventory_Presser
  * @subpackage Inventory_Presser/includes
- * @author     Corey Salzano <corey.salzano@gmail.com>
+ * @author     Corey Salzano <corey@friday.systems>
  */
 
 if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 	class Redirect_404_Vehicles{
 
 		function extract_make( $wp_obj ) {
+
+			if( ! $this->is_request_for_vehicle() ) {
+				return '';
+			}
+
 			//example slug '2016-chevrolet-malibu'
 			//so we assume all vehicles have year and make
-			if( isset( $wp_obj->query_vars[Inventory_Presser_Plugin::CUSTOM_POST_TYPE] ) ) {
-				$slug_pieces = explode( '-', $wp_obj->query_vars[Inventory_Presser_Plugin::CUSTOM_POST_TYPE] );
-				if( 2 <= sizeof( $slug_pieces )
-					&& 4 == strlen( $slug_pieces[0] ) //is the first piece a year?
-					&& is_numeric( $slug_pieces[0] ) ) {
-
-					return $slug_pieces[1];
-				}
+			$slug_pieces = explode( '-', $wp_obj->query_vars[Inventory_Presser_Plugin::CUSTOM_POST_TYPE] );
+			if( 2 <= sizeof( $slug_pieces )
+				//is the first piece a number of no more than 4 digits?
+				&& 4 >= strlen( $slug_pieces[0] )
+				&& is_numeric( $slug_pieces[0] ) )
+			{
+				return $slug_pieces[1];
 			}
+
 			return '';
 		}
 
@@ -52,6 +61,7 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 			//get the make out of the slug
 			$make = $this->extract_make( $wp_obj );
 			if( '' == $make ) {
+				//no make, redirect to vehicle archive
 				wp_safe_redirect( $url, 302 );
 				exit;
 			}
@@ -59,7 +69,7 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 			//are there cars in this make?
 			$term = get_term_by( 'slug', $make, 'make' );
 			if( ! $term || 0 == $term->count ) {
-				//no? just go to inventory page
+				//no cars in this make, go to vehicle archive
 				wp_safe_redirect( $url, 302 );
 				exit;
 			}
@@ -67,6 +77,7 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 			//redirect to this make's archive
 			$url = get_term_link( $make, 'make' );
 			if( is_wp_error( $url ) ) {
+				//no link created for this make? go to vehicle archive
 				wp_safe_redirect( $url, 302 );
 				exit;
 			}

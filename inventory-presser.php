@@ -74,10 +74,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//maybe append to the meta_query if it is already set
 			$old = $query->get( 'meta_query', array() );
-			switch( $query->query_vars['meta_key'] ) {
+			switch( apply_filters( 'invp_unprefix_meta_key', $query->query_vars['meta_key'] ) ) {
 
 				//make
-				case 'inventory_presser_make':
+				case 'make':
 					$query->set( 'meta_query', array_merge( $old, array(
 						'relation' => 'AND',
 						array(
@@ -106,7 +106,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					break;
 
 				//model
-				case 'inventory_presser_model':
+				case 'model':
 					$query->set( 'meta_query', array_merge( $old, array(
 							'relation' => 'AND',
 							array(
@@ -135,7 +135,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					break;
 
 				//year
-				case 'inventory_presser_year':
+				case 'year':
 					$query->set( 'meta_query', array_merge( $old, array(
 							'relation' => 'AND',
 							array(
@@ -187,9 +187,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					break;
 
 				//boat fields might not exist on all vehicles, so do not require them
-				case 'inventory_presser_beam':
-				case 'inventory_presser_length':
-				case 'inventory_presser_hull_material':
+				case 'beam':
+				case 'length':
+				case 'hull_material':
 					unset( $query->query_vars['meta_key'] );
 					$query->set( 'meta_query', array_merge( $old, array(
 							'relation' => 'OR',
@@ -351,6 +351,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//Add all our shortcodes
 			$shortcodes = new Inventory_Presser_Shortcodes();
 			$shortcodes->hooks();
+
+			//Add AJAX handlers for AutoCheck reports
+			$reports = new Inventory_Vehicle_Reports();
+			$reports->hooks();
 		}
 
 		//Change links to terms in our taxonomies to include /inventory before /tax/term

@@ -9,7 +9,7 @@
  * @since      1.2.1
  * @package    Inventory_Presser
  * @subpackage Inventory_Presser/includes
- * @author     Corey Salzano <corey.salzano@gmail.com>, Adam Balee
+ * @author     Corey Salzano <corey@friday.systems>, Adam Balee
  */
 
 if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {

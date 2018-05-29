@@ -1,4 +1,8 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * An object that defines and manipulates our custom taxonomies and their terms.
  *
@@ -185,7 +189,10 @@ class Inventory_Presser_Taxonomies {
 		$taxonomy_data = $this->taxonomy_data();
 		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
 			$tax = $taxonomy_data[$i]['args']['label'];
-			$terms = get_terms( $tax, array( 'fields' => 'ids', 'hide_empty' => false ) );
+			$terms = get_terms( $tax, array(
+				'fields'     => 'ids',
+				'hide_empty' => false
+			) );
 			foreach ( $terms as $value ) {
 				wp_delete_term( $value, $tax );
 			}
@@ -194,63 +201,59 @@ class Inventory_Presser_Taxonomies {
 
 	function edit_location_field( $term, $taxonomy ){
 
-	    // get current term meta
-	    $location_meta = get_term_meta( $term->term_id, 'location-phone-hours', true );
-	    // make sure the current term meta has unique id's
-	    if ($location_meta) {
-    		$location_meta = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term->term_id, $location_meta);
-    	}
+		// get current term meta
+		$location_meta = get_term_meta( $term->term_id, 'location-phone-hours', true );
 
-	    ?>
-	    <tr class="form-field term-group-wrap">
-	        <th scope="row"><label>Phone Numbers</label></th>
-	        <td>
-		        <div class="repeat-group">
-		        	<div class="repeat-container">
+		?>
+		<tr class="form-field term-group-wrap">
+			<th scope="row"><label>Phone Numbers</label></th>
+			<td>
+				<div class="repeat-group">
+					<div class="repeat-container">
 					<?php if (isset($location_meta['phones'])) { ?>
-					<?php foreach ($location_meta['phones'] as $index => $phone) { ?>
+					<?php 	foreach ($location_meta['phones'] as $index => $phone) { ?>
 
-			        	<div class="repeated">
-			        		<div class="repeat-form">
+						<div class="repeated">
+							<div class="repeat-form">
 							<?php
 							echo sprintf('<input type="hidden" name="phone_uid[]" value="%s" />', $phone['uid']);
 							echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Label" />', $phone['phone_description']);
 							echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="Number" />', $phone['phone_number']);
 							?>
-					        </div>
-					        <div class="repeat-buttons">
-					        	<span class="dashicons dashicons-menu repeat-move"></span>
-					        	<span class="dashicons dashicons-trash repeat-delete"></span>
-					        </div>
-				        </div>
-					<?php } ?>
+							</div>
+							<div class="repeat-buttons">
+								<span class="dashicons dashicons-menu repeat-move"></span>
+								<span class="dashicons dashicons-trash repeat-delete"></span>
+							</div>
+						</div>
+					<?php 	} ?>
 					<?php } ?>
 					</div>
 					<div class="repeat-this">
-		        		<div class="repeat-form">
-					        <input type="text" name="phone_description[]" placeholder="Label" />
-					        <input type="text" name="phone_number[]" placeholder="Number" />
-				        </div>
-				        <div class="repeat-buttons">
-				        	<span class="dashicons dashicons-menu repeat-move"></span>
-				        	<span class="dashicons dashicons-trash repeat-delete"></span>
-				        </div>
-			        </div>
-			        <button type="button" class="repeat-add">Add Phone Block</button>
-		        </div>
+						<div class="repeat-form">
+							<input type="text" name="phone_description[]" placeholder="Label" />
+							<input type="text" name="phone_number[]" placeholder="Number" />
+						</div>
+						<div class="repeat-buttons">
+							<span class="dashicons dashicons-menu repeat-move"></span>
+							<span class="dashicons dashicons-trash repeat-delete"></span>
+						</div>
+					</div>
+					<button type="button" class="repeat-add">Add Phone Block</button>
+				</div>
 			</td>
-	    </tr>
-	    <tr class="form-field term-group-wrap">
-	        <th scope="row"><label>Hours</label></th>
-	        <td>
-		        <div class="repeat-group">
-		        	<div class="repeat-container">
+		</tr>
+		<tr class="form-field term-group-wrap">
+			<th scope="row"><label>Hours</label></th>
+			<td>
+				<div class="repeat-group">
+					<div class="repeat-container">
 					<?php if (isset($location_meta['hours'])) { ?>
 					<?php foreach ($location_meta['hours'] as $index => $hours) { ?>
 						<div class="repeated">
-			        		<div class="repeat-form">
+							<div class="repeat-form">
 
-			       				<input type="text" name="hours_title[]" placeholder="Title" value="<?php echo $hours['title'] ?>" />
+								<input type="text" name="hours_title[]" placeholder="Title" value="<?php echo $hours['title'] ?>" />
 			       				<input type="hidden" name="hours_uid[]" placeholder="Title" value="<?php echo $hours['uid'] ?>" />
 
 					        	<table class="repeater-table">
@@ -422,6 +425,18 @@ class Inventory_Presser_Taxonomies {
 			'<p><a href="edit-tags.php?taxonomy=location&post_type=' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '">Manage locations</a></p>';
 	}
 
+	//returns an array of all our taxonomy query vars
+	function query_vars_array() {
+		$arr = array();
+		foreach( $this->taxonomy_data() as $taxonomy_array ) {
+			if( ! isset( $taxonomy_array['args'] ) || ! isset( $taxonomy_array['args']['query_var'] ) ) {
+				continue;
+			}
+			array_push( $arr, $this->slug( $taxonomy_array['args']['query_var'] ) );
+		}
+		return $arr;
+	}
+
 	function save_location_meta( $term_id, $tt_id ) {
 
 		if (isset($_POST['hours_title']) && isset($_POST['phone_number'])) {
@@ -480,13 +495,9 @@ class Inventory_Presser_Taxonomies {
 					$meta_final['phones'][] = $this_phone;
 				}
 
-	    	}
+			}
 
-	    	// add uid's if we don't have them
-	    	$meta_final = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term_id, $meta_final, false);
-
-	    	update_term_meta( $term_id, 'location-phone-hours', $meta_final);
-
+			update_term_meta( $term_id, 'location-phone-hours', $meta_final );
 		}
 	}
 
@@ -538,18 +549,6 @@ class Inventory_Presser_Taxonomies {
 	//underscores instead of spaces
 	function slug( $label ) {
 		return str_replace( ' ', '_', strtolower( $label ) );
-	}
-
-	//returns an array of all our taxonomy query vars
-	function query_vars_array() {
-		$arr = array();
-		foreach( $this->taxonomy_data() as $taxonomy_array ) {
-			if( ! isset( $taxonomy_array['args'] ) || ! isset( $taxonomy_array['args']['query_var'] ) ) {
-				continue;
-			}
-			array_push( $arr, $this->slug( $taxonomy_array['args']['query_var'] ) );
-		}
-		return $arr;
 	}
 
 	//returns an array of all our taxonomy slugs
