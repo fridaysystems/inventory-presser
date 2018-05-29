@@ -138,7 +138,7 @@ class Inventory_Presser_Taxonomies {
 				        	<span class="dashicons dashicons-trash repeat-delete"></span>
 				        </div>
 			        </div>
-			        <p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory_presser' ); ?></p>
+			        <p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory-presser' ); ?></p>
 			        <p><button type="button" class="repeat-add">Add Hours Block</button></p>
 		        </div>
 	        </div>
@@ -328,7 +328,7 @@ class Inventory_Presser_Taxonomies {
 				        	<span class="dashicons dashicons-trash repeat-delete"></span>
 				        </div>
 			        </div>
-			        <p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory_presser' ); ?></p>
+			        <p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory-presser' ); ?></p>
 			        <p><button type="button" class="repeat-add">Add Hours Block</button></p>
 		        </div>
 	        </td>
@@ -386,27 +386,27 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	function meta_box_html_condition( $post ) {
-		echo $this->taxonomy_meta_box_html( 'condition', 'inventory_presser_condition', $post );
+		echo $this->taxonomy_meta_box_html( 'condition', apply_filters( 'invp_prefix_meta_key', 'condition' ), $post );
 	}
 
 	function meta_box_html_cylinders( $post ) {
-		echo $this->taxonomy_meta_box_html( 'cylinders', 'inventory_presser_cylinders', $post );
+		echo $this->taxonomy_meta_box_html( 'cylinders', apply_filters( 'invp_prefix_meta_key', 'cylinders' ), $post );
 	}
 
 	function meta_box_html_availability( $post ) {
-		echo $this->taxonomy_meta_box_html( 'availability', 'inventory_presser_availability', $post );
+		echo $this->taxonomy_meta_box_html( 'availability', apply_filters( 'invp_prefix_meta_key', 'availability' ), $post );
 	}
 
 	function meta_box_html_drive_type( $post ) {
-		echo $this->taxonomy_meta_box_html( 'drive_type', 'inventory_presser_drive_type', $post );
+		echo $this->taxonomy_meta_box_html( 'drive_type', apply_filters( 'invp_prefix_meta_key', 'drive_type' ), $post );
 	}
 
 	function meta_box_html_fuel( $post ) {
-		echo $this->taxonomy_meta_box_html( 'fuel', 'inventory_presser_fuel', $post );
+		echo $this->taxonomy_meta_box_html( 'fuel', apply_filters( 'invp_prefix_meta_key', 'fuel' ), $post );
 	}
 
 	function meta_box_html_propulsion_type( $post ) {
-		echo $this->taxonomy_meta_box_html( 'propulsion_type', 'inventory_presser_propulsion_type', $post );
+		echo $this->taxonomy_meta_box_html( 'propulsion_type', apply_filters( 'invp_prefix_meta_key', 'propulsion_type' ), $post );
 	}
 
 	function meta_box_html_transmission( $post ) {
@@ -421,7 +421,7 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	function meta_box_html_locations( $post ) {
-		echo $this->taxonomy_meta_box_html( 'location', 'inventory_presser_location', $post ) .
+		echo $this->taxonomy_meta_box_html( 'location', apply_filters( 'invp_prefix_meta_key', 'location' ), $post ) .
 			'<p><a href="edit-tags.php?taxonomy=location&post_type=' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '">Manage locations</a></p>';
 	}
 
@@ -513,7 +513,7 @@ class Inventory_Presser_Taxonomies {
 					$slug = 'year';
 					break;
 			}
-			$this->save_taxonomy_term( $post_id, $taxonomy_name, 'inventory_presser_' . $slug );
+			$this->save_taxonomy_term( $post_id, $taxonomy_name, apply_filters( 'invp_prefix_meta_key', $slug ) );
 		}
 	}
 

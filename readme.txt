@@ -52,6 +52,9 @@ Yes. The best way to do this is to use our plugin [Friday Systems Vehicle Import
 
 == Changelog ==
 
+= 6.0.1 =
+* [Fixed] Fixes a bug where the wrong text-domain was provided for a translatable string
+
 = 6.0.0 =
 * [Changed] Changes the vehicle object to return it's list of attachments ordered by their photo number meta value instead of the order that they were uploaded.
 * [Removed] Removed a member of the vehicle object that was populated with lists of attachment URLs when the get_images_html_array() method executed.

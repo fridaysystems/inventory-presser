@@ -13,39 +13,16 @@ defined( 'ABSPATH' ) OR exit;
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-//Include our object definition dependencies
-$inventory_presser_include_paths = array(
-	'class-add-custom-fields-to-search.php',
-	'class-customize-admin-dashboard.php',
-	'class-dealership-options.php',
-	'class-fuel-economy-widget.php',
-	'class-license.php',
-	'class-menu-item-email-a-friend.php',
-	'class-option-manager.php',
-	'class-order-by-post-meta-widget.php',
-	'class-redirect-404-vehicles.php',
-	'class-reports.php',
-	'class-seo.php',
-	'class-shortcodes.php',
-	'class-taxonomies.php',
-	'class-vehicle.php',
-	'class-vehicle-urls-by-vin.php',
-	'class-widgets.php',
-	'template-tags.php',
-);
-foreach( $inventory_presser_include_paths as $path ) {
-	$path = plugin_dir_path( __FILE__ ) . 'includes/' . $path;
-	if( file_exists( $path ) ) {
-		require $path;
-	}
-}
-
 if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	class Inventory_Presser_Plugin {
 
 		const CUSTOM_POST_TYPE = 'inventory_vehicle';
 		var $taxonomies;
 		var $settings; //this plugin's options
+
+		function __construct() {
+			register_activation_hook( __FILE__, array( 'Inventory_Presser_Plugin', 'populate_default_terms' ) );
+		}
 
 		function add_orderby_to_query( $query ) {
 			//Do not mess with the query if it's not the main one and our CPT
@@ -218,6 +195,65 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$wp_rewrite->rules = $this->generate_rewrite_rules( self::CUSTOM_POST_TYPE ) + $wp_rewrite->rules;
 		}
 
+		//Change links to terms in our taxonomies to include /inventory before /tax/term
+		function change_term_links( $termlink, $term ) {
+
+			$taxonomy = get_taxonomy( $term->taxonomy );
+
+			if( ! in_array( self::CUSTOM_POST_TYPE, $taxonomy->object_type ) ) {
+				return;
+			}
+
+			$post_type = get_post_type_object( self::CUSTOM_POST_TYPE );
+			$termlink = $post_type->rewrite['slug'] . $termlink;
+
+			return $termlink;
+		}
+
+		function create_custom_post_type( ) {
+			//creates a custom post type that will be used by this plugin
+			register_post_type(
+				self::CUSTOM_POST_TYPE,
+				apply_filters(
+					'invp_post_type_args',
+					array (
+						'description'  => __( 'Vehicles for sale in an automobile or powersports dealership', 'inventory-presser' ),
+						/**
+						 * Check if the theme (or the parent theme) has a CPT
+						 * archive template.  If not, we will assume that the
+						 * inventory is going to be displayed via shortcode, and
+						 * we won't be using the theme archive
+						 */
+						'has_archive'  => file_exists( get_template_directory().'/archive-'.self::CUSTOM_POST_TYPE.'.php' )
+							|| file_exists( get_stylesheet_directory().'/archive-'.self::CUSTOM_POST_TYPE.'.php' ),
+
+						'hierarchical' => false,
+						'labels' => array (
+							'name'          => __( 'Vehicles', 'inventory-presser' ),
+							'singular_name' => __( 'Vehicle', 'inventory-presser' ),
+							'all_items'     => __( 'Inventory', 'inventory-presser' ),
+							'add_new_item'  => __( 'Add New Vehicle', 'inventory-presser' ),
+							'edit_item'     => __( 'Edit Vehicle', 'inventory-presser' ),
+							'view_item'     => __( 'View Vehicle', 'inventory-presser' ),
+						),
+						'menu_icon'    => 'dashicons-admin-network',
+						'menu_position'=> 5, //below Posts
+						'public'       => true,
+						'rest_base'    => 'inventory',
+						'rewrite'      => array ( 'slug' => 'inventory' ),
+						'show_in_rest' => true,
+						'supports'     => array (
+							'custom-fields',
+							'editor',
+							'title',
+							'thumbnail',
+						),
+						'taxonomies'   => $this->taxonomies->query_vars_array(),
+					)
+				)
+			);
+		}
+
 		function create_serialized_api_fields() {
 			$args = array(
 				'get_callback'    => function( $post, $attr ) {
@@ -231,7 +267,96 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			register_rest_field( self::CUSTOM_POST_TYPE, apply_filters( 'invp_prefix_meta_key', 'prices' ), $args );
 		}
 
+		function deactivate() {
+			deactivate_plugins( plugin_basename( __FILE__ ) );
+		}
+
+		function delete_options() {
+			delete_option( '_dealer_settings' );
+			delete_option( '_dealer_settings_edmunds' );
+		}
+
+		function delete_rewrite_rules_option( ) {
+			/**
+			 * This is called during plugin deactivation
+			 * delete the rewrite_rules option so the rewrite rules
+			 * are generated on the next page load without ours.
+			 * this is a weird thing and is described here http://wordpress.stackexchange.com/a/44337/13090
+			 */
+			delete_option('rewrite_rules');
+		}
+
+		//What is the registered handle of the active theme's stylesheet?
+		private function find_theme_stylesheet_handle() {
+			global $wp_styles;
+
+			foreach( $wp_styles->registered as $handle => $style_obj ) {
+				if( $style_obj->src === get_stylesheet_directory_uri() . '/style.css' ) {
+					return $handle;
+				}
+			}
+			return null;
+		}
+
+		// generate every possible combination of rewrite rules, including 'page', based on post type taxonomy
+		// from http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
+		function generate_rewrite_rules( $post_type, $query_vars = array() ) {
+		    global $wp_rewrite;
+
+		    if( ! is_object( $post_type ) ) {
+		        $post_type = get_post_type_object( $post_type );
+		    }
+
+		    $new_rewrite_rules = array();
+
+		    $taxonomies = get_object_taxonomies( $post_type->name, 'objects' );
+
+		    // Add taxonomy filters to the query vars array
+		    foreach( $taxonomies as $taxonomy ) {
+		        $query_vars[] = $taxonomy->query_var;
+			}
+
+		    // Loop over all the possible combinations of the query vars
+		    for( $i = 1; $i <= count( $query_vars );  $i++ ) {
+
+		        $new_rewrite_rule =  $post_type->rewrite['slug'] . '/';
+		        $new_query_string = 'index.php?post_type=' . $post_type->name;
+
+		        // Prepend the rewrites & queries
+		        for( $n = 1; $n <= $i; $n++ ) {
+		            $new_rewrite_rule .= '(' . implode( '|', $query_vars ) . ')/(.+?)/';
+		            $new_query_string .= '&' . $wp_rewrite->preg_index( $n * 2 - 1 ) . '=' . $wp_rewrite->preg_index( $n * 2 );
+		        }
+
+		        // Allow paging of filtered post type - WordPress expects 'page' in the URL but uses 'paged' in the query string so paging doesn't fit into our regex
+		        $new_paged_rewrite_rule = $new_rewrite_rule . 'page/([0-9]{1,})/';
+		        $new_paged_query_string = $new_query_string . '&paged=' . $wp_rewrite->preg_index( $i * 2 + 1 );
+
+		        // Make the trailing backslash optional
+		        $new_paged_rewrite_rule = $new_paged_rewrite_rule . '?$';
+		        $new_rewrite_rule = $new_rewrite_rule . '?$';
+
+		        // Add the new rewrites
+		        $new_rewrite_rules = array( $new_paged_rewrite_rule => $new_paged_query_string,
+		                                    $new_rewrite_rule       => $new_query_string )
+		                             + $new_rewrite_rules;
+		    }
+
+		    return $new_rewrite_rules;
+		}
+
+		/**
+		 * Given a string, return the last word.
+		 */
+		function get_last_word( $str ) {
+			$pieces = explode( ' ', rtrim( $str ) );
+			return array_pop( $pieces );
+		}
+
 		function hooks( ) {
+
+			//include all this plugin's classes that live in external files
+			$this->include_dependencies();
 
 			//Allow translations
 			add_action( 'plugins_loaded', function() {
@@ -239,7 +364,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			} );
 
 			//Modify the administrator dashboard
-			$customize_dashboard = new Inventory_Presser_Customize_Admin_Dashboard();
+			$customize_dashboard = new Inventory_Presser_Customize_Dashboard();
 			$customize_dashboard->hooks();
 
 			/**
@@ -329,7 +454,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_action( 'invp_delete_all_data', array( $this, 'deactivate' ), 99 );
 
 			//Include CSS on the frontend
-			add_action( 'wp_enqueue_scripts', array( $this, 'include_styles' ), 11 );
+			add_action( 'wp_enqueue_scripts', array( $this, 'include_scripts_and_styles' ), 11 );
 
 			//Customize the behavior of Yoast SEO, if it is active
 			$seo = new Inventory_Presser_SEO();
@@ -357,152 +482,36 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$reports->hooks();
 		}
 
-		//Change links to terms in our taxonomies to include /inventory before /tax/term
-		function change_term_links( $termlink, $term ) {
-
-			$taxonomy = get_taxonomy( $term->taxonomy );
-
-			if( ! in_array( self::CUSTOM_POST_TYPE, $taxonomy->object_type ) ) {
-				return;
-			}
-
-			$post_type = get_post_type_object( self::CUSTOM_POST_TYPE );
-			$termlink = $post_type->rewrite['slug'] . $termlink;
-
-			return $termlink;
-		}
-
-		function create_custom_post_type( ) {
-			//creates a custom post type that will be used by this plugin
-			register_post_type(
-				self::CUSTOM_POST_TYPE,
-				apply_filters(
-					'invp_post_type_args',
-					array (
-						'description'  => __( 'Vehicles for sale in an automobile or powersports dealership', 'inventory-presser' ),
-						/**
-						 * Check if the theme (or the parent theme) has a CPT
-						 * archive template.  If not, we will assume that the
-						 * inventory is going to be displayed via shortcode, and
-						 * we won't be using the theme archive
-						 */
-						'has_archive'  => file_exists( get_template_directory().'/archive-'.self::CUSTOM_POST_TYPE.'.php' )
-							|| file_exists( get_stylesheet_directory().'/archive-'.self::CUSTOM_POST_TYPE.'.php' ),
-
-						'hierarchical' => false,
-						'labels' => array (
-							'name'          => __( 'Vehicles', 'inventory-presser' ),
-							'singular_name' => __( 'Vehicle', 'inventory-presser' ),
-							'all_items'     => __( 'Inventory', 'inventory-presser' ),
-							'add_new_item'  => __( 'Add New Vehicle', 'inventory-presser' ),
-							'edit_item'     => __( 'Edit Vehicle', 'inventory-presser' ),
-							'view_item'     => __( 'View Vehicle', 'inventory-presser' ),
-						),
-						'menu_icon'    => 'dashicons-admin-network',
-						'menu_position'=> 5, //below Posts
-						'public'       => true,
-						'rest_base'    => 'inventory',
-						'rewrite'      => array ( 'slug' => 'inventory' ),
-						'show_in_rest' => true,
-						'supports'     => array (
-							'custom-fields',
-							'editor',
-							'title',
-							'thumbnail',
-						),
-						'taxonomies'   => $this->taxonomies->query_vars_array(),
-					)
-				)
+		function include_dependencies() {
+			//Include our object definition dependencies
+			$file_names = array(
+				'class-add-custom-fields-to-search.php',
+				'class-customize-admin-dashboard.php',
+				'class-dealership-options.php',
+				'class-fuel-economy-widget.php',
+				'class-license.php',
+				'class-menu-item-email-a-friend.php',
+				'class-option-manager.php',
+				'class-order-by-post-meta-widget.php',
+				'class-redirect-404-vehicles.php',
+				'class-reports.php',
+				'class-seo.php',
+				'class-shortcodes.php',
+				'class-taxonomies.php',
+				'class-vehicle.php',
+				'class-vehicle-urls-by-vin.php',
+				'class-widgets.php',
+				'template-tags.php',
 			);
-		}
-
-		function deactivate() {
-			deactivate_plugins( plugin_basename( __FILE__ ) );
-		}
-
-		function delete_options() {
-			delete_option( '_dealer_settings' );
-			delete_option( '_dealer_settings_edmunds' );
-		}
-
-		function delete_rewrite_rules_option( ) {
-			/**
-			 * This is called during plugin deactivation
-			 * delete the rewrite_rules option so the rewrite rules
-			 * are generated on the next page load without ours.
-			 * this is a weird thing and is described here http://wordpress.stackexchange.com/a/44337/13090
-			 */
-			delete_option('rewrite_rules');
-		}
-
-		// generate every possible combination of rewrite rules, including 'page', based on post type taxonomy
-		// from http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
-		function generate_rewrite_rules( $post_type, $query_vars = array() ) {
-		    global $wp_rewrite;
-
-		    if( ! is_object( $post_type ) ) {
-		        $post_type = get_post_type_object( $post_type );
-		    }
-
-		    $new_rewrite_rules = array();
-
-		    $taxonomies = get_object_taxonomies( $post_type->name, 'objects' );
-
-		    // Add taxonomy filters to the query vars array
-		    foreach( $taxonomies as $taxonomy ) {
-		        $query_vars[] = $taxonomy->query_var;
-			}
-
-		    // Loop over all the possible combinations of the query vars
-		    for( $i = 1; $i <= count( $query_vars );  $i++ ) {
-
-		        $new_rewrite_rule =  $post_type->rewrite['slug'] . '/';
-		        $new_query_string = 'index.php?post_type=' . $post_type->name;
-
-		        // Prepend the rewrites & queries
-		        for( $n = 1; $n <= $i; $n++ ) {
-		            $new_rewrite_rule .= '(' . implode( '|', $query_vars ) . ')/(.+?)/';
-		            $new_query_string .= '&' . $wp_rewrite->preg_index( $n * 2 - 1 ) . '=' . $wp_rewrite->preg_index( $n * 2 );
-		        }
-
-		        // Allow paging of filtered post type - WordPress expects 'page' in the URL but uses 'paged' in the query string so paging doesn't fit into our regex
-		        $new_paged_rewrite_rule = $new_rewrite_rule . 'page/([0-9]{1,})/';
-		        $new_paged_query_string = $new_query_string . '&paged=' . $wp_rewrite->preg_index( $i * 2 + 1 );
-
-		        // Make the trailing backslash optional
-		        $new_paged_rewrite_rule = $new_paged_rewrite_rule . '?$';
-		        $new_rewrite_rule = $new_rewrite_rule . '?$';
-
-		        // Add the new rewrites
-		        $new_rewrite_rules = array( $new_paged_rewrite_rule => $new_paged_query_string,
-		                                    $new_rewrite_rule       => $new_query_string )
-		                             + $new_rewrite_rules;
-		    }
-
-		    return $new_rewrite_rules;
-		}
-
-		/**
-		 * Given a string, return the last word.
-		 */
-		function get_last_word( $str ) {
-			$pieces = explode( ' ', rtrim( $str ) );
-			return array_pop( $pieces );
-		}
-
-		//What is the registered handle of the active theme's stylesheet?
-		private function find_theme_stylesheet_handle() {
-			global $wp_styles;
-
-			foreach( $wp_styles->registered as $handle => $style_obj ) {
-				if( $style_obj->src === get_stylesheet_directory_uri() . '/style.css' ) {
-					return $handle;
+			foreach( $file_names as $file_name ) {
+				$path = plugin_dir_path( __FILE__ ) . 'includes/' . $file_name;
+				if( file_exists( $path ) ) {
+					require $path;
 				}
 			}
-			return null;
 		}
 
-		function include_styles() {
+		function include_scripts_and_styles() {
 			//If show carfax buttons
 			if( isset( $this->settings['use_carfax'] ) && $this->settings['use_carfax'] ) {
 				//Add CSS for Carfax button text color, based on a Customizer setting
@@ -515,6 +524,22 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Allow dashicons use on frontend
 			wp_enqueue_style( 'dashicons' );
+
+			/**
+			 * Make the meta prefix to the front-end (the object name invp is
+			 * localized for the admin dashboard in
+			 * Inventory_Presser_Customize_Dashboard)
+			 */
+			if( ! is_admin() ) { ?><script type="text/javascript">
+			    var invp = <?php echo json_encode( array(
+					'meta_prefix' => self::meta_prefix(),
+				) ); ?>;
+			</script><?php
+			}
+		}
+
+		public static function meta_prefix() {
+			return apply_filters( 'invp_meta_prefix', 'inventory_presser_' );
 		}
 
 		function modify_query_orderby( $pieces ) {
@@ -578,6 +603,35 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			flush_rewrite_rules( );
 		}
 
+		//Populate our taxonomies with terms if they do not already exist
+		function populate_default_terms() {
+
+			$taxonomies_obj = new Inventory_Presser_Taxonomies();
+
+			//create the taxonomies or else our wp_insert_term calls will fail
+			$taxonomies_obj->create_custom_taxonomies();
+
+			$taxonomy_data = $taxonomies_obj->taxonomy_data();
+			for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
+
+				if( ! isset( $taxonomy_data[$i]['term_data'] ) ) { continue; }
+
+				foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
+					$taxonomy_name = $taxonomies_obj->convert_hyphens_to_underscores( $taxonomy_data[$i]['args']['query_var'] );
+					if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) ) {
+						$term_exists = wp_insert_term(
+							$desc,
+							$taxonomy_name,
+							array (
+								'description' => $desc,
+								'slug' => $abbr,
+							)
+						);
+					}
+				}
+			}
+		}
+
 		function redirect_single_result() {
 
 			//Do not affect users in the dashboard
@@ -621,14 +675,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		function translate_custom_field_names( $nice_name ) {
 			$nice_name = strtolower( $nice_name );
-			return 'inventory_presser_' . $nice_name;
+			return self::meta_prefix() . $nice_name;
 		}
 
 		function untranslate_custom_field_names( $meta_key ) {
 			if( empty( $meta_key ) ) { return ''; }
 			$meta_key = strtolower( $meta_key );
 			//prefix may start with an underscore because previous versions hid some meta keys
-			$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . 'inventory_presser_';
+			$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . self::meta_prefix();
 			//remove the prefix
 			return substr( $meta_key, strlen( $prefix ) );
 		}
@@ -653,33 +707,4 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	} //end class
 	$inventory_presser = new Inventory_Presser_Plugin();
 	$inventory_presser->hooks();
-
-	//Populate our taxonomies with terms if they do not already exist
-	function invp_populate_default_terms() {
-
-		$taxonomies_obj = new Inventory_Presser_Taxonomies();
-
-		//create the taxonomies or else our wp_insert_term calls will fail
-		$taxonomies_obj->create_custom_taxonomies();
-
-		$taxonomy_data = $taxonomies_obj->taxonomy_data();
-		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
-
-			if( ! isset( $taxonomy_data[$i]['term_data'] ) ) { continue; }
-
-			foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
-				$taxonomy_name = $taxonomies_obj->convert_hyphens_to_underscores( $taxonomy_data[$i]['args']['query_var'] );
-				if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) ) {
-					$term_exists = wp_insert_term(
-						$desc,
-						$taxonomy_name,
-						array (
-							'description' => $desc,
-							'slug' => $abbr,
-						)
-					);
-				}
-			}
-		}
-	}
 } //end if

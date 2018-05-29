@@ -9,7 +9,7 @@
  * @subpackage Inventory_Presser/includes
  * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
  */
-class Inventory_Presser_Customize_Admin_Dashboard {
+class Inventory_Presser_Customize_Dashboard {
 
 	const PRODUCT_NAME = 'Inventory Presser';
 
@@ -484,6 +484,12 @@ class Inventory_Presser_Customize_Admin_Dashboard {
 		wp_enqueue_style( 'my-admin-theme', plugins_url( '/css/wp-admin.css', dirname( __FILE__ ) ) );
 		wp_register_script( 'inventory-presser-javascript', plugins_url( '/js/admin.js', dirname( __FILE__ ) ) );
 		wp_enqueue_script( 'inventory-presser-javascript' );
+
+		//localize an odometer units word for the edit vehicle page
+		wp_localize_script( 'inventory-presser-javascript', 'invp', array(
+			'miles_word'  => apply_filters( 'invp_odometer_word', 'miles' ),
+			'meta_prefix' => Inventory_Presser_Plugin::meta_prefix(),
+		) );
 	}
 
 	function make_vehicles_table_columns_sortable( $columns ) {

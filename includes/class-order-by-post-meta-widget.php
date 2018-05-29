@@ -100,8 +100,8 @@ class Order_By_Widget extends WP_Widget {
 		 * Example output
 		 *
 		 *	array(
-		 *		'inventory_presser_odometer' => 'Odometer',
-		 *		'inventory_presser_price'    => 'Price',
+		 *		'{meta-prefix}odometer' => 'Odometer',
+		 *		'{meta-prefix}price'    => 'Price',
 		 *	)
 		 *
 		 */

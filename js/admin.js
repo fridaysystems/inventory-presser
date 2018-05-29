@@ -20,54 +20,40 @@ function delete_all_post_attachments( ) {
 }
 
 function invp_vehicle_type_changed( type_slug ) {
-	if( 'boat' == type_slug ) {
+	var is_boat = 'boat' == type_slug;
 
-		/**
-		 * Change the interface for boats
-		 */
+	//show or hide the propulsion type taxonomy meta box and boat-specific fields
+	jQuery('#propulsion_typediv,tr.boat-postmeta').toggle( is_boat );
 
-		//HIN instead of VIN
-		jQuery('label[for="inventory_presser_vin"]').html('HIN');
+	//show or hide the drive type taxonomy meta box
+	jQuery('#drive_typediv').toggle( ! is_boat );
 
-		//odometer units are hours
-		jQuery('.invp_odometer_units').html('hours');
+	//HIN or VIN?
+	jQuery('label[for="' + invp.meta_prefix + 'vin"]').html( is_boat ? 'HIN' : 'VIN' );
 
-		//show the propulsion type taxonomy meta box and boat-specific fields
-		jQuery('#propulsion_typediv,tr.boat-postmeta').show();
+	//odometer units are hours or miles
+	jQuery('.invp_odometer_units').html( is_boat ? 'hours' : invp.miles_word );
 
-		//hide the drive type taxonomy meta box
-		jQuery('#drive_typediv').hide();
+	if( is_boat ) {
 
-		jQuery('select#inventory_presser_body_style_hidden')
-			.attr('name', 'inventory_presser_body_style')
-			.attr('id', 'inventory_presser_body_style');
+		//Change the interface for boats
+		jQuery('select#' + invp.meta_prefix + 'body_style_hidden')
+			.attr('name', invp.meta_prefix + 'body_style')
+			.attr('id', invp.meta_prefix + 'body_style');
 
-		jQuery('input#inventory_presser_body_style')
-			.attr('name', 'inventory_presser_body_style_hidden')
-			.attr('id', 'inventory_presser_body_style_hidden');
+		jQuery('input#' + invp.meta_prefix + 'body_style')
+			.attr('name', invp.meta_prefix + 'body_style_hidden')
+			.attr('id', invp.meta_prefix + 'body_style_hidden');
 	} else {
 
 		//Reverse all those boat changes
+		jQuery('input#' + invp.meta_prefix + 'body_style_hidden')
+			.attr('name', invp.meta_prefix + 'body_style')
+			.attr('id', invp.meta_prefix + 'body_style');
 
-		//HIN instead of VIN
-		jQuery('label[for="inventory_presser_vin"]').html('VIN');
-
-		//odometer units are miles
-		jQuery('.invp_odometer_units').html('miles');
-
-		//hide the propulsion type taxonomy meta box and boat-specific fields
-		jQuery('#propulsion_typediv,tr.boat-postmeta').hide();
-
-		//show the drive type taxonomy meta box
-		jQuery('#drive_typediv').show();
-
-		jQuery('input#inventory_presser_body_style_hidden')
-			.attr('name', 'inventory_presser_body_style')
-			.attr('id', 'inventory_presser_body_style');
-
-		jQuery('select#inventory_presser_body_style')
-			.attr('name', 'inventory_presser_body_style_hidden')
-			.attr('id', 'inventory_presser_body_style_hidden');
+		jQuery('select#' + invp.meta_prefix + 'body_style')
+			.attr('name', invp.meta_prefix + 'body_style_hidden')
+			.attr('id', invp.meta_prefix + 'body_style_hidden');
 	}
 }
 
@@ -94,7 +80,7 @@ function update_add_media_button_annotation( ) {
 jQuery(document).ready( function(){
 
 	//set up the edit screen for vehicle entry (hides boat fields)
-	invp_vehicle_type_changed( jQuery('#inventory_presser_type').val() );
+	invp_vehicle_type_changed( jQuery('#' + invp.meta_prefix + 'type').val() );
 
 	// Hack for "Upload New Media" Page (old uploader)
 	// Overriding the uploadSuccess function:
