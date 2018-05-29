@@ -6,74 +6,8 @@
  * @since      1.3.1
  * @package    Inventory_Presser
  * @subpackage Inventory_Presser/includes
- * @author     Corey Salzano <corey@fridaynet.com>, John Norton <norton@fridaynet.com>
+ * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
  */
-class Inventory_Presser_Location_Helper {
-
-	private static $instance;
-
-    private function __construct() {}
-    private function __clone() {}
-
-    public static function getInstance() {
-        if (!Inventory_Presser_Location_Helper::$instance instanceof self) {
-             Inventory_Presser_Location_Helper::$instance = new self();
-        }
-        return Inventory_Presser_Location_Helper::$instance;
-    }
-
-    public function get_random_string($existing_ids = array(), $length = 12) {
-
-    	// get a random string
-    	$id = substr(str_shuffle(MD5(microtime())), 0, $length);
-
-    	// prevent duplicates
-    	if (in_array($id, $existing_ids)) {
-    		$id = $this->get_random_string($existing_ids, $length);
-    	}
-
-        return $id;
-
-    }
-
-    public function check_location_term_meta_ids($term_id, $meta_array, $update = true) {
-
-    	// build an array of existing ids per meta group to prevent duplicates
-    	$existing_ids = array();
-    	foreach ($meta_array as $key => $meta_groups) {
-    		$existing_ids[$key] = array();
-    		foreach ($meta_groups as $index => $value_array) {
-    			if (array_key_exists('uid', $value_array)) {
-    				$existing_ids[$key][] = $value_array['uid'];
-    			}
-    		}
-    	}
-
-    	// add an id to any meta group that doesn't have one
-    	$meta_updated = false;
-    	foreach ($meta_array as $key => $meta_groups) {
-    		foreach ($meta_groups as $index => $value_array) {
-    			if (!array_key_exists('uid', $value_array)) {
-    				$random = $this->get_random_string($existing_ids[$key]);
-    				$meta_array[$key][$index]['uid'] = $random;
-    				$existing_ids[$key][] = $random;
-    				if (!$meta_updated ) {
-    					$meta_updated  = true;
-    				}
-    			}
-    		}
-    	}
-
-    	// update the db if any id's were added
-    	if ($meta_updated && $update) {
-    		update_term_meta($term_id, 'location-phone-hours', $meta_array);
-    	}
-
-    	return $meta_array;
-
-    }
-
-}
 
 // Hours Widget
 class Inventory_Presser_Location_Hours extends WP_Widget {
@@ -1550,17 +1484,16 @@ class Price_Filters extends WP_Widget {
 } // Class Price_Filters
 
 // bootstrap class for these widgets
-class Inventory_Presser_Location_Widgets {
+class Inventory_Presser_Widgets {
 
 	function __construct( ) {
 		add_action( 'widgets_init', array( $this, 'widgets_init' ) );
-		add_action( 'current_screen', array( $this, 'check_ids' ) );
+
 		if ( ! is_admin() && (
 			isset( $_GET['min_price'] )
 			|| isset( $_GET['max_price'] )
 			|| isset( $_GET['min_odometer'] )
 			|| isset( $_GET['max_odometer'] )
-			|| isset( $_GET['favorites'] )
 		) ) {
 			add_action( 'pre_get_posts', array( $this, 'pre_get_posts'),99);
 		}
@@ -1571,10 +1504,6 @@ class Inventory_Presser_Location_Widgets {
 		//Do not mess with the query if it's not the main one and our CPT
 		if ( !$query->is_main_query() || $query->query_vars['post_type'] != Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) {
 			return;
-		}
-
-		if ( isset( $_GET['favorites'] ) && isset( $_COOKIE['vehicle_favorites'] ) ) {
-			$query->set( 'post__in', json_decode( $_COOKIE['vehicle_favorites'] ) );
 		}
 
 		//Get original meta query
@@ -1642,26 +1571,5 @@ class Inventory_Presser_Location_Widgets {
 		register_widget('Inventory_Grid');
 		register_widget('Price_Filters');
 	}
-
-	function check_ids() {
-
-	    $currentScreen = get_current_screen();
-	    // if on the widget admin page
-	    if( $currentScreen->id === "widgets" ) {
-
-			// loop through all locations and make sure the location term meta has unique id's
-		    $term_ids = get_terms('location', array('fields'=>'ids', 'hide_empty'=>false));
-		    foreach ($term_ids as $i => $term_id) {
-		    	$location_meta = get_term_meta($term_id, 'location-phone-hours', true);
-		    	if ($location_meta) {
-		    		$location_meta = Inventory_Presser_Location_Helper::getInstance()->check_location_term_meta_ids($term_id, $location_meta);
-		    	}
-		    }
-
-	    }
-
-	}
-
 }
-
-new Inventory_Presser_Location_Widgets();
+new Inventory_Presser_Widgets();
