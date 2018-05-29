@@ -9,7 +9,7 @@ function extract_wp_query_args_from_url() {
 	}
 	var chunks = url.split( '?' );
 	if( 2 == chunks.length ) {
-			return query_string_to_associative_array( chunks[1] );
+		return query_string_to_associative_array( chunks[1] );
 	}
 	return {};
 }

@@ -1,4 +1,22 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+ * Creates a widget that allows users to sort vehicles by a vehicle attribute.
+ *
+ * If a menu item of type "Custom Link" exists with "Email a Friend" set as the
+ * "Navigation Label", this class will change the URL to a mailto: link
+ * containing vehicle information so the vehicle can be sent to a friend via
+ * email.
+ *
+ *
+ * @since      3.8.0
+ * @package    Inventory_Presser
+ * @subpackage Inventory_Presser/includes
+ * @author     Corey Salzano <corey@friday.systems>
+ */
 class Order_By_Widget extends WP_Widget {
 
  	const ID_BASE = '_invp_order_by';
@@ -88,7 +106,9 @@ class Order_By_Widget extends WP_Widget {
 		 *
 		 */
 		$arr = array();
-		foreach( $this->get_post_meta_keys_from_database() as $key ) {
+		$v = new Inventory_Presser_Vehicle();
+		foreach( $v->keys() as $key ) {
+			$key = apply_filters( 'invp_prefix_meta_key', $key );
 			//if we have a saved label, use that. otherwise, create a label
 			$arr[$key] = ( isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $this->prettify_meta_key( $key ) );
 		}
@@ -96,11 +116,15 @@ class Order_By_Widget extends WP_Widget {
 		 * Some fields do not make sense to order by, such as interior color & VIN
 	 	 */
 		$ignored_keys = array(
+			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
 			apply_filters( 'invp_prefix_meta_key', 'car_id' ),
+			apply_filters( 'invp_prefix_meta_key', 'color' ),
 			apply_filters( 'invp_prefix_meta_key', 'dealer_id' ),
+			apply_filters( 'invp_prefix_meta_key', 'edmunds_style_id' ),
 			apply_filters( 'invp_prefix_meta_key', 'engine' ),
 			apply_filters( 'invp_prefix_meta_key', 'featured' ),
 			apply_filters( 'invp_prefix_meta_key', 'interior_color' ),
+			apply_filters( 'invp_prefix_meta_key', 'leads_id' ),
 			apply_filters( 'invp_prefix_meta_key', 'option_array' ),
 			apply_filters( 'invp_prefix_meta_key', 'prices' ),
 			apply_filters( 'invp_prefix_meta_key', 'trim' ),
@@ -110,25 +134,6 @@ class Order_By_Widget extends WP_Widget {
 			unset( $arr[$ignored_key] );
 		}
 		return $arr;
-	}
-
-	/**
-	 * Get all post meta keys except when they start with an underscore,
-	 * contain a pipe, or are empty string. Returns a single dimensional array.
-	 */
-	function get_post_meta_keys_from_database() {
-		global $wpdb;
-		$query = $wpdb->prepare("
-			SELECT 		DISTINCT($wpdb->postmeta.meta_key)
-			FROM 		$wpdb->posts
-						LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id
-			WHERE 		$wpdb->posts.post_type = '%s'
-						AND $wpdb->postmeta.meta_key LIKE '%inventory\\\\_presser\\\\_%'
-			ORDER BY 	$wpdb->postmeta.meta_key
-			",
-			Inventory_Presser_Plugin::CUSTOM_POST_TYPE
-		);
-		return $wpdb->get_col( $query );
 	}
 
 	function load_javascript( ) {
@@ -154,7 +159,9 @@ class Order_By_Widget extends WP_Widget {
 			'_builtin' => false,
 		);
 		$keys = array();
-		foreach( $this->get_post_meta_keys_from_database() as $key ) {
+		$v = new Inventory_Presser_Vehicle();
+		foreach( $v->keys() as $key ) {
+			$key = apply_filters( 'invp_prefix_meta_key', $key );
 			if( isset( $_REQUEST['obpm-key-' . $key] ) ) {
 				array_push( $keys, $key );
 				if( isset( $_REQUEST['obpm-label-' . $key] ) ) {
