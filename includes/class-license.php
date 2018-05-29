@@ -1,4 +1,14 @@
 <?php
+/**
+ * Helps send a license key to inventorypresser.com for this core plugin or any
+ * of its add-ons to verify an active site and allow updates to be downloaded.
+ *
+ *
+ * @since      5.4.0
+ * @package    Inventory_Presser
+ * @subpackage Inventory_Presser/includes
+ * @author     Corey Salzano <corey@friday.systems>
+ */
 
 if( ! class_exists( 'Inventory_Presser_License' ) ) {
 	class Inventory_Presser_License{

@@ -11,7 +11,7 @@
  * @since      1.2.1
  * @package    Inventory_Presser
  * @subpackage Inventory_Presser/includes
- * @author     Corey Salzano <corey@fridaynet.com>, John Norton <norton@fridaynet.com>
+ * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
  */
 
 if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) ) {
