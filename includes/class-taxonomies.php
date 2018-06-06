@@ -14,7 +14,17 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 class Inventory_Presser_Taxonomies {
 
-	var $days = array('Mon','Tue','Wed','Thu','Fri','Sat','Sun');
+	private function weekdays() {
+		return array(
+			__( 'Mon', 'inventory-presser' ),
+			__( 'Tue', 'inventory-presser' ),
+			__( 'Wed', 'inventory-presser' ),
+			__( 'Thu', 'inventory-presser' ),
+			__( 'Fri', 'inventory-presser' ),
+			__( 'Sat', 'inventory-presser' ),
+			__( 'Sun', 'inventory-presser' ),
+		);
+	}
 
 	function hooks() {
 
@@ -81,8 +91,8 @@ class Inventory_Presser_Taxonomies {
 		        	<div class="repeat-container"></div>
 		        	<div class="repeat-this">
 		        		<div class="repeat-form">
-					        <input type="text" name="phone_description[]" placeholder="Label" />
-					        <input type="text" name="phone_number[]" placeholder="Number" required />
+					        <input type="text" name="phone_description[]" placeholder="<?php _e( 'Label', 'inventory-presser' ); ?>" />
+					        <input type="text" name="phone_number[]" placeholder="<?php _e( 'Number', 'inventory-presser' ); ?>" required />
 				        </div>
 				        <div class="repeat-buttons">
 				        	<span class="dashicons dashicons-menu repeat-move" title="<?php _e( 'Drag to reposition', 'inventory-presser' ); ?>"></span>
@@ -93,24 +103,24 @@ class Inventory_Presser_Taxonomies {
 		        </div>
 		    </div>
 		    <div class="form-wrap form-field">
-		        <label>Hours</label>
+		        <label><?php _e( 'Hours', 'inventory-presser' ); ?></label>
 		        <div class="repeat-group">
 		        	<div class="repeat-container"></div>
 		        	<div class="repeat-this">
 		        		<div class="repeat-form">
 
-				        	<input type="text" name="hours_title[]" placeholder="Title" />
+				        	<input type="text" name="hours_title[]" placeholder="<?php _e( 'Title', 'inventory-presser' ); ?>" />
 
 				        	<table class="wp-list-table widefat fixed striped tags">
 				        		<thead>
-				        			<th></th>
-				        			<th>Open</th>
-				        			<th></th>
-				        			<th>Close</th>
-				        			<th>Appt Only</th>
+				        			<td></td>
+				        			<td><?php _e( 'Open', 'inventory-presser' ); ?></td>
+				        			<td></td>
+				        			<td><?php _e( 'Close', 'inventory-presser' ); ?></td>
+				        			<td><?php _e( 'Appt Only', 'inventory-presser' ); ?></td>
 				        		</thead>
 				        		<tbody>
-				        			<?php foreach ($this->days as $index => $day) { ?>
+				        			<?php foreach ($this->weekdays() as $index => $day) { ?>
 					        		<tr>
 					        			<th><?php echo $day ?></th>
 					        			<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text"></td>
@@ -118,8 +128,8 @@ class Inventory_Presser_Taxonomies {
 					        			<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text"></td>
 					        			<td>
 											<select name="hours[<?php echo $index ?>][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
+												<option value="0"><?php _e( 'No', 'inventory-presser' ); ?></option>
+												<option value="1"><?php _e( 'Yes', 'inventory-presser' ); ?></option>
 											</select>
 					        			</td>
 					        		</tr>
@@ -134,7 +144,7 @@ class Inventory_Presser_Taxonomies {
 				        </div>
 			        </div>
 			        <p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory-presser' ); ?></p>
-			        <p><button type="button" class="repeat-add button action">Add Hours Block</button></p>
+			        <p><button type="button" class="repeat-add button action"><?php _e( 'Add Hours Block', 'inventory-presser' ); ?></button></p>
 		        </div>
 	        </div>
 	    </div>
@@ -201,7 +211,7 @@ class Inventory_Presser_Taxonomies {
 
 		?>
 		<tr class="form-field term-group-wrap">
-			<th scope="row"><label>Phone Numbers</label></th>
+			<th scope="row"><label><?php _e( 'Phone Numbers', 'inventory-presser' ); ?></label></th>
 			<td>
 				<div class="repeat-group">
 					<div class="repeat-container">
@@ -211,9 +221,9 @@ class Inventory_Presser_Taxonomies {
 						<div class="repeated">
 							<div class="repeat-form">
 							<?php
-							echo sprintf('<input type="hidden" name="phone_uid[]" value="%s" />', $phone['uid']);
-							echo sprintf('<input type="text" name="phone_description[]" value="%s" placeholder="Label" />', $phone['phone_description']);
-							echo sprintf('<input type="text" name="phone_number[]" value="%s" placeholder="Number" />', $phone['phone_number']);
+							echo sprintf( '<input type="hidden" name="phone_uid[]" value="%s" />', $phone['uid'] );
+							echo sprintf( '<input type="text" name="phone_description[]" value="%s" placeholder="%s" />', $phone['phone_description'], __( 'Label', 'inventory-presser' ) );
+							echo sprintf( '<input type="text" name="phone_number[]" value="%s" placeholder="%s" />', $phone['phone_number'], __( 'Number', 'inventory-presser' ) );
 							?>
 							</div>
 							<div class="repeat-buttons">
@@ -226,20 +236,20 @@ class Inventory_Presser_Taxonomies {
 					</div>
 					<div class="repeat-this">
 						<div class="repeat-form">
-							<input type="text" name="phone_description[]" placeholder="Label" />
-							<input type="text" name="phone_number[]" placeholder="Number" />
+							<input type="text" name="phone_description[]" placeholder="<?php _e( 'Label', 'inventory-presser' ); ?>" />
+							<input type="text" name="phone_number[]" placeholder="<?php _e( 'Number', 'inventory-presser' ); ?>" />
 						</div>
 						<div class="repeat-buttons">
-							<span class="dashicons dashicons-menu repeat-move"></span>
-							<span class="dashicons dashicons-trash repeat-delete"></span>
+							<span class="dashicons dashicons-menu repeat-move" title="<?php _e( 'Drag to reposition', 'inventory-presser' ); ?>"></span>
+							<span class="dashicons dashicons-trash repeat-delete" title="<?php _e( 'Delete this set of hours', 'inventory-presser' ); ?>"></span>
 						</div>
 					</div>
-					<button type="button" class="repeat-add">Add Phone Block</button>
+					<button type="button" class="repeat-add button action"><?php _e( 'Add Phone Number', 'inventory-presser' ); ?></button>
 				</div>
 			</td>
 		</tr>
 		<tr class="form-field term-group-wrap">
-			<th scope="row"><label>Hours</label></th>
+			<th scope="row"><label><?php _e( 'Hours', 'inventory-presser' ); ?></label></th>
 			<td>
 				<div class="repeat-group">
 					<div class="repeat-container">
@@ -248,19 +258,19 @@ class Inventory_Presser_Taxonomies {
 						<div class="repeated">
 							<div class="repeat-form">
 
-								<input type="text" name="hours_title[]" placeholder="Title" value="<?php echo $hours['title'] ?>" />
-			       				<input type="hidden" name="hours_uid[]" placeholder="Title" value="<?php echo $hours['uid'] ?>" />
+								<input type="text" name="hours_title[]" placeholder="<?php _e( 'Title', 'inventory-presser' ); ?>" value="<?php echo $hours['title'] ?>" />
+			       				<input type="hidden" name="hours_uid[]" placeholder="<?php _e( 'Title', 'inventory-presser' ); ?>" value="<?php echo $hours['uid'] ?>" />
 
 					        	<table class="repeater-table">
 					        		<thead>
 					        			<td></td>
-					        			<td>Open</td>
+					        			<td><?php _e( 'Open', 'inventory-presser' ); ?></td>
 					        			<td></td>
-					        			<td>Close</td>
-					        			<td>Appt Only</td>
+					        			<td><?php _e( 'Close', 'inventory-presser' ); ?></td>
+					        			<td><?php _e( 'Appt Only', 'inventory-presser' ); ?></td>
 					        		</thead>
 					        		<tbody>
-					        			<?php foreach ($this->days as $index => $day) { ?>
+					        			<?php foreach ($this->weekdays() as $index => $day) { ?>
 						        		<tr>
 						        			<td><?php echo $day ?></td>
 						        			<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text" value="<?php echo $hours[$index]['open'] ?>"></td>
@@ -268,8 +278,8 @@ class Inventory_Presser_Taxonomies {
 						        			<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text" value="<?php echo $hours[$index]['close'] ?>"></td>
 						        			<td>
 												<select name="hours[<?php echo $index ?>][appt][]" autocomplete="off">
-													<option value="0"<?php echo ($hours[$index]['appt'] == '0') ? ' selected' : ''; ?>>No</option>
-													<option value="1"<?php echo ($hours[$index]['appt'] == '1') ? ' selected' : ''; ?>>Yes</option>
+													<option value="0"<?php echo ($hours[$index]['appt'] == '0') ? ' selected' : ''; ?>><?php _e( 'No', 'inventory-presser' ); ?></option>
+													<option value="1"<?php echo ($hours[$index]['appt'] == '1') ? ' selected' : ''; ?>><?php _e( 'Yes', 'inventory-presser' ); ?></option>
 												</select>
 						        			</td>
 						        		</tr>
@@ -279,8 +289,8 @@ class Inventory_Presser_Taxonomies {
 
 					        </div>
 					        <div class="repeat-buttons">
-					        	<span class="dashicons dashicons-menu repeat-move"></span>
-					        	<span class="dashicons dashicons-trash repeat-delete"></span>
+					        	<span class="dashicons dashicons-menu repeat-move" title="<?php _e( 'Drag to reposition', 'inventory-presser' ); ?>"></span>
+					        	<span class="dashicons dashicons-trash repeat-delete" title="<?php _e( 'Delete this set of hours', 'inventory-presser' ); ?>"></span>
 					        </div>
 				        </div>
 					<?php } ?>
@@ -294,13 +304,13 @@ class Inventory_Presser_Taxonomies {
 				        	<table class="repeater-table">
 				        		<thead>
 				        			<td></td>
-				        			<td>Open</td>
+				        			<td><?php _e( 'Open', 'inventory-presser' ); ?></td>
 				        			<td></td>
-				        			<td>Close</td>
-				        			<td>Appt Only</td>
+				        			<td><?php _e( 'Close', 'inventory-presser' ); ?></td>
+				        			<td><?php _e( 'Appt Only', 'inventory-presser' ); ?></td>
 				        		</thead>
 				        		<tbody>
-					        		<?php foreach ($this->days as $index => $day) { ?>
+					        		<?php foreach ($this->weekdays() as $index => $day) { ?>
 					        		<tr>
 					        			<td><?php echo $day ?></td>
 					        			<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text"></td>
@@ -308,8 +318,8 @@ class Inventory_Presser_Taxonomies {
 					        			<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text"></td>
 					        			<td>
 											<select name="hours[<?php echo $index ?>][appt][]">
-												<option value="0">No</option>
-												<option value="1">Yes</option>
+												<option value="0"><?php _e( 'No', 'inventory-presser' ); ?></option>
+												<option value="1"><?php _e( 'Yes', 'inventory-presser' ); ?></option>
 											</select>
 					        			</td>
 					        		</tr>
@@ -324,7 +334,7 @@ class Inventory_Presser_Taxonomies {
 				        </div>
 			        </div>
 			        <p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory-presser' ); ?></p>
-			        <p><button type="button" class="repeat-add">Add Hours Block</button></p>
+			        <p><button type="button" class="repeat-add button action"><?php _e( 'Add Hours Block', 'inventory-presser' ); ?></button></p>
 		        </div>
 	        </td>
 	    </tr><?php
