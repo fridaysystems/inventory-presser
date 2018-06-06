@@ -111,7 +111,7 @@ class Inventory_Presser_Taxonomies {
 
 				        	<input type="text" name="hours_title[]" placeholder="<?php _e( 'Title', 'inventory-presser' ); ?>" />
 
-				        	<table class="wp-list-table widefat fixed striped tags">
+				        	<table class="wp-list-table widefat fixed striped">
 				        		<thead>
 				        			<td></td>
 				        			<td><?php _e( 'Open', 'inventory-presser' ); ?></td>
