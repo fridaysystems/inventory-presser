@@ -20,7 +20,7 @@ class Inventory_Presser_Taxonomies {
 
 		//create custom taxonomies for vehicles
 		add_action( 'init', array( $this, 'create_custom_taxonomies' ) );
-		//add_action( 'init', array( $this, 'register_location_term_meta' ) );
+		add_action( 'init', array( $this, 'register_location_term_meta' ) );
 		add_action( 'rest_api_init', array( $this, 'add_api_term_meta_workaround_fields' ) );
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_term_data' ));
@@ -46,11 +46,6 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	function add_api_term_meta_workaround_fields() {
-		/**
-		 * OK. As far as I can tell, the REST API for term meta is broken in
-		 * WordPress version 4.9.4. This method creates some custom rest fields
-		 * to get and set term meta outside the way that core will someday work.
-		 */
 		$args = array(
 			'get_callback'    => array( $this, 'get_term_meta' ),
 			'update_callback' => array( $this, 'set_term_meta' ),
@@ -175,14 +170,14 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	//When the REST API properly supports term meta, this will probably work!
-	// function register_location_term_meta() {
-	// 	$args = array(
-	// 		 'show_in_rest' => true,
-	// 		 'single'       => true,
-	// 	);
-	// 	register_meta( 'term', 'dealer-id', $args );
-	// 	register_meta( 'term', 'location-phone-hours', $args );
-	// }
+	function register_location_term_meta() {
+		$args = array(
+			 'show_in_rest' => true,
+			 'single'       => true,
+		);
+		register_meta( 'term', 'dealer-id', $args );
+		register_meta( 'term', 'location-phone-hours', $args );
+	}
 
 	function delete_term_data() {
 		//remove the terms in taxonomies
