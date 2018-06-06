@@ -63,6 +63,7 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 = 6.1.0 =
 * [Added] Register term meta for our location taxonomy. This code was commented out since WP version 4.9.4 where term meta via the REST appeared to be broken or unfinished.
+* [Changed] Change the style of phone number and hours inputs in the locations taxonomy terms found at Vehicles > Locations. These controls now more closely match the WordPress dashboard style.
 
 = 6.0.1 =
 * [Changed] The description, FAQ, and History sections of this readme.txt file are updated

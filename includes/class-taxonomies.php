@@ -76,7 +76,7 @@ class Inventory_Presser_Taxonomies {
 
 	    <div class="form-field term-group location-tax">
 		    <div class="form-wrap form-field">
-		        <label>Phone Numbers</label>
+		        <label><?php _e( 'Phone Numbers', 'inventory-presser' ); ?></label>
 		        <div class="repeat-group">
 		        	<div class="repeat-container"></div>
 		        	<div class="repeat-this">
@@ -85,11 +85,11 @@ class Inventory_Presser_Taxonomies {
 					        <input type="text" name="phone_number[]" placeholder="Number" required />
 				        </div>
 				        <div class="repeat-buttons">
-				        	<span class="dashicons dashicons-menu repeat-move"></span>
-				        	<span class="dashicons dashicons-trash repeat-delete"></span>
+				        	<span class="dashicons dashicons-menu repeat-move" title="<?php _e( 'Drag to reposition', 'inventory-presser' ); ?>"></span>
+				        	<span class="dashicons dashicons-trash repeat-delete" title="<?php _e( 'Delete this phone number', 'inventory-presser' ); ?>"></span>
 				        </div>
 			        </div>
-			        <button type="button" class="repeat-add">Add Phone Block</button>
+			        <button type="button" class="repeat-add button action"><?php _e( 'Add Phone Number', 'inventory-presser' ); ?></button>
 		        </div>
 		    </div>
 		    <div class="form-wrap form-field">
@@ -101,7 +101,7 @@ class Inventory_Presser_Taxonomies {
 
 				        	<input type="text" name="hours_title[]" placeholder="Title" />
 
-				        	<table>
+				        	<table class="wp-list-table widefat fixed striped tags">
 				        		<thead>
 				        			<th></th>
 				        			<th>Open</th>
@@ -114,7 +114,7 @@ class Inventory_Presser_Taxonomies {
 					        		<tr>
 					        			<th><?php echo $day ?></th>
 					        			<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
+					        			<th>to</th>
 					        			<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text"></td>
 					        			<td>
 											<select name="hours[<?php echo $index ?>][appt][]">
@@ -129,12 +129,12 @@ class Inventory_Presser_Taxonomies {
 
 				        </div>
 				        <div class="repeat-buttons">
-				        	<span class="dashicons dashicons-menu repeat-move"></span>
-				        	<span class="dashicons dashicons-trash repeat-delete"></span>
+				        	<span class="dashicons dashicons-menu repeat-move" title="<?php _e( 'Drag to reposition', 'inventory-presser' ); ?>"></span>
+				        	<span class="dashicons dashicons-trash repeat-delete" title="<?php _e( 'Delete this set of hours', 'inventory-presser' ); ?>"></span>
 				        </div>
 			        </div>
 			        <p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory-presser' ); ?></p>
-			        <p><button type="button" class="repeat-add">Add Hours Block</button></p>
+			        <p><button type="button" class="repeat-add button action">Add Hours Block</button></p>
 		        </div>
 	        </div>
 	    </div>

@@ -37,19 +37,12 @@ button#delete-media-button span:before {
     -moz-osx-font-smoothing: grayscale;
     content: "\f182";
 }
-
 .repeat-group {
 	max-width: 700px;
 }
-
 .repeat-group input[type=text] {
 	width: 100% !important;
 }
-
-.repeated + .repeated {
-	border-top: 1px solid #CCC;
-}
-
 .repeat-form {
 	margin-right: 36px;
 }
@@ -57,13 +50,13 @@ button#delete-media-button span:before {
 .repeat-buttons {
 	position: absolute;
 	right: 0;
-	top: 7px;
-	margin: 3px;
+	top: 0;
+	margin: 0 3px 3px;
 }
 
 .repeat-buttons span {
 	display: block;
-	padding: 3px 5px;
+	padding: 3px 5px 2px;
 	border: 1px solid #CCC;
 	margin-top: 1px;
 	margin-bottom: 2px;
@@ -81,31 +74,18 @@ button#delete-media-button span:before {
 .repeat-buttons .repeat-delete:hover {
 	color: #CC0000;
 }
-
+.wp-core-ui button.repeat-add{
+	margin-bottom: .5em;
+}
 .repeat-this {
 	display: none;
 	position: relative;
 }
-
-.repeat-container {
-	border: 1px solid #DDDDDD;
-	margin-bottom: 10px;
-}
-
 .repeat-container > div {
-	padding: 10px 4px;
+	padding: 0 4px 10px 0;
 	min-height: 60px;
 	position: relative;
 }
-
-.repeat-container > div:nth-child(odd){
-	background: #DBDBDB;
-}
-
-.repeat-container > div:nth-child(even){
-	background: #E3E3E3;
-}
-
 .repeater-table {
 	width: 100%;
 }
