@@ -20,7 +20,7 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 
 		function extract_make( $wp_obj ) {
 
-			if( ! $this->is_request_for_vehicle() ) {
+			if( ! $this->is_request_for_vehicle( $wp_obj ) ) {
 				return '';
 			}
 
