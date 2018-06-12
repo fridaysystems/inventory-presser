@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.6
-Stable tag: 6.1.0
+Stable tag: 6.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,9 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 6.1.1 =
+* [Fixed] Fixes multiple bugs in the way we redirect requests for vehicles that no longer exist in inventory (instead of returning a 404 error)
 
 = 6.1.0 =
 * [Added] Register term meta for our location taxonomy. This code was commented out since WP version 4.9.4 where term meta via the REST appeared to be broken or unfinished.

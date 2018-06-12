@@ -24,15 +24,21 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 				return '';
 			}
 
-			//example slug '2016-chevrolet-malibu'
-			//so we assume all vehicles have year and make
-			$slug_pieces = explode( '-', $wp_obj->query_vars[Inventory_Presser_Plugin::CUSTOM_POST_TYPE] );
-			if( 2 <= sizeof( $slug_pieces )
-				//is the first piece a number of no more than 4 digits?
-				&& 4 >= strlen( $slug_pieces[0] )
-				&& is_numeric( $slug_pieces[0] ) )
-			{
-				return $slug_pieces[1];
+			//if this is a search, the make might be in its own query variable
+			if( isset( $wp_obj->query_vars['make'] ) ) {
+				return $wp_obj->query_vars['make'];
+			}
+
+			//if this is a request for a single vehicle, parse the make out of the slug
+			if( isset( $wp_obj->query_vars[Inventory_Presser_Plugin::CUSTOM_POST_TYPE] ) ) {
+				$slug_pieces = explode( '-', $wp_obj->query_vars[Inventory_Presser_Plugin::CUSTOM_POST_TYPE] );
+				if( 2 <= sizeof( $slug_pieces )
+					//is the first piece a number of no more than 4 digits?
+					&& 4 >= strlen( $slug_pieces[0] )
+					&& is_numeric( $slug_pieces[0] ) )
+				{
+					return $slug_pieces[1];
+				}
 			}
 
 			return '';
