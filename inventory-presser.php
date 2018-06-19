@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 6.1.1
+ * Version: 7.0.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -240,7 +240,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						'menu_position'=> 5, //below Posts
 						'public'       => true,
 						'rest_base'    => 'inventory',
-						'rewrite'      => array ( 'slug' => 'inventory' ),
+						'rewrite'      => array (
+							'slug' => 'inventory',
+							'with_front'   => false,
+						),
 						'show_in_rest' => true,
 						'supports'     => array (
 							'custom-fields',
@@ -254,6 +257,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			);
 		}
 
+		/**
+		 * WordPress core won't let us expose serialized meta fields in the REST
+		 * API, so this function puts these meta values in custom API fields
+		 * outside of meta.
+		 */
 		function create_serialized_api_fields() {
 			$args = array(
 				'get_callback'    => function( $post, $attr ) {
@@ -262,9 +270,51 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'update_callback' => null,
 				'schema'          => null,
 			);
-			register_rest_field( self::CUSTOM_POST_TYPE, apply_filters( 'invp_prefix_meta_key', 'epa_fuel_economy' ), $args );
-			register_rest_field( self::CUSTOM_POST_TYPE, apply_filters( 'invp_prefix_meta_key', 'option_array' ), $args );
-			register_rest_field( self::CUSTOM_POST_TYPE, apply_filters( 'invp_prefix_meta_key', 'prices' ), $args );
+
+			//epa_fuel_economy
+			register_rest_field(
+				self::CUSTOM_POST_TYPE,
+				apply_filters( 'invp_prefix_meta_key', 'epa_fuel_economy' ),
+				array(
+					'get_callback'    => array( $this, 'get_serialized_value_for_rest' ),
+					'update_callback' => null,
+					'schema'          => array(
+						'description' => __( 'An array of EPA Fuel Economy data including miles per gallon stats', 'inventory-presser' ),
+						'type'        => 'string',
+						'context'     => array( 'view', 'edit' ),
+					),
+				)
+			);
+
+			//option_array
+			register_rest_field(
+				self::CUSTOM_POST_TYPE,
+				apply_filters( 'invp_prefix_meta_key', 'option_array' ),
+				array(
+					'get_callback'    => array( $this, 'get_serialized_value_for_rest' ),
+					'update_callback' => null,
+					'schema'          => array(
+						'description' => __( 'An array of vehicle options', 'inventory-presser' ),
+						'type'        => 'string',
+						'context'     => array( 'view', 'edit' ),
+					),
+				)
+			);
+
+			//prices
+			register_rest_field(
+				self::CUSTOM_POST_TYPE,
+				apply_filters( 'invp_prefix_meta_key', 'prices' ),
+				array(
+					'get_callback'    => array( $this, 'get_serialized_value_for_rest' ),
+					'update_callback' => null,
+					'schema'          => array(
+						'description' => __( 'An array of vehicle prices including asking price, MSRP, and down payment', 'inventory-presser' ),
+						'type'        => 'string',
+						'context'     => array( 'view', 'edit' ),
+					),
+				)
+			);
 		}
 
 		function deactivate() {
@@ -351,6 +401,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		function get_last_word( $str ) {
 			$pieces = explode( ' ', rtrim( $str ) );
 			return array_pop( $pieces );
+		}
+
+		/**
+		 * Get a serialized post meta value for a REST API call
+		 * (and deliver it as a serialized string)
+		 */
+		function get_serialized_value_for_rest( $post, $key ) {
+			return serialize( get_post_meta( $post['id'], $key, true ) );
 		}
 
 		function hooks( ) {

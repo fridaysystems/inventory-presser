@@ -56,13 +56,28 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	function add_api_term_meta_workaround_fields() {
-		$args = array(
+
+		//location-phone-hours
+		register_rest_field( 'location', 'location-phone-hours', array(
 			'get_callback'    => array( $this, 'get_term_meta' ),
 			'update_callback' => array( $this, 'set_term_meta' ),
-			'schema'          => null,
-		);
-		register_rest_field( 'location', 'location-phone-hours', $args );
-		register_rest_field( 'location', 'dealer-id', $args );
+			'schema'          => array(
+				'description' => __( 'An array of phone numbers and hours of operation for this location.', 'inventory-presser' ),
+				'type'        => 'string',
+				'context'     => array( 'view', 'edit' ),
+			),
+		) );
+
+		//dealer-id
+		register_rest_field( 'location', 'dealer-id', array(
+			'get_callback'    => array( $this, 'get_term_meta' ),
+			'update_callback' => array( $this, 'set_term_meta' ),
+			'schema'          => array(
+				'description' => __( 'A Friday Systems customer ID that helps identify a customer when there are no vehicles in inventory.', 'inventory-presser' ),
+				'type'        => 'string',
+				'context'     => array( 'view', 'edit' ),
+			),
+		) );
 	}
 
 	function get_term_meta( $term, $attr, $request, $object_type ) {

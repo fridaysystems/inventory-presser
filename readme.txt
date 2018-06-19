@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.6
-Stable tag: 6.1.1
+Stable tag: 7.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,9 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 7.0.0 =
+* [Changed] Changed the permalink behavior for the vehicles post type to ignore any prefix by setting `with_front` to false. This means sites can have blogs at site.com/blog and vehicles at site.com/inventory instead of site.com/blog/inventory.
 
 = 6.1.1 =
 * [Fixed] Fixes multiple bugs in the way we redirect requests for vehicles that no longer exist in inventory (instead of returning a 404 error)
