@@ -534,10 +534,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//Add all our shortcodes
 			$shortcodes = new Inventory_Presser_Shortcodes();
 			$shortcodes->hooks();
-
-			//Add AJAX handlers for AutoCheck reports
-			$reports = new Inventory_Vehicle_Reports();
-			$reports->hooks();
 		}
 
 		function include_dependencies() {
@@ -552,7 +548,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-option-manager.php',
 				'class-order-by-post-meta-widget.php',
 				'class-redirect-404-vehicles.php',
-				'class-reports.php',
 				'class-seo.php',
 				'class-shortcodes.php',
 				'class-taxonomies.php',

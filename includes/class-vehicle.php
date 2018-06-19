@@ -130,12 +130,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$this->type = (isset($type_array[0])) ? $type_array[0] : '';
 		}
 
-		function autocheck_icon_html() {
-			$autocheck_link = admin_url('admin-ajax.php?action=autocheck&vin='.$this->vin);
-			$autocheck_image = file_get_contents( dirname( dirname( __FILE__ ) ) . '/assets/autocheck-button.svg' );
-			return sprintf('<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',$autocheck_link,$autocheck_image);
-		}
-
 		//is this a vehicle for which Carfax maintains data?
 		private function carfax_eligible() {
 			return strlen( $this->vin ) >= 17 && $this->year >= 1980;

@@ -94,14 +94,6 @@ class _dealer_settings {
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
 		);
-
-		add_settings_field(
-			'autocheck_id',
-			'Autocheck ID',
-			array( $this, 'autocheck_callback'),
-			'dealership-options-admin',
-			'dealership_options_setting_section'
-		);
 	}
 
 	public function dealership_options_sanitize( $input ) {
@@ -121,10 +113,6 @@ class _dealer_settings {
 
 		if ( isset( $input['use_carfax'] ) ) {
 			$sanitary_values['use_carfax'] = $input['use_carfax'];
-		}
-
-		if ( isset( $input['autocheck_id'] ) ) {
-			$sanitary_values['autocheck_id'] = sanitize_text_field( $input['autocheck_id'] );
 		}
 
 		return apply_filters( 'invp_options_page_sanitized_values', $input, $sanitary_values );
@@ -198,13 +186,6 @@ class _dealer_settings {
 		printf(
 			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">Display CARFAX buttons near vehicles that link to free CARFAX reports</label>',
 			( isset( $this->_dealer_settings['use_carfax'] ) && $this->_dealer_settings['use_carfax'] === 'use_carfax' ) ? 'checked' : ''
-		);
-	}
-
-	public function autocheck_callback() {
-		printf(
-			'<input type="text" name="_dealer_settings[autocheck_id]" id="autocheck_id" value="%s">',
-			( isset( $this->_dealer_settings['autocheck_id'] )) ? $this->_dealer_settings['autocheck_id'] : ''
 		);
 	}
 }

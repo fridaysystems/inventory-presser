@@ -63,6 +63,7 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 = 7.0.0 =
 * [Changed] Changed the permalink behavior for the vehicles post type to ignore any prefix by setting `with_front` to false. This means sites can have blogs at site.com/blog and vehicles at site.com/inventory instead of site.com/blog/inventory.
+* [Removed] Support for AutoCheck reports has been removed from this plugin and now lives in an add-on called AutoCheck Buttons.
 
 = 6.1.1 =
 * [Fixed] Fixes multiple bugs in the way we redirect requests for vehicles that no longer exist in inventory (instead of returning a 404 error)
