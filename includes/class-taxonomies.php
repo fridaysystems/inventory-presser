@@ -355,6 +355,29 @@ class Inventory_Presser_Taxonomies {
 	    </tr><?php
 	}
 
+	/**
+	 * When a phone number or set of hours is created, we want to save a unique
+	 * ID with it so that it can be identified in the array of phones and hours
+	 * even if it's label changes.
+	 */
+	function generate_location_uid( $term_id, $others ) {
+		$dt = new DateTime();
+		$uid = $term_id . $dt->format('su'); //s = seconds, u = microseconds
+		$unique = false;
+		while( ! $unique ) {
+			$dt = new DateTime();
+			$uid = $term_id . $dt->format('su'); //s = seconds, u = microseconds
+			$unique = true;
+			foreach( $others as $other ) {
+				if( isset( $other['uid'] ) && $uid == $other['uid'] ) {
+					$unique = false;
+					break;
+				}
+			}
+		}
+		return $uid;
+	}
+
 	function get_term_slug( $taxonomy_name, $post_id ) {
 		$terms = wp_get_object_terms( $post_id, $taxonomy_name, array( 'orderby' => 'term_id', 'order' => 'ASC' ) );
 		if ( ! is_wp_error( $terms ) && isset( $terms[0] ) && isset( $terms[0]->name ) ) {
@@ -459,62 +482,73 @@ class Inventory_Presser_Taxonomies {
 
 	function save_location_meta( $term_id, $tt_id ) {
 
-		if (isset($_POST['hours_title']) && isset($_POST['phone_number'])) {
+		if ( isset( $_POST['hours_title'] ) && isset( $_POST['phone_number'] ) ) {
 
-			$meta_final = array('phones' => array(), 'hours' => array());
+			$meta_final = array(
+				'phones' => array(),
+				'hours'  => array(),
+			);
 
 			// HOURS
 			$count = count( $_POST['hours_title'] ) - 2;
 
-			for ($i = 0; $i <= $count; $i++) {
+			for ( $i = 0; $i <= $count; $i++ ) {
 
 				$has_data = false;
 
 				$this_hours = array();
 
 				// if this is an update, carry the id through
-				if (isset($_POST['hours_uid'][$i])) {
+				if ( isset( $_POST['hours_uid'][$i] ) ) {
 					$this_hours['uid'] = $_POST['hours_uid'][$i];
+				} else {
+					//generate a unique id for these hours
+					$this_hours['uid'] = $this->generate_location_uid( $term_id, $meta_final['hours'] );
 				}
 				// title of hours set
-				$this_hours['title'] = sanitize_text_field($_POST['hours_title'][$i]);
+				$this_hours['title'] = sanitize_text_field( $_POST['hours_title'][$i] );
 
 				// add daily hours info to the final array, check to make sure there's data
-				foreach ($_POST['hours'] as $day => $harray) {
+				foreach ( $_POST['hours'] as $day => $harray ) {
 
-					$open = sanitize_text_field($harray['open'][$i]);
-					$close = sanitize_text_field($harray['close'][$i]);
-					$appt = sanitize_text_field($harray['appt'][$i]);
-					if (!$has_data && ($open || $close || $appt == '1')) {
+					$open = sanitize_text_field( $harray['open'][$i] );
+					$close = sanitize_text_field( $harray['close'][$i] );
+					$appt = sanitize_text_field( $harray['appt'][$i] );
+					if ( !$has_data && ( $open || $close || $appt == '1' ) ) {
 						$has_data = true;
 					}
-					$this_hours[$day] = array('open' => $open, 'close' => $close, 'appt'=> $appt);
+					$this_hours[$day] = array(
+						'open'  => $open,
+						'close' => $close,
+						'appt'  => $appt,
+					);
 				}
 
-				if ($has_data) {
+				if ( $has_data ) {
 					$meta_final['hours'][] = $this_hours;
 				}
-
 			}
 
 			// PHONE NUMBERS
-			foreach ($_POST['phone_number'] as $i => $phone_number) {
+			foreach ( $_POST['phone_number'] as $i => $phone_number ) {
 
-				$phone_number = sanitize_text_field($phone_number);
+				$phone_number = sanitize_text_field( $phone_number );
 
-				if ($phone_number) {
+				if ( $phone_number ) {
 					$this_phone = array(
 						'phone_number' => $phone_number,
-						'phone_description' => sanitize_text_field($_POST['phone_description'][$i])
+						'phone_description' => sanitize_text_field( $_POST['phone_description'][$i] ),
 					);
 					// if this is an update, carry the id through
-					if (isset($_POST['phone_uid'][$i])) {
+					if ( isset( $_POST['phone_uid'][$i] ) ) {
 						$this_phone['uid'] = $_POST['phone_uid'][$i];
+					} else {
+						//generate a unique id for this phone number
+						$this_phone['uid'] = $this->generate_location_uid( $term_id, $meta_final['phones'] );
 					}
 					// add this phone number to meta array
 					$meta_final['phones'][] = $this_phone;
 				}
-
 			}
 
 			update_term_meta( $term_id, 'location-phone-hours', $meta_final );
