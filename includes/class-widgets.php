@@ -105,13 +105,21 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 							if ($echo_row) {
 
 								$current_row_class = ($current_weekday == $i) ? ' class="day-highlight"' : '';
-								echo sprintf('<tr%s>',$current_row_class);
-								echo sprintf('<th>%s</th>',$this->weekdays()[$i]);
+								printf(
+									'<tr%s><th>%s</th>',
+									$current_row_class,
+									$this->weekdays()[$i]
+								);
 
 								if ($hourset[$i]['appt'] == 1 && !empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
-									echo sprintf('<td colspan="2">%s - %s & Appointment</td>',$hourset[$i]['open'],$hourset[$i]['close']);
+									printf(
+										'<td colspan="2">%s - %s &amp; %s</td>',
+										$hourset[$i]['open'],
+										$hourset[$i]['close'],
+										__( 'Appointment', 'inventory-presser' )
+									);
 								} elseif ($hourset[$i]['appt'] == 1) {
-									echo '<td colspan="2">Appointment Only</td>';
+									printf( '<td colspan="2">%s</td>', __( 'Appointment Only', 'inventory-presser' ) );
 								} elseif (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
 									echo sprintf('<td>%s</td>',$hourset[$i]['open']);
 							    	echo sprintf('<td>%s</td>',$hourset[$i]['close']);
@@ -145,29 +153,48 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 	    $hours_table = '<table><tbody>';
 
 	    // loop through each location, set up form
-	    foreach ($location_info as $term_id => $name) {
+	    foreach ( $location_info as $term_id => $name ) {
 	    	$location_meta = get_term_meta( $term_id, 'location-phone-hours', true );
-	    	if (isset($location_meta['hours']) && count($location_meta['hours']) > 0) {
-	    		$hours_table .= sprintf('<tr><td>%s</td><td>Display</td><td>Title</td></tr>', $name);
-	    		foreach ($location_meta['hours'] as $index => $hourset) {
-
-	    			$uid = $hourset['uid'];
-
-	    			$hourset_title = ($hourset['title']) ? $hourset['title'] : 'No title entered';
-
-	    			$cb_display_checked = (isset($cb_display[$term_id]) && is_array($cb_display[$term_id]) && in_array($uid, $cb_display[$term_id])) ? ' checked' : '';
-	    			$cb_display_text = sprintf('<input type="checkbox" id="%s" name="%s" value="%s"%s />', $this->get_field_id('cb_display'), $this->get_field_name('cb_display['.$term_id.'][]'), $uid, $cb_display_checked);
-
-	    			$cb_title_checked = (isset($cb_title[$term_id]) && is_array($cb_title[$term_id]) && in_array($uid, $cb_title[$term_id])) ? ' checked' : '';
-	    			$cb_title_text = sprintf('<input type="checkbox" id="%s" name="%s" value="%s"%s />', $this->get_field_id('cb_title'), $this->get_field_name('cb_title['.$term_id.'][]'), $uid, $cb_title_checked);
-
-	    			$hours_table .= sprintf('<tr><td><strong>%s</strong></td><td>%s</td><td>%s</td></tr>',
-	    									$hourset_title,
-	    									$cb_display_text,
-	    									$cb_title_text);
-	    		}
+	    	if ( ! isset( $location_meta['hours'] ) || 0 == count( $location_meta['hours'] ) ) {
+	    		continue;
 	    	}
 
+    		$hours_table .= sprintf(
+    			'<tr><td>%s</td><td>%s</td><td>%s</td></tr>',
+    			$name,
+    			__( 'Display', 'inventory-presser' ),
+    			__( 'Title', 'inventory-presser' )
+    		);
+
+    		foreach ( $location_meta['hours'] as $index => $hourset ) {
+
+    			$uid = $hourset['uid'];
+
+    			$hourset_title = ( $hourset['title'] ) ? $hourset['title'] : __( 'No title entered', 'inventory-presser' );
+
+    			$cb_display_text = sprintf(
+    				'<input type="checkbox" id="%s" name="%s" value="%s"%s />',
+    				$this->get_field_id('cb_display'),
+    				$this->get_field_name('cb_display['.$term_id.'][]'),
+    				$uid,
+    				checked( true, (isset($cb_display[$term_id]) && is_array($cb_display[$term_id]) && in_array($uid, $cb_display[$term_id])), false )
+    			);
+
+    			$cb_title_text = sprintf(
+    				'<input type="checkbox" id="%s" name="%s" value="%s"%s />',
+    				$this->get_field_id('cb_title'),
+    				$this->get_field_name('cb_title['.$term_id.'][]'),
+    				$uid,
+    				checked( true, (isset($cb_title[$term_id]) && is_array($cb_title[$term_id]) && in_array($uid, $cb_title[$term_id])), false )
+    			);
+
+    			$hours_table .= sprintf(
+    				'<tr><td><strong>%s</strong></td><td>%s</td><td>%s</td></tr>',
+					$hourset_title,
+					$cb_display_text,
+					$cb_title_text
+    			);
+    		}
 	    }
 
 	    $hours_table .= '</tbody></table>';
@@ -175,12 +202,12 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id('title'); ?>">Main Title</label>
+		<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e( 'Main Title', 'inventory-presser' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id('cb_showclosed'); ?>">Show All Closed Days</label>
+		<label for="<?php echo $this->get_field_id('cb_showclosed'); ?>"><?php _e( 'Show All Closed Days', 'inventory-presser' ); ?></label>
 		<input type="checkbox" id="<?php echo $this->get_field_id('cb_showclosed'); ?>" name="<?php echo $this->get_field_name('cb_showclosed'); ?>" value="true"<?php echo $cb_showclosed; ?>>
 		</p>
 		<p><?php echo $hours_table; ?></p>
