@@ -145,7 +145,6 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : 'Hours';
 		$cb_display = isset($instance['cb_display']) ? $instance['cb_display'] : array();
 		$cb_title = isset($instance['cb_title']) ? $instance['cb_title'] : array();
-		$cb_showclosed = (isset($instance[ 'cb_showclosed' ]) && $instance[ 'cb_showclosed' ] == 'true') ? ' checked' : '';
 
 		// get all locations
 		$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
@@ -168,7 +167,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
     		foreach ( $location_meta['hours'] as $index => $hourset ) {
 
-    			$uid = $hourset['uid'];
+    			$uid = isset( $hourset['uid'] ) ? $hourset['uid'] : '';
 
     			$hourset_title = ( $hourset['title'] ) ? $hourset['title'] : __( 'No title entered', 'inventory-presser' );
 
@@ -208,7 +207,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 		<p>
 		<label for="<?php echo $this->get_field_id('cb_showclosed'); ?>"><?php _e( 'Show All Closed Days', 'inventory-presser' ); ?></label>
-		<input type="checkbox" id="<?php echo $this->get_field_id('cb_showclosed'); ?>" name="<?php echo $this->get_field_name('cb_showclosed'); ?>" value="true"<?php echo $cb_showclosed; ?>>
+		<input type="checkbox" id="<?php echo $this->get_field_id('cb_showclosed'); ?>" name="<?php echo $this->get_field_name('cb_showclosed'); ?>" value="true"<?php checked( (isset($instance[ 'cb_showclosed' ]) && $instance[ 'cb_showclosed' ] == 'true') ); ?>>
 		</p>
 		<p><?php echo $hours_table; ?></p>
 		<?php
@@ -249,8 +248,8 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Address',
-			array( 'description' => 'Display one or more mailing addresses.', )
+			__( 'Address', 'inventory-presser' ),
+			array( 'description' => __( 'Display one or more mailing addresses.', 'inventory-presser' ), )
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
@@ -294,7 +293,6 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 	public function form( $instance ) {
 
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
-		$cb_single_line = (isset($instance['cb_single_line']) && $instance['cb_single_line'] == 'true') ? ' checked' : '';
 
 		// get all locations
 		$location_terms = get_terms('location', array('hide_empty'=>false));
@@ -311,20 +309,19 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 			}
 		}
 
-	    $address_table = '<table><tbody>';
-	    $address_table .= '<tr><td colspan="2">Select Addresses to Display</td></tr>';
+	    $address_table = '<table><tbody>'
+	    	. '<tr><td colspan="2">Select Addresses to Display</td></tr>';
 
 	    // loop through each location, set up form
 	   	foreach ($location_terms as $index => $term_object) {
-
-	   		$check_text = (in_array($term_object->term_id, $cb_display)) ? ' checked' : '';
-	   		$address_checkbox = sprintf('<input id="%s" name="%s" value="%s" type="checkbox"%s>',
+	   		$address_checkbox = sprintf(
+	   			'<input id="%s" name="%s" value="%s" type="checkbox"%s>',
 	   			$this->get_field_id('cb_title'),
 	   			$this->get_field_name('cb_display[]'),
 	   			$term_object->term_id,
-	   			$check_text);
+	   			checked( (in_array($term_object->term_id, $cb_display)), true, false )
+	   		);
 	   		$address_table .= sprintf('<tr><td>%s</td><td>%s</td></tr>', $address_checkbox, nl2br($term_object->description));
-
 	    }
 
 	    $address_table .= '</tbody></table>';
@@ -333,12 +330,12 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<input type="checkbox" id="<?php echo $this->get_field_id('cb_single_line'); ?>" name="<?php echo $this->get_field_name('cb_single_line'); ?>" value="true"<?php echo $cb_single_line; ?>>
-		<label for="<?php echo $this->get_field_id('cb_single_line'); ?>">Single Line Display</label>
+		<input type="checkbox" id="<?php echo $this->get_field_id('cb_single_line'); ?>" name="<?php echo $this->get_field_name('cb_single_line'); ?>" value="true"<?php checked( (isset($instance['cb_single_line']) && $instance['cb_single_line'] == 'true') ); ?>>
+		<label for="<?php echo $this->get_field_id('cb_single_line'); ?>"><?php _e( 'Single Line Display', 'inventory-presser' ); ?></label>
 		</p>
 		<p><?php echo $address_table; ?></p>
 		<?php
@@ -359,66 +356,68 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 // Phone Widget
 class Inventory_Presser_Location_Phones extends WP_Widget {
 
+	const ID_BASE = '_invp_phone';
+
 	// formats for widget display.  To add more, just follow the pattern
-	var $formats = array(
-		'small_left_label' => array(
-			'selector' => 'Small, left label',
-			'uses_labels' => true,
-			'before' => '<table>',
-			'repeater' => '<tr><th>%1$s</th><td class="phone-link"><a href="tel:%2$s">%2$s</a></td><tr>',
-			'after' => '</table>',
+	function formats() {
+		return array(
+			'small_left_label' => array(
+				'selector'    => __( 'Small, left label', 'inventory-presser' ),
+				'uses_labels' => true,
+				'before'      => '<table>',
+				'repeater'    => '<tr><th>%1$s</th><td class="phone-link"><a href="tel:%2$s">%2$s</a></td><tr>',
+				'after'       => '</table>',
 			),
-		'large_no_label' => array(
-			'selector' => 'Large, no label',
-			'uses_labels' => false,
-			'before' => '',
-			'repeater' => '<h2><a href="tel:%1$s">%1$s</a></h2>',
-			'after' => '',
+			'large_no_label' => array(
+				'selector'    => __( 'Large, no label', 'inventory-presser' ),
+				'uses_labels' => false,
+				'before'      => '',
+				'repeater'    => '<h2><a href="tel:%1$s">%1$s</a></h2>',
+				'after'       => '',
 			),
-		'large_table_left' => array(
-			'selector' => 'Large tabled, left label',
-			'uses_labels' => true,
-			'before' => '<table>',
-			'repeater' => '<tr><th>%1$s</th><td class="phone-link"><a href="tel:%2$s">%2$s</a></td><tr>',
-			'after' => '</table>',
+			'large_table_left' => array(
+				'selector'    => __( 'Large tabled, left label', 'inventory-presser' ),
+				'uses_labels' => true,
+				'before'      => '<table>',
+				'repeater'    => '<tr><th>%1$s</th><td class="phone-link"><a href="tel:%2$s">%2$s</a></td><tr>',
+				'after'       => '</table>',
 			),
-		'large_left_label' => array(
-			'selector' => 'Large, small left label',
-			'uses_labels' => true,
-			'before' => '<table>',
-			'repeater' => '<tr><th>%1$s</th><td><h2><a href="tel:%2$s">%2$s</a></h2></td><tr>',
-			'after' => '</table>',
+			'large_left_label' => array(
+				'selector'    => __( 'Large, small left label', 'inventory-presser' ),
+				'uses_labels' => true,
+				'before'      => '<table>',
+				'repeater'    => '<tr><th>%1$s</th><td><h2><a href="tel:%2$s">%2$s</a></h2></td><tr>',
+				'after'       => '</table>',
 			),
-		'large_right_label' => array(
-			'selector' => 'Large, small right label',
-			'uses_labels' => true,
-			'before' => '<table>',
-			'repeater' => '<tr><td><h2><a href="tel:%2$s">%2$s</a></h2></td><th>%1$s</th><tr>',
-			'after' => '</table>',
+			'large_right_label' => array(
+				'selector'    => __( 'Large, small right label', 'inventory-presser' ),
+				'uses_labels' => true,
+				'before'      => '<table>',
+				'repeater'    => '<tr><td><h2><a href="tel:%2$s">%2$s</a></h2></td><th>%1$s</th><tr>',
+				'after'       => '</table>',
 			),
-		'single_line_labels' => array(
-			'selector' => 'Single line with labels',
-			'uses_labels' => true,
-			'before' => '',
-			'repeater' => '<span>%1$s:</span> <a href="tel:%2$s">%2$s</a>',
-			'after' => '',
+			'single_line_labels' => array(
+				'selector'    => __( 'Single line with labels', 'inventory-presser' ),
+				'uses_labels' => true,
+				'before'      => '',
+				'repeater'    => '<span>%1$s:</span> <a href="tel:%2$s">%2$s</a>',
+				'after'       => '',
 			),
-		'single_line_no_labels' => array(
-			'selector' => 'Single line no labels',
-			'uses_labels' => false,
-			'before' => '',
-			'repeater' => '<span><a href="tel:%1$s">%1$s</a></span>',
-			'after' => '',
+			'single_line_no_labels' => array(
+				'selector'    => __( 'Single line no labels', 'inventory-presser' ),
+				'uses_labels' => false,
+				'before'      => '',
+				'repeater'    => '<span><a href="tel:%1$s">%1$s</a></span>',
+				'after'       => '',
 			),
 		);
-
-	const ID_BASE = '_invp_phone';
+	}
 
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Phone Number',
-			array( 'description' => 'Display one or more phone numbers.', )
+			__( 'Phone Number', 'inventory-presser' ),
+			array( 'description' => __( 'Display one or more phone numbers.', 'inventory-presser' ), )
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
@@ -435,7 +434,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 
 			$title = apply_filters( 'widget_title', $instance['title'] );
 
-			$format_slugs = array_keys($this->formats);
+			$format_slugs = array_keys( $this->formats() );
 			$format = in_array($instance['format'], $format_slugs) ? $instance['format'] : $format_slugs[0];
 
 			// before and after widget arguments are defined by themes
@@ -447,7 +446,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			// get all locations
 			$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
 
-			echo $this->formats[$format]['before'];
+			echo $this->formats()[$format]['before'];
 
 			// loop through each location
 			foreach ($location_info as $term_id => $name) {
@@ -463,28 +462,22 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 
 						// if the phone number has been selected, output it
 						if (in_array($phoneset['uid'], $instance['cb_display'][$term_id])) {
-							echo ($this->formats[$format]['uses_labels']) ? sprintf($this->formats[$format]['repeater'], $phoneset['phone_description'], $phoneset['phone_number']) : sprintf($this->formats[$format]['repeater'], $phoneset['phone_number']);
+							echo ($this->formats()[$format]['uses_labels']) ? sprintf($this->formats()[$format]['repeater'], $phoneset['phone_description'], $phoneset['phone_number']) : sprintf( $this->formats()[$format]['repeater'], $phoneset['phone_number'] );
 						}
-
 					}
-
 				}
-
 			}
 
-			echo $this->formats[$format]['after'];
-
-			echo '</div>';
-			echo $args['after_widget'];
-
+			echo $this->formats()[$format]['after']
+				. '</div>'
+				. $args['after_widget'];
 		}
-
 	}
 
 	// Widget Backend
 	public function form( $instance ) {
 		$title = isset($instance['title']) ? $instance['title'] : '';
-		$format = isset($instance['format']) ? $instance['format'] : current(array_keys($this->formats));
+		$format = isset($instance['format']) ? $instance['format'] : current( array_keys( $this->formats() ) );
 		$cb_display = isset($instance['cb_display']) ? $instance['cb_display'] : array();
 
 		// get all locations
@@ -499,18 +492,24 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	    		$phones_table .= sprintf('<tr><td colspan="3"><strong>%s</strong></td></tr>', $name);
 	    		foreach ($location_meta['phones'] as $index => $phoneset) {
 
-	    			$uid = $phoneset['uid'];
+	    			$uid = isset( $phoneset['uid'] ) ? $phoneset['uid'] : '';
 
-	    			$phoneset_number = ($phoneset['phone_number']) ? $phoneset['phone_number'] : 'No number entered';
+	    			$phoneset_number = ($phoneset['phone_number']) ? $phoneset['phone_number'] : __( 'No number entered', 'inventory-presser' );
 
-	    			$cb_display_checked = (isset($cb_display[$term_id]) && is_array($cb_display[$term_id]) && in_array($uid, $cb_display[$term_id])) ? ' checked' : '';
-	    			$cb_display_text = sprintf('<input type="checkbox" id="%s" name="%s" value="%s"%s />', $this->get_field_id('cb_display'), $this->get_field_name('cb_display['.$term_id.'][]'), $uid, $cb_display_checked);
+	    			$cb_display_text = sprintf(
+	    				'<input type="checkbox" id="%s" name="%s" value="%s"%s />',
+	    				$this->get_field_id('cb_display'),
+	    				$this->get_field_name('cb_display['.$term_id.'][]'),
+	    				$uid,
+	    				checked( (isset($cb_display[$term_id]) && is_array($cb_display[$term_id]) && in_array($uid, $cb_display[$term_id])), true, false )
+	    			);
 
-	    			$phones_table .= sprintf('<tr><td>%s</td><td>%s</td><td>%s</td></tr>',
-	    									$cb_display_text,
-	    									$phoneset['phone_description'],
-	    									$phoneset_number
-	    									);
+	    			$phones_table .= sprintf(
+	    				'<tr><td>%s</td><td>%s</td><td>%s</td></tr>',
+	    				$cb_display_text,
+	    				$phoneset['phone_description'],
+	    				$phoneset_number
+	    			);
 	    		}
 	    	}
 
@@ -521,16 +520,20 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>">Title (optional):</label>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title (optional):', 'inventory-presser' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('format'); ?>">Display Format:</label>
+			<label for="<?php echo $this->get_field_id('format'); ?>"><?php _e( 'Display Format:', 'inventory-presser' ); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('format'); ?>" name="<?php echo $this->get_field_name('format'); ?>">
 			<?php
-			foreach ($this->formats as $key => $format_array) {
-				$selected = ($format == $key) ? ' selected' : '';
-				echo sprintf('<option value="%s"%s>%s</option>', $key, $selected, $format_array['selector']);
+			foreach ($this->formats() as $key => $format_array) {
+				printf(
+					'<option value="%s"%s>%s</option>',
+					$key,
+					selected( $format == $key, true, false ),
+					$format_array['selector']
+				);
 			}
 			?>
 			</select>
@@ -543,7 +546,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
 		$instance['title'] = ( !empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['format'] = ( !empty( $new_instance['format'] ) ) ? $new_instance['format'] : current(array_keys($this->formats));
+		$instance['format'] = ( !empty( $new_instance['format'] ) ) ? $new_instance['format'] : current( array_keys( $this->formats() ) );
 		$instance['cb_display'] = ( !empty( $new_instance['cb_display'] ) ) ? $new_instance['cb_display'] : array();
 		return $instance;
 	}
@@ -554,14 +557,34 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 // Carfax Widget
 class Carfax_Widget extends WP_Widget {
 
-	var $images = array(
-		'default' => array('text'=>'Simple Show Me Logo', 'img'=>'show-me-carfax.svg'),
-		'advantage' => array('text'=>'Advantage Dealer Badge', 'img'=>'carfax-advantage-dealer.png'),
-		'dealership' => array('text'=>'Car Fox Dealership', 'img'=>'carfax-portrait-blue.jpg'),
-		'foxleft' => array('text'=>'Car Fox Left', 'img'=>'carfax-show-me-blue.png'),
-		'foxoval' => array('text'=>'Car Fox Oval', 'img'=>'carfax-show-me-blue-oval.png'),
-		'landscape' => array('text'=>'Landscape Blue', 'img'=>'carfax-show-me-landscape.jpg'),
-	);
+	function images() {
+		return array(
+			'default' => array(
+				'text' => __( 'Simple Show Me Logo', 'inventory-presser' ),
+				'img'  => 'show-me-carfax.svg'
+			),
+			'advantage' => array(
+				'text' => __( 'Advantage Dealer Badge', 'inventory-presser' ),
+				'img'  => 'carfax-advantage-dealer.png'
+			),
+			'dealership' => array(
+				'text' => __( 'Car Fox Dealership', 'inventory-presser' ),
+				'img'  => 'carfax-portrait-blue.jpg'
+			),
+			'foxleft' => array(
+				'text' => __( 'Car Fox Left', 'inventory-presser' ),
+				'img'  => 'carfax-show-me-blue.png'
+			),
+			'foxoval' => array(
+				'text' => __( 'Car Fox Oval', 'inventory-presser' ),
+				'img'  => 'carfax-show-me-blue-oval.png'
+			),
+			'landscape' => array(
+				'text' => __( 'Landscape Blue', 'inventory-presser' ),
+				'img'  => 'carfax-show-me-landscape.jpg'
+			),
+		);
+	}
 
 	const ID_BASE = '_invp_carfax';
 
@@ -582,7 +605,7 @@ class Carfax_Widget extends WP_Widget {
 	// front-end
 	public function widget( $args, $instance ) {
 
-		$image_keys = array_keys($this->images);
+		$image_keys = array_keys( $this->images() );
 		$image = (in_array($instance['image'], $image_keys)) ? $instance['image'] : $image_keys[0];
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
@@ -592,12 +615,12 @@ class Carfax_Widget extends WP_Widget {
 		echo $args['before_title'] . $title . $args['after_title'];
 
 		echo wpautop( $instance['before_image'] );
-		if( 'svg' == strtolower( pathinfo( $this->images[$image]['img'], PATHINFO_EXTENSION ) ) ) {
+		if( 'svg' == strtolower( pathinfo( $this->images()[$image]['img'], PATHINFO_EXTENSION ) ) ) {
 			//Include the SVG inline instead of using an <img> element
-			$svg = file_get_contents( dirname( dirname( __FILE__ ) ) . '/assets/' . $this->images[$image]['img'] );
+			$svg = file_get_contents( dirname( dirname( __FILE__ ) ) . '/assets/' . $this->images()[$image]['img'] );
 			echo sprintf( '<a href="%s">' . $svg . '</a>', get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) );
 		} else {
-			echo sprintf( '<a href="%s"><img src="%s"></a>', get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ), plugins_url( '/assets/'.$this->images[$image]['img'], dirname(__FILE__) ) );
+			echo sprintf( '<a href="%s"><img src="%s"></a>', get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ), plugins_url( '/assets/' . $this->images()[$image]['img'], dirname(__FILE__) ) );
 		}
 		echo wpautop( $instance['after_image'] );
 		echo $args['after_widget'];
@@ -606,7 +629,7 @@ class Carfax_Widget extends WP_Widget {
 	// Widget Backend
 	public function form( $instance ) {
 
-		$image_keys = array_keys($this->images);
+		$image_keys = array_keys( $this->images() );
 
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
 		$before_image = isset($instance[ 'before_image' ]) ? $instance[ 'before_image' ] : '';
@@ -616,20 +639,24 @@ class Carfax_Widget extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:', 'inventory-presser' ); ?></label>
 		<textarea class="widefat" id="<?php echo $this->get_field_id('before_image'); ?>" name="<?php echo $this->get_field_name('before_image'); ?>"><?php echo esc_attr( $before_image ); ?></textarea>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'image' ); ?>"><?php _e( 'Image:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'image' ); ?>"><?php _e( 'Image:', 'inventory-presser' ); ?></label>
 
 		<select class="widefat" id="<?php echo $this->get_field_id('image'); ?>" name="<?php echo $this->get_field_name('image'); ?>">
-		<?php foreach ($this->images as $key => $imginfo) {
-			$select_text = ($key == $image) ? ' selected' : '';
-			echo sprintf('<option value="%s"%s>%s</option>',$key,$select_text,$imginfo['text']);
+		<?php foreach ( $this->images() as $key => $imginfo ) {
+			printf(
+				'<option value="%s"%s>%s</option>',
+				$key,
+				selected( $key == $image, true, false ),
+				$imginfo['text']
+			);
 		} ?>
 		</select>
 
@@ -644,7 +671,7 @@ class Carfax_Widget extends WP_Widget {
 
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
-		$image_keys = array_keys($this->images);
+		$image_keys = array_keys( $this->images() );
 		$instance = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['before_image'] = ( ! empty( $new_instance['before_image'] ) ) ? strip_tags( $new_instance['before_image'] ) : '';
@@ -658,17 +685,22 @@ class Carfax_Widget extends WP_Widget {
 // Kelley Blue Book Widget
 class KBB_Widget extends WP_Widget {
 
-	var $images = array(
-		'default' => array('text'=>'Bordered Rectangle', 'img'=>'kelley-blue-book.jpg'),
-	);
-
 	const ID_BASE = '_invp_kbb';
+
+	function images() {
+		return array(
+			'default' => array(
+				'text' => __( 'Bordered Rectangle', 'inventory-presser' ),
+				'img'  => 'kelley-blue-book.jpg'
+			),
+		);
+	}
 
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Kelley Blue Book Logo',
-			array( 'description' => 'KBB logo image linked to kbb.com', )
+			__( 'Kelley Blue Book Logo', 'inventory-presser' ),
+			array( 'description' => __( 'KBB logo image linked to kbb.com', 'inventory-presser' ), )
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
@@ -681,7 +713,7 @@ class KBB_Widget extends WP_Widget {
 	// front-end
 	public function widget( $args, $instance ) {
 
-		$image_keys = array_keys($this->images);
+		$image_keys = array_keys( $this->images() );
 		$image = (in_array($instance['image'], $image_keys)) ? $instance['image'] : $image_keys[0];
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
@@ -691,7 +723,7 @@ class KBB_Widget extends WP_Widget {
 		echo $args['before_title'] . $title . $args['after_title'];
 
 		echo wpautop($instance['before_image']);
-		echo sprintf('<a href="%s" target="_blank"><img src="%s"></a>','http://kbb.com',plugins_url( '/assets/'.$this->images[$image]['img'], dirname(__FILE__)));
+		printf('<a href="%s" target="_blank"><img src="%s"></a>','http://kbb.com',plugins_url( '/assets/' . $this->images()[$image]['img'], dirname(__FILE__)));
 		echo wpautop($instance['after_image']);
 
 		echo $args['after_widget'];
@@ -700,7 +732,7 @@ class KBB_Widget extends WP_Widget {
 	// Widget Backend
 	public function form( $instance ) {
 
-		$image_keys = array_keys($this->images);
+		$image_keys = array_keys( $this->images() );
 
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
 		$before_image = isset($instance[ 'before_image' ]) ? $instance[ 'before_image' ] : '';
@@ -710,27 +742,31 @@ class KBB_Widget extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:', 'inventory-presser' ); ?></label>
 		<textarea class="widefat" id="<?php echo $this->get_field_id('before_image'); ?>" name="<?php echo $this->get_field_name('before_image'); ?>"><?php echo esc_attr( $before_image ); ?></textarea>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'image' ); ?>"><?php _e( 'Image:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'image' ); ?>"><?php _e( 'Image:', 'inventory-presser' ); ?></label>
 
 		<select class="widefat" id="<?php echo $this->get_field_id('image'); ?>" name="<?php echo $this->get_field_name('image'); ?>">
-		<?php foreach ($this->images as $key => $imginfo) {
-			$select_text = ($key == $image) ? ' selected' : '';
-			echo sprintf('<option value="%s"%s>%s</option>',$key,$select_text,$imginfo['text']);
+		<?php foreach ( $this->images() as $key => $imginfo ) {
+			printf(
+				'<option value="%s"%s>%s</option>',
+				$key,
+				selected( $key == $image, true, false ),
+				$imginfo['text']
+			);
 		} ?>
 		</select>
 
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'after_image' ); ?>"><?php _e( 'Text after image:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'after_image' ); ?>"><?php _e( 'Text after image:', 'inventory-presser' ); ?></label>
 		<textarea class="widefat" id="<?php echo $this->get_field_id('after_image'); ?>" name="<?php echo $this->get_field_name('after_image'); ?>"><?php echo esc_attr( $after_image ); ?></textarea>
 		</p>
 		<?php
@@ -738,7 +774,7 @@ class KBB_Widget extends WP_Widget {
 
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
-		$image_keys = array_keys($this->images);
+		$image_keys = array_keys( $this->images() );
 		$instance = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['before_image'] = ( ! empty( $new_instance['before_image'] ) ) ? strip_tags( $new_instance['before_image'] ) : '';
@@ -752,118 +788,120 @@ class KBB_Widget extends WP_Widget {
 // Stock Photo Slider
 class Stock_Photo_Slider extends WP_Widget {
 
-	// the image sets, follow the pattern to add more
-	private $image_sets = array(
-		'acura' => array(
-			'label' => 'Acura',
-			'photos' => array(
-				'acura-01.jpg',
-				'acura-02.jpg',
-				'acura-03.jpg',
-				'acura-04.jpg',
-				),
-			),
-		'audi' => array(
-			'label' => 'Audi',
-			'photos' => array(
-				'audi-01.jpg',
-				'audi-02.jpg',
-				),
-			),
-		'bmw' => array(
-			'label' => 'BMW',
-			'photos' => array(
-				'bmw-01.jpg',
-				'bmw-02.jpg',
-				'bmw-03.jpg',
-				),
-			),
-		'ford' => array(
-			'label' => 'Ford',
-			'photos' => array(
-				'ford-2013-taurus.jpg',
-				'ford-2015-explorer.jpg',
-				'ford-2015-taurus.jpg',
-				'ford-2016-focus.jpg',
-				'ford-2017-escape.jpg',
-				),
-			),
-		'hyundai' => array(
-			'label' => 'Hyundai',
-			'photos' => array(
-				'hyundai-2016-elantra.jpg',
-				'hyundai-2016-genesis.jpg',
-				'hyundai-2016-santa-fe.jpg',
-				),
-			),
-		'mercedes' => array(
-			'label' => 'Mercedes-Benz',
-			'photos' => array(
-				'mercedes-01.jpg',
-				'mercedes-02.jpg',
-				'mercedes-03.jpg',
-				),
-			),
-		'nissan' => array(
-			'label' => 'Nissan',
-			'photos' => array(
-				'nissan-2013-altima.jpg',
-				'nissan-2016-altima.jpg',
-				'nissan-2016-pulsar.jpg',
-				'nissan-2016-sentra.jpg',
-				),
-			),
-		'boats' => array(
-			'label' => 'Boats',
-			'photos' => array(
-				'boat-1.jpg',
-				'boat-2.jpg',
-				'boat-3.jpg',
-				'boat-4.jpg',
-				'boat-5.jpg',
-				),
-			),
-		'trucks' => array(
-			'label' => 'Trucks',
-			'photos' => array(
-				'truck-1.jpg',
-				'truck-2.jpg',
-				'truck-3.jpg',
-				'truck-4.jpg',
-				),
-			),
-		'suvs' => array(
-			'label' => 'SUVs',
-			'photos' => array(
-				'suv-01.jpg',
-				'suv-02.jpg',
-				'suv-03.jpg',
-				'suv-04.jpg',
-				'suv-05.jpg',
-				'suv-06.jpg',
-				'suv-07.jpg',
-				),
-			),
-		'italian' => array(
-			'label' => 'Italian',
-			'photos' => array(
-				'italian-01.jpg',
-				'italian-02.jpg',
-				'italian-03.jpg',
-				'italian-04.jpg',
-				'italian-05.jpg',
-				'italian-06.jpg',
-				),
-			),
-		);
-
 	const ID_BASE = '_invp_sps';
+
+	// the image sets, follow the pattern to add more
+	function image_sets() {
+		return array(
+			'acura' => array(
+				'label' => 'Acura',
+				'photos' => array(
+					'acura-01.jpg',
+					'acura-02.jpg',
+					'acura-03.jpg',
+					'acura-04.jpg',
+					),
+				),
+			'audi' => array(
+				'label' => 'Audi',
+				'photos' => array(
+					'audi-01.jpg',
+					'audi-02.jpg',
+					),
+				),
+			'bmw' => array(
+				'label' => 'BMW',
+				'photos' => array(
+					'bmw-01.jpg',
+					'bmw-02.jpg',
+					'bmw-03.jpg',
+					),
+				),
+			'ford' => array(
+				'label' => 'Ford',
+				'photos' => array(
+					'ford-2013-taurus.jpg',
+					'ford-2015-explorer.jpg',
+					'ford-2015-taurus.jpg',
+					'ford-2016-focus.jpg',
+					'ford-2017-escape.jpg',
+					),
+				),
+			'hyundai' => array(
+				'label' => 'Hyundai',
+				'photos' => array(
+					'hyundai-2016-elantra.jpg',
+					'hyundai-2016-genesis.jpg',
+					'hyundai-2016-santa-fe.jpg',
+					),
+				),
+			'mercedes' => array(
+				'label' => 'Mercedes-Benz',
+				'photos' => array(
+					'mercedes-01.jpg',
+					'mercedes-02.jpg',
+					'mercedes-03.jpg',
+					),
+				),
+			'nissan' => array(
+				'label' => 'Nissan',
+				'photos' => array(
+					'nissan-2013-altima.jpg',
+					'nissan-2016-altima.jpg',
+					'nissan-2016-pulsar.jpg',
+					'nissan-2016-sentra.jpg',
+					),
+				),
+			'boats' => array(
+				'label' => __( 'Boats', 'inventory-presser' ),
+				'photos' => array(
+					'boat-1.jpg',
+					'boat-2.jpg',
+					'boat-3.jpg',
+					'boat-4.jpg',
+					'boat-5.jpg',
+					),
+				),
+			'trucks' => array(
+				'label' => _( 'Trucks', 'inventory-presser' ),
+				'photos' => array(
+					'truck-1.jpg',
+					'truck-2.jpg',
+					'truck-3.jpg',
+					'truck-4.jpg',
+					),
+				),
+			'suvs' => array(
+				'label' => __( 'SUVs', 'inventory-presser' ),
+				'photos' => array(
+					'suv-01.jpg',
+					'suv-02.jpg',
+					'suv-03.jpg',
+					'suv-04.jpg',
+					'suv-05.jpg',
+					'suv-06.jpg',
+					'suv-07.jpg',
+					),
+				),
+			'italian' => array(
+				'label' => __( 'Italian', 'inventory-presser' ),
+				'photos' => array(
+					'italian-01.jpg',
+					'italian-02.jpg',
+					'italian-03.jpg',
+					'italian-04.jpg',
+					'italian-05.jpg',
+					'italian-06.jpg',
+					),
+				),
+			);
+	}
 
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Stock Photo Slider',
-			array( 'description' => 'Full width slideshow with multiple vehicle photo sets.', )
+			__( 'Stock Photo Slider', 'inventory-presser' ),
+			array( 'description' => __( 'Full width slideshow with multiple vehicle photo sets.', 'inventory-presser' ), )
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
@@ -881,7 +919,7 @@ class Stock_Photo_Slider extends WP_Widget {
 		$image_pool = array();
 		// merge each photo set into one array
 		foreach ($instance['image_sets'] as $set) {
-			$image_pool = array_merge($image_pool, $this->image_sets[$set]['photos']);
+			$image_pool = array_merge($image_pool, $this->image_sets()[$set]['photos']);
 		}
 		// mix em up for random display
 		shuffle($image_pool);
@@ -911,10 +949,8 @@ class Stock_Photo_Slider extends WP_Widget {
 			}
 		}
 		?>
-
 		</ul>
 		</div>
-
 		<?php
 
 		echo $args['after_widget'];
@@ -923,49 +959,47 @@ class Stock_Photo_Slider extends WP_Widget {
 	// Widget Backend
 	public function form( $instance ) {
 
-		$image_keys = array_keys($this->image_sets);
+		$image_keys = array_keys($this->image_sets());
 
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
 		$selected_sets = isset($instance[ 'image_sets' ]) ? $instance[ 'image_sets' ] : $image_keys;
-		$link_slides = (isset($instance['link_slides']) && $instance['link_slides'] == 'true') ? ' checked' : '';
 
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id('link_slides'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('link_slides'); ?>" name="<?php echo $this->get_field_name('link_slides'); ?>" value="true"<?php echo $link_slides; ?>> Link slides to Inventory</label>
+		<label for="<?php echo $this->get_field_id('link_slides'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('link_slides'); ?>" name="<?php echo $this->get_field_name('link_slides'); ?>" value="true"<?php checked( (isset($instance['link_slides']) && $instance['link_slides'] == 'true'), true ); ?>> <?php _e( 'Link slides to Inventory', 'inventory-presser' ); ?></label>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'image_sets[]' ); ?>"><?php _e( 'Image Sets:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'image_sets[]' ); ?>"><?php _e( 'Image Sets:', 'inventory-presser' ); ?></label>
 
 		<table>
 		<?php
 
-		foreach ($this->image_sets as $slug => $info) {
-			$checked = in_array($slug, $selected_sets) ? ' checked' : '';
-			echo sprintf('<tr><td><input type="checkbox" id="%s" name="%s" value="%s"%s></td><td>%s</td></tr>',
+		foreach ($this->image_sets() as $slug => $info) {
+			printf(
+				'<tr><td><input type="checkbox" id="%s" name="%s" value="%s"%s></td><td>%s (%s)</td></tr>',
 				$this->get_field_id('image_sets'),
 				$this->get_field_name('image_sets[]'),
 				$slug,
-				$checked,
-				$info['label'].' ('.count($info['photos']).')'
-				);
+				checked( in_array($slug, $selected_sets), true, false ),
+				$info['label'],
+				count( $info['photos'] )
+			);
 		}
 
 		?>
 		</table>
-
 		</p>
-
 		<?php
 	}
 
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
-		$image_keys = array_keys($this->image_sets);
+		$image_keys = array_keys($this->image_sets());
 		$instance = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['image_sets'] = ( ! empty( $new_instance['image_sets'] ) ) ? $new_instance['image_sets'] : $image_keys;
@@ -980,14 +1014,17 @@ class Inventory_Slider extends WP_Widget {
 
 	const ID_BASE = '_invp_slick';
 
-	var $featured_select = array('featured_priority'=>'Priority for Featured Vehicles', 'featured_only'=>'Featured Vehicles Only', 'random'=>'Random' );
-	var $text_displays = array('none' => 'None','top' => 'Top', 'bottom'=>'Bottom');
+	var $text_displays = array(
+		'none'   => 'None',
+		'top'    => 'Top',
+		'bottom' => 'Bottom'
+	);
 
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Vehicle Slider',
-			array( 'description' => 'A slideshow for all vehicles with at least one photo.', )
+			__( 'Vehicle Slider', 'inventory-presser' ),
+			array( 'description' => __( 'A slideshow for all vehicles with at least one photo.', 'inventory-presser' ), )
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
@@ -997,13 +1034,21 @@ class Inventory_Slider extends WP_Widget {
 		delete_option( 'widget_' . self::ID_BASE );
 	}
 
+	function featured_select_options() {
+		return array(
+			'featured_priority' => __( 'Priority for Featured Vehicles', 'inventory-presser' ),
+			'featured_only'     => __( 'Featured Vehicles Only', 'inventory-presser' ),
+			'random'            => __( 'Random', 'inventory-presser' )
+		);
+	}
+
 	// front-end
 	public function widget( $args, $instance ) {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$showcount = $instance['showcount'];
 		$showtext = $instance['showtext'];
-		$featured_select_slugs = array_keys($this->featured_select);
+		$featured_select_slugs = array_keys( $this->featured_select_options() );
 		$featured_select = isset($instance['featured_select']) ? $instance[ 'featured_select' ] : $featured_select_slugs[0];
 		$showtitle = (isset($instance['cb_showtitle']) && $instance['cb_showtitle'] == 'true');
 		$showprice = (isset($instance['cb_showprice']) && $instance['cb_showprice'] == 'true');
@@ -1040,9 +1085,9 @@ class Inventory_Slider extends WP_Widget {
 						'compare' => 'EXISTS',
 					)
 				),
-				'fields' => 'ids',
-				'orderby'=>'rand',
-				'order' => 'ASC'
+				'fields'  => 'ids',
+				'orderby' =>'rand',
+				'order'   => 'ASC'
 			);
 
 			$inventory_ids = get_posts($gpargs);
@@ -1065,15 +1110,13 @@ class Inventory_Slider extends WP_Widget {
 							'compare' => 'EXISTS'
 						)
 					),
-					'fields' => 'ids',
-					'orderby'=>'rand',
-					'order' => 'ASC'
+					'fields'  => 'ids',
+					'orderby' =>'rand',
+					'order'   => 'ASC'
 				);
 
 				$inventory_ids += get_posts($gpargs);
-
 			}
-
 		}
 
 		if ($inventory_ids) {
@@ -1082,8 +1125,9 @@ class Inventory_Slider extends WP_Widget {
 
 			// before and after widget arguments are defined by themes
 			echo $args['before_widget'];
-			if (!empty( $title ))
+			if ( ! empty( $title ) ) {
 				echo $args['before_title'] . $title . $args['after_title'];
+			}
 
 			echo sprintf('<div class="slick-slider-element" data-slick=\'{"slidesToShow": %1$d, "slidesToScroll": %1$d, "easing": "ease", "autoplaySpeed": %2$d, "speed": 4000}\'>', $showcount, ($showcount * 1000) +1000);
 
@@ -1097,22 +1141,14 @@ class Inventory_Slider extends WP_Widget {
 						echo sprintf('<h3>%s %s %s</h3>', $vehicle->year, $vehicle->make, $vehicle->model);
 					}
 					if ($showprice) {
-						echo sprintf('<h2>%s</h2>',$vehicle->price('Call For Price'));
+						echo sprintf('<h2>%s</h2>',$vehicle->price( __( 'Call For Price', 'inventory-presser' ) ) );
 					}
 					echo '</div>';
 				}
-
 				echo '</div></a></div>';
-
-
 			}
-
-			echo '</div>';
-
-			echo $args['after_widget'];
-
+			echo '</div>' . $args['after_widget'];
 		}
-
 	}
 
 	// Widget Backend
@@ -1121,63 +1157,69 @@ class Inventory_Slider extends WP_Widget {
 		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : '';
 		$showcount = isset($instance[ 'showcount' ]) ? $instance[ 'showcount' ] : 3;
 
-		$featured_select_slugs = array_keys($this->featured_select);
+		$featured_select_slugs = array_keys( $this->featured_select_options() );
 		$featured_select = isset($instance['featured_select']) ? $instance[ 'featured_select' ] : $featured_select_slugs[0];
 
 		$text_displays_slugs = array_keys($this->text_displays);
 		$showtext = isset($instance['showtext']) ? $instance[ 'showtext' ] : $text_displays_slugs[0];
 
-		$cb_showtitle = (isset($instance['cb_showtitle']) && $instance['cb_showtitle'] == 'true') ? ' checked' : '';
-		$cb_showprice = (isset($instance['cb_showprice']) && $instance['cb_showprice'] == 'true') ? ' checked' : '';
-
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'showcount' ); ?>"><?php _e( 'Vehicles to show:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'showcount' ); ?>"><?php _e( 'Vehicles to show:', 'inventory-presser' ); ?></label>
 		<select class="widefat" id="<?php echo $this->get_field_id('showcount'); ?>" name="<?php echo $this->get_field_name('showcount'); ?>">
 		<?php
-
-			for ($i=1; $i < 8; $i++) {
-				$select_text = ($i == $showcount) ? ' selected' : '';
-				echo sprintf('<option value="%1$d"%2$s>%1$d</option>',$i,$select_text);
+			for ( $i=1; $i < 8; $i++ ) {
+				printf(
+					'<option value="%1$d"%2$s>%1$d</option>',
+					$i,
+					selected( $i == $showcount, true, false )
+				);
 			}
-
 		?>
 		</select>
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'featured_select' ); ?>"><?php _e( 'Vehicle Selection:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'featured_select' ); ?>"><?php _e( 'Vehicle Selection:', 'inventory-presser' ); ?></label>
 		<select class="widefat" id="<?php echo $this->get_field_id('featured_select'); ?>" name="<?php echo $this->get_field_name('featured_select'); ?>">
 		<?php
-			foreach ($this->featured_select as $slug => $label) {
-				$select_text = ($slug == $featured_select) ? ' selected' : '';
-				echo sprintf('<option value="%s"%s>%s</option>',$slug,$select_text,$label);
+			foreach ( $this->featured_select_options() as $slug => $label ) {
+				printf(
+					'<option value="%s"%s>%s</option>',
+					$slug,
+					selected( true, $slug == $featured_select, false ),
+					$label
+				);
 			}
 		?>
 		</select>
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'showtext' ); ?>"><?php _e( 'Text Overlay:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'showtext' ); ?>"><?php _e( 'Text Overlay:', 'inventory-presser' ); ?></label>
 		<select class="widefat" id="<?php echo $this->get_field_id('showtext'); ?>" name="<?php echo $this->get_field_name('showtext'); ?>">
 		<?php
-			foreach ($this->text_displays as $slug => $label) {
-				$select_text = ($slug == $showtext) ? ' selected' : '';
-				echo sprintf('<option value="%s"%s>%s</option>',$slug,$select_text,$label);
+			foreach ( $this->text_displays as $slug => $label ) {
+				printf(
+					'<option value="%s"%s>%s</option>',
+					$slug,
+					selected( $slug == $showtext, true, false ),
+					$label
+				);
 			}
 		?>
 		</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id('cb_showtitle'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showtitle'); ?>" name="<?php echo $this->get_field_name('cb_showtitle'); ?>" value="true"<?php echo $cb_showtitle; ?>> Show Vehicle Title</label>
+		<label for="<?php echo $this->get_field_id('cb_showtitle'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showtitle'); ?>" name="<?php echo $this->get_field_name('cb_showtitle'); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showtitle'] ) && $instance['cb_showtitle'] == 'true' ) ); ?>> <?php _e( 'Show Vehicle Title', 'inventory-presser' ); ?></label>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id('cb_showprice'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showprice'); ?>" name="<?php echo $this->get_field_name('cb_showprice'); ?>" value="true"<?php echo $cb_showprice; ?>> Show Vehicle Price</label>
+		<label for="<?php echo $this->get_field_id('cb_showprice'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showprice'); ?>" name="<?php echo $this->get_field_name('cb_showprice'); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showprice'] ) && $instance['cb_showprice'] == 'true' ) ); ?>> <?php _e( 'Show Vehicle Price', 'inventory-presser' ); ?></label>
 		</p>
 
 		<?php
@@ -1224,8 +1266,11 @@ class Inventory_Grid extends WP_Widget {
 	private function get_column_options_html($selected_term) {
  		$html = '';
  		foreach ($this->column_options as $index => $columns) {
- 			$selected = ($selected_term == $columns) ? ' selected' : '';
- 			$html .= sprintf('<option value="%1$d"%2$s>%1$d columns</option>', $columns, $selected);
+ 			$html .= sprintf(
+ 				'<option value="%1$d"%2$s>%1$d columns</option>',
+ 				$columns,
+ 				selected( $selected_term == $columns, true, false )
+ 			);
  		}
  		return $html;
  	}
@@ -1255,8 +1300,9 @@ class Inventory_Grid extends WP_Widget {
 
 		// before and after widget arguments are defined by themes
 		echo $args['before_widget'];
-		if (!empty( $title ))
-		echo $args['before_title'] . $title . $args['after_title'];
+		if ( ! empty( $title ) ) {
+			echo $args['before_title'] . $title . $args['after_title'];
+		}
 
 		$gp_args = array(
 			'posts_per_page' => $limit,
@@ -1268,7 +1314,7 @@ class Inventory_Grid extends WP_Widget {
 		);
 
 		//Does the user want featured vehicles only?
-		if( isset($instance['cb_featured_only']) && 'true' == $instance['cb_featured_only'] ) {
+		if( isset( $instance['cb_featured_only'] ) && 'true' == $instance['cb_featured_only'] ) {
 			$gp_args['meta_query'] = array(
 				array(
 					'key'   => apply_filters( 'invp_prefix_meta_key', 'featured' ),
@@ -1283,41 +1329,41 @@ class Inventory_Grid extends WP_Widget {
 
 		if ($inventory_ids) {
 
-			$grid_html .= '<div class="invp-grid pad cf">';
-			$grid_html .= '<ul class="grid-slides">';
+			$grid_html .= '<div class="invp-grid pad cf"><ul class="grid-slides">';
 
 			foreach ($inventory_ids as $inventory_id) {
 
-				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
+				$vehicle = new Inventory_Presser_Vehicle( $inventory_id );
 
+				$grid_html .= sprintf(
+					'<li class="grid %s"><a class="grid-link" href="%s"><div class="grid-image" style="background-image: url(%s);"></div>',
+					$col_class,
+					$vehicle->url,
+					wp_get_attachment_image_url( get_post_thumbnail_id( $inventory_id ), 'large' )
+				);
 
-				$grid_html .= '<li class="grid '.$col_class.'"><a class="grid-link" href="'.$vehicle->url.'">';
-
-				$grid_html .= '<div class="grid-image" style="background-image: url('.wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large').');">';
-				$grid_html .= "</div>";
-
-				if ($show_captions) {
-					$grid_html .= "<p class=\"grid-caption\">";
-					$grid_html .= $vehicle->post_title.'&nbsp;&nbsp;';
-					$grid_html .= $vehicle->price(' ');
-					$grid_html .= "</p>";
+				if ( $show_captions ) {
+					$grid_html .= sprintf(
+						'<p class="grid-caption">%s&nbsp;&nbsp;%s</p>',
+						$vehicle->post_title,
+						$vehicle->price(' ')
+					);
 				}
 
-				$grid_html .= "</a></li>\n";
-
+				$grid_html .= '</a></li>';
 			}
 
-			$grid_html .= '</ul>';
-			$grid_html .= "</div>";
-			if ($show_button) {
-				$grid_html .= '<div class="invp-grid-button"><a href="'.get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ).'" class="_button _button-med">Full Inventory</a></div>';
-			}
+			$grid_html .= '</ul></div>';
 
+			if ( $show_button ) {
+				$grid_html .= sprintf(
+					'<div class="invp-grid-button"><a href="%s" class="_button _button-med">%s</a></div>',
+					get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ),
+					__( 'Full Inventory', 'inventory-presser' )
+				);
+			}
 		}
-
-		echo $grid_html;
-
-		echo $args['after_widget'];
+		echo $grid_html . $args['after_widget'];
 	}
 
 	// Widget Backend
@@ -1330,29 +1376,29 @@ class Inventory_Grid extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>">Title:</label>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id('columns'); ?>">Column count:</label>
+		<label for="<?php echo $this->get_field_id('columns'); ?>"><?php _e( 'Column count:', 'inventory-presser' ); ?></label>
 		<select class="widefat" id="<?php echo $this->get_field_id('columns'); ?>" name="<?php echo $this->get_field_name('columns'); ?>">
 		<?php echo $this->get_column_options_html($columns); ?>
 		</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'limit' ); ?>">Maximum:</label>
+		<label for="<?php echo $this->get_field_id( 'limit' ); ?>"><?php _e( 'Maximum:', 'inventory-presser' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('limit'); ?>" name="<?php echo $this->get_field_name('limit'); ?>" type="number" value="<?php echo esc_attr( $limit ); ?>" />
 		</p>
 		<p>
 			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showcaptions'); ?>" name="<?php echo $this->get_field_name('cb_showcaptions'); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showcaptions'] ) ? $instance['cb_showcaptions'] : '', true ); ?>>
-			<label for="<?php echo $this->get_field_id('cb_showcaptions'); ?>">Show captions</label>
+			<label for="<?php echo $this->get_field_id('cb_showcaptions'); ?>"><?php _e( 'Show captions', 'inventory-presser' ); ?></label>
 			<br />
 			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showbutton'); ?>" name="<?php echo $this->get_field_name('cb_showbutton'); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showbutton'] ) ? $instance['cb_showbutton'] : '', true ); ?>>
-			<label for="<?php echo $this->get_field_id('cb_showbutton'); ?>">Show inventory button</label>
+			<label for="<?php echo $this->get_field_id('cb_showbutton'); ?>"><?php _e( 'Show inventory button', 'inventory-presser' ); ?></label>
 			<br />
 			<input type="checkbox" id="<?php echo $this->get_field_id('cb_featured_only'); ?>" name="<?php echo $this->get_field_name('cb_featured_only'); ?>" value="true"<?php checked( 'true', isset( $instance['cb_featured_only'] ) ? $instance['cb_featured_only'] : '', true ); ?>>
-			<label for="<?php echo $this->get_field_id('cb_featured_only'); ?>">Featured vehicles only</label>
+			<label for="<?php echo $this->get_field_id('cb_featured_only'); ?>"><?php _e( 'Featured vehicles only', 'inventory-presser' ); ?></label>
 		</p>
 
 		<?php
@@ -1393,8 +1439,8 @@ class Price_Filters extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			'Maximum Price Filter',
-			array( 'description' => 'Filter vehicles by a maximum price.', )
+			__( 'Maximum Price Filter', 'inventory-presser' ),
+			array( 'description' => __( 'Filter vehicles by a maximum price.', 'inventory-presser' ), )
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
@@ -1451,49 +1497,56 @@ class Price_Filters extends WP_Widget {
 	// Widget Backend
 	public function form( $instance ) {
 
-		$title = isset($instance['title']) ? $instance[ 'title' ] : 'Price Filter';
+		$title = isset($instance['title']) ? $instance[ 'title' ] : __( 'Price Filter', 'inventory-presser' );
 		$prices = (isset($instance['prices']) && is_array($instance['prices'])) ? implode(',', $instance['prices']) : implode(',', $this->price_defaults);
 		$display_type_slugs = array_keys($this->display_types);
 		$display_type = isset($instance['display_type']) ? $instance[ 'display_type' ] : $display_type_slugs[0];
 		$orientation_slugs = array_keys($this->orientations);
 		$orientation = isset($instance['orientation']) ? $instance[ 'orientation' ] : $orientation_slugs[0];
-		$cb_reset_link_only = (isset($instance[ 'cb_reset_link_only' ]) && $instance[ 'cb_reset_link_only' ] == 'true') ? ' checked' : '';
 
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id('prices'); ?>">Price Points (separated by commas)</label>
+		<label for="<?php echo $this->get_field_id('prices'); ?>"><?php _e( 'Price Points (separated by commas)', 'inventory-presser' ); ?></label>
 		<textarea class="widefat" id="<?php echo $this->get_field_id('prices'); ?>" name="<?php echo $this->get_field_name('prices'); ?>"><?php echo esc_attr( $prices ); ?></textarea>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('display_type'); ?>">Display Format:</label>
+			<label for="<?php echo $this->get_field_id('display_type'); ?>"><?php _e( 'Display Format:', 'inventory-presser' ); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('display_type'); ?>" name="<?php echo $this->get_field_name('display_type'); ?>">
 			<?php
 			foreach ($this->display_types as $key => $label) {
-				$selected = ($display_type == $key) ? ' selected' : '';
-				echo sprintf('<option value="%s"%s>%s</option>', $key, $selected, $label);
+				printf(
+					'<option value="%s"%s>%s</option>',
+					$key,
+					selected( $display_type == $key, true, false ),
+					$label
+				);
 			}
 			?>
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('orientation'); ?>">Orientation:</label>
+			<label for="<?php echo $this->get_field_id('orientation'); ?>"><?php _e( 'Orientation:', 'inventory-presser' ); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('orientation'); ?>" name="<?php echo $this->get_field_name('orientation'); ?>">
 			<?php
 			foreach ($this->orientations as $key => $label) {
-				$selected = ($orientation == $key) ? ' selected' : '';
-				echo sprintf('<option value="%s"%s>%s</option>', $key, $selected, $label);
+				printf(
+					'<option value="%s"%s>%s</option>',
+					$key,
+					selected( $orientation == $key, true, false ),
+					$label
+				);
 			}
 			?>
 			</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id('cb_reset_link_only'); ?>">Show Reset Link Only</label>
-		<input type="checkbox" id="<?php echo $this->get_field_id('cb_reset_link_only'); ?>" name="<?php echo $this->get_field_name('cb_reset_link_only'); ?>" value="true"<?php echo $cb_reset_link_only; ?>>
+		<label for="<?php echo $this->get_field_id('cb_reset_link_only'); ?>"><?php _e( 'Show Reset Link Only', 'inventory-presser' ); ?></label>
+		<input type="checkbox" id="<?php echo $this->get_field_id('cb_reset_link_only'); ?>" name="<?php echo $this->get_field_name('cb_reset_link_only'); ?>" value="true"<?php checked( 'true', ( isset( $instance[ 'cb_reset_link_only' ] ) ? $instance['cb_reset_link_only'] : '' ) ); ?>>
 		</p>
 		<?php
 	}
