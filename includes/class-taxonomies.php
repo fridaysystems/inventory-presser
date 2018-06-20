@@ -14,18 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 class Inventory_Presser_Taxonomies {
 
-	private function weekdays() {
-		return array(
-			__( 'Mon', 'inventory-presser' ),
-			__( 'Tue', 'inventory-presser' ),
-			__( 'Wed', 'inventory-presser' ),
-			__( 'Thu', 'inventory-presser' ),
-			__( 'Fri', 'inventory-presser' ),
-			__( 'Sat', 'inventory-presser' ),
-			__( 'Sun', 'inventory-presser' ),
-		);
-	}
-
 	function hooks() {
 
 		//create custom taxonomies for vehicles
@@ -57,39 +45,29 @@ class Inventory_Presser_Taxonomies {
 
 	function add_api_term_meta_workaround_fields() {
 
+
 		//location-phone-hours
 		register_rest_field( 'location', 'location-phone-hours', array(
-			'get_callback'    => array( $this, 'get_term_meta' ),
-			'update_callback' => array( $this, 'set_term_meta' ),
+			'get_callback'    => array( $this, 'get_term_meta_via_rest' ),
+			'update_callback' => array( $this, 'set_term_meta_via_rest' ),
 			'schema'          => array(
 				'description' => __( 'An array of phone numbers and hours of operation for this location.', 'inventory-presser' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 			),
 		) );
-
-		//dealer-id
-		register_rest_field( 'location', 'dealer-id', array(
-			'get_callback'    => array( $this, 'get_term_meta' ),
-			'update_callback' => array( $this, 'set_term_meta' ),
-			'schema'          => array(
-				'description' => __( 'A Friday Systems customer ID that helps identify a customer when there are no vehicles in inventory.', 'inventory-presser' ),
-				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
-			),
-		) );
 	}
 
-	function get_term_meta( $term, $attr, $request, $object_type ) {
-		if( ! isset( $term->term_id ) ) {
+	static function get_term_meta_via_rest( $term, $attr, $request, $object_type ) {
+		if( ! isset( $term['id'] ) ) {
 			return false;
 		}
-		return get_term_meta( $term->term_id, $attr, true );
+		return maybe_serialize( get_term_meta( $term['id'], $attr, true ) );
 	}
 
-	function set_term_meta( $value, $term, $attr, $request, $object_type ) {
+	function set_term_meta_via_rest( $value, $term, $attr, $request, $object_type ) {
 		$value = maybe_unserialize( $value );
-		$result = isset( $term->term_id ) && update_term_meta( $term->term_id, $attr, $value, $this->get_term_meta( $term, $attr, $request, $object_type ) );
+		$result = isset( $term->term_id ) && update_term_meta( $term->term_id, $attr, $value, $this->get_term_meta_via_rest( $term, $attr, $request, $object_type ) );
 		if( true !== $result ) {
 			$result = add_term_meta( $term->term_id, $attr, $value, true );
 		}
@@ -196,12 +174,10 @@ class Inventory_Presser_Taxonomies {
 
 	//When the REST API properly supports term meta, this will probably work!
 	function register_location_term_meta() {
-		$args = array(
+		register_meta( 'term', 'location-phone-hours', array(
 			 'show_in_rest' => true,
 			 'single'       => true,
-		);
-		register_meta( 'term', 'dealer-id', $args );
-		register_meta( 'term', 'location-phone-hours', $args );
+		) );
 	}
 
 	function delete_term_data() {
@@ -981,5 +957,17 @@ class Inventory_Presser_Taxonomies {
 			}
 		}
 		return $HTML . '</select>';
+	}
+
+	private function weekdays() {
+		return array(
+			__( 'Mon', 'inventory-presser' ),
+			__( 'Tue', 'inventory-presser' ),
+			__( 'Wed', 'inventory-presser' ),
+			__( 'Thu', 'inventory-presser' ),
+			__( 'Fri', 'inventory-presser' ),
+			__( 'Sat', 'inventory-presser' ),
+			__( 'Sun', 'inventory-presser' ),
+		);
 	}
 }

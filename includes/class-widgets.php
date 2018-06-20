@@ -12,14 +12,15 @@
 // Hours Widget
 class Inventory_Presser_Location_Hours extends WP_Widget {
 
-	var $days = array('Mon','Tue','Wed','Thu','Fri','Sat','Sun');
 	const ID_BASE = '_invp_hours';
 
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
 			'Hours',
-			array( 'description' => 'Display hours of operation.', )
+			array(
+				'description' => __( 'Display hours of operation.', 'inventory-presser' ),
+			)
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
@@ -60,85 +61,74 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 					// loop through each hour set from term meta
 					foreach ($location_meta['hours'] as $index => $hourset) {
 
-						if (in_array($hourset['uid'], $instance['cb_display'][$term_id])) {
-
-							$hours_title = '';
-							if (isset($instance['cb_title'][$term_id]) && is_array($instance['cb_title'][$term_id]) && in_array($hourset['uid'], $instance['cb_title'][$term_id])) {
-								$hours_title = sprintf( '<strong>%s</strong>', $hourset['title'] );
-							}
-							echo apply_filters( 'invp_hours_title', $hours_title, $hourset['uid'] );
-
-							// get current day number, starting on a monday
-							$current_weekday = date('w') - 1;
-							$current_weekday = ($current_weekday == -1) ? 6 : $current_weekday;
-
-							$start_of_week = get_option('start_of_week') -1;
-
-							echo '<table>';
-
-							// output a row for each day
-							for ($z = $start_of_week; $z < ($start_of_week + 7); $z++) {
-
-								$i = ($z > 6) ? $z - 7 : $z;
-
-								// do a check to make sure we want to output this row
-								$echo_row = false;
-								if (($hourset[$i]['appt'] == 1) || (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) || $cb_showclosed) {
-									$echo_row = true;
-								} elseif ($i < 6) {
-									// check the remaining days, output current day if there are other displayed days following
-									for ($r=($i+1); $r < 7; $r++) {
-										if (($hourset[$r]['appt'] == 1) || (!empty($hourset[$r]['open']) && !empty($hourset[$r]['close']))) {
-											$echo_row = true;
-										}
-									}
-									// if there are no remaining days to display, break out of loop
-									if (!$echo_row) {
-										break;
-									}
-								}
-
-								// output row
-								if ($echo_row) {
-
-									$current_row_class = ($current_weekday == $i) ? ' class="day-highlight"' : '';
-									echo sprintf('<tr%s>',$current_row_class);
-									echo sprintf('<th>%s</th>',$this->days[$i]);
-
-									if ($hourset[$i]['appt'] == 1 && !empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
-										echo sprintf('<td colspan="2">%s - %s & Appointment</td>',$hourset[$i]['open'],$hourset[$i]['close']);
-									} elseif ($hourset[$i]['appt'] == 1) {
-										echo '<td colspan="2">Appointment Only</td>';
-									} elseif (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
-										echo sprintf('<td>%s</td>',$hourset[$i]['open']);
-								    	echo sprintf('<td>%s</td>',$hourset[$i]['close']);
-									} else {
-										echo '<td colspan="2">Closed</td>';
-									}
-
-								    echo '</tr>';
-
-								}
-
-
-							}
-
-							echo '</table>';
-
+						if ( ! in_array( $hourset['uid'], $instance['cb_display'][$term_id] ) ) {
+							continue;
 						}
 
+						$hours_title = '';
+						if (isset($instance['cb_title'][$term_id]) && is_array($instance['cb_title'][$term_id]) && in_array($hourset['uid'], $instance['cb_title'][$term_id])) {
+							$hours_title = sprintf( '<strong>%s</strong>', $hourset['title'] );
+						}
+						echo apply_filters( 'invp_hours_title', $hours_title, $hourset['uid'] );
+
+						// get current day number, starting on a monday
+						$current_weekday = date('w') - 1;
+						$current_weekday = ($current_weekday == -1) ? 6 : $current_weekday;
+
+						$start_of_week = get_option('start_of_week') -1;
+
+						echo '<table>';
+
+						// output a row for each day
+						for ($z = $start_of_week; $z < ($start_of_week + 7); $z++) {
+
+							$i = ($z > 6) ? $z - 7 : $z;
+
+							// do a check to make sure we want to output this row
+							$echo_row = false;
+							if (($hourset[$i]['appt'] == 1) || (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) || $cb_showclosed) {
+								$echo_row = true;
+							} elseif ($i < 6) {
+								// check the remaining days, output current day if there are other displayed days following
+								for ($r=($i+1); $r < 7; $r++) {
+									if (($hourset[$r]['appt'] == 1) || (!empty($hourset[$r]['open']) && !empty($hourset[$r]['close']))) {
+										$echo_row = true;
+									}
+								}
+								// if there are no remaining days to display, break out of loop
+								if (!$echo_row) {
+									break;
+								}
+							}
+
+							// output row
+							if ($echo_row) {
+
+								$current_row_class = ($current_weekday == $i) ? ' class="day-highlight"' : '';
+								echo sprintf('<tr%s>',$current_row_class);
+								echo sprintf('<th>%s</th>',$this->weekdays()[$i]);
+
+								if ($hourset[$i]['appt'] == 1 && !empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
+									echo sprintf('<td colspan="2">%s - %s & Appointment</td>',$hourset[$i]['open'],$hourset[$i]['close']);
+								} elseif ($hourset[$i]['appt'] == 1) {
+									echo '<td colspan="2">Appointment Only</td>';
+								} elseif (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
+									echo sprintf('<td>%s</td>',$hourset[$i]['open']);
+							    	echo sprintf('<td>%s</td>',$hourset[$i]['close']);
+								} else {
+									echo '<td colspan="2">Closed</td>';
+								}
+
+							    echo '</tr>';
+							}
+						}
+						echo '</table>';
 					}
-
 				}
-
 			}
 
-			echo '</div>';
-
-			echo $args['after_widget'];
-
+			echo '</div>'. $args['after_widget'];
 		}
-
 	}
 
 	// Widget Backend
@@ -209,6 +199,17 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		return $instance;
 	}
 
+	private function weekdays() {
+		return array(
+			__( 'Mon', 'inventory-presser' ),
+			__( 'Tue', 'inventory-presser' ),
+			__( 'Wed', 'inventory-presser' ),
+			__( 'Thu', 'inventory-presser' ),
+			__( 'Fri', 'inventory-presser' ),
+			__( 'Sat', 'inventory-presser' ),
+			__( 'Sun', 'inventory-presser' ),
+		);
+	}
 } // Class Inventory_Presser_Location_Hours
 
 

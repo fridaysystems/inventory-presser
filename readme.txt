@@ -65,7 +65,9 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 * [Added] Save a unique ID with phone numbers and sets of hours that are created in the dashboard. These IDs allow numbers or hours to be unique identified even if their labels change.
 * [Changed] Changed the permalink behavior for the vehicles post type to ignore any prefix by setting `with_front` to false. This means sites can have blogs at site.com/blog and vehicles at site.com/inventory instead of site.com/blog/inventory.
 * [Changed] Stop using a deprecated hook `media_buttons_context` and start using `media_buttons` instead.
+* [Fixed] Fixes a bug that prevented our location taxonomy from outputting the phone number and hours array in REST API responses
 * [Removed] Support for AutoCheck reports has been removed from this plugin and now lives in an add-on called AutoCheck Buttons.
+* [Removed] Management of a Friday System's customer index as a meta field in our location taxonomy. In preparation of a public release, this company-specific code has no place in this plugin.
 
 = 6.1.1 =
 * [Fixed] Fixes multiple bugs in the way we redirect requests for vehicles that no longer exist in inventory (instead of returning a 404 error)
