@@ -45,18 +45,18 @@ class Inventory_Presser_Customize_Dashboard {
 	//Add a setting to the customizer's Colors panel for Carfax button text
 	function add_settings_to_customizer( $wp_customize ) {
 		$wp_customize->add_setting( 'carfax_text_color', array(
-			'type' => 'theme_mod',
+			'type'       => 'theme_mod',
 			'capability' => 'edit_theme_options',
-			'default' => 'black',
-			'transport' => 'refresh',
+			'default'    => 'black',
+			'transport'  => 'refresh',
 		) );
 
 		$wp_customize->add_control( 'carfax_text_color', array(
-			'type' => 'select',
-			'settings' => 'carfax_text_color',
-			'priority' => 40,
-			'section' => 'colors',
-			'label' => __( 'CARFAX Button Text', 'inventory-presser' ),
+			'type'        => 'select',
+			'settings'    => 'carfax_text_color',
+			'priority'    => 40,
+			'section'     => 'colors',
+			'label'       => __( 'CARFAX Button Text', 'inventory-presser' ),
 			'description' => __( 'The color of the words "SHOW ME THE" in CARFAX buttons.', 'inventory-presser' ),
             'choices'  => array(
                 'black' => 'Black',
@@ -82,13 +82,13 @@ class Inventory_Presser_Customize_Dashboard {
 
 	function annotate_add_media_button( $editor_id ) {
 
-		if( 'content' != $editor_id ) {
-			return;
-		}
+		if( 'content' != $editor_id ) { return; }
 
-		echo $this->create_delete_all_post_attachments_button() .
-			'<span id="media-annotation" class="annotation">' .
-			$this->create_add_media_button_annotation( ) . '</span>';
+		printf(
+			'%s<span id="media-annotation" class="annotation">%s</span>',
+			$this->create_delete_all_post_attachments_button(),
+			$this->create_add_media_button_annotation()
+		);
 	}
 
 	function hooks() {
@@ -246,7 +246,6 @@ class Inventory_Presser_Customize_Dashboard {
 			return $note;
 		}
 		return '0 photos';
-
 	}
 
 	function create_delete_all_post_attachments_button( ) {
@@ -267,8 +266,8 @@ class Inventory_Presser_Customize_Dashboard {
 		if( 0 === sizeof( $attachments ) ) {
 			return '';
 		}
-		return '<button type="button" id="delete-media-button" class="button" onclick="delete_all_post_attachments( );">' .
-			'<span class="wp-media-buttons-icon"></span> Delete All Media</button>';
+		return '<button type="button" id="delete-media-button" class="button" onclick="delete_all_post_attachments( );">'
+			. '<span class="wp-media-buttons-icon"></span> Delete All Media</button>';
 	}
 
 	function default_price_array_keys() {
@@ -476,11 +475,18 @@ class Inventory_Presser_Customize_Dashboard {
 				$type = 'updated';
 				break;
 		}
-		return '<div class="'. $type .' notice"><p><strong>'. __( $message, 'inventory-presser' ) . '</strong></p></div>';
+		return sprintf(
+			'<div class="%s notice"><p><strong>%s</strong></p></div>',
+			$type,
+			__( $message, 'inventory-presser' )
+		);
 	}
 
 	function insert_settings_link( $links ) {
-		$links[] = '<a href="options-general.php?page=' . $this->product_name_slug() . '_settings">Settings</a>';
+		$links[] = sprintf(
+			'<a href="options-general.php?page=%s_settings">Settings</a>',
+			$this->product_name_slug()
+		);
 		return $links;
 	}
 
@@ -510,93 +516,95 @@ class Inventory_Presser_Customize_Dashboard {
 	}
 
 	function meta_box_html_featured( $post ) {
-		echo '<input type="checkbox" id="' . apply_filters( 'invp_prefix_meta_key', 'featured' )
-			. '" name="' . apply_filters( 'invp_prefix_meta_key', 'featured' )
-			. '" ' .
-			checked( '1', get_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'featured' ), true ), false )
-			. ' value="1"><label for="' . apply_filters( 'invp_prefix_meta_key', 'featured' ) .'">Featured in slideshows</label>';
+		$meta_key = apply_filters( 'invp_prefix_meta_key', 'featured' );
+		printf( '<input type="checkbox" id="%s" name="%s" value="1"%s><label for="%s">Featured in slideshows</label>',
+			$meta_key,
+			$meta_key,
+			checked( '1', get_post_meta( $post->ID, $meta_key, true ), false ),
+			$meta_key
+		);
 	}
 
 	function meta_box_html_options( $post ) {
 		$options = apply_filters( 'invp_default_options', array(
-			'3rd Row Seats' => false,
-			'Air Bags' => false,
-			'Air Conditioning' => false,
-			'Alloy Wheels' => false,
-			'Aluminum Wheels' => false,
-			'AM/FM Stereo' => false,
-			'Anti-lock Brakes' => false,
-			'Backup Camera' => false,
-			'Bed Cap' => false,
-			'Bluetooth, Hands Free' => false,
-			'Cassette' => false,
-			'CD Player' => false,
-			'Cell or Intergrated Cell Phone' => false,
-			'Cloth Seats' => false,
-			'Conversion Package' => false,
-			'Convertible' => false,
-			'Cooled Seats' => false,
-			'Cruise Control' => false,
-			'Custom Paint' => false,
-			'Disability Equipped' => false,
-			'Dual Sliding Doors' => false,
-			'DVD Player' => false,
-			'Extended Cab' => false,
-			'Fog Lights' => false,
-			'Heated Seats' => false,
-			'Keyless Entry' => false,
-			'Leather Seats' => false,
-			'Lift Kit' => false,
-			'Long Bed' => false,
-			'Memory Seat(s)' => false,
-			'Moon Roof' => false,
-			'Multi-zone Climate Control' => false,
-			'Navigation System' => false,
-			'Oversize Off Road Tires' => false,
-			'Portable Audio Connection' => false,
-			'Power Brakes' => false,
-			'Power Lift Gate' => false,
-			'Power Locks' => false,
-			'Power Seats' => false,
-			'Power Steering' => false,
-			'Power Windows' => false,
-			'Premium Audio' => false,
-			'Premium Wheels' => false,
-			'Privacy Glass' => false,
-			'Quad Seating' => false,
-			'Rear Air Bags' => false,
-			'Rear Air Conditioning' => false,
-			'Rear Defroster' => false,
-			'Rear Heat' => false,
-			'Refrigerator' => false,
-			'Roof Rack' => false,
-			'Running Boards' => false,
-			'Satellite Radio' => false,
-			'Security System' => false,
-			'Short Bed' => false,
-			'Side Air Bags' => false,
-			'Skid Plate(s)' => false,
-			'Snow Plow' => false,
-			'Spoiler' => false,
-			'Sport Package' => false,
-			'Step Side Bed' => false,
-			'Steering Wheel Controls' => false,
-			'Styled Steel Wheels' => false,
-			'Sunroof' => false,
-			'Supercharger' => false,
-			'Tilt Steering Wheel' => false,
-			'Tonneau Cover' => false,
-			'Topper' => false,
-			'Tow Package' => false,
-			'Traction Control' => false,
-			'Trailer Hitch' => false,
-			'Turbo' => false,
-			'Two Tone Paint' => false,
-			'Wheelchair Access' => false,
-			'Wide Tires' => false,
-			'Winch' => false,
-			'Wire Wheels' => false,
-			'Xenon Headlights' => false,
+			__( '3rd Row Seats', 'inventory-presser' ) => false,
+			__( 'Air Bags', 'inventory-presser' ) => false,
+			__( 'Air Conditioning', 'inventory-presser' ) => false,
+			__( 'Alloy Wheels', 'inventory-presser' ) => false,
+			__( 'Aluminum Wheels', 'inventory-presser' ) => false,
+			__( 'AM/FM Stereo', 'inventory-presser' ) => false,
+			__( 'Anti-lock Brakes', 'inventory-presser' ) => false,
+			__( 'Backup Camera', 'inventory-presser' ) => false,
+			__( 'Bed Cap', 'inventory-presser' ) => false,
+			__( 'Bluetooth, Hands Free', 'inventory-presser' ) => false,
+			__( 'Cassette', 'inventory-presser' ) => false,
+			__( 'CD Player', 'inventory-presser' ) => false,
+			__( 'Cell or Intergrated Cell Phone', 'inventory-presser' ) => false,
+			__( 'Cloth Seats', 'inventory-presser' ) => false,
+			__( 'Conversion Package', 'inventory-presser' ) => false,
+			__( 'Convertible', 'inventory-presser' ) => false,
+			__( 'Cooled Seats', 'inventory-presser' ) => false,
+			__( 'Cruise Control', 'inventory-presser' ) => false,
+			__( 'Custom Paint', 'inventory-presser' ) => false,
+			__( 'Disability Equipped', 'inventory-presser' ) => false,
+			__( 'Dual Sliding Doors', 'inventory-presser' ) => false,
+			__( 'DVD Player', 'inventory-presser' ) => false,
+			__( 'Extended Cab', 'inventory-presser' ) => false,
+			__( 'Fog Lights', 'inventory-presser' ) => false,
+			__( 'Heated Seats', 'inventory-presser' ) => false,
+			__( 'Keyless Entry', 'inventory-presser' ) => false,
+			__( 'Leather Seats', 'inventory-presser' ) => false,
+			__( 'Lift Kit', 'inventory-presser' ) => false,
+			__( 'Long Bed', 'inventory-presser' ) => false,
+			__( 'Memory Seat(s)', 'inventory-presser' ) => false,
+			__( 'Moon Roof', 'inventory-presser' ) => false,
+			__( 'Multi-zone Climate Control', 'inventory-presser' ) => false,
+			__( 'Navigation System', 'inventory-presser' ) => false,
+			__( 'Oversize Off Road Tires', 'inventory-presser' ) => false,
+			__( 'Portable Audio Connection', 'inventory-presser' ) => false,
+			__( 'Power Brakes', 'inventory-presser' ) => false,
+			__( 'Power Lift Gate', 'inventory-presser' ) => false,
+			__( 'Power Locks', 'inventory-presser' ) => false,
+			__( 'Power Seats', 'inventory-presser' ) => false,
+			__( 'Power Steering', 'inventory-presser' ) => false,
+			__( 'Power Windows', 'inventory-presser' ) => false,
+			__( 'Premium Audio', 'inventory-presser' ) => false,
+			__( 'Premium Wheels', 'inventory-presser' ) => false,
+			__( 'Privacy Glass', 'inventory-presser' ) => false,
+			__( 'Quad Seating', 'inventory-presser' ) => false,
+			__( 'Rear Air Bags', 'inventory-presser' ) => false,
+			__( 'Rear Air Conditioning', 'inventory-presser' ) => false,
+			__( 'Rear Defroster', 'inventory-presser' ) => false,
+			__( 'Rear Heat', 'inventory-presser' ) => false,
+			__( 'Refrigerator', 'inventory-presser' ) => false,
+			__( 'Roof Rack', 'inventory-presser' ) => false,
+			__( 'Running Boards', 'inventory-presser' ) => false,
+			__( 'Satellite Radio', 'inventory-presser' ) => false,
+			__( 'Security System', 'inventory-presser' ) => false,
+			__( 'Short Bed', 'inventory-presser' ) => false,
+			__( 'Side Air Bags', 'inventory-presser' ) => false,
+			__( 'Skid Plate(s)', 'inventory-presser' ) => false,
+			__( 'Snow Plow', 'inventory-presser' ) => false,
+			__( 'Spoiler', 'inventory-presser' ) => false,
+			__( 'Sport Package', 'inventory-presser' ) => false,
+			__( 'Step Side Bed', 'inventory-presser' ) => false,
+			__( 'Steering Wheel Controls', 'inventory-presser' ) => false,
+			__( 'Styled Steel Wheels', 'inventory-presser' ) => false,
+			__( 'Sunroof', 'inventory-presser' ) => false,
+			__( 'Supercharger', 'inventory-presser' ) => false,
+			__( 'Tilt Steering Wheel', 'inventory-presser' ) => false,
+			__( 'Tonneau Cover', 'inventory-presser' ) => false,
+			__( 'Topper', 'inventory-presser' ) => false,
+			__( 'Tow Package', 'inventory-presser' ) => false,
+			__( 'Traction Control', 'inventory-presser' ) => false,
+			__( 'Trailer Hitch', 'inventory-presser' ) => false,
+			__( 'Turbo', 'inventory-presser' ) => false,
+			__( 'Two Tone Paint', 'inventory-presser' ) => false,
+			__( 'Wheelchair Access', 'inventory-presser' ) => false,
+			__( 'Wide Tires', 'inventory-presser' ) => false,
+			__( 'Winch', 'inventory-presser' ) => false,
+			__( 'Wire Wheels', 'inventory-presser' ) => false,
+			__( 'Xenon Headlights', 'inventory-presser' ) => false,
 		) );
 		$options_arr = get_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'option_array' ), true );
 		if( is_array( $options_arr ) ) {
@@ -611,14 +619,17 @@ class Inventory_Presser_Customize_Dashboard {
 		foreach( $options as $key => $value ) {
 			//element IDs cannot contain slashes, spaces or parentheses
 			$id = 'option-' . preg_replace( '/\/\(\)/i', '', str_replace( ' ', '_', $key ) );
-			$HTML .= '<li><input type="checkbox" id="'. $id .'" name="'. $id .'" value="'. $key .'"'
-				. checked( true, $value, false )
-				. '>'
-				. '<label for="'. $id .'">' . $key . '</label></li>';
+			$HTML .= sprintf(
+				'<li><input type="checkbox" id="%s" name="%s" value="%s"%s><label for="%s">%s</label></li>',
+				$id,
+				$id,
+				$key,
+				checked( true, $value, false ),
+				$id,
+				$key
+			);
 		}
-		$HTML .= '</ul></div>';
-
-		echo $HTML;
+		echo $HTML . '</ul></div>';
 	}
 
 	function meta_box_html_prices( $post, $meta_box ) {
@@ -635,16 +646,26 @@ class Inventory_Presser_Customize_Dashboard {
 			$meta_key = apply_filters( 'invp_prefix_meta_key', $key );
 			$value = get_post_meta( $post->ID, $meta_key, true );
 
-			echo '<tr><th scope="row"><label for="' . $meta_key . '">' . $label . '</label></th>'
-				. '<td><input type="text" name="' . $meta_key . '" value="' . $value . '" onkeypress="return is_number(event)"></td></tr>';
+			printf(
+				'<tr><th scope="row"><label for="%s">%s</label></th>'
+				. '<td><input type="text" name="%s" value="%s" onkeypress="return is_number(event)"></td></tr>',
+				$meta_key,
+				$label,
+				$meta_key,
+				$value
+			);
 		}
 
 		//Payment frequency is a drop-down
 		$meta_key = apply_filters( 'invp_prefix_meta_key', 'payment_frequency' );
 		$payment_frequency = get_post_meta( $post->ID, $meta_key, true );
 
-		echo '<tr><th scope="row"><label for="' . $meta_key . '">Payment frequency</label></th>'
-			. '<td><select name="' . $meta_key . '"><option></option>';
+		printf(
+			'<tr><th scope="row"><label for="%s">Payment frequency</label></th>'
+			. '<td><select name="%s"><option></option>',
+			$meta_key,
+			$meta_key
+		);
 
 		$frequencies = apply_filters( 'invp_default_payment_frequencies', array(
 			'Monthly'      => 'monthly',
@@ -653,9 +674,12 @@ class Inventory_Presser_Customize_Dashboard {
 			'Semi-monthly' => 'semimonthly',
 		) );
 		foreach( $frequencies as $key => $value ) {
-			echo '<option value="' . $value . '"'
-				. selected( $payment_frequency, $value, false )
-				. '>' . $key . '</option>';
+			printf(
+				'<option value="%s"%s>%s</option>',
+				$value,
+				selected( $payment_frequency, $value, false ),
+				$key
+			);
 		}
 		echo '</select></td></tr>';
 
@@ -666,12 +690,19 @@ class Inventory_Presser_Customize_Dashboard {
 			foreach( $prices as $key => $value ) {
 				if( ! in_array( $key, $this->default_price_array_keys() ) ) {
 					//this is a price we need to display
-					echo '<tr><th scope="row"><label for="' . $prices_meta_key . '[' . $key . ']">' . apply_filters( 'invp_custom_price_label', $key ) . '</label></th>'
-						. '<td><input type="text" name="' . $prices_meta_key . '[' . $key . ']" value="' . $value . '"></td></tr>';
+					printf(
+						'<tr><th scope="row"><label for="%s[%s]">%s</label></th>'
+						. '<td><input type="text" name="%s[%s]" value="%s"></td></tr>',
+						$prices_meta_key,
+						$key,
+						apply_filters( 'invp_custom_price_label', $key ),
+						$prices_meta_key,
+						$key,
+						$value
+					);
 				}
 			}
 		}
-
 		echo '</tbody></table>';
 	}
 
@@ -696,109 +727,183 @@ class Inventory_Presser_Customize_Dashboard {
 		$length = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'length' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'length' )][0] : '' );
 		$hull_material = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'hull_material' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'hull_material' )][0] : '' );
 
-		echo '<table class="form-table"><tbody>'
+		printf(
+			'<table class="form-table"><tbody>'
 
 		//VIN
-			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'vin' ) . '">VIN</label></th>'
-			. '<td>'
-			. apply_filters( 'invp_edit_control_vin', '<input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'vin' ) . '" maxlength="17" value="'. $VIN .'">' )
-			. '</td>'
+			. '<tr><th scope="row"><label for="%s">VIN</label></th>'
+			. '<td>%s</td>'
 
 		//Stock number
-			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'stock_number' ) . '">Stock number</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'stock_number' ) . '" value="'. $stock_number .'"></td>'
+			. '<tr><th scope="row"><label for="%s">Stock number</label></th>'
+			. '<td><input type="text" name="%s" value="%s"></td>'
 
 		//Year
-			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'year' ) . '">Year</label></th>'
-			. '<td><select name="' . apply_filters( 'invp_prefix_meta_key', 'year' ) . '"><option></option>';
+			. '<tr><th scope="row"><label for="%s">Year</label></th>'
+			. '<td><select name="%s"><option></option>',
+
+			apply_filters( 'invp_prefix_meta_key', 'vin' ),
+			apply_filters( 'invp_edit_control_vin', sprintf(
+				'<input type="text" name="%s" maxlength="17" value="%s">',
+				apply_filters( 'invp_prefix_meta_key', 'vin' ),
+				$VIN
+			) ),
+
+			apply_filters( 'invp_prefix_meta_key', 'stock_number' ),
+			apply_filters( 'invp_prefix_meta_key', 'stock_number' ),
+			$stock_number,
+
+			apply_filters( 'invp_prefix_meta_key', 'year' ),
+			apply_filters( 'invp_prefix_meta_key', 'year' )
+		);
 
 		for( $y=date('Y')+2; $y>=1920; $y-- ) {
-			echo '<option' . selected( $y, $year, false ) . '>' .$y. '</option>';
+			printf(
+				'<option%s>%s</option>',
+				selected( $y, $year, false ),
+				$y
+			);
 		}
 
-		echo '</select></td></tr>'
+		printf(
+			'</select></td></tr>'
 
 		//Make
-			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'make' ) . '">Make</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'make' ) . '" value="' .$make. '"></td></tr>'
+			. '<tr><th scope="row"><label for="%s">Make</label></th>'
+			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Model
-			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'model' ) . '">Model</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'model' ) . '" value="' .$model. '"></td></tr>'
+			. '<tr><th scope="row"><label for="%s">Model</label></th>'
+			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Trim level
-			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'trim' ) . '">Trim</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'trim' ) . '" value="' .$trim. '"></td></tr>'
+			. '<tr><th scope="row"><label for="%s">Trim</label></th>'
+			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Engine
-			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'engine' ) . '">Engine</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'engine' ) . '" value="' .$engine. '"></td></tr>'
+			. '<tr><th scope="row"><label for="%s">Engine</label></th>'
+			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Body style
-			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'body_style' ) . '">Body style</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'body_style' ) . '" id="' . apply_filters( 'invp_prefix_meta_key', 'body_style' ). '" value="' .$body_style. '">'
+			. '<tr><th scope="row"><label for="%s">Body style</label></th>'
+			. '<td><input type="text" name="%s" id="%s" value="%s">'
 
-			. '<select name="' . apply_filters( 'invp_prefix_meta_key', 'body_style' ) . '_hidden" id="' . apply_filters( 'invp_prefix_meta_key', 'body_style' ) . '_hidden">';
+			. '<select name="%s_hidden" id="%s_hidden">',
 
-			$boat_styles = apply_filters( 'invp_default_boat_styles', array(
-				'Bass boat',
-				'Bow Rider',
-				'Cabin Cruiser',
-				'Center Console',
-				'Cuddy Cabin',
-				'Deck boat',
-				'Performance',
-				'Pontoon',
-			) );
-			foreach( $boat_styles as $s ) {
-				echo '<option' . selected( $s, $body_style ) . '>' .$s. '</option>';
-			}
+			apply_filters( 'invp_prefix_meta_key', 'make' ),
+			apply_filters( 'invp_prefix_meta_key', 'make' ),
+			$make,
 
-			echo '</select></td></tr>'
+			apply_filters( 'invp_prefix_meta_key', 'model' ),
+			apply_filters( 'invp_prefix_meta_key', 'model' ),
+			$model,
+
+			apply_filters( 'invp_prefix_meta_key', 'trim' ),
+			apply_filters( 'invp_prefix_meta_key', 'trim' ),
+			$trim,
+
+			apply_filters( 'invp_prefix_meta_key', 'engine' ),
+			apply_filters( 'invp_prefix_meta_key', 'engine' ),
+			$engine,
+
+			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
+			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
+			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
+			$body_style,
+			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
+			apply_filters( 'invp_prefix_meta_key', 'body_style' )
+		);
+
+		$boat_styles = apply_filters( 'invp_default_boat_styles', array(
+			'Bass boat',
+			'Bow Rider',
+			'Cabin Cruiser',
+			'Center Console',
+			'Cuddy Cabin',
+			'Deck boat',
+			'Performance',
+			'Pontoon',
+		) );
+		foreach( $boat_styles as $s ) {
+			printf(
+				'<option%s>%s</option>',
+				selected( $s, $body_style ),
+				$s
+			);
+		}
+
+		printf( '</select></td></tr>'
 
 		//Color
-			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'color' ) . '">Color</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'color' ) . '" value="' .$color. '"></td></tr>'
+			. '<tr><th scope="row"><label for="%s">Color</label></th>'
+			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Interior color
-			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'interior_color' ) . '">Interior color</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'interior_color' ) . '" value="' .$interior_color. '"></td></tr>'
+			. '<tr><th scope="row"><label for="%s">Interior color</label></th>'
+			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Odometer
-			. '<tr><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'odometer' ) . '">Odometer</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'odometer' ) . '" value="' .$odometer. '">'
-			. ' <span class="invp_odometer_units">' . apply_filters( 'invp_odometer_word', 'miles' ) . '</span></td></tr>'
+			. '<tr><th scope="row"><label for="%s">Odometer</label></th>'
+			. '<td><input type="text" name="%s" value="%s">'
+			. ' <span class="invp_odometer_units">%s</span></td></tr>'
 
 		//Beam (boats)
-			. '<tr class="boat-postmeta"><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'beam' ) . '">Beam</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'beam' ) . '" value="' .$beam. '"></td></tr>'
+			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">Beam</label></th>'
+			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Length (boats)
-			. '<tr class="boat-postmeta"><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'length' ) . '">Length</label></th>'
-			. '<td><input type="text" name="' . apply_filters( 'invp_prefix_meta_key', 'length' ) . '" value="' .$length. '"></td></tr>'
+			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">Length</label></th>'
+			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Hull material
-			. '<tr class="boat-postmeta"><th scope="row"><label for="' . apply_filters( 'invp_prefix_meta_key', 'hull_material' ) . '">Hull material</label></th>'
-			. '<td><select name="' . apply_filters( 'invp_prefix_meta_key', 'hull_material' ) .'"><option></option>';
+			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">Hull material</label></th>'
+			. '<td><select name="%s"><option></option>',
 
-			$hull_materials = apply_filters( 'invp_default_hull_materials', array(
-				'Aluminum',
-				'Carbon Fiber',
-				'Composite',
-				'Ferro-Cement',
-				'Fiberglass',
-				'Hypalon',
-				'Other',
-				'PVC',
-				'Steel',
-				'Wood',
-			) );
-			foreach( $hull_materials as $m ) {
-				echo '<option' . selected( $m, $hull_material, false ) . '>' .$m. '</option>';
-			}
-			echo '</select>'
+			apply_filters( 'invp_prefix_meta_key', 'color' ),
+			apply_filters( 'invp_prefix_meta_key', 'color' ),
+			$color,
 
-			. '</tbody></table>';
+			apply_filters( 'invp_prefix_meta_key', 'interior_color' ),
+			apply_filters( 'invp_prefix_meta_key', 'interior_color' ),
+			$interior_color,
+
+			apply_filters( 'invp_prefix_meta_key', 'odometer' ),
+			apply_filters( 'invp_prefix_meta_key', 'odometer' ),
+			$odometer,
+			apply_filters( 'invp_odometer_word', 'miles' ),
+
+			apply_filters( 'invp_prefix_meta_key', 'beam' ),
+			apply_filters( 'invp_prefix_meta_key', 'beam' ),
+			$beam,
+
+			apply_filters( 'invp_prefix_meta_key', 'length' ),
+			apply_filters( 'invp_prefix_meta_key', 'length' ),
+			$length,
+
+			apply_filters( 'invp_prefix_meta_key', 'hull_material' ),
+			apply_filters( 'invp_prefix_meta_key', 'hull_material' )
+		);
+
+		$hull_materials = apply_filters( 'invp_default_hull_materials', array(
+			'Aluminum',
+			'Carbon Fiber',
+			'Composite',
+			'Ferro-Cement',
+			'Fiberglass',
+			'Hypalon',
+			'Other',
+			'PVC',
+			'Steel',
+			'Wood',
+		) );
+		foreach( $hull_materials as $m ) {
+			printf(
+				'<option%s>%s</option>',
+				selected( $m, $hull_material, false ),
+				$m
+			);
+		}
+		echo '</select></tbody></table>';
 	}
 
 	function move_advanced_meta_boxes() {

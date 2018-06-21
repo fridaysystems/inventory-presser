@@ -158,16 +158,12 @@ class Inventory_Presser_Taxonomies {
 		</script><?php
 	}
 
-	function convert_hyphens_to_underscores( $str ) {
-		return str_replace( '-', '_', $str );
-	}
-
 	function create_custom_taxonomies() {
 		//loop over this data, register the taxonomies, and populate the terms if needed
 		$taxonomy_data = $this->taxonomy_data();
 		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
-			//create the taxonomy
-			$taxonomy_name = $this->convert_hyphens_to_underscores( $taxonomy_data[$i]['args']['query_var'] );
+			//create the taxonomy, replace hyphens with underscores
+			$taxonomy_name = str_replace( '-', '_', $taxonomy_data[$i]['args']['query_var'] );
 			register_taxonomy( $taxonomy_name, Inventory_Presser_Plugin::CUSTOM_POST_TYPE, $taxonomy_data[$i]['args'] );
 		}
 	}
@@ -457,8 +453,11 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	function meta_box_html_locations( $post ) {
-		echo $this->taxonomy_meta_box_html( 'location', apply_filters( 'invp_prefix_meta_key', 'location' ), $post ) .
-			'<p><a href="edit-tags.php?taxonomy=location&post_type=' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '">Manage locations</a></p>';
+		printf(
+			'%s<p><a href="edit-tags.php?taxonomy=location&post_type=%s">Manage locations</a></p>',
+			$this->taxonomy_meta_box_html( 'location', apply_filters( 'invp_prefix_meta_key', 'location' ), $post ),
+			Inventory_Presser_Plugin::CUSTOM_POST_TYPE
+		);
 	}
 
 	//returns an array of all our taxonomy query vars
@@ -468,84 +467,86 @@ class Inventory_Presser_Taxonomies {
 			if( ! isset( $taxonomy_array['args'] ) || ! isset( $taxonomy_array['args']['query_var'] ) ) {
 				continue;
 			}
-			array_push( $arr, $this->slug( $taxonomy_array['args']['query_var'] ) );
+			$slug = str_replace( ' ', '_', strtolower( $taxonomy_array['args']['query_var'] ) );
+			array_push( $arr, $slug );
 		}
 		return $arr;
 	}
 
 	function save_location_meta( $term_id, $tt_id ) {
 
-		if ( isset( $_POST['hours_title'] ) && isset( $_POST['phone_number'] ) ) {
-
-			$meta_final = array(
-				'phones' => array(),
-				'hours'  => array(),
-			);
-
-			// HOURS
-			$count = count( $_POST['hours_title'] ) - 2;
-
-			for ( $i = 0; $i <= $count; $i++ ) {
-
-				$has_data = false;
-
-				$this_hours = array();
-
-				// if this is an update, carry the id through
-				if ( isset( $_POST['hours_uid'][$i] ) ) {
-					$this_hours['uid'] = $_POST['hours_uid'][$i];
-				} else {
-					//generate a unique id for these hours
-					$this_hours['uid'] = $this->generate_location_uid( $term_id, $meta_final['hours'] );
-				}
-				// title of hours set
-				$this_hours['title'] = sanitize_text_field( $_POST['hours_title'][$i] );
-
-				// add daily hours info to the final array, check to make sure there's data
-				foreach ( $_POST['hours'] as $day => $harray ) {
-
-					$open = sanitize_text_field( $harray['open'][$i] );
-					$close = sanitize_text_field( $harray['close'][$i] );
-					$appt = sanitize_text_field( $harray['appt'][$i] );
-					if ( !$has_data && ( $open || $close || $appt == '1' ) ) {
-						$has_data = true;
-					}
-					$this_hours[$day] = array(
-						'open'  => $open,
-						'close' => $close,
-						'appt'  => $appt,
-					);
-				}
-
-				if ( $has_data ) {
-					$meta_final['hours'][] = $this_hours;
-				}
-			}
-
-			// PHONE NUMBERS
-			foreach ( $_POST['phone_number'] as $i => $phone_number ) {
-
-				$phone_number = sanitize_text_field( $phone_number );
-
-				if ( $phone_number ) {
-					$this_phone = array(
-						'phone_number' => $phone_number,
-						'phone_description' => sanitize_text_field( $_POST['phone_description'][$i] ),
-					);
-					// if this is an update, carry the id through
-					if ( isset( $_POST['phone_uid'][$i] ) ) {
-						$this_phone['uid'] = $_POST['phone_uid'][$i];
-					} else {
-						//generate a unique id for this phone number
-						$this_phone['uid'] = $this->generate_location_uid( $term_id, $meta_final['phones'] );
-					}
-					// add this phone number to meta array
-					$meta_final['phones'][] = $this_phone;
-				}
-			}
-
-			update_term_meta( $term_id, 'location-phone-hours', $meta_final );
+		if ( ! isset( $_POST['hours_title'] ) || ! isset( $_POST['phone_number'] ) ) {
+			return;
 		}
+
+		$meta_final = array(
+			'phones' => array(),
+			'hours'  => array(),
+		);
+
+		// HOURS
+		$count = count( $_POST['hours_title'] ) - 2;
+
+		for ( $i = 0; $i <= $count; $i++ ) {
+
+			$has_data = false;
+
+			$this_hours = array();
+
+			// if this is an update, carry the id through
+			if ( isset( $_POST['hours_uid'][$i] ) ) {
+				$this_hours['uid'] = $_POST['hours_uid'][$i];
+			} else {
+				//generate a unique id for these hours
+				$this_hours['uid'] = $this->generate_location_uid( $term_id, $meta_final['hours'] );
+			}
+			// title of hours set
+			$this_hours['title'] = sanitize_text_field( $_POST['hours_title'][$i] );
+
+			// add daily hours info to the final array, check to make sure there's data
+			foreach ( $_POST['hours'] as $day => $harray ) {
+
+				$open = sanitize_text_field( $harray['open'][$i] );
+				$close = sanitize_text_field( $harray['close'][$i] );
+				$appt = sanitize_text_field( $harray['appt'][$i] );
+				if ( !$has_data && ( $open || $close || $appt == '1' ) ) {
+					$has_data = true;
+				}
+				$this_hours[$day] = array(
+					'open'  => $open,
+					'close' => $close,
+					'appt'  => $appt,
+				);
+			}
+
+			if ( $has_data ) {
+				$meta_final['hours'][] = $this_hours;
+			}
+		}
+
+		// PHONE NUMBERS
+		foreach ( $_POST['phone_number'] as $i => $phone_number ) {
+
+			$phone_number = sanitize_text_field( $phone_number );
+
+			if ( $phone_number ) {
+				$this_phone = array(
+					'phone_number' => $phone_number,
+					'phone_description' => sanitize_text_field( $_POST['phone_description'][$i] ),
+				);
+				// if this is an update, carry the id through
+				if ( isset( $_POST['phone_uid'][$i] ) ) {
+					$this_phone['uid'] = $_POST['phone_uid'][$i];
+				} else {
+					//generate a unique id for this phone number
+					$this_phone['uid'] = $this->generate_location_uid( $term_id, $meta_final['phones'] );
+				}
+				// add this phone number to meta array
+				$meta_final['phones'][] = $this_phone;
+			}
+		}
+
+		update_term_meta( $term_id, 'location-phone-hours', $meta_final );
 	}
 
 	//save custom taxonomy terms when vehicles are saved
@@ -565,37 +566,33 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	function save_taxonomy_term( $post_id, $taxonomy_name, $element_name ) {
-		if ( isset( $_POST[$element_name] ) ) {
-			$term_slug = sanitize_text_field( $_POST[$element_name] );
-			if ( '' == $term_slug ) {
-				// the user is setting the vehicle type to empty string
-				wp_remove_object_terms( $post_id, $this->get_term_slug( $taxonomy_name, $post_id ), $taxonomy_name );
-				return;
-			}
-			$term = get_term_by( 'slug', $term_slug, $taxonomy_name );
-			if ( empty( $term ) || is_wp_error( $term ) ) {
-				//the term does not exist. create it
-				$term_arr = array(
-					'slug'        => sanitize_title( $term_slug ),
-					'description' => $term_slug,
-					'name'        => $term_slug,
-				);
-				$id_arr = wp_insert_term( $term_slug, $taxonomy_name, $term_arr );
-				if( ! is_wp_error( $id_arr ) ) {
-					$term->term_id = $id_arr['term_id'];
-				}
-			}
-			$set = wp_set_object_terms( $post_id, $term->term_id, $taxonomy_name, false );
-			if ( is_wp_error( $set ) ) {
-				//There was an error setting the term
+		if ( ! isset( $_POST[$element_name] ) ) {
+			return;
+		}
+
+		$term_slug = sanitize_text_field( $_POST[$element_name] );
+		if ( '' == $term_slug ) {
+			// the user is setting the vehicle type to empty string
+			wp_remove_object_terms( $post_id, $this->get_term_slug( $taxonomy_name, $post_id ), $taxonomy_name );
+			return;
+		}
+		$term = get_term_by( 'slug', $term_slug, $taxonomy_name );
+		if ( empty( $term ) || is_wp_error( $term ) ) {
+			//the term does not exist. create it
+			$term_arr = array(
+				'slug'        => sanitize_title( $term_slug ),
+				'description' => $term_slug,
+				'name'        => $term_slug,
+			);
+			$id_arr = wp_insert_term( $term_slug, $taxonomy_name, $term_arr );
+			if( ! is_wp_error( $id_arr ) ) {
+				$term->term_id = $id_arr['term_id'];
 			}
 		}
-	}
-
-	//the slug is the way the database identifies taxonomies, all lower-case and
-	//underscores instead of spaces
-	function slug( $label ) {
-		return str_replace( ' ', '_', strtolower( $label ) );
+		$set = wp_set_object_terms( $post_id, $term->term_id, $taxonomy_name, false );
+		if ( is_wp_error( $set ) ) {
+			//There was an error setting the term
+		}
 	}
 
 	//returns an array of all our taxonomy slugs
@@ -954,10 +951,13 @@ class Inventory_Presser_Taxonomies {
 	function taxonomy_meta_box_html( $taxonomy_name, $element_name, $post ) {
 		/**
 		 * Creates HTML output for a meta box that turns a taxonomy into
-		 * a select drop-down list instead of the typical checkboxes
+		 * a select drop-down list instead of the typical checkboxes. Including
+		 * a blank option is the only way a user can remove the value.
 		 */
-		$HTML  = '<select name="' . $element_name . '" id="' . $element_name . '">'
-			. '<option></option>'; //offering a blank value is the only way a user can remove the value
+		$HTML = sprintf( '<select name="%s" id="%s"><option></option>',
+			$element_name,
+			$element_name
+		);
 
 		//get all the term names and slugs for $taxonomy_name
 		$terms = get_terms( $taxonomy_name,  array( 'hide_empty' => false ) );
@@ -968,9 +968,12 @@ class Inventory_Presser_Taxonomies {
 			$saved_term_slug = $this->get_term_slug( $taxonomy_name, $post->ID );
 
 			foreach( $terms as $term ) {
-				$HTML .= '<option value="' . $term->slug . '"'
-					. selected( strtolower( $term->slug ), strtolower( $saved_term_slug ), false )
-					. '>' . $term->name . '</option>';
+				$HTML .= sprintf(
+					'<option value="%s"%s>%s</option>',
+					$term->slug,
+					selected( strtolower( $term->slug ), strtolower( $saved_term_slug ), false ),
+					$term->name
+				);
 			}
 		}
 		return $HTML . '</select>';
