@@ -339,9 +339,19 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	/**
+	 * Creates a unique ID for a phone number or set of hours.
+	 *
+	 * Phone numbers and hours are saved as term meta in our location taxonomy.
 	 * When a phone number or set of hours is created, we want to save a unique
 	 * ID with it so that it can be identified in the array of phones and hours
 	 * even if it's label changes.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param int $term_id The ID of the term in the location taxonomy.
+	 * @param array $others The other phone numbers or hours sets in the meta
+	 * value, used to make sure the return value is unique amongst the set.
+	 * @return string A string of digits.
 	 */
 	function generate_location_uid( $term_id, $others ) {
 		$dt = new DateTime();
