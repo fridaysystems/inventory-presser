@@ -113,3 +113,11 @@ th.column-inventory_presser_thumbnail{
 	max-width: 80px;
 	border: 1px solid #e1e1e1;
 }
+
+/* Location taxonomy inputs */
+table.hours th.day-col{
+	width: 3em;
+}
+table.hours th.to-col{
+	width: 1em;
+}

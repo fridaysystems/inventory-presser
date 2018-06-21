@@ -104,13 +104,13 @@ class Inventory_Presser_Taxonomies {
 
 				        	<input type="text" name="hours_title[]" placeholder="<?php _e( 'Title', 'inventory-presser' ); ?>" />
 
-				        	<table class="wp-list-table widefat fixed striped">
+				        	<table class="wp-list-table widefat fixed striped hours">
 				        		<thead>
-				        			<td></td>
-				        			<td><?php _e( 'Open', 'inventory-presser' ); ?></td>
-				        			<td></td>
-				        			<td><?php _e( 'Close', 'inventory-presser' ); ?></td>
-				        			<td><?php _e( 'Appt Only', 'inventory-presser' ); ?></td>
+				        			<th class="day-col"></th>
+				        			<th><?php _e( 'Open', 'inventory-presser' ); ?></th>
+				        			<th class="to-col"></th>
+				        			<th><?php _e( 'Close', 'inventory-presser' ); ?></th>
+				        			<th><?php _e( 'Appt Only', 'inventory-presser' ); ?></th>
 				        		</thead>
 				        		<tbody>
 				        			<?php foreach ($this->weekdays() as $index => $day) { ?>
@@ -212,9 +212,16 @@ class Inventory_Presser_Taxonomies {
 						<div class="repeated">
 							<div class="repeat-form">
 							<?php
-							echo sprintf( '<input type="hidden" name="phone_uid[]" value="%s" />', $phone['uid'] );
-							echo sprintf( '<input type="text" name="phone_description[]" value="%s" placeholder="%s" />', $phone['phone_description'], __( 'Label', 'inventory-presser' ) );
-							echo sprintf( '<input type="text" name="phone_number[]" value="%s" placeholder="%s" />', $phone['phone_number'], __( 'Number', 'inventory-presser' ) );
+							printf(
+								'<input type="hidden" name="phone_uid[]" value="%s" />'
+								. '<input type="text" name="phone_description[]" value="%s" placeholder="%s" />'
+								. '<input type="text" name="phone_number[]" value="%s" placeholder="%s" />',
+								$phone['uid'],
+								$phone['phone_description'],
+								__( 'Label', 'inventory-presser' ),
+								$phone['phone_number'],
+								__( 'Number', 'inventory-presser' )
+							);
 							?>
 							</div>
 							<div class="repeat-buttons">
@@ -252,13 +259,13 @@ class Inventory_Presser_Taxonomies {
 								<input type="text" name="hours_title[]" placeholder="<?php _e( 'Title', 'inventory-presser' ); ?>" value="<?php echo $hours['title'] ?>" />
 			       				<input type="hidden" name="hours_uid[]" placeholder="<?php _e( 'Title', 'inventory-presser' ); ?>" value="<?php echo $hours['uid'] ?>" />
 
-					        	<table class="repeater-table">
+					        	<table class="repeater-table hours">
 					        		<thead>
-					        			<td></td>
-					        			<td><?php _e( 'Open', 'inventory-presser' ); ?></td>
-					        			<td></td>
-					        			<td><?php _e( 'Close', 'inventory-presser' ); ?></td>
-					        			<td><?php _e( 'Appt Only', 'inventory-presser' ); ?></td>
+					        			<th class="day-col"></th>
+					        			<th><?php _e( 'Open', 'inventory-presser' ); ?></th>
+					        			<th class="to-col"></th>
+					        			<th><?php _e( 'Close', 'inventory-presser' ); ?></th>
+					        			<th><?php _e( 'Appt Only', 'inventory-presser' ); ?></th>
 					        		</thead>
 					        		<tbody>
 					        			<?php foreach ($this->weekdays() as $index => $day) { ?>
@@ -292,13 +299,13 @@ class Inventory_Presser_Taxonomies {
 
 		       				<input type="text" name="hours_title[]" placeholder="Title" />
 
-				        	<table class="repeater-table">
+				        	<table class="repeater-table hours">
 				        		<thead>
-				        			<td></td>
-				        			<td><?php _e( 'Open', 'inventory-presser' ); ?></td>
-				        			<td></td>
-				        			<td><?php _e( 'Close', 'inventory-presser' ); ?></td>
-				        			<td><?php _e( 'Appt Only', 'inventory-presser' ); ?></td>
+				        			<th class="day-col"></th>
+				        			<th><?php _e( 'Open', 'inventory-presser' ); ?></th>
+				        			<th class="to-col"></th>
+				        			<th><?php _e( 'Close', 'inventory-presser' ); ?></th>
+				        			<th><?php _e( 'Appt Only', 'inventory-presser' ); ?></th>
 				        		</thead>
 				        		<tbody>
 					        		<?php foreach ($this->weekdays() as $index => $day) { ?>

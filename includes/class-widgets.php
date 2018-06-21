@@ -121,8 +121,11 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 								} elseif ($hourset[$i]['appt'] == 1) {
 									printf( '<td colspan="2">%s</td>', __( 'Appointment Only', 'inventory-presser' ) );
 								} elseif (!empty($hourset[$i]['open']) && !empty($hourset[$i]['close'])) {
-									echo sprintf('<td>%s</td>',$hourset[$i]['open']);
-							    	echo sprintf('<td>%s</td>',$hourset[$i]['close']);
+									printf(
+										'<td>%s</td><td>%s</td>',
+										$hourset[$i]['open'],
+										$hourset[$i]['close']
+									);
 								} else {
 									echo '<td colspan="2">Closed</td>';
 								}
@@ -441,7 +444,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			echo $args['before_widget'];
 			if (!empty( $title ))
 			echo $args['before_title'] . $title . $args['after_title'];
-			echo sprintf('<div class="invp-%s">', $format);
+			printf( '<div class="invp-%s">', $format );
 
 			// get all locations
 			$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
@@ -618,12 +621,19 @@ class Carfax_Widget extends WP_Widget {
 		if( 'svg' == strtolower( pathinfo( $this->images()[$image]['img'], PATHINFO_EXTENSION ) ) ) {
 			//Include the SVG inline instead of using an <img> element
 			$svg = file_get_contents( dirname( dirname( __FILE__ ) ) . '/assets/' . $this->images()[$image]['img'] );
-			echo sprintf( '<a href="%s">' . $svg . '</a>', get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) );
+			printf(
+				'<a href="%s">%s</a>',
+				get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ),
+				$svg
+			);
 		} else {
-			echo sprintf( '<a href="%s"><img src="%s"></a>', get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ), plugins_url( '/assets/' . $this->images()[$image]['img'], dirname(__FILE__) ) );
+			printf(
+				'<a href="%s"><img src="%s"></a>',
+				get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ),
+				plugins_url( '/assets/' . $this->images()[$image]['img'], dirname(__FILE__) )
+			);
 		}
-		echo wpautop( $instance['after_image'] );
-		echo $args['after_widget'];
+		echo wpautop( $instance['after_image'] ). $args['after_widget'];
 	}
 
 	// Widget Backend
@@ -943,9 +953,16 @@ class Stock_Photo_Slider extends WP_Widget {
 		$inventory_link = get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE );
 		foreach ($display_images as $filename) {
 			if ($link_slides) {
-				echo sprintf('<li><a href="%s"><img src="%s"></a></li>',$inventory_link,$base_url.$filename);
+				printf(
+					'<li><a href="%s"><img src="%s"></a></li>',
+					$inventory_link,
+					$base_url . $filename
+				);
 			} else {
-				echo sprintf('<li><img src="%s"></li>',$base_url.$filename);
+				printf(
+					'<li><img src="%s"></li>',
+					$base_url . $filename
+				);
 			}
 		}
 		?>
@@ -1129,19 +1146,27 @@ class Inventory_Slider extends WP_Widget {
 				echo $args['before_title'] . $title . $args['after_title'];
 			}
 
-			echo sprintf('<div class="slick-slider-element" data-slick=\'{"slidesToShow": %1$d, "slidesToScroll": %1$d, "easing": "ease", "autoplaySpeed": %2$d, "speed": 4000}\'>', $showcount, ($showcount * 1000) +1000);
+			printf(
+				'<div class="slick-slider-element" data-slick=\'{"slidesToShow": %1$d, "slidesToScroll": %1$d, "easing": "ease", "autoplaySpeed": %2$d, "speed": 4000}\'>',
+				$showcount,
+				( $showcount * 1000 ) + 1000
+			);
 
 			foreach ($inventory_ids as $inventory_id) {
 
 				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
-				echo sprintf('<div class="widget-inventory-slide-wrap"><a href="%s"><div class="slick-background-image" style="background-image: url(%s);">',$vehicle->url,wp_get_attachment_image_url(get_post_thumbnail_id($inventory_id), 'large'));
+				printf(
+					'<div class="widget-inventory-slide-wrap"><a href="%s"><div class="slick-background-image" style="background-image: url(%s);">',
+					$vehicle->url,
+					wp_get_attachment_image_url( get_post_thumbnail_id( $inventory_id ), 'large' )
+				);
 				if ($showtext != 'none') {
-					echo sprintf('<div class="slick-text slick-text-%s">', $showtext);
+					printf( '<div class="slick-text slick-text-%s">', $showtext );
 					if ($showtitle) {
-						echo sprintf('<h3>%s %s %s</h3>', $vehicle->year, $vehicle->make, $vehicle->model);
+						printf( '<h3>%s %s %s</h3>', $vehicle->year, $vehicle->make, $vehicle->model );
 					}
 					if ($showprice) {
-						echo sprintf('<h2>%s</h2>',$vehicle->price( __( 'Call For Price', 'inventory-presser' ) ) );
+						printf( '<h2>%s</h2>', $vehicle->price( __( 'Call For Price', 'inventory-presser' ) ) );
 					}
 					echo '</div>';
 				}
@@ -1462,7 +1487,7 @@ class Price_Filters extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
-		echo sprintf('<div class="price-filter price-filter-%s">',$instance['orientation']);
+		printf( '<div class="price-filter price-filter-%s">', $instance['orientation'] );
 		if (!empty( $title )) {
 			echo '<div class="price-title">'.$args['before_title'] . $title . $args['after_title'].'</div>';
 		}
@@ -1480,18 +1505,24 @@ class Price_Filters extends WP_Widget {
 
 			foreach ($price_points as $price_point) {
 				$this_link = add_query_arg( 'max_price', $price_point, $base_link);
-				echo sprintf('<div><a href="%s"%s><i class="fa fa-arrow-circle-down"></i>&nbsp;&nbsp;%s</a></div>',$this_link,$class_string,'$' . number_format($price_point, 0, '.', ',' ));
+				printf(
+					'<div><a href="%s"%s><i class="fa fa-arrow-circle-down"></i>&nbsp;&nbsp;$%s</a></div>',
+					$this_link,
+					$class_string,
+					number_format( $price_point, 0, '.', ',' )
+				);
 			}
 		}
 
-		if (isset($_GET['max_price'])) {
-			echo sprintf('<div><a href="%s">Remove %s Price Filter</a></div>', remove_query_arg('max_price'),'$' . number_format((int)$_GET['max_price'], 0, '.', ',' ));
+		if ( isset( $_GET['max_price'] ) ) {
+			printf(
+				'<div><a href="%s">Remove $%s Price Filter</a></div>',
+				remove_query_arg('max_price'),
+				number_format( (int) $_GET['max_price'], 0, '.', ',' )
+			);
 		}
 
-		echo '</div>';
-
-		echo $args['after_widget'];
-
+		echo '</div>' . $args['after_widget'];
 	}
 
 	// Widget Backend
