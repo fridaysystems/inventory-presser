@@ -66,7 +66,7 @@ class Inventory_Presser_Taxonomies {
 		 * https://coreysalzano.com/wordpress/array-passed-to-get_callback-you-provide-to-register_rest_field/
 		 */
 		if(  is_array( $term ) ) {
-			$term_id = $term['id']
+			$term_id = $term['id'];
 		} else {
 			$term_id = $term->term_id;
 		}
