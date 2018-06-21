@@ -873,7 +873,7 @@ class Stock_Photo_Slider extends WP_Widget {
 					),
 				),
 			'trucks' => array(
-				'label' => _( 'Trucks', 'inventory-presser' ),
+				'label' => __( 'Trucks', 'inventory-presser' ),
 				'photos' => array(
 					'truck-1.jpg',
 					'truck-2.jpg',
