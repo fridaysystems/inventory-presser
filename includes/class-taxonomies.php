@@ -45,7 +45,6 @@ class Inventory_Presser_Taxonomies {
 
 	function add_api_term_meta_workaround_fields() {
 
-
 		//location-phone-hours
 		register_rest_field( 'location', 'location-phone-hours', array(
 			'get_callback'    => array( $this, 'get_term_meta_via_rest' ),
@@ -59,10 +58,15 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	static function get_term_meta_via_rest( $term, $attr, $request, $object_type ) {
-		if( ! isset( $term['id'] ) ) {
-			return false;
+		$term_id = 0;
+
+		if(  is_array( $term ) ) {
+			$term_id = $term['id']
+		} else {
+			$term_id = $term->term_id;
 		}
-		return maybe_serialize( get_term_meta( $term['id'], $attr, true ) );
+
+		return maybe_serialize( get_term_meta( $term_id, $attr, true ) );
 	}
 
 	function set_term_meta_via_rest( $value, $term, $attr, $request, $object_type ) {
