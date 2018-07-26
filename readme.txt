@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.6
-Stable tag: 7.0.0
+Stable tag: 7.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,10 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 7.1.0 =
+* [Added] Added a filter to the [invp-inventory-slider] shortcode so that the attributes can be filtered. Also added the orderby and order parameters of the queries inside this shortcode to the shortcode attributes so they can be filtered.
+* [Fixed] Fix some bugs in the KBB Widget where we were assuming the widget's settings contain values.
 
 = 7.0.0 =
 * [Added] Save a unique ID with phone numbers and sets of hours that are created in the dashboard. These IDs allow numbers or hours to be unique identified even if their labels change.

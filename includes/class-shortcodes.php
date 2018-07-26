@@ -72,10 +72,14 @@ class Inventory_Presser_Shortcodes {
 
 	function inventory_slider($atts) {
 		// process shortcode attributes
-		$atts = shortcode_atts(array(
+		$atts = shortcode_atts( array(
 			'per_page' => 10,
 			'captions' => 'true',
-		), $atts);
+			'orderby'  => 'rand',
+			'order'    => 'ASC',
+		), $atts, 'inventory_slider' );
+
+		//Use shortcode_atts_inventory_slider to filter the incoming attributes
 
 		$atts['captions'] = 'true' === $atts['captions'];
 
@@ -95,8 +99,8 @@ class Inventory_Presser_Shortcodes {
 				)
 			),
 			'fields'  => 'ids',
-			'orderby' => 'rand',
-			'order'   => 'ASC'
+			'orderby' => $atts['orderby'],
+			'order'   => $atts['order'],
 		);
 
 		$inventory_ids = get_posts($gpargs);
@@ -119,8 +123,8 @@ class Inventory_Presser_Shortcodes {
 					)
 				),
 				'fields'  => 'ids',
-				'orderby' => 'rand',
-				'order'   => 'ASC'
+				'orderby' => $atts['orderby'],
+				'order'   => $atts['order'],
 			);
 
 			$inventory_ids += get_posts($gpargs);

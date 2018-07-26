@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 7.0.0
+ * Version: 7.0.1
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -19,10 +19,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		const CUSTOM_POST_TYPE = 'inventory_vehicle';
 		var $taxonomies;
 		var $settings; //this plugin's options
-
-		function __construct() {
-			register_activation_hook( __FILE__, array( 'Inventory_Presser_Plugin', 'populate_default_terms' ) );
-		}
 
 		function add_orderby_to_query( $query ) {
 			//Do not mess with the query if it's not the main one and our CPT
@@ -460,9 +456,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//Do some things during deactivation
 			register_deactivation_hook( __FILE__, array( $this, 'delete_rewrite_rules_option' ) );
 
-			//Populate our custom taxonomies with default terms
-			register_activation_hook( __FILE__, 'invp_populate_default_terms' );
-
 			/**
 			 * These items make it easier to create themes based on our custom post type
 			 */
@@ -670,7 +663,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				if( ! isset( $taxonomy_data[$i]['term_data'] ) ) { continue; }
 
 				foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
-					$taxonomy_name = $taxonomies_obj->convert_hyphens_to_underscores( $taxonomy_data[$i]['args']['query_var'] );
+					$taxonomy_name = str_replace( '-', '_', $taxonomy_data[$i]['args']['query_var'] );
 					if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) ) {
 						$term_exists = wp_insert_term(
 							$desc,
@@ -760,4 +753,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	} //end class
 	$inventory_presser = new Inventory_Presser_Plugin();
 	$inventory_presser->hooks();
+
+	register_activation_hook( __FILE__, array( $inventory_presser, 'populate_default_terms' ) );
 } //end if
