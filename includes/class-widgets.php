@@ -1076,67 +1076,51 @@ class Inventory_Slider extends WP_Widget {
 
 		$inventory_ids = array();
 
+		$gpargs = array(
+			'numberposts' => $showcount * 5,
+			'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+			'fields'      => 'ids',
+			'orderby'     => 'rand',
+			'order'       => 'ASC'
+		);
+
 		if ($featured_select == 'random') {
 
-			$gpargs = array(
-				'numberposts' => $showcount * 5,
-				'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
-				'meta_key'    => '_thumbnail_id',
-				'fields'      => 'ids',
-				'orderby'     => 'rand',
-				'order'       => 'ASC'
-			);
-
-			$inventory_ids = get_posts($gpargs);
+			$gpargs['meta_key'] = '_thumbnail_id';
+			$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
 
 		} else {
 
-			$gpargs = array(
-				'numberposts' => $showcount * 5,
-				'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
-				'meta_query'  => array(
-					'relation' => 'AND',
-					array(
-						'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
-						'value'   => 1,
-						'compare' => '=',
-					),
-					array(
-						'key'	  => '_thumbnail_id',
-						'compare' => 'EXISTS',
-					)
+			$gpargs['meta_query'] = array(
+				'relation' => 'AND',
+				array(
+					'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
+					'value'   => 1,
+					'compare' => '=',
 				),
-				'fields'  => 'ids',
-				'orderby' =>'rand',
-				'order'   => 'ASC'
+				array(
+					'key'	  => '_thumbnail_id',
+					'compare' => 'EXISTS',
+				)
 			);
-
-			$inventory_ids = get_posts($gpargs);
-
+			$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
 
 			if (count($inventory_ids) < ($showcount * 5) && $featured_select == 'featured_priority') {
 
-				$gpargs = array(
-					'numberposts' => ($showcount * 5) - (count($inventory_ids)),
-					'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
-					'meta_query'  => array(
-						'relation' => 'AND',
-						array(
-							'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
-							'value'   => 0,
-							'compare' => '='
-						),
-						array(
-							'key'	  => '_thumbnail_id',
-							'compare' => 'EXISTS'
-						)
+				$gpargs['numberposts'] = ($showcount * 5) - (count($inventory_ids));
+				$gpargs['meta_query'] = array(
+					'relation' => 'AND',
+					array(
+						'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
+						'value'   => 0,
+						'compare' => '='
 					),
-					'fields'  => 'ids',
-					'orderby' =>'rand',
-					'order'   => 'ASC'
+					array(
+						'key'	  => '_thumbnail_id',
+						'compare' => 'EXISTS'
+					)
 				);
-
-				$inventory_ids += get_posts($gpargs);
+				$inventory_ids += get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
 			}
 		}
 

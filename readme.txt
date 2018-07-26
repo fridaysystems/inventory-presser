@@ -62,7 +62,8 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 == Changelog ==
 
 = 7.1.0 =
-* [Added] Added a filter to the [invp-inventory-slider] shortcode so that the attributes can be filtered. Also added the orderby and order parameters of the queries inside this shortcode to the shortcode attributes so they can be filtered.
+* [Added] Added a filter `shortcode_atts_inventory_slider` to the [invp-inventory-slider] shortcode so that the attributes can be filtered. Also added the orderby and order parameters of the queries inside this shortcode to the shortcode attributes so they can be filtered.
+* [Added] Added a filter `invp_slider_widget_query_args` that wraps the arguments that find vehicles that will populate the widget version of the slider.
 * [Fixed] Fix some bugs in the KBB Widget where we were assuming the widget's settings contain values.
 
 = 7.0.0 =
