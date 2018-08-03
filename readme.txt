@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.6
-Stable tag: 7.1.0
+Stable tag: 8.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,9 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 8.0.0 =
+* [Changed] Changed the custom post type definition to always has_archive, despite whether or not the theme has a proper template to show vehicles.
 
 = 7.1.0 =
 * [Added] Added a filter `shortcode_atts_inventory_slider` to the [invp-inventory-slider] shortcode so that the attributes can be filtered. Also added the orderby and order parameters of the queries inside this shortcode to the shortcode attributes so they can be filtered.
