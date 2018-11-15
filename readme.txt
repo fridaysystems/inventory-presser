@@ -63,6 +63,7 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 = 8.1.0 =
 * [Added] Adds a list of full size photo URLs to the response array of the vehicle class' get_images_html_array() method. These accompany the <img> elements that are still part of the response.
+* [Added] Adds JavaScript and CSS payloads and hooks for jQuery.slick, a carousel we've built into our Vehicle Slider widget. This further decouples this plugin from the first theme we built called _dealer.
 
 = 8.0.0 =
 * [Changed] Changed the custom post type definition to always has_archive, despite whether or not the theme has a proper template to show vehicles.

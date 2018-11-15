@@ -181,7 +181,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 * @return string The value of the src attribute
 		 */
 		function extract_image_element_src( $img_element ) {
-			return preg_replace( "/\">?.*/", "", ( preg_replace( "/.*<img[\s\S]+src=\"/", "", $img_element ) ?? '' ) );
+			return preg_replace( "/\">?.*/", "", preg_replace( "/.*<img[\s\S]+src=\"/", "", $img_element ) );
 		}
 
 		// fill arrays of thumb and large <img> elements

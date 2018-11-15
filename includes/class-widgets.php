@@ -1049,6 +1049,9 @@ class Inventory_Slider extends WP_Widget {
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
+
+		//This widget uses a jQuery carousel called slick https://plugins.jquery.com/slick/
+		add_action( 'wp_enqueue_scripts', array( $this, 'include_scripts' ) );
 	}
 
 	public function delete_option() {
@@ -1061,6 +1064,13 @@ class Inventory_Slider extends WP_Widget {
 			'featured_only'     => __( 'Featured Vehicles Only', 'inventory-presser' ),
 			'random'            => __( 'Random', 'inventory-presser' )
 		);
+	}
+
+	function include_scripts() {
+		wp_enqueue_style( 'jquery-slick-style', '//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css' );
+		wp_enqueue_style( 'invp-slick', plugins_url( 'css/slick.css', dirname( __FILE__ ) ) );
+		wp_enqueue_script( 'jquery-slick', '//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js', array('jquery'), '1.6.0' );
+		wp_enqueue_script( 'invp-slick-init', plugins_url( 'js/slick.js', dirname( __FILE__ ) ), array( 'jquery-slick' ) );
 	}
 
 	// front-end
