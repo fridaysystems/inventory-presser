@@ -173,7 +173,18 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return max( $nada, $kbb );
 		}
 
-		// fill arrays of thumb and large image URI's
+		/**
+		 * Given a string containing HTML <img> element markup, extract the
+		 * value of the src element and return it.
+		 *
+		 * @param string $img_element An HTML <img> element
+		 * @return string The value of the src attribute
+		 */
+		function extract_image_element_src( $img_element ) {
+			return preg_replace( "/\">?.*/", "", ( preg_replace( "/.*<img[\s\S]+src=\"/", "", $img_element ) ?? '' ) );
+		}
+
+		// fill arrays of thumb and large <img> elements
 		function get_images_html_array( $sizes ) {
 
 			/**
@@ -189,9 +200,9 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				'numberposts'    => -1,
 				'order'          => 'ASC',
 				'orderby'        => 'meta_value_num',
+				'post_mime_type' => 'image',
 				'post_parent'    => $this->post_ID,
 				'post_type'      => 'attachment',
-				'post_mime_type' => 'image',
 			);
 
 			$images = get_children( $image_args );
@@ -199,12 +210,19 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$image_urls = array();
 			foreach( $images as $image ) {
 				foreach( $sizes as $size ) {
-					$image_urls[$size][] = wp_get_attachment_image(
+
+					$img_element = wp_get_attachment_image(
 						$image->ID,
 						$size,
 						false,
 						array( 'class' => "attachment-$size size-$size invp-image" )
 					);
+
+					$image_urls[$size][] = $img_element;
+
+					if( 'large' == $size ) {
+						$image_urls['urls'][] = $this->extract_image_element_src( $img_element );
+					}
 				}
 			}
 
