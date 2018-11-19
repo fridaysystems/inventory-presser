@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.6
-Stable tag: 8.0.0
+Stable tag: 8.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,10 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 8.1.1 =
+* [Changed] Only include stylesheets and scripts for the Vehicle Slider widget if that widget is active.
+* [Removed] Removes a script file and stylesheet for noUiSlider, a JavaScript range slider that was originally added for a price range widget that was never finished.
 
 = 8.1.0 =
 * [Added] Adds a list of full size photo URLs to the response array of the vehicle class' get_images_html_array() method. These accompany the <img> elements that are still part of the response.
