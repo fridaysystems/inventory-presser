@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 8.1.1
+ * Version: 8.2.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -462,20 +462,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_filter( 'invp_prefix_meta_key', array( $this, 'translate_custom_field_names' ) );
 			add_filter( 'invp_unprefix_meta_key', array( $this, 'untranslate_custom_field_names' ) );
 
-			/**
-			 * Make a widget available to sort vehicles by post meta fields.
-			 * Or, enable order by year, make, price, odometer, etc.
-			 */
-			$widget_available = new Order_By_Widget();
-			//Register the widget
-	 		add_action( 'widgets_init', create_function( '', 'return register_widget( "Order_By_Widget" );' ) );
-
-			/**
-			 * Make a widget available to show EPA Fuel Economy data
-			 */
-			$widget_available = new Fuel_Economy_Widget();
-			//Register the widget
-	 		add_action( 'widgets_init', create_function( '', 'return register_widget( "Fuel_Economy_Widget" );' ) );
+			//Register some widgets included with this plugin
+			add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 
 			/**
 			 * Deliver our promise to order posts, change the ORDER BY clause of
@@ -544,6 +532,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-taxonomies.php',
 				'class-vehicle.php',
 				'class-vehicle-urls-by-vin.php',
+				'class-widget-google-maps.php',
 				'class-widgets.php',
 				'template-tags.php',
 			);
@@ -717,18 +706,24 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 		}
 
-		function translate_custom_field_names( $nice_name ) {
-			$nice_name = strtolower( $nice_name );
-			return self::meta_prefix() . $nice_name;
-		}
+		function register_widgets() {
 
-		function untranslate_custom_field_names( $meta_key ) {
-			if( empty( $meta_key ) ) { return ''; }
-			$meta_key = strtolower( $meta_key );
-			//prefix may start with an underscore because previous versions hid some meta keys
-			$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . self::meta_prefix();
-			//remove the prefix
-			return substr( $meta_key, strlen( $prefix ) );
+			/**
+			 * Make a widget available to sort vehicles by post meta fields.
+			 * Or, enable order by year, make, price, odometer, etc.
+			 */
+			register_widget( "Order_By_Widget" );
+
+			/**
+			 * Make a widget available to show EPA Fuel Economy data
+			 */
+			register_widget( "Fuel_Economy_Widget" );
+
+			/**
+			 * Make a widget available to embed a Google map pointed at one of
+			 * the addresses in our location taxonomy.
+			 */
+			register_widget( "Inventory_Presser_Google_Maps_Widget" );
 		}
 
 		//Get this plugin's Options page settings mingled with default values
@@ -748,6 +743,19 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 		}
 
+		function translate_custom_field_names( $nice_name ) {
+			$nice_name = strtolower( $nice_name );
+			return self::meta_prefix() . $nice_name;
+		}
+
+		function untranslate_custom_field_names( $meta_key ) {
+			if( empty( $meta_key ) ) { return ''; }
+			$meta_key = strtolower( $meta_key );
+			//prefix may start with an underscore because previous versions hid some meta keys
+			$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . self::meta_prefix();
+			//remove the prefix
+			return substr( $meta_key, strlen( $prefix ) );
+		}
 	} //end class
 	$inventory_presser = new Inventory_Presser_Plugin();
 	$inventory_presser->hooks();
