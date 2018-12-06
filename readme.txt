@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.6
-Stable tag: 8.2.0
+Stable tag: 8.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,8 +61,13 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 == Changelog ==
 
+= 8.3.0 =
+* [Added] Built-in taxonomies can now accept multiple filters. For example, a URL such as foo.com/inventory/model/accent/model/grand-cherokee/ will list all Hyundai Accents and Jeep Grand Cherokees.
+* [Removed] Removed a feature that redirects search results that include only one vehicle to that vehicle's details page. This feature is at odds with allowing multiple taxonomies filters and especially with Vehicle Filters Widget version 4.0.0.
+
 = 8.2.0 =
 * [Added] Adds a Google Map widget that points at an address stored in this plugin's location taxonomy of the user's choosing
+* [Fixed] Changes to achieve compatibility with PHP 7.2: a few create_function() calls were rewritten to use anonymous functions
 
 = 8.1.2 =
 * [Fixed] Fixes a bug where a static member was not called statically when updating vehicle taxonomy terms via the REST API

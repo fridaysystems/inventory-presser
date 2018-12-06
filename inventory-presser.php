@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 8.2.0
+ * Version: 8.3.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -342,7 +342,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			return null;
 		}
 
-		// generate every possible combination of rewrite rules, including 'page', based on post type taxonomy
+		// generate every possible combination of rewrite rules, including paging, based on post type taxonomy
 		// from http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
 		function generate_rewrite_rules( $post_type, $query_vars = array() ) {
 		    global $wp_rewrite;
@@ -369,7 +369,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		        // Prepend the rewrites & queries
 		        for( $n = 1; $n <= $i; $n++ ) {
 		            $new_rewrite_rule .= '(' . implode( '|', $query_vars ) . ')/(.+?)/';
-		            $new_query_string .= '&' . $wp_rewrite->preg_index( $n * 2 - 1 ) . '=' . $wp_rewrite->preg_index( $n * 2 );
+		            $new_query_string .= '&' . $wp_rewrite->preg_index( $n * 2 - 1 ) . '[]=' . $wp_rewrite->preg_index( $n * 2 );
 		        }
 
 		        // Allow paging of filtered post type - WordPress expects 'page' in the URL but uses 'paged' in the query string so paging doesn't fit into our regex
@@ -506,9 +506,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Change links to our taxonomy terms to insert /inventory/
 			add_filter( 'pre_term_link', array( $this, 'change_term_links' ), 10, 2 );
-
-			//If a search or post archive produces only one post, redirect to that post instead of a results page
-			add_action( 'template_redirect', array( $this, 'redirect_single_result' ) );
 
 			//Add all our shortcodes
 			$shortcodes = new Inventory_Presser_Shortcodes();
@@ -661,22 +658,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							)
 						);
 					}
-				}
-			}
-		}
-
-		function redirect_single_result() {
-
-			//Do not affect users in the dashboard
-			if( is_admin() ) { return; }
-
-			//If this is a search result or page one of our post archive
-			if( ( is_search() && self::CUSTOM_POST_TYPE == get_query_var( 'post_type', '' ) ) || ( is_post_type_archive( self::CUSTOM_POST_TYPE ) && 0 == get_query_var( 'paged', 0 ) ) ) {
-
-				//If there is only one post in the query,
-				global $wp_query;
-				if ( $wp_query->post_count == 1 ) {
-					wp_redirect( get_permalink( $wp_query->posts['0']->ID ) );
 				}
 			}
 		}
