@@ -257,13 +257,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * outside of meta.
 		 */
 		function create_serialized_api_fields() {
-			$args = array(
-				'get_callback'    => function( $post, $attr ) {
-					return serialize( get_post_meta( $post['id'], $attr, true ) );
-				},
-				'update_callback' => null,
-				'schema'          => null,
-			);
 
 			//epa_fuel_economy
 			register_rest_field(

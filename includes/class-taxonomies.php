@@ -74,9 +74,10 @@ class Inventory_Presser_Taxonomies {
 		return maybe_serialize( get_term_meta( $term_id, $attr, true ) );
 	}
 
-	function set_term_meta_via_rest( $value, $term, $attr, $request, $object_type ) {
+	static function set_term_meta_via_rest( $value, $term, $attr, $request, $object_type ) {
 		$value = maybe_unserialize( $value );
-		$result = isset( $term->term_id ) && update_term_meta( $term->term_id, $attr, $value, self::get_term_meta_via_rest( $term, $attr, $request, $object_type ) );
+		$old_value = get_term_meta( $term->term_id, $attr, true );
+		$result = isset( $term->term_id ) && update_term_meta( $term->term_id, $attr, $value, $old_value );
 		if( true !== $result ) {
 			$result = add_term_meta( $term->term_id, $attr, $value, true );
 		}
