@@ -192,7 +192,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			 * incoming argument was a string not an array.
 			 */
 			if( ! is_array( $sizes ) ) {
-				$sizes = array( $size );
+				$sizes = array( $sizes );
 			}
 
 			$image_args = array(

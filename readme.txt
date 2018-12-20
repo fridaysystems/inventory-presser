@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.8
-Stable tag: 8.3.1
+Stable tag: 8.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,8 +61,11 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 == Changelog ==
 
+= 8.3.2 =
+* [Fixed] Fixes a bug where a misspelled variable name would prevent an instance of our vehicle class from returning the requested size thumbnails.
+
 = 8.3.1 =
-* [Fixed] Fix a bug where when updating taxonomy terms via the REST API, the old value passed to update_term_meta() would be unnecessarily serialized.
+* [Fixed] Fixes a bug where when updating taxonomy terms via the REST API, the old value passed to update_term_meta() would be unnecessarily serialized.
 
 = 8.3.0 =
 * [Added] Built-in taxonomies can now accept multiple filters. For example, a URL such as foo.com/inventory/model/accent/model/grand-cherokee/ will list all Hyundai Accents and Jeep Grand Cherokees.
