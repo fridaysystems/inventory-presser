@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 8.3.2
+ * Version: 8.4.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -264,7 +264,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				apply_filters( 'invp_prefix_meta_key', 'epa_fuel_economy' ),
 				array(
 					'get_callback'    => array( $this, 'get_serialized_value_for_rest' ),
-					'update_callback' => null,
+					'update_callback' => array( $this, 'set_serialized_meta_value' ),
 					'schema'          => array(
 						'description' => __( 'An array of EPA Fuel Economy data including miles per gallon stats', 'inventory-presser' ),
 						'type'        => 'string',
@@ -279,7 +279,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				apply_filters( 'invp_prefix_meta_key', 'option_array' ),
 				array(
 					'get_callback'    => array( $this, 'get_serialized_value_for_rest' ),
-					'update_callback' => null,
+					'update_callback' => array( $this, 'set_serialized_meta_value' ),
 					'schema'          => array(
 						'description' => __( 'An array of vehicle options', 'inventory-presser' ),
 						'type'        => 'string',
@@ -294,7 +294,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				apply_filters( 'invp_prefix_meta_key', 'prices' ),
 				array(
 					'get_callback'    => array( $this, 'get_serialized_value_for_rest' ),
-					'update_callback' => null,
+					'update_callback' => array( $this, 'set_serialized_meta_value' ),
 					'schema'          => array(
 						'description' => __( 'An array of vehicle prices including asking price, MSRP, and down payment', 'inventory-presser' ),
 						'type'        => 'string',
@@ -698,6 +698,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * the addresses in our location taxonomy.
 			 */
 			register_widget( "Inventory_Presser_Google_Maps_Widget" );
+		}
+
+		function set_serialized_meta_value( $value, $object, $field_name ) {
+			$return = update_post_meta( $object->ID, $field_name, maybe_unserialize( $value ) );
 		}
 
 		//Get this plugin's Options page settings mingled with default values

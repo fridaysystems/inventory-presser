@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
 Tested up to: 4.9.8
-Stable tag: 8.3.2
+Stable tag: 8.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,10 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 8.4.0 =
+* [Added] Allows updating of serialized meta fields via the REST API via an update callback.
+* [Changed] No longer defines a few functions statically to avoid throwing warnings when updating term meta via the REST API.
 
 = 8.3.2 =
 * [Fixed] Fixes a bug where a misspelled variable name would prevent an instance of our vehicle class from returning the requested size thumbnails.

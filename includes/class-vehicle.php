@@ -277,23 +277,23 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 */
 		function keys( $include_serialized = true ) {
 			$all_keys = array(
-				'beam',
+				'beam', //for boats
 				'body_style',
-				'car_id',
+				'car_id', //unique identifier
 				'carfax_have_report',
 				'carfax_one_owner',
 				'color',
-				'dealer_id',
+				'dealer_id', //friday systems dealer id
 				'down_payment',
 				'edmunds_style_id',
 				'engine',
 				'epa_fuel_economy',
 				'featured',
-				'hull_material',
+				'hull_material', //for boats
 				'interior_color',
 				'last_modified',
-				'leads_id',
-				'length',
+				'leads_id', //friday systems dealer id that receives leads
+				'length', //for boats
 				'make',
 				'model',
 				'msrp',

@@ -57,7 +57,7 @@ class Inventory_Presser_Taxonomies {
 		) );
 	}
 
-	static function get_term_meta_via_rest( $term, $attr, $request, $object_type ) {
+	function get_term_meta_via_rest( $term, $attr, $request, $object_type ) {
 		$term_id = 0;
 
 		/**
@@ -74,7 +74,7 @@ class Inventory_Presser_Taxonomies {
 		return maybe_serialize( get_term_meta( $term_id, $attr, true ) );
 	}
 
-	static function set_term_meta_via_rest( $value, $term, $attr, $request, $object_type ) {
+	function set_term_meta_via_rest( $value, $term, $attr, $request, $object_type ) {
 		$value = maybe_unserialize( $value );
 		$old_value = get_term_meta( $term->term_id, $attr, true );
 		$result = isset( $term->term_id ) && update_term_meta( $term->term_id, $attr, $value, $old_value );
