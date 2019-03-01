@@ -1,10 +1,10 @@
 <?php
-defined( 'ABSPATH' ) OR exit;
+defined( 'ABSPATH' ) or exit;
 /**
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 8.4.0
+ * Version: 8.6.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -657,26 +657,35 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		//register all meta fields our CPT uses
 		function register_meta_fields() {
-			$vehicle = new Inventory_Presser_Vehicle();
-			$keys = $vehicle->keys( true );
+
+			$keys = Inventory_Presser_Vehicle::keys_and_types( true );
 
 			/**
-			 * Add a couple keys that are used on media attachments to our CPT.
+			 * Add a couple fields that are used on media attachments to our CPT.
 			 * Do this in one swoop because there is no core way (as of 4.9.4) to specify the
 			 * object_subtype for the object to which these fields are registered.
 			 */
-			$keys[] = 'file_date';
-			$keys[] = 'hash';
-			$keys[] = 'photo_number';
+			$keys[] = array(
+				'name' => 'file_date',
+				'type' => 'string',
+			);
+			$keys[] = array(
+				'name' => 'hash',
+				'type' => 'string',
+			);
+			$keys[] = array(
+				'name' => 'photo_number',
+				'type' => 'integer',
+			);
 
-			foreach( $keys as $key ) {
-				$key = apply_filters( 'invp_prefix_meta_key', $key );
-				$args = array(
+			foreach( $keys as $key_arr ) {
+				$key = apply_filters( 'invp_prefix_meta_key', $key_arr['name'] );
+				register_meta( 'post', $key, array(
 					'sanitize_callback' => 'maybe_unserialize',
 					'show_in_rest'      => true,
 					'single'            => true,
-				);
-				register_meta( 'post', $key, $args );
+					'type'              => $key_arr['type'],
+				) );
 			}
 		}
 

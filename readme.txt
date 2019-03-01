@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 3.0.1
-Tested up to: 4.9.8
-Stable tag: 8.4.0
+Tested up to: 5.1.0
+Stable tag: 8.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,16 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 8.6.0 =
+* [Added] Adds methods to the vehicle class to output down payment and payment in dollar-formatted strings like the price.
+* [Added] Now provides a type argument when registering meta keys for the Vehicle post type.
+* [Changed] Add and refactor some methods in the vehicle class to make the Carfax report URL and YouTube video URL available as methods.
+* [Changed] Tweak the registration of vehicle attribute taxonomies so they will be visible in the block editor.
+* [Fixed] Fixes a bug in a `the_content` filter when there are no templates in the theme to display vehicles.
+
+= 8.5.0 =
+* [Added] Added `show_ui` arguments when creating vehicle attribute taxonomies so a new add-on plugin, Show All Taxonomies, can filter this data and reveal all our taxonomies to dashboard users.
 
 = 8.4.0 =
 * [Added] Allows updating of serialized meta fields via the REST API via an update callback.
@@ -366,6 +376,9 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Upgrade Notice ==
+
+= 8.6.0 =
+This is the minimum version required for compatibility with the block editor launched in WordPress 5.0 and a new add-on called [Inventory Presser Elementor Add-on](https://inventorypresser.com/products/plugins/elementor-add-on/). This plugin adds vehicle fields to Elementor's list of Dynamic Tags.
 
 = 4.2.0 =
 This version is the first that includes REST API endpoints that allow efficient vehicle updates.

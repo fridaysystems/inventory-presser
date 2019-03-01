@@ -136,25 +136,68 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 
 		function carfax_icon_html() {
+
 			if( ! $this->carfax_eligible() || ! $this->have_carfax_report() ) {
 				return '';
 			}
 
-			$link = '<a href="http://www.carfax.com/VehicleHistory/p/Report.cfx?partner=FXI_0&vin='
-				. $this->vin
-				. '" target="_blank" rel="noopener noreferrer">';
+			return sprintf(
+				'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+				$this->carfax_report_url(),
+				$this->carfax_icon_svg()
+			);
+		}
 
+		function carfax_icon_svg() {
 			$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
 			if( $this->is_carfax_one_owner() ) {
 				$svg_path .= '-1-owner';
 			}
 			$svg_path .= '.svg';
+			return file_get_contents( $svg_path );
+		}
 
-			return $link . file_get_contents( $svg_path ) . '</a>';
+		function carfax_report_url() {
+
+			if( ! $this->carfax_eligible() || ! $this->have_carfax_report() ) {
+				return '';
+			}
+
+			return 'http://www.carfax.com/VehicleHistory/p/Report.cfx?partner=FXI_0&vin=' . $this->vin;
+		}
+
+		/**
+		 * Returns the down payment as a dollar amount except when it is zero.
+		 * Returns empty string if the down payment is zero.
+		 *
+		 * @return string The down payment formatted as a dollar amount except when the price is zero
+		 */
+		function down_payment() {
+
+			if ( $this->is_sold ) {
+				return '';
+			}
+
+			if( empty( $this->down_payment ) ) {
+				return '';
+			}
+
+			return __( '$', 'inventory-presser' ) . number_format( $this->down_payment, 0, '.', ',' );
 		}
 
 		function extract_digits( $str ) {
 			return abs( (int) filter_var( $str, FILTER_SANITIZE_NUMBER_INT ) );
+		}
+
+		/**
+		 * Given a string containing HTML <img> element markup, extract the
+		 * value of the src element and return it.
+		 *
+		 * @param string $img_element An HTML <img> element
+		 * @return string The value of the src attribute
+		 */
+		function extract_image_element_src( $img_element ) {
+			return preg_replace( "/\">?.*/", "", preg_replace( "/.*<img[\s\S]+src=\"/", "", $img_element ) );
 		}
 
 		function get_book_value() {
@@ -171,17 +214,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				$kbb = intval( $this->prices['KBB Book Value'] );
 			}
 			return max( $nada, $kbb );
-		}
-
-		/**
-		 * Given a string containing HTML <img> element markup, extract the
-		 * value of the src element and return it.
-		 *
-		 * @param string $img_element An HTML <img> element
-		 * @return string The value of the src attribute
-		 */
-		function extract_image_element_src( $img_element ) {
-			return preg_replace( "/\">?.*/", "", preg_replace( "/.*<img[\s\S]+src=\"/", "", $img_element ) );
 		}
 
 		// fill arrays of thumb and large <img> elements
@@ -273,44 +305,144 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		/**
 		 * This is an array of the post meta keys this object uses. These keys
-		 * are prefixed by an apply_filters() call.
+		 * must be prefixed by an apply_filters() call before use.
 		 */
 		function keys( $include_serialized = true ) {
-			$all_keys = array(
-				'beam', //for boats
-				'body_style',
-				'car_id', //unique identifier
-				'carfax_have_report',
-				'carfax_one_owner',
-				'color',
-				'dealer_id', //friday systems dealer id
-				'down_payment',
-				'edmunds_style_id',
-				'engine',
-				'epa_fuel_economy',
-				'featured',
-				'hull_material', //for boats
-				'interior_color',
-				'last_modified',
-				'leads_id', //friday systems dealer id that receives leads
-				'length', //for boats
-				'make',
-				'model',
-				'msrp',
-				'odometer',
-				'option_array',
-				'payment',
-				'payment_frequency',
-				'price',
-				'prices',
-				'stock_number',
-				'title_status',
-				'trim',
-				'vin',
-				'year',
-				'youtube',
+			$all_keys = array_column( self::keys_and_types( $include_serialized ), 'name' );
+			return $include_serialized ? $all_keys : array_diff( $all_keys, array( 'epa_fuel_economy', 'option_array', 'prices' ) );
+		}
+
+		public static function keys_and_types( $include_serialized = true ) {
+			return array(
+				array(
+					'name' => 'beam', //for boats
+					'type' => 'number',
+				),
+				array(
+					'name' => 'body_style',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'car_id', //unique identifier
+					'type' => 'integer',
+				),
+				array(
+					'name' => 'carfax_have_report',
+					'type' => 'boolean',
+				),
+				array(
+					'name' => 'carfax_one_owner',
+					'type' => 'boolean',
+				),
+				array(
+					'name' => 'color',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'dealer_id', //friday systems dealer id
+					'type' => 'integer',
+				),
+				array(
+					'name' => 'down_payment',
+					'type' => 'number',
+				),
+				array(
+					'name' => 'edmunds_style_id',
+					'type' => 'integer',
+				),
+				array(
+					'name' => 'engine',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'epa_fuel_economy',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'featured',
+					'type' => 'boolean',
+				),
+				array(
+					'name' => 'hull_material', //for boats
+					'type' => 'string',
+				),
+				array(
+					'name' => 'interior_color',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'last_modified',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'leads_id', //friday systems dealer id that receives leads
+					'type' => 'integer',
+				),
+				array(
+					'name' => 'length', //for boats
+					'type' => 'integer',
+				),
+				array(
+					'name' => 'make',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'model',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'msrp',
+					'type' => 'number',
+				),
+				array(
+					'name' => 'odometer',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'option_array',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'payment',
+					'type' => 'number',
+				),
+				array(
+					'name' => 'payment_frequency',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'price',
+					'type' => 'number',
+				),
+				array(
+					'name' => 'prices',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'stock_number',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'title_status',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'trim',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'vin',
+					'type' => 'string',
+				),
+				array(
+					'name' => 'year',
+					'type' => 'integer',
+				),
+				array(
+					'name' => 'youtube',
+					'type' => 'string',
+				),
 			);
-			return $include_serialized ? $all_keys : array_diff( $all_keys, array( 'option_array', 'prices' ) );
 		}
 
 		//if numeric, format the odometer with thousands separators
@@ -329,11 +461,38 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return $odometer;
 		}
 
-		function payments( $zero_string = '' ) {
+		/**
+		 * Returns the payment as a dollar amount except when it is zero or the vehicle is sold.
+		 * Returns empty string if the payment is zero or the vehicle is sold.
+		 *
+		 * @return string The payment formatted as a dollar amount except when the payment is zero or the vehicle is sold
+		 */
+		function payment() {
+
+			if ( $this->is_sold ) {
+				return '';
+			}
+
+			if( empty( $this->payment ) ) {
+				return '';
+			}
+
+			return __( '$', 'inventory-presser' ) . number_format( $this->payment, 0, '.', ',' );
+		}
+
+		function payments( $zero_string = '', $separator = '/' ) {
 
 			if ( isset( $this->down_payment ) ) {
-				return sprintf( '$%s Down / $%s %s', number_format( $this->down_payment, 0, '.', ',' ), number_format( $this->payment, 0, '.', ',' ), ucfirst( $this->payment_frequency ) );
+				return sprintf(
+					'%s %s %s $%s %s',
+					$this->down_payment(),
+					__( 'Down', 'inventory-presser' ),
+					$separator,
+					$this->payment(),
+					ucfirst( $this->payment_frequency )
+				);
 			}
+
 			return $this->price( $zero_string );
 		}
 
@@ -350,18 +509,23 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 
 		/**
-		 * Return the price as a dollar amount except when it is zero.
-		 * Return the $zero_string when the price is zero.
+		 * Returns the price as a dollar amount except when it is zero. Returns
+		 * the $zero_string when the price is zero.
+		 *
+		 * @param string $zero_string The text to display when the price is zero
+		 * @return string The price formatted as a dollar amount except when the price is zero
 		 */
 		function price( $zero_string = '' ) {
-			if ( ! $this->is_sold ) {
-				if( 0 == $this->price ) {
-					return apply_filters( 'invp_zero_price_string', $zero_string, $this );
-				}
-				return '$' . number_format( $this->price, 0, '.', ',' );
+
+			if ( $this->is_sold ) {
+				return apply_filters( 'invp_sold_string', sprintf( '<span class="vehicle-sold">%s</span>', __( 'SOLD!', 'inventory-presser' ) ) );
 			}
 
-			return apply_filters( 'invp_sold_string', '<span class="vehicle-sold">SOLD!</span>' );
+			if( 0 == $this->price ) {
+				return apply_filters( 'invp_zero_price_string', $zero_string, $this );
+			}
+
+			return __( '$', 'inventory-presser' ) . number_format( $this->price, 0, '.', ',' );
 		}
 
 		function schema_org_drive_type( $drive_type ) {
@@ -464,6 +628,15 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			}
 
 			return '<script type="application/ld+json">' . json_encode( $obj ) . '</script>';
+		}
+
+		function youtube_url() {
+
+			if ( empty( $vehicle->youtube ) ) {
+				return '';
+			}
+
+			return 'https://www.youtube.com/watch?v=' . $vehicle->youtube;
 		}
 	}
 }

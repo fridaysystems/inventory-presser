@@ -709,7 +709,7 @@ class Inventory_Presser_Taxonomies {
 						'singular_label' => 'Condition',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
-						'show_ui'        => false,
+						'show_ui'        => true,
 					),
 					'term_data' =>	array (
 						'New'  => 'New',
@@ -733,7 +733,7 @@ class Inventory_Presser_Taxonomies {
 						'singular_label' => 'Type',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
-						'show_ui'        => false,
+						'show_ui'        => true,
 					),
 					'term_data' =>	array (
 						'ATV' => 'All Terrain Vehicle',
@@ -766,7 +766,7 @@ class Inventory_Presser_Taxonomies {
 						'singular_label' => 'Availability',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
-						'show_ui'        => false,
+						'show_ui'        => true,
 					),
 					'term_data' =>	array (
 						'For sale' => 'For sale',
@@ -789,7 +789,7 @@ class Inventory_Presser_Taxonomies {
 						'singular_label' => 'Drive type',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
-						'show_ui'        => false,
+						'show_ui'        => true,
 					),
 					'term_data' =>	array (
 						'4FD' => 'Front Wheel Drive w/4x4',
@@ -822,7 +822,7 @@ class Inventory_Presser_Taxonomies {
 						'singular_label' => 'Propulsion type',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
-						'show_ui'        => false,
+						'show_ui'        => true,
 					),
 					'term_data' =>	array (
 						'IN'  => 'Inboard',
@@ -848,7 +848,7 @@ class Inventory_Presser_Taxonomies {
 						'singular_label' => 'Fuel',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
-						'show_ui'        => false,
+						'show_ui'        => true,
 					),
 					'term_data' =>	array (
 						'B' => 'Electric and Gas Hybrid',
@@ -880,7 +880,7 @@ class Inventory_Presser_Taxonomies {
 						'singular_label' => 'Transmission',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
-						'show_ui'        => false,
+						'show_ui'        => true,
 					),
 					'term_data' =>	array (
 						'A' => 'Automatic',
@@ -905,7 +905,7 @@ class Inventory_Presser_Taxonomies {
 						'singular_label' => 'Cylinders',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
-						'show_ui'        => false,
+						'show_ui'        => true,
 					),
 					'term_data' => array (
 						'1'  => '1',
@@ -956,7 +956,6 @@ class Inventory_Presser_Taxonomies {
 						),
 						'meta_box_cb'    => array( $this, 'meta_box_html_locations' ),
 						'query_var'      => 'location',
-						'show_ui'			=> true,
 						'singular_label' => 'Location',
 						'show_in_menu'   => true,
 						'show_in_rest'   => true,

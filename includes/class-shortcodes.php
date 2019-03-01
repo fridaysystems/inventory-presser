@@ -340,7 +340,7 @@ class Inventory_Presser_Shortcodes {
 		);
 
 		// if there are images, display them
-		if( 0 < count( $image_url_lists['large'] ) ) {
+		if( isset( $image_url_lists['large'] ) && 0 < count( $image_url_lists['large'] ) ) {
 
 			$before .= '<div id="slider" class="flexslider"><ul class="slides">';
 			foreach( $image_url_lists['large'] as $image ) {
@@ -349,7 +349,7 @@ class Inventory_Presser_Shortcodes {
 			$before .= '</ul></div>';
 
 			// if only 1 image, skip the nav
-			if( 1 < count( $image_url_lists['thumb'] ) ) {
+			if( isset( $image_url_lists['thumb'] ) && 1 < count( $image_url_lists['thumb'] ) ) {
 				$before .= '<div id="carousel" class="flexslider"><ul class="slides">';
 				foreach( $image_url_lists['thumb'] as $image ) {
 					$before .= sprintf( '<li>%s</li>', $image );
