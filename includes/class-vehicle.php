@@ -356,7 +356,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				),
 				array(
 					'name' => 'epa_fuel_economy',
-					'type' => 'string',
+					'type' => null, //'string',
 				),
 				array(
 					'name' => 'featured',
@@ -400,7 +400,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				),
 				array(
 					'name' => 'option_array',
-					'type' => 'string',
+					'type' => null, //'string',
 				),
 				array(
 					'name' => 'payment',
@@ -416,7 +416,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				),
 				array(
 					'name' => 'prices',
-					'type' => 'string',
+					'type' => null, //'string',
 				),
 				array(
 					'name' => 'stock_number',
