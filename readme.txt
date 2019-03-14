@@ -1,7 +1,7 @@
 === Inventory Presser ===
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
-Requires at least: 3.0.1
+Requires at least: 5.0.0
 Tested up to: 5.1.0
 Stable tag: 8.6.0
 License: GPLv2 or later
@@ -60,6 +60,9 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 9.0.0 =
+* [Changed] Changes the "Requires at least" version number to 5.0.0 because this version adds editor blocks that do not work on older versions of WordPress
 
 = 8.6.0 =
 * [Added] Adds methods to the vehicle class to output down payment and payment in dollar-formatted strings like the price.
