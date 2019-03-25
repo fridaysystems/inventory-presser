@@ -25,6 +25,11 @@ class Inventory_Presser_Blocks{
 
 	function register_block_types() {
 
+		if( ! function_exists( 'register_block_type' ) ) {
+			//running on WordPress < 5.0.0, no blocks for you
+			return;
+		}
+
 		$keys = array(
 			'beam',
 			'body-style',
@@ -46,11 +51,6 @@ class Inventory_Presser_Blocks{
 				plugins_url( 'js/blocks/' . $key . '.js', dirname( __FILE__ ) ),
 				array( 'wp-blocks', 'wp-element' )
 			);
-
-			if( ! function_exists( 'register_block_type' ) ) {
-				//running on WordPress < 5.0.0, no blocks for you
-				continue;
-			}
 
 			register_block_type( 'inventory-presser/' . $key, array(
 				'editor_script' => 'block-' . $key,
