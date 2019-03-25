@@ -1064,7 +1064,8 @@ class Inventory_Slider extends WP_Widget {
 		return array(
 			'featured_priority' => __( 'Priority for Featured Vehicles', 'inventory-presser' ),
 			'featured_only'     => __( 'Featured Vehicles Only', 'inventory-presser' ),
-			'random'            => __( 'Random', 'inventory-presser' )
+			'random'            => __( 'Random', 'inventory-presser' ),
+			'newest_first'      => __( 'Newest Vehicles First', 'inventory-presser' ),
 		);
 	}
 
@@ -1090,56 +1091,66 @@ class Inventory_Slider extends WP_Widget {
 		$inventory_ids = array();
 
 		$gpargs = array(
-			'numberposts' => $showcount * 5,
+			'numberposts' => $showcount * 5, //get 5 sets of the number we'll show at one time
 			'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
 			'fields'      => 'ids',
 			'orderby'     => 'rand',
-			'order'       => 'ASC'
+			'order'       => 'ASC',
+			'meta_query'  => array(
+				array(
+					'key'     => '_thumbnail_id',
+					'compare' => 'EXISTS',
+				),
+			),
 		);
 
-		if ($featured_select == 'random') {
+		switch( $featured_select ) {
 
-			$gpargs['meta_key'] = '_thumbnail_id';
-			$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
+			case 'random':
+				$gpargs['meta_key'] = '_thumbnail_id';
+				$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
+				break;
 
-		} else {
+			case 'newest_first':
+				$gpargs['meta_key'] = apply_filters( 'invp_prefix_meta_key', 'last_modified' );
+				$gpargs['orderby'] = ' STR_TO_DATE( meta1.meta_value, \'%a, %d %b %Y %T\' ) ';
+				$gpargs['order']   = 'DESC';
+				$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
+				break;
 
-			$gpargs['meta_query'] = array(
-				'relation' => 'AND',
-				array(
+			default:
+				$gpargs['meta_query']['relation'] = 'AND';
+				$gpargs['meta_query'][] = array(
 					'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
 					'value'   => 1,
 					'compare' => '=',
-				),
-				array(
-					'key'	  => '_thumbnail_id',
-					'compare' => 'EXISTS',
-				)
-			);
-			$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
-
-			if (count($inventory_ids) < ($showcount * 5) && $featured_select == 'featured_priority') {
-
-				$gpargs['numberposts'] = ($showcount * 5) - (count($inventory_ids));
-				$gpargs['meta_query'] = array(
-					'relation' => 'AND',
-					array(
-						'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
-						'value'   => 0,
-						'compare' => '='
-					),
-					array(
-						'key'	  => '_thumbnail_id',
-						'compare' => 'EXISTS'
-					)
 				);
-				$inventory_ids += get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
-			}
+				$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
+
+				if (count($inventory_ids) < ($showcount * 5) && $featured_select == 'featured_priority') {
+
+					$gpargs['numberposts'] = ($showcount * 5) - (count($inventory_ids));
+					$gpargs['meta_query'] = array(
+						'relation' => 'AND',
+						array(
+							'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
+							'value'   => 0,
+							'compare' => '='
+						),
+						array(
+							'key'	  => '_thumbnail_id',
+							'compare' => 'EXISTS'
+						)
+					);
+					$inventory_ids += get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
+				}
+				//randomize the order, a strange choice we'll maintain
+				shuffle( $inventory_ids );
+
+				break;
 		}
 
 		if ($inventory_ids) {
-
-			shuffle($inventory_ids);
 
 			// before and after widget arguments are defined by themes
 			echo $args['before_widget'];
@@ -1196,7 +1207,7 @@ class Inventory_Slider extends WP_Widget {
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'showcount' ); ?>"><?php _e( 'Vehicles to show:', 'inventory-presser' ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'showcount' ); ?>"><?php _e( 'Vehicles to show at one time:', 'inventory-presser' ); ?></label>
 		<select class="widefat" id="<?php echo $this->get_field_id('showcount'); ?>" name="<?php echo $this->get_field_name('showcount'); ?>">
 		<?php
 			for ( $i=1; $i < 8; $i++ ) {

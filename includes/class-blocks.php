@@ -19,25 +19,42 @@ class Inventory_Presser_Blocks{
 	}
 
 	function hooks() {
-		add_action( 'init', array( $this, 'body_style' ) );
+		add_action( 'init', array( $this, 'register_block_types' ) );
 		add_filter( 'block_categories', array( $this, 'add_category' ), 10, 2 );
 	}
 
-	function body_style() {
+	function register_block_types() {
 
-		wp_register_script(
-			'block-body-style',
-			plugins_url( 'js/block-body-style.js', dirname( __FILE__ ) ),
-			array( 'wp-blocks', 'wp-element' )
+		$keys = array(
+			'beam',
+			'body-style',
+			'color',
+			'engine',
+			'hull-material',
+			'interior-color',
+			'last-modified',
+			'length',
+			'make',
+			'model',
+			'odometer',
 		);
 
-		if( ! function_exists( 'register_block_type' ) ) {
-			//running on WordPress < 5.0.0, no blocks for you
-			return;
-		}
+		foreach( $keys as $key ) {
 
-		register_block_type( 'inventory-presser/body-style', array(
-			'editor_script' => 'block-body-style',
-		) );
+			wp_register_script(
+				'block-' . $key,
+				plugins_url( 'js/blocks/' . $key . '.js', dirname( __FILE__ ) ),
+				array( 'wp-blocks', 'wp-element' )
+			);
+
+			if( ! function_exists( 'register_block_type' ) ) {
+				//running on WordPress < 5.0.0, no blocks for you
+				continue;
+			}
+
+			register_block_type( 'inventory-presser/' . $key, array(
+				'editor_script' => 'block-' . $key,
+			) );
+		}
 	}
 }

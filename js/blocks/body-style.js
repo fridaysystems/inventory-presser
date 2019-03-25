@@ -1,6 +1,4 @@
-const { registerBlockType } = wp.blocks;
-
-registerBlockType( 'inventory-presser/body-style', {
+wp.blocks.registerBlockType( 'inventory-presser/body-style', {
 	title: 'Body Style',
 
 	icon: 'admin-network', //it's a key

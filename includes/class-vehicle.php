@@ -282,8 +282,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		//return taxonomy terms as a comma delimited string
 		function get_term_string( $taxonomy ) {
-			$term_list = wp_get_post_terms($this->post_ID, $taxonomy, array("fields" => "names"));
-			return implode(', ', $term_list);
+			$term_list = wp_get_post_terms( $this->post_ID, $taxonomy, array( 'fields' => 'names' ) );
+			return implode( ', ', $term_list );
 		}
 
 		function have_carfax_report() {

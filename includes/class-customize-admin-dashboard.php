@@ -91,66 +91,6 @@ class Inventory_Presser_Customize_Dashboard {
 		);
 	}
 
-	function hooks() {
-
-		add_filter( 'posts_clauses', array( $this, 'enable_order_by_attachment_count' ), 1, 2 );
-
-		//Save custom post data when posts are saved
-		add_action( 'save_post_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE, array( $this, 'save_vehicle_post_meta' ), 10, 3 );
-
-		//Add columns to the table that lists all the Vehicles on edit.php
-		add_filter( 'manage_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '_posts_columns', array( $this, 'add_columns_to_vehicles_table' ) );
-
-		//Populate the columns we added to the Vehicles table
-		add_action( 'manage_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '_posts_custom_column', array( $this, 'populate_columns_we_added_to_vehicles_table' ), 10, 2 );
-
-		//Make our added columns to the Vehicles table sortable
-		add_filter( 'manage_edit-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '_sortable_columns', array( $this, 'make_vehicles_table_columns_sortable' ) );
-
-		//Implement the orderby for each of these added columns
-		add_filter( 'pre_get_posts', array( $this, 'vehicles_table_columns_orderbys' ) );
-
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes_to_cpt' ) );
-
-		// Move all "advanced" meta boxes above the default editor
-		// http://wordpress.stackexchange.com/a/88103
-		add_action( 'edit_form_after_title', array( $this, 'move_advanced_meta_boxes' ) );
-
-		//Move the "Tags" metabox below the meta boxes for vehicle custom taxonomies
-		add_action( 'add_meta_boxes', array( $this, 'move_tags_meta_box' ), 0 );
-
-		//Load our scripts
-		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
-
-		//Add some content next to the "Add Media" button
-		add_action( 'media_buttons', array( $this, 'annotate_add_media_button' ) );
-
-		//Define an AJAX handler for the 'Delete All Media' button
-		add_filter( 'wp_ajax_delete_all_post_attachments', array( $this, 'delete_all_post_attachments' ) );
-
-		//'add_attachment'
-		//'delete_attachment'
-		//Make our Add Media button annotation available from an AJAX call
-		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
-
-		//Add a link to the Settings page on the plugin management page
-		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'insert_settings_link' ), 2, 2 );
-
-		//Define an AJAX handler for the 'Delete all inventory' button
-		add_action( 'wp_ajax_delete_all_inventory', array( $this, 'delete_all_inventory_ajax' ) );
-
-		//Add a link to the main menu of the Admin bar
-		add_action( 'admin_bar_menu', array( $this, 'add_vehicles_to_admin_bar' ), 100 );
-
-		$options = get_option( '_dealer_settings' );
-		if( isset( $options['use_carfax'] ) && $options['use_carfax'] ) {
-			add_action( 'customize_register', array( $this, 'add_settings_to_customizer' ) );
-		}
-
-		//Change some messages in the dashboard the user sees when updating vehicles
-		add_filter( 'post_updated_messages', array( $this, 'change_post_updated_messages' ) );
-	}
-
 	function change_post_updated_messages( $msgs ) {
 		global $post;
 
@@ -480,6 +420,66 @@ class Inventory_Presser_Customize_Dashboard {
 			$type,
 			__( $message, 'inventory-presser' )
 		);
+	}
+
+	function hooks() {
+
+		add_filter( 'posts_clauses', array( $this, 'enable_order_by_attachment_count' ), 1, 2 );
+
+		//Save custom post data when posts are saved
+		add_action( 'save_post_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE, array( $this, 'save_vehicle_post_meta' ), 10, 3 );
+
+		//Add columns to the table that lists all the Vehicles on edit.php
+		add_filter( 'manage_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '_posts_columns', array( $this, 'add_columns_to_vehicles_table' ) );
+
+		//Populate the columns we added to the Vehicles table
+		add_action( 'manage_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '_posts_custom_column', array( $this, 'populate_columns_we_added_to_vehicles_table' ), 10, 2 );
+
+		//Make our added columns to the Vehicles table sortable
+		add_filter( 'manage_edit-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '_sortable_columns', array( $this, 'make_vehicles_table_columns_sortable' ) );
+
+		//Implement the orderby for each of these added columns
+		add_filter( 'pre_get_posts', array( $this, 'vehicles_table_columns_orderbys' ) );
+
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes_to_cpt' ) );
+
+		// Move all "advanced" meta boxes above the default editor
+		// http://wordpress.stackexchange.com/a/88103
+		add_action( 'edit_form_after_title', array( $this, 'move_advanced_meta_boxes' ) );
+
+		//Move the "Tags" metabox below the meta boxes for vehicle custom taxonomies
+		add_action( 'add_meta_boxes', array( $this, 'move_tags_meta_box' ), 0 );
+
+		//Load our scripts
+		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
+
+		//Add some content next to the "Add Media" button
+		add_action( 'media_buttons', array( $this, 'annotate_add_media_button' ) );
+
+		//Define an AJAX handler for the 'Delete All Media' button
+		add_filter( 'wp_ajax_delete_all_post_attachments', array( $this, 'delete_all_post_attachments' ) );
+
+		//'add_attachment'
+		//'delete_attachment'
+		//Make our Add Media button annotation available from an AJAX call
+		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
+
+		//Add a link to the Settings page on the plugin management page
+		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'insert_settings_link' ), 2, 2 );
+
+		//Define an AJAX handler for the 'Delete all inventory' button
+		add_action( 'wp_ajax_delete_all_inventory', array( $this, 'delete_all_inventory_ajax' ) );
+
+		//Add a link to the main menu of the Admin bar
+		add_action( 'admin_bar_menu', array( $this, 'add_vehicles_to_admin_bar' ), 100 );
+
+		$options = get_option( '_dealer_settings' );
+		if( isset( $options['use_carfax'] ) && $options['use_carfax'] ) {
+			add_action( 'customize_register', array( $this, 'add_settings_to_customizer' ) );
+		}
+
+		//Change some messages in the dashboard the user sees when updating vehicles
+		add_filter( 'post_updated_messages', array( $this, 'change_post_updated_messages' ) );
 	}
 
 	function insert_settings_link( $links ) {
@@ -994,9 +994,9 @@ class Inventory_Presser_Customize_Dashboard {
 	function save_vehicle_post_meta( $post_id, $post, $is_update ) {
 
 		//Do not continue if the post is being moved to the trash
-        if( 'trash' == $post->post_status ) {
-        	return;
-        }
+		if( 'trash' == $post->post_status ) {
+			return;
+		}
 
 		//if we are not coming from the new/edit post page, we want to abort
 		if( ! isset( $_POST['post_title'] ) ) {
