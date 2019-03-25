@@ -528,6 +528,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-vehicle.php',
 				'class-vehicle-urls-by-vin.php',
 				'class-widget-google-maps.php',
+				'class-widget-inventory-grid.php',
 				'class-widget-inventory-slider.php',
 				'class-widgets.php',
 				'template-tags.php',
@@ -715,6 +716,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			register_widget( "Inventory_Presser_Google_Maps_Widget" );
 
 			register_widget( 'Inventory_Presser_Slider' );
+
+			register_widget( 'Inventory_Presser_Grid' );
 		}
 
 		function set_serialized_meta_value( $value, $object, $field_name ) {
