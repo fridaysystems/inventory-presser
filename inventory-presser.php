@@ -527,9 +527,15 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-taxonomies.php',
 				'class-vehicle.php',
 				'class-vehicle-urls-by-vin.php',
+				'class-widget-address.php',
+				'class-widget-carfax.php',
 				'class-widget-google-maps.php',
+				'class-widget-hours.php',
 				'class-widget-inventory-grid.php',
 				'class-widget-inventory-slider.php',
+				'class-widget-kbb.php',
+				'class-widget-phones.php',
+				'class-widget-stock-photo-slider.php',
 				'class-widgets.php',
 				'template-tags.php',
 			);
@@ -713,11 +719,16 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * Make a widget available to embed a Google map pointed at one of
 			 * the addresses in our location taxonomy.
 			 */
-			register_widget( "Inventory_Presser_Google_Maps_Widget" );
+			register_widget( 'Inventory_Presser_Google_Maps_Widget' );
 
-			register_widget( 'Inventory_Presser_Slider' );
-
+			register_widget( 'Inventory_Presser_Carfax_Widget' );
 			register_widget( 'Inventory_Presser_Grid' );
+			register_widget( 'Inventory_Presser_KBB_Widget' );
+			register_widget( 'Inventory_Presser_Location_Address' );
+			register_widget( 'Inventory_Presser_Location_Hours' );
+			register_widget( 'Inventory_Presser_Location_Phones' );
+			register_widget( 'Inventory_Presser_Slider' );
+			register_widget( 'Inventory_Presser_Stock_Photo_Slider' );
 		}
 
 		function set_serialized_meta_value( $value, $object, $field_name ) {

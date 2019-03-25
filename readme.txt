@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.1.0
-Stable tag: 8.6.0
+Stable tag: 9.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,8 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 == Changelog ==
 
 = 9.0.0 =
+* [Added] Add a setting to both the Grid and Vehicle Slider widgets to order vehicles with the newest ones first
+* [Added] Add editor blocks for most of the vehicle attributes
 * [Changed] Changes the "Requires at least" version number to 5.0.0 because this version adds editor blocks that do not work on older versions of WordPress
 
 = 8.6.0 =
