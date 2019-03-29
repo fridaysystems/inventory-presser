@@ -124,6 +124,18 @@ class Inventory_Presser_Customize_Dashboard {
 		return $msgs;
 	}
 
+	function change_taxonomy_show_ui_attributes( $taxonomy_data ) {
+		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
+			if( ! isset( $taxonomy_data[$i]['args']['show_in_menu'] ) ) {
+				continue;
+			}
+
+			$taxonomy_data[$i]['args']['show_in_menu'] = true;
+			$taxonomy_data[$i]['args']['show_ui'] = true;
+		}
+		return $taxonomy_data;
+	}
+
 	function create_add_media_button_annotation( ) {
 		global $post;
 		if( !is_object( $post ) && isset( $_POST['post_ID'] ) ) {
@@ -476,6 +488,11 @@ class Inventory_Presser_Customize_Dashboard {
 		$options = get_option( '_dealer_settings' );
 		if( isset( $options['use_carfax'] ) && $options['use_carfax'] ) {
 			add_action( 'customize_register', array( $this, 'add_settings_to_customizer' ) );
+		}
+
+		//If the Show All Taxonomies setting is checked, change the way we register taxonomies
+		if( isset( $options['show_all_taxonomies'] ) && $options['show_all_taxonomies'] ) {
+			add_filter( 'invp_taxonomy_data', array( $this, 'change_taxonomy_show_ui_attributes' ) );
 		}
 
 		//Change some messages in the dashboard the user sees when updating vehicles

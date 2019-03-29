@@ -13,49 +13,49 @@
 class _dealer_settings {
 	private $_dealer_settings;
 
-	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'dealership_options_add_plugin_page' ) );
-		add_action( 'admin_init', array( $this, 'dealership_options_page_init' ) );
+	public function hooks() {
+		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
+		add_action( 'admin_init', array( $this, 'add_settings' ) );
 	}
 
-	public function dealership_options_add_plugin_page() {
+	public function add_options_page() {
 		if ( post_type_exists( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) ) {
 			add_submenu_page('edit.php?post_type=' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
-				'Options', // page_title
-				'Options', // menu_title
+				__( 'Options', 'inventory-presser' ), // page_title
+				__( 'Options', 'inventory-presser' ), // menu_title
 				'manage_options', // capability
 				'dealership-options', // menu_slug
-				array( $this, 'dealership_options_create_admin_page' ) // function
+				array( $this, 'options_page_content' ) // function
 			);
 		} else {
 			add_options_page(
-				'Dealership Options', // page_title
-				'Dealership Options', // menu_title
+				__( 'Inventory Presser', 'inventory-presser' ), // page_title
+				__( 'Inventory Presser', 'inventory-presser' ), // menu_title
 				'manage_options', // capability
 				'dealership-options', // menu_slug
-				array( $this, 'dealership_options_create_admin_page' ) // function
+				array( $this, 'options_page_content' ) // function
 			);
 		}
 	}
 
-	public function dealership_options_create_admin_page() {
-		$this->_dealer_settings = get_option( '_dealer_settings' ); ?>
+	public function options_page_content() {
+		$this->_dealer_settings = get_option( '_dealer_settings' );
 
-		<div class="wrap">
-			<h2>Dealership Options</h2>
-			<?php settings_errors(); ?>
+		?><div class="wrap">
+			<h2><?php _e( 'Inventory Presser Settings', 'inventory-presser' ); ?></h2>
+			<?php settings_errors();
 
-			<form method="post" action="options.php">
+			?><form method="post" action="options.php">
 				<?php
 					settings_fields( 'dealership_options_option_group' );
 					do_settings_sections( 'dealership-options-admin' );
 					submit_button();
-				?>
-			</form>
-		</div>
-	<?php }
 
-	public function dealership_options_page_init() {
+			?></form>
+		</div><?php
+	}
+
+	public function add_settings() {
 		register_setting(
 			'dealership_options_option_group', // option_group
 			'_dealer_settings', // option_name
@@ -64,7 +64,7 @@ class _dealer_settings {
 
 		add_settings_section(
 			'dealership_options_setting_section', // id
-			'Settings', // title
+			__( 'Settings', 'inventory-presser' ), // title
 			'__return_empty_string', // callback
 			'dealership-options-admin' // page
 		);
@@ -72,7 +72,7 @@ class _dealer_settings {
 		//Sort vehicles by [Field] in [Ascending] order
 		add_settings_field(
 			'sort_vehicles_by', // id
-			'Sort Vehicles By', // title
+			__( 'Sort Vehicles By', 'inventory-presser' ), // title
 			array( $this, 'sort_vehicles_by_callback' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
@@ -81,7 +81,7 @@ class _dealer_settings {
 		//[x] Include sold vehicles on listings pages
 		add_settings_field(
 			'include_sold_vehicles', // id
-			'Sold Vehicles', // title
+			__( 'Sold Vehicles', 'inventory-presser' ), // title
 			array( $this, 'include_sold_vehicles_callback' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
@@ -89,8 +89,17 @@ class _dealer_settings {
 
 		add_settings_field(
 			'use_carfax', // id
-			'CARFAX', // title
+			__( 'CARFAX', 'inventory-presser' ), // title
 			array( $this, 'use_carfax_callback' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
+		//[x] Show all taxonomies under Vehicles menu in Dashboard
+		add_settings_field(
+			'show_all_taxonomies', // id
+			__( 'Show All Taxonomies', 'inventory-presser' ), // title
+			array( $this, 'show_all_taxonomies_callback' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
 		);
@@ -111,6 +120,10 @@ class _dealer_settings {
 			$sanitary_values['include_sold_vehicles'] = $input['include_sold_vehicles'];
 		}
 
+		if ( isset( $input['show_all_taxonomies'] ) ) {
+			$sanitary_values['show_all_taxonomies'] = true;
+		}
+
 		if ( isset( $input['use_carfax'] ) ) {
 			$sanitary_values['use_carfax'] = $input['use_carfax'];
 		}
@@ -120,8 +133,9 @@ class _dealer_settings {
 
 	function include_sold_vehicles_callback() {
 		printf(
-			'<input type="checkbox" name="_dealer_settings[include_sold_vehicles]" id="include_sold_vehicles" value="include_sold_vehicles" %s> <label for="include_sold_vehicles">Include sold vehicles on listings pages</label>',
-			( isset( $this->_dealer_settings['include_sold_vehicles'] ) && $this->_dealer_settings['include_sold_vehicles'] === 'include_sold_vehicles' ) ? 'checked' : ''
+			'<input type="checkbox" name="_dealer_settings[include_sold_vehicles]" id="include_sold_vehicles" value="include_sold_vehicles" %s> <label for="include_sold_vehicles">%s</label>',
+			( isset( $this->_dealer_settings['include_sold_vehicles'] ) && $this->_dealer_settings['include_sold_vehicles'] === 'include_sold_vehicles' ) ? 'checked' : '',
+			__( 'Include sold vehicles on listings pages', 'inventory-presser' )
 		);
 	}
 
@@ -170,7 +184,10 @@ class _dealer_settings {
 			echo '>' . str_replace( '_', ' ', ucfirst( $key ) ) . '</option>';
 		}
 
-		echo '</select> in <select name="_dealer_settings[sort_vehicles_order]" id="sort_vehicles_order">';
+		printf(
+			'</select> %s <select name="_dealer_settings[sort_vehicles_order]" id="sort_vehicles_order">',
+			__( 'in', 'inventory-presser' )
+		);
 
 		foreach( array( 'ascending' => 'ASC', 'descending' => 'DESC' ) as $direction => $abbr ) {
 			echo '<option value="'. $abbr . '"';
@@ -179,14 +196,38 @@ class _dealer_settings {
 			}
 			echo '>' . $direction . '</option>';
 		}
-		echo '</select> order';
+		echo '</select> ' . __( 'order', 'inventory-presser' );
+	}
+
+	function boolean_checkbox_setting_callback( $setting_name, $checkbox_label ) {
+		printf(
+			'<input type="checkbox" name="_dealer_settings[%s]" id="%s" %s> <label for="%s">%s</label>',
+			$setting_name,
+			$setting_name,
+			( isset( $this->_dealer_settings[$setting_name] ) && $this->_dealer_settings[$setting_name] ) ? 'checked' : '',
+			$setting_name,
+			$checkbox_label
+		);
+	}
+
+	/**
+	 * Output the controls that create the Show all Taxonomies setting.
+	 *
+	 * @return void
+	 */
+	function show_all_taxonomies_callback() {
+		$this->boolean_checkbox_setting_callback( 'show_all_taxonomies', __( 'Show all taxonomies under Vehicles menu in Dashboard', 'inventory-presser' ) );
 	}
 
 	public function use_carfax_callback() {
 		printf(
-			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">Display CARFAX buttons near vehicles that link to free CARFAX reports</label>',
-			( isset( $this->_dealer_settings['use_carfax'] ) && $this->_dealer_settings['use_carfax'] === 'use_carfax' ) ? 'checked' : ''
+			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">%s</label>',
+			( isset( $this->_dealer_settings['use_carfax'] ) && $this->_dealer_settings['use_carfax'] === 'use_carfax' ) ? 'checked' : '',
+			__( 'Display CARFAX buttons near vehicles that link to free CARFAX reports', 'inventory-presser' )
 		);
 	}
 }
-if ( is_admin() ) { $dealership_options = new _dealer_settings(); }
+if ( is_admin() ) {
+	$invp_options_019230128080 = new _dealer_settings();
+	$invp_options_019230128080->hooks();
+}
