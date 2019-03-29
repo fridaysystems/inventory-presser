@@ -494,6 +494,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$email_a_friend = new Inventory_Presser_Email_A_Friend();
 			$email_a_friend->hooks();
 
+			//Make it possible for a menu item to print the page
+			$print_button = new Inventory_Presser_Menu_Item_Print();
+			$print_button->hooks();
+
 			//Skip the trash bin and always permanently delete vehicles
 			add_action( 'trashed_post', array( $this, 'skip_trash' ) );
 
@@ -519,6 +523,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-fuel-economy-widget.php',
 				'class-license.php',
 				'class-menu-item-email-a-friend.php',
+				'class-menu-item-print.php',
 				'class-option-manager.php',
 				'class-order-by-post-meta-widget.php',
 				'class-redirect-404-vehicles.php',

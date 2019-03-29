@@ -64,6 +64,8 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 = 9.0.0 =
 * [Added] Add a setting to both the Grid and Vehicle Slider widgets to order vehicles with the newest ones first
 * [Added] Add editor blocks for most of the vehicle attributes
+* [Added] Add a setting to the Options page that allows users to show all taxonomies under the Vehicles menu in the Dashboard
+* [Added] Enable print buttons in menus on any Custom Link menu item with a target of "#" and a CSS class of "invp-print-button"
 * [Changed] Changes the "Requires at least" version number to 5.0.0 because this version adds editor blocks that do not work on older versions of WordPress
 
 = 8.6.0 =

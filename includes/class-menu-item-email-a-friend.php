@@ -1,8 +1,5 @@
 <?php
-
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
+defined( 'ABSPATH' ) or exit;
 /**
  * Implement a mailto: link in a specific menu item in a specific menu that
  * often exists in Inventory Presser websites.
@@ -23,7 +20,7 @@ class Inventory_Presser_Email_A_Friend{
 	/**
 	 * Set up filter and action hooks
 	 *
-	 * @uses add_action(), load_plugin_textdomain(), add_filter()
+	 * @uses add_filter()
 	 *
 	 * @return void
 	 */
