@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) or exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 9.0.0
+ * Version: 9.1.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -443,9 +443,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Flush rewrite rules when the plugin is activated
 			register_activation_hook( __FILE__, array( $this, 'my_rewrite_flush' ) );
+			//Schedule a weekly cron job to delete empty terms in our taxonomies
+			register_activation_hook( __FILE__, array( $this->taxonomies, 'schedule_terms_cron_job' ) );
 
 			//Do some things during deactivation
 			register_deactivation_hook( __FILE__, array( $this, 'delete_rewrite_rules_option' ) );
+			register_deactivation_hook( __FILE__, array( $this->taxonomies, 'remove_terms_cron_job' ) );
 
 			/**
 			 * These items make it easier to create themes based on our custom post type
