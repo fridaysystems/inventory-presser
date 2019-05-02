@@ -62,7 +62,7 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 == Changelog ==
 
 = 9.1.0 =
-* [Added] Deletes unused terms in a handful of the custom taxonomies once a week using a wp-cron job
+* [Added] Deletes unused terms in a handful of the custom taxonomies once a week using a wp-cron job. Years of inventory churn created hundreds of empty terms before this feature.
 
 = 9.0.0 =
 * [Added] Add a setting to both the Grid and Vehicle Slider widgets to order vehicles with the newest ones first

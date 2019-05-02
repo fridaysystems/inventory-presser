@@ -14,34 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 class Inventory_Presser_Taxonomies {
 
-	function hooks() {
-
-		//create custom taxonomies for vehicles
-		add_action( 'init', array( $this, 'create_custom_taxonomies' ) );
-		add_action( 'init', array( $this, 'register_location_term_meta' ) );
-		add_action( 'rest_api_init', array( $this, 'add_api_term_meta_workaround_fields' ) );
-
-		add_action( 'invp_delete_all_data', array( $this, 'delete_term_data' ));
-
-		// location taxonomy admin actions
-		add_action( 'location_add_form_fields', array( $this, 'add_location_fields'), 10, 2 );
-		add_action( 'location_add_form_fields', array( $this, 'add_location_fields_javascript'), 11, 1 );
-		add_action( 'created_location', array( $this, 'save_location_meta'), 10, 2 );
-		add_action( 'location_edit_form_fields', array( $this, 'edit_location_field'), 10, 2 );
-		add_action( 'edited_location', array( $this, 'save_location_meta'), 10, 2 );
-
-		//Sort some taxonomy terms as numbers
-		add_filter( 'get_terms_orderby', array( $this, 'sort_terms_as_numbers' ), 10,  3 );
-
-		//Save custom taxonomy terms when posts are saved
-		add_action( 'save_post_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
-
-		//Load our scripts
-		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
-
-		//Do not include sold vehicles in listings unless an option is checked
-		add_action( 'pre_get_posts', array( $this, 'maybe_exclude_sold_vehicles' ) );
-	}
+	const CRON_HOOK_DELETE_TERMS = 'inventory_presser_delete_unused_terms';
 
 	function add_api_term_meta_workaround_fields() {
 
@@ -55,26 +28,6 @@ class Inventory_Presser_Taxonomies {
 				'context'     => array( 'view', 'edit' ),
 			),
 		) );
-	}
-
-	function get_term_meta_via_rest( $term, $attr, $request, $object_type ) {
-
-		/**
-		 * As of WP 4.9.6, the object passed to this callback is sometimes an
-		 * array. I think this is a bug and provide some details here:
-		 * https://coreysalzano.com/wordpress/array-passed-to-get_callback-you-provide-to-register_rest_field/
-		 */
-		$term_id = ( is_array( $term ) ? $term['id'] : $term->term_id );
-		return maybe_serialize( get_term_meta( $term_id, $attr, true ) );
-	}
-
-	function set_term_meta_via_rest( $value, $term, $attr, $request, $object_type ) {
-		$value = maybe_unserialize( $value );
-		$old_value = get_term_meta( $term->term_id, $attr, true );
-		$result = isset( $term->term_id ) && update_term_meta( $term->term_id, $attr, $value, $old_value );
-		if( true !== $result ) {
-			$result = add_term_meta( $term->term_id, $attr, $value, true );
-		}
 	}
 
 	/* location taxonomy */
@@ -162,9 +115,20 @@ class Inventory_Presser_Taxonomies {
 		</script><?php
 	}
 
-	function create_custom_taxonomies() {
+	/**
+	 * Enable weekly wp-cron jobs
+	 */
+	function add_weekly_cron_interval( $schedules ) {
+		$schedules['weekly'] = array(
+			'interval' => 604800,
+			'display'  => esc_html__( 'Every Week' ),
+		);
+		return $schedules;
+	}
+
+	static function create_custom_taxonomies() {
 		//loop over this data, register the taxonomies, and populate the terms if needed
-		$taxonomy_data = $this->taxonomy_data();
+		$taxonomy_data = self::taxonomy_data();
 		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
 			//create the taxonomy, replace hyphens with underscores
 			$taxonomy_name = str_replace( '-', '_', $taxonomy_data[$i]['args']['query_var'] );
@@ -172,17 +136,9 @@ class Inventory_Presser_Taxonomies {
 		}
 	}
 
-	//When the REST API properly supports term meta, this will probably work!
-	function register_location_term_meta() {
-		register_meta( 'term', 'location-phone-hours', array(
-			 'show_in_rest' => true,
-			 'single'       => true,
-		) );
-	}
-
 	function delete_term_data() {
 		//remove the terms in taxonomies
-		$taxonomy_data = $this->taxonomy_data();
+		$taxonomy_data = self::taxonomy_data();
 		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
 			$tax = $taxonomy_data[$i]['args']['label'];
 			$terms = get_terms( $tax, array(
@@ -191,6 +147,26 @@ class Inventory_Presser_Taxonomies {
 			) );
 			foreach ( $terms as $value ) {
 				wp_delete_term( $value, $tax );
+			}
+		}
+	}
+
+	/**
+	 * The nature of inserting and deleting vehicles means terms in a few of our
+	 * taxonomies will be left behind and unused. This method deletes some of
+	 * them.
+	 */
+	function delete_unused_terms() {
+		$terms = get_terms( array(
+			'taxonomy'   => array( 'model_year', 'make', 'model', 'style' ),
+			'childless'  => true,
+			'count'      => true,
+			'hide_empty' => false,
+		) );
+
+		foreach( $terms as $term ) {
+			if( 0 == $term->count ) {
+				wp_delete_term( $term->term_id, $term->taxonomy );
 			}
 		}
 	}
@@ -371,12 +347,59 @@ class Inventory_Presser_Taxonomies {
 		return $uid;
 	}
 
+	function get_term_meta_via_rest( $term, $attr, $request, $object_type ) {
+
+		/**
+		 * As of WP 4.9.6, the object passed to this callback is sometimes an
+		 * array. I think this is a bug and provide some details here:
+		 * https://coreysalzano.com/wordpress/array-passed-to-get_callback-you-provide-to-register_rest_field/
+		 */
+		$term_id = ( is_array( $term ) ? $term['id'] : $term->term_id );
+		return maybe_serialize( get_term_meta( $term_id, $attr, true ) );
+	}
+
 	function get_term_slug( $taxonomy_name, $post_id ) {
 		$terms = wp_get_object_terms( $post_id, $taxonomy_name, array( 'orderby' => 'term_id', 'order' => 'ASC' ) );
 		if ( ! is_wp_error( $terms ) && isset( $terms[0] ) && isset( $terms[0]->name ) ) {
 			return $terms[0]->slug;
 		}
 		return '';
+	}
+
+
+	function hooks() {
+
+		//create custom taxonomies for vehicles
+		add_action( 'init', array( $this, 'create_custom_taxonomies' ) );
+		add_action( 'init', array( $this, 'register_location_term_meta' ) );
+		add_action( 'rest_api_init', array( $this, 'add_api_term_meta_workaround_fields' ) );
+
+		add_action( 'invp_delete_all_data', array( $this, 'delete_term_data' ) );
+
+		// location taxonomy admin actions
+		add_action( 'location_add_form_fields', array( $this, 'add_location_fields'), 10, 2 );
+		add_action( 'location_add_form_fields', array( $this, 'add_location_fields_javascript'), 11, 1 );
+		add_action( 'created_location', array( $this, 'save_location_meta'), 10, 2 );
+		add_action( 'location_edit_form_fields', array( $this, 'edit_location_field'), 10, 2 );
+		add_action( 'edited_location', array( $this, 'save_location_meta'), 10, 2 );
+
+		//Sort some taxonomy terms as numbers
+		add_filter( 'get_terms_orderby', array( $this, 'sort_terms_as_numbers' ), 10,  3 );
+
+		//Save custom taxonomy terms when posts are saved
+		add_action( 'save_post_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
+
+		//Load our scripts
+		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
+
+		//Do not include sold vehicles in listings unless an option is checked
+		add_action( 'pre_get_posts', array( $this, 'maybe_exclude_sold_vehicles' ) );
+
+		add_filter( 'cron_schedules', array( $this, 'add_weekly_cron_interval' ) );
+		add_action( self::CRON_HOOK_DELETE_TERMS, array( $this, 'delete_unused_terms' ) );
+
+		//Put terms into our taxonomies when the plugin is activated
+		register_activation_hook( dirname( __FILE__, 2 ) . '/inventory-presser.php', array( 'Inventory_Presser_Taxonomies', 'populate_default_terms' ) );
 	}
 
 	function load_scripts($hook) {
@@ -464,10 +487,37 @@ class Inventory_Presser_Taxonomies {
 		);
 	}
 
+	//Populate our taxonomies with terms if they do not already exist
+	static function populate_default_terms() {
+
+		//create the taxonomies or else our wp_insert_term calls will fail
+		self::create_custom_taxonomies();
+
+		$taxonomy_data = self::taxonomy_data();
+		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
+
+			if( ! isset( $taxonomy_data[$i]['term_data'] ) ) { continue; }
+
+			foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
+				$taxonomy_name = str_replace( '-', '_', $taxonomy_data[$i]['args']['query_var'] );
+				if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) ) {
+					$term_exists = wp_insert_term(
+						$desc,
+						$taxonomy_name,
+						array (
+							'description' => $desc,
+							'slug'        => $abbr,
+						)
+					);
+				}
+			}
+		}
+	}
+
 	//returns an array of all our taxonomy query vars
-	function query_vars_array() {
+	static function query_vars_array() {
 		$arr = array();
-		foreach( $this->taxonomy_data() as $taxonomy_array ) {
+		foreach( self::taxonomy_data() as $taxonomy_array ) {
 			if( ! isset( $taxonomy_array['args'] ) || ! isset( $taxonomy_array['args']['query_var'] ) ) {
 				continue;
 			}
@@ -475,6 +525,32 @@ class Inventory_Presser_Taxonomies {
 			array_push( $arr, $slug );
 		}
 		return $arr;
+	}
+
+	//When the REST API properly supports term meta, this will probably work!
+	function register_location_term_meta() {
+		register_meta( 'term', 'location-phone-hours', array(
+			 'show_in_rest' => true,
+			 'single'       => true,
+		) );
+	}
+
+	/**
+	 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
+	 */
+	public static function remove_terms_cron_job( $network_wide ) {
+
+		if( ! is_multisite() || ! $network_wide ) {
+			wp_unschedule_event( wp_next_scheduled( self::CRON_HOOK_DELETE_TERMS ), self::CRON_HOOK_DELETE_TERMS );
+			return;
+		}
+
+		$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
+		foreach( $sites as $site ) {
+			switch_to_blog( $site->blog_id );
+			wp_unschedule_event( wp_next_scheduled( self::CRON_HOOK_DELETE_TERMS ), self::CRON_HOOK_DELETE_TERMS );
+			restore_current_blog();
+		}
 	}
 
 	function save_location_meta( $term_id, $tt_id ) {
@@ -599,6 +675,35 @@ class Inventory_Presser_Taxonomies {
 		}
 	}
 
+	/**
+	 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
+	 */
+	public static function schedule_terms_cron_job( $network_wide ) {
+		if ( ! wp_next_scheduled( self::CRON_HOOK_DELETE_TERMS ) ) {
+
+			if( ! is_multisite() || ! $network_wide ) {
+				wp_schedule_event( time(), 'weekly', self::CRON_HOOK_DELETE_TERMS );
+				return;
+			}
+
+			$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
+			foreach( $sites as $site ) {
+				switch_to_blog( $site->blog_id );
+				wp_schedule_event( time(), 'weekly', self::CRON_HOOK_DELETE_TERMS );
+				restore_current_blog();
+			}
+		}
+	}
+
+	function set_term_meta_via_rest( $value, $term, $attr, $request, $object_type ) {
+		$value = maybe_unserialize( $value );
+		$old_value = get_term_meta( $term->term_id, $attr, true );
+		$result = isset( $term->term_id ) && update_term_meta( $term->term_id, $attr, $value, $old_value );
+		if( true !== $result ) {
+			$result = add_term_meta( $term->term_id, $attr, $value, true );
+		}
+	}
+
 	//returns an array of all our taxonomy slugs
 	function slugs_array() {
 		$arr = array();
@@ -626,7 +731,7 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	//this is an array of taxonomy names and the corresponding arrays of term data
-	function taxonomy_data( ) {
+	static function taxonomy_data( ) {
 		return apply_filters(
 			'invp_taxonomy_data',
 			array (
@@ -698,7 +803,7 @@ class Inventory_Presser_Taxonomies {
 							'popular_items' => 'Popular conditions',
 							'all_items'     => 'All new and used',
 						),
-						'meta_box_cb'    => array( $this, 'meta_box_html_condition' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_condition' ),
 						'query_var'      => 'condition',
 						'singular_label' => 'Condition',
 						'show_in_menu'   => false,
@@ -721,7 +826,7 @@ class Inventory_Presser_Taxonomies {
 							'popular_items' => 'Popular types',
 							'all_items'     => 'All types',
 						),
-						'meta_box_cb'    => array( $this, 'meta_box_html_type' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_type' ),
 						'query_var'      => 'type',
 						'rest_base'      => 'inventory_type',
 						'singular_label' => 'Type',
@@ -755,7 +860,7 @@ class Inventory_Presser_Taxonomies {
 							'popular_items' => 'Popular availabilities',
 							'all_items'     => 'All sold and for sale',
 						),
-						'meta_box_cb'    => array( $this, 'meta_box_html_availability' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_availability' ),
 						'query_var'      => 'availability',
 						'singular_label' => 'Availability',
 						'show_in_menu'   => false,
@@ -778,7 +883,7 @@ class Inventory_Presser_Taxonomies {
 							'popular_items' => 'Popular drive types',
 							'all_items'     => 'All drive types',
 						),
-						'meta_box_cb'    => array( $this, 'meta_box_html_drive_type' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_drive_type' ),
 						'query_var'      => 'drive-type',
 						'singular_label' => 'Drive type',
 						'show_in_menu'   => false,
@@ -811,7 +916,7 @@ class Inventory_Presser_Taxonomies {
 							'popular_items' => 'Popular propulsion types',
 							'all_items'     => 'All propulsion types',
 						),
-						'meta_box_cb'    => array( $this, 'meta_box_html_propulsion_type' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_propulsion_type' ),
 						'query_var'      => 'propulsion-type',
 						'singular_label' => 'Propulsion type',
 						'show_in_menu'   => false,
@@ -837,7 +942,7 @@ class Inventory_Presser_Taxonomies {
 							'popular_items' => 'Popular fuel types',
 							'all_items'     => 'All fuel types',
 						),
-						'meta_box_cb'    => array( $this, 'meta_box_html_fuel' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_fuel' ),
 						'query_var'      => 'fuel',
 						'singular_label' => 'Fuel',
 						'show_in_menu'   => false,
@@ -869,7 +974,7 @@ class Inventory_Presser_Taxonomies {
 							'popular_items' => 'Popular transmissions',
 							'all_items'     => 'All transmissions',
 						),
-						'meta_box_cb'    => array( $this, 'meta_box_html_transmission' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_transmission' ),
 						'query_var'      => 'transmission',
 						'singular_label' => 'Transmission',
 						'show_in_menu'   => false,
@@ -894,7 +999,7 @@ class Inventory_Presser_Taxonomies {
 							'popular_items' => 'Popular cylinder counts',
 							'all_items'     => 'All cylinder counts',
 						),
-						'meta_box_cb'    => array( $this, 'meta_box_html_cylinders' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_cylinders' ),
 						'query_var'      => 'cylinders',
 						'singular_label' => 'Cylinders',
 						'show_in_menu'   => false,
@@ -948,7 +1053,7 @@ class Inventory_Presser_Taxonomies {
 							'new_item_name' => __( 'New Location Name', 'inventory-presser' ),
 							'menu_name'     => __( 'Locations', 'inventory-presser' ),
 						),
-						'meta_box_cb'    => array( $this, 'meta_box_html_locations' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_locations' ),
 						'query_var'      => 'location',
 						'singular_label' => 'Location',
 						'show_in_menu'   => true,

@@ -17,7 +17,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	class Inventory_Presser_Plugin {
 
 		const CUSTOM_POST_TYPE = 'inventory_vehicle';
-		var $taxonomies;
 		var $settings; //this plugin's options
 
 		function add_orderby_to_query( $query ) {
@@ -206,7 +205,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			return $termlink;
 		}
 
-		function create_custom_post_type( ) {
+		static function create_custom_post_type( ) {
 			//creates a custom post type that will be used by this plugin
 			register_post_type(
 				self::CUSTOM_POST_TYPE,
@@ -245,7 +244,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							'title',
 							'thumbnail',
 						),
-						'taxonomies'   => $this->taxonomies->query_vars_array(),
+						'taxonomies'   => Inventory_Presser_Taxonomies::query_vars_array(),
 					)
 				)
 			);
@@ -313,14 +312,28 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			delete_option( '_dealer_settings_edmunds' );
 		}
 
-		function delete_rewrite_rules_option( ) {
+		/**
+		 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
+		 */
+		static function delete_rewrite_rules_option( $network_wide ) {
+
 			/**
 			 * This is called during plugin deactivation
 			 * delete the rewrite_rules option so the rewrite rules
 			 * are generated on the next page load without ours.
 			 * this is a weird thing and is described here http://wordpress.stackexchange.com/a/44337/13090
 			 */
-			delete_option('rewrite_rules');
+			if( ! is_multisite() || ! $network_wide ) {
+				delete_option('rewrite_rules');
+				return;
+			}
+
+			$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
+			foreach( $sites as $site ) {
+				switch_to_blog( $site->blog_id );
+				delete_option( 'rewrite_rules' );
+				restore_current_blog();
+			}
 		}
 
 		//What is the registered handle of the active theme's stylesheet?
@@ -333,6 +346,26 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				}
 			}
 			return null;
+		}
+
+		/**
+		 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
+		 */
+		static function flush_rewrite( $network_wide ) {
+
+			self::create_custom_post_type( );
+
+			if( ! is_multisite() || ! $network_wide ) {
+				flush_rewrite_rules( );
+				return;
+			}
+
+			$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
+			foreach( $sites as $site ) {
+				switch_to_blog( $site->blog_id );
+				delete_option( 'rewrite_rules' );
+				restore_current_blog();
+			}
 		}
 
 		// generate every possible combination of rewrite rules, including paging, based on post type taxonomy
@@ -426,8 +459,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_action( 'rest_api_init', array( $this, 'create_serialized_api_fields' ) );
 
 			//Create custom taxonomies
-			$this->taxonomies = new Inventory_Presser_Taxonomies();
-			$this->taxonomies->hooks();
+			$taxonomies = new Inventory_Presser_Taxonomies();
+			$taxonomies->hooks();
 
 			/**
 			 * Some custom rewrite rules are created and destroyed
@@ -442,13 +475,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 
 			//Flush rewrite rules when the plugin is activated
-			register_activation_hook( __FILE__, array( $this, 'my_rewrite_flush' ) );
+			register_activation_hook( __FILE__, array( 'Inventory_Presser_Plugin', 'flush_rewrite' ) );
 			//Schedule a weekly cron job to delete empty terms in our taxonomies
-			register_activation_hook( __FILE__, array( $this->taxonomies, 'schedule_terms_cron_job' ) );
+			register_activation_hook( __FILE__, array( 'Inventory_Presser_Taxonomies', 'schedule_terms_cron_job' ) );
 
 			//Do some things during deactivation
-			register_deactivation_hook( __FILE__, array( $this, 'delete_rewrite_rules_option' ) );
-			register_deactivation_hook( __FILE__, array( $this->taxonomies, 'remove_terms_cron_job' ) );
+			register_deactivation_hook( __FILE__, array( 'Inventory_Presser_Plugin', 'delete_rewrite_rules_option' ) );
+			register_deactivation_hook( __FILE__, array( 'Inventory_Presser_Taxonomies', 'remove_terms_cron_job' ) );
 
 			/**
 			 * These items make it easier to create themes based on our custom post type
@@ -633,49 +666,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			return $pieces;
 		}
 
-		function my_rewrite_flush( ) {
-			//http://codex.wordpress.org/Function_Reference/register_post_type#Flushing_Rewrite_on_Activation
-
-			// First, we "add" the custom post type via the above written function.
-			// Note: "add" is written with quotes, as CPTs don't get added to the DB,
-			// They are only referenced in the post_type column with a post entry,
-			// when you add a post of this CPT.
-			$this->create_custom_post_type( );
-
-			// ATTENTION: This is *only* done during plugin activation hook in this example!
-			// You should *NEVER EVER* do this on every page load!!
-			flush_rewrite_rules( );
-		}
-
-		//Populate our taxonomies with terms if they do not already exist
-		function populate_default_terms() {
-
-			$taxonomies_obj = new Inventory_Presser_Taxonomies();
-
-			//create the taxonomies or else our wp_insert_term calls will fail
-			$taxonomies_obj->create_custom_taxonomies();
-
-			$taxonomy_data = $taxonomies_obj->taxonomy_data();
-			for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
-
-				if( ! isset( $taxonomy_data[$i]['term_data'] ) ) { continue; }
-
-				foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
-					$taxonomy_name = str_replace( '-', '_', $taxonomy_data[$i]['args']['query_var'] );
-					if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) ) {
-						$term_exists = wp_insert_term(
-							$desc,
-							$taxonomy_name,
-							array (
-								'description' => $desc,
-								'slug' => $abbr,
-							)
-						);
-					}
-				}
-			}
-		}
-
 		//register all meta fields our CPT uses
 		function register_meta_fields() {
 
@@ -776,6 +766,4 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	} //end class
 	$inventory_presser = new Inventory_Presser_Plugin();
 	$inventory_presser->hooks();
-
-	register_activation_hook( __FILE__, array( $inventory_presser, 'populate_default_terms' ) );
 } //end if
