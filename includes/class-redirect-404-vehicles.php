@@ -66,7 +66,7 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 
 			//get the make out of the slug
 			$make = $this->extract_make( $wp_obj );
-			if( '' == $make ) {
+			if( ! is_string( $make ) || '' == $make ) {
 				//no make, redirect to vehicle archive
 				wp_safe_redirect( $url, 302 );
 				exit;

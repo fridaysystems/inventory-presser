@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-	jQuery('.slick-slider-element').slick({
+	jQuery('.slick-slider-element').not('.slick-initialized').slick({
 		autoplay: true,
 		responsive: [
 			{

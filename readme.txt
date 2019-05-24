@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.1.0
-Stable tag: 9.1.0
+Stable tag: 9.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,10 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 9.1.1 =
+* [Fixed] Make sure some values we anticipate to be strings are strings before trying to use them to load locations or redirect to a make archive
+* [Fixed] Do not load the slick slider JavaScript if another plugin or theme has already loaded it to avoid a conflict and errors
 
 = 9.1.0 =
 * [Added] Deletes unused terms in a handful of the custom taxonomies once a week using a wp-cron job. Years of inventory churn created hundreds of empty terms before this feature.

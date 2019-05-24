@@ -40,17 +40,19 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		$location = get_term_by( 'slug', $instance['location_slug'], 'location' );
+		if( isset( $instance['location_slug'] ) && is_string( $instance['location_slug'] )  {
 
-		//remove line breaks from the term description
-		$address_to_search = str_replace( PHP_EOL, ', ', $location->description );
+			$location = get_term_by( 'slug', $instance['location_slug'], 'location' );
+			//remove line breaks from the term description
+			$address_to_search = str_replace( PHP_EOL, ', ', $location->description );
 
-		printf(
-			'<div class="invp-google-maps"><iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=%s&amp;t=m&amp;z=%d&amp;output=embed" aria-label="%s"></iframe></div>',
-			rawurlencode( $address_to_search ),
-			'13',
-			esc_attr( $address_to_search )
-		);
+			printf(
+				'<div class="invp-google-maps"><iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=%s&amp;t=m&amp;z=%d&amp;output=embed" aria-label="%s"></iframe></div>',
+				rawurlencode( $address_to_search ),
+				'13',
+				esc_attr( $address_to_search )
+			);
+		}
 
 		echo $args['after_widget'];
 	}
