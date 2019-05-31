@@ -40,7 +40,7 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		if( isset( $instance['location_slug'] ) && is_string( $instance['location_slug'] )  {
+		if( isset( $instance['location_slug'] ) && is_string( $instance['location_slug'] ) ) {
 
 			$location = get_term_by( 'slug', $instance['location_slug'], 'location' );
 			//remove line breaks from the term description
