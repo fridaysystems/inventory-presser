@@ -117,8 +117,8 @@ class Inventory_Presser_Shortcodes {
 					'relation' => 'AND',
 					array(
 						'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
-						'value'   => 0,
-						'compare' => '='
+						'value' => array( '', '0'),
+						'compare' => 'IN'
 					),
 					array(
 						'key'	  => '_thumbnail_id',
@@ -133,7 +133,10 @@ class Inventory_Presser_Shortcodes {
 			$inventory_ids += get_posts($gpargs);
 		}
 
-		if( ! $inventory_ids ) { return ''; }
+		if( ! $inventory_ids ) {
+			error_log( 'Shortcode [invp-inventory-slider] found no vehicles.' );
+			return '';
+		}
 
 		shuffle( $inventory_ids );
 

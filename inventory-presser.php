@@ -576,7 +576,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-widget-inventory-slider.php',
 				'class-widget-kbb.php',
 				'class-widget-phones.php',
-				'class-widget-stock-photo-slider.php',
 				'class-widgets.php',
 				'template-tags.php',
 			);
@@ -726,7 +725,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			register_widget( 'Inventory_Presser_Location_Hours' );
 			register_widget( 'Inventory_Presser_Location_Phones' );
 			register_widget( 'Inventory_Presser_Slider' );
-			register_widget( 'Inventory_Presser_Stock_Photo_Slider' );
 		}
 
 		function set_serialized_meta_value( $value, $object, $field_name ) {
