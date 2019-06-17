@@ -116,9 +116,16 @@ class Inventory_Presser_Shortcodes {
 				'meta_query'  => array(
 					'relation' => 'AND',
 					array(
-						'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
-						'value' => array( '', '0'),
-						'compare' => 'IN'
+						'relation' => 'OR',
+						array(
+							'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
+							'value'   => array( '', '0'),
+							'compare' => 'IN'
+						),
+						array(
+							'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
+							'compare' => 'NOT EXISTS',
+						),
 					),
 					array(
 						'key'	  => '_thumbnail_id',
