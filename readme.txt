@@ -65,7 +65,10 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 * [Removed] Removes the Stock Photo Slider widget. This image slider with included stock automobile photography has been extracted and lives on as a separate plugin.
 * [Fixed] Fixes a bug where custom meta boxes on the vehicle post type were generating errors because they were not called statically
 * [Fixed] Fixes a bug to prevent warnings about a callback passed to register_rest_field() being called statically
+<<<<<<< HEAD
 * [Fixed] Fixes a bug in the [invp-inventory-slider] shortcode to make sure the slider appears despite no vehicles in inventory being marked as featured
+=======
+>>>>>>> b33a85caeb87fd4facbd75d066ef7d6fa532f68e
 
 = 9.1.1 =
 * [Fixed] Make sure some values we anticipate to be strings are strings before trying to use them to load locations or redirect to a make archive
