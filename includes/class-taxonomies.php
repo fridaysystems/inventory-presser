@@ -20,8 +20,26 @@ class Inventory_Presser_Taxonomies {
 
 		//location-phone-hours
 		register_rest_field( 'location', 'location-phone-hours', array(
-			'get_callback'    => array( $this, 'get_term_meta_via_rest' ),
-			'update_callback' => array( $this, 'set_term_meta_via_rest' ),
+
+			'get_callback'    => function( $term, $attr, $request, $object_type ) {
+				/**
+				 * As of WP 4.9.6, the object passed to this callback is sometimes an
+				 * array. I think this is a bug and provide some details here:
+				 * https://coreysalzano.com/wordpress/array-passed-to-get_callback-you-provide-to-register_rest_field/
+				 */
+				$term_id = ( is_array( $term ) ? $term['id'] : $term->term_id );
+				return maybe_serialize( get_term_meta( $term_id, $attr, true ) );
+			},
+
+			'update_callback' => function( $value, $term, $attr, $request, $object_type ) {
+				$value = maybe_unserialize( $value );
+				$old_value = get_term_meta( $term->term_id, $attr, true );
+				$result = isset( $term->term_id ) && update_term_meta( $term->term_id, $attr, $value, $old_value );
+				if( true !== $result ) {
+					$result = add_term_meta( $term->term_id, $attr, $value, true );
+				}
+			},
+
 			'schema'          => array(
 				'description' => __( 'An array of phone numbers and hours of operation for this location.', 'inventory-presser' ),
 				'type'        => 'string',
@@ -347,18 +365,7 @@ class Inventory_Presser_Taxonomies {
 		return $uid;
 	}
 
-	function get_term_meta_via_rest( $term, $attr, $request, $object_type ) {
-
-		/**
-		 * As of WP 4.9.6, the object passed to this callback is sometimes an
-		 * array. I think this is a bug and provide some details here:
-		 * https://coreysalzano.com/wordpress/array-passed-to-get_callback-you-provide-to-register_rest_field/
-		 */
-		$term_id = ( is_array( $term ) ? $term['id'] : $term->term_id );
-		return maybe_serialize( get_term_meta( $term_id, $attr, true ) );
-	}
-
-	function get_term_slug( $taxonomy_name, $post_id ) {
+	static function get_term_slug( $taxonomy_name, $post_id ) {
 		$terms = wp_get_object_terms( $post_id, $taxonomy_name, array( 'orderby' => 'term_id', 'order' => 'ASC' ) );
 		if ( ! is_wp_error( $terms ) && isset( $terms[0] ) && isset( $terms[0]->name ) ) {
 			return $terms[0]->slug;
@@ -444,45 +451,45 @@ class Inventory_Presser_Taxonomies {
 		$query->set( 'tax_query', $tax_query );
 	}
 
-	function meta_box_html_condition( $post ) {
-		echo $this->taxonomy_meta_box_html( 'condition', apply_filters( 'invp_prefix_meta_key', 'condition' ), $post );
+	static function meta_box_html_condition( $post ) {
+		echo self::taxonomy_meta_box_html( 'condition', apply_filters( 'invp_prefix_meta_key', 'condition' ), $post );
 	}
 
-	function meta_box_html_cylinders( $post ) {
-		echo $this->taxonomy_meta_box_html( 'cylinders', apply_filters( 'invp_prefix_meta_key', 'cylinders' ), $post );
+	static function meta_box_html_cylinders( $post ) {
+		echo self::taxonomy_meta_box_html( 'cylinders', apply_filters( 'invp_prefix_meta_key', 'cylinders' ), $post );
 	}
 
-	function meta_box_html_availability( $post ) {
-		echo $this->taxonomy_meta_box_html( 'availability', apply_filters( 'invp_prefix_meta_key', 'availability' ), $post );
+	static function meta_box_html_availability( $post ) {
+		echo self::taxonomy_meta_box_html( 'availability', apply_filters( 'invp_prefix_meta_key', 'availability' ), $post );
 	}
 
-	function meta_box_html_drive_type( $post ) {
-		echo $this->taxonomy_meta_box_html( 'drive_type', apply_filters( 'invp_prefix_meta_key', 'drive_type' ), $post );
+	static function meta_box_html_drive_type( $post ) {
+		echo self::taxonomy_meta_box_html( 'drive_type', apply_filters( 'invp_prefix_meta_key', 'drive_type' ), $post );
 	}
 
-	function meta_box_html_fuel( $post ) {
-		echo $this->taxonomy_meta_box_html( 'fuel', apply_filters( 'invp_prefix_meta_key', 'fuel' ), $post );
+	static function meta_box_html_fuel( $post ) {
+		echo self::taxonomy_meta_box_html( 'fuel', apply_filters( 'invp_prefix_meta_key', 'fuel' ), $post );
 	}
 
-	function meta_box_html_propulsion_type( $post ) {
-		echo $this->taxonomy_meta_box_html( 'propulsion_type', apply_filters( 'invp_prefix_meta_key', 'propulsion_type' ), $post );
+	static function meta_box_html_propulsion_type( $post ) {
+		echo self::taxonomy_meta_box_html( 'propulsion_type', apply_filters( 'invp_prefix_meta_key', 'propulsion_type' ), $post );
 	}
 
-	function meta_box_html_transmission( $post ) {
-		echo $this->taxonomy_meta_box_html( 'transmission', apply_filters( 'invp_prefix_meta_key', 'transmission' ), $post );
+	static function meta_box_html_transmission( $post ) {
+		echo self::taxonomy_meta_box_html( 'transmission', apply_filters( 'invp_prefix_meta_key', 'transmission' ), $post );
 	}
 
-	function meta_box_html_type( $post ) {
-		$html = $this->taxonomy_meta_box_html( 'type', apply_filters( 'invp_prefix_meta_key', 'type' ), $post );
+	static function meta_box_html_type( $post ) {
+		$html = self::taxonomy_meta_box_html( 'type', apply_filters( 'invp_prefix_meta_key', 'type' ), $post );
 		//add an onchange attribute to the select
 		$html = str_replace( '<select', '<select onchange="invp_vehicle_type_changed( this.value );" ', $html );
 		echo $html;
 	}
 
-	function meta_box_html_locations( $post ) {
+	static function meta_box_html_locations( $post ) {
 		printf(
 			'%s<p><a href="edit-tags.php?taxonomy=location&post_type=%s">Manage locations</a></p>',
-			$this->taxonomy_meta_box_html( 'location', apply_filters( 'invp_prefix_meta_key', 'location' ), $post ),
+			self::taxonomy_meta_box_html( 'location', apply_filters( 'invp_prefix_meta_key', 'location' ), $post ),
 			Inventory_Presser_Plugin::CUSTOM_POST_TYPE
 		);
 	}
@@ -653,7 +660,7 @@ class Inventory_Presser_Taxonomies {
 		$term_slug = sanitize_text_field( $_POST[$element_name] );
 		if ( '' == $term_slug ) {
 			// the user is setting the vehicle type to empty string
-			wp_remove_object_terms( $post_id, $this->get_term_slug( $taxonomy_name, $post_id ), $taxonomy_name );
+			wp_remove_object_terms( $post_id, self::get_term_slug( $taxonomy_name, $post_id ), $taxonomy_name );
 			return;
 		}
 		$term = get_term_by( 'slug', $term_slug, $taxonomy_name );
@@ -692,15 +699,6 @@ class Inventory_Presser_Taxonomies {
 				wp_schedule_event( time(), 'weekly', self::CRON_HOOK_DELETE_TERMS );
 				restore_current_blog();
 			}
-		}
-	}
-
-	function set_term_meta_via_rest( $value, $term, $attr, $request, $object_type ) {
-		$value = maybe_unserialize( $value );
-		$old_value = get_term_meta( $term->term_id, $attr, true );
-		$result = isset( $term->term_id ) && update_term_meta( $term->term_id, $attr, $value, $old_value );
-		if( true !== $result ) {
-			$result = add_term_meta( $term->term_id, $attr, $value, true );
 		}
 	}
 
@@ -1065,7 +1063,7 @@ class Inventory_Presser_Taxonomies {
 		);
 	}
 
-	function taxonomy_meta_box_html( $taxonomy_name, $element_name, $post ) {
+	static function taxonomy_meta_box_html( $taxonomy_name, $element_name, $post ) {
 		/**
 		 * Creates HTML output for a meta box that turns a taxonomy into
 		 * a select drop-down list instead of the typical checkboxes. Including
@@ -1082,7 +1080,7 @@ class Inventory_Presser_Taxonomies {
 		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 
 			//get the saved term for this taxonomy
-			$saved_term_slug = $this->get_term_slug( $taxonomy_name, $post->ID );
+			$saved_term_slug = self::get_term_slug( $taxonomy_name, $post->ID );
 
 			foreach( $terms as $term ) {
 				$HTML .= sprintf(

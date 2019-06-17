@@ -61,6 +61,11 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 == Changelog ==
 
+= 10.0.0 =
+* [Removed] Removes the Stock Photo Slider widget. This image slider with included stock automobile photography has been extracted and lives on as a separate plugin.
+* [Fixed] Fixes a bug where custom meta boxes on the vehicle post type were generating errors because they were not called statically
+* [Fixed] Fixes a bug to prevent warnings about a callback passed to register_rest_field() being called statically
+
 = 9.1.1 =
 * [Fixed] Make sure some values we anticipate to be strings are strings before trying to use them to load locations or redirect to a make archive
 * [Fixed] Do not load the slick slider JavaScript if another plugin or theme has already loaded it to avoid a conflict and errors
