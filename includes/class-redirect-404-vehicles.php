@@ -1,7 +1,5 @@
 <?php
-
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+defined( 'ABSPATH' ) or exit;
 
 /**
  * A class that detects when requests are made for vehicles that are no longer

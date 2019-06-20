@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) or exit;
+
 /**
  * Various classes to deal with location taxonomy widgets and checks
  *

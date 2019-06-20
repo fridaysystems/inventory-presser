@@ -1,6 +1,5 @@
 <?php
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Creates shortcodes to make designing pages easier.
@@ -176,73 +175,64 @@ class Inventory_Presser_Shortcodes {
 	}
 
 	function inventory_grid( $atts ) {
-		// process shortcode attributes
-		$atts = shortcode_atts( array(
-			'per_page'   => 15,
-			'captions'   => 'true',
-			'button'     => 'true',
-			'show_price' => 'false',
-			'size'       => 'one-third',
+
+		/**
+		 * Shortcode attributes & default values. Some of these overlap to
+		 * provide backwards compatibility with a time when this widget and the
+		 * shortcode did not share any code. (Widget? What? See comment below.)
+		 */
+		$new_atts = shortcode_atts( array(
+			/*  old attributes
+			'per_page'     => 15,
+			'captions'     => true,
+			'button'       => true,
+			'show_price'   => false,
+			'size'         => 'one-third', */
+
+ 			'columns'       => 3, //replaces 'size'
+ 			'featured_only' => false,
+ 			'limit'         => 15, //replaces 'per_page'
+ 			'newest_first'  => false,
+ 			'show_button'   => true, //replaces 'button'
+ 			'show_captions' => false, //replaces 'captions'
+ 			'show_prices'   => false, //replaces 'show_price'
 		), $atts );
 
-		$atts['captions'] = 'true' === $atts['captions'];
-		$atts['button'] = 'true' === $atts['button'];
-		$atts['show_price'] = 'true' === $atts['show_price'];
-
-		$args = array(
-			'posts_per_page' => $atts['per_page'],
-			'post_type'      => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
-			'meta_key'       => '_thumbnail_id',
-			'fields'         => 'ids',
-			'orderby'        => 'rand',
-			'order'          => 'ASC'
-		);
-
-		$inventory_ids = get_posts( $args );
-
-		$grid_html = '';
-
-		if ( $inventory_ids ) {
-
-			$grid_html .= '<div class="invp-grid pad cf">'
-				. '<ul class="grid-slides">';
-
-			foreach( $inventory_ids as $inventory_id ) {
-
-				$vehicle = new Inventory_Presser_Vehicle( $inventory_id );
-
-				$grid_html .= sprintf(
-					'<li class="grid %s"><a class="grid-link" href="%s">'
-					. '<div class="grid-image" style="background-image: url(\'%s\');">'
-					. '</div>',
-					$atts['size'],
-					$vehicle->url,
-					wp_get_attachment_image_url( get_post_thumbnail_id( $inventory_id ), 'large' )
-				);
-
-				if ( $atts['captions'] ) {
-					$grid_html .= '<p class="grid-caption">'
-						. $vehicle->post_title;
-					if ( $atts['show_price'] ) {
-						$grid_html .= '&nbsp;&nbsp;' . $vehicle->price(' ');
-					}
-					$grid_html .= '</p>';
-				}
-
-				$grid_html .= '</a></li>';
-
-			}
-
-			$grid_html .= '</ul><div class="clear"></div></div>';
-			if ( $atts['button'] ) {
-				$grid_html .= sprintf(
-					'<a href="%s" class="_button _button-med">Full Inventory</a>',
-					get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE )
-				);
-			}
-
+		//Handle the old attribute names
+		if( isset( $atts['per_page'] ) && ! isset( $atts['limit'] ) ) {
+			$atts['limit'] = $atts['per_page'];
 		}
-		return $grid_html;
+		if( isset( $atts['captions'] ) && ! isset( $atts['show_captions'] ) ) {
+			$new_atts['show_captions'] = $atts['captions'];
+		}
+		if( isset( $atts['button'] ) && ! isset( $atts['show_button'] ) ) {
+			$new_atts['show_button'] = $atts['button'];
+		}
+		if( isset( $atts['show_price'] ) && ! isset( $atts['show_prices'] ) ) {
+			$new_atts['show_prices'] = $atts['show_price'];
+		}
+		if( isset( $atts['size'] ) && ! isset( $atts['columns'] ) ) {
+			switch( $atts['size'] ) {
+				case 'one-third':
+					$new_atts['columns'] = 3;
+					break;
+				case 'one-fourth':
+					$new_atts['columns'] = 4;
+					break;
+				case 'one-fifth':
+					$new_atts['columns'] = 5;
+					break;
+			}
+		}
+
+		/**
+		 * We actually use the Grid widget to generate the output of this
+		 * shortcode since version 10.1.0. The output was very similiar but
+		 * the arguments didn't overlap completely before that, so they were
+		 * merged to make life easy.
+		 */
+		$widget = new Inventory_Presser_Grid();
+		return $widget->content( $new_atts );
 	}
 
 	function simple_listing( $atts ) {

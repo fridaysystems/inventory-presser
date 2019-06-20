@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or exit;
 
 class Inventory_Presser_Slider extends WP_Widget {
 

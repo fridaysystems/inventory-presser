@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) or exit;
+
 /**
  * Template tags: functions that make it easy for other developers to get data
  * about the current vehicle.

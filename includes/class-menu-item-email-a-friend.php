@@ -1,5 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or exit;
+
 /**
  * Implement a mailto: link in a specific menu item in a specific menu that
  * often exists in Inventory Presser websites.

@@ -1,7 +1,5 @@
 <?php
-
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Creates a widget that allows users to sort vehicles by a vehicle attribute.

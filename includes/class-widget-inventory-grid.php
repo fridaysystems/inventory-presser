@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or exit;
 
 class Inventory_Presser_Grid extends WP_Widget {
 
@@ -30,37 +31,47 @@ class Inventory_Presser_Grid extends WP_Widget {
  		return $html;
  	}
 
-	// front-end
-	public function widget( $args, $instance ) {
+ 	function content( $args ) {
+ 		/**
+ 		 * $args array keys
+ 		 * ----------------
+ 		 * + columns
+ 		 * + featured_only
+ 		 * + limit
+ 		 * + newest_first
+ 		 * + show_button
+ 		 * + show_captions
+ 		 * + show_prices
+ 		 */
+ 		$default_args = array(
+ 			'columns'       => 5,
+ 			'featured_only' => false,
+ 			'limit'         => 15,
+ 			'newest_first'  => false,
+ 			'show_button'   => false,
+ 			'show_captions' => false,
+ 			'show_prices'   => false,
+ 		);
+ 		$args = wp_parse_args( $args, $default_args );
 
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		$columns = (isset($instance['columns'])) ? $instance['columns'] : 5;
-		$limit = (isset($instance['limit'])) ? $instance['limit'] : $columns * 3;
-		$show_captions = (isset($instance['cb_showcaptions']) && $instance['cb_showcaptions'] == 'true');
-		$show_button = (isset($instance['cb_showbutton']) && $instance['cb_showbutton'] == 'true');
-
-		switch ($columns) {
-		    case 3:
-		        $col_class = 'one-third';
-		        break;
-		    case 4:
-		        $col_class = 'one-fourth';
-		        break;
-		    case 5:
-		        $col_class = 'one-fifth';
-		        break;
+ 		//Turn the column count into a CSS class
+ 		$column_css_class = 'one-fifth';
+		switch( $args['columns'] ) {
+			case 3:
+				$column_css_class = 'one-third';
+				break;
+			case 4:
+				$column_css_class = 'one-fourth';
+				break;
 		}
 
-		$limit = ($limit != 0) ? $limit : -1;
-
-		// before and after widget arguments are defined by themes
-		echo $args['before_widget'];
-		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
+		//Make sure the limit is not zero or empty string
+		if( empty( $args['limit'] ) ) {
+			$args['limit'] = -1;
 		}
 
-		$gp_args = array(
-			'posts_per_page' => $limit,
+		$post_args = array(
+			'posts_per_page' => $args['limit'],
 			'post_type'      => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
 			'meta_query'     => array(
 				array(
@@ -73,59 +84,90 @@ class Inventory_Presser_Grid extends WP_Widget {
 			'order'          => 'ASC'
 		);
 
-		if( isset( $instance['newest_first'] ) && $instance['newest_first'] ) {
-			$gp_args['meta_key'] = apply_filters( 'invp_prefix_meta_key', 'last_modified' );
-			$gp_args['orderby'] = 'STR_TO_DATE( meta1.meta_value, \'%a, %d %b %Y %T\' )';
-			$gp_args['order']   = 'DESC';
+		if( $args['newest_first'] ) {
+			$post_args['meta_key'] = apply_filters( 'invp_prefix_meta_key', 'last_modified' );
+			$post_args['orderby']  = 'STR_TO_DATE( meta1.meta_value, \'%a, %d %b %Y %T\' )';
+			$post_args['order']    = 'DESC';
 		}
 
 		//Does the user want featured vehicles only?
-		if( isset( $instance['cb_featured_only'] ) && 'true' == $instance['cb_featured_only'] ) {
-			$gp_args['meta_query'][] = array(
+		if( $args['featured_only'] ) {
+			$post_args['meta_query'][] = array(
 				'key'   => apply_filters( 'invp_prefix_meta_key', 'featured' ),
 				'value' => '1',
 			);
 		}
 
-		$inventory_ids = get_posts( $gp_args );
+		$inventory_ids = get_posts( $post_args );
 		if( empty( $inventory_ids ) ) {
 			return;
 		}
 
 		$grid_html = '<div class="invp-grid pad cf"><ul class="grid-slides">';
 
-		foreach ($inventory_ids as $inventory_id) {
+		foreach( $inventory_ids as $inventory_id ) {
 
 			$vehicle = new Inventory_Presser_Vehicle( $inventory_id );
 
 			$grid_html .= sprintf(
 				'<li class="grid %s"><a class="grid-link" href="%s"><div class="grid-image" style="background-image: url(%s);"></div>',
-				$col_class,
+				$column_css_class,
 				$vehicle->url,
 				wp_get_attachment_image_url( get_post_thumbnail_id( $inventory_id ), 'large' )
 			);
 
-			if ( $show_captions ) {
+			if( $args['show_captions'] ) {
 				$grid_html .= sprintf(
-					'<p class="grid-caption">%s&nbsp;&nbsp;%s</p>',
+					'<p class="grid-caption">%s&nbsp;%s</p>',
 					$vehicle->post_title,
-					$vehicle->price(' ')
+					$args['show_prices'] ? $vehicle->price(' ') : ''
 				);
 			}
 
 			$grid_html .= '</a></li>';
 		}
-
 		$grid_html .= '</ul></div>';
 
-		if ( $show_button ) {
+		if( $args['show_button'] ) {
 			$grid_html .= sprintf(
 				'<div class="invp-grid-button"><a href="%s" class="_button _button-med">%s</a></div>',
 				get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ),
 				__( 'Full Inventory', 'inventory-presser' )
 			);
 		}
-		echo $grid_html . $args['after_widget'];
+
+		return $grid_html;
+ 	}
+
+	// front-end
+	public function widget( $args, $instance ) {
+
+		//build $args array
+		$content_args = array();
+		if( isset( $instance['columns'] ) ) {
+			$content_args['columns'] = $instance['columns'];
+		}
+		if( isset( $instance['limit'] ) ) {
+			$content_args['limit'] = $instance['limit'];
+		}
+		if( isset( $instance['cb_showcaptions'] ) ) {
+			$content_args['show_captions'] = ( $instance['cb_showcaptions'] == 'true' );
+		}
+		if( isset( $instance['cb_showbutton'] ) ) {
+			$content_args['show_button'] = ( $instance['cb_showbutton'] == 'true' );
+		}
+		if( isset( $instance['cb_showprices'] ) ) {
+			$content_args['show_prices'] = ( $instance['cb_showprices'] == 'true' );
+		}
+
+		// before and after widget arguments are defined by themes
+		echo $args['before_widget'];
+		$title = apply_filters( 'widget_title', $instance['title'] );
+		if ( ! empty( $title ) ) {
+			echo $args['before_title'] . $title . $args['after_title'];
+		}
+
+		echo $this->content( $content_args ) . $args['after_widget'];
 	}
 
 	// Widget Backend
@@ -156,6 +198,9 @@ class Inventory_Presser_Grid extends WP_Widget {
 			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showcaptions'); ?>" name="<?php echo $this->get_field_name('cb_showcaptions'); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showcaptions'] ) ? $instance['cb_showcaptions'] : '', true ); ?>>
 			<label for="<?php echo $this->get_field_id('cb_showcaptions'); ?>"><?php _e( 'Show captions', 'inventory-presser' ); ?></label>
 			<br />
+			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showprices'); ?>" name="<?php echo $this->get_field_name('cb_showprices'); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showprices'] ) ? $instance['cb_showprices'] : '', true ); ?>>
+			<label for="<?php echo $this->get_field_id('cb_showprices'); ?>"><?php _e( 'Show prices', 'inventory-presser' ); ?></label>
+			<br />
 			<input type="checkbox" id="<?php echo $this->get_field_id('cb_showbutton'); ?>" name="<?php echo $this->get_field_name('cb_showbutton'); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showbutton'] ) ? $instance['cb_showbutton'] : '', true ); ?>>
 			<label for="<?php echo $this->get_field_id('cb_showbutton'); ?>"><?php _e( 'Show "Full Inventory" button', 'inventory-presser' ); ?></label>
 			<br />
@@ -177,6 +222,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 		$instance['columns'] = ( ! empty( $new_instance['columns'] ) ) ? strip_tags( $new_instance['columns'] ) : 5;
 		$instance['limit'] = ( ! empty( $new_instance['limit'] ) ) ? strip_tags( $new_instance['limit'] ) : 15;
 		$instance['cb_showcaptions'] = ( !empty( $new_instance['cb_showcaptions'] ) ) ? $new_instance['cb_showcaptions'] : '';
+		$instance['cb_showprices'] = ( !empty( $new_instance['cb_showprices'] ) ) ? $new_instance['cb_showprices'] : '';
 		$instance['cb_showbutton'] = ( !empty( $new_instance['cb_showbutton'] ) ) ? $new_instance['cb_showbutton'] : '';
 		$instance['cb_featured_only'] = ( !empty( $new_instance['cb_featured_only'] ) ) ? $new_instance['cb_featured_only'] : '';
 		$instance['newest_first'] = ( !empty( $new_instance['newest_first'] ) ) ? $new_instance['newest_first'] == 'true' : false;

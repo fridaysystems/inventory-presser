@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) or exit;
+
 /**
  * An object that modifies the WordPress search query to include custom fields
  *

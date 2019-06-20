@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.1.0
-Stable tag: 9.1.1
+Stable tag: 10.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,10 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 10.1.0 =
+* [Added] Adds a `newest first` parameter to the Inventory Grid Widget and Shortcode
+* [Changed] Combines the code generating the Inventory Grid Widget and Shortcode so that each supports the same parameters and generates the same output while maintaining backwards compatibility
 
 = 10.0.0 =
 * [Removed] Removes the Stock Photo Slider widget. This image slider with included stock automobile photography has been extracted and lives on as a separate plugin.

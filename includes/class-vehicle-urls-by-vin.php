@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) or exit;
+
 /**
  * An object that redirects URLs based on a VIN to proper permalinks.
  *

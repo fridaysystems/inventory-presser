@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or exit;
 
 class Inventory_Presser_Location_Phones extends WP_Widget {
 

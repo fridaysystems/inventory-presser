@@ -1,7 +1,5 @@
 <?php
-
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+defined( 'ABSPATH' ) or exit;
 
 /**
  * An object that defines and manipulates our custom taxonomies and their terms.

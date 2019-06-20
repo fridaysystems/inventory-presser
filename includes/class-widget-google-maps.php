@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Google Maps Widget

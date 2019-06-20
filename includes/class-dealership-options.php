@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) or exit;
+
 /**
  * Creates an options page in the dashboard to hold this plugin and its add-ons
  * settings.

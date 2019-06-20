@@ -1,5 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or exit;
+
 /**
  * Enable a print command when a specific menu item is clicked.
  *

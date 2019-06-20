@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) or exit;
+
 /**
  * An object that customizes the administrator dashboard to make managing an
  * inventory of vehicles easy.

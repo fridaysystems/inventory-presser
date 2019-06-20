@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or exit;
 
 if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 	class Inventory_Presser_Vehicle {

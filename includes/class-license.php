@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) or exit;
+
 /**
  * Helps send a license key to inventorypresser.com for this core plugin or any
  * of its add-ons to verify an active site and allow updates to be downloaded.
