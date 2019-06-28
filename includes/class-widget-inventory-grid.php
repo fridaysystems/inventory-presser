@@ -58,17 +58,6 @@ class Inventory_Presser_Grid extends WP_Widget {
  		);
  		$args = wp_parse_args( $args, $default_args );
 
- 		//Turn the column count into a CSS class
- 		$column_css_class = 'one-fifth';
-		switch( $args['columns'] ) {
-			case 3:
-				$column_css_class = 'one-third';
-				break;
-			case 4:
-				$column_css_class = 'one-fourth';
-				break;
-		}
-
 		//Make sure the limit is not zero or empty string
 		if( empty( $args['limit'] ) ) {
 			$args['limit'] = -1;
