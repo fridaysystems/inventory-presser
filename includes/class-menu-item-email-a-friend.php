@@ -46,7 +46,7 @@ class Inventory_Presser_Email_A_Friend{
 		//looking for $menu_item = <a href="mailto:">Email a Friend</a>
 
 		//is it the vehicle details menu?
-		if( __( 'Vehicle Details Buttons', 'inventory-presser' ) != $args->menu->name ) {
+		if( empty( $args ) || empty( $args->menu ) || empty( $args->menu->name ) || __( 'Vehicle Details Buttons', 'inventory-presser' ) != $args->menu->name ) {
 			//no
 			return $menu_item;
 		}
