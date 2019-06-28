@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.1.0
-Stable tag: 10.0.1
+Stable tag: 10.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,10 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 10.2.0 =
+* [Added] Adds CSS for the Grid widget and shortcode. Previously, the styles that styled this widget lived in the _dealer theme.
+* [Fixed] Fixes a bug where menu args were assumed to exist before using them to identify a specific menu this plugin modifies.
 
 = 10.1.0 =
 * [Added] Adds a `newest first` parameter to the Inventory Grid Widget and Shortcode
