@@ -6,6 +6,7 @@
 	column-gap: .8em;
 	row-gap: .8em;
 	padding: 0;
+	margin: 0;
 }
 .grid-image{
 	background-size: cover;
