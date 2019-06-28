@@ -32,6 +32,10 @@ class Inventory_Presser_Grid extends WP_Widget {
  	}
 
  	function content( $args ) {
+
+		//Need the stylesheet for this content
+		wp_enqueue_style( 'invp-grid' );
+
  		/**
  		 * $args array keys
  		 * ----------------
@@ -103,15 +107,17 @@ class Inventory_Presser_Grid extends WP_Widget {
 			return;
 		}
 
-		$grid_html = '<div class="invp-grid pad cf"><ul class="grid-slides">';
+		$grid_html = sprintf(
+			'<div class="invp-grid"><ul class="grid-slides" style="grid-template-columns: %s;">',
+			trim( str_repeat( '1fr ', $args['columns'] ) )
+		);
 
 		foreach( $inventory_ids as $inventory_id ) {
 
 			$vehicle = new Inventory_Presser_Vehicle( $inventory_id );
 
 			$grid_html .= sprintf(
-				'<li class="grid %s"><a class="grid-link" href="%s"><div class="grid-image" style="background-image: url(%s);"></div>',
-				$column_css_class,
+				'<li><a class="grid-link" href="%s"><div class="grid-image" style="background-image: url(%s);"></div>',
 				$vehicle->url,
 				wp_get_attachment_image_url( get_post_thumbnail_id( $inventory_id ), 'large' )
 			);
@@ -130,7 +136,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 
 		if( $args['show_button'] ) {
 			$grid_html .= sprintf(
-				'<div class="invp-grid-button"><a href="%s" class="_button _button-med">%s</a></div>',
+				'<div class="invp-grid-button"><button onclick="location.href=\'%s\';" class="button">%s</button></div>',
 				get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ),
 				__( 'Full Inventory', 'inventory-presser' )
 			);

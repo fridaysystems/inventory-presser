@@ -603,6 +603,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			wp_enqueue_style( 'dashicons' );
 
 			/**
+			 * Register a stylesheet that will only be enqueued when our Grid
+			 * widget or shortcode is actually used.
+			 */
+			$plugin_version = get_plugin_data( __FILE__ )['Version'];
+			wp_register_style( 'invp-grid', plugins_url( 'css/widget-grid.css', __FILE__ ), [], $plugin_version );
+
+			/**
 			 * Make the meta prefix to the front-end (the object name invp is
 			 * localized for the admin dashboard in
 			 * Inventory_Presser_Customize_Dashboard)
