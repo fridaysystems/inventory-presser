@@ -557,7 +557,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-blocks.php',
 				'class-customize-admin-dashboard.php',
 				'class-dealership-options.php',
-				'class-fuel-economy-widget.php',
 				'class-license.php',
 				'class-menu-item-email-a-friend.php',
 				'class-menu-item-print.php',
@@ -571,6 +570,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-vehicle-urls-by-vin.php',
 				'class-widget-address.php',
 				'class-widget-carfax.php',
+				'class-widget-fuel-economy.php',
 				'class-widget-google-maps.php',
 				'class-widget-hours.php',
 				'class-widget-inventory-grid.php',
@@ -718,7 +718,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			/**
 			 * Make a widget available to show EPA Fuel Economy data
 			 */
-			register_widget( "Fuel_Economy_Widget" );
+			register_widget( "Inventory_Presser_Fuel_Economy_Widget" );
 
 			/**
 			 * Make a widget available to embed a Google map pointed at one of

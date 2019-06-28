@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
-class Fuel_Economy_Widget extends WP_Widget {
+class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget {
 
  	const ID_BASE = '_invp_fuel_economy_widget';
 
