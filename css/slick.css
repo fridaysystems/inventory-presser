@@ -77,7 +77,6 @@
 .slick-prev:before,
 .slick-next:before
 {
-    font-family: FontAwesome;
     font-size: 25px;
     line-height: 1;
     -webkit-font-smoothing: antialiased;

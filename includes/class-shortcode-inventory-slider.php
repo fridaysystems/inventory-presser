@@ -11,6 +11,7 @@ class Inventory_Presser_Shortcode_Slider {
 
 		//Need flexslider for this content
 		wp_enqueue_script( 'flexslider' );
+		wp_enqueue_style( 'flexslider' );
 
 		// process shortcode attributes
 		$atts = shortcode_atts( array(

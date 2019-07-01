@@ -542,8 +542,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_filter( 'pre_term_link', array( $this, 'change_term_links' ), 10, 2 );
 
 			//Add all our shortcodes
-			$shortcodes = new Inventory_Presser_Shortcodes();
-			$shortcodes->hooks();
 			$shortcodes = new Inventory_Presser_Shortcode_Grid();
 			$shortcodes->hooks();
 			$shortcodes = new Inventory_Presser_Shortcode_Iframe();
@@ -573,7 +571,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-shortcode-iframe.php',
 				'class-shortcode-inventory-grid.php',
 				'class-shortcode-inventory-slider.php',
-				'class-shortcodes.php',
 				'class-taxonomies.php',
 				'class-vehicle.php',
 				'class-vehicle-urls-by-vin.php',
@@ -619,9 +616,41 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			wp_register_style( 'invp-grid', plugins_url( 'css/widget-grid.css', __FILE__ ), [], $plugin_version );
 
 			/**
-			 * Register flexslider JavaScript
+			 * Register flexslider and provide overrides for scripts and styles
 			 */
-			wp_register_script( 'flexslider', plugins_url('/js/jquery.flexslider.min.js', __FILE__ ), array('jquery'), $plugin_version );
+			wp_register_script( 'flexslider', plugins_url('/lib/flexslider/jquery.flexslider-min.js', __FILE__ ), array('jquery'), $plugin_version );
+			wp_add_inline_script( 'flexslider',
+"jQuery('.flexslider').flexslider({
+	animation: 'slide',
+	controlNav: false,
+	prevText: '',
+	nextText: ''
+});"
+			);
+
+			wp_register_style( 'flexslider', plugins_url( '/lib/flexslider/flexslider.css', __FILE__ ), null, $plugin_version );
+			wp_add_inline_style( 'flexslider',
+".flex-direction-nav a {
+	height: auto;
+	transition: none;
+	opacity: 1;
+}
+.flex-direction-nav a,
+.flex-direction-nav a:before{
+	text-shadow: none;
+	color: #fff;
+}
+.flexslider:hover .flex-direction-nav .flex-prev,
+.flexslider:hover .flex-direction-nav .flex-next{
+	opacity: 1;
+}
+.flex-direction-nav .flex-next{
+	right: 10px;
+}
+.flex-direction-nav .flex-prev{
+	left: 10px;
+}"
+			);
 
 			/**
 			 * Make the meta prefix to the front-end (the object name invp is

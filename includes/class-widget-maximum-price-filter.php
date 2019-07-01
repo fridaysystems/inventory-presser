@@ -43,14 +43,6 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	// front-end
 	public function widget( $args, $instance ) {
 
-		$handle = 'font-awesome';
-		if( ! wp_style_is( $handle, 'enqueued' ) ) {
-			wp_enqueue_style(
-				$handle,
-				'//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
-			);
-		}
-
 		$reset_link_only = (isset($instance['cb_reset_link_only']) && $instance['cb_reset_link_only'] == 'true');
 
 		if ($reset_link_only && !isset($_GET['max_price']))
@@ -79,7 +71,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 			foreach ($price_points as $price_point) {
 				$this_link = add_query_arg( 'max_price', $price_point, $base_link);
 				printf(
-					'<div><a href="%s"%s><i class="fa fa-arrow-circle-down"></i>&nbsp;&nbsp;$%s</a></div>',
+					'<div><a href="%s"%s><span class="dashicons dashicons-arrow-down-alt"></span>&nbsp;&nbsp;$%s</a></div>',
 					$this_link,
 					$class_string,
 					number_format( $price_point, 0, '.', ',' )
