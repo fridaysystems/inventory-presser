@@ -17,7 +17,6 @@ class Inventory_Presser_Shortcodes {
 
 		add_shortcode( 'invp-simple-listing', array( $this, 'simple_listing') );
 		add_shortcode( 'invp-inventory-slider', array( $this, 'inventory_slider') );
-		add_shortcode( 'iframe', array( $this, 'iframe_embed_shortcode') );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts') );
 		add_action( 'wp_ajax_get_simple_listing', array( $this, 'simple_json') );
