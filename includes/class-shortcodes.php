@@ -27,14 +27,6 @@ class Inventory_Presser_Shortcodes {
 
 	function load_scripts() {
 
-		$handle = 'font-awesome';
-		if( ! wp_style_is( $handle, 'enqueued' ) ) {
-			wp_enqueue_style(
-				$handle,
-				'//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
-			);
-		}
-
 		global $post;
 		if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'invp-simple-listing') || is_post_type_archive( Inventory_Presser_Plugin::CUSTOM_POST_TYPE )) {
 			wp_enqueue_style('invp-simple-listing-style', plugins_url('/css/invp-simple-listing.css', dirname(__FILE__)));

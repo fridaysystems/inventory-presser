@@ -43,6 +43,14 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	// front-end
 	public function widget( $args, $instance ) {
 
+		$handle = 'font-awesome';
+		if( ! wp_style_is( $handle, 'enqueued' ) ) {
+			wp_enqueue_style(
+				$handle,
+				'//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
+			);
+		}
+
 		$reset_link_only = (isset($instance['cb_reset_link_only']) && $instance['cb_reset_link_only'] == 'true');
 
 		if ($reset_link_only && !isset($_GET['max_price']))
