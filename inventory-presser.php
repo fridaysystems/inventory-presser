@@ -546,6 +546,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$shortcodes->hooks();
 			$shortcodes = new Inventory_Presser_Shortcode_Grid();
 			$shortcodes->hooks();
+			$shortcodes = new Inventory_Presser_Shortcode_Iframe();
+			$shortcodes->hooks();
 
 			//Add blocks
 			$blocks = new Inventory_Presser_Blocks();
@@ -566,6 +568,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-order-by-post-meta-widget.php',
 				'class-redirect-404-vehicles.php',
 				'class-seo.php',
+				'class-shortcode-iframe.php',
 				'class-shortcode-inventory-grid.php',
 				'class-shortcodes.php',
 				'class-taxonomies.php',
