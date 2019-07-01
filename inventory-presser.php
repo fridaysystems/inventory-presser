@@ -622,8 +622,75 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 		}
 
+		/**
+		 * Change a query's meta_query value if the meta_query does not already
+		 * contain the provided key.
+		 */
+		function maybe_add_meta_query( $meta_query, $key, $value, $compare, $type ) {
+			//Make sure there is not already $key item in the meta_query
+			if( $this->meta_query_contains_key( $meta_query, $key ) ) {
+				return $meta_query;
+			}
+
+			$meta_query[] = array(
+				'key'     => $key,
+				'value'   => $value,
+				'compare' => $compare,
+				'type'    => $type,
+			);
+			return $meta_query;
+		}
+
 		public static function meta_prefix() {
 			return apply_filters( 'invp_meta_prefix', 'inventory_presser_' );
+		}
+
+		/**
+		 * Does a WP_Query's meta_query contain a specific key?
+		 */
+		function meta_query_contains_key( $meta_query, $key ) {
+			if( is_array( $meta_query ) ) {
+				if( isset( $meta_query['key'] ) ) {
+					return $meta_query['key'] == $key;
+				}
+
+				foreach( $meta_query as $another ) {
+					return $this->meta_query_contains_key( $another, $key );
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * Modifieds the query to filter vehicles by prices for the Maximum
+		 * Price Filter widget.
+		 */
+		function modify_query_for_max_price( $query ) {
+
+			//Do not mess with the query if it's not the main one and our CPT
+			if ( !$query->is_main_query() || $query->query_vars['post_type'] != Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) {
+				return;
+			}
+
+			//Get original meta query
+			$meta_query = $query->get('meta_query');
+			if( ! is_array( $meta_query ) ) {
+				$meta_query = array();
+			}
+
+			if ( isset( $_GET['max_price'] ) ) {
+				$meta_query['relation'] = 'AND';
+				$meta_query = $this->maybe_add_meta_query(
+					$meta_query,
+					apply_filters( 'invp_prefix_meta_key', 'price' ),
+					(int) $_GET['max_price'],
+					'<=',
+					'numeric'
+				);
+				$query->set( 'meta_query', $meta_query );
+			}
+
+			return $query;
 		}
 
 		function modify_query_orderby( $pieces ) {
@@ -733,6 +800,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			register_widget( 'Inventory_Presser_Location_Hours' );
 			register_widget( 'Inventory_Presser_Location_Phones' );
 			register_widget( 'Inventory_Presser_Slider' );
+
+			register_widget( 'Price_Filters' );
+			/**
+			 * The query needs to be altered for the Price_Filters widget.
+			 */
+			if ( ! is_admin() && isset( $_GET['max_price'] ) ) {
+				add_action( 'pre_get_posts', array( $this, 'modify_query_for_max_price' ), 99, 1 );
+			}
 		}
 
 		function set_serialized_meta_value( $value, $object, $field_name ) {
