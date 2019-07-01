@@ -7,10 +7,10 @@ defined( 'ABSPATH' ) or exit;
 class Inventory_Presser_Shortcode_Grid {
 
 	function hooks() {
-		add_shortcode( 'invp-inventory-grid', array( $this, 'output' ) );
+		add_shortcode( 'invp-inventory-grid', array( $this, 'content' ) );
 	}
 
-	function output( $atts ) {
+	function content( $atts ) {
 
 		/**
 		 * Shortcode attributes & default values. Some of these overlap to

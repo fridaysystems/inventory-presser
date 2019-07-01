@@ -18,45 +18,45 @@
 			}
 		})
 		.done(function(response) {
-			if (response.status == 'ok') {
-				$('.invp-reset').empty();
-
-				// create paging
-				if ($('.invp-pages').length && (response.total/1) > per_page) {
-					$('.invp-pages').append('<span>Pages: </span>');
-					page_count = Math.ceil(response.total/per_page);
-					for (var i = 0; i < page_count; i++) {
-						var page_link = (i == cur_page) ? '<a href="#" class="invp-page invp-page-active">' + (i + 1) + '</a>' : '<a href="#" class="invp-page">' + (i + 1) + '</a>';
-						var pager_div = $('<div class="invp-page">' + page_link + '</div>');
-						$('.invp-pages').append(page_link);
-					}
-					// bind links
-					$('a.invp-page').on('click',function(e){
-						e.preventDefault();
-						cur_page = $(this).index()-1;
-						populate_inventory();
-						$('html, body').animate({
-							scrollTop: $(this).closest('.invp-wrapper').offset().top - top_adjust
-						}, 1000);
-					});
-				}
-
-				// loop through inventory, replace string values and append
-				$.each(response.inventory, function (index, item) {
-					// set template html to a variable
-					var html = template;
-					// loop through each key value pair in the inventory item, replace {{key}} with value
-					$.each(item, function(key, value) {
-						var re = new RegExp('{{'+key+'}}', 'g');
-						html = html.replace(re, value);
-					});
-					// append to div wrapper
-					$('.invp-listing').append(html);
-				});
-			} else {
-				alert ('Error retrieving inventory, please try again!');
+			if (response.status != 'ok') {
 				console.log(response.message);
+				return;
 			}
+
+			$('.invp-reset').empty();
+
+			// create paging
+			if ($('.invp-pages').length && (response.total/1) > per_page) {
+				$('.invp-pages').append('<span>Pages: </span>');
+				page_count = Math.ceil(response.total/per_page);
+				for (var i = 0; i < page_count; i++) {
+					var page_link = (i == cur_page) ? '<a href="#" class="invp-page invp-page-active">' + (i + 1) + '</a>' : '<a href="#" class="invp-page">' + (i + 1) + '</a>';
+					var pager_div = $('<div class="invp-page">' + page_link + '</div>');
+					$('.invp-pages').append(page_link);
+				}
+				// bind links
+				$('a.invp-page').on('click',function(e){
+					e.preventDefault();
+					cur_page = $(this).index()-1;
+					populate_inventory();
+					$('html, body').animate({
+						scrollTop: $(this).closest('.invp-wrapper').offset().top - top_adjust
+					}, 1000);
+				});
+			}
+
+			// loop through inventory, replace string values and append
+			$.each(response.inventory, function (index, item) {
+				// set template html to a variable
+				var html = template;
+				// loop through each key value pair in the inventory item, replace {{key}} with value
+				$.each(item, function(key, value) {
+					var re = new RegExp('{{'+key+'}}', 'g');
+					html = html.replace(re, value);
+				});
+				// append to div wrapper
+				$('.invp-listing').append(html);
+			});
 		});
 
 	}

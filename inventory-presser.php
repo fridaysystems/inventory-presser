@@ -548,6 +548,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$shortcodes->hooks();
 			$shortcodes = new Inventory_Presser_Shortcode_Iframe();
 			$shortcodes->hooks();
+			$shortcodes = new Inventory_Presser_Shortcode_Slider();
+			$shortcodes->hooks();
 
 			//Add blocks
 			$blocks = new Inventory_Presser_Blocks();
@@ -570,6 +572,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-seo.php',
 				'class-shortcode-iframe.php',
 				'class-shortcode-inventory-grid.php',
+				'class-shortcode-inventory-slider.php',
 				'class-shortcodes.php',
 				'class-taxonomies.php',
 				'class-vehicle.php',
@@ -614,6 +617,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 			$plugin_version = get_plugin_data( __FILE__ )['Version'];
 			wp_register_style( 'invp-grid', plugins_url( 'css/widget-grid.css', __FILE__ ), [], $plugin_version );
+
+			/**
+			 * Register flexslider JavaScript
+			 */
+			wp_register_script( 'flexslider', plugins_url('/js/jquery.flexslider.min.js', __FILE__ ), array('jquery'), $plugin_version );
 
 			/**
 			 * Make the meta prefix to the front-end (the object name invp is

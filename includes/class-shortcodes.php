@@ -16,11 +16,12 @@ class Inventory_Presser_Shortcodes {
 	function hooks() {
 
 		add_shortcode( 'invp-simple-listing', array( $this, 'simple_listing') );
-		add_shortcode( 'invp-inventory-slider', array( $this, 'inventory_slider') );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts') );
 		add_action( 'wp_ajax_get_simple_listing', array( $this, 'simple_json') );
 		add_action( 'wp_ajax_nopriv_get_simple_listing', array( $this, 'simple_json') );
+
+		//Fallback content filter if the theme has no template for vehicles
 		add_filter( 'the_content', array( $this, 'filter_single_content') );
 	}
 
@@ -39,7 +40,6 @@ class Inventory_Presser_Shortcodes {
 			wp_enqueue_style('invp-simple-listing-style', plugins_url('/css/invp-simple-listing.css', dirname(__FILE__)));
 		}
 
-		wp_register_script('flexslider', plugins_url('/js/jquery.flexslider.min.js', dirname(__FILE__)), array('jquery'));
 		wp_register_script('invp-simple-listing', plugins_url('/js/invp-simple-listing.js', dirname(__FILE__)), array('flexslider'));
 
 		if (is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) && !file_exists(get_stylesheet_directory().'/single-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '.php')) {
@@ -68,108 +68,6 @@ class Inventory_Presser_Shortcodes {
 			) );
 		}
 
-	}
-
-	function inventory_slider($atts) {
-		// process shortcode attributes
-		$atts = shortcode_atts( array(
-			'per_page' => 10,
-			'captions' => 'true',
-			'orderby'  => 'rand',
-			'order'    => 'ASC',
-		), $atts, 'inventory_slider' );
-
-		//Use shortcode_atts_inventory_slider to filter the incoming attributes
-
-		$atts['captions'] = 'true' === $atts['captions'];
-
-		$gpargs = array(
-			'numberposts' => 10,
-			'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
-			'meta_query'  => array(
-				'relation' => 'AND',
-				array(
-					'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
-					'value'   => 1,
-					'compare' => '=',
-				),
-				array(
-					'key'	  => '_thumbnail_id',
-					'compare' => 'EXISTS',
-				)
-			),
-			'fields'  => 'ids',
-			'orderby' => $atts['orderby'],
-			'order'   => $atts['order'],
-		);
-
-		$inventory_ids = get_posts($gpargs);
-
-		if (count($inventory_ids) < 10) {
-
-			$gpargs = array(
-				'numberposts' => 10 - (count($inventory_ids)),
-				'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
-				'meta_query'  => array(
-					'relation' => 'AND',
-					array(
-						'relation' => 'OR',
-						array(
-							'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
-							'value'   => array( '', '0'),
-							'compare' => 'IN'
-						),
-						array(
-							'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
-							'compare' => 'NOT EXISTS',
-						),
-					),
-					array(
-						'key'	  => '_thumbnail_id',
-						'compare' => 'EXISTS'
-					)
-				),
-				'fields'  => 'ids',
-				'orderby' => $atts['orderby'],
-				'order'   => $atts['order'],
-			);
-
-			$inventory_ids += get_posts($gpargs);
-		}
-
-		if( ! $inventory_ids ) {
-			error_log( 'Shortcode [invp-inventory-slider] found no vehicles.' );
-			return '';
-		}
-
-		shuffle( $inventory_ids );
-
-		$flex_html = '<div class="flexslider flex-native">'
-			. '<ul class="slides">';
-
-		foreach( $inventory_ids as $inventory_id ) {
-
-			$vehicle = new Inventory_Presser_Vehicle( $inventory_id );
-
-			$flex_html .= sprintf(
-				'<li><a class="flex-link" href="%s">'
-				. '<div class="grid-image" style="background-image: url(\'%s\');">'
-				. '</div>',
-				$vehicle->url,
-				wp_get_attachment_image_url( get_post_thumbnail_id( $inventory_id ), 'large')
-			);
-
-			if( $atts['captions'] ) {
-				$flex_html .= sprintf(
-					'<p class="flex-caption">%s</p>',
-					$vehicle->post_title
-				);
-			}
-
-			$flex_html .= '</a></li>';
-		}
-
-		return $flex_html . '</ul></div>';
 	}
 
 	function simple_listing( $atts ) {
@@ -216,13 +114,12 @@ class Inventory_Presser_Shortcodes {
 
 			// get post id's only
 			$output['inventory'] = array();
-			$args = array(
+			$inventory_array = get_posts( array(
 				'posts_per_page' => $per_page,
 				'offset'         => $offset,
 				'fields'         => 'ids',
 				'post_type'      => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
-			);
-			$inventory_array = get_posts( $args );
+			) );
 
 			foreach ( $inventory_array as $inventory_id ) {
 				$vehicle = new Inventory_Presser_Vehicle( $inventory_id );
