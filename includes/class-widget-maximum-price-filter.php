@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) or exit;
  */
 
 // Price Filters
-class Price_Filters extends WP_Widget {
+class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 
 	const ID_BASE = '_invp_price_filters';
 
@@ -158,4 +158,4 @@ class Price_Filters extends WP_Widget {
 		return $instance;
 	}
 
-} // Class Price_Filters
+}

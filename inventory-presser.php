@@ -577,7 +577,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-widget-inventory-slider.php',
 				'class-widget-kbb.php',
 				'class-widget-phones.php',
-				'class-widgets.php',
+				'class-widget-maximum-price-filter.php',
 				'template-tags.php',
 			);
 			foreach( $file_names as $file_name ) {
@@ -801,9 +801,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			register_widget( 'Inventory_Presser_Location_Phones' );
 			register_widget( 'Inventory_Presser_Slider' );
 
-			register_widget( 'Price_Filters' );
+			register_widget( 'Inventory_Presser_Maximum_Price_Filter' );
 			/**
-			 * The query needs to be altered for the Price_Filters widget.
+			 * The query needs to be altered for the Maximum Price Filters widget.
 			 */
 			if ( ! is_admin() && isset( $_GET['max_price'] ) ) {
 				add_action( 'pre_get_posts', array( $this, 'modify_query_for_max_price' ), 99, 1 );
