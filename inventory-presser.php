@@ -625,6 +625,16 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	controlNav: false,
 	prevText: '',
 	nextText: ''
+});
+var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutationRecord) {
+        jQuery('#slider').data('flexslider').resize();
+    });
+});
+jQuery(document).ready( function() {
+	jQuery('#slider .slides li:first-child img').each( function() {
+		observer.observe(jQuery(this)[0], { attributes : true, attributeFilter : ['style'] });
+	});
 });"
 			);
 
@@ -634,21 +644,30 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	height: auto;
 	transition: none;
 	opacity: 1;
-}
-.flex-direction-nav a,
-.flex-direction-nav a:before{
-	text-shadow: none;
 	color: #fff;
+}
+.flex-direction-nav a:before{
+	color: #fff;
+	text-shadow: -1px 0 #666, 0 1px #666, 1px 0 #666, 0 -1px #666;
 }
 .flexslider:hover .flex-direction-nav .flex-prev,
 .flexslider:hover .flex-direction-nav .flex-next{
 	opacity: 1;
+}
+ul.flex-direction-nav li{
+	line-height: 1;
+}
+.flex-direction-nav a:focus{
+	outline: none;
 }
 .flex-direction-nav .flex-next{
 	right: 10px;
 }
 .flex-direction-nav .flex-prev{
 	left: 10px;
+}
+.flexslider .slides img{
+    cursor: pointer;
 }"
 			);
 
