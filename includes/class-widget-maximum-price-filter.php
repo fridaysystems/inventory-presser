@@ -17,14 +17,6 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	const ID_BASE = '_invp_price_filters';
 
 	var $price_defaults = array( 5000,10000,15000,20000 );
-	var $display_types = array(
-		'buttons' => 'Buttons',
-		'text'    => 'Text',
-	);
-	var $orientations = array(
-		'horizontal' => 'Horizontal',
-		'vertical'   => 'Vertical',
-	);
 
 	function __construct() {
 		parent::__construct(
@@ -40,6 +32,20 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 		delete_option( 'widget_' . self::ID_BASE );
 	}
 
+	function display_types() {
+		return array(
+			'buttons' => __( 'Buttons', 'inventory-presser' ),
+			'text'    => __( 'Text', 'inventory-presser' ),
+		);
+	}
+
+	function orientations() {
+		return array(
+			'horizontal' => __( 'Horizontal', 'inventory-presser' ),
+			'vertical'   => __( 'Vertical', 'inventory-presser' ),
+		);
+	}
+
 	// front-end
 	public function widget( $args, $instance ) {
 
@@ -53,8 +59,13 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
 		printf( '<div class="price-filter price-filter-%s">', $instance['orientation'] );
-		if (!empty( $title )) {
-			echo '<div class="price-title">'.$args['before_title'] . $title . $args['after_title'].'</div>';
+		if( ! empty( $title ) ) {
+			printf(
+				'<div class="price-title">%s%s%s</div>',
+				$args['before_title'],
+				$title,
+				$args['after_title']
+			);
 		}
 
 		if (!$reset_link_only) {
@@ -71,7 +82,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 			foreach ($price_points as $price_point) {
 				$this_link = add_query_arg( 'max_price', $price_point, $base_link);
 				printf(
-					'<div><a href="%s"%s><span class="dashicons dashicons-arrow-down-alt"></span>&nbsp;&nbsp;$%s</a></div>',
+					'<div><a href="%s"%s><span class="dashicons dashicons-arrow-down-alt"></span>&nbsp;$%s</a></div>',
 					$this_link,
 					$class_string,
 					number_format( $price_point, 0, '.', ',' )
@@ -81,9 +92,11 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 
 		if ( isset( $_GET['max_price'] ) ) {
 			printf(
-				'<div><a href="%s">Remove $%s Price Filter</a></div>',
+				'<div><a href="%s">%s $%s %s</a></div>',
 				remove_query_arg('max_price'),
-				number_format( (int) $_GET['max_price'], 0, '.', ',' )
+				__( 'Remove', 'inventory-presser' ),
+				number_format( (int) $_GET['max_price'], 0, '.', ',' ),
+				__( 'Price Filter', 'inventory-presser' )
 			);
 		}
 
@@ -95,9 +108,9 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 
 		$title = isset($instance['title']) ? $instance[ 'title' ] : __( 'Price Filter', 'inventory-presser' );
 		$prices = (isset($instance['prices']) && is_array($instance['prices'])) ? implode(',', $instance['prices']) : implode(',', $this->price_defaults);
-		$display_type_slugs = array_keys($this->display_types);
+		$display_type_slugs = array_keys($this->display_types());
 		$display_type = isset($instance['display_type']) ? $instance[ 'display_type' ] : $display_type_slugs[0];
-		$orientation_slugs = array_keys($this->orientations);
+		$orientation_slugs = array_keys($this->orientations());
 		$orientation = isset($instance['orientation']) ? $instance[ 'orientation' ] : $orientation_slugs[0];
 
 		// Widget admin form
@@ -114,7 +127,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 			<label for="<?php echo $this->get_field_id('display_type'); ?>"><?php _e( 'Display Format:', 'inventory-presser' ); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('display_type'); ?>" name="<?php echo $this->get_field_name('display_type'); ?>">
 			<?php
-			foreach ($this->display_types as $key => $label) {
+			foreach ($this->display_types() as $key => $label) {
 				printf(
 					'<option value="%s"%s>%s</option>',
 					$key,
@@ -129,7 +142,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 			<label for="<?php echo $this->get_field_id('orientation'); ?>"><?php _e( 'Orientation:', 'inventory-presser' ); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('orientation'); ?>" name="<?php echo $this->get_field_name('orientation'); ?>">
 			<?php
-			foreach ($this->orientations as $key => $label) {
+			foreach ($this->orientations() as $key => $label) {
 				printf(
 					'<option value="%s"%s>%s</option>',
 					$key,
