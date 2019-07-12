@@ -609,11 +609,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			wp_enqueue_style( 'dashicons' );
 
 			/**
-			 * Register a stylesheet that will only be enqueued when our Grid
-			 * widget or shortcode is actually used.
+			 * Register stylesheets that will only be enqueued when specific
+			 * widgets or shortcodes are used.
 			 */
 			$plugin_version = get_plugin_data( __FILE__ )['Version'];
 			wp_register_style( 'invp-grid', plugins_url( 'css/widget-grid.css', __FILE__ ), [], $plugin_version );
+			wp_register_style( 'invp-maximum-price-filters', plugins_url( 'css/widget-invp-maximum-price-filters.css', __FILE__ ), [], $plugin_version );
 
 			/**
 			 * Register flexslider and provide overrides for scripts and styles
