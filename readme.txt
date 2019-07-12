@@ -63,6 +63,7 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 = 10.2.0 =
 * [Added] Adds CSS for the Grid widget and shortcode. Previously, the styles that styled this widget lived in the _dealer theme.
+* [Changed] Upgrades the version of flexslider embedded in this plugin to the latest version, 2.7.2. This changes the previous and next arrow buttons from their location in the top right of photos to the left and right sides of the frame how most sliders operate.
 * [Fixed] Fixes a bug where menu args were assumed to exist before using them to identify a specific menu this plugin modifies.
 
 = 10.1.0 =
