@@ -614,7 +614,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 			$plugin_version = get_plugin_data( __FILE__ )['Version'];
 			wp_register_style( 'invp-grid', plugins_url( 'css/widget-grid.css', __FILE__ ), [], $plugin_version );
-			wp_register_style( 'invp-maximum-price-filters', plugins_url( 'css/widget-invp-maximum-price-filters.css', __FILE__ ), [], $plugin_version );
+			wp_register_style( 'invp-maximum-price-filters', plugins_url( 'css/widget-maximum-price-filters.css', __FILE__ ), [], $plugin_version );
 
 			/**
 			 * Register flexslider and provide overrides for scripts and styles
