@@ -60,59 +60,69 @@ class Inventory_Presser_Slider extends WP_Widget {
 
 		$inventory_ids = array();
 
-		$gpargs = array(
-			'numberposts' => $showcount * 5, //get 5 sets of the number we'll show at one time
-			'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
-			'fields'      => 'ids',
-			'orderby'     => 'rand',
-			'order'       => 'ASC',
-			'meta_query'  => array(
+		$get_posts_args = array(
+			'fields'         => 'ids',
+			'meta_query'     => array(
 				array(
 					'key'     => '_thumbnail_id',
 					'compare' => 'EXISTS',
 				),
 			),
+			'order'          => 'ASC',
+			'orderby'        => 'rand',
+			'post_type'      => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+			'posts_per_page' => $showcount * 5, //get 5 sets of the number we'll show at one time
 		);
 
 		switch( $featured_select ) {
 
 			case 'random':
-				$gpargs['meta_key'] = '_thumbnail_id';
-				$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
+				$get_posts_args['meta_key'] = '_thumbnail_id';
+				$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $get_posts_args ) );
 				break;
 
 			case 'newest_first':
-				$gpargs['meta_key'] = apply_filters( 'invp_prefix_meta_key', 'last_modified' );
-				$gpargs['orderby'] = ' STR_TO_DATE( meta1.meta_value, \'%a, %d %b %Y %T\' ) ';
-				$gpargs['order']   = 'DESC';
-				$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
+				$get_posts_args['meta_key'] = apply_filters( 'invp_prefix_meta_key', 'last_modified' );
+				$get_posts_args['orderby'] = ' STR_TO_DATE( meta1.meta_value, \'%a, %d %b %Y %T\' ) ';
+				$get_posts_args['order']   = 'DESC';
+				$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $get_posts_args ) );
 				break;
 
+			//featured_only
+			//featured_priority
 			default:
-				$gpargs['meta_query']['relation'] = 'AND';
-				$gpargs['meta_query'][] = array(
+				$get_posts_args['meta_query'][] = array(
 					'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
 					'value'   => 1,
-					'compare' => '=',
 				);
-				$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
+				$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $get_posts_args ) );
 
+				//do we need more vehicles?
 				if (count($inventory_ids) < ($showcount * 5) && $featured_select == 'featured_priority') {
 
-					$gpargs['numberposts'] = ($showcount * 5) - (count($inventory_ids));
-					$gpargs['meta_query'] = array(
+					//Get enough non-featured vehicles to fill out the number we need
+					$get_posts_args['posts_per_page'] = ($showcount * 5) - (count($inventory_ids));
+					$get_posts_args['meta_query'] = array(
 						'relation' => 'AND',
 						array(
-							'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
-							'value'   => 0,
-							'compare' => '='
+							'relation' => 'OR',
+							array(
+								'key'   => apply_filters( 'invp_prefix_meta_key', 'featured' ),
+								'value' => false,
+								'type'  => 'BOOLEAN',
+							),
+							array(
+								'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
+								'compare' => 'NOT EXISTS',
+							),
 						),
 						array(
 							'key'	  => '_thumbnail_id',
 							'compare' => 'EXISTS'
 						)
 					);
-					$inventory_ids += get_posts( apply_filters( 'invp_slider_widget_query_args', $gpargs ) );
+					$second_pass = get_posts( apply_filters( 'invp_slider_widget_query_args', $get_posts_args ) );
+					$inventory_ids += $second_pass;
 				}
 				//randomize the order, a strange choice we'll maintain
 				shuffle( $inventory_ids );
@@ -120,42 +130,44 @@ class Inventory_Presser_Slider extends WP_Widget {
 				break;
 		}
 
-		if ($inventory_ids) {
-
-			// before and after widget arguments are defined by themes
-			echo $args['before_widget'];
-			if ( ! empty( $title ) ) {
-				echo $args['before_title'] . $title . $args['after_title'];
-			}
-
-			printf(
-				'<div class="slick-slider-element" data-slick=\'{"slidesToShow": %1$d, "slidesToScroll": %1$d, "easing": "ease", "autoplaySpeed": %2$d, "speed": 4000}\'>',
-				$showcount,
-				( $showcount * 1000 ) + 1000
-			);
-
-			foreach ($inventory_ids as $inventory_id) {
-
-				$vehicle = new Inventory_Presser_Vehicle($inventory_id);
-				printf(
-					'<div class="widget-inventory-slide-wrap"><a href="%s"><div class="slick-background-image" style="background-image: url(%s);">',
-					$vehicle->url,
-					wp_get_attachment_image_url( get_post_thumbnail_id( $inventory_id ), 'large' )
-				);
-				if ($showtext != 'none') {
-					printf( '<div class="slick-text slick-text-%s">', $showtext );
-					if ($showtitle) {
-						printf( '<h3>%s %s %s</h3>', $vehicle->year, $vehicle->make, $vehicle->model );
-					}
-					if ($showprice) {
-						printf( '<h2>%s</h2>', $vehicle->price( __( 'Call For Price', 'inventory-presser' ) ) );
-					}
-					echo '</div>';
-				}
-				echo '</div></a></div>';
-			}
-			echo '</div>' . $args['after_widget'];
+		if ( ! $inventory_ids ) {
+			//No vehicles to show, don't output anything
+			return;
 		}
+
+		// before and after widget arguments are defined by themes
+		echo $args['before_widget'];
+		if ( ! empty( $title ) ) {
+			echo $args['before_title'] . $title . $args['after_title'];
+		}
+
+		printf(
+			'<div class="slick-slider-element" data-slick=\'{"slidesToShow": %1$d, "slidesToScroll": %1$d, "easing": "ease", "autoplaySpeed": %2$d, "speed": 4000}\'>',
+			$showcount,
+			( $showcount * 1000 ) + 1000
+		);
+
+		foreach ($inventory_ids as $inventory_id) {
+
+			$vehicle = new Inventory_Presser_Vehicle($inventory_id);
+			printf(
+				'<div class="widget-inventory-slide-wrap"><a href="%s"><div class="slick-background-image" style="background-image: url(%s);">',
+				$vehicle->url,
+				wp_get_attachment_image_url( get_post_thumbnail_id( $inventory_id ), 'large' )
+			);
+			if ($showtext != 'none') {
+				printf( '<div class="slick-text slick-text-%s">', $showtext );
+				if ($showtitle) {
+					printf( '<h3>%s %s %s</h3>', $vehicle->year, $vehicle->make, $vehicle->model );
+				}
+				if ($showprice) {
+					printf( '<h2>%s</h2>', $vehicle->price( __( 'Call For Price', 'inventory-presser' ) ) );
+				}
+				echo '</div>';
+			}
+			echo '</div></a></div>';
+		}
+		echo '</div>' . $args['after_widget'];
 	}
 
 	// Widget Backend
