@@ -477,12 +477,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			//Flush rewrite rules when the plugin is activated
 			register_activation_hook( __FILE__, array( 'Inventory_Presser_Plugin', 'flush_rewrite' ) );
-			//Schedule a weekly cron job to delete empty terms in our taxonomies
-			register_activation_hook( __FILE__, array( 'Inventory_Presser_Taxonomies', 'schedule_terms_cron_job' ) );
 
-			//Do some things during deactivation
+			//Delete an option during deactivation
 			register_deactivation_hook( __FILE__, array( 'Inventory_Presser_Plugin', 'delete_rewrite_rules_option' ) );
-			register_deactivation_hook( __FILE__, array( 'Inventory_Presser_Taxonomies', 'remove_terms_cron_job' ) );
 
 			/**
 			 * These items make it easier to create themes based on our custom post type
