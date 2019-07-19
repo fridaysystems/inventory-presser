@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.1.0
-Stable tag: 10.2.1
+Stable tag: 10.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,9 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 10.3.0 =
+* [Added] Adds the ability to set the Inventory listing as the home page
 
 = 10.2.1 =
 * [Fixed] Fixes a bug in the Vehicle Slider widget when using the "prioritize featured vehicles" setting. Previously, no vehicles were shown (and no slider was included on the page) if no vehicles in inventory were set as featured.
