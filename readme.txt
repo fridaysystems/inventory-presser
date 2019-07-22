@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.1.0
-Stable tag: 10.3.0
+Stable tag: 10.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,9 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 
 
 == Changelog ==
+
+= 10.3.1 =
+* [Removed] Removes files from the copy of WooTheme's flexslider that is embedded in this plugin, including the demo folder and two copies of jQuery that are not useful in this plugin.
 
 = 10.3.0 =
 * [Added] Adds the ability to set the Inventory listing as the home page

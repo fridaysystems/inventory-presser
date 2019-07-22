@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 10.3.0
+ * Version: 10.3.1
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -255,6 +255,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * WordPress core won't let us expose serialized meta fields in the REST
 		 * API, so this function puts these meta values in custom API fields
 		 * outside of meta.
+		 *
+		 * @return void
 		 */
 		function create_serialized_api_fields() {
 
@@ -304,6 +306,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			);
 		}
 
+		/**
+		 * Deactivates this plugin
+		 *
+		 * @return void
+		 */
 		function deactivate() {
 			deactivate_plugins( plugin_basename( __FILE__ ) );
 		}
@@ -314,16 +321,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		/**
+		 * Deletes the rewrite_rules option so the rewrite rules are generated
+		 * on the next page load without ours. Called during deactivation.
+		 * @see http://wordpress.stackexchange.com/a/44337/13090
+		 *
 		 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
 		 */
 		static function delete_rewrite_rules_option( $network_wide ) {
 
-			/**
-			 * This is called during plugin deactivation
-			 * delete the rewrite_rules option so the rewrite rules
-			 * are generated on the next page load without ours.
-			 * this is a weird thing and is described here http://wordpress.stackexchange.com/a/44337/13090
-			 */
 			if( ! is_multisite() || ! $network_wide ) {
 				delete_option('rewrite_rules');
 				return;
@@ -337,7 +342,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 		}
 
-		//What is the registered handle of the active theme's stylesheet?
+		/**
+		 * Finds the registered handle of the active theme's stylesheet.
+		 *
+		 * @return string|null The stylesheet handle or null if there is no stylesheet
+		 */
 		private function find_theme_stylesheet_handle() {
 			global $wp_styles;
 
@@ -369,9 +378,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 		}
 
-		// generate every possible combination of rewrite rules, including paging, based on post type taxonomy
-		// from http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
 		function generate_rewrite_rules( $post_type, $query_vars = array() ) {
+
+			// generate every possible combination of rewrite rules, including paging, based on post type taxonomy
+			// from http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
 		    global $wp_rewrite;
 
 		    if( ! is_object( $post_type ) ) {
@@ -418,6 +428,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 		/**
 		 * Given a string, return the last word.
+		 *
+		 * @param string $str The string from which to extract the last word
+		 * @return string The last word of the input string
 		 */
 		function get_last_word( $str ) {
 			$pieces = explode( ' ', rtrim( $str ) );
@@ -425,8 +438,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		/**
-		 * Get a serialized post meta value for a REST API call
-		 * (and deliver it as a serialized string)
+		 * Gets a serialized post meta value for a REST API call, and returns it
+		 * as a serialized string.
 		 */
 		function get_serialized_value_for_rest( $post, $key ) {
 			return serialize( get_post_meta( $post['id'], $key, true ) );
