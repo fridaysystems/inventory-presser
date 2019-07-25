@@ -1,0 +1,29 @@
+.flex-direction-nav a {
+	height: auto;
+	transition: none;
+	opacity: 1;
+	color: #fff;
+}
+.flex-direction-nav a:before{
+	color: #fff;
+	text-shadow: -1px 0 #666, 0 1px #666, 1px 0 #666, 0 -1px #666;
+}
+.flexslider:hover .flex-direction-nav .flex-prev,
+.flexslider:hover .flex-direction-nav .flex-next{
+	opacity: 1;
+}
+ul.flex-direction-nav li{
+	line-height: 1;
+}
+.flex-direction-nav a:focus{
+	outline: none;
+}
+.flex-direction-nav .flex-next{
+	right: 10px;
+}
+.flex-direction-nav .flex-prev{
+	left: 10px;
+}
+.flexslider .slides img{
+    cursor: pointer;
+}

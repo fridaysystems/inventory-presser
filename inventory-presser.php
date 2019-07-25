@@ -635,57 +635,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * Register flexslider and provide overrides for scripts and styles
 			 */
 			wp_register_script( 'flexslider', plugins_url('/lib/flexslider/jquery.flexslider-min.js', __FILE__ ), array('jquery'), $plugin_version );
-			wp_add_inline_script( 'flexslider',
-"jQuery('.flexslider').flexslider({
-	animation: 'slide',
-	controlNav: false,
-	prevText: '',
-	nextText: ''
-});
-var observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutationRecord) {
-        jQuery('#slider').data('flexslider').resize();
-    });
-});
-jQuery(document).ready( function() {
-	jQuery('#slider .slides li:first-child img').each( function() {
-		observer.observe(jQuery(this)[0], { attributes : true, attributeFilter : ['style'] });
-	});
-});"
-			);
+			wp_register_script( 'invp-flexslider', plugins_url('/js/flexslider.js', __FILE__ ), array( 'flexslider' ), $plugin_version );
 
 			wp_register_style( 'flexslider', plugins_url( '/lib/flexslider/flexslider.css', __FILE__ ), null, $plugin_version );
-			wp_add_inline_style( 'flexslider',
-".flex-direction-nav a {
-	height: auto;
-	transition: none;
-	opacity: 1;
-	color: #fff;
-}
-.flex-direction-nav a:before{
-	color: #fff;
-	text-shadow: -1px 0 #666, 0 1px #666, 1px 0 #666, 0 -1px #666;
-}
-.flexslider:hover .flex-direction-nav .flex-prev,
-.flexslider:hover .flex-direction-nav .flex-next{
-	opacity: 1;
-}
-ul.flex-direction-nav li{
-	line-height: 1;
-}
-.flex-direction-nav a:focus{
-	outline: none;
-}
-.flex-direction-nav .flex-next{
-	right: 10px;
-}
-.flex-direction-nav .flex-prev{
-	left: 10px;
-}
-.flexslider .slides img{
-    cursor: pointer;
-}"
-			);
+			wp_register_style( 'invp-flexslider', plugins_url( '/css/flexslider.css', __FILE__ ), array( 'flexslider' ), $plugin_version );
 
 			/**
 			 * Make the meta prefix to the front-end (the object name invp is
