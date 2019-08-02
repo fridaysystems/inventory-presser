@@ -36,6 +36,7 @@ Built the right way and developer-friendly
 
 1. Upload the `inventory-presser` directory to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
+1. Read this plugin's Frequently Asked Question called "Does Inventory Presser work with my theme?" to learn how vehicles can best be displayed
 
 
 == Frequently Asked Questions ==
@@ -50,7 +51,11 @@ Not for free. We have a VIN decoder add-on available at https://inventorypresser
 
 = Can I import my inventory into this system with a bulk feed? =
 
-Yes. The best way to do this to use the [WordPress REST API](https://developer.wordpress.org/rest-api/). Vehicles are stored in a custom post type, so other options are certainly available. Our first importer was based on a fork of the XML-based [WordPress Importer](https://wordpress.org/plugins/wordpress-importer/). Many CSV/spreadsheet importer plugins work with custom post types as well.
+Yes. The best way to do this to use the [WordPress REST API](https://developer.wordpress.org/rest-api/). Vehicles are stored in a custom post type, so other options are certainly available. Our first importer was based on a fork of the XML-based [WordPress Importer](https://wordpress.org/plugins/wordpress-importer/). Many CSV/spreadsheet importer plugins work with custom post types as well. If this sounds challenging, Friday Systems feeds many site running Inventory Presser, and it may be easier to feed there and let Friday Systems handle the last leg.
+
+= Does Inventory Presser work with my theme? =
+
+This plugin requires a few page templates to display listing pages and vehicle detail pages that contain the many attributes that describe a vehicle. To make creating these templates easy, we've released [Lift Kit](https://github.com/fridaysystems/lift-kit), a free set of files that can be added to any WordPress theme or child theme to quickly achieve compatibility. Themes designed for this plugin can also be seen and bought at https://inventorypresser.com/.
 
 
 == Screenshots ==
@@ -62,7 +67,11 @@ Yes. The best way to do this to use the [WordPress REST API](https://developer.w
 == Changelog ==
 
 = 10.3.1 =
-* [Removed] Removes files from the copy of WooTheme's flexslider that is embedded in this plugin, including the demo folder and two copies of jQuery that are not useful in this plugin.
+* [Added] Adds content to the Frequently Asked Questions section of this file
+* [Changed] Moves inline scripts and styles for flexslider into their own files
+* [Changed] Moves some activation and deactivation hooks into the taxonomies class where their callback methods live
+* [Removed] Removes needless files from the copy of WooTheme's flexslider that is embedded in this plugin, including the demo folder and two copies of jQuery that are not useful in this plugin.
+* [Removed] Removes references to Font Awesome, a dependency this plugin no longer has
 
 = 10.3.0 =
 * [Added] Adds the ability to set the Inventory listing as the home page
