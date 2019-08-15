@@ -339,11 +339,11 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				),
 				array(
 					'name' => 'carfax_url_icon',
-					'type' => 'boolean',
+					'type' => 'string',
 				),
 				array(
 					'name' => 'carfax_url_report',
-					'type' => 'boolean',
+					'type' => 'string',
 				),
 				array(
 					'name' => 'color',
