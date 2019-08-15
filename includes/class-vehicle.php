@@ -57,6 +57,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		var $carfax_have_report = '0';
 		var $carfax_one_owner = '0';
+		var $carfax_url_icon = '';
+		var $carfax_url_report = '';
 
 		// taxonomy terms
 		var $transmission;
@@ -333,6 +335,14 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				),
 				array(
 					'name' => 'carfax_one_owner',
+					'type' => 'boolean',
+				),
+				array(
+					'name' => 'carfax_url_icon',
+					'type' => 'boolean',
+				),
+				array(
+					'name' => 'carfax_url_report',
 					'type' => 'boolean',
 				),
 				array(
