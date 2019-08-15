@@ -643,11 +643,11 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		function youtube_url() {
 
-			if ( empty( $vehicle->youtube ) ) {
+			if ( empty( $this->youtube ) ) {
 				return '';
 			}
 
-			return 'https://www.youtube.com/watch?v=' . $vehicle->youtube;
+			return 'https://www.youtube.com/watch?v=' . $this->youtube;
 		}
 	}
 }
