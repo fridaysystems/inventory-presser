@@ -70,9 +70,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $is_sold = false;
 		var $is_used = true;
 
-		// color string for output
-		var $color_string = '';
-
 		// constructors
 		function __construct( $post_id = null ) {
 
@@ -104,16 +101,6 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 					}
 				}
 			}
-
-			// set up color string
-			$colorsArr = array();
-			if ($this->color) {
-				$colorsArr[] = ucwords(strtolower($this->color)) . ' Exterior';
-			}
-			if ($this->interior_color) {
-				$colorsArr[] = ucwords(strtolower($this->interior_color)) . ' Interior';
-			}
-			$this->color_string = implode(' / ', $colorsArr);
 
 			// get selected taxonomy terms
 			$this->transmission = $this->get_term_string('transmission');
