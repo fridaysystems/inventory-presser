@@ -152,11 +152,17 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 
 		function carfax_icon_svg() {
-			$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
-			if( $this->is_carfax_one_owner() ) {
-				$svg_path .= '-1-owner';
+
+			$svg_path = '';
+			if( ! empty( $this->carfax_url_icon ) ) {
+				$svg_path = $this->carfax_url_icon;
+			} else {
+				$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
+				if( $this->is_carfax_one_owner() ) {
+					$svg_path .= '-1-owner';
+				}
+				$svg_path .= '.svg';
 			}
-			$svg_path .= '.svg';
 			return file_get_contents( $svg_path );
 		}
 
@@ -166,6 +172,11 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				return '';
 			}
 
+			if( ! empty( $this->carfax_url_report ) ) {
+				return $this->carfax_url_report;
+			}
+
+			//fallback to the pre-August-2019 URLs
 			return 'http://www.carfax.com/VehicleHistory/p/Report.cfx?partner=FXI_0&vin=' . $this->vin;
 		}
 
