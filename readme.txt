@@ -66,6 +66,12 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 == Changelog ==
 
+= 10.4.0 =
+* [Added] The vehicle object now tracks two new Carfax fields for report URL and icon URL. Carfax's latest feed to service providers gives the organization a bit more control over the URLs where reports live and the icon that appears on dealer websites. This plugin still ships with Carfax icons, and they will continue to be used when they apply to the vehicle and the newer fields are not available.
+* [Added] The vehicle object now tracks transmission speeds in post meta. The existing transmission taxonomy is unchanged.
+* [Changed] The vehicle object's transmission member `$vehicle->transmission` will now include the number of speeds in the transmission instead of simply the name of the term in the transmission taxonomy. What was "Automatic" may now be "6 Speed Automatic" if this new field is used.
+* [Removed] Removes a vehicle object member `color_string` that would hold a string like "Blue Exterior / White Interior". This was a feature used in only one theme that we are no longer recommending. This feature was moved to the child themes where it is used. We've decided not to advance the major verison number despite this removal because this plugin is not yet distributed and no current installs are using the member.
+
 = 10.3.1 =
 * [Added] Adds content to the Frequently Asked Questions section of this file
 * [Changed] Moves inline scripts and styles for flexslider into their own files
