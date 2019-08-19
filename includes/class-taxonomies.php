@@ -20,11 +20,6 @@ class Inventory_Presser_Taxonomies {
 		register_rest_field( 'location', 'location-phone-hours', array(
 
 			'get_callback'    => function( $term, $attr, $request, $object_type ) {
-				/**
-				 * As of WP 4.9.6, the object passed to this callback is sometimes an
-				 * array. I think this is a bug and provide some details here:
-				 * https://coreysalzano.com/wordpress/array-passed-to-get_callback-you-provide-to-register_rest_field/
-				 */
 				$term_id = ( is_array( $term ) ? $term['id'] : $term->term_id );
 				return maybe_serialize( get_term_meta( $term_id, $attr, true ) );
 			},

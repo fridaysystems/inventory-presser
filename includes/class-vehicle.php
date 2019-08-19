@@ -139,11 +139,9 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 
 		function carfax_icon_svg() {
-
-			$svg_path = '';
-			if( ! empty( $this->carfax_url_icon ) ) {
-				$svg_path = $this->carfax_url_icon;
-			} else {
+			$svg_path = $this->carfax_url_icon;
+			if( empty( $svg_path ) ) {
+				//fallback to the icon that ships with this plugin
 				$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
 				if( $this->is_carfax_one_owner() ) {
 					$svg_path .= '-1-owner';
