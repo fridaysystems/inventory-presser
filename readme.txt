@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.1.0
-Stable tag: 10.3.1
+Stable tag: 10.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,10 +67,11 @@ This plugin requires a few page templates to display listing pages and vehicle d
 == Changelog ==
 
 = 10.4.0 =
-* [Added] The vehicle object now tracks two new Carfax fields for report URL and icon URL. Carfax's latest feed to service providers gives the organization a bit more control over the URLs where reports live and the icon that appears on dealer websites. This plugin still ships with Carfax icons, and they will continue to be used when they apply to the vehicle and the newer fields are not available.
-* [Added] The vehicle object now tracks transmission speeds in post meta. The existing transmission taxonomy is unchanged.
-* [Changed] The vehicle object's transmission member `$vehicle->transmission` will now include the number of speeds in the transmission instead of simply the name of the term in the transmission taxonomy. What was "Automatic" may now be "6 Speed Automatic" if this new field is used.
-* [Removed] Removes a vehicle object member `color_string` that would hold a string like "Blue Exterior / White Interior". This was a feature used in only one theme that we are no longer recommending. This feature was moved to the child themes where it is used. We've decided not to advance the major verison number despite this removal because this plugin is not yet distributed and no current installs are using the member.
+* [Added] The vehicle class now tracks two new Carfax fields for report URL and icon URL. Carfax's latest feed to service providers gives the organization a bit more control over the URLs where reports live and the icon that appears on dealer websites. This plugin still ships with Carfax icons, and they will continue to be used when they apply to the vehicle and the newer fields are not available.
+* [Added] The vehicle class now tracks transmission speeds in post meta. The existing transmission taxonomy is unchanged.
+* [Changed] The vehicle class' transmission member `$vehicle->transmission` will now include the number of speeds in the transmission instead of simply the name of the term in the transmission taxonomy. What was "Automatic" may now be "6 Speed Automatic" if this new field is used.
+* [Removed] Removes a vehicle class member `color_string` that would hold a string like "Blue Exterior / White Interior". This was a feature used in only one theme that we are no longer recommending. This feature was moved to the child themes where it is used. We've decided not to advance the major verison number despite this removal because this plugin is not yet distributed and no current installs are using the member.
+* [Fixed] Fixes a bug in the vehicle class' youtube_url() method
 
 = 10.3.1 =
 * [Added] Adds content to the Frequently Asked Questions section of this file
