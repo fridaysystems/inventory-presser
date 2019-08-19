@@ -44,6 +44,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $prices = array();
 		var $stock_number = '';
 		var $title_status = '';
+		var $transmission_speeds = 0;
 		var $trim = '';
 		var $type = '';
 		var $vin = '';
@@ -102,22 +103,23 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				}
 			}
 
-			// get selected taxonomy terms
+			//get taxonomy terms
 			$this->transmission = $this->get_term_string('transmission');
+			if( ! empty( $this->transmission_speeds ) ) {
+				$this->transmission = trim( sprintf(
+					'%s %s %s',
+					$this->transmission_speeds,
+					__( 'Speed', 'inventory-presser' ),
+					$this->transmission
+				) );
+			}
 			$this->drivetype = $this->get_term_string('drive_type');
 			$this->fuel = $this->get_term_string('fuel');
 			$this->location = $this->get_term_string('location');
 			$this->availability = $this->get_term_string('availability');
-
-			$pos = strpos(strtolower($this->availability), 'sold');
-			if ($pos !== false) {
-				$this->is_sold = true;
-			}
-
+			$this->is_sold = false !== strpos( strtolower( $this->availability ), 'sold' );
 			$this->is_used = has_term( 'used', 'condition', $this->post_ID );
-
-			$type_array = wp_get_post_terms($this->post_ID, 'type', array("fields" => "slugs"));
-			$this->type = (isset($type_array[0])) ? $type_array[0] : '';
+			$this->type = $this->get_term_string('type');
 		}
 
 		//is this a vehicle for which Carfax maintains data?
@@ -432,6 +434,10 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				array(
 					'name' => 'title_status',
 					'type' => 'string',
+				),
+				array(
+					'name' => 'transmission_speeds',
+					'type' => 'integer',
 				),
 				array(
 					'name' => 'trim',
