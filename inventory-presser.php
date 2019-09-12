@@ -566,6 +566,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			//Add blocks
 			$blocks = new Inventory_Presser_Blocks();
 			$blocks->hooks();
+
+			/**
+			 * Add photo number meta values to vehicle photos uploaded in the
+			 * dashboard
+			 */
+			$photo_numberer = new Inventory_Presser_Photo_Numberer();
+			$photo_numberer->hooks();
 		}
 
 		function include_dependencies() {
@@ -581,6 +588,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-menu-item-print.php',
 				'class-option-manager.php',
 				'class-order-by-post-meta-widget.php',
+				'class-photo-numberer.php',
 				'class-redirect-404-vehicles.php',
 				'class-seo.php',
 				'class-shortcode-iframe.php',
