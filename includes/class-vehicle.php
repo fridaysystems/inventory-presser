@@ -437,7 +437,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				),
 				array(
 					'name' => 'transmission_speeds',
-					'type' => 'integer',
+					'type' => 'string',
 				),
 				array(
 					'name' => 'trim',
