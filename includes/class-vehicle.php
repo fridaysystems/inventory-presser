@@ -246,7 +246,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 					$img_element = wp_get_attachment_image(
 						$image->ID,
-						$size,
+						$size == 'large' ? array( '1024', 'auto' ) : $size,
 						false,
 						array( 'class' => "attachment-$size size-$size invp-image" )
 					);
