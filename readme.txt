@@ -42,19 +42,15 @@ Built the right way and developer-friendly
 == Frequently Asked Questions ==
 
 = How much does this plugin cost? =
-
 This plugin is free. Free and paid add-ons are available at https://inventorypresser.com/.
 
 = Does it decode VINs? =
-
 Not for free. We have a VIN decoder add-on available at https://inventorypresser.com/. If you know of a free VIN decoder that allows automated, public queries, please show us.
 
 = Can I import my inventory into this system with a bulk feed? =
-
 Yes. The best way to do this to use the [WordPress REST API](https://developer.wordpress.org/rest-api/). Vehicles are stored in a custom post type, so other options are certainly available. Our first importer was based on a fork of the XML-based [WordPress Importer](https://wordpress.org/plugins/wordpress-importer/). Many CSV/spreadsheet importer plugins work with custom post types as well. If this sounds challenging, Friday Systems feeds many site running Inventory Presser, and it may be easier to feed there and let Friday Systems handle the last leg.
 
 = Does Inventory Presser work with my theme? =
-
 This plugin requires a few page templates to display listing pages and vehicle detail pages that contain the many attributes that describe a vehicle. To make creating these templates easy, we've released [Lift Kit](https://github.com/fridaysystems/lift-kit), a free set of files that can be added to any WordPress theme or child theme to quickly achieve compatibility. Themes designed for this plugin can also be seen and bought at https://inventorypresser.com/.
 
 
@@ -69,9 +65,11 @@ This plugin requires a few page templates to display listing pages and vehicle d
 = 10.4.0 =
 * [Added] The vehicle class now tracks two new Carfax fields for report URL and icon URL. Carfax's latest feed to service providers gives the organization a bit more control over the URLs where reports live and the icon that appears on dealer websites. This plugin still ships with Carfax icons, and they will continue to be used when they apply to the vehicle and the newer fields are not available.
 * [Added] The vehicle class now tracks transmission speeds in post meta. The existing transmission taxonomy is unchanged.
+* [Added] Adds a meta value containing the photo order integer to vehicle photos that are uploaded directly into the Media Library
 * [Changed] The vehicle class' transmission member `$vehicle->transmission` will now include the number of speeds in the transmission instead of simply the name of the term in the transmission taxonomy. What was "Automatic" may now be "6 Speed Automatic" if this new field is used.
 * [Removed] Removes a vehicle class member `color_string` that would hold a string like "Blue Exterior / White Interior". This was a feature used in only one theme that we are no longer recommending. This feature was moved to the child themes where it is used. We've decided not to advance the major verison number despite this removal because this plugin is not yet distributed and no current installs are using the member.
 * [Fixed] Fixes a bug in the vehicle class' youtube_url() method
+* [Fixed] Restores functionality that shows odd-size or mismatched aspect ratio photos at full width in flex slider. This functionality was lost in 10.2.0.
 
 = 10.3.1 =
 * [Added] Adds content to the Frequently Asked Questions section of this file
