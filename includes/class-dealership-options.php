@@ -71,6 +71,15 @@ class _dealer_settings {
 			'dealership-options-admin' // page
 		);
 
+		//Price Display
+		add_settings_field(
+			'price_display', // id
+			__( 'Price Display', 'inventory-presser' ), // title
+			array( $this, 'price_display_callback' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
 		//Sort vehicles by [Field] in [Ascending] order
 		add_settings_field(
 			'sort_vehicles_by', // id
@@ -110,6 +119,10 @@ class _dealer_settings {
 	public function dealership_options_sanitize( $input ) {
 		$sanitary_values = array();
 
+		if ( isset( $input['price_display'] ) ) {
+			$sanitary_values['price_display'] = $input['price_display'];
+		}
+
 		if ( isset( $input['sort_vehicles_by'] ) ) {
 			$sanitary_values['sort_vehicles_by'] = $input['sort_vehicles_by'];
 		}
@@ -139,6 +152,41 @@ class _dealer_settings {
 			( isset( $this->_dealer_settings['include_sold_vehicles'] ) && $this->_dealer_settings['include_sold_vehicles'] === 'include_sold_vehicles' ) ? 'checked' : '',
 			__( 'Include sold vehicles on listings pages', 'inventory-presser' )
 		);
+	}
+
+	function price_display_callback() {
+
+		$price_display_options = apply_filters( 'invp_price_display_options', array(
+			'default'          => '${Price}',
+			'msrp'             => '${MSRP}',
+			'genes'            => 'Now ${MSRP} Was ${Down Payment}',
+			'full_or_down'     => '${Price} or ${Down Payment} Down',
+			'down_only'        => '${Down Payment} Down',
+			'was_now_discount' => 'Retail ${MSRP} Now ${Price} You Save ${MSRP-Price}',
+			'call_for_price'   => 'Call For Price',
+		) );
+
+		$selected_val = null;
+		if ( isset( $this->_dealer_settings['price_display'] ) ) {
+			$selected_val = $this->_dealer_settings['price_display'];
+		}
+
+		echo '<select name="_dealer_settings[price_display]" id="price_display">';
+		foreach( $price_display_options as $val => $name ) {
+			printf(
+				'<option value="%s"%s>%s</option>',
+				$val,
+				selected( $val, $selected_val, false ),
+				$name
+			);
+		}
+		echo '</select>'
+			. '<p class="description" id="_dealer_settings[price_display]-description">'
+			. sprintf(
+				'&quot;%s&quot; %s.',
+				__( 'Call for Price', '_dealer' ),
+				__( 'will display for any price that is zero', '_dealer' )
+			) . '</p>';
 	}
 
 	public function sort_vehicles_by_callback() {
