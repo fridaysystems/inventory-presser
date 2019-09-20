@@ -573,6 +573,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 			$photo_numberer = new Inventory_Presser_Photo_Numberer();
 			$photo_numberer->hooks();
+
+			if ( is_admin() ) {
+				//Initialize our Settings page in the Dashboard
+				$options = new _dealer_settings();
+				$options->hooks();
+			}
 		}
 
 		function include_dependencies() {

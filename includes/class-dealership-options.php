@@ -277,7 +277,3 @@ class _dealer_settings {
 		);
 	}
 }
-if ( is_admin() ) {
-	$invp_options_019230128080 = new _dealer_settings();
-	$invp_options_019230128080->hooks();
-}
