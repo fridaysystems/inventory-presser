@@ -528,17 +528,98 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 * @param string $zero_string The text to display when the price is zero
 		 * @return string The price formatted as a dollar amount except when the price is zero
 		 */
-		function price( $zero_string = '' ) {
-
-			if ( $this->is_sold ) {
+		function price( $zero_string = '' )
+		{
+			//If this vehicle is sold, just say so
+			if ( $this->is_sold )
+			{
 				return apply_filters( 'invp_sold_string', sprintf( '<span class="vehicle-sold">%s</span>', __( 'SOLD!', 'inventory-presser' ) ) );
 			}
 
-			if( 0 == $this->price ) {
-				return apply_filters( 'invp_zero_price_string', $zero_string, $this );
+			$zero_string = apply_filters( 'invp_zero_price_string', $zero_string, $this );
+
+			//How are we displaying the price?
+			$settings = Inventory_Presser_Plugin::settings();
+
+			if( ! isset( $settings['price_display'] ) )
+			{
+				$settings['price_display'] = 'default';
 			}
 
-			return __( '$', 'inventory-presser' ) . number_format( $this->price, 0, '.', ',' );
+			switch( $settings['price_display'] )
+			{
+				case 'msrp':
+					if ( isset( $this->msrp ) && $this->msrp > 0 )
+					{
+						return is_numeric( $this->msrp ) ? '$' . number_format( $this->msrp, 0, '.', ',' ) : $this->msrp;
+					}
+					break;
+
+				// down payment and/or full price
+				case 'full_or_down':
+					if ( $this->down_payment > 0 )
+					{
+						if ( $this->price > 0 )
+						{
+							return sprintf( '$%s / $%s Down', number_format( $this->price, 0, '.', ',' ), number_format( $this->down_payment, 0, '.', ',' ) );
+						}
+						return sprintf( '$%s Down', number_format( $this->down_payment, 0, '.', ',' ) );
+					}
+					break;
+
+				// down payment only
+				case 'down_only':
+					if ( $this->down_payment > 0 )
+					{
+						return sprintf( '$%s Down', number_format( $this->down_payment, 0, '.', ',' ) );
+					}
+					break;
+
+				// call_for_price
+				case 'call_for_price':
+
+					return __( 'Call For Price', 'inventory-presser' );
+					break;
+
+				// was_now_discount - MSRP = was price, regular price = now price, discount = was - now.
+				case 'was_now_discount':
+					if ( isset( $this->msrp )
+						&& $this->msrp > 0
+						&& $this->price > 0
+						&& $this->msrp > $this->price
+					)
+					{
+						return sprintf(
+							'<div class="price-was-discount">%s $%s</div>%s $%s<div class="price-was-discount-save">%s $%s</div>',
+							__( 'Retail', 'inventory-presser' ),
+							number_format( $this->msrp, 0, '.', ',' ),
+							__( 'Now', 'inventory-presser' ),
+							number_format( $this->price, 0, '.', ',' ),
+							__( 'You Save', 'inventory-presser' ),
+							number_format( ( $this->msrp - $this->price ), 0, '.', ',' )
+						);
+					}
+					break;
+
+				case 'default':
+					//Normally, show the price field as currency.
+					if( 0 == $this->price )
+					{
+						return apply_filters( 'invp_zero_price_string', $zero_string, $this );
+					}
+					return '$' . number_format( $this->price, 0, '.', ',' );
+					break;
+
+				default:
+					/**
+					 * The price display type is something beyond what this
+					 * plugin supports. Allow the value to be filtered.
+					 */
+					return apply_filters( 'invp_price_display', __( 'Call For Price', 'inventory-presser' ), $settings['price_display'], $this );
+					break;
+			}
+
+			return __( 'Call For Price', 'inventory-presser' );
 		}
 
 		function schema_org_drive_type( $drive_type ) {

@@ -62,6 +62,11 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 == Changelog ==
 
+= 10.5.0 =
+* [Added] Adds a Price Display setting that lets users show MSRP values, down payments, or 'Call For Price' instead of vehicle prices. This feature was built into the _dealer theme, but now lives in core so it's easy for widgets to show appropriate prices.
+* [Added] Adds filters `invp_price_display_options` and `invp_price_display` that allow developers to create their own price display options.
+* [Changed] The settings() method on the Inventory_Presser_Plugin class is now a static method.
+
 = 10.4.0 =
 * [Added] The vehicle class now tracks two new Carfax fields for report URL and icon URL. Carfax's latest feed to service providers gives the organization a bit more control over the URLs where reports live and the icon that appears on dealer websites. This plugin still ships with Carfax icons, and they will continue to be used when they apply to the vehicle and the newer fields are not available.
 * [Added] The vehicle class now tracks transmission speeds in post meta. The existing transmission taxonomy is unchanged.

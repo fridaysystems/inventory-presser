@@ -159,11 +159,10 @@ class _dealer_settings {
 		$price_display_options = apply_filters( 'invp_price_display_options', array(
 			'default'          => '${Price}',
 			'msrp'             => '${MSRP}',
-			'genes'            => 'Now ${MSRP} Was ${Down Payment}',
-			'full_or_down'     => '${Price} or ${Down Payment} Down',
+			'full_or_down'     => '${Price} / ${Down Payment} Down',
 			'down_only'        => '${Down Payment} Down',
-			'was_now_discount' => 'Retail ${MSRP} Now ${Price} You Save ${MSRP-Price}',
-			'call_for_price'   => 'Call For Price',
+			'was_now_discount' => 'Retail ${MSRP} Now ${Price} You Save ${MSRP}-{Price}',
+			'call_for_price'   => __( 'Call For Price', 'inventory-presser' ),
 		) );
 
 		$selected_val = null;
@@ -184,8 +183,8 @@ class _dealer_settings {
 			. '<p class="description" id="_dealer_settings[price_display]-description">'
 			. sprintf(
 				'&quot;%s&quot; %s.',
-				__( 'Call for Price', '_dealer' ),
-				__( 'will display for any price that is zero', '_dealer' )
+				__( 'Call for Price', 'inventory-presser' ),
+				__( 'will display for any price that is zero', 'inventory-presser' )
 			) . '</p>';
 	}
 
