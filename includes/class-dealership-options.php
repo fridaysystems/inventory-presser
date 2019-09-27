@@ -78,7 +78,7 @@ class Inventory_Presser_Options
 		register_setting(
 			'dealership_options_option_group', // option_group
 			Inventory_Presser_Plugin::OPTION_NAME, // option_name
-			array( $this, 'dealership_options_sanitize' ) // sanitize_callback
+			array( $this, 'sanitize_options' ) // sanitize_callback
 		);
 
 		add_settings_section(
@@ -92,7 +92,7 @@ class Inventory_Presser_Options
 		add_settings_field(
 			'price_display', // id
 			__( 'Price Display', 'inventory-presser' ), // title
-			array( $this, 'price_display_callback' ), // callback
+			array( $this, 'callback_price_display' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
 		);
@@ -101,7 +101,7 @@ class Inventory_Presser_Options
 		add_settings_field(
 			'sort_vehicles_by', // id
 			__( 'Sort Vehicles By', 'inventory-presser' ), // title
-			array( $this, 'sort_vehicles_by_callback' ), // callback
+			array( $this, 'callback_sort_vehicles_by' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
 		);
@@ -110,7 +110,7 @@ class Inventory_Presser_Options
 		add_settings_field(
 			'include_sold_vehicles', // id
 			__( 'Sold Vehicles', 'inventory-presser' ), // title
-			array( $this, 'include_sold_vehicles_callback' ), // callback
+			array( $this, 'callback_include_sold_vehicles' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
 		);
@@ -118,7 +118,7 @@ class Inventory_Presser_Options
 		add_settings_field(
 			'use_carfax', // id
 			__( 'CARFAX', 'inventory-presser' ), // title
-			array( $this, 'use_carfax_callback' ), // callback
+			array( $this, 'callback_use_carfax' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
 		);
@@ -127,13 +127,13 @@ class Inventory_Presser_Options
 		add_settings_field(
 			'show_all_taxonomies', // id
 			__( 'Show All Taxonomies', 'inventory-presser' ), // title
-			array( $this, 'show_all_taxonomies_callback' ), // callback
+			array( $this, 'callback_show_all_taxonomies' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
 		);
 	}
 
-	public function dealership_options_sanitize( $input )
+	public function sanitize_options( $input )
 	{
 		$sanitary_values = array();
 
@@ -170,7 +170,7 @@ class Inventory_Presser_Options
 		return apply_filters( 'invp_options_page_sanitized_values', $input, $sanitary_values );
 	}
 
-	function include_sold_vehicles_callback()
+	function callback_include_sold_vehicles()
 	{
 		$this->boolean_checkbox_setting_callback(
 			'include_sold_vehicles',
@@ -178,7 +178,7 @@ class Inventory_Presser_Options
 		);
 	}
 
-	function price_display_callback()
+	function callback_price_display()
 	{
 		$price_display_options = apply_filters( 'invp_price_display_options', array(
 			'default'          => '${Price}',
@@ -250,7 +250,7 @@ class Inventory_Presser_Options
 		delete_option( $old_option_name );
 	}
 
-	public function sort_vehicles_by_callback()
+	public function callback_sort_vehicles_by()
 	{
 		//use these default values if we have none
 		if( ! isset( $this->option['sort_vehicles_by'] ) )
@@ -342,7 +342,7 @@ class Inventory_Presser_Options
 	 *
 	 * @return void
 	 */
-	function show_all_taxonomies_callback()
+	function callback_show_all_taxonomies()
 	{
 		$this->boolean_checkbox_setting_callback(
 			'show_all_taxonomies',
@@ -350,7 +350,7 @@ class Inventory_Presser_Options
 		);
 	}
 
-	function use_carfax_callback()
+	function callback_use_carfax()
 	{
 		$this->boolean_checkbox_setting_callback(
 			'use_carfax',
