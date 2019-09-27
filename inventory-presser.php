@@ -18,7 +18,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	class Inventory_Presser_Plugin {
 
 		const CUSTOM_POST_TYPE = 'inventory_vehicle';
-		const OPTION_NAME = '_dealer_settings';
+		const OPTION_NAME = 'inventory_presser';
 
 		var $settings; //A place to store this plugin's option
 

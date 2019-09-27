@@ -21,6 +21,15 @@ class Inventory_Presser_Options
 	{
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
+
+		/**
+		 * In September 2019, I decided to rename this plugin's option. I made
+		 * this decision after realizing that the _dealer theme uses the same
+		 * option to store its settings. Also, I've always felt that it has been
+		 * unfortunately named something that does not indicate to strangers
+		 * that it belongs to this plugin.
+		 */
+		add_action( 'plugins_loaded', array( $this, 'rename_option' ) );
 	}
 
 	public function add_options_page()
@@ -68,7 +77,7 @@ class Inventory_Presser_Options
 	{
 		register_setting(
 			'dealership_options_option_group', // option_group
-			'_dealer_settings', // option_name
+			Inventory_Presser_Plugin::OPTION_NAME, // option_name
 			array( $this, 'dealership_options_sanitize' ) // sanitize_callback
 		);
 
@@ -145,7 +154,7 @@ class Inventory_Presser_Options
 
 		if ( isset( $input['include_sold_vehicles'] ) )
 		{
-			$sanitary_values['include_sold_vehicles'] = $input['include_sold_vehicles'];
+			$sanitary_values['include_sold_vehicles'] = true;
 		}
 
 		if ( isset( $input['show_all_taxonomies'] ) )
@@ -155,7 +164,7 @@ class Inventory_Presser_Options
 
 		if ( isset( $input['use_carfax'] ) )
 		{
-			$sanitary_values['use_carfax'] = $input['use_carfax'];
+			$sanitary_values['use_carfax'] = true;
 		}
 
 		return apply_filters( 'invp_options_page_sanitized_values', $input, $sanitary_values );
@@ -163,9 +172,8 @@ class Inventory_Presser_Options
 
 	function include_sold_vehicles_callback()
 	{
-		printf(
-			'<input type="checkbox" name="_dealer_settings[include_sold_vehicles]" id="include_sold_vehicles" value="include_sold_vehicles" %s> <label for="include_sold_vehicles">%s</label>',
-			( isset( $this->option['include_sold_vehicles'] ) && $this->option['include_sold_vehicles'] === 'include_sold_vehicles' ) ? 'checked' : '',
+		$this->boolean_checkbox_setting_callback(
+			'include_sold_vehicles',
 			__( 'Include sold vehicles on listings pages', 'inventory-presser' )
 		);
 	}
@@ -187,7 +195,10 @@ class Inventory_Presser_Options
 			$selected_val = $this->option['price_display'];
 		}
 
-		echo '<select name="_dealer_settings[price_display]" id="price_display">';
+		printf(
+			'<select name="%s[price_display]" id="price_display">',
+			Inventory_Presser_Plugin::OPTION_NAME
+		);
 		foreach( $price_display_options as $val => $name )
 		{
 			printf(
@@ -197,13 +208,46 @@ class Inventory_Presser_Options
 				$name
 			);
 		}
-		echo '</select>'
-			. '<p class="description" id="_dealer_settings[price_display]-description">'
-			. sprintf(
-				'&quot;%s&quot; %s.',
-				__( 'Call for Price', 'inventory-presser' ),
-				__( 'will display for any price that is zero', 'inventory-presser' )
-			) . '</p>';
+		printf(
+			'</select><p class="description" id="%s[price_display]-description">&quot;%s&quot; %s.</p>',
+			Inventory_Presser_Plugin::OPTION_NAME,
+			__( 'Call for Price', 'inventory-presser' ),
+			__( 'will display for any price that is zero', 'inventory-presser' )
+		);
+	}
+
+	/**
+	 * Rename the option used by this plugin from "_dealer_settings" to
+	 * "inventory_presser"
+	 */
+	function rename_option()
+	{
+		$old_option_name = '_dealer_settings';
+
+		//Only do this once
+		$new_option = get_option( Inventory_Presser_Plugin::OPTION_NAME );
+		if( $new_option ) {
+			delete_option( $old_option_name );
+			return;
+		}
+
+		$old_option = get_option( $old_option_name );
+		if( ! $old_option ) {
+			return;
+		}
+
+		//Remove some keys because the _dealer theme hijacked our option
+		unset( $old_option['append_page'] );
+		unset( $old_option['archive_show_content'] );
+		unset( $old_option['cargurus_badge_archive'] );
+		unset( $old_option['hide_footer_credit'] );
+		unset( $old_option['msrp_label'] );
+		unset( $old_option['price_display_type'] );
+		unset( $old_option['valley_custom_icon'] );
+		unset( $old_option['valley_custom_link'] );
+
+		update_option( Inventory_Presser_Plugin::OPTION_NAME, $old_option );
+		delete_option( $old_option_name );
 	}
 
 	public function sort_vehicles_by_callback()
@@ -218,7 +262,10 @@ class Inventory_Presser_Options
 			$this->option['sort_vehicles_order'] = 'ASC';
 		}
 
-		echo '<select name="_dealer_settings[sort_vehicles_by]" id="sort_vehicles_by">';
+		printf(
+			'<select name="%s[sort_vehicles_by]" id="sort_vehicles_by">',
+			Inventory_Presser_Plugin::OPTION_NAME
+		);
 
 		/**
 		 * Get a list of all the post meta keys in our CPT. Let the user choose
@@ -260,8 +307,9 @@ class Inventory_Presser_Options
 		}
 
 		printf(
-			'</select> %s <select name="_dealer_settings[sort_vehicles_order]" id="sort_vehicles_order">',
-			__( 'in', 'inventory-presser' )
+			'</select> %s <select name="%s[sort_vehicles_order]" id="sort_vehicles_order">',
+			__( 'in', 'inventory-presser' ),
+			Inventory_Presser_Plugin::OPTION_NAME
 		);
 
 		foreach( array( 'ascending' => 'ASC', 'descending' => 'DESC' ) as $direction => $abbr )
@@ -279,7 +327,8 @@ class Inventory_Presser_Options
 	function boolean_checkbox_setting_callback( $setting_name, $checkbox_label )
 	{
 		printf(
-			'<input type="checkbox" name="_dealer_settings[%s]" id="%s" %s> <label for="%s">%s</label>',
+			'<input type="checkbox" name="%s[%s]" id="%s" %s> <label for="%s">%s</label>',
+			Inventory_Presser_Plugin::OPTION_NAME,
 			$setting_name,
 			$setting_name,
 			( isset( $this->option[$setting_name] ) && $this->option[$setting_name] ) ? 'checked' : '',
@@ -295,14 +344,16 @@ class Inventory_Presser_Options
 	 */
 	function show_all_taxonomies_callback()
 	{
-		$this->boolean_checkbox_setting_callback( 'show_all_taxonomies', __( 'Show all taxonomies under Vehicles menu in Dashboard', 'inventory-presser' ) );
+		$this->boolean_checkbox_setting_callback(
+			'show_all_taxonomies',
+			__( 'Show all taxonomies under Vehicles menu in Dashboard', 'inventory-presser' )
+		);
 	}
 
-	public function use_carfax_callback()
+	function use_carfax_callback()
 	{
-		printf(
-			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">%s</label>',
-			( isset( $this->option['use_carfax'] ) && $this->option['use_carfax'] === 'use_carfax' ) ? 'checked' : '',
+		$this->boolean_checkbox_setting_callback(
+			'use_carfax',
 			__( 'Display CARFAX buttons near vehicles that link to free CARFAX reports', 'inventory-presser' )
 		);
 	}
