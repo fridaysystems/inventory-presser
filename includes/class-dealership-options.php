@@ -12,8 +12,10 @@ defined( 'ABSPATH' ) or exit;
  * @author     Corey Salzano <corey@friday.systems>
  */
 
-class _dealer_settings {
-	private $_dealer_settings;
+class Inventory_Presser_Options
+{
+	//This plugin's option that holds all the settings
+	private $option;
 
 	public function hooks() {
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
@@ -41,7 +43,7 @@ class _dealer_settings {
 	}
 
 	public function options_page_content() {
-		$this->_dealer_settings = Inventory_Presser_Plugin::settings();
+		$this->option = Inventory_Presser_Plugin::settings();
 
 		?><div class="wrap">
 			<h2><?php _e( 'Inventory Presser Settings', 'inventory-presser' ); ?></h2>
@@ -149,7 +151,7 @@ class _dealer_settings {
 	function include_sold_vehicles_callback() {
 		printf(
 			'<input type="checkbox" name="_dealer_settings[include_sold_vehicles]" id="include_sold_vehicles" value="include_sold_vehicles" %s> <label for="include_sold_vehicles">%s</label>',
-			( isset( $this->_dealer_settings['include_sold_vehicles'] ) && $this->_dealer_settings['include_sold_vehicles'] === 'include_sold_vehicles' ) ? 'checked' : '',
+			( isset( $this->option['include_sold_vehicles'] ) && $this->option['include_sold_vehicles'] === 'include_sold_vehicles' ) ? 'checked' : '',
 			__( 'Include sold vehicles on listings pages', 'inventory-presser' )
 		);
 	}
@@ -166,8 +168,8 @@ class _dealer_settings {
 		) );
 
 		$selected_val = null;
-		if ( isset( $this->_dealer_settings['price_display'] ) ) {
-			$selected_val = $this->_dealer_settings['price_display'];
+		if ( isset( $this->option['price_display'] ) ) {
+			$selected_val = $this->option['price_display'];
 		}
 
 		echo '<select name="_dealer_settings[price_display]" id="price_display">';
@@ -191,11 +193,11 @@ class _dealer_settings {
 	public function sort_vehicles_by_callback() {
 
 		//use these default values if we have none
-		if( ! isset( $this->_dealer_settings['sort_vehicles_by'] ) ) {
-			$this->_dealer_settings['sort_vehicles_by'] = apply_filters( 'invp_prefix_meta_key', 'make' );
+		if( ! isset( $this->option['sort_vehicles_by'] ) ) {
+			$this->option['sort_vehicles_by'] = apply_filters( 'invp_prefix_meta_key', 'make' );
 		}
-		if( ! isset( $this->_dealer_settings['sort_vehicles_order'] ) ) {
-			$this->_dealer_settings['sort_vehicles_order'] = 'ASC';
+		if( ! isset( $this->option['sort_vehicles_order'] ) ) {
+			$this->option['sort_vehicles_order'] = 'ASC';
 		}
 
 		echo '<select name="_dealer_settings[sort_vehicles_by]" id="sort_vehicles_by">';
@@ -227,8 +229,8 @@ class _dealer_settings {
 			if( '_' == $meta_key[0] ) { continue; }
 
 			echo '<option value="'. $meta_key . '"';
-			if( isset( $this->_dealer_settings['sort_vehicles_by'] ) ) {
-				selected( $this->_dealer_settings['sort_vehicles_by'], $meta_key );
+			if( isset( $this->option['sort_vehicles_by'] ) ) {
+				selected( $this->option['sort_vehicles_by'], $meta_key );
 			}
 			echo '>' . str_replace( '_', ' ', ucfirst( $key ) ) . '</option>';
 		}
@@ -240,8 +242,8 @@ class _dealer_settings {
 
 		foreach( array( 'ascending' => 'ASC', 'descending' => 'DESC' ) as $direction => $abbr ) {
 			echo '<option value="'. $abbr . '"';
-			if( isset( $this->_dealer_settings['sort_vehicles_order'] ) ) {
-				selected( $this->_dealer_settings['sort_vehicles_order'], $abbr );
+			if( isset( $this->option['sort_vehicles_order'] ) ) {
+				selected( $this->option['sort_vehicles_order'], $abbr );
 			}
 			echo '>' . $direction . '</option>';
 		}
@@ -253,7 +255,7 @@ class _dealer_settings {
 			'<input type="checkbox" name="_dealer_settings[%s]" id="%s" %s> <label for="%s">%s</label>',
 			$setting_name,
 			$setting_name,
-			( isset( $this->_dealer_settings[$setting_name] ) && $this->_dealer_settings[$setting_name] ) ? 'checked' : '',
+			( isset( $this->option[$setting_name] ) && $this->option[$setting_name] ) ? 'checked' : '',
 			$setting_name,
 			$checkbox_label
 		);
@@ -271,7 +273,7 @@ class _dealer_settings {
 	public function use_carfax_callback() {
 		printf(
 			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">%s</label>',
-			( isset( $this->_dealer_settings['use_carfax'] ) && $this->_dealer_settings['use_carfax'] === 'use_carfax' ) ? 'checked' : '',
+			( isset( $this->option['use_carfax'] ) && $this->option['use_carfax'] === 'use_carfax' ) ? 'checked' : '',
 			__( 'Display CARFAX buttons near vehicles that link to free CARFAX reports', 'inventory-presser' )
 		);
 	}

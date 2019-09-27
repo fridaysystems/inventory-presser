@@ -577,7 +577,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			if ( is_admin() ) {
 				//Initialize our Settings page in the Dashboard
-				$options = new _dealer_settings();
+				$options = new Inventory_Presser_Options();
 				$options->hooks();
 			}
 		}
