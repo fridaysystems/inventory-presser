@@ -41,7 +41,7 @@ class _dealer_settings {
 	}
 
 	public function options_page_content() {
-		$this->_dealer_settings = get_option( '_dealer_settings' );
+		$this->_dealer_settings = Inventory_Presser_Plugin::settings();
 
 		?><div class="wrap">
 			<h2><?php _e( 'Inventory Presser Settings', 'inventory-presser' ); ?></h2>

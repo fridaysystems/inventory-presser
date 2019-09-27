@@ -487,7 +487,7 @@ class Inventory_Presser_Customize_Dashboard {
 		//Add a link to the main menu of the Admin bar
 		add_action( 'admin_bar_menu', array( $this, 'add_vehicles_to_admin_bar' ), 100 );
 
-		$options = get_option( '_dealer_settings' );
+		$options = Inventory_Presser_Plugin::settings();
 		if( isset( $options['use_carfax'] ) && $options['use_carfax'] ) {
 			add_action( 'customize_register', array( $this, 'add_settings_to_customizer' ) );
 		}

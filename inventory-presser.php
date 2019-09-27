@@ -18,7 +18,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	class Inventory_Presser_Plugin {
 
 		const CUSTOM_POST_TYPE = 'inventory_vehicle';
-		var $settings; //this plugin's options
+		const OPTION_NAME = '_dealer_settings';
+
+		var $settings; //A place to store this plugin's option
 
 		function add_orderby_to_query( $query ) {
 			//Do not mess with the query if it's not the main one and our CPT
@@ -316,8 +318,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		function delete_options() {
-			delete_option( '_dealer_settings' );
-			delete_option( '_dealer_settings_edmunds' );
+			delete_option( self::OPTION_NAME );
 		}
 
 		/**
@@ -865,7 +866,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'sort_vehicles_by' => apply_filters( 'invp_prefix_meta_key', 'make' ),
 				'sort_vehicles_order' => 'ASC',
 			);
-			return wp_parse_args( get_option( '_dealer_settings' ), $defaults );
+			return wp_parse_args( get_option( self::OPTION_NAME ), $defaults );
 		}
 
 		function skip_trash( $post_id ) {

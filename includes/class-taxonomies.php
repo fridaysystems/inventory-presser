@@ -423,7 +423,7 @@ class Inventory_Presser_Taxonomies {
 		}
 
 		//if the checkbox to include sold vehicles is checked, abort
-		$plugin_settings = get_option( '_dealer_settings' );
+		$plugin_settings = Inventory_Presser_Plugin::settings();
 		if( isset( $plugin_settings['include_sold_vehicles'] ) && $plugin_settings['include_sold_vehicles'] ) {
 			return;
 		}
