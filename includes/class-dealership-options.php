@@ -307,6 +307,9 @@ class Inventory_Presser_Options
 			return;
 		}
 
+		//Rename a key for a feature moved from the theme into this plugin
+		$old_option['price_display'] = $old_option['price_display_type'];
+
 		//Remove some keys because the _dealer theme hijacked our option
 		unset( $old_option['append_page'] );
 		unset( $old_option['archive_show_content'] );
