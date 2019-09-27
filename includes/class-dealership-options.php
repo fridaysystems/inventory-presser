@@ -17,13 +17,16 @@ class Inventory_Presser_Options
 	//This plugin's option that holds all the settings
 	private $option;
 
-	public function hooks() {
+	public function hooks()
+	{
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
 	}
 
-	public function add_options_page() {
-		if ( post_type_exists( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) ) {
+	public function add_options_page()
+	{
+		if ( post_type_exists( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) )
+		{
 			add_submenu_page('edit.php?post_type=' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
 				__( 'Options', 'inventory-presser' ), // page_title
 				__( 'Options', 'inventory-presser' ), // menu_title
@@ -31,7 +34,9 @@ class Inventory_Presser_Options
 				'dealership-options', // menu_slug
 				array( $this, 'options_page_content' ) // function
 			);
-		} else {
+		}
+		else
+		{
 			add_options_page(
 				__( 'Inventory Presser', 'inventory-presser' ), // page_title
 				__( 'Inventory Presser', 'inventory-presser' ), // menu_title
@@ -42,7 +47,8 @@ class Inventory_Presser_Options
 		}
 	}
 
-	public function options_page_content() {
+	public function options_page_content()
+	{
 		$this->option = Inventory_Presser_Plugin::settings();
 
 		?><div class="wrap">
@@ -59,7 +65,8 @@ class Inventory_Presser_Options
 		</div><?php
 	}
 
-	public function add_settings() {
+	public function add_settings()
+	{
 		register_setting(
 			'dealership_options_option_group', // option_group
 			'_dealer_settings', // option_name
@@ -118,37 +125,45 @@ class Inventory_Presser_Options
 		);
 	}
 
-	public function dealership_options_sanitize( $input ) {
+	public function dealership_options_sanitize( $input )
+	{
 		$sanitary_values = array();
 
-		if ( isset( $input['price_display'] ) ) {
+		if ( isset( $input['price_display'] ) )
+		{
 			$sanitary_values['price_display'] = $input['price_display'];
 		}
 
-		if ( isset( $input['sort_vehicles_by'] ) ) {
+		if ( isset( $input['sort_vehicles_by'] ) )
+		{
 			$sanitary_values['sort_vehicles_by'] = $input['sort_vehicles_by'];
 		}
 
-		if ( isset( $input['sort_vehicles_order'] ) ) {
+		if ( isset( $input['sort_vehicles_order'] ) )
+		{
 			$sanitary_values['sort_vehicles_order'] = $input['sort_vehicles_order'];
 		}
 
-		if ( isset( $input['include_sold_vehicles'] ) ) {
+		if ( isset( $input['include_sold_vehicles'] ) )
+		{
 			$sanitary_values['include_sold_vehicles'] = $input['include_sold_vehicles'];
 		}
 
-		if ( isset( $input['show_all_taxonomies'] ) ) {
+		if ( isset( $input['show_all_taxonomies'] ) )
+		{
 			$sanitary_values['show_all_taxonomies'] = true;
 		}
 
-		if ( isset( $input['use_carfax'] ) ) {
+		if ( isset( $input['use_carfax'] ) )
+		{
 			$sanitary_values['use_carfax'] = $input['use_carfax'];
 		}
 
 		return apply_filters( 'invp_options_page_sanitized_values', $input, $sanitary_values );
 	}
 
-	function include_sold_vehicles_callback() {
+	function include_sold_vehicles_callback()
+	{
 		printf(
 			'<input type="checkbox" name="_dealer_settings[include_sold_vehicles]" id="include_sold_vehicles" value="include_sold_vehicles" %s> <label for="include_sold_vehicles">%s</label>',
 			( isset( $this->option['include_sold_vehicles'] ) && $this->option['include_sold_vehicles'] === 'include_sold_vehicles' ) ? 'checked' : '',
@@ -156,8 +171,8 @@ class Inventory_Presser_Options
 		);
 	}
 
-	function price_display_callback() {
-
+	function price_display_callback()
+	{
 		$price_display_options = apply_filters( 'invp_price_display_options', array(
 			'default'          => '${Price}',
 			'msrp'             => '${MSRP}',
@@ -168,12 +183,14 @@ class Inventory_Presser_Options
 		) );
 
 		$selected_val = null;
-		if ( isset( $this->option['price_display'] ) ) {
+		if ( isset( $this->option['price_display'] ) )
+		{
 			$selected_val = $this->option['price_display'];
 		}
 
 		echo '<select name="_dealer_settings[price_display]" id="price_display">';
-		foreach( $price_display_options as $val => $name ) {
+		foreach( $price_display_options as $val => $name )
+		{
 			printf(
 				'<option value="%s"%s>%s</option>',
 				$val,
@@ -190,26 +207,27 @@ class Inventory_Presser_Options
 			) . '</p>';
 	}
 
-	public function sort_vehicles_by_callback() {
-
+	public function sort_vehicles_by_callback()
+	{
 		//use these default values if we have none
-		if( ! isset( $this->option['sort_vehicles_by'] ) ) {
+		if( ! isset( $this->option['sort_vehicles_by'] ) )
+		{
 			$this->option['sort_vehicles_by'] = apply_filters( 'invp_prefix_meta_key', 'make' );
 		}
-		if( ! isset( $this->option['sort_vehicles_order'] ) ) {
+		if( ! isset( $this->option['sort_vehicles_order'] ) )
+		{
 			$this->option['sort_vehicles_order'] = 'ASC';
 		}
 
 		echo '<select name="_dealer_settings[sort_vehicles_by]" id="sort_vehicles_by">';
 
 		/**
-		 * Get a list of all the post meta keys in our
-		 * CPT. Let the user choose one as a default
-		 * sort.
+		 * Get a list of all the post meta keys in our CPT. Let the user choose
+		 * one as a default sort.
 		 */
 		$vehicle = new Inventory_Presser_Vehicle();
-		foreach( $vehicle->keys( false ) as $key ) {
-
+		foreach( $vehicle->keys( false ) as $key )
+		{
 			//Skip post meta keys that make no sense as a sort key
 			$non_sortable_keys = array(
 				'color',
@@ -221,15 +239,22 @@ class Inventory_Presser_Options
 				'vin',
 				'youtube',
 			);
-			if( in_array( $key, $non_sortable_keys ) ) { continue; }
+			if( in_array( $key, $non_sortable_keys ) )
+			{
+				continue;
+			}
 
 			$meta_key = apply_filters( 'invp_prefix_meta_key', $key );
 
 			//Skip hidden post meta keys
-			if( '_' == $meta_key[0] ) { continue; }
+			if( '_' == $meta_key[0] )
+			{
+				continue;
+			}
 
 			echo '<option value="'. $meta_key . '"';
-			if( isset( $this->option['sort_vehicles_by'] ) ) {
+			if( isset( $this->option['sort_vehicles_by'] ) )
+			{
 				selected( $this->option['sort_vehicles_by'], $meta_key );
 			}
 			echo '>' . str_replace( '_', ' ', ucfirst( $key ) ) . '</option>';
@@ -240,9 +265,11 @@ class Inventory_Presser_Options
 			__( 'in', 'inventory-presser' )
 		);
 
-		foreach( array( 'ascending' => 'ASC', 'descending' => 'DESC' ) as $direction => $abbr ) {
+		foreach( array( 'ascending' => 'ASC', 'descending' => 'DESC' ) as $direction => $abbr )
+		{
 			echo '<option value="'. $abbr . '"';
-			if( isset( $this->option['sort_vehicles_order'] ) ) {
+			if( isset( $this->option['sort_vehicles_order'] ) )
+			{
 				selected( $this->option['sort_vehicles_order'], $abbr );
 			}
 			echo '>' . $direction . '</option>';
@@ -250,7 +277,8 @@ class Inventory_Presser_Options
 		echo '</select> ' . __( 'order', 'inventory-presser' );
 	}
 
-	function boolean_checkbox_setting_callback( $setting_name, $checkbox_label ) {
+	function boolean_checkbox_setting_callback( $setting_name, $checkbox_label )
+	{
 		printf(
 			'<input type="checkbox" name="_dealer_settings[%s]" id="%s" %s> <label for="%s">%s</label>',
 			$setting_name,
@@ -266,11 +294,13 @@ class Inventory_Presser_Options
 	 *
 	 * @return void
 	 */
-	function show_all_taxonomies_callback() {
+	function show_all_taxonomies_callback()
+	{
 		$this->boolean_checkbox_setting_callback( 'show_all_taxonomies', __( 'Show all taxonomies under Vehicles menu in Dashboard', 'inventory-presser' ) );
 	}
 
-	public function use_carfax_callback() {
+	public function use_carfax_callback()
+	{
 		printf(
 			'<input type="checkbox" name="_dealer_settings[use_carfax]" id="use_carfax" value="use_carfax" %s> <label for="use_carfax">%s</label>',
 			( isset( $this->option['use_carfax'] ) && $this->option['use_carfax'] === 'use_carfax' ) ? 'checked' : '',
