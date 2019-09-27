@@ -34,17 +34,16 @@ class Inventory_Presser_Options
 				'dealership-options', // menu_slug
 				array( $this, 'options_page_content' ) // function
 			);
+			return;
 		}
-		else
-		{
-			add_options_page(
-				__( 'Inventory Presser', 'inventory-presser' ), // page_title
-				__( 'Inventory Presser', 'inventory-presser' ), // menu_title
-				'manage_options', // capability
-				'dealership-options', // menu_slug
-				array( $this, 'options_page_content' ) // function
-			);
-		}
+
+		add_options_page(
+			__( 'Inventory Presser', 'inventory-presser' ), // page_title
+			__( 'Inventory Presser', 'inventory-presser' ), // menu_title
+			'manage_options', // capability
+			'dealership-options', // menu_slug
+			array( $this, 'options_page_content' ) // function
+		);
 	}
 
 	public function options_page_content()
