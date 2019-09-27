@@ -55,24 +55,6 @@ class Inventory_Presser_Options
 		);
 	}
 
-	public function options_page_content()
-	{
-		$this->option = Inventory_Presser_Plugin::settings();
-
-		?><div class="wrap">
-			<h2><?php _e( 'Inventory Presser Settings', 'inventory-presser' ); ?></h2>
-			<?php settings_errors();
-
-			?><form method="post" action="options.php">
-				<?php
-					settings_fields( 'dealership_options_option_group' );
-					do_settings_sections( 'dealership-options-admin' );
-					submit_button();
-
-			?></form>
-		</div><?php
-	}
-
 	public function add_settings()
 	{
 		register_setting(
@@ -133,41 +115,17 @@ class Inventory_Presser_Options
 		);
 	}
 
-	public function sanitize_options( $input )
+	function boolean_checkbox_setting_callback( $setting_name, $checkbox_label )
 	{
-		$sanitary_values = array();
-
-		if ( isset( $input['price_display'] ) )
-		{
-			$sanitary_values['price_display'] = $input['price_display'];
-		}
-
-		if ( isset( $input['sort_vehicles_by'] ) )
-		{
-			$sanitary_values['sort_vehicles_by'] = $input['sort_vehicles_by'];
-		}
-
-		if ( isset( $input['sort_vehicles_order'] ) )
-		{
-			$sanitary_values['sort_vehicles_order'] = $input['sort_vehicles_order'];
-		}
-
-		if ( isset( $input['include_sold_vehicles'] ) )
-		{
-			$sanitary_values['include_sold_vehicles'] = true;
-		}
-
-		if ( isset( $input['show_all_taxonomies'] ) )
-		{
-			$sanitary_values['show_all_taxonomies'] = true;
-		}
-
-		if ( isset( $input['use_carfax'] ) )
-		{
-			$sanitary_values['use_carfax'] = true;
-		}
-
-		return apply_filters( 'invp_options_page_sanitized_values', $input, $sanitary_values );
+		printf(
+			'<input type="checkbox" name="%s[%s]" id="%s" %s> <label for="%s">%s</label>',
+			Inventory_Presser_Plugin::OPTION_NAME,
+			$setting_name,
+			$setting_name,
+			( isset( $this->option[$setting_name] ) && $this->option[$setting_name] ) ? 'checked' : '',
+			$setting_name,
+			$checkbox_label
+		);
 	}
 
 	function callback_include_sold_vehicles()
@@ -217,40 +175,19 @@ class Inventory_Presser_Options
 	}
 
 	/**
-	 * Rename the option used by this plugin from "_dealer_settings" to
-	 * "inventory_presser"
+	 * Output the controls that create the Show all Taxonomies setting.
+	 *
+	 * @return void
 	 */
-	function rename_option()
+	function callback_show_all_taxonomies()
 	{
-		$old_option_name = '_dealer_settings';
-
-		//Only do this once
-		$new_option = get_option( Inventory_Presser_Plugin::OPTION_NAME );
-		if( $new_option ) {
-			delete_option( $old_option_name );
-			return;
-		}
-
-		$old_option = get_option( $old_option_name );
-		if( ! $old_option ) {
-			return;
-		}
-
-		//Remove some keys because the _dealer theme hijacked our option
-		unset( $old_option['append_page'] );
-		unset( $old_option['archive_show_content'] );
-		unset( $old_option['cargurus_badge_archive'] );
-		unset( $old_option['hide_footer_credit'] );
-		unset( $old_option['msrp_label'] );
-		unset( $old_option['price_display_type'] );
-		unset( $old_option['valley_custom_icon'] );
-		unset( $old_option['valley_custom_link'] );
-
-		update_option( Inventory_Presser_Plugin::OPTION_NAME, $old_option );
-		delete_option( $old_option_name );
+		$this->boolean_checkbox_setting_callback(
+			'show_all_taxonomies',
+			__( 'Show all taxonomies under Vehicles menu in Dashboard', 'inventory-presser' )
+		);
 	}
 
-	public function callback_sort_vehicles_by()
+	function callback_sort_vehicles_by()
 	{
 		//use these default values if we have none
 		if( ! isset( $this->option['sort_vehicles_by'] ) )
@@ -324,37 +261,100 @@ class Inventory_Presser_Options
 		echo '</select> ' . __( 'order', 'inventory-presser' );
 	}
 
-	function boolean_checkbox_setting_callback( $setting_name, $checkbox_label )
-	{
-		printf(
-			'<input type="checkbox" name="%s[%s]" id="%s" %s> <label for="%s">%s</label>',
-			Inventory_Presser_Plugin::OPTION_NAME,
-			$setting_name,
-			$setting_name,
-			( isset( $this->option[$setting_name] ) && $this->option[$setting_name] ) ? 'checked' : '',
-			$setting_name,
-			$checkbox_label
-		);
-	}
-
-	/**
-	 * Output the controls that create the Show all Taxonomies setting.
-	 *
-	 * @return void
-	 */
-	function callback_show_all_taxonomies()
-	{
-		$this->boolean_checkbox_setting_callback(
-			'show_all_taxonomies',
-			__( 'Show all taxonomies under Vehicles menu in Dashboard', 'inventory-presser' )
-		);
-	}
-
 	function callback_use_carfax()
 	{
 		$this->boolean_checkbox_setting_callback(
 			'use_carfax',
 			__( 'Display CARFAX buttons near vehicles that link to free CARFAX reports', 'inventory-presser' )
 		);
+	}
+
+	public function options_page_content()
+	{
+		$this->option = Inventory_Presser_Plugin::settings();
+
+		?><div class="wrap">
+			<h2><?php _e( 'Inventory Presser Settings', 'inventory-presser' ); ?></h2>
+			<?php settings_errors();
+
+			?><form method="post" action="options.php">
+				<?php
+					settings_fields( 'dealership_options_option_group' );
+					do_settings_sections( 'dealership-options-admin' );
+					submit_button();
+
+			?></form>
+		</div><?php
+	}
+
+	/**
+	 * Rename the option used by this plugin from "_dealer_settings" to
+	 * "inventory_presser"
+	 */
+	function rename_option()
+	{
+		$old_option_name = '_dealer_settings';
+
+		//Only do this once
+		$new_option = get_option( Inventory_Presser_Plugin::OPTION_NAME );
+		if( $new_option ) {
+			delete_option( $old_option_name );
+			return;
+		}
+
+		$old_option = get_option( $old_option_name );
+		if( ! $old_option ) {
+			return;
+		}
+
+		//Remove some keys because the _dealer theme hijacked our option
+		unset( $old_option['append_page'] );
+		unset( $old_option['archive_show_content'] );
+		unset( $old_option['cargurus_badge_archive'] );
+		unset( $old_option['hide_footer_credit'] );
+		unset( $old_option['msrp_label'] );
+		unset( $old_option['price_display_type'] );
+		unset( $old_option['valley_custom_icon'] );
+		unset( $old_option['valley_custom_link'] );
+
+		update_option( Inventory_Presser_Plugin::OPTION_NAME, $old_option );
+		delete_option( $old_option_name );
+	}
+
+	public function sanitize_options( $input )
+	{
+		$sanitary_values = array();
+
+		if ( isset( $input['price_display'] ) )
+		{
+			$sanitary_values['price_display'] = $input['price_display'];
+		}
+
+		if ( isset( $input['sort_vehicles_by'] ) )
+		{
+			$sanitary_values['sort_vehicles_by'] = $input['sort_vehicles_by'];
+		}
+
+		if ( isset( $input['sort_vehicles_order'] ) )
+		{
+			$sanitary_values['sort_vehicles_order'] = $input['sort_vehicles_order'];
+		}
+
+		if ( isset( $input['include_sold_vehicles'] ) )
+		{
+			$sanitary_values['include_sold_vehicles'] = true;
+		}
+
+		if ( isset( $input['show_all_taxonomies'] ) )
+		{
+			$sanitary_values['show_all_taxonomies'] = true;
+		}
+
+		if ( isset( $input['use_carfax'] ) )
+		{
+			$sanitary_values['use_carfax'] = true;
+		}
+
+		return apply_filters( 'invp_options_page_sanitized_values', $input, $sanitary_values );
 	}
 }
