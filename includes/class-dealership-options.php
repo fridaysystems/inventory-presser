@@ -298,7 +298,6 @@ class Inventory_Presser_Options
 		//Only do this once
 		$new_option = get_option( Inventory_Presser_Plugin::OPTION_NAME );
 		if( $new_option ) {
-			delete_option( $old_option_name );
 			return;
 		}
 
@@ -321,7 +320,6 @@ class Inventory_Presser_Options
 		unset( $old_option['valley_custom_link'] );
 
 		update_option( Inventory_Presser_Plugin::OPTION_NAME, $old_option );
-		delete_option( $old_option_name );
 	}
 
 	public function sanitize_options( $input )
