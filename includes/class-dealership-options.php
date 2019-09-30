@@ -306,20 +306,32 @@ class Inventory_Presser_Options
 			return;
 		}
 
-		//Rename a key for a feature moved from the theme into this plugin
-		$old_option['price_display'] = $old_option['price_display_type'];
+		$new_option = array(
+			'price_display'         => $old_option['price_display_type'], //Rename this key
+			'sort_vehicles_by'      => $old_option['sort_vehicles_by'],
+			'sort_vehicles_order'   => $old_option['sort_vehicles_order'],
+			'include_sold_vehicles' => $old_option['include_sold_vehicles'],
+			'show_all_taxonomies'   => $old_option['show_all_taxonomies'],
+			'use_carfax'            => $old_option['use_carfax'],
+		);
 
-		//Remove some keys because the _dealer theme hijacked our option
-		unset( $old_option['append_page'] );
-		unset( $old_option['archive_show_content'] );
-		unset( $old_option['cargurus_badge_archive'] );
-		unset( $old_option['hide_footer_credit'] );
-		unset( $old_option['msrp_label'] );
+		update_option( Inventory_Presser_Plugin::OPTION_NAME, $new_option );
+
+		/**
+		 * Now remove this plugin's keys from the old option and update it. Why?
+		 * Because the old option is actually the option used by the _dealer
+		 * theme. The theme was created after the plugin and a bad decision to
+		 * share the same option was made. A more accurate name for this method
+		 * might be split_the_option().
+		 */
 		unset( $old_option['price_display_type'] );
-		unset( $old_option['valley_custom_icon'] );
-		unset( $old_option['valley_custom_link'] );
+		unset( $old_option['sort_vehicles_by'] );
+		unset( $old_option['sort_vehicles_order'] );
+		unset( $old_option['include_sold_vehicles'] );
+		unset( $old_option['show_all_taxonomies'] );
+		unset( $old_option['use_carfax'] );
 
-		update_option( Inventory_Presser_Plugin::OPTION_NAME, $old_option );
+		update_option( $old_option_name, $old_option );
 	}
 
 	public function sanitize_options( $input )
