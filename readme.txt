@@ -65,6 +65,9 @@ This plugin requires a few page templates to display listing pages and vehicle d
 = 10.5.0 =
 * [Added] Adds a Price Display setting that lets users show MSRP values, down payments, or 'Call For Price' instead of vehicle prices. This feature was built into the _dealer theme, but now lives in core so it's easy for widgets to show appropriate prices.
 * [Added] Adds filters `invp_price_display_options` and `invp_price_display` that allow developers to create their own price display options.
+* [Added] Adds a method to the vehicle class that identifies the address where the vehicle is located when there is more than one term in the locations taxonomy containing vehicles.
+* [Added] Adds a filter `invp_vehicle_location_sentence` so that the output of the new location sentence method in the vehicle class can be filtered.
+* [Changed] The location property of the vehicle class is now populated with the location term description (full address) instead of the name (street address line 1).
 * [Changed] The settings() method on the Inventory_Presser_Plugin class is now a static method.
 
 = 10.4.0 =

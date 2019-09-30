@@ -115,11 +115,17 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			}
 			$this->drivetype = $this->get_term_string('drive_type');
 			$this->fuel = $this->get_term_string('fuel');
-			$this->location = $this->get_term_string('location');
 			$this->availability = $this->get_term_string('availability');
 			$this->is_sold = false !== strpos( strtolower( $this->availability ), 'sold' );
 			$this->is_used = has_term( 'used', 'condition', $this->post_ID );
 			$this->type = $this->get_term_string('type');
+
+			/**
+			 * We want the term description from the location taxonomy term
+			 * because the name only contains street address line one.
+			 */
+			$location_terms = wp_get_post_terms( $this->post_ID, 'location' );
+			$this->location = implode( ', ', array_column( $location_terms, 'description' ) );
 		}
 
 		//is this a vehicle for which Carfax maintains data?
@@ -455,6 +461,35 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 					'name' => 'youtube',
 					'type' => 'string',
 				),
+			);
+		}
+
+		/**
+		 * Creates a short sentence identifying the dealership address where
+		 * this vehicle is located. If there is only one term in the locations
+		 * taxonomy containing vehicles, this method returns an empty string.
+		 */
+		function location_sentence()
+		{
+			//How many locations does this dealer have?
+			$location_terms = get_terms( 'location', array( 'hide_empty' => true ) );
+			$location_count = ! is_wp_error( $location_terms ) ? sizeof( $location_terms ) : 0;
+
+			if( 1 >= $location_count || empty( $this->location ) )
+			{
+				return '';
+			}
+
+			$sentence = sprintf(
+				'%s %s %s <strong><address>%s</address></strong>',
+				__( 'See this', 'inventory-presser' ),
+				$this->make,
+				__( 'at', 'inventory-presser' ),
+				$this->location
+			);
+			return sprintf(
+				'<div class="vehicle-location">%s</div>',
+				apply_filters( 'invp_vehicle_location_sentence', $sentence, $this )
 			);
 		}
 
