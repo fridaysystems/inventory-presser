@@ -236,7 +236,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 			$image_args = array(
 				'meta_key'       => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
-				'numberposts'    => -1,
+				'posts_per_page' => -1,
 				'order'          => 'ASC',
 				'orderby'        => 'meta_value_num',
 				'post_mime_type' => 'image',
@@ -279,7 +279,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		function get_image_count() {
 			$image_args = array(
 				'post_parent'    => $this->post_ID,
-				'numberposts'    => -1,
+				'posts_per_page' => -1,
 				'post_type'      => 'attachment',
 				'post_mime_type' => 'image',
 			);

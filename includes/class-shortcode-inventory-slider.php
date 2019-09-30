@@ -26,7 +26,7 @@ class Inventory_Presser_Shortcode_Slider {
 		$atts['captions'] = 'true' === $atts['captions'];
 
 		$gpargs = array(
-			'numberposts' => 10,
+			'posts_per_page' => 10,
 			'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
 			'meta_query'  => array(
 				'relation' => 'AND',
@@ -50,7 +50,7 @@ class Inventory_Presser_Shortcode_Slider {
 		if (count($inventory_ids) < 10) {
 
 			$gpargs = array(
-				'numberposts' => 10 - (count($inventory_ids)),
+				'posts_per_page' => 10 - (count($inventory_ids)),
 				'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
 				'meta_query'  => array(
 					'relation' => 'AND',
