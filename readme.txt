@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.1.0
-Stable tag: 10.4.0
+Stable tag: 10.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,9 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 
 == Changelog ==
+
+= 10.5.1 =
+* [Fixed] Fixes a bug when renaming the option when some settings have never been assigned a value
 
 = 10.5.0 =
 * [Added] Adds a Price Display setting that lets users show MSRP values, down payments, or 'Call For Price' instead of vehicle prices. This feature was built into the _dealer theme, but now lives in core so it's easy for widgets to show appropriate prices.
