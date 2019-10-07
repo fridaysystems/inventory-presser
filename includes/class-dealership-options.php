@@ -310,9 +310,9 @@ class Inventory_Presser_Options
 			'price_display'         => $old_option['price_display_type'], //Rename this key
 			'sort_vehicles_by'      => $old_option['sort_vehicles_by'],
 			'sort_vehicles_order'   => $old_option['sort_vehicles_order'],
-			'include_sold_vehicles' => $old_option['include_sold_vehicles'],
-			'show_all_taxonomies'   => $old_option['show_all_taxonomies'],
-			'use_carfax'            => $old_option['use_carfax'],
+			'include_sold_vehicles' => isset( $old_option['include_sold_vehicles'] ) && $old_option['include_sold_vehicles'],
+			'show_all_taxonomies'   => isset( $old_option['show_all_taxonomies'] ) && $old_option['show_all_taxonomies'],
+			'use_carfax'            => isset( $old_option['use_carfax'] ) && $old_option['use_carfax'],
 		);
 
 		update_option( Inventory_Presser_Plugin::OPTION_NAME, $new_option );
