@@ -6,7 +6,8 @@ jQuery(document).ready( function() {
 		prevText: '',
 		nextText: '',
 		slideshow: false,
-		after: function( slider ) { flexslider_maybe_resize_current_image(); }
+		after: function( slider ) { flexslider_maybe_resize_current_image(); },
+		start: function( slider ) { jQuery(window).trigger('resize'); }
 	});
 
 	jQuery('#slider .slides li:first-child img').each( function() {
@@ -32,6 +33,7 @@ function flexslider_maybe_resize_current_image()
 		//if the photo isn't taking up the whole width of the slider, remove inline height so it does
 		jQuery('#slider .flex-active-slide img').css('height','' );
 	}
+
 	var current_image_height = jQuery('#slider .flex-active-slide img').css('height');
 	//when the slide changes, reset the next/prev text line-height
 	jQuery('#slider .flex-direction-nav a').css('line-height', current_image_height );
