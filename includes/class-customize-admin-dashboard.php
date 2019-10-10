@@ -32,10 +32,10 @@ class Inventory_Presser_Customize_Dashboard {
 
 	function add_meta_boxes_to_cpt( ) {
 		//Add a meta box to the New/Edit post page
-		add_meta_box('vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'advanced', 'high' );
+		add_meta_box('vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'normal', 'high' );
 
 		//and another for prices
-		add_meta_box('prices-meta', 'Prices', array( $this, 'meta_box_html_prices' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'advanced', 'high' );
+		add_meta_box('prices-meta', 'Prices', array( $this, 'meta_box_html_prices' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'normal', 'high' );
 
 		//Add another meta box to the New/Edit post page
 		add_meta_box('options-meta', 'Optional equipment', array( $this, 'meta_box_html_options' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'normal', 'high' );
@@ -730,7 +730,8 @@ class Inventory_Presser_Customize_Dashboard {
 		echo '</tbody></table>';
 	}
 
-	function meta_box_html_vehicle( $post, $meta_box ) {
+	function meta_box_html_vehicle( $post, $meta_box )
+	{
 		//HTML output for vehicle data meta box
 		$custom = get_post_custom( $post->ID );
 
@@ -745,6 +746,7 @@ class Inventory_Presser_Customize_Dashboard {
 		$trim = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'trim' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'trim' )][0] : '' );
 		$VIN = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'vin' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'vin' )][0] : '' );
 		$year = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'year' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'year' )][0] : '' );
+		$youtube = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'youtube' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'youtube' )][0] : '' );
 
 		//boat items
 		$beam = ( isset( $custom[apply_filters( 'invp_prefix_meta_key', 'beam' )] ) ? $custom[apply_filters( 'invp_prefix_meta_key', 'beam' )][0] : '' );
@@ -781,7 +783,8 @@ class Inventory_Presser_Customize_Dashboard {
 			apply_filters( 'invp_prefix_meta_key', 'year' )
 		);
 
-		for( $y=date('Y')+2; $y>=1920; $y-- ) {
+		for( $y=date('Y')+2; $y>=1920; $y-- )
+		{
 			printf(
 				'<option%s>%s</option>',
 				selected( $y, $year, false ),
@@ -871,6 +874,10 @@ class Inventory_Presser_Customize_Dashboard {
 			. '<td><input type="text" name="%s" value="%s">'
 			. ' <span class="invp_odometer_units">%s</span></td></tr>'
 
+		//YouTube
+			. '<tr><th scope="row"><label for="%s">%s</label></th>'
+			. '<td><input type="text" name="%s" value="%s"></td></tr>'
+
 		//Beam (boats)
 			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">Beam</label></th>'
 			. '<td><input type="text" name="%s" value="%s"></td></tr>'
@@ -895,6 +902,11 @@ class Inventory_Presser_Customize_Dashboard {
 			apply_filters( 'invp_prefix_meta_key', 'odometer' ),
 			$odometer,
 			apply_filters( 'invp_odometer_word', 'miles' ),
+
+			apply_filters( 'invp_prefix_meta_key', 'youtube' ),
+			__( 'YouTube video ID', 'inventory-presser' ),
+			apply_filters( 'invp_prefix_meta_key', 'youtube' ),
+			$youtube,
 
 			apply_filters( 'invp_prefix_meta_key', 'beam' ),
 			apply_filters( 'invp_prefix_meta_key', 'beam' ),
