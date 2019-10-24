@@ -70,6 +70,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 		var $is_sold = false;
 		var $is_used = true;
+		var $is_wholesale = false;
 
 		// constructors
 		function __construct( $post_id = null ) {

@@ -52,7 +52,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$showcount = $instance['showcount'];
-		$showtext = $instance['showtext'];
+		$showtext = isset( $instance['showtext'] ) ? $instance['showtext'] : false;
 		$featured_select_slugs = array_keys( $this->featured_select_options() );
 		$featured_select = isset($instance['featured_select']) ? $instance[ 'featured_select' ] : $featured_select_slugs[0];
 		$showtitle = (isset($instance['cb_showtitle']) && $instance['cb_showtitle'] == 'true');
@@ -98,8 +98,8 @@ class Inventory_Presser_Slider extends WP_Widget {
 				$inventory_ids = get_posts( apply_filters( 'invp_slider_widget_query_args', $get_posts_args ) );
 
 				//do we need more vehicles?
-				if (count($inventory_ids) < ($showcount * 5) && $featured_select == 'featured_priority') {
-
+				if (count($inventory_ids) < ($showcount * 5) && $featured_select == 'featured_priority')
+				{
 					//Get enough non-featured vehicles to fill out the number we need
 					$get_posts_args['posts_per_page'] = ($showcount * 5) - (count($inventory_ids));
 					$get_posts_args['meta_query'] = array(
@@ -108,8 +108,8 @@ class Inventory_Presser_Slider extends WP_Widget {
 							'relation' => 'OR',
 							array(
 								'key'   => apply_filters( 'invp_prefix_meta_key', 'featured' ),
-								'value' => false,
-								'type'  => 'BOOLEAN',
+								'value' => 0,
+								'type'  => 'BINARY',
 							),
 							array(
 								'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
@@ -121,6 +121,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 							'compare' => 'EXISTS'
 						)
 					);
+
 					$second_pass = get_posts( apply_filters( 'invp_slider_widget_query_args', $get_posts_args ) );
 					$inventory_ids += $second_pass;
 				}
