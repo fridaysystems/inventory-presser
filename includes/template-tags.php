@@ -17,5 +17,6 @@ function invp_get_the_vin() {
 }
 
 function invp_get_the_price() {
-	return get_post_meta( get_the_ID(), apply_filters( 'invp_prefix_meta_key', 'price' ), true );
+	$vehicle = new Inventory_Presser_Vehicle( get_the_ID() );
+	return $vehicle->price();
 }

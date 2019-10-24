@@ -62,6 +62,9 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 == Changelog ==
 
+= 10.6.0 =
+* [Added] Adds YouTube video ID to the edit screen so that the field can be edited by users in the dashboard.
+
 = 10.5.2 =
 * [Changed] Changes the flexslider spin up to stretch images that are smaller than the width of the slider.
 
