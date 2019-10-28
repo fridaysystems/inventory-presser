@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.1.0
-Stable tag: 10.5.2
+Stable tag: 10.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,7 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 = 10.6.0 =
 * [Added] Adds YouTube video ID to the edit screen so that the field can be edited by users in the dashboard.
+* [Fixed] Bug fix for Carfax-hosted Carfax buttons. Carfax did not anticipate inline display, and certain combinations of buttons on the same page break all sorts of CSS. Now inserting vehicle stock numbers into Carfax CSS class names to avoid conflicts.
 
 = 10.5.2 =
 * [Changed] Changes the flexslider spin up to stretch images that are smaller than the width of the slider.
