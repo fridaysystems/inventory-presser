@@ -147,17 +147,33 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			);
 		}
 
-		function carfax_icon_svg() {
+		function carfax_icon_svg()
+		{
 			$svg_path = $this->carfax_url_icon;
-			if( empty( $svg_path ) ) {
+			$svg_element = '';
+			if( empty( $svg_path ) )
+			{
 				//fallback to the icon that ships with this plugin
 				$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
-				if( $this->is_carfax_one_owner() ) {
+				if( $this->is_carfax_one_owner() )
+				{
 					$svg_path .= '-1-owner';
 				}
 				$svg_path .= '.svg';
+				$svg_element = file_get_contents( $svg_path );
 			}
-			return file_get_contents( $svg_path );
+			else
+			{
+				$svg_element = file_get_contents( $svg_path );
+				/**
+				 * Change CSS class names in Carfax icons hosted by Carfax. They
+				 * didn't anticipate anyone displaying them inline, and they
+				 * get real goofy with certain combinations of duplicate CSS
+				 * class names on the page.
+				 */
+				$svg_element = preg_replace( '/(cls\-[0-9]+)/', '$1-' . $this->stock_number, $svg_element );
+			}
+			return $svg_element;
 		}
 
 		function carfax_report_url() {
