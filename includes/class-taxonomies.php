@@ -863,8 +863,9 @@ class Inventory_Presser_Taxonomies {
 						'show_ui'        => true,
 					),
 					'term_data' =>	array (
-						'For sale' => 'For sale',
-						'Sold'     => 'Sold',
+						'For sale'  => 'For sale',
+						'Sold'      => 'Sold',
+						'Wholesale' => 'Wholesale',
 					),
 				),
 				array (
