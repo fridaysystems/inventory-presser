@@ -988,11 +988,12 @@ class Inventory_Presser_Customize_Dashboard {
 		);
 	}
 
-	function populate_columns_we_added_to_vehicles_table( $column_name, $post_id ) {
+	function populate_columns_we_added_to_vehicles_table( $column_name, $post_id )
+	{
 		$custom_fields = get_post_custom( $post_id );
 		$val = ( isset( $custom_fields[$column_name] ) ? $custom_fields[$column_name][0] : '' );
-		switch( true ) {
-
+		switch( true )
+		{
 			case $column_name == apply_filters( 'invp_prefix_meta_key', 'thumbnail' ):
 				echo edit_post_link( get_the_post_thumbnail( $post_id, 'thumbnail' ) );
 				break;
