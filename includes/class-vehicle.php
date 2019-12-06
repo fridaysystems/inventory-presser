@@ -118,7 +118,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$this->fuel = $this->get_term_string('fuel');
 			$this->availability = $this->get_term_string('availability');
 			$this->is_sold = false !== strpos( strtolower( $this->availability ), 'sold' );
-			$this->is_wholesale = false !== strpos( strtolower( $this->avaibility ), 'wholesale' );
+			$this->is_wholesale = false !== strpos( strtolower( $this->availability ), 'wholesale' );
 			$this->is_used = has_term( 'used', 'condition', $this->post_ID );
 			$this->type = $this->get_term_string('type');
 
