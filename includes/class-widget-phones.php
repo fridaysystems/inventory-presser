@@ -108,7 +108,8 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 					foreach ($location_meta['phones'] as $index => $phoneset) {
 
 						// if the phone number has been selected, output it
-						if (in_array($phoneset['uid'], $instance['cb_display'][$term_id])) {
+						if ( isset( $phoneset['uid'] ) && in_array($phoneset['uid'], $instance['cb_display'][$term_id] ) )
+						{
 							echo ($this->formats()[$format]['uses_labels']) ? sprintf($this->formats()[$format]['repeater'], $phoneset['phone_description'], $phoneset['phone_number']) : sprintf( $this->formats()[$format]['repeater'], $phoneset['phone_number'] );
 						}
 					}
