@@ -624,9 +624,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 		}
 
-		function include_scripts_and_styles() {
+		function include_scripts_and_styles()
+		{
 			//If show carfax buttons
-			if( isset( $this->settings['use_carfax'] ) && $this->settings['use_carfax'] ) {
+			if( isset( $this->settings['use_carfax'] ) && $this->settings['use_carfax'] )
+			{
 				//Add CSS for Carfax button text color, based on a Customizer setting
 				//Append an inline style just after the current theme's stylesheet
 				$style_handle = $this->find_theme_stylesheet_handle();
@@ -666,7 +668,8 @@ svg > g > path,
 			 * localized for the admin dashboard in
 			 * Inventory_Presser_Customize_Dashboard)
 			 */
-			if( ! is_admin() ) { ?><script type="text/javascript">
+			if( ! is_admin() )
+			{ ?><script type="text/javascript">
 			    var invp = <?php echo json_encode( array(
 					'meta_prefix' => self::meta_prefix(),
 				) ); ?>;
