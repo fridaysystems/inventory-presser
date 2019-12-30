@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.1.0
-Stable tag: 10.6.1
+Stable tag: 10.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,10 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 
 == Changelog ==
+
+= 10.7.0 =
+* [Added] Adds a setting that allows users to choose whether or not to use the latest Carfax buttons loaded from Carfax servers.
+* [Fixed] Fixes a bug where the two arguments to the filter `invp_options_page_sanitized_values` were supplied out of order.
 
 = 10.6.1 =
 * [Fixed] Adds a CSS rule to be deployed with our Customizer setting to help better show Carfax icons on dark backgrounds. The newer icons hosted by Carfax were not affected by our existing rule.

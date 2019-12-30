@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 10.6.1
+ * Version: 10.7.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -14,17 +14,20 @@ defined( 'ABSPATH' ) or exit;
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
-	class Inventory_Presser_Plugin {
-
+if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
+{
+	class Inventory_Presser_Plugin
+	{
 		const CUSTOM_POST_TYPE = 'inventory_vehicle';
 		const OPTION_NAME = 'inventory_presser';
 
 		var $settings; //A place to store this plugin's option
 
-		function add_orderby_to_query( $query ) {
+		function add_orderby_to_query( $query )
+		{
 			//Do not mess with the query if it's not the main one and our CPT
-			if ( ! $query->is_main_query() || ! is_post_type_archive( self::CUSTOM_POST_TYPE ) ) {
+			if ( ! $query->is_main_query() || ! is_post_type_archive( self::CUSTOM_POST_TYPE ) )
+			{
 				return;
 			}
 
@@ -37,20 +40,24 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * $_GET['order'] or 'sort_vehicles_order.'
 			 */
 			$direction = $this->settings['sort_vehicles_order'];
-			if( isset( $_GET['orderby'] ) ) {
+			if( isset( $_GET['orderby'] ) )
+			{
 				$key = $_GET['orderby'];
-				if( isset( $_GET['order'] ) ) {
+				if( isset( $_GET['order'] ) )
+				{
 					$direction = $_GET['order'];
 				}
-			} else {
+			}
+			else
+			{
 				$key = $this->settings['sort_vehicles_by'];
 			}
 			$query->set( 'meta_key', $key );
 
 			//maybe append to the meta_query if it is already set
 			$old = $query->get( 'meta_query', array() );
-			switch( apply_filters( 'invp_unprefix_meta_key', $query->query_vars['meta_key'] ) ) {
-
+			switch( apply_filters( 'invp_unprefix_meta_key', $query->query_vars['meta_key'] ) )
+			{
 				//make
 				case 'make':
 					$query->set( 'meta_query', array_merge( $old, array(
@@ -188,17 +195,19 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$query->set( 'order', $direction );
 		}
 
-		function add_pretty_search_urls( ) {
+		function add_pretty_search_urls()
+		{
 			global $wp_rewrite;
 			$wp_rewrite->rules = $this->generate_rewrite_rules( self::CUSTOM_POST_TYPE ) + $wp_rewrite->rules;
 		}
 
 		//Change links to terms in our taxonomies to include /inventory before /tax/term
-		function change_term_links( $termlink, $term ) {
-
+		function change_term_links( $termlink, $term )
+		{
 			$taxonomy = get_taxonomy( $term->taxonomy );
 
-			if( ! in_array( self::CUSTOM_POST_TYPE, $taxonomy->object_type ) ) {
+			if( ! in_array( self::CUSTOM_POST_TYPE, $taxonomy->object_type ) )
+			{
 				return;
 			}
 
@@ -208,7 +217,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			return $termlink;
 		}
 
-		static function create_custom_post_type( ) {
+		static function create_custom_post_type()
+		{
 			//creates a custom post type that will be used by this plugin
 			register_post_type(
 				self::CUSTOM_POST_TYPE,
@@ -260,8 +270,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 *
 		 * @return void
 		 */
-		function create_serialized_api_fields() {
-
+		function create_serialized_api_fields()
+		{
 			//epa_fuel_economy
 			register_rest_field(
 				self::CUSTOM_POST_TYPE,
@@ -313,11 +323,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 *
 		 * @return void
 		 */
-		function deactivate() {
+		function deactivate()
+		{
 			deactivate_plugins( plugin_basename( __FILE__ ) );
 		}
 
-		function delete_options() {
+		function delete_options()
+		{
 			delete_option( self::OPTION_NAME );
 		}
 
@@ -328,15 +340,17 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 *
 		 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
 		 */
-		static function delete_rewrite_rules_option( $network_wide ) {
-
-			if( ! is_multisite() || ! $network_wide ) {
+		static function delete_rewrite_rules_option( $network_wide )
+		{
+			if( ! is_multisite() || ! $network_wide )
+			{
 				delete_option('rewrite_rules');
 				return;
 			}
 
 			$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
-			foreach( $sites as $site ) {
+			foreach( $sites as $site )
+			{
 				switch_to_blog( $site->blog_id );
 				delete_option( 'rewrite_rules' );
 				restore_current_blog();
@@ -348,11 +362,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 *
 		 * @return string|null The stylesheet handle or null if there is no stylesheet
 		 */
-		private function find_theme_stylesheet_handle() {
+		private function find_theme_stylesheet_handle()
+		{
 			global $wp_styles;
 
-			foreach( $wp_styles->registered as $handle => $style_obj ) {
-				if( $style_obj->src === get_stylesheet_directory_uri() . '/style.css' ) {
+			foreach( $wp_styles->registered as $handle => $style_obj )
+			{
+				if( $style_obj->src === get_stylesheet_directory_uri() . '/style.css' )
+				{
 					return $handle;
 				}
 			}
@@ -362,30 +379,33 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		/**
 		 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
 		 */
-		static function flush_rewrite( $network_wide ) {
-
+		static function flush_rewrite( $network_wide )
+		{
 			self::create_custom_post_type( );
 
-			if( ! is_multisite() || ! $network_wide ) {
+			if( ! is_multisite() || ! $network_wide )
+			{
 				flush_rewrite_rules( );
 				return;
 			}
 
 			$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
-			foreach( $sites as $site ) {
+			foreach( $sites as $site )
+			{
 				switch_to_blog( $site->blog_id );
 				delete_option( 'rewrite_rules' );
 				restore_current_blog();
 			}
 		}
 
-		function generate_rewrite_rules( $post_type, $query_vars = array() ) {
-
+		function generate_rewrite_rules( $post_type, $query_vars = array() )
+		{
 			// generate every possible combination of rewrite rules, including paging, based on post type taxonomy
 			// from http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
 		    global $wp_rewrite;
 
-		    if( ! is_object( $post_type ) ) {
+		    if( ! is_object( $post_type ) )
+		    {
 		        $post_type = get_post_type_object( $post_type );
 		    }
 
@@ -394,18 +414,20 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		    $taxonomies = get_object_taxonomies( $post_type->name, 'objects' );
 
 		    // Add taxonomy filters to the query vars array
-		    foreach( $taxonomies as $taxonomy ) {
+		    foreach( $taxonomies as $taxonomy )
+		    {
 		        $query_vars[] = $taxonomy->query_var;
 			}
 
 		    // Loop over all the possible combinations of the query vars
-		    for( $i = 1; $i <= count( $query_vars );  $i++ ) {
-
+		    for( $i = 1; $i <= count( $query_vars );  $i++ )
+		    {
 		        $new_rewrite_rule =  $post_type->rewrite['slug'] . '/';
 		        $new_query_string = 'index.php?post_type=' . $post_type->name;
 
 		        // Prepend the rewrites & queries
-		        for( $n = 1; $n <= $i; $n++ ) {
+		        for( $n = 1; $n <= $i; $n++ )
+		        {
 		            $new_rewrite_rule .= '(' . implode( '|', $query_vars ) . ')/(.+?)/';
 		            $new_query_string .= '&' . $wp_rewrite->preg_index( $n * 2 - 1 ) . '[]=' . $wp_rewrite->preg_index( $n * 2 );
 		        }
@@ -433,7 +455,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * @param string $str The string from which to extract the last word
 		 * @return string The last word of the input string
 		 */
-		function get_last_word( $str ) {
+		function get_last_word( $str )
+		{
 			$pieces = explode( ' ', rtrim( $str ) );
 			return array_pop( $pieces );
 		}
@@ -442,17 +465,19 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * Gets a serialized post meta value for a REST API call, and returns it
 		 * as a serialized string.
 		 */
-		function get_serialized_value_for_rest( $post, $key ) {
+		function get_serialized_value_for_rest( $post, $key )
+		{
 			return serialize( get_post_meta( $post['id'], $key, true ) );
 		}
 
-		function hooks( ) {
-
+		function hooks()
+		{
 			//include all this plugin's classes that live in external files
 			$this->include_dependencies();
 
 			//Allow translations
-			add_action( 'plugins_loaded', function() {
+			add_action( 'plugins_loaded', function()
+			{
 				load_plugin_textdomain( 'inventory-presser', false, __DIR__ );
 			} );
 
@@ -512,7 +537,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 
 			$this->settings = self::settings();
-			if( ! is_admin() && ( isset( $_GET['orderby'] ) || isset( $this->settings['sort_vehicles_by'] ) ) ) {
+			if( ! is_admin() && ( isset( $_GET['orderby'] ) || isset( $this->settings['sort_vehicles_by'] ) ) )
+			{
 				add_action( 'pre_get_posts', array( $this, 'add_orderby_to_query' ) );
 			}
 
@@ -575,14 +601,16 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$photo_numberer = new Inventory_Presser_Photo_Numberer();
 			$photo_numberer->hooks();
 
-			if ( is_admin() ) {
+			if ( is_admin() )
+			{
 				//Initialize our Settings page in the Dashboard
 				$options = new Inventory_Presser_Options();
 				$options->hooks();
 			}
 		}
 
-		function include_dependencies() {
+		function include_dependencies()
+		{
 			//Include our object definition dependencies
 			$file_names = array(
 				'class-add-custom-fields-to-search.php',
@@ -616,9 +644,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-widget-maximum-price-filter.php',
 				'template-tags.php',
 			);
-			foreach( $file_names as $file_name ) {
+			foreach( $file_names as $file_name )
+			{
 				$path = plugin_dir_path( __FILE__ ) . 'includes/' . $file_name;
-				if( file_exists( $path ) ) {
+				if( file_exists( $path ) )
+				{
 					require $path;
 				}
 			}
@@ -681,9 +711,11 @@ svg > g > path,
 		 * Change a query's meta_query value if the meta_query does not already
 		 * contain the provided key.
 		 */
-		function maybe_add_meta_query( $meta_query, $key, $value, $compare, $type ) {
+		function maybe_add_meta_query( $meta_query, $key, $value, $compare, $type )
+		{
 			//Make sure there is not already $key item in the meta_query
-			if( $this->meta_query_contains_key( $meta_query, $key ) ) {
+			if( $this->meta_query_contains_key( $meta_query, $key ) )
+			{
 				return $meta_query;
 			}
 
@@ -696,20 +728,25 @@ svg > g > path,
 			return $meta_query;
 		}
 
-		public static function meta_prefix() {
+		public static function meta_prefix()
+		{
 			return apply_filters( 'invp_meta_prefix', 'inventory_presser_' );
 		}
 
 		/**
 		 * Does a WP_Query's meta_query contain a specific key?
 		 */
-		function meta_query_contains_key( $meta_query, $key ) {
-			if( is_array( $meta_query ) ) {
-				if( isset( $meta_query['key'] ) ) {
+		function meta_query_contains_key( $meta_query, $key )
+		{
+			if( is_array( $meta_query ) )
+			{
+				if( isset( $meta_query['key'] ) )
+				{
 					return $meta_query['key'] == $key;
 				}
 
-				foreach( $meta_query as $another ) {
+				foreach( $meta_query as $another )
+				{
 					return $this->meta_query_contains_key( $another, $key );
 				}
 			}
@@ -720,20 +757,23 @@ svg > g > path,
 		 * Modifieds the query to filter vehicles by prices for the Maximum
 		 * Price Filter widget.
 		 */
-		function modify_query_for_max_price( $query ) {
-
+		function modify_query_for_max_price( $query )
+		{
 			//Do not mess with the query if it's not the main one and our CPT
-			if ( !$query->is_main_query() || $query->query_vars['post_type'] != Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) {
+			if ( !$query->is_main_query() || $query->query_vars['post_type'] != Inventory_Presser_Plugin::CUSTOM_POST_TYPE )
+			{
 				return;
 			}
 
 			//Get original meta query
 			$meta_query = $query->get('meta_query');
-			if( ! is_array( $meta_query ) ) {
+			if( ! is_array( $meta_query ) )
+			{
 				$meta_query = array();
 			}
 
-			if ( isset( $_GET['max_price'] ) ) {
+			if ( isset( $_GET['max_price'] ) )
+			{
 				$meta_query['relation'] = 'AND';
 				$meta_query = $this->maybe_add_meta_query(
 					$meta_query,
@@ -748,8 +788,8 @@ svg > g > path,
 			return $query;
 		}
 
-		function modify_query_orderby( $pieces ) {
-
+		function modify_query_orderby( $pieces )
+		{
 			/**
 			 * Count the number of meta fields we have added to the query by parsing
 			 * the join piece of the query
@@ -767,10 +807,12 @@ svg > g > path,
 			 * 'mt1.meta_value ASC, mt2.meta_value ASC, mt3.meta_value ASC'
 			 * where the number of meta values is what we calculated in $meta_field_count
 			 */
-			if( 0 < $meta_field_count ) {
+			if( 0 < $meta_field_count )
+			{
 				$replacement = $pieces['orderby'] . ', ';
 				$vehicle = new Inventory_Presser_Vehicle();
-				for( $m=0; $m<$meta_field_count; $m++ ) {
+				for( $m=0; $m<$meta_field_count; $m++ )
+				{
 					$replacement .= 'mt' . ( $m+1 ) . '.meta_value';
 					/**
 					 * Determine if this meta field should be sorted as a number
@@ -780,12 +822,14 @@ svg > g > path,
 					$field_start = strpos( $pieces['where'], 'mt' . ( $m+1 ) . '.meta_key = \'')+16;
 					$field_end = strpos( $pieces['where'], "'", $field_start )-$field_start;
 					$field_name = substr( $pieces['where'], $field_start, $field_end );
-					if( $vehicle->post_meta_value_is_number( $field_name ) ) {
+					if( $vehicle->post_meta_value_is_number( $field_name ) )
+					{
 						$replacement .= '+0';
 					}
 
 					$replacement .= $direction;
-					if( $m < ( $meta_field_count-1 ) ) {
+					if( $m < ( $meta_field_count-1 ) )
+					{
 						$replacement .= ', ';
 					}
 				}
@@ -796,8 +840,8 @@ svg > g > path,
 		}
 
 		//register all meta fields our CPT uses
-		function register_meta_fields() {
-
+		function register_meta_fields()
+		{
 			$keys = Inventory_Presser_Vehicle::keys_and_types( true );
 
 			/**
@@ -818,7 +862,8 @@ svg > g > path,
 				'type' => 'integer',
 			);
 
-			foreach( $keys as $key_arr ) {
+			foreach( $keys as $key_arr )
+			{
 				$key = apply_filters( 'invp_prefix_meta_key', $key_arr['name'] );
 				register_meta( 'post', $key, array(
 					'sanitize_callback' => 'maybe_unserialize',
@@ -829,8 +874,8 @@ svg > g > path,
 			}
 		}
 
-		function register_widgets() {
-
+		function register_widgets()
+		{
 			/**
 			 * Make a widget available to sort vehicles by post meta fields.
 			 * Or, enable order by year, make, price, odometer, etc.
@@ -860,17 +905,20 @@ svg > g > path,
 			/**
 			 * The query needs to be altered for the Maximum Price Filters widget.
 			 */
-			if ( ! is_admin() && isset( $_GET['max_price'] ) ) {
+			if ( ! is_admin() && isset( $_GET['max_price'] ) )
+			{
 				add_action( 'pre_get_posts', array( $this, 'modify_query_for_max_price' ), 99, 1 );
 			}
 		}
 
-		function set_serialized_meta_value( $value, $object, $field_name ) {
+		function set_serialized_meta_value( $value, $object, $field_name )
+		{
 			$return = update_post_meta( $object->ID, $field_name, maybe_unserialize( $value ) );
 		}
 
 		//Get this plugin's Options page settings mingled with default values
-		public static function settings() {
+		public static function settings()
+		{
 			$defaults = array(
 				'sort_vehicles_by'            => apply_filters( 'invp_prefix_meta_key', 'make' ),
 				'sort_vehicles_order'         => 'ASC',
@@ -879,21 +927,28 @@ svg > g > path,
 			return wp_parse_args( get_option( self::OPTION_NAME ), $defaults );
 		}
 
-		function skip_trash( $post_id ) {
+		function skip_trash( $post_id )
+		{
 			//is the post a vehicle?
-			if( self::CUSTOM_POST_TYPE == get_post_type( $post_id ) ) {
+			if( self::CUSTOM_POST_TYPE == get_post_type( $post_id ) )
+			{
 				//force delete
 				wp_delete_post( $post_id, true );
 			}
 		}
 
-		function translate_custom_field_names( $nice_name ) {
+		function translate_custom_field_names( $nice_name )
+		{
 			$nice_name = strtolower( $nice_name );
 			return self::meta_prefix() . $nice_name;
 		}
 
-		function untranslate_custom_field_names( $meta_key ) {
-			if( empty( $meta_key ) ) { return ''; }
+		function untranslate_custom_field_names( $meta_key )
+		{
+			if( empty( $meta_key ) )
+			{
+				return '';
+			}
 			$meta_key = strtolower( $meta_key );
 			//prefix may start with an underscore because previous versions hid some meta keys
 			$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . self::meta_prefix();
