@@ -65,6 +65,7 @@ This plugin requires a few page templates to display listing pages and vehicle d
 = 10.7.0 =
 * [Added] Adds a setting that allows users to choose whether or not to use the latest Carfax buttons loaded from Carfax servers.
 * [Fixed] Fixes a bug where the two arguments to the filter `invp_options_page_sanitized_values` were supplied out of order.
+* [Fixed] Fixes bugs introduced in Carfax CSS rules in 10.6.1
 
 = 10.6.1 =
 * [Fixed] Adds a CSS rule to be deployed with our Customizer setting to help better show Carfax icons on dark backgrounds. The newer icons hosted by Carfax were not affected by our existing rule.

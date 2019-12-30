@@ -665,10 +665,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 				$color = get_theme_mod( 'carfax_text_color', 'black' );
 				$color_code = ( $color == 'black' ? '231F20' : 'FFF' );
 				$css =
-".show-me-the{ fill: #' . $color_code . '; }
-svg > g > path,
+".show-me-the{ fill: #$color_code; }
+.carfax-wrapper svg > g > path,
 .carfax-wrapper #show path{
-	fill: $color_code;
+	fill: #$color_code;
 }";
 				wp_add_inline_style( $style_handle, $css );
 			}
