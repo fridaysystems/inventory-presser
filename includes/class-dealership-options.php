@@ -63,6 +63,9 @@ class Inventory_Presser_Options
 			array( $this, 'sanitize_options' ) // sanitize_callback
 		);
 
+		/**
+		 * SECTION Settings
+		 */
 		add_settings_section(
 			'dealership_options_setting_section', // id
 			__( 'Settings', 'inventory-presser' ), // title
@@ -97,14 +100,6 @@ class Inventory_Presser_Options
 			'dealership_options_setting_section' // section
 		);
 
-		add_settings_field(
-			'use_carfax', // id
-			__( 'Carfax', 'inventory-presser' ), // title
-			array( $this, 'callback_use_carfax' ), // callback
-			'dealership-options-admin', // page
-			'dealership_options_setting_section' // section
-		);
-
 		//[x] Show all taxonomies under Vehicles menu in Dashboard
 		add_settings_field(
 			'show_all_taxonomies', // id
@@ -112,6 +107,25 @@ class Inventory_Presser_Options
 			array( $this, 'callback_show_all_taxonomies' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
+		);
+
+		/**
+		 * SECTION Carfax
+		 */
+		add_settings_section(
+			'dealership_options_section_carfax', // id
+			__( 'Carfax', 'inventory-presser' ), // title
+			'__return_empty_string', // callback
+			'dealership-options-admin' // page
+		);
+
+		//[x] Display Carfax buttons near vehicles that link to free Carfax reports
+		add_settings_field(
+			'use_carfax', // id
+			__( 'Enable Carfax', 'inventory-presser' ), // title
+			array( $this, 'callback_use_carfax' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_section_carfax' // section
 		);
 	}
 
