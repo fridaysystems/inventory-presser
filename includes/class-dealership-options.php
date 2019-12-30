@@ -99,7 +99,7 @@ class Inventory_Presser_Options
 
 		add_settings_field(
 			'use_carfax', // id
-			__( 'CARFAX', 'inventory-presser' ), // title
+			__( 'Carfax', 'inventory-presser' ), // title
 			array( $this, 'callback_use_carfax' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
@@ -265,7 +265,7 @@ class Inventory_Presser_Options
 	{
 		$this->boolean_checkbox_setting_callback(
 			'use_carfax',
-			__( 'Display CARFAX buttons near vehicles that link to free CARFAX reports', 'inventory-presser' )
+			__( 'Display Carfax buttons near vehicles that link to free Carfax reports', 'inventory-presser' )
 		);
 	}
 

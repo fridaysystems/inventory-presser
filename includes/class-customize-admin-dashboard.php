@@ -58,8 +58,8 @@ class Inventory_Presser_Customize_Dashboard {
 			'settings'    => 'carfax_text_color',
 			'priority'    => 40,
 			'section'     => 'colors',
-			'label'       => __( 'CARFAX Button Text', 'inventory-presser' ),
-			'description' => __( 'The color of the words "SHOW ME THE" in CARFAX buttons.', 'inventory-presser' ),
+			'label'       => __( 'Carfax Button Text', 'inventory-presser' ),
+			'description' => __( 'The color of the words "SHOW ME THE" in Carfax buttons.', 'inventory-presser' ),
             'choices'  => array(
                 'black' => 'Black',
                 'white' => 'White',
