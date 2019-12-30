@@ -148,6 +148,15 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			);
 		}
 
+		/**
+		 * Returns an SVG element that is one of various Carfax icons, usually
+		 * containing the text, "SHOW ME THE Carfax," but sometimes also
+		 * adorned with a green banner that says "GOOD VALUE."
+		 *
+		 * A setting this plugin provides allows users to cede control of the
+		 * <svg> payload to Carfax, by using an SVG provided by a URL instead of
+		 * the .svg files that ship with this plugin.
+		 */
 		function carfax_icon_svg()
 		{
 			$svg_path = $this->carfax_url_icon;
