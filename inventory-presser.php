@@ -872,8 +872,9 @@ svg > g > path,
 		//Get this plugin's Options page settings mingled with default values
 		public static function settings() {
 			$defaults = array(
-				'sort_vehicles_by' => apply_filters( 'invp_prefix_meta_key', 'make' ),
-				'sort_vehicles_order' => 'ASC',
+				'sort_vehicles_by'            => apply_filters( 'invp_prefix_meta_key', 'make' ),
+				'sort_vehicles_order'         => 'ASC',
+				'use_carfax_provided_buttons' => true,
 			);
 			return wp_parse_args( get_option( self::OPTION_NAME ), $defaults );
 		}

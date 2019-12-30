@@ -127,6 +127,15 @@ class Inventory_Presser_Options
 			'dealership-options-admin', // page
 			'dealership_options_section_carfax' // section
 		);
+
+		//[x] Use Carfax-provided, dynamic buttons that may also say things like "GOOD VALUE"
+		add_settings_field(
+			'use_carfax_provided_buttons', // id
+			__( 'Use Newest Buttons', 'inventory-presser' ), // title
+			array( $this, 'callback_use_carfax_provided_buttons' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_section_carfax' // section
+		);
 	}
 
 	function boolean_checkbox_setting_callback( $setting_name, $checkbox_label )
@@ -136,7 +145,7 @@ class Inventory_Presser_Options
 			Inventory_Presser_Plugin::OPTION_NAME,
 			$setting_name,
 			$setting_name,
-			( isset( $this->option[$setting_name] ) && $this->option[$setting_name] ) ? 'checked' : '',
+			isset( $this->option[$setting_name] ) ? checked( $this->option[$setting_name], true, false ) : '',
 			$setting_name,
 			$checkbox_label
 		);
@@ -283,6 +292,14 @@ class Inventory_Presser_Options
 		);
 	}
 
+	function callback_use_carfax_provided_buttons()
+	{
+		$this->boolean_checkbox_setting_callback(
+			'use_carfax_provided_buttons',
+			__( 'Use Carfax-provided, dynamic buttons that may also say things like "GOOD VALUE"', 'inventory-presser' )
+		);
+	}
+
 	public function options_page_content()
 	{
 		$this->option = Inventory_Presser_Plugin::settings();
@@ -367,21 +384,17 @@ class Inventory_Presser_Options
 			$sanitary_values['sort_vehicles_order'] = $input['sort_vehicles_order'];
 		}
 
-		if ( isset( $input['include_sold_vehicles'] ) )
+		$boolean_settings = array(
+			'include_sold_vehicles',
+			'show_all_taxonomies',
+			'use_carfax',
+			'use_carfax_provided_buttons',
+		);
+		foreach( $boolean_settings as $b )
 		{
-			$sanitary_values['include_sold_vehicles'] = true;
+			$sanitary_values[$b] = isset( $input[$b] );
 		}
 
-		if ( isset( $input['show_all_taxonomies'] ) )
-		{
-			$sanitary_values['show_all_taxonomies'] = true;
-		}
-
-		if ( isset( $input['use_carfax'] ) )
-		{
-			$sanitary_values['use_carfax'] = true;
-		}
-
-		return apply_filters( 'invp_options_page_sanitized_values', $input, $sanitary_values );
+		return apply_filters( 'invp_options_page_sanitized_values', $sanitary_values, $input );
 	}
 }

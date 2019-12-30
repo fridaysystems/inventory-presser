@@ -159,9 +159,17 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 */
 		function carfax_icon_svg()
 		{
+			//A per-vehicle icon URL is provided by Carfax during daily IICR
 			$svg_path = $this->carfax_url_icon;
 			$svg_element = '';
-			if( empty( $svg_path ) )
+
+			/**
+			 * If we don't have a URL from IICR, or the user has turned off the
+			 * newer, dynamic icons, fall back to SVGs that ship with this
+			 * plugin.
+			 */
+			$settings = Inventory_Presser_Plugin::settings();
+			if( empty( $svg_path ) || ! $settings['use_carfax_provided_buttons'] )
 			{
 				//fallback to the icon that ships with this plugin
 				$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
