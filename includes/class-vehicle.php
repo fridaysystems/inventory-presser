@@ -606,7 +606,10 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 				return apply_filters( 'invp_sold_string', sprintf( '<span class="vehicle-sold">%s</span>', __( 'SOLD!', 'inventory-presser' ) ) );
 			}
 
-			$zero_string = apply_filters( 'invp_zero_price_string', $zero_string, $this );
+			if( '' == $zero_string )
+			{
+				$zero_string = apply_filters( 'invp_zero_price_string', __( 'Call For Price', 'inventory-presser' ), $this );
+			}
 
 			//How are we displaying the price?
 			$settings = Inventory_Presser_Plugin::settings();
@@ -625,16 +628,26 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 					}
 					break;
 
-				// down payment and/or full price
+				//${Price} / ${Down Payment} Down
 				case 'full_or_down':
+
+					$price = '';
+					if ( $this->price > 0 )
+					{
+						$price .= sprintf( '$%s', number_format( $this->price, 0, '.', ',' ) );
+					}
+
 					if ( $this->down_payment > 0 )
 					{
-						if ( $this->price > 0 )
-						{
-							return sprintf( '$%s / $%s Down', number_format( $this->price, 0, '.', ',' ), number_format( $this->down_payment, 0, '.', ',' ) );
-						}
-						return sprintf( '$%s Down', number_format( $this->down_payment, 0, '.', ',' ) );
+						$price .= sprintf( ' / $%s Down', number_format( $this->down_payment, 0, '.', ',' ) );
 					}
+
+					if( '' == $price )
+					{
+						return $zero_string;
+					}
+					return $price;
+
 					break;
 
 				// down payment only
@@ -675,7 +688,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 					//Normally, show the price field as currency.
 					if( 0 == $this->price )
 					{
-						return apply_filters( 'invp_zero_price_string', $zero_string, $this );
+						return $zero_string;
 					}
 					return '$' . number_format( $this->price, 0, '.', ',' );
 					break;
@@ -689,7 +702,7 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 					break;
 			}
 
-			return __( 'Call For Price', 'inventory-presser' );
+			return $zero_string;
 		}
 
 		function schema_org_drive_type( $drive_type ) {
