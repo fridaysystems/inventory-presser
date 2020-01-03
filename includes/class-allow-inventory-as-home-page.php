@@ -1,13 +1,14 @@
 <?php
 
-class Inventory_Presser_Allow_Inventory_As_Home_Page{
-
+class Inventory_Presser_Allow_Inventory_As_Home_Page
+{
 	const PAGE_META_KEY = '_inventory_presser_hidden_page';
 
-	static function create_page() {
-
+	static function create_page()
+	{
 		//Does the page already exist?
-		if( -1 != self::find_page_id() ) {
+		if( -1 != self::find_page_id() )
+		{
 			//Yes, abort
 			return;
 		}
@@ -24,7 +25,8 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page{
 		) );
 	}
 
-	static function delete_page() {
+	static function delete_page()
+	{
 		wp_delete_post( self::find_page_id(), true );
 	}
 
@@ -34,13 +36,15 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page{
 	 *
 	 * @return int The ID of the page or -1 if the page is not found.
 	 */
-	static function find_page_id() {
+	static function find_page_id()
+	{
 		$pages = get_pages( array(
 			'meta_key'   => self::PAGE_META_KEY,
 			'meta_value' => '1',
 		) );
 
-		if( empty( $pages ) ) {
+		if( empty( $pages ) )
+		{
 			return -1;
 		}
 
@@ -57,15 +61,17 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page{
 	 * @param WP_Query $query An instance of the WP_Query class
 	 * @return void
 	 */
-	function hide_page_from_edit_list( $query ) {
+	function hide_page_from_edit_list( $query )
+	{
 		global $pagenow, $post_type;
-		if( is_admin() && 'edit.php' == $pagenow && 'page' == $post_type ) {
+		if( is_admin() && 'edit.php' == $pagenow && 'page' == $post_type )
+		{
 			$query->query_vars['post__not_in'] = array( self::find_page_id() );
 		}
 	}
 
-	function hooks() {
-
+	function hooks()
+	{
 		$file_path = dirname( __FILE__, 2 ) . DIRECTORY_SEPARATOR . 'inventory-presser.php';
 		register_activation_hook(   $file_path, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'create_page' ) );
 		register_deactivation_hook( $file_path, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'delete_page' ) );
@@ -74,14 +80,15 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page{
 		add_action( 'pre_get_posts', array( $this, 'redirect_the_page' ) );
 	}
 
-	function redirect_the_page( $wp_query ) {
-
-		if( is_admin() ) {
+	function redirect_the_page( $wp_query )
+	{
+		if( is_admin() )
+		{
 			return;
 		}
 
-		if( $wp_query->get( 'page_id' ) == get_option( 'page_on_front' ) && $wp_query->get( 'page_id' ) == self::find_page_id() ) {
-
+		if( $wp_query->get( 'page_id' ) == get_option( 'page_on_front' ) && $wp_query->get( 'page_id' ) == self::find_page_id() )
+		{
 			wp_redirect( get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) );
 			exit;
 		}
