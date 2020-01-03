@@ -684,6 +684,19 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 					}
 					break;
 
+				//$75 per week
+				case 'payment_only':
+					if( empty( $this->payment ) || empty( $this->payment_frequency ) )
+					{
+						return $zero_string;
+					}
+					return sprintf(
+						'$%s %s',
+						number_format( $this->payment, 0, '.', ',' ),
+						$this->payment_frequency_readable( $this->payment_frequency )
+					);
+					break;
+
 				case 'default':
 					//Normally, show the price field as currency.
 					if( 0 == $this->price )
@@ -703,6 +716,18 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			}
 
 			return $zero_string;
+		}
+
+		private function payment_frequency_readable( $slug )
+		{
+			switch( $slug )
+			{
+				case 'weekly':      return __( 'per week', 'inventory-presser' );
+				case 'monthly':     return __( 'per month', 'inventory-presser' );
+				case 'biweekly':    return __( 'every other week', 'inventory-presser' );
+				case 'semimonthly': return __( 'twice a month', 'inventory-presser' );
+				default: return '';
+			}
 		}
 
 		function schema_org_drive_type( $drive_type ) {

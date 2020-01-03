@@ -167,6 +167,7 @@ class Inventory_Presser_Options
 			'full_or_down'     => '${Price} / ${Down Payment} Down',
 			'down_only'        => '${Down Payment} Down',
 			'was_now_discount' => 'Retail ${MSRP} Now ${Price} You Save ${MSRP}-{Price}',
+			'payment_only'     => '${Payment} {Frequency}',
 			'call_for_price'   => __( 'Call For Price', 'inventory-presser' ),
 		) );
 

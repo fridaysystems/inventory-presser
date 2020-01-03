@@ -66,6 +66,7 @@ This plugin requires a few page templates to display listing pages and vehicle d
 * [Added] Detects when the active theme does not have templates for vehicles or vehicle archives, and replaces the_content with shortcodes to provide any theme with basic display support. The included CSS still needs work, but the code output is sufficient to launch.
 * [Added] Shortcode [invp-archive-vehicle]
 * [Added] Shortcode [invp-single-vehicle]
+* [Added] Adds a new price display type for payment and payment frequency so "$75 per week" and similar iterations are now possible
 * [Fixed] Fixes a CSS selector bug and adds more rules for Carfax buttons
 
 = 10.7.1 =
