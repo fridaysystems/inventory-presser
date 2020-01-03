@@ -6,16 +6,11 @@ defined( 'ABSPATH' ) or exit;
  * to show vehicle archives that are similar to the way themes are properly
  * built out for this plugin.
  */
-class Inventory_Presser_Shortcode_Single_Vehicle
+class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Template_Shortcode
 {
 	function hooks()
 	{
 		add_shortcode( 'invp-single-vehicle', array( $this, 'content' ) );
-	}
-
-	function return_content()
-	{
-
 	}
 
 	function content( $atts )
@@ -26,9 +21,15 @@ class Inventory_Presser_Shortcode_Single_Vehicle
 		}
 
 		$vehicle = new Inventory_Presser_Vehicle( get_the_ID() );
+		$image_url_lists = $vehicle->get_images_html_array( array( 'large', 'thumb' ) );
 
 		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );
+		wp_enqueue_style(
+			'inv_single_vehicle',
+			plugins_url( '/css/shortcode-single-vehicle.css', dirname( __FILE__, 2 ) . '/inventory-presser.php' ),
+			null
+		);
 		wp_enqueue_script( 'invp-flexslider', '', array(), false, true );
 
  		ob_start();
@@ -38,10 +39,6 @@ class Inventory_Presser_Shortcode_Single_Vehicle
 			<div class="post-inner">
 
 				<div class="post-thumbnail">
-					<header class="entry-header">
-						<?php the_title( '<h1 class="post-title">', '</h1>' ); ?>
-					</header><!-- .entry-header -->
-
 					<?php
 					// widget area, main column below vehicle
 					if( is_active_sidebar( 'sidebar-above-single-vehicle' ) )
@@ -50,15 +47,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle
 					}
 					?>
 					<div class="vehicle-images">
-						<?php
-						if ( isset( $image_url_lists['large'] ) && count( $image_url_lists['large'] ) )
-						{
-							echo sprintf( '<div id="print-image">%s</div>', $image_url_lists['large'][0] );
-						}
-						?>
-
 						<div id="slider-width"></div>
-
 						<div id="slider" class="flexslider">
 							<ul class="slides"><?php
 
@@ -175,122 +164,21 @@ class Inventory_Presser_Shortcode_Single_Vehicle
 					// if dealership has multiple locations, display the location of this vehicle
 					echo $vehicle->location_sentence();
 
-					$invp_settings = Inventory_Presser_Plugin::settings();
-
 					?><div class="vehicle-summary"><?php
 
-						//Populate this array with attributes
-						$labels_and_values = array();
+						echo $this->vehicle_attribute_table( $vehicle );
 
-						// Book Value
-						if ( method_exists( $vehicle, 'get_book_value' ) && ( ! isset( $invp_settings['price_display'] ) || $invp_settings['price_display'] != 'genes' ) )
-						{
-							$book_value = $vehicle->get_book_value();
-							if( $book_value > 0  && $book_value > intval( $vehicle->price ) )
-							{
-								$labels_and_values[apply_filters( '_dealer_label-book_value', 'Book Value' )] = '$' . number_format( $book_value, 0, '.', ',' );
-							}
-						}
+							// //Type
+							// array(
+							// 	'member' => 'type',
+							// 	'label'  => __( 'Type', 'inventory-presser' ),
+							// ),
 
-						// MSRP
-						if ( isset( $GLOBALS['_dealer_settings']['msrp_label'] ) && $GLOBALS['_dealer_settings']['msrp_label'] && isset( $vehicle->msrp ) && $vehicle->msrp )
-						{
-							$msrp = is_numeric( $vehicle->msrp ) ? number_format( $vehicle->msrp, 0, '.', ',' ) : $vehicle->msrp;
-							$labels_and_values[$GLOBALS['_dealer_settings']['msrp_label']] = $msrp;
-						}
-
-						// Odometer
-						if ( $vehicle->odometer( ' ' . apply_filters( '_dealer_odometer_word', 'Miles' ) ) && $vehicle->type != 'boat' )
-						{
-							$labels_and_values[apply_filters( '_dealer_label-odometer', apply_filters( '_dealer_odometer_word', 'Mileage' ) )] = $vehicle->odometer( ' ' . apply_filters( '_dealer_odometer_word', 'Miles' ) );
-						}
-
-						// Type
-						if ( $vehicle->type )
-						{
-							$labels_and_values[apply_filters( '_dealer_label-type', __( 'Type', 'inventory-presser' ) )] = $vehicle->type;
-						}
-
-						// Body style
-						if ( $vehicle->body_style )
-						{
-							$labels_and_values[apply_filters( '_dealer_label-body_style', __( 'Body style', '_dealer' ) )] = sprintf( '<span class="vehicle-content-initcaps">%s</span>', strtolower( $vehicle->body_style ) );
-						}
-
-						// Exterior Color
-						if ( $vehicle->color )
-						{
-							$labels_and_values[apply_filters( '_dealer_label-color', 'Exterior' )] = sprintf( '<span class="vehicle-content-initcaps">%s</span>', strtolower( $vehicle->color ) );
-						}
-
-						// Interior Color
-						if ( $vehicle->interior_color )
-						{
-							$labels_and_values[apply_filters( '_dealer_label-interior_color', 'Interior' )] = sprintf( '<span class="vehicle-content-initcaps">%s</span>', strtolower( $vehicle->interior_color ) );
-						}
-
-						//Engine
-						if ( $vehicle->fuel || $vehicle->engine )
-						{
-							$labels_and_values[apply_filters( '_dealer_label-engine', 'Engine' )] =	implode( ' ', array( $vehicle->fuel, $vehicle->engine ) );
-						}
-
-						//Transmission
-						if ( $vehicle->transmission )
-						{
-							$labels_and_values[apply_filters( '_dealer_label-transmission', 'Transmission' )] = sprintf( '<span class="vehicle-content-initcaps">%s</span>', strtolower( $vehicle->transmission ) );
-						}
-
-						//Drive Type
-						if ( $vehicle->drivetype )
-						{
-							$labels_and_values[apply_filters( '_dealer_label-drivetype', 'Drive Type' )] = $vehicle->drivetype;
-						}
-
-						// stock #
-						if ( $vehicle->stock_number )
-						{
-							$labels_and_values[apply_filters( '_dealer_label-stock_number', 'Stock' )] = $vehicle->stock_number;
-						}
-
-						// vin
-						if ( $vehicle->vin )
-						{
-							$labels_and_values[apply_filters( '_dealer_label-vin', 'boat' == $vehicle->type ? 'HIN' : 'VIN' )] = $vehicle->vin;
-						}
-
-						//Boat-specific fields
-						if( 'boat' == $vehicle->type )
-						{
-							//Beam
-							if ( $vehicle->beam )
-							{
-								$labels_and_values[apply_filters( '_dealer_label-beam', 'Beam' )] = $vehicle->beam;
-							}
-
-							//Length
-							if ( $vehicle->length )
-							{
-								$labels_and_values[apply_filters( '_dealer_label-length', 'Length' )] = $vehicle->length;
-							}
-
-							//Hull material
-							if ( $vehicle->hull_material )
-							{
-								$labels_and_values[apply_filters( '_dealer_label-hull_material', 'Hull Material' )] = $vehicle->hull_material;
-							}
-						}
-
-						//Output all the labels and values
-						foreach( apply_filters( '_dealer_details_table_labels_and_values', $labels_and_values, $vehicle ) as $label => $value )
-						{
-							printf(
-								'<div class="vehicle-summary-item"><div class="vehicle-summary-item-label">%s:</div><div class="vehicle-summary-item-value">%s</div></div>',
-								$label,
-								$value
-							);
-						}
-
+							// //Body Style
+							// array(
+							// 	'member' => 'body_style',
+							// 	'label'  => __( 'Body style', 'inventory_presser' ),
+							// ),
 					?></div>
 
 					<?php
@@ -328,7 +216,48 @@ class Inventory_Presser_Shortcode_Single_Vehicle
 
 			</div><!--/.post-inner-->
 
-		</div><?php
+		</div><script type="text/javascript"><!--
+	function adjustSlideHeight(wrapper)
+	{
+		var ratios = [];
+		jQuery(wrapper + ' .slides li img').each(function() {
+			ratios.push( jQuery(this).attr('height') / jQuery(this).attr('width'));
+		});
+		height = Math.ceil( jQuery('#slider-width').width() * Math.min.apply(Math,ratios));
+		jQuery(wrapper + ' .slides li img').each(function() {
+			jQuery(this).css('height', height + 'px');
+			jQuery(this).css('width', 'auto');
+		});
+	}
+
+	jQuery(window).load(function()
+	{
+		if (jQuery('body').hasClass('single-inventory_vehicle'))
+		{
+			var anispeed = 300;
+			adjustSlideHeight('#slider');
+
+			jQuery(window).resize(function() {
+				setTimeout(function() {
+					adjustSlideHeight('#slider');
+				}, 120);
+			});
+
+			// The slider being synched must be initialized first
+			jQuery('#carousel').flexslider({
+				animation: "slide",
+				controlNav: false,
+				slideshow: false,
+				smoothHeight: true,
+				itemWidth: 150,
+				itemMargin: 10,
+				asNavFor: '#slider',
+				prevText: '',
+				nextText: ''
+			});
+		}
+	});
+--></script><?php
 
 		if( method_exists( $vehicle, 'schema_org_json_ld' ) && apply_filters( '_dealer_include_schema_org_json_ld', true ) )
 		{

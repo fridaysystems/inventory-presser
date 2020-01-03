@@ -640,6 +640,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 				'class-shortcode-iframe.php',
 				'class-shortcode-inventory-grid.php',
 				'class-shortcode-inventory-slider.php',
+				'class-shortcode-template-shortcode.php',
 				'class-shortcode-archive-vehicle.php',
 				'class-shortcode-single-vehicle.php',
 				'class-taxonomies.php',

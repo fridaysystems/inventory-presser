@@ -1,0 +1,9 @@
+.flexslider{
+	background: none;
+	border: none;
+}
+ul.vehicle-features {
+	margin-left: .5em;
+	columns: 3;
+	column-gap: 1em;
+}
