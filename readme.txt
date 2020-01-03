@@ -66,7 +66,7 @@ This plugin requires a few page templates to display listing pages and vehicle d
 * [Added] Detects when the active theme does not have templates for vehicles or vehicle archives, and replaces the_content with shortcodes to provide any theme with basic display support. The included CSS still needs work, but the code output is sufficient to launch.
 * [Added] Shortcode [invp-archive-vehicle]
 * [Added] Shortcode [invp-single-vehicle]
-* [Fixed] Fixes a CSS selector bug for rules on Carfax buttons
+* [Fixed] Fixes a CSS selector bug and adds more rules for Carfax buttons
 
 = 10.7.1 =
 * [Fixed] Fixes a bug in the "${price} / ${down} Down" price display setting where neither price would show if a vehicle did not have a down payment. Starting now, the price will show by itself even when there is no down payment.
