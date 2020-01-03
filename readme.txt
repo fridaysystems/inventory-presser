@@ -68,6 +68,7 @@ This plugin requires a few page templates to display listing pages and vehicle d
 * [Added] Shortcode [invp-single-vehicle]
 * [Added] Adds a new price display type for payment and payment frequency so "$75 per week" and similar iterations are now possible
 * [Fixed] Fixes a CSS selector bug and adds more rules for Carfax buttons
+* [Fixed] Fixes a feature launched in version 10.3.0 that allows users to set the inventory archive as the home page. This feature did not work on multisite networks until now.
 
 = 10.7.1 =
 * [Fixed] Fixes a bug in the "${price} / ${down} Down" price display setting where neither price would show if a vehicle did not have a down payment. Starting now, the price will show by itself even when there is no down payment.

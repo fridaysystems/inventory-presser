@@ -4,7 +4,7 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 {
 	const PAGE_META_KEY = '_inventory_presser_hidden_page';
 
-	static function create_page()
+	private static function create_page()
 	{
 		//Does the page already exist?
 		if( -1 != self::find_page_id() )
@@ -25,9 +25,49 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 		) );
 	}
 
-	static function delete_page()
+	static function create_pages()
 	{
-		wp_delete_post( self::find_page_id(), true );
+		/**
+		 * Are we on multi-site? If so, we need to create a page on every blog
+		 * in the multisite network
+		 */
+
+		if( ! is_multisite() )
+		{
+			self::create_page();
+			return;
+		}
+
+		//We are on multisite, create a page for every site on the network
+		$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
+		foreach( $sites as $site )
+		{
+			switch_to_blog( $site->blog_id );
+			self::create_page();
+			restore_current_blog();
+		}
+	}
+
+	static function delete_pages()
+	{
+		/**
+		 * Are we on multi-site? If so, we need to delete the page from every
+		 * blog in the multisite network
+		 */
+		if( ! is_multisite() )
+		{
+			wp_delete_post( self::find_page_id(), true );
+			return;
+		}
+
+		//We are on multisite, create a page for every site on the network
+		$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
+		foreach( $sites as $site )
+		{
+			switch_to_blog( $site->blog_id );
+			wp_delete_post( self::find_page_id(), true );
+			restore_current_blog();
+		}
 	}
 
 	/**
@@ -73,8 +113,8 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 	function hooks()
 	{
 		$file_path = dirname( __FILE__, 2 ) . DIRECTORY_SEPARATOR . 'inventory-presser.php';
-		register_activation_hook(   $file_path, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'create_page' ) );
-		register_deactivation_hook( $file_path, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'delete_page' ) );
+		register_activation_hook(   $file_path, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'create_pages' ) );
+		register_deactivation_hook( $file_path, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'delete_pages' ) );
 
 		add_filter( 'parse_query', array( $this, 'hide_page_from_edit_list' ) );
 		add_action( 'pre_get_posts', array( $this, 'redirect_the_page' ) );
