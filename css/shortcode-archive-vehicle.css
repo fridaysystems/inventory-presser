@@ -161,3 +161,21 @@ ul.vehicle-features {
 		font-size: 100%;
 	}
 }
+
+.post-thumbnail .photo-count .dashicons{
+	line-height: inherit;
+}
+.post-thumbnail .photo-count{
+	float: right;
+	text-align: right;
+	position: relative;
+	right: .35em;
+	top: -1.54em;
+}
+.post-thumbnail .photo-count a:link,
+.post-thumbnail .photo-count a:visited,
+.post-thumbnail .photo-count a:hover,
+.post-thumbnail .photo-count a:active{
+	color: #fff;
+	text-decoration: none;
+}

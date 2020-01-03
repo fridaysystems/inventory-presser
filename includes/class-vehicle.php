@@ -579,6 +579,16 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return $this->price( $zero_string );
 		}
 
+		function photo_count()
+		{
+			if( empty( $this->post_ID ) )
+			{
+				return 0;
+			}
+			$attachments = get_children( array( 'post_parent' => $this->post_ID ) );
+			return sizeof( $attachments );
+		}
+
 		function post_meta_value_is_number( $post_meta_key ) {
 			return in_array( $post_meta_key, array(
 				apply_filters( 'invp_prefix_meta_key', 'beam' ),

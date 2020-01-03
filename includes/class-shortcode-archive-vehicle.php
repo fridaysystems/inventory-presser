@@ -53,8 +53,22 @@ class Inventory_Presser_Shortcode_Archive_Vehicle
 								add_filter( 'has_post_thumbnail', array( 'Inventory_Presser_Template_Provider', 'lie_about_post_thumbnails' ), 10, 3 );
 
 							?></a>
-						</div>
-					</div><!--/.post-thumbnail-->
+						</div><?php
+
+							$photo_count = $vehicle->photo_count();
+							if( 0 < $photo_count )
+							{
+						?><span class="photo-count"><a href="<?php the_permalink(); ?>"><?php
+
+							$multi_icon = '<span class="dashicons dashicons-format-gallery"></span>';
+							$single_icon = '<span class="dashicons dashicons-format-image"></span>';
+							echo $photo_count . ' ' . ( 1 == $photo_count ? $single_icon : $multi_icon );
+
+						?></a></span><?php
+
+							}
+
+					?></div>
 
 					<div class="vehicle-summary"><?php
 
@@ -72,7 +86,6 @@ class Inventory_Presser_Shortcode_Archive_Vehicle
 						if( ! isset( $invp_settings['price_display'] ) || 'genes' != $invp_settings['price_display'] )
 						{
 							$book_value = $vehicle->get_book_value();
-							error_log( '$book_value = ' . $book_value );
 							if( $book_value > 0  && $book_value > intval( $vehicle->price ) )
 							{
 								$table_items[] = array(
