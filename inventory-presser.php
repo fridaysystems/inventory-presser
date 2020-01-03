@@ -676,13 +676,25 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 				//Add CSS for Carfax button text color, based on a Customizer setting
 				//Append an inline style just after the current theme's stylesheet
 				$style_handle = $this->find_theme_stylesheet_handle();
+				$black = '231F20';
 				$color = get_theme_mod( 'carfax_text_color', 'black' );
-				$color_code = ( $color == 'black' ? '231F20' : 'FFF' );
+				$color_code = ( $color == 'black' ? $black : 'FFF' );
 				$css =
 ".show-me-the{ fill: #$color_code; }
-.carfax-wrapper svg > g:not(#CARFAX_-_Black_Logo) > path,
+.carfax-wrapper svg > g:not(#CARFAX_-_Black_Logo):not(#cfx) > path,
 .carfax-wrapper #show path{
 	fill: #$color_code;
+	stroke: none;
+}
+g#show path:nth-child(5n),
+g#show path:nth-child(8n),
+g#show path:nth-child(9n),
+g#show path:nth-child(7n),
+g#show path:nth-child(6n) {
+    stroke: none;
+}
+.carfax-wrapper svg > g#cfx > *:nth-child(13n) {
+    fill: #$black;
 }";
 				wp_add_inline_style( $style_handle, $css );
 			}
