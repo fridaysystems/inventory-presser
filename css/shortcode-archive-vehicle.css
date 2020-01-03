@@ -1,0 +1,229 @@
+/*  post : vehicle loop
+/* ------------------------------------ */
+
+.vehicle-archive-header {
+	text-transform: uppercase;
+	display: inline-block;
+}
+
+.vehicle-archive-header select {
+	margin-left: 3px;
+}
+
+.vehicle-archive-header + .vehicle-archive-header {
+	margin-left: 10px;
+}
+
+.post-type-archive-inventory_vehicle .post-vehicle {
+	padding: 30px 0;
+}
+
+.post-vehicle .vehicle-head-widget {
+	padding-left: 25px;
+}
+
+.post-vehicle .vehicle-images img {
+	width: 100%;
+}
+
+.post-vehicle {
+	width: 100%;
+}
+
+.post-vehicle .vehicle-info {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+}
+
+.post-vehicle .vehicle-info > div {
+	display: flex;
+	border-collapse: collapse;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+
+.post-vehicle .post-title {
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.5em;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.entry-content h2.vehicle-price {
+	margin: 0;
+}
+
+.vehicle-tbl {
+	display: table;
+	width:100%
+}
+
+.vehicle-row {
+	display: table-row;
+	width:100%
+}
+
+.vehicle-cell {
+	display: table-cell;
+	vertical-align: top;
+}
+
+.vehicle-summary-onecol {
+	display: none;
+}
+
+.vehicle-summary-twocol {
+	width: 25%;
+}
+
+.vehicle-tbl-bottom .vehicle-cell-set a img {
+	width: 100%;
+}
+
+.vehicle-tbl-bottom .vehicle-cell + .vehicle-cell {
+	padding-left: 20px;
+}
+
+.vehicle-content ._button + ._button {
+	margin-top: 15px;
+}
+
+@media only screen and (max-width: 	1150px) {
+
+	.vehicle-tbl-bottom .vehicle-tbl {
+		display: block;
+	}
+
+	.vehicle-tbl-bottom .vehicle-row {
+		display: block;
+	}
+
+	.vehicle-summary-onecol {
+		display: block;
+	}
+
+	.vehicle-summary-twocol {
+		display:none;
+	}
+
+	.vehicle-tbl-bottom .vehicle-cell-set {
+		width: 100%;
+		display: block;
+	}
+
+	.vehicle-tbl-bottom .vehicle-cell + .vehicle-cell {
+		padding-left: 0;
+	}
+
+	.vehicle-tbl-bottom .vehicle-cell-set a{
+		display: inline-block;
+		text-align: center;
+	}
+
+	.vehicle-tbl-bottom .vehicle-cell-set a img {
+		width: 60%;
+	}
+}
+
+@media only screen and (max-width: 719px) {
+
+	.vehicle-tbl-top .vehicle-tbl {
+		display: block;
+	}
+
+	.vehicle-tbl-top .vehicle-row {
+		display: block;
+	}
+
+	.vehicle-tbl-top .vehicle-cell {
+		display:block;
+		text-align: left;
+	}
+
+}
+
+.vehicle-content section {
+	margin-top: 40px;
+}
+
+.vehicle-location {
+	margin-bottom: 20px;
+}
+
+.vehicle-summary {
+	display: inline-table;
+	margin-bottom: 30px;
+	max-width: 300px;
+}
+
+.vehicle-summary-item {
+	display: table-row;
+}
+
+.vehicle-summary-item > div {
+	display: table-cell;
+	padding: 5px 0;
+}
+
+.vehicle-summary-item-label {
+	text-transform: uppercase;
+	font-size: 80%;
+	vertical-align: center;
+}
+
+.vehicle-summary-item div + div {
+	padding-left: 12px;
+}
+
+.post-vehicle li {
+	line-height: 1.5;
+}
+
+.vehicle-content-strong {
+	font-weight: bold;
+}
+
+.vehicle-content-initcaps {
+    text-transform: capitalize;
+}
+
+.vehicle-content-allcaps {
+	text-transform: uppercase;
+}
+
+ul.vehicle-features {
+	margin-top: 30px;
+  -webkit-columns: 3 170px;
+     -moz-columns: 3 170px;
+          columns: 3 170px;
+  -webkit-column-gap: 40px;
+    column-gap: 40px;
+    -moz-column-gap: 40px;
+}
+
+.carfax-wrapper {
+	margin-bottom: 20px;
+}
+.carfax-icon{
+	max-width: 15em;
+}
+
+.autocheck-wrapper,
+.carfax-wrapper,
+.wp-post-image{
+	max-width: 280px;
+}
+
+.vehicle-info .post-inner a.wp-block-button__link{
+	flex-grow: 1;
+}
+.vehicle-price-and-buttons{
+	display: flex;
+	flex-basis: 280px;
+	flex-direction: column;
+	padding-left: 1em;
+}

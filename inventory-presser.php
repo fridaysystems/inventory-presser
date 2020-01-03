@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 10.7.0
+ * Version: 10.8.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -589,6 +589,17 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 			$shortcodes->hooks();
 			$shortcodes = new Inventory_Presser_Shortcode_Slider();
 			$shortcodes->hooks();
+			$shortcodes = new Inventory_Presser_Shortcode_Single_Vehicle();
+			$shortcodes->hooks();
+			$shortcodes = new Inventory_Presser_Shortcode_Archive_Vehicle();
+			$shortcodes->hooks();
+
+			/**
+			 * When the active theme isn't prepared to display vehicles, insert
+			 * our archive and single vehicle shortcodes.
+			 */
+			$template_provider = new Inventory_Presser_Template_Provider();
+			$template_provider->hooks();
 
 			//Add blocks
 			$blocks = new Inventory_Presser_Blocks();
@@ -629,7 +640,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 				'class-shortcode-iframe.php',
 				'class-shortcode-inventory-grid.php',
 				'class-shortcode-inventory-slider.php',
+				'class-shortcode-archive-vehicle.php',
+				'class-shortcode-single-vehicle.php',
 				'class-taxonomies.php',
+				'class-template-provider.php',
 				'class-vehicle.php',
 				'class-vehicle-urls-by-vin.php',
 				'class-widget-address.php',
@@ -666,7 +680,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 				$color_code = ( $color == 'black' ? '231F20' : 'FFF' );
 				$css =
 ".show-me-the{ fill: #$color_code; }
-.carfax-wrapper svg > g > path,
+.carfax-wrapper svg > g:not(#CARFAX_-_Black_Logo) > path,
 .carfax-wrapper #show path{
 	fill: #$color_code;
 }";
