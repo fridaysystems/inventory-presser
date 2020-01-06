@@ -181,13 +181,6 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 							printf( '<div class="autocheck-wrapper">%s</div>', $autocheck_html );
 						}
 					}
-
-					//include our vehicle details page menu if we have one set
-					if ( has_nav_menu( 'vehicle-details' ) )
-					{
-						wp_nav_menu( array( 'theme_location' => 'vehicle-details' ) );
-					}
-
 				?></div><!--/.post-content-->
 			</div><!--/.post-inner-->
 		</div><script type="text/javascript"><!--
