@@ -23,10 +23,11 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 		$vehicle = new Inventory_Presser_Vehicle( get_the_ID() );
 		$image_url_lists = $vehicle->get_images_html_array( array( 'large', 'thumb' ) );
 
+		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );
 		wp_enqueue_style(
-			'inv_single_vehicle',
+			'invp_single_vehicle',
 			plugins_url( '/css/shortcode-single-vehicle.css', dirname( __FILE__, 2 ) . '/inventory-presser.php' ),
 			null
 		);

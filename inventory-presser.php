@@ -721,6 +721,17 @@ g#show path:nth-child(6n) {
 			wp_register_style( 'invp-flexslider', plugins_url( '/css/flexslider.css', __FILE__ ), array( 'flexslider' ), $plugin_version );
 
 			/**
+			 * Register a stylesheet that will be used by two shortcodes,
+			 * [invp-archive-vehicle] and [invp-single-vehicle]
+			 */
+			wp_register_style(
+				'invp-attribute-table',
+				plugins_url( '/css/vehicle-attribute-table.css', __FILE__ ),
+				null,
+				$plugin_version
+			);
+
+			/**
 			 * Make the meta prefix to the front-end (the object name invp is
 			 * localized for the admin dashboard in
 			 * Inventory_Presser_Customize_Dashboard)
