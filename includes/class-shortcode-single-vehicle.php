@@ -40,13 +40,6 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 			<div class="post-inner">
 
 				<div class="post-thumbnail">
-					<?php
-					// widget area, main column below vehicle
-					if( is_active_sidebar( 'sidebar-above-single-vehicle' ) )
-					{
-						dynamic_sidebar( 'sidebar-above-single-vehicle' );
-					}
-					?>
 					<div class="vehicle-images">
 						<div id="slider-width"></div>
 						<div id="slider" class="flexslider">
@@ -169,17 +162,6 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 
 						echo $this->vehicle_attribute_table( $vehicle );
 
-							// //Type
-							// array(
-							// 	'member' => 'type',
-							// 	'label'  => __( 'Type', 'inventory-presser' ),
-							// ),
-
-							// //Body Style
-							// array(
-							// 	'member' => 'body_style',
-							// 	'label'  => __( 'Body style', 'inventory_presser' ),
-							// ),
 					?></div>
 
 					<?php
@@ -206,17 +188,8 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 						wp_nav_menu( array( 'theme_location' => 'vehicle-details' ) );
 					}
 
-				?></div><!--/.post-content--><?php
-
-				// widget area, main column below vehicle
-				if( is_active_sidebar( 'sidebar-below-single-vehicle' ) )
-				{
-					dynamic_sidebar( 'sidebar-below-single-vehicle' );
-				}
-				?>
-
+				?></div><!--/.post-content-->
 			</div><!--/.post-inner-->
-
 		</div><script type="text/javascript"><!--
 	function adjustSlideHeight(wrapper)
 	{
@@ -268,4 +241,3 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 		return ob_get_clean();
 	}
 }
-
