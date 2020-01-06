@@ -8,7 +8,6 @@
 .vehicle-summary .item > div {
 	display: table-cell;
 	padding: 5px 0;
-	font-size: 65%;
 }
 .vehicle-summary .item .label {
 	text-transform: uppercase;

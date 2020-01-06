@@ -154,3 +154,6 @@ ul.vehicle-features {
 	color: #fff;
 	text-decoration: none;
 }
+.vehicle-summary .item > div {
+	font-size: 65%;
+}
