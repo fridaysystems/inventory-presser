@@ -40,6 +40,16 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 			<div class="post-inner">
 
 				<div class="post-thumbnail">
+					<div class="vehicle-content">
+						<h2 class="post-title vehicle-price"><?php
+								echo $vehicle->price( __( 'Call For Price', '_dealer' ) );
+						?></h2>
+
+						<?php
+						// if dealership has multiple locations, display the location of this vehicle
+						echo $vehicle->location_sentence();
+
+					?></div>
 					<div class="vehicle-images">
 						<div id="slider-width"></div>
 						<div id="slider" class="flexslider">
@@ -148,40 +158,31 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 
 				?></div><!--/.post-thumbnail-->
 
-				<div class="vehicle-content">
-
-					<h2 class="post-title vehicle-price"><?php
-							echo $vehicle->price( __( 'Call For Price', '_dealer' ) );
-					?></h2>
-
-					<?php
-					// if dealership has multiple locations, display the location of this vehicle
-					echo $vehicle->location_sentence();
-
-					?><div class="vehicle-summary"><?php
+				<div class="vehicle-columns">
+					<div class="vehicle-summary"><?php
 
 						echo $this->vehicle_attribute_table( $vehicle );
 
 					?></div>
-
-					<?php
-					// carfax
-					$carfax_html = $vehicle->carfax_icon_html();
-					if ( isset( $invp_settings['use_carfax'] ) && $invp_settings['use_carfax'] && '' != $carfax_html )
-					{
-						printf( '<div class="carfax-wrapper">%s</div>', $carfax_html );
-					}
-
-					// autocheck icon
-					if( shortcode_exists( 'autocheck_button' ) )
-					{
-						$autocheck_html = do_shortcode( sprintf( '[autocheck_button vin="%s"]', $vehicle->vin ) );
-						if( '' != $autocheck_html )
+					<div class="vehicle-buttons"><?php
+						// carfax
+						$carfax_html = $vehicle->carfax_icon_html();
+						if ( isset( $invp_settings['use_carfax'] ) && $invp_settings['use_carfax'] && '' != $carfax_html )
 						{
-							printf( '<div class="autocheck-wrapper">%s</div>', $autocheck_html );
+							printf( '<div class="carfax-wrapper">%s</div>', $carfax_html );
 						}
-					}
-				?></div><!--/.post-content-->
+
+						// autocheck icon
+						if( shortcode_exists( 'autocheck_button' ) )
+						{
+							$autocheck_html = do_shortcode( sprintf( '[autocheck_button vin="%s"]', $vehicle->vin ) );
+							if( '' != $autocheck_html )
+							{
+								printf( '<div class="autocheck-wrapper">%s</div>', $autocheck_html );
+							}
+						}
+					?></div>
+				</div><!--/.post-content-->
 			</div><!--/.post-inner-->
 		</div><script type="text/javascript"><!--
 	function adjustSlideHeight(wrapper)

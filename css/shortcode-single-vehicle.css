@@ -2,8 +2,18 @@
 	background: none;
 	border: none;
 }
+.vehicle-price{
+	text-align: right;
+}
 ul.vehicle-features {
 	margin-left: .5em;
 	columns: 3;
 	column-gap: 1em;
+}
+.vehicle-buttons{
+	max-width: 48%;
+}
+.vehicle-columns{
+	display: flex;
+	justify-content: space-between;
 }
