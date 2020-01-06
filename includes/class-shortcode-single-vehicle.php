@@ -95,27 +95,6 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 
 						}
 					?></div>
-
-					<div class="vehicle-content-wrap"><?php the_content(); ?></div><?php
-
-					// if there's a youtube video associated with this vehicle, embed it
-					if ( $vehicle->youtube )
-					{
-						echo wp_oembed_get( 'https://www.youtube.com/watch?v=' . $vehicle->youtube );
-					}
-
-					?><ul class="vehicle-features"><?php
-
-					// loop through list of vehicle options
-					if( isset( $vehicle->option_array ) && is_array( $vehicle->option_array ) )
-					{
-						foreach($vehicle->option_array as $option)
-						{
-							printf( '<li>%s</li>', $option );
-						}
-					}
-
-					?></ul>
 				</div><!--/.post-thumbnail-->
 
 				<div class="vehicle-columns">
@@ -142,7 +121,30 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 							}
 						}
 					?></div>
-				</div><!--/.post-content-->
+				</div>
+
+				<div class="vehicle-content">
+					<div class="vehicle-content-wrap"><?php the_content(); ?></div><?php
+
+					// if there's a youtube video associated with this vehicle, embed it
+					if ( $vehicle->youtube )
+					{
+						echo wp_oembed_get( 'https://www.youtube.com/watch?v=' . $vehicle->youtube );
+					}
+
+					?><ul class="vehicle-features"><?php
+
+					// loop through list of vehicle options
+					if( isset( $vehicle->option_array ) && is_array( $vehicle->option_array ) )
+					{
+						foreach($vehicle->option_array as $option)
+						{
+							printf( '<li>%s</li>', $option );
+						}
+					}
+
+					?></ul>
+				</div>
 			</div><!--/.post-inner-->
 		</div><script type="text/javascript"><!--
 	function adjustSlideHeight(wrapper)
