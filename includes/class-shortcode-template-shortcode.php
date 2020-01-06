@@ -33,8 +33,8 @@ class Inventory_Presser_Template_Shortcode
 		{
 			$table_items[] = array(
 				'member' => 'odometer',
-				'label'  => apply_filters( '_dealer_label-odometer', apply_filters( '_dealer_odometer_word', __( 'Mileage', 'inventory-presser' ) ) ),
-				'value'  => $vehicle->odometer( ' ' . apply_filters( '_dealer_odometer_word', 'Miles' ) ),
+				'label'  => apply_filters( 'invp_label-odometer', apply_filters( 'invp_odometer_word', __( 'Mileage', 'inventory-presser' ) ) ),
+				'value'  => $vehicle->odometer( ' ' . apply_filters( 'invp_odometer_word', 'Miles' ) ),
 			);
 		}
 
@@ -121,7 +121,7 @@ class Inventory_Presser_Template_Shortcode
 
 			$html .= sprintf(
 				'<div class="item"><div class="label">%s</div><div class="value vehicle-content-initcaps">%s</div></div>',
-				apply_filters( '_dealer_label-' . $member, $item['label'] ),
+				apply_filters( 'invp_label-' . $member, $item['label'] ),
 				empty( $item['value'] ) ? strtolower( $vehicle->$member ) : $item['value']
 			);
 		}

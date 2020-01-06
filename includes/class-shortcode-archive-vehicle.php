@@ -78,7 +78,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 
 					<div class="vehicle-price-and-buttons">
 						<h3 class="vehicle-price"><?php
-							echo $vehicle->price( __( 'Call For Price', '_dealer' ) );
+							echo $vehicle->price( __( 'Call For Price', 'inventory-presser' ) );
 						?></h3><?php
 
 						//carfax
@@ -103,14 +103,6 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 									echo $autocheck_html;
 								?></div><?php
 							}
-						}
-
-						//cargurus
-						if ( isset( $GLOBALS['_dealer_settings']['cargurus_badge_archive'] )
-							&& $GLOBALS['_dealer_settings']['cargurus_badge_archive']
-							&& shortcode_exists( 'invp_cargurus_badge' ) )
-						{
-							echo do_shortcode( '[invp_cargurus_badge height="78"]' );
 						}
 
 						do_action( 'invp_listing_buttons', $vehicle );

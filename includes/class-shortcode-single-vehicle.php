@@ -42,7 +42,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 				<div class="post-thumbnail">
 					<div class="vehicle-content">
 						<h2 class="post-title vehicle-price"><?php
-								echo $vehicle->price( __( 'Call For Price', '_dealer' ) );
+								echo $vehicle->price( __( 'Call For Price', 'inventory-presser' ) );
 						?></h2>
 
 						<?php
@@ -115,48 +115,8 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 						}
 					}
 
-					?></ul><?php
-
-					/**
-					 * Maybe show an accordian of content if some
-					 * filters add content to this empty array.
-					 */
-					$acc_arr = apply_filters( '_dealer_accordian_content', array(), $vehicle->post_ID );
-					if( 0 < sizeof( $acc_arr ) )
-					{
-						echo '<div class="accordion cf"><ul class="accordion__wrapper">';
-						foreach( $acc_arr as $title => $content )
-						{
-							echo '<li class="accordion__item">'
-								. '<input type="checkbox" checked>'
-								. '<span class="dashicons dashicons-arrow-up-alt2"></span>'
-								. '<h2>' . $title . '</h2>'
-								. '<div class="panel">'
-								. '<div class="panel-inner">'
-								. $content
-								. '</div>'
-								. '</div>'
-								. '</li>';
-						}
-						echo '</ul></div>';
-
-						//A disclaimer about third party databases
-						printf(
-							'<p><small>%s ',
-							__( 'While every effort has been made to ensure the accuracy of this listing, some of the information this page was sourced from a third party rather than being entered by us as the sellers of this vehicle.', 'inventory-presser' )
-						);
-
-						if( $vehicle->is_used )
-						{
-							_e( 'Especially since this vehicle is used and could have been modified by a previous owner, it may not include the features or components listed on this page. ', 'inventory-presser' );
-						}
-						printf(
-							'%s</small></p>',
-							__( 'Please verify all statements and features with your sales representative before buying this vehicle.', 'inventory-presser' )
-						);
-					}
-
-				?></div><!--/.post-thumbnail-->
+					?></ul>
+				</div><!--/.post-thumbnail-->
 
 				<div class="vehicle-columns">
 					<div class="vehicle-summary"><?php
@@ -227,7 +187,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 	});
 --></script><?php
 
-		if( method_exists( $vehicle, 'schema_org_json_ld' ) && apply_filters( '_dealer_include_schema_org_json_ld', true ) )
+		if( method_exists( $vehicle, 'schema_org_json_ld' ) && apply_filters( 'invp_include_schema_org_json_ld', true ) )
 		{
 			echo $vehicle->schema_org_json_ld();
 		}
