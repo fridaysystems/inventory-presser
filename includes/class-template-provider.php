@@ -43,19 +43,24 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
 				return $template;
 			}
 
-			if( ! empty( $template ) )
+			$single_or_archive = str_replace( '_template', '', current_filter() );
+
+			remove_filter( $single_or_archive . '_template', array( $this, 'maybe_provide_template' ) );
+
+			if( ! empty( $template )
+				&& (
+					( 'archive' == $single_or_archive && 'archive-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '.php' == basename( $template ) )
+					|| ( 'single' == $single_or_archive && 'single-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '.php' == basename( $template ) )
+				) )
 			{
 				//the current theme already has a template
 				return $template;
 			}
 
+			//lie to themes using has_post_thumbnail() statically
+			add_filter( 'has_post_thumbnail', array( __CLASS__, 'lie_about_post_thumbnails' ), 10, 3 );
+
 			//filter the post content to use a shortcode instead
-			$single_or_archive = str_replace( '_template', '', current_filter() );
-			if( 'archive' == $single_or_archive )
-			{
-				//lie to themes using has_post_thumbnail()
-				add_filter( 'has_post_thumbnail', array( __CLASS__, 'lie_about_post_thumbnails' ), 10, 3 );
-			}
 			add_filter( 'the_content', array( $this, 'replace_content_with_shortcode_' . $single_or_archive ) );
 
 			//Still return the empty template
