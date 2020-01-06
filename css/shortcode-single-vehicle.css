@@ -6,7 +6,7 @@
 	text-align: right;
 }
 ul.vehicle-features {
-	margin-left: .5em;
+	list-style-position: inside;
 	columns: 3;
 	column-gap: 1em;
 }
