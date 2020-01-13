@@ -1,14 +1,15 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
-class Inventory_Presser_Blocks{
-
-	function add_category( $categories, $post ) {
+class Inventory_Presser_Blocks
+{
+	function add_category( $categories, $post )
+	{
 		return array_merge(
 			$categories,
 			array(
 				array(
-					'slug' => 'inventory-presser',
+					'slug'  => 'inventory-presser',
 					'title' => __( 'Inventory Presser', 'inventory-presser' ),
 					'icon'  => 'dashicons-admin-network', //it's a key
 				),
@@ -16,14 +17,16 @@ class Inventory_Presser_Blocks{
 		);
 	}
 
-	function hooks() {
+	function hooks()
+	{
 		add_action( 'init', array( $this, 'register_block_types' ) );
 		add_filter( 'block_categories', array( $this, 'add_category' ), 10, 2 );
 	}
 
-	function register_block_types() {
-
-		if( ! function_exists( 'register_block_type' ) ) {
+	function register_block_types()
+	{
+		if( ! function_exists( 'register_block_type' ) )
+		{
 			//running on WordPress < 5.0.0, no blocks for you
 			return;
 		}
@@ -42,8 +45,8 @@ class Inventory_Presser_Blocks{
 			'odometer',
 		);
 
-		foreach( $keys as $key ) {
-
+		foreach( $keys as $key )
+		{
 			wp_register_script(
 				'block-' . $key,
 				plugins_url( 'js/blocks/' . $key . '.js', dirname( __FILE__ ) ),
