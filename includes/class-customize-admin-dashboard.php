@@ -11,11 +11,12 @@ defined( 'ABSPATH' ) or exit;
  * @subpackage Inventory_Presser/includes
  * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
  */
-class Inventory_Presser_Customize_Dashboard {
-
+class Inventory_Presser_Customize_Dashboard
+{
 	const PRODUCT_NAME = 'Inventory Presser';
 
-	function add_columns_to_vehicles_table( $column ) {
+	function add_columns_to_vehicles_table( $column )
+	{
 		//add our columns
 		$column[apply_filters( 'invp_prefix_meta_key', 'stock_number' )] = 'Stock #';
 		$column[apply_filters( 'invp_prefix_meta_key', 'color' )] = 'Color';
@@ -29,8 +30,8 @@ class Inventory_Presser_Customize_Dashboard {
 		return $column;
 	}
 
-
-	function add_meta_boxes_to_cpt( ) {
+	function add_meta_boxes_to_cpt()
+	{
 		//Add a meta box to the New/Edit post page
 		add_meta_box('vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'normal', 'high' );
 
@@ -45,7 +46,8 @@ class Inventory_Presser_Customize_Dashboard {
 	}
 
 	//Add a setting to the customizer's Colors panel for Carfax button text
-	function add_settings_to_customizer( $wp_customize ) {
+	function add_settings_to_customizer( $wp_customize )
+	{
 		$wp_customize->add_setting( 'carfax_text_color', array(
 			'type'       => 'theme_mod',
 			'capability' => 'edit_theme_options',
@@ -67,13 +69,12 @@ class Inventory_Presser_Customize_Dashboard {
 		) );
 	}
 
-	function add_vehicles_to_admin_bar() {
-
+	function add_vehicles_to_admin_bar()
+	{
 		//do not do this if we are already looking at the dashboard
 		if( is_admin() ) { return; }
 
 		global $wp_admin_bar;
-
 		$wp_admin_bar->add_node( array(
 			'id'     => 'wp-admin-bar-vehicles',
 			'title'  => 'Vehicles',
@@ -82,8 +83,8 @@ class Inventory_Presser_Customize_Dashboard {
 		) );
 	}
 
-	function annotate_add_media_button( $editor_id ) {
-
+	function annotate_add_media_button( $editor_id )
+	{
 		if( 'content' != $editor_id ) { return; }
 
 		printf(
@@ -93,7 +94,8 @@ class Inventory_Presser_Customize_Dashboard {
 		);
 	}
 
-	function change_post_updated_messages( $msgs ) {
+	function change_post_updated_messages( $msgs )
+	{
 		global $post;
 
 		$view_link = sprintf(
@@ -126,9 +128,12 @@ class Inventory_Presser_Customize_Dashboard {
 		return $msgs;
 	}
 
-	function change_taxonomy_show_ui_attributes( $taxonomy_data ) {
-		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
-			if( ! isset( $taxonomy_data[$i]['args']['show_in_menu'] ) ) {
+	function change_taxonomy_show_ui_attributes( $taxonomy_data )
+	{
+		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ )
+		{
+			if( ! isset( $taxonomy_data[$i]['args']['show_in_menu'] ) )
+			{
 				continue;
 			}
 
@@ -138,9 +143,11 @@ class Inventory_Presser_Customize_Dashboard {
 		return $taxonomy_data;
 	}
 
-	function create_add_media_button_annotation( ) {
+	function create_add_media_button_annotation()
+	{
 		global $post;
-		if( !is_object( $post ) && isset( $_POST['post_ID'] ) ) {
+		if( !is_object( $post ) && isset( $_POST['post_ID'] ) )
+		{
 			/**
 			 * This function is being called via AJAX and the
 			 * post_id is incoming, so get the post
@@ -148,7 +155,8 @@ class Inventory_Presser_Customize_Dashboard {
 			$post = get_post( $_POST['post_ID'] );
 		}
 
-		if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post->post_type ) {
+		if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post->post_type )
+		{
 			return;
 		}
 
@@ -164,8 +172,10 @@ class Inventory_Presser_Customize_Dashboard {
 			'PDF'   => 0,
 			'other' => 0,
 		);
-		foreach( $attachments as $attachment ) {
-			switch( $attachment->post_mime_type ) {
+		foreach( $attachments as $attachment )
+		{
+			switch( $attachment->post_mime_type )
+			{
 				case 'image/jpeg':
 				case 'image/png':
 				case 'image/gif':
@@ -189,10 +199,13 @@ class Inventory_Presser_Customize_Dashboard {
 					break;
 			}
 		}
-		if( 0 < ( $counts['image'] + $counts['video'] + $counts['text'] + $counts['PDF'] + $counts['other'] ) ) {
+		if( 0 < ( $counts['image'] + $counts['video'] + $counts['text'] + $counts['PDF'] + $counts['other'] ) )
+		{
 			$note = '';
-			foreach( $counts as $key => $count ) {
-				if( 0 < $count ) {
+			foreach( $counts as $key => $count )
+			{
+				if( 0 < $count )
+				{
 					if( '' != $note ) { $note .= ', '; }
 					$note .= $count . ' ' . $key . ( 1 != $count ? 's' : '' );
 				}
@@ -202,14 +215,17 @@ class Inventory_Presser_Customize_Dashboard {
 		return '0 photos';
 	}
 
-	function create_delete_all_post_attachments_button( ) {
+	function create_delete_all_post_attachments_button()
+	{
 		global $post;
-		if( ! is_object( $post ) || ! isset( $post->ID ) ) {
+		if( ! is_object( $post ) || ! isset( $post->ID ) )
+		{
 			return '';
 		}
 		//does this post have attachments?
 		$post = get_post( $post->ID );
-		if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post->post_type ) {
+		if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post->post_type )
+		{
 			return '';
 		}
 		$attachments = get_children( array(
@@ -217,14 +233,16 @@ class Inventory_Presser_Customize_Dashboard {
 			'post_type'      => 'attachment',
 			'posts_per_page' => -1,
 		) );
-		if( 0 === sizeof( $attachments ) ) {
+		if( 0 === sizeof( $attachments ) )
+		{
 			return '';
 		}
 		return '<button type="button" id="delete-media-button" class="button" onclick="delete_all_post_attachments( );">'
 			. '<span class="wp-media-buttons-icon"></span> Delete All Media</button>';
 	}
 
-	function default_price_array_keys() {
+	function default_price_array_keys()
+	{
 		return array(
 			'down_payment',
 			'msrp',
@@ -234,7 +252,8 @@ class Inventory_Presser_Customize_Dashboard {
 		);
 	}
 
-	function delete_all_data_and_deactivate( ) {
+	function delete_all_data_and_deactivate()
+	{
 		/**
 		 * This function will operate as an uninstall utility. Removes all the
 		 * data we have added to the database.
@@ -246,12 +265,14 @@ class Inventory_Presser_Customize_Dashboard {
 
 		//delete all terms
 		$taxonomies = new Inventory_Presser_Taxonomies();
-		foreach( $taxonomies->query_vars_array() as $taxonomy ) {
+		foreach( $taxonomies->query_vars_array() as $taxonomy )
+		{
 			$terms = get_terms( array(
 				'taxonomy'   => $taxonomy,
 				'hide_empty' => false,
 			) );
-			foreach( $terms as $term ) {
+			foreach( $terms as $term )
+			{
 				wp_delete_term( $term->term_id, $taxonomy );
 			}
 		}
@@ -259,7 +280,8 @@ class Inventory_Presser_Customize_Dashboard {
 		do_action( 'invp_delete_all_data' );
 	}
 
-	function delete_all_inventory( ) {
+	function delete_all_inventory()
+	{
 		/**
 		 * This function deletes all posts that exist of our custom post type
 		 * and their associated meta data. Returns the number of vehicles
@@ -274,9 +296,11 @@ class Inventory_Presser_Customize_Dashboard {
 		);
 		$posts = get_posts( $args );
 		$deleted_count = 0;
-		if ( $posts ){
+		if ( $posts )
+		{
 			$upload_dir = wp_upload_dir();
-			foreach( $posts as $post ){
+			foreach( $posts as $post )
+			{
 				//delete post attachments
 				$attachment = array(
 					'posts_per_page' => -1,
@@ -286,7 +310,8 @@ class Inventory_Presser_Customize_Dashboard {
 
 				$attachment_dir = '';
 
-				foreach( get_posts( $attachment ) as $attached ){
+				foreach( get_posts( $attachment ) as $attached )
+				{
 					$attachment_dir = get_attached_file( $attached->ID );
 					//delete the attachment
 					wp_delete_attachment( $attached->ID, true );
@@ -297,9 +322,11 @@ class Inventory_Presser_Customize_Dashboard {
 				$deleted_count++;
 
 				//delete the photo folder if it exists (and is empty)
-				if( '' != $attachment_dir ) {
+				if( '' != $attachment_dir )
+				{
 					$dir_path = dirname( $attachment_dir );
-					if( is_dir( $dir_path ) && $dir_path != $upload_dir['basedir'] ) {
+					if( is_dir( $dir_path ) && $dir_path != $upload_dir['basedir'] )
+					{
 						@rmdir( $dir_path );
 					}
 				}
@@ -320,7 +347,8 @@ class Inventory_Presser_Customize_Dashboard {
 				)
 			),
 		) );
-		foreach( $orphan_media as $post ) {
+		foreach( $orphan_media as $post )
+		{
 			wp_delete_post( $post->ID );
 		}
 
@@ -334,12 +362,17 @@ class Inventory_Presser_Customize_Dashboard {
 	 *
 	 * Deletes all inventory and echoes a response to the JavaScript caller.
 	 */
-	function delete_all_inventory_ajax( ) {
+	function delete_all_inventory_ajax()
+	{
 		$delete_result = $this->delete_all_inventory();
-		if ( is_wp_error( $delete_result ) ) {
+		if ( is_wp_error( $delete_result ) )
+		{
 			//output error
-			echo "<div id='import-error' class='settings-error'><p><strong>" . $delete_result->get_error_message( ) . "</strong></p></div>";
-		} else {
+			echo "<div id='import-error' class='settings-error'><p><strong>"
+				. $delete_result->get_error_message( ) . "</strong></p></div>";
+		}
+		else
+		{
 			//output the success result, it's a string of html
 			echo '
 				<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible">
@@ -352,24 +385,24 @@ class Inventory_Presser_Customize_Dashboard {
 		wp_die();
 	}
 
-	function delete_all_post_attachments( ) {
-
+	function delete_all_post_attachments()
+	{
 		$post_id = isset( $_POST['post_ID'] ) ? $_POST['post_ID'] : 0;
 
-		if( ! isset( $post_id ) ) {
-
+		if( ! isset( $post_id ) )
+		{
 			return; // Will die in case you run a function like this: delete_post_media($post_id); if you will remove this line - ALL ATTACHMENTS WHO HAS A PARENT WILL BE DELETED PERMANENTLY!
-
-		} elseif ( 0 == $post_id ) {
-
+		}
+		elseif ( 0 == $post_id )
+		{
 			return; // Will die in case you have 0 set. there's no page id called 0 :)
-
-		} elseif( is_array( $post_id ) ) {
-
+		}
+		elseif( is_array( $post_id ) )
+		{
 			return; // Will die in case you place there an array of pages.
-
-		} else {
-
+		}
+		else
+		{
 		    $attachments = get_posts( array(
 		        'post_type'      => 'attachment',
 		        'posts_per_page' => -1,
@@ -377,8 +410,10 @@ class Inventory_Presser_Customize_Dashboard {
 		        'post_parent'    => $post_id
 		    ) );
 
-		    foreach ( $attachments as $attachment ) {
-		        if ( false === wp_delete_attachment( $attachment->ID ) ) {
+		    foreach ( $attachments as $attachment )
+		    {
+		        if ( false === wp_delete_attachment( $attachment->ID ) )
+		        {
 		            // Log failure to delete attachment.
 		           	error_log( 'Failed to delete attachment ' . $attachment->ID . ' in ' . __FILE__ );
 		        }
@@ -387,20 +422,22 @@ class Inventory_Presser_Customize_Dashboard {
 	}
 
 	//Handle the ORDER BY on the vehicle list (edit.php) when sorting by photo count
-	function enable_order_by_attachment_count( $pieces, $query ) {
+	function enable_order_by_attachment_count( $pieces, $query )
+	{
 		if( ! is_admin() ) { return $pieces; }
 
 		/**
 		 * We only want our code to run in the main WP query
 		 * AND if an orderby query variable is designated.
 		 */
-		if ( $query->is_main_query() && ( $orderby = $query->get( 'orderby' ) ) ) {
-
+		if ( $query->is_main_query() && ( $orderby = $query->get( 'orderby' ) ) )
+		{
 			// Get the order query variable - ASC or DESC
 			$order = strtoupper( $query->get( 'order' ) );
 
 			// Make sure the order setting qualifies. If not, set default as ASC
-			if ( ! in_array( $order, array( 'ASC', 'DESC' ) ) ) {
+			if ( ! in_array( $order, array( 'ASC', 'DESC' ) ) )
+			{
 				$order = 'ASC';
 			}
 
@@ -417,8 +454,10 @@ class Inventory_Presser_Customize_Dashboard {
 	/**
 	 * $color is a string value of 'red', 'yellow', or 'green' that appears as a left border on the notice box
 	 */
-	function get_admin_notice_html( $message, $color ) {
-		switch( $color ){
+	function get_admin_notice_html( $message, $color )
+	{
+		switch( $color )
+		{
 			case 'red':
 				$type = 'error';
 				break;
@@ -436,8 +475,8 @@ class Inventory_Presser_Customize_Dashboard {
 		);
 	}
 
-	function hooks() {
-
+	function hooks()
+	{
 		add_filter( 'posts_clauses', array( $this, 'enable_order_by_attachment_count' ), 1, 2 );
 
 		//Save custom post data when posts are saved
@@ -501,7 +540,8 @@ class Inventory_Presser_Customize_Dashboard {
 		add_filter( 'post_updated_messages', array( $this, 'change_post_updated_messages' ) );
 	}
 
-	function insert_settings_link( $links ) {
+	function insert_settings_link( $links )
+	{
 		$links[] = sprintf(
 			'<a href="options-general.php?page=%s_settings">Settings</a>',
 			$this->product_name_slug()
@@ -522,7 +562,8 @@ class Inventory_Presser_Customize_Dashboard {
 		) );
 	}
 
-	function make_vehicles_table_columns_sortable( $columns ) {
+	function make_vehicles_table_columns_sortable( $columns )
+	{
 		$custom = array(
 			// meta column id => sortby value used in query
 			apply_filters( 'invp_prefix_meta_key', 'color' )        => apply_filters( 'invp_prefix_meta_key', 'color' ),
@@ -535,7 +576,8 @@ class Inventory_Presser_Customize_Dashboard {
 		return wp_parse_args( $custom, $columns );
 	}
 
-	function meta_box_html_featured( $post ) {
+	function meta_box_html_featured( $post )
+	{
 		$meta_key = apply_filters( 'invp_prefix_meta_key', 'featured' );
 		printf( '<input type="checkbox" id="%s" name="%s" value="1"%s><label for="%s">%s</label>',
 			$meta_key,
@@ -546,7 +588,8 @@ class Inventory_Presser_Customize_Dashboard {
 		);
 	}
 
-	function meta_box_html_options( $post ) {
+	function meta_box_html_options( $post )
+	{
 		$options = apply_filters( 'invp_default_options', array(
 			__( '3rd Row Seats', 'inventory-presser' ),
 			__( 'Air Bags', 'inventory-presser' ),
@@ -632,8 +675,10 @@ class Inventory_Presser_Customize_Dashboard {
 		$options = array_fill_keys( $options, false );
 
 		$options_arr = get_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'option_array' ), true );
-		if( is_array( $options_arr ) ) {
-			foreach( $options_arr as $option ) {
+		if( is_array( $options_arr ) )
+		{
+			foreach( $options_arr as $option )
+			{
 				$options[$option] = true;
 			}
 		}
@@ -641,7 +686,8 @@ class Inventory_Presser_Customize_Dashboard {
 		ksort( $options );
 		//output a bunch of checkboxes
 		$HTML = '<div class="list-with-columns"><ul class="optional-equipment">';
-		foreach( $options as $key => $value ) {
+		foreach( $options as $key => $value )
+		{
 			//element IDs cannot contain slashes, spaces or parentheses
 			$id = 'option-' . preg_replace( '/\/\(\)/i', '', str_replace( ' ', '_', $key ) );
 			$HTML .= sprintf(
@@ -657,8 +703,8 @@ class Inventory_Presser_Customize_Dashboard {
 		echo $HTML . '</ul></div>';
 	}
 
-	function meta_box_html_prices( $post, $meta_box ) {
-
+	function meta_box_html_prices( $post, $meta_box )
+	{
 		$prices = array(
 			'price'        => 'Price',
 			'msrp'         => 'MSRP',
@@ -667,7 +713,8 @@ class Inventory_Presser_Customize_Dashboard {
 		);
 
 		echo '<table class="form-table"><tbody>';
-		foreach( $prices as $key => $label ) {
+		foreach( $prices as $key => $label )
+		{
 			$meta_key = apply_filters( 'invp_prefix_meta_key', $key );
 			$value = get_post_meta( $post->ID, $meta_key, true );
 
@@ -698,7 +745,8 @@ class Inventory_Presser_Customize_Dashboard {
 			'Bi-weekly'    => 'biweekly',
 			'Semi-monthly' => 'semimonthly',
 		) );
-		foreach( $frequencies as $key => $value ) {
+		foreach( $frequencies as $key => $value )
+		{
 			printf(
 				'<option value="%s"%s>%s</option>',
 				$value,
@@ -711,9 +759,12 @@ class Inventory_Presser_Customize_Dashboard {
 		//handle all other keys in the prices array, could be any keys
 		$prices_meta_key = apply_filters( 'invp_prefix_meta_key', 'prices' );
 		$prices = get_post_meta( $post->ID, $prices_meta_key, true );
-		if( is_array( $prices ) ) {
-			foreach( $prices as $key => $value ) {
-				if( ! in_array( $key, $this->default_price_array_keys() ) ) {
+		if( is_array( $prices ) )
+		{
+			foreach( $prices as $key => $value )
+			{
+				if( ! in_array( $key, $this->default_price_array_keys() ) )
+				{
 					//this is a price we need to display
 					printf(
 						'<tr><th scope="row"><label for="%s[%s]">%s</label></th>'
@@ -852,7 +903,8 @@ class Inventory_Presser_Customize_Dashboard {
 			'Performance',
 			'Pontoon',
 		) );
-		foreach( $boat_styles as $s ) {
+		foreach( $boat_styles as $s )
+		{
 			printf(
 				'<option%s>%s</option>',
 				selected( $s, $body_style ),
@@ -933,7 +985,8 @@ class Inventory_Presser_Customize_Dashboard {
 			'Steel',
 			'Wood',
 		) );
-		foreach( $hull_materials as $m ) {
+		foreach( $hull_materials as $m )
+		{
 			printf(
 				'<option%s>%s</option>',
 				selected( $m, $hull_material, false ),
@@ -943,11 +996,13 @@ class Inventory_Presser_Customize_Dashboard {
 		echo '</select></tbody></table>';
 	}
 
-	function move_advanced_meta_boxes() {
+	function move_advanced_meta_boxes()
+	{
 		global $post, $wp_meta_boxes;
 		$post_type = get_post_type( $post );
 
-		if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post_type ) {
+		if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post_type )
+		{
 			return;
 		}
 
@@ -955,7 +1010,8 @@ class Inventory_Presser_Customize_Dashboard {
 		unset( $wp_meta_boxes[get_post_type( $post )]['advanced'] );
 	}
 
-	function move_tags_meta_box( ) {
+	function move_tags_meta_box()
+	{
 		//Remove and re-add the "Tags" meta box so it ends up at the bottom for our CPT
 		global $wp_meta_boxes;
 		unset( $wp_meta_boxes[Inventory_Presser_Plugin::CUSTOM_POST_TYPE]['side']['core']['tagsdiv-post_tag'] );
@@ -970,19 +1026,23 @@ class Inventory_Presser_Customize_Dashboard {
 		);
 	}
 
-	function output_add_media_button_annotation( ) { //because AJAX
+	function output_add_media_button_annotation()
+	{
+		//because AJAX
 		echo $this->create_add_media_button_annotation( );
 		wp_die();
 	}
 
-	function output_thumbnail_size_error_html() {
+	function output_thumbnail_size_error_html()
+	{
 		echo $this->get_admin_notice_html(
 			'At least one of your thumbnail sizes does not have an aspect ratio of 4:3, which is the most common smartphone and digital camera aspect ratio. You can change thumbnail sizes <a href="options-media.php">here</a>.',
 			'yellow'
 		);
 	}
 
-	function output_upload_folder_error_html() {
+	function output_upload_folder_error_html()
+	{
 		echo $this->get_admin_notice_html(
 			'Your media settings are configured to organize uploads into month- and year-based folders. This is not optimal for '.self::PRODUCT_NAME.', and you can turn this setting off on <a href="options-media.php">this page</a>.',
 			'yellow'
@@ -1020,19 +1080,22 @@ class Inventory_Presser_Customize_Dashboard {
 		}
 	}
 
-	function product_name_slug( $suffix = '' ) {
+	function product_name_slug( $suffix = '' )
+	{
 		return strtolower( str_replace( ' ', '_', self::PRODUCT_NAME ) . $suffix );
 	}
 
-	function save_vehicle_post_meta( $post_id, $post, $is_update ) {
-
+	function save_vehicle_post_meta( $post_id, $post, $is_update )
+	{
 		//Do not continue if the post is being moved to the trash
-		if( 'trash' == $post->post_status ) {
+		if( 'trash' == $post->post_status )
+		{
 			return;
 		}
 
 		//if we are not coming from the new/edit post page, we want to abort
-		if( ! isset( $_POST['post_title'] ) ) {
+		if( ! isset( $_POST['post_title'] ) )
+		{
 			return;
 		}
 
@@ -1053,12 +1116,17 @@ class Inventory_Presser_Customize_Dashboard {
 		$vehicle = new Inventory_Presser_Vehicle( $post_id );
 		$price = 0;
 
-		foreach( $vehicle->keys() as $key ) {
+		foreach( $vehicle->keys() as $key )
+		{
 			$key = apply_filters( 'invp_prefix_meta_key', $key );
-			if ( isset( $_POST[$key] ) ) {
-				if( is_array( $_POST[$key] ) ) {
+			if ( isset( $_POST[$key] ) )
+			{
+				if( is_array( $_POST[$key] ) )
+				{
 					$_POST[$key] = $this->sanitize_array( $_POST[$key] );
-				} else {
+				}
+				else
+				{
 					$_POST[$key] = sanitize_text_field( $_POST[$key] );
 				}
 				update_post_meta( $post->ID, $key, $_POST[$key] );
@@ -1073,15 +1141,19 @@ class Inventory_Presser_Customize_Dashboard {
 		if( '' == $price_arr ) { $price_arr = []; }
 
 		//our built-in prices should also live in the prices array
-		foreach( $this->default_price_array_keys() as $key ) {
-			if( isset( $_POST[ apply_filters( 'invp_prefix_meta_key', $key ) ] ) ) {
+		foreach( $this->default_price_array_keys() as $key )
+		{
+			if( isset( $_POST[ apply_filters( 'invp_prefix_meta_key', $key ) ] ) )
+			{
 				$price_arr[$key] = $_POST[ apply_filters( 'invp_prefix_meta_key', $key ) ];
 			}
 		}
 
 		//other custom prices
-		if( isset( $_POST[ $price_arr_key ] ) ) {
-			foreach( $_POST[ $price_arr_key ] as $key => $value ) {
+		if( isset( $_POST[ $price_arr_key ] ) )
+		{
+			foreach( $_POST[ $price_arr_key ] as $key => $value )
+			{
 				$price_arr[$key] = $value;
 			}
 		}
@@ -1093,49 +1165,58 @@ class Inventory_Presser_Customize_Dashboard {
 		 * check boxes
 		 */
 		$options = array();
-		foreach( $_POST as $key => $val ) {
-			if( 'option-' == substr( $key, 0, 7 ) ) {
+		foreach( $_POST as $key => $val )
+		{
+			if( 'option-' == substr( $key, 0, 7 ) )
+			{
 				array_push( $options, $val );
 			}
 		}
 		update_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'option_array' ), $options );
 	}
 
-	function sanitize_array( $arr ) {
-		foreach( $arr as $key => $value ) {
-			if( is_array( $value ) ) {
+	function sanitize_array( $arr )
+	{
+		foreach( $arr as $key => $value )
+		{
+			if( is_array( $value ) )
+			{
 				$arr[$key] = $this->sanitize_array( $value );
-			} else {
+			}
+			else
+			{
 				$arr[$key] = sanitize_text_field( $value );
 			}
 		}
 		return $arr;
 	}
 
-	function scan_for_recommended_settings_and_create_warnings() {
+	function scan_for_recommended_settings_and_create_warnings()
+	{
 		/**
 		 * Suggest values for WordPress internal settings if the user has values
 		 * we do not prefer
 		 */
 
-		if( '1' == get_option('uploads_use_yearmonth_folders') ) {
+		if( '1' == get_option('uploads_use_yearmonth_folders') )
+		{
 			//Organize uploads into yearly and monthly folders is turned on. Recommend otherwise.
 			add_action( 'admin_notices', array( $this, 'output_upload_folder_error_html' ) );
 		}
 
 		//Are thumbnail sizes not 4:3 aspect ratios?
 		if(
-			( ( 4/3 ) != ( get_option('thumbnail_size_w')/get_option('thumbnail_size_h') ) ) ||
-			( ( 4/3 ) != ( get_option('medium_size_w')/get_option('medium_size_h') ) ) ||
-			( ( 4/3 ) != ( get_option('large_size_w')/get_option('large_size_h') ) )
+			( ( 4/3 ) != ( get_option('thumbnail_size_w')/get_option('thumbnail_size_h') ) )
+			|| ( ( 4/3 ) != ( get_option('medium_size_w')/get_option('medium_size_h') ) )
+			|| ( ( 4/3 ) != ( get_option('large_size_w')/get_option('large_size_h') ) )
 		){
 			//At least one thumbnail size is not 4:3
 			add_action( 'admin_notices', array( $this, 'output_thumbnail_size_error_html' ) );
 		}
 	}
 
-	function vehicles_table_columns_orderbys( $query ) {
-
+	function vehicles_table_columns_orderbys( $query )
+	{
 		if( ! is_admin() || ! $query->is_main_query() ) { return; }
 
 		$columns = array(
@@ -1146,9 +1227,11 @@ class Inventory_Presser_Customize_Dashboard {
 		);
 		$vehicle = new Inventory_Presser_Vehicle();
 		$orderby = $query->get( 'orderby' );
-		foreach( $columns as $column ) {
+		foreach( $columns as $column )
+		{
 			$meta_key = apply_filters( 'invp_prefix_meta_key', $column );
-			if ( $orderby == $meta_key ) {
+			if ( $orderby == $meta_key )
+			{
 	            $query->set( 'meta_key', $meta_key );
 	            $query->set( 'orderby', 'meta_value' . ( $vehicle->post_meta_value_is_number( $meta_key ) ? '_num' : '' ) );
 	            return;
