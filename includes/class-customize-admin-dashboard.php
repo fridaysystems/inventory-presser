@@ -33,10 +33,10 @@ class Inventory_Presser_Customize_Dashboard
 	function add_meta_boxes_to_cpt()
 	{
 		//Add a meta box to the New/Edit post page
-		add_meta_box('vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'normal', 'high' );
+		//add_meta_box('vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'normal', 'high' );
 
 		//and another for prices
-		add_meta_box('prices-meta', 'Prices', array( $this, 'meta_box_html_prices' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'normal', 'high' );
+		//add_meta_box('prices-meta', 'Prices', array( $this, 'meta_box_html_prices' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'normal', 'high' );
 
 		//Add another meta box to the New/Edit post page
 		add_meta_box('options-meta', 'Optional equipment', array( $this, 'meta_box_html_options' ), Inventory_Presser_Plugin::CUSTOM_POST_TYPE, 'normal', 'high' );
@@ -557,8 +557,14 @@ class Inventory_Presser_Customize_Dashboard
 
 		//localize an odometer units word for the edit vehicle page
 		wp_localize_script( 'inventory-presser-javascript', 'invp', array(
-			'miles_word'  => apply_filters( 'invp_odometer_word', 'miles' ),
-			'meta_prefix' => Inventory_Presser_Plugin::meta_prefix(),
+			'miles_word'          => apply_filters( 'invp_odometer_word', 'miles' ),
+			'meta_prefix'         => Inventory_Presser_Plugin::meta_prefix(),
+			'payment_frequencies' => apply_filters( 'invp_default_payment_frequencies', array(
+				'Monthly'      => 'monthly',
+				'Weekly'       => 'weekly',
+				'Bi-weekly'    => 'biweekly',
+				'Semi-monthly' => 'semimonthly',
+			) ),
 		) );
 	}
 

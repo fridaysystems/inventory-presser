@@ -45,6 +45,19 @@
 		return key.charAt(0).toUpperCase() + key.slice(1);
 	}
 
+	function paymentFrequencyOptions()
+	{
+		var options = [];
+		for( var label in invp.payment_frequencies )
+		{
+			options.push({
+				label: label,
+				value: invp.payment_frequencies[label]
+			});
+		}
+		return options;
+	}
+
 	function yearOptions()
 	{
 		var options = [];
@@ -187,28 +200,7 @@
 					),
 					el( MetaBlockFieldSelect, {
 						fieldName: 'inventory_presser_payment_frequency',
-						optionArray:[
-							{
-								value: '',
-								label: ''
-							},
-							{
-								value: 'monthly',
-								label: 'Monthly'
-							},
-							{
-								value: 'weekly',
-								label: 'Weekly',
-							},
-							{
-								value: 'biweekly',
-								label: 'Bi-weekly'
-							},
-							{
-								value: 'semimonthly',
-								label: 'Semi-monthly'
-							}
-						]
+						optionArray: paymentFrequencyOptions()
 					} ),
 				),
 			);
