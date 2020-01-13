@@ -617,6 +617,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 				//Initialize our Settings page in the Dashboard
 				$options = new Inventory_Presser_Options();
 				$options->hooks();
+
+				//Add a sidebar to the editor when editing vehicles
+				$sidebar = new Inventory_Presser_Editor_Sidebar();
+				$sidebar->hooks();
 			}
 		}
 
@@ -629,6 +633,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 				'class-blocks.php',
 				'class-customize-admin-dashboard.php',
 				'class-dealership-options.php',
+				'class-editor-sidebar.php',
 				'class-license.php',
 				'class-menu-item-email-a-friend.php',
 				'class-menu-item-print.php',

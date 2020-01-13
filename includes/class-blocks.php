@@ -4,9 +4,6 @@ defined( 'ABSPATH' ) or exit;
 class Inventory_Presser_Blocks{
 
 	function add_category( $categories, $post ) {
-		if ( $post->post_type !== Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) {
-			return $categories;
-		}
 		return array_merge(
 			$categories,
 			array(

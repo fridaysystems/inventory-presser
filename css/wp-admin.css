@@ -121,3 +121,7 @@ table.hours th.day-col{
 table.hours th.to-col{
 	width: 1em;
 }
+/* Editor sidebar */
+.invp-editor-sidebar {
+    padding: 16px;
+}

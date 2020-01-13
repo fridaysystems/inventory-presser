@@ -62,6 +62,9 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 == Changelog ==
 
+= 10.9.0 =
+* [Fixed] Fixes a bug where our Editor block category was only being added when editing posts in the vehicles post type. This was wrong, and the block category should be registered no matter what or the Editor throws JavaScript errors when editing posts of other types.
+
 = 10.8.0 =
 * [Added] Detects when the active theme does not have templates for vehicles or vehicle archives, and replaces the_content with shortcodes to provide any theme with basic display support.
 * [Added] Shortcode [invp-archive-vehicle]

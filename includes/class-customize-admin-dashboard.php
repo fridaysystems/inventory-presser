@@ -509,9 +509,10 @@ class Inventory_Presser_Customize_Dashboard {
 		return $links;
 	}
 
-	function load_scripts($hook) {
-		wp_enqueue_style( 'my-admin-theme', plugins_url( '/css/wp-admin.css', dirname( __FILE__ ) ) );
-		wp_register_script( 'inventory-presser-javascript', plugins_url( '/js/admin.js', dirname( __FILE__ ) ) );
+	function load_scripts( $hook )
+	{
+		wp_enqueue_style( 'my-admin-theme', plugins_url( '/css/wp-admin.css', dirname( __FILE__, 2 ) . '/inventory-presser.php' ) );
+		wp_register_script( 'inventory-presser-javascript', plugins_url( '/js/admin.js', dirname( __FILE__, 2 ) . '/inventory-presser.php' ) );
 		wp_enqueue_script( 'inventory-presser-javascript' );
 
 		//localize an odometer units word for the edit vehicle page
