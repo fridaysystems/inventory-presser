@@ -143,63 +143,79 @@
 						{},
 						'Attributes'
 					),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_vin' }
-					),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_stock_number' }
-					),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_vin',
+						id:        'inventory_presser_vin'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_stock_number',
+						id:        'inventory_presser_stock_number'
+					} ),
 					el( MetaBlockFieldSelect, {
 						fieldName: 'inventory_presser_year',
+						id:        'inventory_presser_year',
 						optionArray: yearOptions(),
 					} ),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_make' }
-					),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_model' }
-					),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_trim' }
-					),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_engine' }
-					),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_body_style' }
-					),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_color' }
-					),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_interior_color' }
-					),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_make',
+						id:        'inventory_presser_make',
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_model',
+						id:        'inventory_presser_model'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_trim',
+						id:        'inventory_presser_trim',
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_engine',
+						id:        'inventory_presser_engine'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_body_style',
+						id:        'inventory_presser_body_style',
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_color',
+						id:        'inventory_presser_color'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_interior_color',
+						id:        'inventory_presser_interior_color'
+					} ),
 					el( MetaBlockField, {
 						fieldName: 'inventory_presser_odometer',
-						id: 'inventory_presser_odometer'
+						id:        'inventory_presser_odometer'
 					} ),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_youtube' }
-					),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_youtube',
+						id:        'inventory_presser_youtube'
+					} ),
 					el(
 						'h2',
 						{},
 						'Prices'
 					),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_price' }
-					),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_msrp' }
-					),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_down_payment' }
-					),
-					el( MetaBlockField,
-						{ fieldName: 'inventory_presser_payment' }
-					),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_price',
+						id:        'inventory_presser_price'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_msrp',
+						id:        'inventory_presser_msrp'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_down_payment',
+						id:        'inventory_presser_down_payment'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_payment',
+						id:        'inventory_presser_payment'
+					} ),
 					el( MetaBlockFieldSelect, {
 						fieldName: 'inventory_presser_payment_frequency',
+						id:        'inventory_presser_payment_frequency',
 						optionArray: paymentFrequencyOptions()
 					} ),
 				),
