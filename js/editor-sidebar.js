@@ -10,18 +10,39 @@
 
 	function getLabel( meta_key )
 	{
+		if( 19 > meta_key.length )
+		{
+			return meta_key;
+		}
+
 		switch( meta_key.substring( 18 ) )
 		{
-			case 'year':
-				return 'Year';
+			case 'body_style':
+				return 'Body Style';
+
+			case 'interior_color':
+				return 'Interior Color';
+
+			case 'msrp':
+				return 'MSRP';
+
+			case 'odometer':
+				return 'Odometer (' + invp.miles_word + ')';
 
 			case 'stock_number':
 				return 'Stock Number';
 
 			case 'vin':
 				return 'VIN';
+
+			case 'youtube':
+				return 'YouTube Video ID';
 		}
-		return meta_key;
+		//make
+		//model
+		//year
+		var key = meta_key.substring( 18 );
+		return key.charAt(0).toUpperCase() + key.slice(1);
 	}
 
 	function yearOptions()
@@ -58,6 +79,7 @@
 		return el( Text, {
 			label: getLabel( props.fieldName ),
 			value: props.metaFieldValue,
+			id: props.id,
 			onChange: function( content ) {
 				props.setMetaFieldValue( content );
 			},
@@ -86,7 +108,7 @@
 		return el( Select, {
 			label: getLabel( props.fieldName ),
 			value: props.metaFieldValue,
-			options: yearOptions(),
+			options: props.optionArray,
 			onChange: function( content ) {
 				props.setMetaFieldValue( content );
 			},
@@ -103,15 +125,91 @@
 				},
 				el( 'div',
 					{ className: 'invp-editor-sidebar' },
+					el(
+						'h2',
+						{},
+						'Attributes'
+					),
 					el( MetaBlockField,
 						{ fieldName: 'inventory_presser_vin' }
 					),
 					el( MetaBlockField,
 						{ fieldName: 'inventory_presser_stock_number' }
 					),
-					el( MetaBlockFieldSelect,
-						{ fieldName: 'inventory_presser_year' }
-					)
+					el( MetaBlockFieldSelect, {
+						fieldName: 'inventory_presser_year',
+						optionArray: yearOptions(),
+					} ),
+					el( MetaBlockField,
+						{ fieldName: 'inventory_presser_make' }
+					),
+					el( MetaBlockField,
+						{ fieldName: 'inventory_presser_model' }
+					),
+					el( MetaBlockField,
+						{ fieldName: 'inventory_presser_trim' }
+					),
+					el( MetaBlockField,
+						{ fieldName: 'inventory_presser_engine' }
+					),
+					el( MetaBlockField,
+						{ fieldName: 'inventory_presser_body_style' }
+					),
+					el( MetaBlockField,
+						{ fieldName: 'inventory_presser_color' }
+					),
+					el( MetaBlockField,
+						{ fieldName: 'inventory_presser_interior_color' }
+					),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_odometer',
+						id: 'inventory_presser_odometer'
+					} ),
+					el( MetaBlockField,
+						{ fieldName: 'inventory_presser_youtube' }
+					),
+					el(
+						'h2',
+						{},
+						'Prices'
+					),
+					el( MetaBlockField,
+						{ fieldName: 'inventory_presser_price' }
+					),
+					el( MetaBlockField,
+						{ fieldName: 'inventory_presser_msrp' }
+					),
+					el( MetaBlockField,
+						{ fieldName: 'inventory_presser_down_payment' }
+					),
+					el( MetaBlockField,
+						{ fieldName: 'inventory_presser_payment' }
+					),
+					el( MetaBlockFieldSelect, {
+						fieldName: 'inventory_presser_payment_frequency',
+						optionArray:[
+							{
+								value: '',
+								label: ''
+							},
+							{
+								value: 'monthly',
+								label: 'Monthly'
+							},
+							{
+								value: 'weekly',
+								label: 'Weekly',
+							},
+							{
+								value: 'biweekly',
+								label: 'Bi-weekly'
+							},
+							{
+								value: 'semimonthly',
+								label: 'Semi-monthly'
+							}
+						]
+					} ),
 				),
 			);
 		}
