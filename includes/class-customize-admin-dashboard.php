@@ -557,6 +557,18 @@ class Inventory_Presser_Customize_Dashboard
 
 		//localize an odometer units word for the edit vehicle page
 		wp_localize_script( 'inventory-presser-javascript', 'invp', array(
+			'hull_materials'      => apply_filters( 'invp_default_hull_materials', array(
+				'Aluminum',
+				'Carbon Fiber',
+				'Composite',
+				'Ferro-Cement',
+				'Fiberglass',
+				'Hypalon',
+				'Other',
+				'PVC',
+				'Steel',
+				'Wood',
+			) ),
 			'miles_word'          => apply_filters( 'invp_odometer_word', 'miles' ),
 			'meta_prefix'         => Inventory_Presser_Plugin::meta_prefix(),
 			'payment_frequencies' => apply_filters( 'invp_default_payment_frequencies', array(

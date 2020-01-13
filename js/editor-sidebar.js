@@ -20,6 +20,9 @@
 			case 'body_style':
 				return 'Body Style';
 
+			case 'hull_material':
+				return 'Hull Material';
+
 			case 'interior_color':
 				return 'Interior Color';
 
@@ -45,9 +48,22 @@
 		return key.charAt(0).toUpperCase() + key.slice(1);
 	}
 
+	function hullMaterialOptions()
+	{
+		var options = [{label:'',value:''}];
+		for( var l=0; l<invp.hull_materials.length; l++ )
+		{
+			options.push({
+				label: invp.hull_materials[l],
+				value: invp.hull_materials[l].toLowerCase().replace( ' ', '-' )
+			});
+		}
+		return options;
+	}
+
 	function paymentFrequencyOptions()
 	{
-		var options = [];
+		var options = [{label:'',value:''}];
 		for( var label in invp.payment_frequencies )
 		{
 			options.push({
@@ -217,6 +233,24 @@
 						fieldName: 'inventory_presser_payment_frequency',
 						id:        'inventory_presser_payment_frequency',
 						optionArray: paymentFrequencyOptions()
+					} ),
+					el(
+						'h2',
+						{},
+						'Boat Attributes'
+					),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_beam',
+						id:        'inventory_presser_beam'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_length',
+						id:        'inventory_presser_length'
+					} ),
+					el( MetaBlockFieldSelect, {
+						fieldName: 'inventory_presser_hull_material',
+						id:        'inventory_presser_hull_material',
+						optionArray: hullMaterialOptions()
 					} ),
 				),
 			);
