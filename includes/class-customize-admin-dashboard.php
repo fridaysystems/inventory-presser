@@ -403,21 +403,21 @@ class Inventory_Presser_Customize_Dashboard
 		}
 		else
 		{
-		    $attachments = get_posts( array(
-		        'post_type'      => 'attachment',
-		        'posts_per_page' => -1,
-		        'post_status'    => 'any',
-		        'post_parent'    => $post_id
-		    ) );
+			$attachments = get_posts( array(
+				'post_type'      => 'attachment',
+				'posts_per_page' => -1,
+				'post_status'    => 'any',
+				'post_parent'    => $post_id
+			) );
 
-		    foreach ( $attachments as $attachment )
-		    {
-		        if ( false === wp_delete_attachment( $attachment->ID ) )
-		        {
-		            // Log failure to delete attachment.
-		           	error_log( 'Failed to delete attachment ' . $attachment->ID . ' in ' . __FILE__ );
-		        }
-		    }
+			foreach ( $attachments as $attachment )
+			{
+				if ( false === wp_delete_attachment( $attachment->ID ) )
+				{
+					// Log failure to delete attachment.
+					error_log( 'Failed to delete attachment ' . $attachment->ID . ' in ' . __FILE__ );
+				}
+			}
 		}
 	}
 

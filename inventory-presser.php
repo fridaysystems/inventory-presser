@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 10.8.0
+ * Version: 10.9.0
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -572,8 +572,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 			$print_button = new Inventory_Presser_Menu_Item_Print();
 			$print_button->hooks();
 
-			//Skip the trash bin and always permanently delete vehicles
-			add_action( 'trashed_post', array( $this, 'skip_trash' ) );
+			//Skip the trash bin and always permanently delete vehicles & photos
+			add_action( 'trashed_post', array( $this, 'really_delete' ) );
 
 			//Change links to our taxonomy terms to insert /inventory/
 			add_filter( 'pre_term_link', array( $this, 'change_term_links' ), 10, 2 );
@@ -882,6 +882,35 @@ g#show path:nth-child(6n) {
 			return $pieces;
 		}
 
+		function really_delete( $post_id )
+		{
+			//is the post a vehicle?
+			if( self::CUSTOM_POST_TYPE != get_post_type( $post_id ) )
+			{
+				return;
+			}
+
+			//force delete
+			wp_delete_post( $post_id, true );
+
+			//delete all attachments
+			$attachments = get_posts( array(
+				'post_type'      => 'attachment',
+				'posts_per_page' => -1,
+				'post_status'    => 'any',
+				'post_parent'    => $post_id
+			) );
+
+			foreach ( $attachments as $attachment )
+			{
+				if ( false === wp_delete_attachment( $attachment->ID ) )
+				{
+					// Log failure to delete attachment.
+					error_log( 'Failed to delete attachment ' . $attachment->ID . ' in ' . __FILE__ );
+				}
+			}
+		}
+
 		//register all meta fields our CPT uses
 		function register_meta_fields()
 		{
@@ -968,16 +997,6 @@ g#show path:nth-child(6n) {
 				'use_carfax_provided_buttons' => true,
 			);
 			return wp_parse_args( get_option( self::OPTION_NAME ), $defaults );
-		}
-
-		function skip_trash( $post_id )
-		{
-			//is the post a vehicle?
-			if( self::CUSTOM_POST_TYPE == get_post_type( $post_id ) )
-			{
-				//force delete
-				wp_delete_post( $post_id, true );
-			}
 		}
 
 		function translate_custom_field_names( $nice_name )
