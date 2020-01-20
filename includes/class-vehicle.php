@@ -1,15 +1,14 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
-if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
-	class Inventory_Presser_Vehicle {
-
+if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
+{
+	class Inventory_Presser_Vehicle
+	{
 		var $post_ID;
 		var $post_title;
 		var $url;
 		var $image_url;
-
-
 
 		/**
 		 * A unique identifier assigned by the inventory provider, if a feed is
@@ -73,10 +72,11 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		var $is_wholesale = false;
 
 		// constructors
-		function __construct( $post_id = null ) {
-
+		function __construct( $post_id = null )
+		{
 			//Help the order by logic determine which post meta keys are numbers
-			if( ! has_filter( 'invp_meta_value_or_meta_value_num', array( $this, 'indicate_post_meta_values_are_numbers' ) ) ) {
+			if( ! has_filter( 'invp_meta_value_or_meta_value_num', array( $this, 'indicate_post_meta_values_are_numbers' ) ) )
+			{
 				add_filter( 'invp_meta_value_or_meta_value_num', array( $this, 'indicate_post_meta_values_are_numbers' ), 10, 2 );
 			}
 
@@ -93,12 +93,17 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$meta = get_post_meta( $this->post_ID );
 
 			//get these post meta values
-			foreach( $this->keys() as $key ) {
+			foreach( $this->keys() as $key )
+			{
 				$filtered_key = apply_filters( 'invp_prefix_meta_key', $key );
-				if( isset( $meta[$filtered_key] ) && isset( $meta[$filtered_key][0])) {
-					if( is_array( $this->$key ) ) {
+				if( isset( $meta[$filtered_key] ) && isset( $meta[$filtered_key][0]))
+				{
+					if( is_array( $this->$key ) )
+					{
 						$this->$key = unserialize($meta[$filtered_key][0]);
-					} else {
+					}
+					else
+					{
 						$this->$key = trim($meta[$filtered_key][0]);
 					}
 				}
@@ -106,7 +111,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 			//get taxonomy terms
 			$this->transmission = $this->get_term_string('transmission');
-			if( ! empty( $this->transmission_speeds ) ) {
+			if( ! empty( $this->transmission_speeds ) )
+			{
 				$this->transmission = trim( sprintf(
 					'%s %s %s',
 					$this->transmission_speeds,
@@ -131,13 +137,15 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 
 		//is this a vehicle for which Carfax maintains data?
-		private function carfax_eligible() {
+		private function carfax_eligible()
+		{
 			return strlen( $this->vin ) >= 17 && $this->year >= 1980;
 		}
 
-		function carfax_icon_html() {
-
-			if( ! $this->carfax_eligible() || ! $this->have_carfax_report() ) {
+		function carfax_icon_html()
+		{
+			if( ! $this->carfax_eligible() || ! $this->have_carfax_report() )
+			{
 				return '';
 			}
 
@@ -194,18 +202,48 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return $svg_element;
 		}
 
-		function carfax_report_url() {
-
-			if( ! $this->carfax_eligible() || ! $this->have_carfax_report() ) {
+		function carfax_report_url()
+		{
+			if( ! $this->carfax_eligible() || ! $this->have_carfax_report() )
+			{
 				return '';
 			}
 
-			if( ! empty( $this->carfax_url_report ) ) {
+			if( ! empty( $this->carfax_url_report ) )
+			{
 				return $this->carfax_url_report;
 			}
 
 			//fallback to the pre-August-2019 URLs
 			return 'http://www.carfax.com/VehicleHistory/p/Report.cfx?partner=FXI_0&vin=' . $this->vin;
+		}
+
+		function delete_attachments( $post_id = null )
+		{
+			if( null == $post_id )
+			{
+				if( null == $this->post_ID )
+				{
+					return;
+				}
+				$post_id = $this->post_ID;
+			}
+
+			$attachments = get_posts( array(
+				'post_type'      => 'attachment',
+				'posts_per_page' => -1,
+				'post_status'    => 'any',
+				'post_parent'    => $post_id
+			) );
+
+			foreach ( $attachments as $attachment )
+			{
+				if ( false === wp_delete_attachment( $attachment->ID ) )
+				{
+					// Log failure to delete attachment.
+					error_log( 'Failed to delete attachment ' . $attachment->ID . ' in ' . __FILE__ );
+				}
+			}
 		}
 
 		/**
@@ -214,20 +252,23 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 *
 		 * @return string The down payment formatted as a dollar amount except when the price is zero
 		 */
-		function down_payment() {
-
-			if ( $this->is_sold ) {
+		function down_payment()
+		{
+			if ( $this->is_sold )
+			{
 				return '';
 			}
 
-			if( empty( $this->down_payment ) ) {
+			if( empty( $this->down_payment ) )
+			{
 				return '';
 			}
 
 			return __( '$', 'inventory-presser' ) . number_format( $this->down_payment, 0, '.', ',' );
 		}
 
-		function extract_digits( $str ) {
+		function extract_digits( $str )
+		{
 			return abs( (int) filter_var( $str, FILTER_SANITIZE_NUMBER_INT ) );
 		}
 
@@ -238,34 +279,39 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 * @param string $img_element An HTML <img> element
 		 * @return string The value of the src attribute
 		 */
-		function extract_image_element_src( $img_element ) {
+		function extract_image_element_src( $img_element )
+		{
 			return preg_replace( "/\">?.*/", "", preg_replace( "/.*<img[\s\S]+src=\"/", "", $img_element ) );
 		}
 
-		function get_book_value() {
+		function get_book_value()
+		{
 			/**
 			 * Book value lives in the prices array under
 			 * array key 'NADA Book Value' or 'KBB Book Value'
 			 */
 
 			$nada = $kbb = 0;
-			if( isset( $this->prices['NADA Book Value'])) {
+			if( isset( $this->prices['NADA Book Value'] ) )
+			{
 				$nada = intval( $this->prices['NADA Book Value'] );
 			}
-			if( isset( $this->prices['KBB Book Value'])) {
+			if( isset( $this->prices['KBB Book Value'] ) )
+			{
 				$kbb = intval( $this->prices['KBB Book Value'] );
 			}
 			return max( $nada, $kbb );
 		}
 
 		// fill arrays of thumb and large <img> elements
-		function get_images_html_array( $sizes ) {
-
+		function get_images_html_array( $sizes )
+		{
 			/**
 			 * Backwards compatibility to versions before 5.4.0 where the
 			 * incoming argument was a string not an array.
 			 */
-			if( ! is_array( $sizes ) ) {
+			if( ! is_array( $sizes ) )
+			{
 				$sizes = array( $sizes );
 			}
 
@@ -282,9 +328,10 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			$images = get_children( $image_args );
 
 			$image_urls = array();
-			foreach( $images as $image ) {
-				foreach( $sizes as $size ) {
-
+			foreach( $images as $image )
+			{
+				foreach( $sizes as $size )
+				{
 					$img_element = wp_get_attachment_image(
 						$image->ID,
 						$size == 'large' ? array( '1024', 'auto' ) : $size,
@@ -294,7 +341,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 
 					$image_urls[$size][] = $img_element;
 
-					if( 'large' == $size ) {
+					if( 'large' == $size )
+					{
 						$image_urls['urls'][] = $this->extract_image_element_src( $img_element );
 					}
 				}
@@ -304,31 +352,35 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			 * Backwards compatibility to versions before 5.4.0 where the
 			 * incoming argument was a string not an array.
 			 */
-			if( 1 == sizeof( $sizes ) ) {
+			if( 1 == sizeof( $sizes ) )
+			{
 				return $image_urls[$sizes[0]];
 			}
 
 			return $image_urls;
 		}
 
-		function get_image_count() {
+		function get_image_count()
+		{
 			$image_args = array(
 				'post_parent'    => $this->post_ID,
 				'posts_per_page' => -1,
 				'post_type'      => 'attachment',
 				'post_mime_type' => 'image',
 			);
-			$images = get_children($image_args);
-			return count($images);
+			$images = get_children( $image_args );
+			return count( $images );
 		}
 
 		//return taxonomy terms as a comma delimited string
-		function get_term_string( $taxonomy ) {
+		function get_term_string( $taxonomy )
+		{
 			$term_list = wp_get_post_terms( $this->post_ID, $taxonomy, array( 'fields' => 'names' ) );
 			return implode( ', ', $term_list );
 		}
 
-		function have_carfax_report() {
+		function have_carfax_report()
+		{
 			return '1' == $this->carfax_have_report;
 		}
 
@@ -337,11 +389,13 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 * numbers. By default, they are all strings, and strings sort
 		 * differently than numbers.
 		 */
-		function indicate_post_meta_values_are_numbers( $value, $meta_key ) {
+		function indicate_post_meta_values_are_numbers( $value, $meta_key )
+		{
 			return ( $this->post_meta_value_is_number( $meta_key ) ? 'meta_value_num' : $value );
 		}
 
-		function is_carfax_one_owner() {
+		function is_carfax_one_owner()
+		{
 			return '1' == $this->carfax_one_owner;
 		}
 
@@ -349,12 +403,14 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 * This is an array of the post meta keys this object uses. These keys
 		 * must be prefixed by an apply_filters() call before use.
 		 */
-		function keys( $include_serialized = true ) {
+		function keys( $include_serialized = true )
+		{
 			$all_keys = array_column( self::keys_and_types( $include_serialized ), 'name' );
 			return $include_serialized ? $all_keys : array_diff( $all_keys, array( 'epa_fuel_economy', 'option_array', 'prices' ) );
 		}
 
-		public static function keys_and_types( $include_serialized = true ) {
+		public static function keys_and_types( $include_serialized = true )
+		{
 			return array(
 				array(
 					'name' => 'beam', //for boats
@@ -529,16 +585,21 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		}
 
 		//if numeric, format the odometer with thousands separators
-		function odometer( $append = '' ) {
+		function odometer( $append = '' )
+		{
 			if( '0' == $this->odometer ) { return ''; }
 
 			$odometer = '';
-			if( is_numeric( $this->odometer ) ) {
+			if( is_numeric( $this->odometer ) )
+			{
 				$odometer .= number_format( $this->odometer, 0, '.', ',' );
-				if ($append) {
+				if( $append )
+				{
 					$odometer .= $append;
 				}
-			} else {
+			}
+			else
+			{
 				$odometer .= $this->odometer;
 			}
 			return $odometer;
@@ -550,22 +611,25 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		 *
 		 * @return string The payment formatted as a dollar amount except when the payment is zero or the vehicle is sold
 		 */
-		function payment() {
-
-			if ( $this->is_sold ) {
+		function payment()
+		{
+			if ( $this->is_sold )
+			{
 				return '';
 			}
 
-			if( empty( $this->payment ) ) {
+			if( empty( $this->payment ) )
+			{
 				return '';
 			}
 
 			return __( '$', 'inventory-presser' ) . number_format( $this->payment, 0, '.', ',' );
 		}
 
-		function payments( $zero_string = '', $separator = '/' ) {
-
-			if ( isset( $this->down_payment ) ) {
+		function payments( $zero_string = '', $separator = '/' )
+		{
+			if ( isset( $this->down_payment ) )
+			{
 				return sprintf(
 					'%s %s %s $%s %s',
 					$this->down_payment(),
@@ -589,7 +653,8 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			return sizeof( $attachments );
 		}
 
-		function post_meta_value_is_number( $post_meta_key ) {
+		function post_meta_value_is_number( $post_meta_key )
+		{
 			return in_array( $post_meta_key, array(
 				apply_filters( 'invp_prefix_meta_key', 'beam' ),
 				apply_filters( 'invp_prefix_meta_key', 'car_id' ),
@@ -740,10 +805,10 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 			}
 		}
 
-		function schema_org_drive_type( $drive_type ) {
-
-			switch( $drive_type ) {
-
+		function schema_org_drive_type( $drive_type )
+		{
+			switch( $drive_type )
+			{
 				case 'Front Wheel Drive w/4x4':
 				case 'Rear Wheel Drive w/4x4':
 					return 'FourWheelDriveConfiguration';
@@ -764,87 +829,103 @@ if ( !class_exists( 'Inventory_Presser_Vehicle' ) ) {
 		/**
 		 * Returns Schema.org markup for this Vehicle as a JSON-LD code block
 		 */
-		function schema_org_json_ld() {
-
+		function schema_org_json_ld()
+		{
 			$obj = [
 				'@context' => 'http://schema.org/',
-				'@type' => 'Vehicle'
+				'@type'    => 'Vehicle'
 			];
 
-			if( isset( $this->post_title ) && '' != $this->post_title ) {
+			if( isset( $this->post_title ) && '' != $this->post_title )
+			{
 				$obj['name'] = $this->post_title;
 			}
 
-			if( '' != $this->make ) {
+			if( '' != $this->make )
+			{
 				$obj['brand'] = [
 					'@type' => 'Thing',
-					'name' => $this->make
+					'name'  => $this->make
 				];
 			}
 
-			if( '' != $this->vin ) {
+			if( '' != $this->vin )
+			{
 				$obj['vehicleIdentificationNumber'] = $this->vin;
 			}
 
-			if( 0 != $this->year ) {
+			if( 0 != $this->year )
+			{
 				$obj['vehicleModelDate'] = $this->year;
 			}
 
 			//if the image does not end with 'no-photo.png'
-			if( 'no-photo.png' != substr( $this->image_url, 12 ) ) {
+			if( 'no-photo.png' != substr( $this->image_url, 12 ) )
+			{
 				$obj['image'] = $this->image_url;
 			}
 
-			if( '' != $this->odometer ) {
+			if( '' != $this->odometer )
+			{
 				$obj['mileageFromOdometer'] = [
-					'@type' => 'QuantitativeValue',
-					'value' => $this->extract_digits( $this->odometer ),
+					'@type'    => 'QuantitativeValue',
+					'value'    => $this->extract_digits( $this->odometer ),
 					'unitCode' => 'SMI'
 				];
 			}
 
-			if( '' != $this->engine || ( isset( $this->fuel ) && '' != $this->fuel ) ) {
+			if( '' != $this->engine || ( isset( $this->fuel ) && '' != $this->fuel ) )
+			{
 				$obj['vehicleEngine'] = [];
-				if( '' != $this->engine ) {
+				if( '' != $this->engine )
+				{
 					$obj['vehicleEngine']['engineType'] = $this->engine;
 				}
-				if( isset( $this->fuel ) && '' != $this->fuel ) {
+				if( isset( $this->fuel ) && '' != $this->fuel )
+				{
 					$obj['vehicleEngine']['fuelType'] = $this->fuel;
 				}
 			}
 
-			if( '' != $this->body_style ) {
+			if( '' != $this->body_style )
+			{
 				$obj['bodyType'] = $this->body_style;
 			}
 
-			if( '' != $this->color ){
+			if( '' != $this->color )
+			{
 				$obj['color'] = $this->color;
 			}
 
-			if( '' != $this->interior_color ) {
+			if( '' != $this->interior_color )
+			{
 				$obj['vehicleInteriorColor'] = $this->interior_color;
 			}
 
 			global $post;
-			if( isset( $post->post_content ) && '' != $post->post_content ) {
+			if( isset( $post->post_content ) && '' != $post->post_content )
+			{
 				$obj['description'] = $post->post_content;
 			}
 
 			$schema_drive_type = $this->schema_org_drive_type( $this->drivetype );
-			if( null !== $schema_drive_type ) {
+			if( null !== $schema_drive_type )
+			{
 				$obj['driveWheelConfiguration'] = $schema_drive_type;
 			}
 
-			if( isset( $this->transmission ) && '' != $this->transmission ) {
+			if( isset( $this->transmission ) && '' != $this->transmission )
+			{
 				$obj['vehicleTransmission'] = $this->transmission;
 			}
 
 			return '<script type="application/ld+json">' . json_encode( $obj ) . '</script>';
 		}
 
-		function youtube_url() {
-
-			if ( empty( $this->youtube ) ) {
+		function youtube_url()
+		{
+			if ( empty( $this->youtube ) )
+			{
 				return '';
 			}
 
