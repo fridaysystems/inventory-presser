@@ -890,12 +890,12 @@ g#show path:nth-child(6n) {
 				return;
 			}
 
-			//force delete
-			wp_delete_post( $post_id, true );
-
 			//delete all attachments
 			$vehicle = new Inventory_Presser_Vehicle();
 			$vehicle->delete_attachments( $post_id );
+
+			//force delete
+			wp_delete_post( $post_id, true );
 		}
 
 		//register all meta fields our CPT uses
