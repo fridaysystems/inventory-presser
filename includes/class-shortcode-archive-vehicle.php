@@ -101,7 +101,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 							}
 						}
 
-						do_action( 'invp_listing_buttons', $vehicle );
+						do_action( 'invp_archive_buttons', $vehicle );
 
 						?><a class="wp-block-button__link" href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php _e( 'View Details', 'inventory-presser' ); ?></a>
 					</div>

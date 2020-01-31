@@ -749,7 +749,7 @@ g#show path:nth-child(6n) {
 				'invp_single_vehicle',
 				plugins_url( '/css/shortcode-single-vehicle.css', __FILE__ ),
 				null,
-				$plugin_verison
+				$plugin_version
 			);
 
 			/**

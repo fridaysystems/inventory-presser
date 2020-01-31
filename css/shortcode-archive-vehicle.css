@@ -144,8 +144,8 @@ ul.vehicle-features {
 	float: right;
 	text-align: right;
 	position: relative;
-	right: .35em;
-	top: -1.54em;
+	right: 10px;
+	top: -30px;
 }
 .post-thumbnail .photo-count a:link,
 .post-thumbnail .photo-count a:visited,
