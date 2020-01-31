@@ -23,6 +23,17 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 
 		var $settings; //A place to store this plugin's option
 
+		function add_carfax_badge( $vehicle )
+		{
+			$carfax_html = $vehicle->carfax_icon_html();
+			if( '' != $carfax_html )
+			{
+				?><div class="carfax-wrapper"><?php
+					echo $carfax_html;
+				?></div><?php
+			}
+		}
+
 		function add_orderby_to_query( $query )
 		{
 			//Do not mess with the query if it's not the main one and our CPT
@@ -540,6 +551,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 			if( ! is_admin() && ( isset( $_GET['orderby'] ) || isset( $this->settings['sort_vehicles_by'] ) ) )
 			{
 				add_action( 'pre_get_posts', array( $this, 'add_orderby_to_query' ) );
+			}
+
+			//If Carfax is enabled, add the badge to pages
+			if ( isset( $this->settings['use_carfax'] ) && $this->settings['use_carfax'] )
+			{
+				add_action( 'invp_archive_buttons', array( $this, 'add_carfax_badge' ), 10, 1 );
+				add_action( 'invp_single_buttons',  array( $this, 'add_carfax_badge' ), 10, 1 );
 			}
 
 			//Allow custom fields to be searched
