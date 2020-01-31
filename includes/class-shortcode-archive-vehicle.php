@@ -21,11 +21,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 		}
 
 		wp_enqueue_style( 'invp-attribute-table' );
-		wp_enqueue_style(
-			'invp_archive_vehicle',
-			plugins_url( '/css/shortcode-archive-vehicle.css', dirname( __FILE__, 2 ) . '/inventory-presser.php' ),
-			null
-		);
+		wp_enqueue_style( 'invp_archive_vehicle' );
 
 		$vehicle = new Inventory_Presser_Vehicle( get_the_ID() );
 

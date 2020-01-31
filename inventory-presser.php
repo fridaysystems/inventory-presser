@@ -736,6 +736,22 @@ g#show path:nth-child(6n) {
 				$plugin_version
 			);
 
+			//Register a stylesheet for the archive vehicle shortcode
+			wp_register_style(
+				'invp_archive_vehicle',
+				plugins_url( '/css/shortcode-archive-vehicle.css', __FILE__ ),
+				null,
+				$plugin_version
+			);
+
+			//Register a stylesheet for the single vehicle shortcode
+			wp_register_style(
+				'invp_single_vehicle',
+				plugins_url( '/css/shortcode-single-vehicle.css', __FILE__ ),
+				null,
+				$plugin_verison
+			);
+
 			/**
 			 * Make the meta prefix to the front-end (the object name invp is
 			 * localized for the admin dashboard in

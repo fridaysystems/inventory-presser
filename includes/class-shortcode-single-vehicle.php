@@ -26,11 +26,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );
-		wp_enqueue_style(
-			'invp_single_vehicle',
-			plugins_url( '/css/shortcode-single-vehicle.css', dirname( __FILE__, 2 ) . '/inventory-presser.php' ),
-			null
-		);
+		wp_enqueue_style( 'invp_single_vehicle' );
 		wp_enqueue_script( 'invp-flexslider', '', array(), false, true );
 
  		ob_start();

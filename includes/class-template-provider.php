@@ -37,6 +37,11 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
 		{
 			//is this our vehicle post type?
 			global $post;
+			if( empty( $post ) )
+			{
+				return $template;
+			}
+
 			if ( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post->post_type )
 			{
 				//no, who cares what happens
