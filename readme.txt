@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
-Tested up to: 5.1.3
-Stable tag: 10.8.0
+Tested up to: 5.3.2
+Stable tag: 10.10.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,11 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 
 == Changelog ==
+
+= 10.10.0 =
+* [Added] Implements action hooks `invp_archive_buttons` and `invp_single_buttons` to help other plugins add badges near the Carfax report buttons.
+* [Changed] Changes Carfax buttons to use the new action hooks described above instead of relying on templates.
+* [Changed] Changes CSS rules to for larger thumbnails on listings and better alignment on smaller devices.
 
 = 10.9.0 =
 * [Added] Adds a plugin sidebar to allow users to edit vehicle attributes in the Editor using a WordPress 5.0.0 friendly method rather than old Editor meta boxes.
