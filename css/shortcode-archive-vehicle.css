@@ -92,7 +92,8 @@ ul.vehicle-features {
     -moz-column-gap: 40px;
 }
 
-.vehicle-price-and-buttons > div{
+.vehicle-row div.vehicle-price-and-buttons > div{
+	flex: none;
 	max-width: 280px;
 }
 
@@ -107,7 +108,6 @@ ul.vehicle-features {
 	flex-direction: column;
 	flex: .5;
 }
-.vehicle-price-and-buttons > *,
 .vehicle-price-and-buttons > *.vehicle-price {
 	margin-bottom: .75em;
 }
