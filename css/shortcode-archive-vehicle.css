@@ -92,16 +92,7 @@ ul.vehicle-features {
     -moz-column-gap: 40px;
 }
 
-.carfax-wrapper {
-	margin-bottom: 20px;
-}
-.carfax-icon{
-	max-width: 15em;
-}
-
-.autocheck-wrapper,
-.carfax-wrapper,
-.wp-post-image{
+.vehicle-price-and-buttons > div{
 	max-width: 280px;
 }
 
@@ -111,9 +102,10 @@ ul.vehicle-features {
 .vehicle-info .post-inner a.wp-block-button__link{
 	flex-grow: 1;
 }
-.vehicle-price-and-buttons{
+.vehicle-row div.vehicle-price-and-buttons{
 	display: flex;
 	flex-direction: column;
+	flex: .5;
 }
 .vehicle-price-and-buttons > *,
 .vehicle-price-and-buttons > *.vehicle-price {
@@ -127,13 +119,14 @@ ul.vehicle-features {
 	.vehicle-info .post-inner > *{
 		width: 100%;
 	}
-	.autocheck-wrapper,
-	.carfax-wrapper,
-	.wp-post-image{
+	.vehicle-price-and-buttons > div{
 		max-width: none;
 	}
 	.vehicle-summary .item > div {
 		font-size: 100%;
+	}
+	.vehicle-row.vehicle-head-widget{
+		flex-direction: column;
 	}
 }
 
