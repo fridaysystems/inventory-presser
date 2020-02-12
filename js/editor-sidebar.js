@@ -32,6 +32,9 @@
 			case 'odometer':
 				return 'Odometer (' + invp.miles_word + ')';
 
+			case 'payment_frequency':
+				return 'Payment Frequency';
+
 			case 'stock_number':
 				return 'Stock Number';
 
@@ -41,6 +44,8 @@
 			case 'youtube':
 				return 'YouTube Video ID';
 		}
+
+		//Just capitalize the first letter
 		//make
 		//model
 		//year
@@ -87,6 +92,24 @@
 		return options;
 	}
 
+	function findTermID( name, taxonomy )
+	{
+		let terms = new wp.api.collections[ucFirst( taxonomy )];
+		terms.fetch().done( function( t ){
+			let target = t.find( x => name === x.name );
+			if( ! target ) { return; }
+			console.log( target.id );
+			return target.id;
+		});
+	}
+
+	function ucFirst( str )
+	{
+		str += ''
+		var f = str.charAt(0).toUpperCase()
+		return f + str.substr(1)
+	}
+
 	var MetaBlockField = compose(
 		withDispatch( function( dispatch, props ) {
 			return {
@@ -121,7 +144,8 @@
 			return {
 				setMetaFieldValue: function( value ) {
 					dispatch( 'core/editor' ).editPost(
-						{ meta: { [ props.fieldName ]: value } }
+						{ meta: { [ props.fieldName ]: value },
+						 model_year: findTermID( value, 'model_year' ) }
 					);
 				}
 			}

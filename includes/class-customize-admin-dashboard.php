@@ -1092,8 +1092,18 @@ class Inventory_Presser_Customize_Dashboard
 
 	function save_vehicle_post_meta( $post_id, $post, $is_update )
 	{
-		//Do not continue if the post is being moved to the trash
-		if( 'trash' == $post->post_status )
+		/**
+		 * Do not continue if the post is being moved to the trash or if this is
+		 * an auto-draft.
+		 */
+		if( in_array( $post->post_status, array( 'trash', 'auto-draft' ) ) )
+		{
+			return;
+		}
+
+		//Abort if autosave or AJAX/quick edit
+		if( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+			|| ( defined('DOING_AJAX') && DOING_AJAX ) )
 		{
 			return;
 		}
