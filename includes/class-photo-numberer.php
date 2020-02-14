@@ -61,7 +61,6 @@ class Inventory_Presser_Photo_Numberer{
 		$last_photo = end( $photos );
 		$last_number = get_post_meta( $last_photo->ID,  apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true );
 
-		error_log( 'Last photo number was ' . $last_number );
 		update_post_meta( $attachment->ID, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $last_number + 1 );
 	}
 }

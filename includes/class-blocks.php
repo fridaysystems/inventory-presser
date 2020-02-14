@@ -19,8 +19,35 @@ class Inventory_Presser_Blocks
 
 	function hooks()
 	{
-		add_action( 'init', array( $this, 'register_block_types' ) );
+		//Only load our blocks when editing or creating vehicles
+		if( ! $this->editing_a_vehicle() )
+		{
+			return;
+		}
+
+		add_action( 'enqueue_block_editor_assets', array( $this, 'register_block_types' ) );
 		add_filter( 'block_categories', array( $this, 'add_category' ), 10, 2 );
+	}
+
+	/**
+	 * True or false, this request originates from the editor and a post in our
+	 * post type is what is being created or edited
+	 */
+	private function editing_a_vehicle()
+	{
+		global $post_type;
+		if( ! empty( $post_type ) )
+		{
+			if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post_type )
+			{
+				return false;
+			}
+		}
+		elseif( empty( $_POST['post_type'] ) )
+		{
+			return false;
+		}
+		return true;
 	}
 
 	function register_block_types()

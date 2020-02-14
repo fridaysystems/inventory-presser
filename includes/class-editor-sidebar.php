@@ -24,7 +24,6 @@ class Inventory_Presser_Editor_Sidebar
 		{
 			return;
 		}
-
 		wp_enqueue_script( 'invp-plugin-sidebar' );
 	}
 
@@ -37,7 +36,7 @@ class Inventory_Presser_Editor_Sidebar
 		 * When a few meta fields are edited, also update the taxonomy terms
 		 * that overlap.
 		 */
-		add_action( 'update_post_meta', array( $this, 'maybe_update_term' ), 10, 4 );
+		//add_action( 'update_post_meta', array( $this, 'maybe_update_term' ), 10, 4 );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'include_javascript_backbone' ) );
 	}
@@ -49,8 +48,6 @@ class Inventory_Presser_Editor_Sidebar
 
 	function maybe_update_term( $meta_id, $object_id, $meta_key, $meta_value )
 	{
-		error_log( 'entry with $meta_key = ' . $meta_key );
-
 		$meta_keys_and_taxonomies = array(
 			apply_filters( 'invp_prefix_meta_key', 'body_style' ) => 'style', //different
 			apply_filters( 'invp_prefix_meta_key', 'make' )       => 'make',
@@ -60,7 +57,6 @@ class Inventory_Presser_Editor_Sidebar
 
 		if( ! isset( $meta_keys_and_taxonomies[$meta_key] ) )
 		{
-			error_log( 'exit 1. $meta_key = ' . $meta_key );
 			return;
 		}
 
@@ -90,11 +86,6 @@ class Inventory_Presser_Editor_Sidebar
 		else
 		{
 			$term_id = $terms[0]->term_id;
-		}
-
-		if( empty( $term_id ) )
-		{
-			error_log( 'exit 2' );
 		}
 
 		wp_set_object_terms( $object_id, $term_id, $meta_keys_and_taxonomies[$meta_key] );

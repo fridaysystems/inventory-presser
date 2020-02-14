@@ -1114,6 +1114,13 @@ class Inventory_Presser_Customize_Dashboard
 			return;
 		}
 
+		//is this a vehicle?
+		if( ! empty( $_POST['post_type'] ) && Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $_POST['post_type'] )
+		{
+			//no, don't create any meta data for vehicles
+			return;
+		}
+
 		/**
 		 * Tick the last modified date of this vehicle since we're saving changes.
 		 * It looks like this: Tue, 06 Sep 2016 09:26:12 -0400

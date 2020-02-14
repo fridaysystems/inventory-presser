@@ -958,7 +958,7 @@ g#show path:nth-child(6n) {
 			foreach( $keys as $key_arr )
 			{
 				$key = apply_filters( 'invp_prefix_meta_key', $key_arr['name'] );
-				register_meta( 'post', $key, array(
+				register_post_meta( Inventory_Presser_Plugin::CUSTOM_POST_TYPE, $key, array(
 					'sanitize_callback' => 'maybe_unserialize',
 					'show_in_rest'      => true,
 					'single'            => true,

@@ -1,4 +1,6 @@
-wp.blocks.registerBlockType( 'inventory-presser/beam', {
+import { registerBlockType } from '@wordpress/blocks';
+
+registerBlockType( 'inventory-presser/beam', {
 	title: 'Beam',
 
 	icon: 'admin-network', //it's a key
@@ -13,11 +15,11 @@ wp.blocks.registerBlockType( 'inventory-presser/beam', {
 		},
 	},
 
-	edit: function( props ) {
+	edit: ( props ) => {
 		return props.attributes.beam;
 	},
 
-	save: function( props ) {
+	save: ( props ) => {
 		return wp.element.createElement(
 			'span',
 			{
