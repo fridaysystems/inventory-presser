@@ -68,7 +68,7 @@ class Inventory_Presser_Options
 		 */
 		add_settings_section(
 			'dealership_options_setting_section', // id
-			__( 'Settings', 'inventory-presser' ), // title
+			__( 'General', 'inventory-presser' ), // title
 			'__return_empty_string', // callback
 			'dealership-options-admin' // page
 		);
@@ -82,16 +82,7 @@ class Inventory_Presser_Options
 			'dealership_options_setting_section' // section
 		);
 
-		//Sort vehicles by [Field] in [Ascending] order
-		add_settings_field(
-			'sort_vehicles_by', // id
-			__( 'Sort Vehicles By', 'inventory-presser' ), // title
-			array( $this, 'callback_sort_vehicles_by' ), // callback
-			'dealership-options-admin', // page
-			'dealership_options_setting_section' // section
-		);
-
-		//[x] Include sold vehicles on listings pages
+		//[x] Include sold vehicles
 		add_settings_field(
 			'include_sold_vehicles', // id
 			__( 'Sold Vehicles', 'inventory-presser' ), // title
@@ -107,6 +98,37 @@ class Inventory_Presser_Options
 			array( $this, 'callback_show_all_taxonomies' ), // callback
 			'dealership-options-admin', // page
 			'dealership_options_setting_section' // section
+		);
+
+		/**
+		 * SECTION Listings
+		 */
+		add_settings_section(
+			'dealership_options_section_listings', // id
+			__( 'Listings', 'inventory-presser' ), // title
+			'__return_empty_string', // callback
+			'dealership-options-admin' // page
+		);
+
+		//Sort vehicles by [Field] in [Ascending] order
+		add_settings_field(
+			'sort_vehicles_by', // id
+			__( 'Sort Vehicles By', 'inventory-presser' ), // title
+			array( $this, 'callback_sort_vehicles_by' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_section_listings' // section
+		);
+
+		/**
+		 * Create an additional inventory archive at pmgautosales.com/[cash-deals]
+		 * that contains vehicles that have a value for field [Down Payment]
+		 */
+		add_settings_field(
+			'additional_listings_page', // id
+			__( 'Additional Listings Page', 'inventory-presser' ), // title
+			array( $this, 'callback_additional_listings_page' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_section_listings' // section
 		);
 
 		/**
@@ -151,11 +173,43 @@ class Inventory_Presser_Options
 		);
 	}
 
+	function callback_additional_listings_page()
+	{
+		/**
+		 * Create an additional inventory archive at pmgautosales.com/[cash-deals]
+		 * that contains vehicles that have a value for field [Down Payment]
+		 */
+
+		$url_slug_id = 'additional_listings_pages_slug';
+		$url_slug_name = Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][0][url_path]';
+		$saved_key = ! empty( $this->option['additional_listings_pages'][0]['key'] ) ? $this->option['additional_listings_pages'][0]['key'] : '';
+
+		$options = '';
+		$label = sprintf(
+			'%s <b>%s/</b><input type="text" id="%s" name="%s" value="%s" /> %s %s',
+			__( 'Create an additional inventory archive at', 'inventory-presser' ),
+			site_url(),
+			$url_slug_id,
+			$url_slug_name,
+			! empty( $this->option['additional_listings_pages'][0]['url_path'] ) ? $this->option['additional_listings_pages'][0]['url_path'] : '',
+			__( 'that contains vehicles that have a value for field', 'inventory-presser' ),
+			$this->html_select_vehicle_keys( array(
+				'id'   => 'additional_listings_pages_key',
+				'name' => Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][0][key]',
+			), $saved_key )
+		);
+
+		$this->boolean_checkbox_setting_callback(
+			'additional_listings_page',
+			$label
+		);
+	}
+
 	function callback_include_sold_vehicles()
 	{
 		$this->boolean_checkbox_setting_callback(
 			'include_sold_vehicles',
-			__( 'Include sold vehicles on listings pages', 'inventory-presser' )
+			__( 'Include sold vehicles in listings and search results', 'inventory-presser' )
 		);
 	}
 
@@ -223,52 +277,14 @@ class Inventory_Presser_Options
 			$this->option['sort_vehicles_order'] = 'ASC';
 		}
 
-		printf(
-			'<select name="%s[sort_vehicles_by]" id="sort_vehicles_by">',
-			Inventory_Presser_Plugin::OPTION_NAME
-		);
-
-		/**
-		 * Get a list of all the post meta keys in our CPT. Let the user choose
-		 * one as a default sort.
-		 */
-		$vehicle = new Inventory_Presser_Vehicle();
-		foreach( $vehicle->keys( false ) as $key )
-		{
-			//Skip post meta keys that make no sense as a sort key
-			$non_sortable_keys = array(
-				'color',
-				'engine',
-				'hull_material',
-				'interior_color',
-				'stock_number',
-				'trim',
-				'vin',
-				'youtube',
-			);
-			if( in_array( $key, $non_sortable_keys ) )
-			{
-				continue;
-			}
-
-			$meta_key = apply_filters( 'invp_prefix_meta_key', $key );
-
-			//Skip hidden post meta keys
-			if( '_' == $meta_key[0] )
-			{
-				continue;
-			}
-
-			echo '<option value="'. $meta_key . '"';
-			if( isset( $this->option['sort_vehicles_by'] ) )
-			{
-				selected( $this->option['sort_vehicles_by'], $meta_key );
-			}
-			echo '>' . str_replace( '_', ' ', ucfirst( $key ) ) . '</option>';
-		}
+		$select = $this->html_select_vehicle_keys( array(
+			'name' => Inventory_Presser_Plugin::OPTION_NAME . '[sort_vehicles_by]',
+			'id'   => 'sort_vehicles_by',
+		), $this->option['sort_vehicles_by'] );
 
 		printf(
-			'</select> %s <select name="%s[sort_vehicles_order]" id="sort_vehicles_order">',
+			'%s %s <select name="%s[sort_vehicles_order]" id="sort_vehicles_order">',
+			$select,
 			__( 'in', 'inventory-presser' ),
 			Inventory_Presser_Plugin::OPTION_NAME
 		);
@@ -298,6 +314,45 @@ class Inventory_Presser_Options
 		$this->boolean_checkbox_setting_callback(
 			'use_carfax_provided_buttons',
 			__( 'Use Carfax-provided, dynamic buttons that may also say things like "GOOD VALUE"', 'inventory-presser' )
+		);
+	}
+
+	private function html_select_vehicle_keys( $attributes = null, $selected_value = null )
+	{
+		/**
+		 * Get a list of all the post meta keys in our CPT. Let the user choose
+		 * one as a default sort.
+		 */
+		$vehicle = new Inventory_Presser_Vehicle();
+		$options = '';
+		foreach( $vehicle->keys( false ) as $key )
+		{
+			$meta_key = apply_filters( 'invp_prefix_meta_key', $key );
+
+			//Skip hidden post meta keys
+			if( '_' == $meta_key[0] )
+			{
+				continue;
+			}
+
+			$options .= sprintf(
+				'<option value="%s"%s>%s</option>',
+				$meta_key,
+				selected( $selected_value, $meta_key, false ),
+				str_replace( '_', ' ', ucfirst( $key ) )
+			);
+		}
+
+		$attribute_string = '';
+		if( ! empty( $attributes ) )
+		{
+			$attribute_string = ' ' . str_replace( "=", '="', http_build_query( $attributes, null, '" ', PHP_QUERY_RFC3986 ) ) . '"';
+		}
+
+		return sprintf(
+			'<select%s>%s</select>',
+			urldecode( $attribute_string ),
+			$options
 		);
 	}
 
@@ -385,7 +440,13 @@ class Inventory_Presser_Options
 			$sanitary_values['sort_vehicles_order'] = $input['sort_vehicles_order'];
 		}
 
+		if( is_array( $input['additional_listings_pages'] ) )
+		{
+			$sanitary_values['additional_listings_pages'] = $input['additional_listings_pages'];
+		}
+
 		$boolean_settings = array(
+			'additional_listings_page',
 			'include_sold_vehicles',
 			'show_all_taxonomies',
 			'use_carfax',
