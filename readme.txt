@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.3.2
-Stable tag: 10.10.0
+Stable tag: 10.11.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,7 +64,9 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 = 10.11.0 =
 * [Added] Adds the ability to create a second inventory listing page with a vehicle attribute filter. This new feature makes it easy to create a separate listing page containing only vehicles that have a value for down payment or a boat field like hull material.
+* [Added] Adds filter hooks `invp_rewrite_rules` and `invp_rewrite_slugs` to make it easier to create additional inventory listings pages with the same rewrite rules as our default listings page.
 * [Changed] Changes the way the default sort order stores the meta key to no longer contain the prefix.
+* [Changed] Makes sure to not prefix a meta key that is already prefixed.
 
 = 10.10.0 =
 * [Added] Implements action hooks `invp_archive_buttons` and `invp_single_buttons` to help other plugins add badges near the Carfax report buttons.
