@@ -61,7 +61,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 			}
 			else
 			{
-				$key = $this->settings['sort_vehicles_by'];
+				$key = apply_filters( 'invp_prefix_meta_key', $this->settings['sort_vehicles_by'] );
 			}
 			$query->set( 'meta_key', $key );
 
@@ -413,51 +413,55 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 		{
 			// generate every possible combination of rewrite rules, including paging, based on post type taxonomy
 			// from http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
-		    global $wp_rewrite;
+			global $wp_rewrite;
 
-		    if( ! is_object( $post_type ) )
-		    {
-		        $post_type = get_post_type_object( $post_type );
-		    }
-
-		    $new_rewrite_rules = array();
-
-		    $taxonomies = get_object_taxonomies( $post_type->name, 'objects' );
-
-		    // Add taxonomy filters to the query vars array
-		    foreach( $taxonomies as $taxonomy )
-		    {
-		        $query_vars[] = $taxonomy->query_var;
+			if( ! is_object( $post_type ) )
+			{
+				$post_type = get_post_type_object( $post_type );
 			}
 
-		    // Loop over all the possible combinations of the query vars
-		    for( $i = 1; $i <= count( $query_vars );  $i++ )
-		    {
-		        $new_rewrite_rule =  $post_type->rewrite['slug'] . '/';
-		        $new_query_string = 'index.php?post_type=' . $post_type->name;
+			$rewrite_slugs = apply_filters( 'invp_rewrite_slugs', array(
+				 $post_type->rewrite['slug'],
+			) );
 
-		        // Prepend the rewrites & queries
-		        for( $n = 1; $n <= $i; $n++ )
-		        {
-		            $new_rewrite_rule .= '(' . implode( '|', $query_vars ) . ')/(.+?)/';
-		            $new_query_string .= '&' . $wp_rewrite->preg_index( $n * 2 - 1 ) . '[]=' . $wp_rewrite->preg_index( $n * 2 );
-		        }
+			$taxonomies = get_object_taxonomies( $post_type->name, 'objects' );
+			$new_rewrite_rules = array();
 
-		        // Allow paging of filtered post type - WordPress expects 'page' in the URL but uses 'paged' in the query string so paging doesn't fit into our regex
-		        $new_paged_rewrite_rule = $new_rewrite_rule . 'page/([0-9]{1,})/';
-		        $new_paged_query_string = $new_query_string . '&paged=' . $wp_rewrite->preg_index( $i * 2 + 1 );
+			// Add taxonomy filters to the query vars array
+			foreach( $taxonomies as $taxonomy )
+			{
+			    $query_vars[] = $taxonomy->query_var;
+			}
 
-		        // Make the trailing backslash optional
-		        $new_paged_rewrite_rule = $new_paged_rewrite_rule . '?$';
-		        $new_rewrite_rule = $new_rewrite_rule . '?$';
+			// Loop over all the possible combinations of the query vars
+			for( $i = 1; $i <= count( $query_vars );  $i++ )
+			{
+				foreach( $rewrite_slugs as $rewrite_slug )
+				{
+					$new_rewrite_rule =  $rewrite_slug  . '/';
+					$new_query_string = 'index.php?post_type=' . $post_type->name;
 
-		        // Add the new rewrites
-		        $new_rewrite_rules = array( $new_paged_rewrite_rule => $new_paged_query_string,
-		                                    $new_rewrite_rule       => $new_query_string )
-		                             + $new_rewrite_rules;
-		    }
+					// Prepend the rewrites & queries
+					for( $n = 1; $n <= $i; $n++ )
+					{
+						$new_rewrite_rule .= '(' . implode( '|', $query_vars ) . ')/(.+?)/';
+						$new_query_string .= '&' . $wp_rewrite->preg_index( $n * 2 - 1 ) . '[]=' . $wp_rewrite->preg_index( $n * 2 );
+					}
 
-		    return $new_rewrite_rules;
+					// Allow paging of filtered post type - WordPress expects 'page' in the URL but uses 'paged' in the query string so paging doesn't fit into our regex
+					$new_paged_rewrite_rule = $new_rewrite_rule . 'page/([0-9]{1,})/';
+					$new_paged_query_string = $new_query_string . '&paged=' . $wp_rewrite->preg_index( $i * 2 + 1 );
+
+					// Make the trailing backslash optional
+					$new_paged_rewrite_rule = $new_paged_rewrite_rule . '?$';
+					$new_rewrite_rule = $new_rewrite_rule . '?$';
+
+					// Add the new rewrites
+					$new_rewrite_rules[$new_paged_rewrite_rule] = $new_paged_query_string;
+					$new_rewrite_rules[$new_rewrite_rule]       = $new_query_string;
+				}
+			}
+			return apply_filters( 'invp_rewrite_rules', $new_rewrite_rules );
 		}
 
 		/**
@@ -630,6 +634,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 			$photo_numberer = new Inventory_Presser_Photo_Numberer();
 			$photo_numberer->hooks();
 
+			//Allow additional vehicle archives to be created
+			$additional_archives = new Inventory_Presser_Additional_Listings_Pages();
+			$additional_archives->hooks();
+
 			if ( is_admin() )
 			{
 				//Initialize our Settings page in the Dashboard
@@ -647,6 +655,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 			//Include our object definition dependencies
 			$file_names = array(
 				'class-add-custom-fields-to-search.php',
+				'class-additional-listings-pages.php',
 				'class-allow-inventory-as-home-page.php',
 				'class-blocks.php',
 				'class-customize-admin-dashboard.php',
@@ -1013,17 +1022,31 @@ g#show path:nth-child(6n) {
 		public static function settings()
 		{
 			$defaults = array(
-				'sort_vehicles_by'            => apply_filters( 'invp_prefix_meta_key', 'make' ),
+				'sort_vehicles_by'            => 'make',
 				'sort_vehicles_order'         => 'ASC',
 				'use_carfax_provided_buttons' => true,
 			);
 			return wp_parse_args( get_option( self::OPTION_NAME ), $defaults );
 		}
 
+		/**
+		 * Prefixes our post meta field keys so 'make' becomes
+		 * 'inventory_presser_make'. Careful to not prefix a key that has
+		 * already been prefixed.
+		 *
+		 * @param string $nice_name The unprefixed meta key.
+		 * @return string The prefixed meta key.
+		 */
 		function translate_custom_field_names( $nice_name )
 		{
 			$nice_name = strtolower( $nice_name );
-			return self::meta_prefix() . $nice_name;
+			$prefix = self::meta_prefix();
+
+			if( $prefix == substr( $nice_name, 0, strlen( $prefix ) ) )
+			{
+				return $nice_name;
+			}
+			return $prefix . $nice_name;
 		}
 
 		function untranslate_custom_field_names( $meta_key )

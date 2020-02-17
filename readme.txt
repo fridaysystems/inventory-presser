@@ -62,6 +62,10 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 == Changelog ==
 
+= 10.11.0 =
+* [Added] Adds the ability to create a second inventory listing page with a vehicle attribute filter. This new feature makes it easy to create a separate listing page containing only vehicles that have a value for down payment or a boat field like hull material.
+* [Changed] Changes the way the default sort order stores the meta key to no longer contain the prefix.
+
 = 10.10.0 =
 * [Added] Implements action hooks `invp_archive_buttons` and `invp_single_buttons` to help other plugins add badges near the Carfax report buttons.
 * [Changed] Changes Carfax buttons to use the new action hooks described above instead of relying on templates.

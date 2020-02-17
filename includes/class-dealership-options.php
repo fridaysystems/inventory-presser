@@ -270,7 +270,7 @@ class Inventory_Presser_Options
 		//use these default values if we have none
 		if( ! isset( $this->option['sort_vehicles_by'] ) )
 		{
-			$this->option['sort_vehicles_by'] = apply_filters( 'invp_prefix_meta_key', 'make' );
+			$this->option['sort_vehicles_by'] = 'make';
 		}
 		if( ! isset( $this->option['sort_vehicles_order'] ) )
 		{
@@ -337,8 +337,8 @@ class Inventory_Presser_Options
 
 			$options .= sprintf(
 				'<option value="%s"%s>%s</option>',
-				$meta_key,
-				selected( $selected_value, $meta_key, false ),
+				$key,
+				selected( $selected_value, $key, false ),
 				str_replace( '_', ' ', ucfirst( $key ) )
 			);
 		}
