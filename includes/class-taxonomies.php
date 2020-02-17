@@ -10,12 +10,12 @@ defined( 'ABSPATH' ) or exit;
  * @subpackage Inventory_Presser/includes
  * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
  */
-class Inventory_Presser_Taxonomies {
-
+class Inventory_Presser_Taxonomies
+{
 	const CRON_HOOK_DELETE_TERMS = 'inventory_presser_delete_unused_terms';
 
-	function add_api_term_meta_workaround_fields() {
-
+	function add_api_term_meta_workaround_fields()
+	{
 		//location-phone-hours
 		register_rest_field( 'location', 'location-phone-hours', array(
 
@@ -42,82 +42,84 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	/* location taxonomy */
-	function add_location_fields( $taxonomy ) {
-	    ?>
+	function add_location_fields( $taxonomy )
+	{
+		?><div class="form-field term-group location-tax">
+			<div class="form-wrap form-field">
+				<label><?php _e( 'Phone Numbers', 'inventory-presser' ); ?></label>
+				<div class="repeat-group">
+					<div class="repeat-container"></div>
+					<div class="repeat-this">
+						<div class="repeat-form">
+							<input type="text" name="phone_description[]" placeholder="<?php _e( 'Label', 'inventory-presser' ); ?>" />
+							<input type="text" name="phone_number[]" placeholder="<?php _e( 'Number', 'inventory-presser' ); ?>" required />
+						</div>
+						<div class="repeat-buttons">
+							<span class="dashicons dashicons-menu repeat-move" title="<?php _e( 'Drag to reposition', 'inventory-presser' ); ?>"></span>
+							<span class="dashicons dashicons-trash repeat-delete" title="<?php _e( 'Delete this phone number', 'inventory-presser' ); ?>"></span>
+						</div>
+					</div>
+					<button type="button" class="repeat-add button action"><?php _e( 'Add Phone Number', 'inventory-presser' ); ?></button>
+				</div>
+			</div>
+			<div class="form-wrap form-field">
+				<label><?php _e( 'Hours', 'inventory-presser' ); ?></label>
+				<div class="repeat-group">
+					<div class="repeat-container"></div>
+					<div class="repeat-this">
+						<div class="repeat-form">
 
-	    <div class="form-field term-group location-tax">
-		    <div class="form-wrap form-field">
-		        <label><?php _e( 'Phone Numbers', 'inventory-presser' ); ?></label>
-		        <div class="repeat-group">
-		        	<div class="repeat-container"></div>
-		        	<div class="repeat-this">
-		        		<div class="repeat-form">
-					        <input type="text" name="phone_description[]" placeholder="<?php _e( 'Label', 'inventory-presser' ); ?>" />
-					        <input type="text" name="phone_number[]" placeholder="<?php _e( 'Number', 'inventory-presser' ); ?>" required />
-				        </div>
-				        <div class="repeat-buttons">
-				        	<span class="dashicons dashicons-menu repeat-move" title="<?php _e( 'Drag to reposition', 'inventory-presser' ); ?>"></span>
-				        	<span class="dashicons dashicons-trash repeat-delete" title="<?php _e( 'Delete this phone number', 'inventory-presser' ); ?>"></span>
-				        </div>
-			        </div>
-			        <button type="button" class="repeat-add button action"><?php _e( 'Add Phone Number', 'inventory-presser' ); ?></button>
-		        </div>
-		    </div>
-		    <div class="form-wrap form-field">
-		        <label><?php _e( 'Hours', 'inventory-presser' ); ?></label>
-		        <div class="repeat-group">
-		        	<div class="repeat-container"></div>
-		        	<div class="repeat-this">
-		        		<div class="repeat-form">
+						<input type="text" name="hours_title[]" placeholder="<?php _e( 'Title', 'inventory-presser' ); ?>" />
 
-				        	<input type="text" name="hours_title[]" placeholder="<?php _e( 'Title', 'inventory-presser' ); ?>" />
+						<table class="wp-list-table widefat fixed striped hours">
+							<thead>
+								<th class="day-col"></th>
+								<th><?php _e( 'Open', 'inventory-presser' ); ?></th>
+								<th class="to-col"></th>
+								<th><?php _e( 'Close', 'inventory-presser' ); ?></th>
+								<th><?php _e( 'Appt Only', 'inventory-presser' ); ?></th>
+							</thead>
+							<tbody><?php
 
-				        	<table class="wp-list-table widefat fixed striped hours">
-				        		<thead>
-				        			<th class="day-col"></th>
-				        			<th><?php _e( 'Open', 'inventory-presser' ); ?></th>
-				        			<th class="to-col"></th>
-				        			<th><?php _e( 'Close', 'inventory-presser' ); ?></th>
-				        			<th><?php _e( 'Appt Only', 'inventory-presser' ); ?></th>
-				        		</thead>
-				        		<tbody>
-				        			<?php foreach ($this->weekdays() as $index => $day) { ?>
-					        		<tr>
-					        			<th><?php echo $day ?></th>
-					        			<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text"></td>
-					        			<th>to</th>
-					        			<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text"></td>
-					        			<td>
-											<select name="hours[<?php echo $index ?>][appt][]">
-												<option value="0"><?php _e( 'No', 'inventory-presser' ); ?></option>
-												<option value="1"><?php _e( 'Yes', 'inventory-presser' ); ?></option>
-											</select>
-					        			</td>
-					        		</tr>
-					        		<?php } ?>
-					        	</tbody>
-				        	</table>
+								foreach ($this->weekdays() as $index => $day)
+								{
+									?><tr>
+									<th><?php echo $day ?></th>
+									<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text"></td>
+									<th>to</th>
+									<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text"></td>
+									<td>
+										<select name="hours[<?php echo $index ?>][appt][]">
+											<option value="0"><?php _e( 'No', 'inventory-presser' ); ?></option>
+											<option value="1"><?php _e( 'Yes', 'inventory-presser' ); ?></option>
+										</select>
+									</td>
+								</tr><?php
 
-				        </div>
-				        <div class="repeat-buttons">
-				        	<span class="dashicons dashicons-menu repeat-move" title="<?php _e( 'Drag to reposition', 'inventory-presser' ); ?>"></span>
-				        	<span class="dashicons dashicons-trash repeat-delete" title="<?php _e( 'Delete this set of hours', 'inventory-presser' ); ?>"></span>
-				        </div>
-			        </div>
-			        <p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory-presser' ); ?></p>
-			        <p><button type="button" class="repeat-add button action"><?php _e( 'Add Hours Block', 'inventory-presser' ); ?></button></p>
-		        </div>
-	        </div>
-	    </div>
+								}
 
-	    <?php
+							?></tbody>
+							</table>
+
+						</div>
+						<div class="repeat-buttons">
+							<span class="dashicons dashicons-menu repeat-move" title="<?php _e( 'Drag to reposition', 'inventory-presser' ); ?>"></span>
+							<span class="dashicons dashicons-trash repeat-delete" title="<?php _e( 'Delete this set of hours', 'inventory-presser' ); ?>"></span>
+						</div>
+					</div>
+					<p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory-presser' ); ?></p>
+					<p><button type="button" class="repeat-add button action"><?php _e( 'Add Hours Block', 'inventory-presser' ); ?></button></p>
+				</div>
+			</div>
+		</div><?php
 	}
 
 	/**
 	 * When the user is manually adding a location term, populate the slug
 	 * while they type the name.
 	 */
-	function add_location_fields_javascript() {
+	function add_location_fields_javascript()
+	{
 		?><script type="text/javascript"><!--
 		jQuery('#tag-name').on('input', function(){
 			jQuery('#tag-slug').val( jQuery(this).val().replace(' ', '-').replace(/[^a-z\-0-9]/gi,'').toLowerCase());
@@ -129,7 +131,8 @@ class Inventory_Presser_Taxonomies {
 	/**
 	 * Enable weekly wp-cron jobs
 	 */
-	function add_weekly_cron_interval( $schedules ) {
+	function add_weekly_cron_interval( $schedules )
+	{
 		$schedules['weekly'] = array(
 			'interval' => 604800,
 			'display'  => esc_html__( 'Every Week' ),
@@ -137,26 +140,31 @@ class Inventory_Presser_Taxonomies {
 		return $schedules;
 	}
 
-	static function create_custom_taxonomies() {
+	static function create_custom_taxonomies()
+	{
 		//loop over this data, register the taxonomies, and populate the terms if needed
 		$taxonomy_data = self::taxonomy_data();
-		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
+		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ )
+		{
 			//create the taxonomy, replace hyphens with underscores
 			$taxonomy_name = str_replace( '-', '_', $taxonomy_data[$i]['args']['query_var'] );
 			register_taxonomy( $taxonomy_name, Inventory_Presser_Plugin::CUSTOM_POST_TYPE, $taxonomy_data[$i]['args'] );
 		}
 	}
 
-	function delete_term_data() {
+	function delete_term_data()
+	{
 		//remove the terms in taxonomies
 		$taxonomy_data = self::taxonomy_data();
-		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
+		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ )
+		{
 			$tax = $taxonomy_data[$i]['args']['label'];
 			$terms = get_terms( $tax, array(
 				'fields'     => 'ids',
 				'hide_empty' => false
 			) );
-			foreach ( $terms as $value ) {
+			foreach ( $terms as $value )
+			{
 				wp_delete_term( $value, $tax );
 			}
 		}
@@ -167,7 +175,8 @@ class Inventory_Presser_Taxonomies {
 	 * taxonomies will be left behind and unused. This method deletes some of
 	 * them.
 	 */
-	function delete_unused_terms() {
+	function delete_unused_terms()
+	{
 		$terms = get_terms( array(
 			'taxonomy'   => array( 'model_year', 'make', 'model', 'style' ),
 			'childless'  => true,
@@ -175,30 +184,33 @@ class Inventory_Presser_Taxonomies {
 			'hide_empty' => false,
 		) );
 
-		foreach( $terms as $term ) {
-			if( 0 == $term->count ) {
+		foreach( $terms as $term )
+		{
+			if( 0 == $term->count )
+			{
 				wp_delete_term( $term->term_id, $term->taxonomy );
 			}
 		}
 	}
 
-	function edit_location_field( $term, $taxonomy ){
-
+	function edit_location_field( $term, $taxonomy )
+	{
 		// get current term meta
 		$location_meta = get_term_meta( $term->term_id, 'location-phone-hours', true );
 
-		?>
-		<tr class="form-field term-group-wrap">
+		?><tr class="form-field term-group-wrap">
 			<th scope="row"><label><?php _e( 'Phone Numbers', 'inventory-presser' ); ?></label></th>
 			<td>
 				<div class="repeat-group">
-					<div class="repeat-container">
-					<?php if (isset($location_meta['phones'])) { ?>
-					<?php 	foreach ($location_meta['phones'] as $index => $phone) { ?>
+					<div class="repeat-container"><?php
 
-						<div class="repeated">
-							<div class="repeat-form">
-							<?php
+					if ( isset( $location_meta['phones'] ) )
+					{
+						foreach ( $location_meta['phones'] as $index => $phone )
+						{
+							?><div class="repeated">
+							<div class="repeat-form"><?php
+
 							printf(
 								'<input type="hidden" name="phone_uid[]" value="%s" />'
 								. '<input type="text" name="phone_description[]" value="%s" placeholder="%s" />'
@@ -209,16 +221,18 @@ class Inventory_Presser_Taxonomies {
 								$phone['phone_number'],
 								__( 'Number', 'inventory-presser' )
 							);
-							?>
-							</div>
+
+							?></div>
 							<div class="repeat-buttons">
 								<span class="dashicons dashicons-menu repeat-move"></span>
 								<span class="dashicons dashicons-trash repeat-delete"></span>
 							</div>
-						</div>
-					<?php 	} ?>
-					<?php } ?>
-					</div>
+						</div><?php
+
+						}
+					}
+
+					?></div>
 					<div class="repeat-this">
 						<div class="repeat-form">
 							<input type="text" name="phone_description[]" placeholder="<?php _e( 'Label', 'inventory-presser' ); ?>" />
@@ -237,92 +251,108 @@ class Inventory_Presser_Taxonomies {
 			<th scope="row"><label><?php _e( 'Hours', 'inventory-presser' ); ?></label></th>
 			<td>
 				<div class="repeat-group">
-					<div class="repeat-container">
-					<?php if (isset($location_meta['hours'])) { ?>
-					<?php foreach ($location_meta['hours'] as $index => $hours) { ?>
-						<div class="repeated">
+					<div class="repeat-container"><?php
+
+					if ( isset( $location_meta['hours'] ) )
+					{
+						foreach ( $location_meta['hours'] as $index => $hours )
+						{
+
+						?><div class="repeated">
 							<div class="repeat-form">
 
 								<input type="text" name="hours_title[]" placeholder="<?php _e( 'Title', 'inventory-presser' ); ?>" value="<?php echo $hours['title'] ?>" />
-			       				<input type="hidden" name="hours_uid[]" placeholder="<?php _e( 'Title', 'inventory-presser' ); ?>" value="<?php echo $hours['uid'] ?>" />
+								<input type="hidden" name="hours_uid[]" placeholder="<?php _e( 'Title', 'inventory-presser' ); ?>" value="<?php echo $hours['uid'] ?>" />
 
-					        	<table class="repeater-table hours">
-					        		<thead>
-					        			<th class="day-col"></th>
-					        			<th><?php _e( 'Open', 'inventory-presser' ); ?></th>
-					        			<th class="to-col"></th>
-					        			<th><?php _e( 'Close', 'inventory-presser' ); ?></th>
-					        			<th><?php _e( 'Appt Only', 'inventory-presser' ); ?></th>
-					        		</thead>
-					        		<tbody>
-					        			<?php foreach ($this->weekdays() as $index => $day) { ?>
-						        		<tr>
-						        			<td><?php echo $day ?></td>
-						        			<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text" value="<?php echo $hours[$index]['open'] ?>"></td>
-						        			<td>to</td>
-						        			<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text" value="<?php echo $hours[$index]['close'] ?>"></td>
-						        			<td>
-												<select name="hours[<?php echo $index ?>][appt][]" autocomplete="off">
-													<option value="0"<?php echo ($hours[$index]['appt'] == '0') ? ' selected' : ''; ?>><?php _e( 'No', 'inventory-presser' ); ?></option>
-													<option value="1"<?php echo ($hours[$index]['appt'] == '1') ? ' selected' : ''; ?>><?php _e( 'Yes', 'inventory-presser' ); ?></option>
-												</select>
-						        			</td>
-						        		</tr>
-						        		<?php } ?>
-						        	</tbody>
-					        	</table>
+								<table class="repeater-table hours">
+									<thead>
+										<th class="day-col"></th>
+										<th><?php _e( 'Open', 'inventory-presser' ); ?></th>
+										<th class="to-col"></th>
+										<th><?php _e( 'Close', 'inventory-presser' ); ?></th>
+										<th><?php _e( 'Appt Only', 'inventory-presser' ); ?></th>
+									</thead>
+									<tbody><?php
 
-					        </div>
-					        <div class="repeat-buttons">
-					        	<span class="dashicons dashicons-menu repeat-move" title="<?php _e( 'Drag to reposition', 'inventory-presser' ); ?>"></span>
-					        	<span class="dashicons dashicons-trash repeat-delete" title="<?php _e( 'Delete this set of hours', 'inventory-presser' ); ?>"></span>
-					        </div>
-				        </div>
-					<?php } ?>
-					<?php } ?>
-		        	</div>
-		        	<div class="repeat-this">
-		        		<div class="repeat-form">
+										foreach ( $this->weekdays() as $index => $day )
+										{
 
-		       				<input type="text" name="hours_title[]" placeholder="Title" />
+										?><tr>
+										<td><?php echo $day ?></td>
+										<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text" value="<?php echo $hours[$index]['open'] ?>"></td>
+										<td>to</td>
+										<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text" value="<?php echo $hours[$index]['close'] ?>"></td>
+										<td>
+											<select name="hours[<?php echo $index ?>][appt][]" autocomplete="off">
+												<option value="0"<?php echo ($hours[$index]['appt'] == '0') ? ' selected' : ''; ?>><?php _e( 'No', 'inventory-presser' ); ?></option>
+												<option value="1"<?php echo ($hours[$index]['appt'] == '1') ? ' selected' : ''; ?>><?php _e( 'Yes', 'inventory-presser' ); ?></option>
+											</select>
+										</td>
+									</tr><?php
 
-				        	<table class="repeater-table hours">
-				        		<thead>
-				        			<th class="day-col"></th>
-				        			<th><?php _e( 'Open', 'inventory-presser' ); ?></th>
-				        			<th class="to-col"></th>
-				        			<th><?php _e( 'Close', 'inventory-presser' ); ?></th>
-				        			<th><?php _e( 'Appt Only', 'inventory-presser' ); ?></th>
-				        		</thead>
-				        		<tbody>
-					        		<?php foreach ($this->weekdays() as $index => $day) { ?>
-					        		<tr>
-					        			<td><?php echo $day ?></td>
-					        			<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text"></td>
-					        			<td>to</td>
-					        			<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text"></td>
-					        			<td>
+									}
+
+								?></tbody>
+							</table>
+
+							</div>
+							<div class="repeat-buttons">
+								<span class="dashicons dashicons-menu repeat-move" title="<?php _e( 'Drag to reposition', 'inventory-presser' ); ?>"></span>
+								<span class="dashicons dashicons-trash repeat-delete" title="<?php _e( 'Delete this set of hours', 'inventory-presser' ); ?>"></span>
+							</div>
+						</div><?php
+
+						}
+					}
+
+					?></div>
+					<div class="repeat-this">
+						<div class="repeat-form">
+
+							<input type="text" name="hours_title[]" placeholder="Title" />
+
+							<table class="repeater-table hours">
+								<thead>
+									<th class="day-col"></th>
+									<th><?php _e( 'Open', 'inventory-presser' ); ?></th>
+									<th class="to-col"></th>
+									<th><?php _e( 'Close', 'inventory-presser' ); ?></th>
+									<th><?php _e( 'Appt Only', 'inventory-presser' ); ?></th>
+								</thead>
+								<tbody><?php
+
+									foreach ( $this->weekdays() as $index => $day )
+									{
+
+									?><tr>
+										<td><?php echo $day ?></td>
+										<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text"></td>
+										<td>to</td>
+										<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text"></td>
+										<td>
 											<select name="hours[<?php echo $index ?>][appt][]">
 												<option value="0"><?php _e( 'No', 'inventory-presser' ); ?></option>
 												<option value="1"><?php _e( 'Yes', 'inventory-presser' ); ?></option>
 											</select>
-					        			</td>
-					        		</tr>
-					        		<?php } ?>
-					        	</tbody>
-				        	</table>
+										</td>
+									</tr><?php
 
-				        </div>
-				        <div class="repeat-buttons">
-				        	<span class="dashicons dashicons-menu repeat-move"></span>
-				        	<span class="dashicons dashicons-trash repeat-delete"></span>
-				        </div>
-			        </div>
-			        <p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory-presser' ); ?></p>
-			        <p><button type="button" class="repeat-add button action"><?php _e( 'Add Hours Block', 'inventory-presser' ); ?></button></p>
-		        </div>
-	        </td>
-	    </tr><?php
+									}
+
+									?></tbody>
+							</table>
+
+						</div>
+						<div class="repeat-buttons">
+							<span class="dashicons dashicons-menu repeat-move"></span>
+							<span class="dashicons dashicons-trash repeat-delete"></span>
+						</div>
+					</div>
+					<p class="description"><?php _e( 'When saving multiple sets of hours for a single location, position the primary showroom hours first.', 'inventory-presser' ); ?></p>
+					<p><button type="button" class="repeat-add button action"><?php _e( 'Add Hours Block', 'inventory-presser' ); ?></button></p>
+				</div>
+			</td>
+		</tr><?php
 	}
 
 	/**
@@ -340,16 +370,20 @@ class Inventory_Presser_Taxonomies {
 	 * value, used to make sure the return value is unique amongst the set.
 	 * @return string A string of digits.
 	 */
-	function generate_location_uid( $term_id, $others ) {
+	function generate_location_uid( $term_id, $others )
+	{
 		$dt = new DateTime();
 		$uid = $term_id . $dt->format('su'); //s = seconds, u = microseconds
 		$unique = false;
-		while( ! $unique ) {
+		while( ! $unique )
+		{
 			$dt = new DateTime();
 			$uid = $term_id . $dt->format('su'); //s = seconds, u = microseconds
 			$unique = true;
-			foreach( $others as $other ) {
-				if( isset( $other['uid'] ) && $uid == $other['uid'] ) {
+			foreach( $others as $other )
+			{
+				if( isset( $other['uid'] ) && $uid == $other['uid'] )
+				{
 					$unique = false;
 					break;
 				}
@@ -358,17 +392,19 @@ class Inventory_Presser_Taxonomies {
 		return $uid;
 	}
 
-	static function get_term_slug( $taxonomy_name, $post_id ) {
+	static function get_term_slug( $taxonomy_name, $post_id )
+	{
 		$terms = wp_get_object_terms( $post_id, $taxonomy_name, array( 'orderby' => 'term_id', 'order' => 'ASC' ) );
-		if ( ! is_wp_error( $terms ) && isset( $terms[0] ) && isset( $terms[0]->name ) ) {
+		if ( ! is_wp_error( $terms ) && isset( $terms[0] ) && isset( $terms[0]->name ) )
+		{
 			return $terms[0]->slug;
 		}
 		return '';
 	}
 
 
-	function hooks() {
-
+	function hooks()
+	{
 		//create custom taxonomies for vehicles
 		add_action( 'init', array( $this, 'create_custom_taxonomies' ) );
 		add_action( 'init', array( $this, 'register_location_term_meta' ) );
@@ -406,9 +442,13 @@ class Inventory_Presser_Taxonomies {
 		register_deactivation_hook( dirname( __FILE__, 2 ) . DIRECTORY_SEPARATOR . 'inventory-presser.php', array( 'Inventory_Presser_Taxonomies', 'remove_terms_cron_job' ) );
 	}
 
-	function load_scripts($hook) {
+	function load_scripts( $hook )
+	{
 		global $current_screen;
-		if (($hook == 'edit-tags.php' || $hook == 'term.php') && $current_screen->post_type == Inventory_Presser_Plugin::CUSTOM_POST_TYPE && $current_screen->taxonomy == 'location') {
+		if ( ( $hook == 'edit-tags.php' || $hook == 'term.php')
+			&& $current_screen->post_type == Inventory_Presser_Plugin::CUSTOM_POST_TYPE
+			&& $current_screen->taxonomy == 'location' )
+		{
 			wp_enqueue_style('inventory-presser-timepicker-css',  plugins_url( '/css/jquery.timepicker.css', dirname( __FILE__ ) ));
 			wp_enqueue_script('inventory-presser-timepicker', plugins_url( '/js/jquery.timepicker.min.js', dirname( __FILE__ ) ), array('jquery'), '1.8.10');
 			wp_enqueue_script('jquery-ui-sortable');
@@ -417,21 +457,26 @@ class Inventory_Presser_Taxonomies {
 
 	}
 
-	function maybe_exclude_sold_vehicles( $query ) {
-		if( is_admin() || ! $query->is_main_query() || ! ( is_search() || is_post_type_archive( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) ) ) {
+	function maybe_exclude_sold_vehicles( $query )
+	{
+		if( is_admin() || ! $query->is_main_query()
+			|| ! ( is_search() || is_post_type_archive( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) ) )
+		{
 			return;
 		}
 
 		//if the checkbox to include sold vehicles is checked, abort
 		$plugin_settings = Inventory_Presser_Plugin::settings();
-		if( isset( $plugin_settings['include_sold_vehicles'] ) && $plugin_settings['include_sold_vehicles'] ) {
+		if( isset( $plugin_settings['include_sold_vehicles'] ) && $plugin_settings['include_sold_vehicles'] )
+		{
 			return;
 		}
 
 		$taxonomy = 'availability';
 
 		//if there is already a tax_query for taxonomy availability, abort
-		if( $query->is_tax( $taxonomy ) ) {
+		if( $query->is_tax( $taxonomy ) )
+		{
 			return;
 		}
 
@@ -448,42 +493,51 @@ class Inventory_Presser_Taxonomies {
 		$query->set( 'tax_query', $tax_query );
 	}
 
-	static function meta_box_html_condition( $post ) {
+	static function meta_box_html_condition( $post )
+	{
 		echo self::taxonomy_meta_box_html( 'condition', apply_filters( 'invp_prefix_meta_key', 'condition' ), $post );
 	}
 
-	static function meta_box_html_cylinders( $post ) {
+	static function meta_box_html_cylinders( $post )
+	{
 		echo self::taxonomy_meta_box_html( 'cylinders', apply_filters( 'invp_prefix_meta_key', 'cylinders' ), $post );
 	}
 
-	static function meta_box_html_availability( $post ) {
+	static function meta_box_html_availability( $post )
+	{
 		echo self::taxonomy_meta_box_html( 'availability', apply_filters( 'invp_prefix_meta_key', 'availability' ), $post );
 	}
 
-	static function meta_box_html_drive_type( $post ) {
+	static function meta_box_html_drive_type( $post )
+	{
 		echo self::taxonomy_meta_box_html( 'drive_type', apply_filters( 'invp_prefix_meta_key', 'drive_type' ), $post );
 	}
 
-	static function meta_box_html_fuel( $post ) {
+	static function meta_box_html_fuel( $post )
+	{
 		echo self::taxonomy_meta_box_html( 'fuel', apply_filters( 'invp_prefix_meta_key', 'fuel' ), $post );
 	}
 
-	static function meta_box_html_propulsion_type( $post ) {
+	static function meta_box_html_propulsion_type( $post )
+	{
 		echo self::taxonomy_meta_box_html( 'propulsion_type', apply_filters( 'invp_prefix_meta_key', 'propulsion_type' ), $post );
 	}
 
-	static function meta_box_html_transmission( $post ) {
+	static function meta_box_html_transmission( $post )
+	{
 		echo self::taxonomy_meta_box_html( 'transmission', apply_filters( 'invp_prefix_meta_key', 'transmission' ), $post );
 	}
 
-	static function meta_box_html_type( $post ) {
+	static function meta_box_html_type( $post )
+	{
 		$html = self::taxonomy_meta_box_html( 'type', apply_filters( 'invp_prefix_meta_key', 'type' ), $post );
 		//add an onchange attribute to the select
 		$html = str_replace( '<select', '<select onchange="invp_vehicle_type_changed( this.value );" ', $html );
 		echo $html;
 	}
 
-	static function meta_box_html_locations( $post ) {
+	static function meta_box_html_locations( $post )
+	{
 		printf(
 			'%s<p><a href="edit-tags.php?taxonomy=location&post_type=%s">Manage locations</a></p>',
 			self::taxonomy_meta_box_html( 'location', apply_filters( 'invp_prefix_meta_key', 'location' ), $post ),
@@ -492,19 +546,21 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	//Populate our taxonomies with terms if they do not already exist
-	static function populate_default_terms() {
-
+	static function populate_default_terms()
+	{
 		//create the taxonomies or else our wp_insert_term calls will fail
 		self::create_custom_taxonomies();
 
 		$taxonomy_data = self::taxonomy_data();
-		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ ) {
-
+		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ )
+		{
 			if( ! isset( $taxonomy_data[$i]['term_data'] ) ) { continue; }
 
-			foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc ) {
+			foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc )
+			{
 				$taxonomy_name = str_replace( '-', '_', $taxonomy_data[$i]['args']['query_var'] );
-				if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) ) {
+				if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) )
+				{
 					$term_exists = wp_insert_term(
 						$desc,
 						$taxonomy_name,
@@ -519,10 +575,13 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	//returns an array of all our taxonomy query vars
-	static function query_vars_array() {
+	static function query_vars_array()
+	{
 		$arr = array();
-		foreach( self::taxonomy_data() as $taxonomy_array ) {
-			if( ! isset( $taxonomy_array['args'] ) || ! isset( $taxonomy_array['args']['query_var'] ) ) {
+		foreach( self::taxonomy_data() as $taxonomy_array )
+		{
+			if( ! isset( $taxonomy_array['args'] ) || ! isset( $taxonomy_array['args']['query_var'] ) )
+			{
 				continue;
 			}
 			$slug = str_replace( ' ', '_', strtolower( $taxonomy_array['args']['query_var'] ) );
@@ -532,34 +591,38 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	//When the REST API properly supports term meta, this will probably work!
-	function register_location_term_meta() {
+	function register_location_term_meta()
+	{
 		register_meta( 'term', 'location-phone-hours', array(
-			 'show_in_rest' => true,
-			 'single'       => true,
+			'show_in_rest' => true,
+			'single'       => true,
 		) );
 	}
 
 	/**
 	 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
 	 */
-	public static function remove_terms_cron_job( $network_wide ) {
-
-		if( ! is_multisite() || ! $network_wide ) {
+	public static function remove_terms_cron_job( $network_wide )
+	{
+		if( ! is_multisite() || ! $network_wide )
+		{
 			wp_unschedule_event( wp_next_scheduled( self::CRON_HOOK_DELETE_TERMS ), self::CRON_HOOK_DELETE_TERMS );
 			return;
 		}
 
 		$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
-		foreach( $sites as $site ) {
+		foreach( $sites as $site )
+		{
 			switch_to_blog( $site->blog_id );
 			wp_unschedule_event( wp_next_scheduled( self::CRON_HOOK_DELETE_TERMS ), self::CRON_HOOK_DELETE_TERMS );
 			restore_current_blog();
 		}
 	}
 
-	function save_location_meta( $term_id, $tt_id ) {
-
-		if ( ! isset( $_POST['hours_title'] ) || ! isset( $_POST['phone_number'] ) ) {
+	function save_location_meta( $term_id, $tt_id )
+	{
+		if ( ! isset( $_POST['hours_title'] ) || ! isset( $_POST['phone_number'] ) )
+		{
 			return;
 		}
 
@@ -571,16 +634,19 @@ class Inventory_Presser_Taxonomies {
 		// HOURS
 		$count = count( $_POST['hours_title'] ) - 2;
 
-		for ( $i = 0; $i <= $count; $i++ ) {
-
+		for ( $i = 0; $i <= $count; $i++ )
+		{
 			$has_data = false;
 
 			$this_hours = array();
 
 			// if this is an update, carry the id through
-			if ( isset( $_POST['hours_uid'][$i] ) ) {
+			if ( isset( $_POST['hours_uid'][$i] ) )
+			{
 				$this_hours['uid'] = $_POST['hours_uid'][$i];
-			} else {
+			}
+			else
+			{
 				//generate a unique id for these hours
 				$this_hours['uid'] = $this->generate_location_uid( $term_id, $meta_final['hours'] );
 			}
@@ -588,12 +654,13 @@ class Inventory_Presser_Taxonomies {
 			$this_hours['title'] = sanitize_text_field( $_POST['hours_title'][$i] );
 
 			// add daily hours info to the final array, check to make sure there's data
-			foreach ( $_POST['hours'] as $day => $harray ) {
-
+			foreach ( $_POST['hours'] as $day => $harray )
+			{
 				$open = sanitize_text_field( $harray['open'][$i] );
 				$close = sanitize_text_field( $harray['close'][$i] );
 				$appt = sanitize_text_field( $harray['appt'][$i] );
-				if ( !$has_data && ( $open || $close || $appt == '1' ) ) {
+				if ( !$has_data && ( $open || $close || $appt == '1' ) )
+				{
 					$has_data = true;
 				}
 				$this_hours[$day] = array(
@@ -603,25 +670,29 @@ class Inventory_Presser_Taxonomies {
 				);
 			}
 
-			if ( $has_data ) {
+			if ( $has_data )
+			{
 				$meta_final['hours'][] = $this_hours;
 			}
 		}
 
 		// PHONE NUMBERS
-		foreach ( $_POST['phone_number'] as $i => $phone_number ) {
-
+		foreach ( $_POST['phone_number'] as $i => $phone_number )
+		{
 			$phone_number = sanitize_text_field( $phone_number );
-
-			if ( $phone_number ) {
+			if ( $phone_number )
+			{
 				$this_phone = array(
 					'phone_number' => $phone_number,
 					'phone_description' => sanitize_text_field( $_POST['phone_description'][$i] ),
 				);
 				// if this is an update, carry the id through
-				if ( isset( $_POST['phone_uid'][$i] ) ) {
+				if ( isset( $_POST['phone_uid'][$i] ) )
+				{
 					$this_phone['uid'] = $_POST['phone_uid'][$i];
-				} else {
+				}
+				else
+				{
 					//generate a unique id for this phone number
 					$this_phone['uid'] = $this->generate_location_uid( $term_id, $meta_final['phones'] );
 				}
@@ -634,10 +705,13 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	//save custom taxonomy terms when vehicles are saved
-	function save_vehicle_taxonomy_terms( $post_id, $is_update ) {
-		foreach( $this->slugs_array() as $slug ) {
+	function save_vehicle_taxonomy_terms( $post_id, $is_update )
+	{
+		foreach( $this->slugs_array() as $slug )
+		{
 			$taxonomy_name = $slug;
-			switch( $slug ) {
+			switch( $slug )
+			{
 				case 'style':
 					$slug = 'body_style';
 					break;
@@ -649,19 +723,23 @@ class Inventory_Presser_Taxonomies {
 		}
 	}
 
-	function save_taxonomy_term( $post_id, $taxonomy_name, $element_name ) {
-		if ( ! isset( $_POST[$element_name] ) ) {
+	function save_taxonomy_term( $post_id, $taxonomy_name, $element_name )
+	{
+		if ( ! isset( $_POST[$element_name] ) )
+		{
 			return;
 		}
 
 		$term_slug = sanitize_text_field( $_POST[$element_name] );
-		if ( '' == $term_slug ) {
+		if ( '' == $term_slug )
+		{
 			// the user is setting the vehicle type to empty string
 			wp_remove_object_terms( $post_id, self::get_term_slug( $taxonomy_name, $post_id ), $taxonomy_name );
 			return;
 		}
 		$term = get_term_by( 'slug', $term_slug, $taxonomy_name );
-		if ( empty( $term ) || is_wp_error( $term ) ) {
+		if ( empty( $term ) || is_wp_error( $term ) )
+		{
 			//the term does not exist. create it
 			$term_arr = array(
 				'slug'        => sanitize_title( $term_slug ),
@@ -669,12 +747,14 @@ class Inventory_Presser_Taxonomies {
 				'name'        => $term_slug,
 			);
 			$id_arr = wp_insert_term( $term_slug, $taxonomy_name, $term_arr );
-			if( ! is_wp_error( $id_arr ) ) {
+			if( ! is_wp_error( $id_arr ) )
+			{
 				$term->term_id = $id_arr['term_id'];
 			}
 		}
 		$set = wp_set_object_terms( $post_id, $term->term_id, $taxonomy_name, false );
-		if ( is_wp_error( $set ) ) {
+		if ( is_wp_error( $set ) )
+		{
 			//There was an error setting the term
 		}
 	}
@@ -682,16 +762,19 @@ class Inventory_Presser_Taxonomies {
 	/**
 	 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
 	 */
-	public static function schedule_terms_cron_job( $network_wide ) {
-		if ( ! wp_next_scheduled( self::CRON_HOOK_DELETE_TERMS ) ) {
-
-			if( ! is_multisite() || ! $network_wide ) {
+	public static function schedule_terms_cron_job( $network_wide )
+	{
+		if ( ! wp_next_scheduled( self::CRON_HOOK_DELETE_TERMS ) )
+		{
+			if( ! is_multisite() || ! $network_wide )
+			{
 				wp_schedule_event( time(), 'weekly', self::CRON_HOOK_DELETE_TERMS );
 				return;
 			}
 
 			$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
-			foreach( $sites as $site ) {
+			foreach( $sites as $site )
+			{
 				switch_to_blog( $site->blog_id );
 				wp_schedule_event( time(), 'weekly', self::CRON_HOOK_DELETE_TERMS );
 				restore_current_blog();
@@ -700,24 +783,28 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	//returns an array of all our taxonomy slugs
-	function slugs_array() {
+	function slugs_array()
+	{
 		$arr = array();
-		foreach( $this->query_vars_array() as $query_var ) {
+		foreach( $this->query_vars_array() as $query_var )
+		{
 			array_push( $arr, str_replace( '-', '_', $query_var ) );
 		}
 		return $arr;
 	}
 
-	function sort_terms_as_numbers( $order_by, $args, $taxonomies ) {
-
+	function sort_terms_as_numbers( $order_by, $args, $taxonomies )
+	{
 		if( '' == $order_by ) { return ''; }
 
 		$taxonomies_to_sort = array(
 			'cylinders',
 			'model_year',
 		);
-		foreach( $taxonomies_to_sort as $taxonomy_to_sort ) {
-			if( in_array( $taxonomy_to_sort, $taxonomies ) ) {
+		foreach( $taxonomies_to_sort as $taxonomy_to_sort )
+		{
+			if( in_array( $taxonomy_to_sort, $taxonomies ) )
+			{
 				$order_by .=  '+0';
 				break;
 			}
@@ -726,7 +813,8 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	//this is an array of taxonomy names and the corresponding arrays of term data
-	static function taxonomy_data( ) {
+	static function taxonomy_data()
+	{
 		return apply_filters(
 			'invp_taxonomy_data',
 			array (
@@ -1061,7 +1149,8 @@ class Inventory_Presser_Taxonomies {
 		);
 	}
 
-	static function taxonomy_meta_box_html( $taxonomy_name, $element_name, $post ) {
+	static function taxonomy_meta_box_html( $taxonomy_name, $element_name, $post )
+	{
 		/**
 		 * Creates HTML output for a meta box that turns a taxonomy into
 		 * a select drop-down list instead of the typical checkboxes. Including
@@ -1075,12 +1164,13 @@ class Inventory_Presser_Taxonomies {
 		//get all the term names and slugs for $taxonomy_name
 		$terms = get_terms( $taxonomy_name,  array( 'hide_empty' => false ) );
 
-		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) )
+		{
 			//get the saved term for this taxonomy
 			$saved_term_slug = self::get_term_slug( $taxonomy_name, $post->ID );
 
-			foreach( $terms as $term ) {
+			foreach( $terms as $term )
+			{
 				$HTML .= sprintf(
 					'<option value="%s"%s>%s</option>',
 					$term->slug,
@@ -1092,7 +1182,8 @@ class Inventory_Presser_Taxonomies {
 		return $HTML . '</select>';
 	}
 
-	private function weekdays() {
+	private function weekdays()
+	{
 		return array(
 			__( 'Mon', 'inventory-presser' ),
 			__( 'Tue', 'inventory-presser' ),
