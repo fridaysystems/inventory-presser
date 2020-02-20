@@ -197,94 +197,97 @@ class Inventory_Presser_Options
 		$url_slug_name = Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][0][url_path]';
 		$saved_key = ! empty( $this->option['additional_listings_pages'][0]['key'] ) ? $this->option['additional_listings_pages'][0]['key'] : '';
 
-		echo '<p>';
-		$this->boolean_checkbox_setting_callback(
+		?><p><?php
+
+		echo $this->boolean_checkbox_setting_callback(
 			'additional_listings_page',
 			__( 'Create additional inventory archive(s)', 'inventory-presser' )
 		);
-		echo '</p>';
 
-		//output a table to hold the settings for additional sheets
-		?><table class="wp-list-table widefat striped additional_listings_pages">
-			<thead>
-				<tr>
-					<th><?php _e( 'URL path', 'inventory-presser' ); ?></th>
-					<th><?php _e( 'Field', 'inventory-presser' ); ?></th>
-					<th><?php _e( 'Operator', 'inventory-presser' ); ?></th>
-					<th><?php _e( 'Value', 'inventory-presser' ); ?></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody><?php
+			//output a table to hold the settings for additional sheets
+			?></p>
+		<div id="additional_listings_pages_settings">
+			<table class="wp-list-table widefat striped additional_listings_pages">
+				<thead>
+					<tr>
+						<th><?php _e( 'URL path', 'inventory-presser' ); ?></th>
+						<th><?php _e( 'Field', 'inventory-presser' ); ?></th>
+						<th><?php _e( 'Operator', 'inventory-presser' ); ?></th>
+						<th><?php _e( 'Value', 'inventory-presser' ); ?></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody><?php
 
-			//output a row for each saved additional listing page + one blank
-			$additional_listings = Inventory_Presser_Additional_Listings_Pages::additional_listings_pages_array();
-			for( $a=0; $a<sizeof( $additional_listings ); $a++ )
-			{
-				if( empty( $additional_listings[$a]['operator'] ) )
+				//output a row for each saved additional listing page + one blank
+				$additional_listings = Inventory_Presser_Additional_Listings_Pages::additional_listings_pages_array();
+				for( $a=0; $a<sizeof( $additional_listings ); $a++ )
 				{
-					$additional_listings[$a]['operator'] = '';
+					if( empty( $additional_listings[$a]['operator'] ) )
+					{
+						$additional_listings[$a]['operator'] = '';
+					}
+					if( empty( $additional_listings[$a]['value'] ) )
+					{
+						$additional_listings[$a]['value'] = '';
+					}
+
+					?><tr id="row_<?php echo $a; ?>">
+						<td style="width: 100%;"><?php
+
+						//url path
+						printf(
+							'%s/<input type="text" id="additional_listings_pages_slug_%s" name="%s[additional_listings_pages][%s][url_path]" value="%s" />',
+							site_url(),
+							$a,
+							Inventory_Presser_Plugin::OPTION_NAME,
+							$a,
+							$additional_listings[$a]['url_path']
+						);
+
+						?></td>
+						<td><?php
+
+						//select list of vehicle fields
+						echo $this->html_select_vehicle_keys( array(
+							'id'   => 'additional_listings_pages_key_' . $a,
+							'name' => Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][' . $a . '][key]',
+						), $additional_listings[$a]['key'] );
+
+						?></td>
+						<td><?php
+
+						//select list of operators
+						echo $this->html_select_operator( array(
+							'id'    => 'additional_listings_pages_operator_' . $a,
+							'name'  => Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][' . $a . '][operator]',
+							'class' => 'operator',
+						), $additional_listings[$a]['operator'] );
+
+						?></td>
+						<td><?php
+
+						//text box for comparison value
+						printf(
+							'<input type="text" id="additional_listings_pages_value_%s" name="%s[additional_listings_pages][%s][value]" value="%s" />',
+							$a,
+							Inventory_Presser_Plugin::OPTION_NAME,
+							$a,
+							$additional_listings[$a]['value']
+						);
+
+						?></td>
+						<td>
+							<button class="button action delete-button" id="delete_<?php echo $a; ?>" title="Delete this page"><span class="dashicons dashicons-trash"></span></button>
+						</td>
+					</tr><?php
+
 				}
-				if( empty( $additional_listings[$a]['value'] ) )
-				{
-					$additional_listings[$a]['value'] = '';
-				}
 
-				?><tr id="row_<?php echo $a; ?>">
-					<td style="width: 100%;"><?php
-
-					//url path
-					printf(
-						'%s/<input type="text" id="additional_listings_pages_slug_%s" name="%s[additional_listings_pages][%s][url_path]" value="%s" />',
-						site_url(),
-						$a,
-						Inventory_Presser_Plugin::OPTION_NAME,
-						$a,
-						$additional_listings[$a]['url_path']
-					);
-
-					?></td>
-					<td><?php
-
-					//select list of vehicle fields
-					echo $this->html_select_vehicle_keys( array(
-						'id'   => 'additional_listings_pages_key_' . $a,
-						'name' => Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][' . $a . '][key]',
-					), $additional_listings[$a]['key'] );
-
-					?></td>
-					<td><?php
-
-					//select list of operators
-					echo $this->html_select_operator( array(
-						'id'    => 'additional_listings_pages_operator_' . $a,
-						'name'  => Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][' . $a . '][operator]',
-						'class' => 'operator',
-					), $additional_listings[$a]['operator'] );
-
-					?></td>
-					<td><?php
-
-					//text box for comparison value
-					printf(
-						'<input type="text" id="additional_listings_pages_value_%s" name="%s[additional_listings_pages][%s][value]" value="%s" />',
-						$a,
-						Inventory_Presser_Plugin::OPTION_NAME,
-						$a,
-						$additional_listings[$a]['value']
-					);
-
-					?></td>
-					<td>
-						<button class="button action delete-button" id="delete_<?php echo $a; ?>" title="Delete this page"><span class="dashicons dashicons-trash"></span></button>
-					</td>
-				</tr><?php
-
-			}
-
-			?></tbody>
-		</table>
-		<button class="button action" id="add_additional_listings_page">Add Additional Listings Page</button><?php
+				?></tbody>
+			</table>
+			<button class="button action" id="add_additional_listings_page">Add Additional Listings Page</button>
+		</div><?php
 	}
 
 	function callback_include_sold_vehicles()

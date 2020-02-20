@@ -14,7 +14,16 @@
 
 		//bind the delete buttons
 		$('button.delete-button').on('click', delete_listings_page);
+
+		//bind a checkbox to the visibility of a div to show and hide settings
+		$('#additional_listings_page').on('change', toggle_listings_pages_settings );
+		toggle_listings_pages_settings();
 	});
+
+	function toggle_listings_pages_settings()
+	{
+		$('#additional_listings_pages_settings').toggle( $('#additional_listings_page').prop('checked') );
+	}
 
 	function delete_listings_page()
 	{
