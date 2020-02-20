@@ -19,8 +19,9 @@ class Inventory_Presser_Options
 
 	public function hooks()
 	{
-		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_javascript' ) );
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
+		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 
 		/**
 		 * In September 2019, I decided to rename this plugin's option. I made
@@ -30,6 +31,18 @@ class Inventory_Presser_Options
 		 * that it belongs to this plugin.
 		 */
 		add_action( 'plugins_loaded', array( $this, 'rename_option' ) );
+	}
+
+	/**
+	 * Registers JavaScript for this settings page.
+	 */
+	function register_javascript()
+	{
+		wp_register_script(
+			'invp_page_settings',
+			plugins_url( '/js/page-settings.js', dirname( __FILE__, 2 ) . '/inventory-presser.php' ),
+			array( 'jquery' )
+		);
 	}
 
 	public function add_options_page()
@@ -184,25 +197,94 @@ class Inventory_Presser_Options
 		$url_slug_name = Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][0][url_path]';
 		$saved_key = ! empty( $this->option['additional_listings_pages'][0]['key'] ) ? $this->option['additional_listings_pages'][0]['key'] : '';
 
-		$options = '';
-		$label = sprintf(
-			'%s <b>%s/</b><input type="text" id="%s" name="%s" value="%s" /> %s %s',
-			__( 'Create an additional inventory archive at', 'inventory-presser' ),
-			site_url(),
-			$url_slug_id,
-			$url_slug_name,
-			! empty( $this->option['additional_listings_pages'][0]['url_path'] ) ? $this->option['additional_listings_pages'][0]['url_path'] : '',
-			__( 'that contains vehicles that have a value for field', 'inventory-presser' ),
-			$this->html_select_vehicle_keys( array(
-				'id'   => 'additional_listings_pages_key',
-				'name' => Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][0][key]',
-			), $saved_key )
-		);
-
+		echo '<p>';
 		$this->boolean_checkbox_setting_callback(
 			'additional_listings_page',
-			$label
+			__( 'Create additional inventory archive(s)', 'inventory-presser' )
 		);
+		echo '</p>';
+
+		//output a table to hold the settings for additional sheets
+		?><table class="wp-list-table widefat striped additional_listings_pages">
+			<thead>
+				<tr>
+					<th><?php _e( 'URL path', 'inventory-presser' ); ?></th>
+					<th><?php _e( 'Field', 'inventory-presser' ); ?></th>
+					<th><?php _e( 'Operator', 'inventory-presser' ); ?></th>
+					<th><?php _e( 'Value', 'inventory-presser' ); ?></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody><?php
+
+			//output a row for each saved additional listing page + one blank
+			$additional_listings = Inventory_Presser_Additional_Listings_Pages::additional_listings_pages_array();
+			for( $a=0; $a<sizeof( $additional_listings ); $a++ )
+			{
+				if( empty( $additional_listings[$a]['operator'] ) )
+				{
+					$additional_listings[$a]['operator'] = '';
+				}
+				if( empty( $additional_listings[$a]['value'] ) )
+				{
+					$additional_listings[$a]['value'] = '';
+				}
+
+				?><tr id="row_<?php echo $a; ?>">
+					<td style="width: 100%;"><?php
+
+					//url path
+					printf(
+						'%s/<input type="text" id="additional_listings_pages_slug_%s" name="%s[additional_listings_pages][%s][url_path]" value="%s" />',
+						site_url(),
+						$a,
+						Inventory_Presser_Plugin::OPTION_NAME,
+						$a,
+						$additional_listings[$a]['url_path']
+					);
+
+					?></td>
+					<td><?php
+
+					//select list of vehicle fields
+					echo $this->html_select_vehicle_keys( array(
+						'id'   => 'additional_listings_pages_key_' . $a,
+						'name' => Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][' . $a . '][key]',
+					), $additional_listings[$a]['key'] );
+
+					?></td>
+					<td><?php
+
+					//select list of operators
+					echo $this->html_select_operator( array(
+						'id'    => 'additional_listings_pages_operator_' . $a,
+						'name'  => Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][' . $a . '][operator]',
+						'class' => 'operator',
+					), $additional_listings[$a]['operator'] );
+
+					?></td>
+					<td><?php
+
+					//text box for comparison value
+					printf(
+						'<input type="text" id="additional_listings_pages_value_%s" name="%s[additional_listings_pages][%s][value]" value="%s" />',
+						$a,
+						Inventory_Presser_Plugin::OPTION_NAME,
+						$a,
+						$additional_listings[$a]['value']
+					);
+
+					?></td>
+					<td>
+						<button class="button action delete-button" id="delete_<?php echo $a; ?>" title="Delete this page"><span class="dashicons dashicons-trash"></span></button>
+					</td>
+				</tr><?php
+
+			}
+
+			?></tbody>
+		</table>
+		<button class="button action" id="add_additional_listings_page">Add Additional Listings Page</button><?php
 	}
 
 	function callback_include_sold_vehicles()
@@ -317,6 +399,42 @@ class Inventory_Presser_Options
 		);
 	}
 
+	private function html_select_operator( $attributes = null, $selected_value = null )
+	{
+		$keys = array(
+			'exists',
+			'does not exist',
+			'greater than',
+			'less than',
+			'equal to',
+			'not equal to',
+		);
+
+		$options = '';
+		foreach( $keys as $key )
+		{
+			$slug = str_replace( ' ', '_', $key );
+			$options .= sprintf(
+				'<option value="%s"%s>%s</option>',
+				$slug,
+				selected( $selected_value, $slug, false ),
+				$key
+			);
+		}
+
+		$attribute_string = '';
+		if( ! empty( $attributes ) )
+		{
+			$attribute_string = ' ' . str_replace( "=", '="', http_build_query( $attributes, null, '" ', PHP_QUERY_RFC3986 ) ) . '"';
+		}
+
+		return sprintf(
+			'<select%s>%s</select>',
+			urldecode( $attribute_string ),
+			$options
+		);
+	}
+
 	private function html_select_vehicle_keys( $attributes = null, $selected_value = null )
 	{
 		/**
@@ -358,6 +476,8 @@ class Inventory_Presser_Options
 
 	public function options_page_content()
 	{
+		wp_enqueue_script( 'invp_page_settings' );
+
 		$this->option = Inventory_Presser_Plugin::settings();
 
 		?><div class="wrap">
@@ -384,12 +504,14 @@ class Inventory_Presser_Options
 
 		//Only do this once
 		$new_option = get_option( Inventory_Presser_Plugin::OPTION_NAME );
-		if( $new_option ) {
+		if( $new_option )
+		{
 			return;
 		}
 
 		$old_option = get_option( $old_option_name );
-		if( ! $old_option ) {
+		if( ! $old_option )
+		{
 			return;
 		}
 

@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.3.2
-Stable tag: 10.11.0
+Stable tag: 10.11.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,9 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 
 == Changelog ==
+
+= 10.11.1 =
+* [Fixed] Fixes a bug where our post meta keys for both vehicles and photos were being registered on the vehicle post type instead of on our post type and on the post type 'attachment'.
 
 = 10.11.0 =
 * [Added] Adds the ability to create a second inventory listing page with a vehicle attribute filter. This new feature makes it easy to create a separate listing page containing only vehicles that have a value for down payment or a boat field like hull material.

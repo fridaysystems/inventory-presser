@@ -24,7 +24,9 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
 				return $has_thumbnail;
 			}
 
-			$is_vehicle_photo = ! empty( get_post_meta( $thumbnail_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true ) );
+			$is_vehicle_photo = 'attachment' == get_post_type( $thumbnail_id )
+				&& ! empty( get_post_meta( $thumbnail_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true ) );
+
 			if( ! $is_vehicle_photo )
 			{
 				return $has_thumbnail;

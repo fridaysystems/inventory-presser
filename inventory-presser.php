@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 10.11.0
+ * Version: 10.11.1
  * Author: Corey Salzano, John Norton
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -944,31 +944,44 @@ g#show path:nth-child(6n) {
 		//register all meta fields our CPT uses
 		function register_meta_fields()
 		{
-			$keys = Inventory_Presser_Vehicle::keys_and_types( true );
-
-			/**
-			 * Add a couple fields that are used on media attachments to our CPT.
-			 * Do this in one swoop because there is no core way (as of 4.9.4) to specify the
-			 * object_subtype for the object to which these fields are registered.
-			 */
-			$keys[] = array(
-				'name' => 'file_date',
-				'type' => 'string',
-			);
-			$keys[] = array(
-				'name' => 'hash',
-				'type' => 'string',
-			);
-			$keys[] = array(
-				'name' => 'photo_number',
-				'type' => 'integer',
-			);
-
-			foreach( $keys as $key_arr )
+			//Add meta fields to our post type
+			foreach( Inventory_Presser_Vehicle::keys_and_types( true ) as $key_arr )
 			{
 				$key = apply_filters( 'invp_prefix_meta_key', $key_arr['name'] );
 				register_post_meta( Inventory_Presser_Plugin::CUSTOM_POST_TYPE, $key, array(
 					'sanitize_callback' => 'maybe_unserialize',
+					'show_in_rest'      => true,
+					'single'            => true,
+					'type'              => $key_arr['type'],
+				) );
+			}
+
+			//Add a couple fields that are used on media attachments
+			$attachment_keys = array();
+			$attachment_keys[] = array(
+				'name' => 'file_date',
+				'type' => 'string',
+			);
+			$attachment_keys[] = array(
+				'name' => 'hash',
+				'type' => 'string',
+			);
+			$attachment_keys[] = array(
+				'name' => 'photo_number',
+				'type' => 'integer',
+			);
+			$attachment_keys[] = array(
+				'name' => 'vin',
+				'type' => 'string',
+			);
+
+
+			//Add meta fields to attachments
+			foreach( $attachment_keys as $key_arr )
+			{
+				$key = apply_filters( 'invp_prefix_meta_key', $key_arr['name'] );
+				register_post_meta( 'attachment', $key, array(
+					'sanitize_callback' => 'sanitize_text_field',
 					'show_in_rest'      => true,
 					'single'            => true,
 					'type'              => $key_arr['type'],

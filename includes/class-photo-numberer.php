@@ -16,7 +16,8 @@ class Inventory_Presser_Photo_Numberer{
 	{
 		//Is this new attachment even attached to a post?
 		$attachment = get_post( $post_id );
-		if( empty( $attachment->post_parent ) ) {
+		if( empty( $attachment->post_parent ) )
+		{
 			//No
 			return;
 		}

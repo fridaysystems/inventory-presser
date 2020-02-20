@@ -25,7 +25,7 @@ class Inventory_Presser_Additional_Listings_Pages
 
 	function add_rewrite_rules( $rules )
 	{
-		foreach( $this->additional_listings_pages_array() as $additional_listing )
+		foreach( self::additional_listings_pages_array() as $additional_listing )
 		{
 			if( empty( $additional_listing['url_path'] ) )
 			{
@@ -43,7 +43,7 @@ class Inventory_Presser_Additional_Listings_Pages
 
 	function add_rewrite_slugs( $slugs )
 	{
-		foreach( $this->additional_listings_pages_array() as $additional_listing )
+		foreach( self::additional_listings_pages_array() as $additional_listing )
 		{
 			if( empty( $additional_listing['url_path'] ) )
 			{
@@ -54,7 +54,7 @@ class Inventory_Presser_Additional_Listings_Pages
 		return $slugs;
 	}
 
-	private function additional_listings_pages_array()
+	public static function additional_listings_pages_array()
 	{
 		//Are there additional listings pages configured?
 		$settings = Inventory_Presser_Plugin::settings();
@@ -77,7 +77,7 @@ class Inventory_Presser_Additional_Listings_Pages
 
 		//which rule does the URL path match?
 		global $wp;
-		foreach( $this->additional_listings_pages_array() as $additional_listing )
+		foreach( self::additional_listings_pages_array() as $additional_listing )
 		{
 			if( $additional_listing['url_path'] == substr( $wp->matched_rule, 0, strlen( $additional_listing['url_path'] ) ) )
 			{
