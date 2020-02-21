@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.3.2
-Stable tag: 10.11.1
+Stable tag: 10.12.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,10 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 
 == Changelog ==
+
+= 10.12.0 =
+* [Added] Builds on a the feature launched in 10.11.0 to allow more than additional listing page to be created. Creates a table to manage additional listing page rules on the options page.
+* [Fixed] Fixes a bug in our Vehicle class where requesting a list of the post meta keys without the ones that contain serialized values returned those very keys that contain serialized values.
 
 = 10.11.1 =
 * [Fixed] Fixes a bug where our post meta keys for both vehicles and photos were being registered on the vehicle post type instead of on our post type and on the post type 'attachment'.
