@@ -506,6 +506,7 @@ class Inventory_Presser_Options
 		$old_option_name = '_dealer_settings';
 
 		//Only do this once
+		//Do not use Inventory_Presser_Plugin::settings() because it populates defaults
 		$new_option = get_option( Inventory_Presser_Plugin::OPTION_NAME );
 		if( $new_option )
 		{
@@ -550,6 +551,18 @@ class Inventory_Presser_Options
 	{
 		$sanitary_values = array();
 
+		$boolean_settings = array(
+			'additional_listings_page',
+			'include_sold_vehicles',
+			'show_all_taxonomies',
+			'use_carfax',
+			'use_carfax_provided_buttons',
+		);
+		foreach( $boolean_settings as $b )
+		{
+			$sanitary_values[$b] = isset( $input[$b] );
+		}
+
 		if ( isset( $input['price_display'] ) )
 		{
 			$sanitary_values['price_display'] = $input['price_display'];
@@ -570,16 +583,14 @@ class Inventory_Presser_Options
 			$sanitary_values['additional_listings_pages'] = $input['additional_listings_pages'];
 		}
 
-		$boolean_settings = array(
-			'additional_listings_page',
-			'include_sold_vehicles',
-			'show_all_taxonomies',
-			'use_carfax',
-			'use_carfax_provided_buttons',
-		);
-		foreach( $boolean_settings as $b )
+		//if the additional listing pages switch is changed, flush rewrite rules
+		//if the switch is on and the array of pages is different, flush rewrite rules
+
+		$settings = Inventory_Presser_Plugin::settings();
+		if( $sanitary_values['additional_listings_page'] != $settings['additional_listings_page']
+			|| ( $sanitary_values['additional_listings_page'] && $sanitary_values['additional_listings_pages'] != $settings['additional_listings_pages'] ) )
 		{
-			$sanitary_values[$b] = isset( $input[$b] );
+			flush_rewrite_rules();
 		}
 
 		return apply_filters( 'invp_options_page_sanitized_values', $sanitary_values, $input );
