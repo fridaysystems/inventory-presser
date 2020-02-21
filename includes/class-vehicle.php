@@ -406,18 +406,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		function keys( $include_serialized = true )
 		{
 			$keys_and_types = self::keys_and_types( $include_serialized );
-			if( ! $include_serialized )
-			{
-				$keys_and_types = array_filter( $keys_and_types, function( $values, $key ) {
-					return empty( $values['is_serialized'] ) || ! $values['is_serialized'];
-				}, ARRAY_FILTER_USE_BOTH );
-			}
 			return array_column( $keys_and_types, 'name' );
 		}
 
 		public static function keys_and_types( $include_serialized = true )
 		{
-			return array(
+			$keys_and_types = array(
 				array(
 					'name' => 'beam', //for boats
 					'type' => 'number',
@@ -562,6 +556,15 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type' => 'string',
 				),
 			);
+
+			if( ! $include_serialized )
+			{
+				$keys_and_types = array_filter( $keys_and_types, function( $values, $key ) {
+					return empty( $values['is_serialized'] ) || ! $values['is_serialized'];
+				}, ARRAY_FILTER_USE_BOTH );
+			}
+
+			return $keys_and_types;
 		}
 
 		/**

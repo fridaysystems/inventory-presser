@@ -67,8 +67,6 @@ class Inventory_Presser_Additional_Listings_Pages
 		return array();
 	}
 
-	private static function is_numeric_field()
-
 	/**
 	 * True or false, a given additional listing page rule has settings that
 	 * allow us to create the page. User might not provide the URL path, for
@@ -101,7 +99,7 @@ class Inventory_Presser_Additional_Listings_Pages
 		 * If the key points to a value that is not a number and the operator
 		 * is less than or greater than, you might have a bad time.
 		 */
-		if( ! self::is_numeric_field( $rule['key'] )
+		if( ! Inventory_Presser_Vehicle::post_meta_value_is_number( apply_filters( 'invp_prefix_meta_key', $rule['key'] ) )
 			&& ( 'less_than' == $rule['operator'] || 'greater_than' == $rule['operator'] ) )
 		{
 			return false;
