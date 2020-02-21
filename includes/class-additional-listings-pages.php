@@ -12,7 +12,7 @@ class Inventory_Presser_Additional_Listings_Pages
 {
 	function hooks()
 	{
-		//Do we have additional listings pages enabled?
+		//Are additional listings pages enabled?
 		$settings = Inventory_Presser_Plugin::settings();
 		if( empty( $settings['additional_listings_page'] ) || ! $settings['additional_listings_page'] )
 		{
@@ -27,7 +27,8 @@ class Inventory_Presser_Additional_Listings_Pages
 	{
 		foreach( self::additional_listings_pages_array() as $additional_listing )
 		{
-			if( empty( $additional_listing['url_path'] ) )
+			//is this rule valid?
+			if( ! self::is_valid_rule( $additional_listing ) )
 			{
 				continue;
 			}
@@ -45,7 +46,8 @@ class Inventory_Presser_Additional_Listings_Pages
 	{
 		foreach( self::additional_listings_pages_array() as $additional_listing )
 		{
-			if( empty( $additional_listing['url_path'] ) )
+			//is this rule valid?
+			if( ! self::is_valid_rule( $additional_listing ) )
 			{
 				continue;
 			}
@@ -107,20 +109,6 @@ class Inventory_Presser_Additional_Listings_Pages
 
 		//you're probably good man
 		return true;
-
-		/*
-			Array
-			(
-			    [0] => Array
-			        (
-			            [url_path] => cash-deals
-			            [key] => down_payment
-			            [operator] => less_than
-			            [value] =>
-			        )
-
-			)
-		*/
 	}
 
 	function modify_query( $query )
@@ -135,22 +123,75 @@ class Inventory_Presser_Additional_Listings_Pages
 		global $wp;
 		foreach( self::additional_listings_pages_array() as $additional_listing )
 		{
+			//is this rule valid?
+			if( ! self::is_valid_rule( $additional_listing ) )
+			{
+				continue;
+			}
+
+			//our URL path will match the beginning of the rewrite rule
 			if( $additional_listing['url_path'] == substr( $wp->matched_rule, 0, strlen( $additional_listing['url_path'] ) ) )
 			{
-				//found it, require the key
+				//found it, require the key & enforce the logic in the rule
 				$old = $query->get( 'meta_query', array() );
-				$query->set( 'meta_query', array_merge( $old, array(
-					'relation' => 'AND',
-					array(
-						'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
-						'compare' => 'EXISTS'
-					),
-					array(
-						'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
-						'value'   => array( '', 0 ),
-						'compare' => 'NOT IN'
-					),
-				) ) );
+				$new = array();
+
+				switch( $additional_listing['operator'] )
+				{
+					case 'does_not_exist':
+						$new = array(
+							'relation' => 'AND',
+							array(
+								'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
+								'compare' => 'NOT EXISTS'
+							),
+						);
+						break;
+
+					case 'equal_to':
+					case 'not_equal_to':
+						$new = array(
+							'relation' => 'AND',
+							array(
+								'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
+								'compare' => ( 'equal_to' == $additional_listing['operator'] ? '=' : '!=' ),
+								'value'   => $additional_listing['value'],
+							),
+						);
+						break;
+
+					case 'exists':
+						$new = array(
+							'relation' => 'AND',
+							array(
+								'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
+								'compare' => 'EXISTS'
+							),
+							array(
+								'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
+								'value'   => array( '', 0 ),
+								'compare' => 'NOT IN'
+							),
+						);
+						break;
+
+					case 'greater_than':
+					case 'less_than':
+						$new = array(
+							'relation' => 'AND',
+							array(
+								'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
+								'compare' => ( 'greater_than' == $additional_listing['operator'] ? '>' : '<' ),
+								'value'   => ((float)$additional_listing['value']),
+								'type'    => 'NUMERIC',
+							),
+						);
+						break;
+				}
+				if( ! empty( $new ) )
+				{
+					$query->set( 'meta_query', array_merge( $old, $new ) );
+				}
 				return $query;
 			}
 		}

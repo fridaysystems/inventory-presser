@@ -221,15 +221,20 @@ class Inventory_Presser_Options
 
 				//output a row for each saved additional listing page + one blank
 				$additional_listings = Inventory_Presser_Additional_Listings_Pages::additional_listings_pages_array();
+				$keys = array(
+					'url_path',
+					'key',
+					'operator',
+					'value',
+				);
 				for( $a=0; $a<sizeof( $additional_listings ); $a++ )
 				{
-					if( empty( $additional_listings[$a]['operator'] ) )
+					foreach( $keys as $key )
 					{
-						$additional_listings[$a]['operator'] = '';
-					}
-					if( empty( $additional_listings[$a]['value'] ) )
-					{
-						$additional_listings[$a]['value'] = '';
+						if( ! isset( $additional_listings[$a][$key] ) )
+						{
+							$additional_listings[$a][$key] = '';
+						}
 					}
 
 					?><tr id="row_<?php echo $a; ?>">
@@ -580,12 +585,32 @@ class Inventory_Presser_Options
 
 		if( is_array( $input['additional_listings_pages'] ) )
 		{
-			$sanitary_values['additional_listings_pages'] = $input['additional_listings_pages'];
+			/**
+			 * array_values() re-indexes the array starting at zero in case the
+			 * first rule was deleted and index 0 doesn't exist.
+			 */
+			$sanitary_values['additional_listings_pages'] = array_values( $input['additional_listings_pages'] );
+			/**
+			 * This feature doesn't work when two rules have the same URL path.
+			 * Drop any duplicates.
+			 */
+			$url_paths = array();
+			$unique_rules = array();
+			foreach( $sanitary_values['additional_listings_pages'] as $additional_listing )
+			{
+				if( in_array( $additional_listing['url_path'], $url_paths ) )
+				{
+					//sorry!
+					continue;
+				}
+				$unique_rules[] = $additional_listing;
+				$url_paths[] = $additional_listing['url_path'];
+			}
+			$sanitary_values['additional_listings_pages'] = $unique_rules;
 		}
 
 		//if the additional listing pages switch is changed, flush rewrite rules
 		//if the switch is on and the array of pages is different, flush rewrite rules
-
 		$settings = Inventory_Presser_Plugin::settings();
 		if( $sanitary_values['additional_listings_page'] != $settings['additional_listings_page']
 			|| ( $sanitary_values['additional_listings_page'] && $sanitary_values['additional_listings_pages'] != $settings['additional_listings_pages'] ) )
