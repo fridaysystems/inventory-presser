@@ -896,19 +896,18 @@ g#show path:nth-child(6n) {
 			if( 0 < $meta_field_count )
 			{
 				$replacement = $pieces['orderby'] . ', ';
-				$vehicle = new Inventory_Presser_Vehicle();
 				for( $m=0; $m<$meta_field_count; $m++ )
 				{
 					$replacement .= 'mt' . ( $m+1 ) . '.meta_value';
 					/**
 					 * Determine if this meta field should be sorted as a number
 					 * 1. Parse out the meta key name from $pieces['where']
-					 * 2. Run it through $vehicle->post_meta_value_is_number
+					 * 2. Run it through Inventory_Presser_Vehicle::post_meta_value_is_number
 					 */
 					$field_start = strpos( $pieces['where'], 'mt' . ( $m+1 ) . '.meta_key = \'')+16;
 					$field_end = strpos( $pieces['where'], "'", $field_start )-$field_start;
 					$field_name = substr( $pieces['where'], $field_start, $field_end );
-					if( $vehicle->post_meta_value_is_number( $field_name ) )
+					if( Inventory_Presser_Vehicle::post_meta_value_is_number( $field_name ) )
 					{
 						$replacement .= '+0';
 					}

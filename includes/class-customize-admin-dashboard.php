@@ -1247,7 +1247,6 @@ class Inventory_Presser_Customize_Dashboard
 			'price',
 			'stock_number',
 		);
-		$vehicle = new Inventory_Presser_Vehicle();
 		$orderby = $query->get( 'orderby' );
 		foreach( $columns as $column )
 		{
@@ -1255,7 +1254,7 @@ class Inventory_Presser_Customize_Dashboard
 			if ( $orderby == $meta_key )
 			{
 	            $query->set( 'meta_key', $meta_key );
-	            $query->set( 'orderby', 'meta_value' . ( $vehicle->post_meta_value_is_number( $meta_key ) ? '_num' : '' ) );
+	            $query->set( 'orderby', 'meta_value' . ( Inventory_Presser_Vehicle::post_meta_value_is_number( $meta_key ) ? '_num' : '' ) );
 	            return;
 			}
 		}

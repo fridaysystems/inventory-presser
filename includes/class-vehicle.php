@@ -391,7 +391,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		function indicate_post_meta_values_are_numbers( $value, $meta_key )
 		{
-			return ( $this->post_meta_value_is_number( $meta_key ) ? 'meta_value_num' : $value );
+			return ( self::post_meta_value_is_number( $meta_key ) ? 'meta_value_num' : $value );
 		}
 
 		function is_carfax_one_owner()
@@ -405,8 +405,14 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		function keys( $include_serialized = true )
 		{
-			$all_keys = array_column( self::keys_and_types( $include_serialized ), 'name' );
-			return $include_serialized ? $all_keys : array_diff( $all_keys, array( 'epa_fuel_economy', 'option_array', 'prices' ) );
+			$keys_and_types = self::keys_and_types( $include_serialized );
+			if( ! $include_serialized )
+			{
+				$keys_and_types = array_filter( $keys_and_types, function( $values, $key ) {
+					return empty( $values['is_serialized'] ) || ! $values['is_serialized'];
+				}, ARRAY_FILTER_USE_BOTH );
+			}
+			return array_column( $keys_and_types, 'name' );
 		}
 
 		public static function keys_and_types( $include_serialized = true )
@@ -461,8 +467,9 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type' => 'string',
 				),
 				array(
-					'name' => 'epa_fuel_economy',
-					'type' => null, //'string',
+					'name'          => 'epa_fuel_economy',
+					'type'          => null, //'string',
+					'is_serialized' => true,
 				),
 				array(
 					'name' => 'featured',
@@ -505,8 +512,9 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type' => 'string',
 				),
 				array(
-					'name' => 'option_array',
-					'type' => null, //'string',
+					'name'          => 'option_array',
+					'type'          => null, //'string',
+					'is_serialized' => true,
 				),
 				array(
 					'name' => 'payment',
@@ -521,8 +529,9 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type' => 'number',
 				),
 				array(
-					'name' => 'prices',
-					'type' => null, //'string',
+					'name'          => 'prices',
+					'type'          => null, //'string',
+					'is_serialized' => true,
 				),
 				array(
 					'name' => 'stock_number',
@@ -653,17 +662,17 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			return sizeof( $attachments );
 		}
 
-		function post_meta_value_is_number( $post_meta_key )
+		public static function post_meta_value_is_number( $post_meta_key )
 		{
-			return in_array( $post_meta_key, array(
-				apply_filters( 'invp_prefix_meta_key', 'beam' ),
-				apply_filters( 'invp_prefix_meta_key', 'car_id' ),
-				apply_filters( 'invp_prefix_meta_key', 'dealer_id' ),
-				apply_filters( 'invp_prefix_meta_key', 'length' ),
-				apply_filters( 'invp_prefix_meta_key', 'odometer' ),
-				apply_filters( 'invp_prefix_meta_key', 'price' ),
-				apply_filters( 'invp_prefix_meta_key', 'year' ),
-			) );
+			$keys_and_types = self::keys_and_types();
+			foreach( $keys_and_types as $key_and_type )
+			{
+				if( apply_filters( 'invp_prefix_meta_key', $key_and_type['name'] ) == $post_meta_key )
+				{
+					return 'number' == $key_and_type['type'] || 'integer' == $key_and_type['type'];
+				}
+			}
+			return false;
 		}
 
 		/**
