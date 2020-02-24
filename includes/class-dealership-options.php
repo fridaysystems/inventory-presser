@@ -221,6 +221,10 @@ class Inventory_Presser_Options
 
 				//output a row for each saved additional listing page + one blank
 				$additional_listings = Inventory_Presser_Additional_Listings_Pages::additional_listings_pages_array();
+				if( empty( $additional_listings ) )
+				{
+					$additional_listings = array( array() );
+				}
 				$keys = array(
 					'url_path',
 					'key',
@@ -592,12 +596,19 @@ class Inventory_Presser_Options
 			$sanitary_values['additional_listings_pages'] = array_values( $input['additional_listings_pages'] );
 			/**
 			 * This feature doesn't work when two rules have the same URL path.
-			 * Drop any duplicates.
+			 * Drop any duplicates. Also reject any invalid rules.
 			 */
 			$url_paths = array();
 			$unique_rules = array();
 			foreach( $sanitary_values['additional_listings_pages'] as $additional_listing )
 			{
+				//Is this even a valid rule?
+				if( ! Inventory_Presser_Additional_Listings_Pages::is_valid_rule( $additional_listing ) )
+				{
+					//No
+					continue;
+				}
+
 				if( in_array( $additional_listing['url_path'], $url_paths ) )
 				{
 					//sorry!
