@@ -1,0 +1,26 @@
+{
+	"name": "inventory-presser",
+	"version": "10.12.0",
+	"description": "An inventory management plugin for car dealers.",
+	"main": "build/index.js",
+	"directories": {
+		"lib": "lib"
+	},
+	"scripts": {
+		"start": "wp-scripts start",
+		"build": "wp-scripts build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/csalzano/inventory-presser.git"
+	},
+	"author": "csalzano",
+	"license": "GPL-2.0-only",
+	"bugs": {
+		"url": "https://github.com/csalzano/inventory-presser/issues"
+	},
+	"homepage": "https://github.com/csalzano/inventory-presser#readme",
+	"devDependencies": {
+		"@wordpress/scripts": "7.1.1"
+	}
+}

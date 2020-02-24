@@ -5,6 +5,13 @@ class Inventory_Presser_Blocks
 {
 	function add_category( $categories, $post )
 	{
+		//is the post a vehicle?
+		if( empty( $post ) || empty( $post->post_type )
+			|| $post->post_type != Inventory_Presser_Plugin::CUSTOM_POST_TYPE )
+		{
+			return $categories;
+		}
+
 		return array_merge(
 			$categories,
 			array(
@@ -19,12 +26,6 @@ class Inventory_Presser_Blocks
 
 	function hooks()
 	{
-		//Only load our blocks when editing or creating vehicles
-		if( ! $this->editing_a_vehicle() )
-		{
-			return;
-		}
-
 		add_action( 'enqueue_block_editor_assets', array( $this, 'register_block_types' ) );
 		add_filter( 'block_categories', array( $this, 'add_category' ), 10, 2 );
 	}
@@ -58,30 +59,46 @@ class Inventory_Presser_Blocks
 			return;
 		}
 
+		if( ! $this->editing_a_vehicle() )
+		{
+			return;
+		}
+
+		$plugin_root_file_path = dirname( __FILE__, 2 ) . '/inventory-presser.php';
+
+		$asset_file = include( plugin_dir_path( $plugin_root_file_path ) . 'build/index.asset.php' );
+
 		$keys = array(
-			'beam',
-			'body-style',
-			'color',
-			'engine',
-			'hull-material',
-			'interior-color',
-			'last-modified',
-			'length',
+			// 'beam',
+			// 'body-style',
+			// 'color',
+			// 'engine',
+			// 'hull-material',
+			// 'interior-color',
+			// 'last-modified',
+			// 'length',
 			'make',
 			'model',
-			'odometer',
+			// 'odometer',
 		);
+
+		wp_enqueue_script(
+			'invp-blocks',
+			plugins_url( 'build/index.js', $plugin_root_file_path ),
+			$asset_file['dependencies'],
+			$asset_file['version']
+		);
+
+		//localize an odometer units word for the edit vehicle page
+		wp_localize_script( 'invp-blocks', 'invp_blocks', array(
+			'keys'        => Inventory_Presser_Vehicle::keys_and_types(),
+			'meta_prefix' => Inventory_Presser_Plugin::meta_prefix(),
+		) );
 
 		foreach( $keys as $key )
 		{
-			wp_register_script(
-				'block-' . $key,
-				plugins_url( 'js/blocks/' . $key . '.js', dirname( __FILE__ ) ),
-				array( 'wp-blocks', 'wp-element' )
-			);
-
 			register_block_type( 'inventory-presser/' . $key, array(
-				'editor_script' => 'block-' . $key,
+				'editor_script' => 'invp-blocks',
 			) );
 		}
 	}
