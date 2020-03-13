@@ -197,7 +197,8 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				 * get real goofy with certain combinations of duplicate CSS
 				 * class names on the page.
 				 */
-				$svg_element = preg_replace( '/(cls\-[0-9]+)/', '$1-' . $this->stock_number, $svg_element );
+				$stock_number_letters_and_digits = preg_replace( '/[^a-zA-Z0-9]+/', '', $this->stock_number );
+				$svg_element = preg_replace( '/(cls\-[0-9]+)/', '$1-' . $stock_number_letters_and_digits, $svg_element );
 			}
 			return $svg_element;
 		}
