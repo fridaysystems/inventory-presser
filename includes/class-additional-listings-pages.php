@@ -70,6 +70,43 @@ class Inventory_Presser_Additional_Listings_Pages
 	}
 
 	/**
+	 * If the current request is for one of our additional listing pages, return
+	 * that listings page rule so it's easy to extract or replicate the meta
+	 * query.
+	 */
+	public static function get_current_matched_rule( $query = null )
+	{
+		if( null === $query )
+		{
+			global $wp_query;
+			$query = $wp_query;
+		}
+
+		//Must be the main query on a vehicle archive request
+		if ( ! $query->is_main_query() || ! is_post_type_archive( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) )
+		{
+			return false;
+		}
+
+		global $wp;
+		foreach( self::additional_listings_pages_array() as $additional_listing )
+		{
+			//is this rule valid?
+			if( ! self::is_valid_rule( $additional_listing ) )
+			{
+				continue;
+			}
+
+			//our URL path will match the beginning of the rewrite rule
+			if( $additional_listing['url_path'] == substr( $wp->matched_rule, 0, strlen( $additional_listing['url_path'] ) ) )
+			{
+				return $additional_listing;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * True or false, a given additional listing page rule has settings that
 	 * allow us to create the page. User might not provide the URL path, for
 	 * example.
@@ -113,87 +150,71 @@ class Inventory_Presser_Additional_Listings_Pages
 
 	function modify_query( $query )
 	{
-		//Do not mess with the query if it's not the main one and our CPT
-		if ( ! $query->is_main_query() || ! is_post_type_archive( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) )
+		$additional_listing = self::get_current_matched_rule( $query );
+		if( ! $additional_listing )
 		{
 			return;
 		}
 
-		//which rule does the URL path match?
-		global $wp;
-		foreach( self::additional_listings_pages_array() as $additional_listing )
+		//found it, require the key & enforce the logic in the rule
+		$old = $query->get( 'meta_query', array() );
+		$new = array();
+
+		switch( $additional_listing['operator'] )
 		{
-			//is this rule valid?
-			if( ! self::is_valid_rule( $additional_listing ) )
-			{
-				continue;
-			}
+			case 'does_not_exist':
+				$new = array(
+					'relation' => 'AND',
+					array(
+						'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
+						'compare' => 'NOT EXISTS'
+					),
+				);
+				break;
 
-			//our URL path will match the beginning of the rewrite rule
-			if( $additional_listing['url_path'] == substr( $wp->matched_rule, 0, strlen( $additional_listing['url_path'] ) ) )
-			{
-				//found it, require the key & enforce the logic in the rule
-				$old = $query->get( 'meta_query', array() );
-				$new = array();
+			case 'equal_to':
+			case 'not_equal_to':
+				$new = array(
+					'relation' => 'AND',
+					array(
+						'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
+						'compare' => ( 'equal_to' == $additional_listing['operator'] ? '=' : '!=' ),
+						'value'   => $additional_listing['value'],
+					),
+				);
+				break;
 
-				switch( $additional_listing['operator'] )
-				{
-					case 'does_not_exist':
-						$new = array(
-							'relation' => 'AND',
-							array(
-								'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
-								'compare' => 'NOT EXISTS'
-							),
-						);
-						break;
+			case 'exists':
+				$new = array(
+					'relation' => 'AND',
+					array(
+						'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
+						'compare' => 'EXISTS'
+					),
+					array(
+						'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
+						'value'   => array( '', 0 ),
+						'compare' => 'NOT IN'
+					),
+				);
+				break;
 
-					case 'equal_to':
-					case 'not_equal_to':
-						$new = array(
-							'relation' => 'AND',
-							array(
-								'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
-								'compare' => ( 'equal_to' == $additional_listing['operator'] ? '=' : '!=' ),
-								'value'   => $additional_listing['value'],
-							),
-						);
-						break;
-
-					case 'exists':
-						$new = array(
-							'relation' => 'AND',
-							array(
-								'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
-								'compare' => 'EXISTS'
-							),
-							array(
-								'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
-								'value'   => array( '', 0 ),
-								'compare' => 'NOT IN'
-							),
-						);
-						break;
-
-					case 'greater_than':
-					case 'less_than':
-						$new = array(
-							'relation' => 'AND',
-							array(
-								'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
-								'compare' => ( 'greater_than' == $additional_listing['operator'] ? '>' : '<' ),
-								'value'   => ((float)$additional_listing['value']),
-								'type'    => 'NUMERIC',
-							),
-						);
-						break;
-				}
-				if( ! empty( $new ) )
-				{
-					$query->set( 'meta_query', array_merge( $old, $new ) );
-				}
-				return $query;
-			}
+			case 'greater_than':
+			case 'less_than':
+				$new = array(
+					'relation' => 'AND',
+					array(
+						'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
+						'compare' => ( 'greater_than' == $additional_listing['operator'] ? '>' : '<' ),
+						'value'   => ((float)$additional_listing['value']),
+						'type'    => 'NUMERIC',
+					),
+				);
+				break;
+		}
+		if( ! empty( $new ) )
+		{
+			$query->set( 'meta_query', array_merge( $old, $new ) );
 		}
 		return $query;
 	}
