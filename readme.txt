@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.3.2
-Stable tag: 10.12.0
+Stable tag: 10.12.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,9 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 
 == Changelog ==
+
+= 10.12.1 =
+* [Fixed] Fixes a bug when injecting stock numbers into Carfax icon CSS class names where characters that are allowed in stock numbers but not in CSS class names were breaking this hack that lets us show more than one Carfax icon inline on the same page.
 
 = 10.12.0 =
 * [Added] Builds on a the feature launched in 10.11.0 to allow more than additional listing page to be created. Creates a table to manage additional listing page rules on the options page.
