@@ -106,6 +106,64 @@ class Inventory_Presser_Additional_Listings_Pages
 		return false;
 	}
 
+	public static function get_query_meta_array( $rule )
+	{
+		$new = null;
+		switch( $rule['operator'] )
+		{
+			case 'does_not_exist':
+				$new = array(
+					'relation' => 'AND',
+					array(
+						'key'     => apply_filters( 'invp_prefix_meta_key', $rule['key'] ),
+						'compare' => 'NOT EXISTS'
+					),
+				);
+				break;
+
+			case 'equal_to':
+			case 'not_equal_to':
+				$new = array(
+					'relation' => 'AND',
+					array(
+						'key'     => apply_filters( 'invp_prefix_meta_key', $rule['key'] ),
+						'compare' => ( 'equal_to' == $rule['operator'] ? '=' : '!=' ),
+						'value'   => $rule['value'],
+					),
+				);
+				break;
+
+			case 'exists':
+				$new = array(
+					'relation' => 'AND',
+					array(
+						'key'     => apply_filters( 'invp_prefix_meta_key', $rule['key'] ),
+						'compare' => 'EXISTS'
+					),
+					array(
+						'key'     => apply_filters( 'invp_prefix_meta_key', $rule['key'] ),
+						'value'   => array( '', 0 ),
+						'compare' => 'NOT IN'
+					),
+				);
+				break;
+
+			case 'greater_than':
+			case 'less_than':
+				$new = array(
+					'relation' => 'AND',
+					array(
+						'key'     => apply_filters( 'invp_prefix_meta_key', $rule['key'] ),
+						'compare' => ( 'greater_than' == $rule['operator'] ? '>' : '<' ),
+						'value'   => ((float)$rule['value']),
+						'type'    => 'NUMERIC',
+					),
+				);
+				break;
+		}
+		return $new;
+	}
+
 	/**
 	 * True or false, a given additional listing page rule has settings that
 	 * allow us to create the page. User might not provide the URL path, for
@@ -158,60 +216,8 @@ class Inventory_Presser_Additional_Listings_Pages
 
 		//found it, require the key & enforce the logic in the rule
 		$old = $query->get( 'meta_query', array() );
-		$new = array();
+		$new = self::get_query_meta_array( $additional_listing );
 
-		switch( $additional_listing['operator'] )
-		{
-			case 'does_not_exist':
-				$new = array(
-					'relation' => 'AND',
-					array(
-						'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
-						'compare' => 'NOT EXISTS'
-					),
-				);
-				break;
-
-			case 'equal_to':
-			case 'not_equal_to':
-				$new = array(
-					'relation' => 'AND',
-					array(
-						'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
-						'compare' => ( 'equal_to' == $additional_listing['operator'] ? '=' : '!=' ),
-						'value'   => $additional_listing['value'],
-					),
-				);
-				break;
-
-			case 'exists':
-				$new = array(
-					'relation' => 'AND',
-					array(
-						'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
-						'compare' => 'EXISTS'
-					),
-					array(
-						'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
-						'value'   => array( '', 0 ),
-						'compare' => 'NOT IN'
-					),
-				);
-				break;
-
-			case 'greater_than':
-			case 'less_than':
-				$new = array(
-					'relation' => 'AND',
-					array(
-						'key'     => apply_filters( 'invp_prefix_meta_key', $additional_listing['key'] ),
-						'compare' => ( 'greater_than' == $additional_listing['operator'] ? '>' : '<' ),
-						'value'   => ((float)$additional_listing['value']),
-						'type'    => 'NUMERIC',
-					),
-				);
-				break;
-		}
 		if( ! empty( $new ) )
 		{
 			$query->set( 'meta_query', array_merge( $old, $new ) );
