@@ -25,6 +25,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $body_style = '';
 		var $car_id = 0;
 		var $color = '';
+		var $description = '';
 		var $down_payment = 0;
 		var $edmunds_style_id = 0;
 		var $engine = ''; //3.9L 8 cylinder
@@ -459,6 +460,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'label'  => __( 'Dealer ID', 'inventory_presser' ),
 					'name' => 'dealer_id', //friday systems dealer id
 					'type' => 'integer',
+				),
+				array(
+					'label'  => __( 'Description', 'inventory_presser' ),
+					'name'   => 'description',
+					'sample' => 'Clean, non-smoker, must-see!',
+					'type'   => 'string',
 				),
 				array(
 					'label'  => __( 'Down Payment', 'inventory_presser' ),
@@ -970,10 +977,9 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				$obj['vehicleInteriorColor'] = $this->interior_color;
 			}
 
-			global $post;
-			if( isset( $post->post_content ) && '' != $post->post_content )
+			if( '' != $this->description )
 			{
-				$obj['description'] = $post->post_content;
+				$obj['description'] = $this->description;
 			}
 
 			$schema_drive_type = $this->schema_org_drive_type( $this->drivetype );
