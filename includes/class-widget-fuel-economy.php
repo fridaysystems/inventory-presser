@@ -75,6 +75,12 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 		//if the vehicle doesn't have EPA data, abort
 		$vehicle = new Inventory_Presser_Vehicle( $queried_object->ID );
 
+
+		if( empty( $vehicle->fuel_economy_city ) || empty( $vehicle->fuel_economy_highway ) )
+		{
+			return;
+		}
+
 		//OK, we have some data and will create output
 		extract( $args );
 
