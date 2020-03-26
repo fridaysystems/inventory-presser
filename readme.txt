@@ -63,7 +63,13 @@ This plugin requires a few page templates to display listing pages and vehicle d
 == Changelog ==
 
 = 11.0.0 =
-* [Changes] No longer stores the vehicle description in post_content of the custom post type. This breaking change must occur so that we can being using the editor blocks provided by this plugin to define the appearance of posts regardless of a site's theme.
+* [Added] Adds two meta fields `book_value_kbb` and `book_value_nada` to hold prices provided by Kelley Blue Book and NADA Guides.
+* [Added] Adds meta fields to hold EPA Fuel Economy stats `fuel_economy_annual_consumption`, `fuel_economy_annual_cost`, `fuel_economy_annual_emissions`, `fuel_economy_city`, `fuel_economy_combined`, and `fuel_economy_highway`.
+* [Changed] No longer stores vehicle options as a serialized array in a meta field `option_array`.
+* [Added] A new meta field `options` contains a CSV string of vehicle options.
+* [Changed] No longer stores the vehicle description in post_content of the custom post type. This breaking change must occur so that we can being using the editor blocks provided by this plugin to define the appearance of posts regardless of a site's theme.
+* [Added] A new meta field `description` holds the sentence-form vehicle description.
+* [Fixed] Fixes a bug that prevented Attachments from being deleted when Vehicles were deleted.
 
 = 10.13.0 =
 * [Added] Adds a public method to the additional listings class to make it easier for other plugins to modify queries to satisfy additional listings filter rules.
