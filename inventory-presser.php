@@ -597,6 +597,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 			//Skip the trash bin and always permanently delete vehicles & photos
 			add_action( 'trashed_post', array( $this, 'really_delete' ) );
 
+			//When vehicles are deleted, delete their attachments, too
+			add_action( 'before_delete_post', array( $this, 'delete_attachments' ), 10, 1 );
+
 			//Change links to our taxonomy terms to insert /inventory/
 			add_filter( 'pre_term_link', array( $this, 'change_term_links' ), 10, 2 );
 
@@ -932,12 +935,14 @@ g#show path:nth-child(6n) {
 				return;
 			}
 
-			//delete all attachments
-			$vehicle = new Inventory_Presser_Vehicle();
-			$vehicle->delete_attachments( $post_id );
-
 			//force delete
 			wp_delete_post( $post_id, true );
+		}
+
+		function delete_attachments( $post_id )
+		{
+			$vehicle = new Inventory_Presser_Vehicle();
+			$vehicle->delete_attachments( $post_id );
 		}
 
 		//register all meta fields our CPT uses

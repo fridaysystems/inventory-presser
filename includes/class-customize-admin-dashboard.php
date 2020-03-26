@@ -94,6 +94,21 @@ class Inventory_Presser_Customize_Dashboard
 		);
 	}
 
+	/**
+	 * Converts a one-dimensional array into an equivalent comma-separated v
+	 * values string. Input of array( 1, 2, 3 ) returns "1","2","3"
+	 */
+	private function array_to_csv( $arr )
+	{
+		$csv = '';
+		foreach( $arr as $item )
+		{
+			$csv .= "\"" . str_replace( "\"", "\"\"", $item ) . "\",";
+		}
+		//ignore last comma
+		return substr( $csv, 0, -1 );
+	}
+
 	function change_post_updated_messages( $msgs )
 	{
 		global $post;
@@ -679,10 +694,10 @@ class Inventory_Presser_Customize_Dashboard
 		//turn the array into an associative array with value false for all
 		$options = array_fill_keys( $options, false );
 
-		$options_arr = get_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'option_array' ), true );
-		if( is_array( $options_arr ) )
+		$vehicle = new Inventory_Presser_Vehicle( $post->ID );
+		if( is_array( $vehicle->options_array() ) )
 		{
-			foreach( $options_arr as $option )
+			foreach( $vehicle->options_array() as $option )
 			{
 				$options[$option] = true;
 			}
@@ -1194,7 +1209,8 @@ class Inventory_Presser_Customize_Dashboard
 				array_push( $options, $val );
 			}
 		}
-		update_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'option_array' ), $options );
+		$options_csv = $this->array_to_csv( $options );
+		update_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'options' ), $options_csv );
 	}
 
 	function sanitize_array( $arr )

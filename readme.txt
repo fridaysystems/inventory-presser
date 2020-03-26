@@ -62,6 +62,9 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 == Changelog ==
 
+= 11.0.0 =
+* [Changes] No longer stores the vehicle description in post_content of the custom post type. This breaking change must occur so that we can being using the editor blocks provided by this plugin to define the appearance of posts regardless of a site's theme.
+
 = 10.13.0 =
 * [Added] Adds a public method to the additional listings class to make it easier for other plugins to modify queries to satisfy additional listings filter rules.
 

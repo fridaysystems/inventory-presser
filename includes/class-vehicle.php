@@ -31,6 +31,14 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $engine = ''; //3.9L 8 cylinder
 		var $epa_fuel_economy = array();
 		var $featured = '0';
+
+		var $fuel_economy_annual_consumption = '';
+		var $fuel_economy_annual_cost = 0;
+		var $fuel_economy_annual_emissions = '';
+		var $fuel_economy_city = 0;
+		var $fuel_economy_combined = 0;
+		var $fuel_economy_highway = 0;
+
 		var $interior_color = '';
 		var $last_modified = '';
 		var $make = '';
@@ -38,6 +46,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $msrp = 0;
 		var $odometer = '';
 		var $option_array = array();
+		var $options_csv = '';
 		var $payment = 0;
 		var $payment_frequency = '';
 		var $price = 0;
@@ -232,10 +241,10 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			}
 
 			$attachments = get_posts( array(
+				'post_parent'    => $post_id,
+				'post_status'    => 'inherit',
 				'post_type'      => 'attachment',
 				'posts_per_page' => -1,
-				'post_status'    => 'any',
-				'post_parent'    => $post_id
 			) );
 
 			foreach ( $attachments as $attachment )
@@ -426,6 +435,18 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type'   => 'string',
 				),
 				array(
+					'label'  => __( 'KBB Book Value', 'inventory_presser' ), //Kelley Blue Book
+					'name'   => 'book_value_kbb',
+					'sample' => 13500,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'NADA Book Value', 'inventory_presser' ),
+					'name'   => 'book_value_nada',
+					'sample' => 13500,
+					'type'   => 'number',
+				),
+				array(
 					'label'  => __( 'Car ID', 'inventory_presser' ),
 					'name'   => 'car_id', //unique identifier
 					'type'   => 'integer',
@@ -496,6 +517,42 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type' => 'boolean',
 				),
 				array(
+					'label'  => __( 'Fuel Economy Annual Fuel Consumption', 'inventory_presser' ),
+					'name'   => 'fuel_economy_annual_consumption',
+					'sample' => '13.18 barrels',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Annual Fuel Cost', 'inventory_presser' ),
+					'name'   => 'fuel_economy_annual_cost',
+					'sample' => 1600,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Annual Tailpipe CO2 Emissions', 'inventory_presser' ),
+					'name'   => 'fuel_economy_annual_emissions',
+					'sample' => '355 grams per mile',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy City', 'inventory_presser' ),
+					'name'   => 'fuel_economy_city',
+					'sample' => 22,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Combined', 'inventory_presser' ),
+					'name'   => 'fuel_economy_combined',
+					'sample' => 25,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Highway', 'inventory_presser' ),
+					'name'   => 'fuel_economy_highway',
+					'sample' => 31,
+					'type'   => 'number',
+				),
+				array(
 					'label'  => __( 'Hull Material', 'inventory_presser' ),
 					'name'   => 'hull_material', //for boats
 					'type'   => 'string',
@@ -551,6 +608,11 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'name'          => 'option_array',
 					'type'          => null, //'string',
 					'is_serialized' => true,
+				),
+				array(
+					'label' => __( 'Options', 'inventory_presser' ),
+					'name'  => 'options',
+					'type'  => 'string',
 				),
 				array(
 					'label'  => __( 'Payment Frequency', 'inventory_presser' ),
@@ -678,6 +740,11 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				$odometer .= $this->odometer;
 			}
 			return $odometer;
+		}
+
+		public function options_array()
+		{
+			return str_getcsv( $this->options_csv );
 		}
 
 		/**
