@@ -23,6 +23,8 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $leads_id = 0;
 
 		var $body_style = '';
+		var $book_value_kbb = 0;
+		var $book_value_nada = 0;
 		var $car_id = 0;
 		var $color = '';
 		var $description = '';
@@ -46,7 +48,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $msrp = 0;
 		var $odometer = '';
 		var $option_array = array();
-		var $options_csv = '';
+		var $options = '';
 		var $payment = 0;
 		var $payment_frequency = '';
 		var $price = 0;
@@ -744,7 +746,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 		public function options_array()
 		{
-			return str_getcsv( $this->options_csv );
+			return str_getcsv( $this->options );
 		}
 
 		/**

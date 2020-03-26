@@ -695,9 +695,10 @@ class Inventory_Presser_Customize_Dashboard
 		$options = array_fill_keys( $options, false );
 
 		$vehicle = new Inventory_Presser_Vehicle( $post->ID );
-		if( is_array( $vehicle->options_array() ) )
+		$options_array = $vehicle->options_array();
+		if( is_array( $options_array ) )
 		{
-			foreach( $vehicle->options_array() as $option )
+			foreach( $options_array as $option )
 			{
 				$options[$option] = true;
 			}
@@ -1209,8 +1210,7 @@ class Inventory_Presser_Customize_Dashboard
 				array_push( $options, $val );
 			}
 		}
-		$options_csv = $this->array_to_csv( $options );
-		update_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'options' ), $options_csv );
+		update_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'options' ), $this->array_to_csv( $options ) );
 	}
 
 	function sanitize_array( $arr )
