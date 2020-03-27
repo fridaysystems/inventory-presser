@@ -407,6 +407,7 @@ class Inventory_Presser_Taxonomies
 	{
 		//create custom taxonomies for vehicles
 		add_action( 'init', array( $this, 'create_taxonomies' ) );
+		add_action( 'init', array( $this, 'register_meta' ) );
 		add_action( 'init', array( $this, 'register_location_term_meta' ) );
 		add_action( 'rest_api_init', array( $this, 'add_api_term_meta_workaround_fields' ) );
 
@@ -597,6 +598,79 @@ class Inventory_Presser_Taxonomies
 			'show_in_rest' => true,
 			'single'       => true,
 		) );
+	}
+
+	/**
+	 * Registers term meta fields for our Location taxonomy to help store phone
+	 * numbers and hours of operation.
+	 */
+	function register_meta()
+	{
+		$phone_key_suffixes = array(
+			'uid',
+			'description',
+			'number',
+		);
+
+		//How many phone numbers do we plan to store per address?
+		$loop_max = apply_filters( 'invp_max_phone_numbers_per_address', 10 );
+
+		for( $i=1; $i<=$loop_max; $i++ )
+		{
+			foreach( $phone_key_suffixes as $suffix )
+			{
+				$meta_key = 'phone_' . $i . '_' . $suffix;
+				register_term_meta( 'location', $meta_key, array(
+					'sanitize_callback' => 'sanitize_text_field',
+					'show_in_rest'      => true,
+					'single'            => true,
+					'type'              => 'string',
+				) );
+			}
+		}
+
+		$hours_key_suffixes = array(
+			'uid',
+			'title',
+			'sunday_appt',
+			'sunday_open',
+			'sunday_close',
+			'saturday_appt',
+			'saturday_open',
+			'saturday_close',
+			'friday_appt',
+			'friday_open',
+			'friday_close',
+			'thursday_appt',
+			'thursday_open',
+			'thursday_close',
+			'wednesday_appt',
+			'wednesday_open',
+			'wednesday_close',
+			'tuesday_appt',
+			'tuesday_open',
+			'tuesday_close',
+			'monday_appt',
+			'monday_open',
+			'monday_close',
+		);
+
+		//How many sets of hours do we plan to store per address?
+		$loop_max = apply_filters( 'invp_max_hours_sets_per_address', 5 );
+
+		for( $i=1; $i<=$loop_max; $i++ )
+		{
+			foreach( $hours_key_suffixes as $suffix )
+			{
+				$meta_key = 'hours_' . $i . '_' . $suffix;
+				register_term_meta( 'location', $meta_key, array(
+					'sanitize_callback' => 'sanitize_text_field',
+					'show_in_rest'      => true,
+					'single'            => true,
+					'type'              => 'string',
+				) );
+			}
+		}
 	}
 
 	/**
