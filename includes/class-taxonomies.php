@@ -602,10 +602,36 @@ class Inventory_Presser_Taxonomies
 
 	/**
 	 * Registers term meta fields for our Location taxonomy to help store phone
-	 * numbers and hours of operation.
+	 * numbers and hours of operation. Also allows the storage of the individual
+	 * pieces of the address that previously lived only in the term description.
 	 */
 	function register_meta()
 	{
+		/**
+		 * Register some address fields so the pieces of the address can be
+		 * accessed individually. For all of 2015-2019, we left the whole
+		 * address in the term description.
+		 */
+		$address_keys = array(
+			'address_street',
+			'address_street_line_two',
+			'address_city',
+			'address_state',
+			'address_zip',
+		);
+		foreach( $address_keys as $meta_key )
+		{
+			register_term_meta( 'location', $meta_key, array(
+				'sanitize_callback' => 'sanitize_text_field',
+				'show_in_rest'      => true,
+				'single'            => true,
+				'type'              => 'string',
+			) );
+		}
+
+		/**
+		 * Phone Numbers
+		 */
 		$phone_key_suffixes = array(
 			'uid',
 			'description',
@@ -629,6 +655,9 @@ class Inventory_Presser_Taxonomies
 			}
 		}
 
+		/**
+		 * Hours
+		 */
 		$hours_key_suffixes = array(
 			'uid',
 			'title',
