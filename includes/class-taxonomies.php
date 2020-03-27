@@ -408,7 +408,6 @@ class Inventory_Presser_Taxonomies
 		//create custom taxonomies for vehicles
 		add_action( 'init', array( $this, 'create_taxonomies' ) );
 		add_action( 'init', array( $this, 'register_meta' ) );
-		add_action( 'init', array( $this, 'register_location_term_meta' ) );
 		add_action( 'rest_api_init', array( $this, 'add_api_term_meta_workaround_fields' ) );
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_term_data' ) );
@@ -589,15 +588,6 @@ class Inventory_Presser_Taxonomies
 			array_push( $arr, $slug );
 		}
 		return $arr;
-	}
-
-	//When the REST API properly supports term meta, this will probably work!
-	function register_location_term_meta()
-	{
-		register_meta( 'term', 'location-phone-hours', array(
-			'show_in_rest' => true,
-			'single'       => true,
-		) );
 	}
 
 	/**
