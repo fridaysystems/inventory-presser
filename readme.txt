@@ -63,7 +63,7 @@ This plugin requires a few page templates to display listing pages and vehicle d
 == Changelog ==
 
 = 11.1.0 =
-* [Added] Adds term meta fields to hold phone numbers and sets of hours of operation in the location taxonomy.
+* [Added] Adds term meta fields to hold the pieces of the street address, phone numbers, and sets of hours of operation in the location taxonomy.
 
 = 11.0.0 =
 * [Added] Adds two meta fields `book_value_kbb` and `book_value_nada` to hold prices provided by Kelley Blue Book and NADA Guides.
