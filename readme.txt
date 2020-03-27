@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.3.2
-Stable tag: 10.13.0
+Stable tag: 11.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,9 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 == Changelog ==
 
+= 11.1.0 =
+* [Added] Adds term meta fields to hold phone numbers and sets of hours of operation in the location taxonomy.
+
 = 11.0.0 =
 * [Added] Adds two meta fields `book_value_kbb` and `book_value_nada` to hold prices provided by Kelley Blue Book and NADA Guides.
 * [Added] Adds meta fields to hold EPA Fuel Economy stats `fuel_economy_annual_consumption`, `fuel_economy_annual_cost`, `fuel_economy_annual_emissions`, `fuel_economy_city`, `fuel_economy_combined`, and `fuel_economy_highway`.
@@ -70,6 +73,7 @@ This plugin requires a few page templates to display listing pages and vehicle d
 * [Changed] No longer stores the vehicle description in post_content of the custom post type. This breaking change must occur so that we can being using the editor blocks provided by this plugin to define the appearance of posts regardless of a site's theme.
 * [Added] A new meta field `description` holds the sentence-form vehicle description.
 * [Fixed] Fixes a bug that prevented Attachments from being deleted when Vehicles were deleted.
+* [Fixed] Fixes a bug in the EPA Fuel Economy widget that prevents the entire widget from showing if a critical stat like the city or highway mileage is missing.
 
 = 10.13.0 =
 * [Added] Adds a public method to the additional listings class to make it easier for other plugins to modify queries to satisfy additional listings filter rules.
