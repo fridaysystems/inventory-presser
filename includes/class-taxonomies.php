@@ -140,7 +140,7 @@ class Inventory_Presser_Taxonomies
 		return $schedules;
 	}
 
-	static function create_custom_taxonomies()
+	static function create_taxonomies()
 	{
 		//loop over this data, register the taxonomies, and populate the terms if needed
 		$taxonomy_data = self::taxonomy_data();
@@ -406,7 +406,7 @@ class Inventory_Presser_Taxonomies
 	function hooks()
 	{
 		//create custom taxonomies for vehicles
-		add_action( 'init', array( $this, 'create_custom_taxonomies' ) );
+		add_action( 'init', array( $this, 'create_taxonomies' ) );
 		add_action( 'init', array( $this, 'register_location_term_meta' ) );
 		add_action( 'rest_api_init', array( $this, 'add_api_term_meta_workaround_fields' ) );
 
@@ -549,7 +549,7 @@ class Inventory_Presser_Taxonomies
 	static function populate_default_terms()
 	{
 		//create the taxonomies or else our wp_insert_term calls will fail
-		self::create_custom_taxonomies();
+		self::create_taxonomies();
 
 		$taxonomy_data = self::taxonomy_data();
 		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ )
