@@ -63,7 +63,10 @@ This plugin requires a few page templates to display listing pages and vehicle d
 == Changelog ==
 
 = 11.1.2 =
+* [Changed] Changes the tested up to version to 5.4.0
+* [Changed] Makes the post meta key prefix of `inventory_presser_` optional in the `orderby` querystring parameter for nicer looking URLs
 * [Fixed] Fixes a bug where sorting vehicle archives by odometer would not work if odometer values contained commas
+* [Fixed] Prevents our post meta key prefix remover from damaging a key that does not have the prefix
 
 = 11.1.1 =
 * [Fixed] Fixes a bug introduced with version 11.0.0 to prevent the default menu label for vehicle archives from changing to All Vehicles. Changes it back to Inventory. Only the first menu label under Vehicles in the dashboard was intended to be changed.
