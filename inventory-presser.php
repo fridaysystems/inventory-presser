@@ -199,11 +199,35 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 					break;
 			}
 
+			$meta_value_or_meta_value_num = 'meta_value';
+			if( $key == apply_filters( 'invp_prefix_meta_key', 'odometer' ) )
+			{
+				$meta_value_or_meta_value_num .= '_num';
+
+				//We also want to customize the order by to remove non-digits from the odometer
+				add_filter( 'posts_orderby', array( $this, 'change_order_by_for_odometer' ), 10, 2 );
+			}
+
 			//Allow other developers to decide if the post meta values are numbers
-			$vehicle = new Inventory_Presser_Vehicle();
-			$meta_value_or_meta_value_num = apply_filters( 'invp_meta_value_or_meta_value_num', 'meta_value', $key );
-			$query->set( 'orderby', $meta_value_or_meta_value_num );
+			$query->set( 'orderby', apply_filters( 'invp_meta_value_or_meta_value_num', $meta_value_or_meta_value_num, $key ) );
 			$query->set( 'order', $direction );
+		}
+
+		/**
+		 * @param string $orderby The ORDER BY clause of a main query
+		 * @param WP_Query $query The main query object
+		 *
+		 * @return string The changed ORDER BY clause
+		 */
+		function change_order_by_for_odometer( $orderby, $query )
+		{
+			/**
+			 * Changes
+			 * ORDER BY wp_postmeta.meta_value+0
+			 * to
+			 * ORDER BY REPLACE( wp_postmeta.meta_value, ',', '' )+0
+			 */
+			return str_replace( 'wp_postmeta.meta_value+0', "REPLACE( wp_postmeta.meta_value, ',', '' )+0", $orderby );
 		}
 
 		function add_pretty_search_urls()
