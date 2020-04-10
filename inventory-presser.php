@@ -37,7 +37,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 		function add_orderby_to_query( $query )
 		{
 			//Do not mess with the query if it's not the main one and our CPT
-			if ( ! $query->is_main_query() || ! is_post_type_archive( self::CUSTOM_POST_TYPE ) )
+			if ( ! $query->is_main_query()
+				|| ! is_post_type_archive( self::CUSTOM_POST_TYPE )
+				|| ( empty( $_GET['orderby'] ) && empty( $this->settings['sort_vehicles_by'] ) ) )
 			{
 				return;
 			}
@@ -51,18 +53,19 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 			 * $_GET['order'] or 'sort_vehicles_order.'
 			 */
 			$direction = $this->settings['sort_vehicles_order'];
+			if( isset( $_GET['order'] ) )
+			{
+				$direction = $_GET['order'];
+			}
+
+			$key = $this->settings['sort_vehicles_by'];
 			if( isset( $_GET['orderby'] ) )
 			{
 				$key = $_GET['orderby'];
-				if( isset( $_GET['order'] ) )
-				{
-					$direction = $_GET['order'];
-				}
 			}
-			else
-			{
-				$key = apply_filters( 'invp_prefix_meta_key', $this->settings['sort_vehicles_by'] );
-			}
+
+			//Make sure the meta key has the prefix
+			$key = apply_filters( 'invp_prefix_meta_key', $key );
 			$query->set( 'meta_key', $key );
 
 			//maybe append to the meta_query if it is already set
@@ -582,7 +585,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 			 */
 
 			$this->settings = self::settings();
-			if( ! is_admin() && ( isset( $_GET['orderby'] ) || isset( $this->settings['sort_vehicles_by'] ) ) )
+			if( ! is_admin() )
 			{
 				add_action( 'pre_get_posts', array( $this, 'add_orderby_to_query' ) );
 			}
