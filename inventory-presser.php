@@ -200,11 +200,16 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 			}
 
 			$meta_value_or_meta_value_num = 'meta_value';
-			if( $key == apply_filters( 'invp_prefix_meta_key', 'odometer' ) )
+			$key_is_odometer = $key == apply_filters( 'invp_prefix_meta_key', 'odometer' );
+
+			if( Inventory_Presser_Vehicle::post_meta_value_is_number( $key ) || $key_is_odometer )
 			{
 				$meta_value_or_meta_value_num .= '_num';
+			}
 
-				//We also want to customize the order by to remove non-digits from the odometer
+			//We also want to customize the order by to remove non-digits from the odometer
+			if( $key_is_odometer )
+			{
 				add_filter( 'posts_orderby', array( $this, 'change_order_by_for_odometer' ), 10, 2 );
 			}
 
@@ -1091,6 +1096,14 @@ g#show path:nth-child(6n) {
 			return $prefix . $nice_name;
 		}
 
+		/**
+		 * Removes the prefix from our post meta field keys so
+		 * 'inventory_presser_make' becomes 'make'. Careful to not damage any
+		 * provided key that does not start with our prefix.
+		 *
+		 * @param string $meta_key The prefixed meta key.
+		 * @return string The un-prefixed meta key.
+		 */
 		function untranslate_custom_field_names( $meta_key )
 		{
 			if( empty( $meta_key ) )
@@ -1100,8 +1113,15 @@ g#show path:nth-child(6n) {
 			$meta_key = strtolower( $meta_key );
 			//prefix may start with an underscore because previous versions hid some meta keys
 			$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . self::meta_prefix();
-			//remove the prefix
-			return substr( $meta_key, strlen( $prefix ) );
+
+			//does $meta_key actually start with the $prefix?
+			if( $prefix == substr( $meta_key, 0, strlen( $prefix ) ) )
+			{
+				//remove the prefix
+				return substr( $meta_key, strlen( $prefix ) );
+			}
+
+			return $meta_key;
 		}
 	} //end class
 	$inventory_presser = new Inventory_Presser_Plugin();
