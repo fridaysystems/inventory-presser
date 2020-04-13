@@ -120,7 +120,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 				</div>
 
 				<div class="vehicle-content">
-					<div class="vehicle-content-wrap"><?php the_content(); ?></div><?php
+					<div class="vehicle-content-wrap"><?php echo $vehicle->description; ?></div><?php
 
 					// if there's a youtube video associated with this vehicle, embed it
 					if ( $vehicle->youtube )
