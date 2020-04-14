@@ -297,23 +297,13 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			return preg_replace( "/\">?.*/", "", preg_replace( "/.*<img[\s\S]+src=\"/", "", $img_element ) );
 		}
 
+		/**
+		 * Returns the higher of the two book value prices among NADA Guides and
+		 * Kelley Blue Book.
+		 */
 		function get_book_value()
 		{
-			/**
-			 * Book value lives in the prices array under
-			 * array key 'NADA Book Value' or 'KBB Book Value'
-			 */
-
-			$nada = $kbb = 0;
-			if( isset( $this->prices['NADA Book Value'] ) )
-			{
-				$nada = intval( $this->prices['NADA Book Value'] );
-			}
-			if( isset( $this->prices['KBB Book Value'] ) )
-			{
-				$kbb = intval( $this->prices['KBB Book Value'] );
-			}
-			return max( $nada, $kbb );
+			return max( intval( $this->book_value_nada ), intval( $this->book_value_kbb ) );
 		}
 
 		// fill arrays of thumb and large <img> elements
@@ -443,7 +433,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type'   => 'number',
 				),
 				array(
-					'label'  => __( 'NADA Book Value', 'inventory_presser' ),
+					'label'  => __( 'NADA Book Value', 'inventory_presser' ), //NADA Guides
 					'name'   => 'book_value_nada',
 					'sample' => 13500,
 					'type'   => 'number',
