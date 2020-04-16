@@ -170,7 +170,6 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 	// Widget Backend
 	public function form( $instance )
 	{
-		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : 'Hours';
 		$cb_display = isset($instance['cb_display']) ? $instance['cb_display'] : array();
 		$cb_title = isset($instance['cb_title']) ? $instance['cb_title'] : array();
 
@@ -182,44 +181,53 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 		// loop through each location, set up form
 		foreach ( $location_info as $term_id => $name )
 		{
-			$location_meta = get_term_meta( $term_id, 'location-phone-hours', true );
-			if ( ! isset( $location_meta['hours'] ) || 0 == count( $location_meta['hours'] ) )
+			//Output a checkbox for every set of hours in this location
+			for( $h=1; $h<=self::MAX_HOURS_SETS; $h++ )
 			{
-				continue;
-			}
+				//Are there hours in this slot?
+				$hours_uid = get_term_meta( $term_id, 'hours_' . $h . '_uid', true );
+				if( ! $hours_uid )
+				{
+					//No, we're done with this location
+					break;
+				}
 
-			$hours_table .= sprintf(
-				'<tr><td>%s</td><td>%s</td><td>%s</td></tr>',
-				$name,
-				__( 'Display', 'inventory-presser' ),
-				__( 'Title', 'inventory-presser' )
-			);
+				//Only do this once per location
+				if( 1 == $h )
+				{
+					$hours_table .= sprintf(
+						'<tr><td>%s</td><td>%s</td><td>%s</td></tr>',
+						$name,
+						__( 'Display', 'inventory-presser' ),
+						__( 'Title', 'inventory-presser' )
+					);
+				}
 
-			foreach ( $location_meta['hours'] as $index => $hourset )
-			{
-				$uid = isset( $hourset['uid'] ) ? $hourset['uid'] : '';
-
-				$hourset_title = ( $hourset['title'] ) ? $hourset['title'] : __( 'No title entered', 'inventory-presser' );
+				$title = get_term_meta( $term_id, 'hours_' . $h . '_title', true );
+				if( empty( $title ) )
+				{
+					$title =  __( 'No title entered', 'inventory-presser' );
+				}
 
 				$cb_display_text = sprintf(
 					'<input type="checkbox" id="%s" name="%s" value="%s"%s />',
-					$this->get_field_id('cb_display'),
+					$this->get_field_id('cb_display_' . $hours_id ),
 					$this->get_field_name('cb_display['.$term_id.'][]'),
-					$uid,
-					checked( true, (isset($cb_display[$term_id]) && is_array($cb_display[$term_id]) && in_array($uid, $cb_display[$term_id])), false )
+					$hours_uid,
+					checked( true, (isset($cb_display[$term_id]) && is_array($cb_display[$term_id]) && in_array($hours_uid, $cb_display[$term_id])), false )
 				);
 
 				$cb_title_text = sprintf(
 					'<input type="checkbox" id="%s" name="%s" value="%s"%s />',
-					$this->get_field_id('cb_title'),
+					$this->get_field_id('cb_title_' . $hours_id ),
 					$this->get_field_name('cb_title['.$term_id.'][]'),
-					$uid,
-					checked( true, (isset($cb_title[$term_id]) && is_array($cb_title[$term_id]) && in_array($uid, $cb_title[$term_id])), false )
+					$hours_uid,
+					checked( true, (isset($cb_title[$term_id]) && is_array($cb_title[$term_id]) && in_array($hours_uid, $cb_title[$term_id])), false )
 				);
 
 				$hours_table .= sprintf(
 					'<tr><td><strong>%s</strong></td><td>%s</td><td>%s</td></tr>',
-					$hourset_title,
+					$title,
 					$cb_display_text,
 					$cb_title_text
 				);
@@ -229,6 +237,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 		$hours_table .= '</tbody></table>';
 
 		// Widget admin form
+		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : _( 'Hours', 'inventory-presser' );
 		?>
 		<p>
 		<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e( 'Main Title', 'inventory-presser' ); ?></label>
