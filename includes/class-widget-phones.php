@@ -1,12 +1,13 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
-class Inventory_Presser_Location_Phones extends WP_Widget {
-
+class Inventory_Presser_Location_Phones extends WP_Widget
+{
 	const ID_BASE = '_invp_phone';
 
 	// formats for widget display.  To add more, just follow the pattern
-	function formats() {
+	function formats()
+	{
 		return array(
 			'small_left_label' => array(
 				'selector'    => __( 'Small, left label', 'inventory-presser' ),
@@ -60,7 +61,8 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		);
 	}
 
-	function __construct() {
+	function __construct()
+	{
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Phone Number', 'inventory-presser' ),
@@ -70,15 +72,16 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
-	public function delete_option() {
+	public function delete_option()
+	{
 		delete_option( 'widget_' . self::ID_BASE );
 	}
 
 	// widget front-end
-	public function widget( $args, $instance ) {
-
-		if (is_array($instance['cb_display']) && count($instance['cb_display']) > 0) {
-
+	public function widget( $args, $instance )
+	{
+		if (is_array($instance['cb_display']) && count($instance['cb_display']) > 0)
+		{
 			$title = apply_filters( 'widget_title', $instance['title'] );
 
 			$format_slugs = array_keys( $this->formats() );
@@ -87,7 +90,9 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			// before and after widget arguments are defined by themes
 			echo $args['before_widget'];
 			if (!empty( $title ))
-			echo $args['before_title'] . $title . $args['after_title'];
+			{
+				echo $args['before_title'] . $title . $args['after_title'];
+			}
 			printf( '<div class="invp-%s">', $format );
 
 			// get all locations
@@ -96,17 +101,17 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			echo $this->formats()[$format]['before'];
 
 			// loop through each location
-			foreach ($location_info as $term_id => $name) {
-
+			foreach ($location_info as $term_id => $name)
+			{
 				// get term meta for location
 				$location_meta = get_term_meta( $term_id, 'location-phone-hours', true );
 
 				// if any hour sets have been selected for this location
-				if (isset($instance['cb_display'][$term_id]) && is_array($instance['cb_display'][$term_id]) && count($instance['cb_display'][$term_id]) > 0 && isset($location_meta['phones']) && count($location_meta['phones']) > 0) {
-
+				if (isset($instance['cb_display'][$term_id]) && is_array($instance['cb_display'][$term_id]) && count($instance['cb_display'][$term_id]) > 0 && isset($location_meta['phones']) && count($location_meta['phones']) > 0)
+				{
 					// loop through each hour set from term meta
-					foreach ($location_meta['phones'] as $index => $phoneset) {
-
+					foreach ($location_meta['phones'] as $index => $phoneset)
+					{
 						// if the phone number has been selected, output it
 						if ( isset( $phoneset['uid'] ) && in_array($phoneset['uid'], $instance['cb_display'][$term_id] ) )
 						{
@@ -123,7 +128,8 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	}
 
 	// Widget Backend
-	public function form( $instance ) {
+	public function form( $instance )
+	{
 		$title = isset($instance['title']) ? $instance['title'] : '';
 		$format = isset($instance['format']) ? $instance['format'] : current( array_keys( $this->formats() ) );
 		$cb_display = isset($instance['cb_display']) ? $instance['cb_display'] : array();
@@ -134,12 +140,14 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		$phones_table = '<table><tbody>';
 
 		// loop through each location, set up form
-		foreach ($location_info as $term_id => $name) {
+		foreach ($location_info as $term_id => $name)
+		{
 			$location_meta = get_term_meta( $term_id, 'location-phone-hours', true );
-			if (isset($location_meta['phones']) && count($location_meta['phones']) > 0) {
+			if (isset($location_meta['phones']) && count($location_meta['phones']) > 0)
+			{
 				$phones_table .= sprintf('<tr><td colspan="3"><strong>%s</strong></td></tr>', $name);
-				foreach ($location_meta['phones'] as $index => $phoneset) {
-
+				foreach ($location_meta['phones'] as $index => $phoneset)
+				{
 					$uid = isset( $phoneset['uid'] ) ? $phoneset['uid'] : '';
 
 					$phoneset_number = ($phoneset['phone_number']) ? $phoneset['phone_number'] : __( 'No number entered', 'inventory-presser' );
@@ -191,7 +199,8 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	}
 
 	// Updating widget replacing old instances with new
-	public function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance )
+	{
 		$instance = array();
 		$instance['title'] = ( !empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['format'] = ( !empty( $new_instance['format'] ) ) ? $new_instance['format'] : current( array_keys( $this->formats() ) );

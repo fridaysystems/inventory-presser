@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.4.0
-Stable tag: 11.1.2
+Stable tag: 11.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,15 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 
 == Changelog ==
+
+= 11.2.0 =
+* [Added] Adds a view button next to additional listing pages on our Options page.
+* [Fixed] Fixes a bug that would delete attachments when any post was deleted, not just vehicles in our post type
+* [Fixed] Fixes a bug that put an extra comma in street addresses when using the single line address output in the Address widget
+* [Fixed] Fixes a bug in a regular expression that powers our redirect rules that was preventing URLs with more than one filter criteria in them from working, like inventory/model-year/2012/make/bmw/model/528/
+* [Fixed] No longer duplicates the delete button when copying the table row to create a new additional listings page. You can't delete a page that isn't saved yet, so this button was misleading.
+* [Changed] Updates the get_book_value() method in our vehicle class to use the new, dedicated meta fields for book values rather than the serialized prices array.
+* [Changed] Changes the single vehicle shortcode to use the vehicle description stored in post meta rather than post_content. This shortcode is used when the active theme does not have a template for a single vehicle page.
 
 = 11.1.2 =
 * [Changed] Changes the tested up to version to 5.4.0
