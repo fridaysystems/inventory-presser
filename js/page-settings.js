@@ -58,7 +58,10 @@
 		re = new RegExp( 'value="[^"]+"' );
 		tr_html = tr_html.replace( re, 'value=""' );
 
-		return tr_html;
+		//remove the view link, this page doesn't exist until saved
+		var mset = jQuery(tr_html);
+		mset.find('a.button.action,button.delete-button').remove();
+		return mset[0].outerHTML;
 	}
 
 	function toggle_value_input()

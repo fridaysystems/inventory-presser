@@ -242,7 +242,7 @@ class Inventory_Presser_Options
 					}
 
 					?><tr id="row_<?php echo $a; ?>">
-						<td style="width: 100%;"><?php
+						<td><?php
 
 						//url path
 						printf(
@@ -287,7 +287,8 @@ class Inventory_Presser_Options
 
 						?></td>
 						<td>
-							<button class="button action delete-button" id="delete_<?php echo $a; ?>" title="Delete this page"><span class="dashicons dashicons-trash"></span></button>
+							<a href="<?php echo site_url( $additional_listings[$a]['url_path'] ); ?>" class="button action" title="View this page"><span class="dashicons dashicons-welcome-view-site"></span></a><?php
+							?><button class="button action delete-button" id="delete_<?php echo $a; ?>" title="Delete this page"><span class="dashicons dashicons-trash"></span></button>
 						</td>
 					</tr><?php
 

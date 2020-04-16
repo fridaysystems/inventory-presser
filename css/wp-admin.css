@@ -134,6 +134,15 @@ table.additional_listings_pages th {
     font-weight: normal;
     padding: 8px 10px;
 }
-table.additional_listings_pages .dashicons-trash{
+table.additional_listings_pages td{
+	white-space: nowrap;
+}
+table.additional_listings_pages td:first-child{
+	width: 99%;
+}
+table.additional_listings_pages .dashicons{
 	padding-top: .18em;
+}
+.wp-core-ui table.additional_listings_pages a.action{
+	margin-right: .5em;
 }
