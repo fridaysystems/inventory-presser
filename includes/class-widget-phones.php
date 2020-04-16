@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) or exit;
 class Inventory_Presser_Location_Phones extends WP_Widget
 {
 	const ID_BASE = '_invp_phone';
+	const MAX_PHONES = 10; //the maximum number of phones a single address holds
 
 	// formats for widget display.  To add more, just follow the pattern
 	function formats()
@@ -80,51 +81,69 @@ class Inventory_Presser_Location_Phones extends WP_Widget
 	// widget front-end
 	public function widget( $args, $instance )
 	{
-		if (is_array($instance['cb_display']) && count($instance['cb_display']) > 0)
+		if( ! is_array( $instance['cb_display'] ) || empty( $instance['cb_display'] ) )
 		{
-			$title = apply_filters( 'widget_title', $instance['title'] );
+			return;
+		}
 
-			$format_slugs = array_keys( $this->formats() );
-			$format = in_array($instance['format'], $format_slugs) ? $instance['format'] : $format_slugs[0];
+		// before and after widget arguments are defined by themes
+		echo $args['before_widget'];
 
-			// before and after widget arguments are defined by themes
-			echo $args['before_widget'];
-			if (!empty( $title ))
+		$title = apply_filters( 'widget_title', $instance['title'] );
+		if( ! empty( $title ) )
+		{
+			echo $args['before_title'] . $title . $args['after_title'];
+		}
+
+		$format_slugs = array_keys( $this->formats() );
+		$format = in_array($instance['format'], $format_slugs) ? $instance['format'] : $format_slugs[0];
+
+		printf(
+			'<div class="invp-%s">%s',
+			$format,
+			$this->formats()[$format]['before']
+		);
+
+		// loop through each location
+		$location_info = get_terms( 'location', array( 'fields' => 'id=>name', 'hide_empty' => false ) );
+		foreach( $location_info as $term_id => $name )
+		{
+			//Does this address even have a phone number displayed by this instance of this widget?
+			if( empty( $instance['cb_display'][$term_id] ) )
 			{
-				echo $args['before_title'] . $title . $args['after_title'];
+				//No
+				continue;
 			}
-			printf( '<div class="invp-%s">', $format );
 
-			// get all locations
-			$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
-
-			echo $this->formats()[$format]['before'];
-
-			// loop through each location
-			foreach ($location_info as $term_id => $name)
+			for( $p=1; $p<=self::MAX_PHONES; $p++ )
 			{
-				// get term meta for location
-				$location_meta = get_term_meta( $term_id, 'location-phone-hours', true );
-
-				// if any hour sets have been selected for this location
-				if (isset($instance['cb_display'][$term_id]) && is_array($instance['cb_display'][$term_id]) && count($instance['cb_display'][$term_id]) > 0 && isset($location_meta['phones']) && count($location_meta['phones']) > 0)
+				$phone_uid = get_term_meta( $term_id, 'phone_' . $p . '_uid', true );
+				if( ! $phone_uid )
 				{
-					// loop through each hour set from term meta
-					foreach ($location_meta['phones'] as $index => $phoneset)
+					break;
+				}
+
+				//There is a phone number is slot $p, has the user configured this widget to display it?
+				if( in_array( $phone_uid, $instance['cb_display'][$term_id] ) )
+				{
+					//Yes, output this number
+					$number = get_term_meta( $term_id, 'phone_' . $p . '_number', true );
+					if( $this->formats()[$format]['uses_labels'] )
 					{
-						// if the phone number has been selected, output it
-						if ( isset( $phoneset['uid'] ) && in_array($phoneset['uid'], $instance['cb_display'][$term_id] ) )
-						{
-							echo ($this->formats()[$format]['uses_labels']) ? sprintf($this->formats()[$format]['repeater'], $phoneset['phone_description'], $phoneset['phone_number']) : sprintf( $this->formats()[$format]['repeater'], $phoneset['phone_number'] );
-						}
+						$description = get_term_meta( $term_id, 'phone_' . $p . '_description', true );
+						printf( $this->formats()[$format]['repeater'], $description, $number );
+					}
+					else
+					{
+						printf( $this->formats()[$format]['repeater'], $number );
 					}
 				}
 			}
-
-			echo $this->formats()[$format]['after']
-				. '</div>'
-				. $args['after_widget'];
 		}
+
+		echo $this->formats()[$format]['after']
+			. '</div>'
+			. $args['after_widget'];
 	}
 
 	// Widget Backend
