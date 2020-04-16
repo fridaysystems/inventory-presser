@@ -974,6 +974,13 @@ g#show path:nth-child(6n) {
 
 		function delete_attachments( $post_id )
 		{
+			//Is $post_id a vehicle?
+			if( self::CUSTOM_POST_TYPE != get_post_type( $post_id ) )
+			{
+				//No, abort.
+				return;
+			}
+
 			$vehicle = new Inventory_Presser_Vehicle();
 			$vehicle->delete_attachments( $post_id );
 		}
