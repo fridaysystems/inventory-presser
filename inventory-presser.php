@@ -477,7 +477,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 					// Prepend the rewrites & queries
 					for( $n = 1; $n <= $i; $n++ )
 					{
-						$new_rewrite_rule .= '(' . implode( '|', $query_vars ) . ')/(.+?)/';
+						$new_rewrite_rule .= '(' . implode( '|', $query_vars ) . ')/([^\/]+?)/';
 						$new_query_string .= '&' . $wp_rewrite->preg_index( $n * 2 - 1 ) . '[]=' . $wp_rewrite->preg_index( $n * 2 );
 					}
 
