@@ -149,50 +149,58 @@ class Inventory_Presser_Location_Phones extends WP_Widget
 	// Widget Backend
 	public function form( $instance )
 	{
-		$title = isset($instance['title']) ? $instance['title'] : '';
-		$format = isset($instance['format']) ? $instance['format'] : current( array_keys( $this->formats() ) );
 		$cb_display = isset($instance['cb_display']) ? $instance['cb_display'] : array();
-
 		// get all locations
 		$location_info = get_terms('location', array('fields'=>'id=>name', 'hide_empty'=>false));
-
 		$phones_table = '<table><tbody>';
 
 		// loop through each location, set up form
-		foreach ($location_info as $term_id => $name)
+		foreach( $location_info as $term_id => $name )
 		{
-			$location_meta = get_term_meta( $term_id, 'location-phone-hours', true );
-			if (isset($location_meta['phones']) && count($location_meta['phones']) > 0)
+			//Output a checkbox for every phone number in this location
+			for( $p=1; $p<=self::MAX_PHONES; $p++ )
 			{
-				$phones_table .= sprintf('<tr><td colspan="3"><strong>%s</strong></td></tr>', $name);
-				foreach ($location_meta['phones'] as $index => $phoneset)
+				//Is there a phone number in this slot?
+				$phone_uid = get_term_meta( $term_id, 'phone_' . $p . '_uid', true );
+				if( ! $phone_uid )
 				{
-					$uid = isset( $phoneset['uid'] ) ? $phoneset['uid'] : '';
-
-					$phoneset_number = ($phoneset['phone_number']) ? $phoneset['phone_number'] : __( 'No number entered', 'inventory-presser' );
-
-					$cb_display_text = sprintf(
-						'<input type="checkbox" id="%s" name="%s" value="%s"%s />',
-						$this->get_field_id('cb_display'),
-						$this->get_field_name('cb_display['.$term_id.'][]'),
-						$uid,
-						checked( (isset($cb_display[$term_id]) && is_array($cb_display[$term_id]) && in_array($uid, $cb_display[$term_id])), true, false )
-					);
-
-					$phones_table .= sprintf(
-						'<tr><td>%s</td><td>%s</td><td>%s</td></tr>',
-						$cb_display_text,
-						$phoneset['phone_description'],
-						$phoneset_number
-					);
+					//No, we're done with this location
+					break;
 				}
-			}
 
+				//Only do this once per location
+				if( 1 == $p )
+				{
+					$phones_table .= sprintf('<tr><td colspan="3"><strong>%s</strong></td></tr>', $name);
+				}
+
+				$number = get_term_meta( $term_id, 'phone_' . $p . '_number', true );
+				$description = get_term_meta( $term_id, 'phone_' . $p . '_description', true );
+				$checkbox_id = $this->get_field_id( 'cb_display_' . $phone_uid );
+
+				$cb_display_text = sprintf(
+					'<input type="checkbox" id="%s" name="%s" value="%s"%s />',
+					$checkbox_id,
+					$this->get_field_name( 'cb_display[' . $term_id . '][]' ),
+					$phone_uid,
+					checked( (isset($cb_display[$term_id]) && is_array($cb_display[$term_id]) && in_array($phone_uid, $cb_display[$term_id])), true, false )
+				);
+
+				$phones_table .= sprintf(
+					'<tr><td>%s</td><td><label for="%s">%s</label></td><td><label for="%s">%s</label></td></tr>',
+					$cb_display_text,
+					$checkbox_id,
+					$description,
+					$checkbox_id,
+					$number
+				);
+			}
 		}
 
 		$phones_table .= '</tbody></table>';
 
 		// Widget admin form
+		$title = isset($instance['title']) ? $instance['title'] : '';
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title (optional):', 'inventory-presser' ); ?></label>
@@ -202,6 +210,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget
 			<label for="<?php echo $this->get_field_id('format'); ?>"><?php _e( 'Display Format:', 'inventory-presser' ); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id('format'); ?>" name="<?php echo $this->get_field_name('format'); ?>">
 			<?php
+			$format = isset($instance['format']) ? $instance['format'] : current( array_keys( $this->formats() ) );
 			foreach ($this->formats() as $key => $format_array) {
 				printf(
 					'<option value="%s"%s>%s</option>',
