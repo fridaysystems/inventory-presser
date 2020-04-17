@@ -210,7 +210,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 
 				$cb_display_text = sprintf(
 					'<input type="checkbox" id="%s" name="%s" value="%s"%s />',
-					$this->get_field_id('cb_display_' . $hours_id ),
+					$this->get_field_id('cb_display_' . $hours_uid ),
 					$this->get_field_name('cb_display['.$term_id.'][]'),
 					$hours_uid,
 					checked( true, (isset($cb_display[$term_id]) && is_array($cb_display[$term_id]) && in_array($hours_uid, $cb_display[$term_id])), false )
@@ -218,7 +218,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 
 				$cb_title_text = sprintf(
 					'<input type="checkbox" id="%s" name="%s" value="%s"%s />',
-					$this->get_field_id('cb_title_' . $hours_id ),
+					$this->get_field_id('cb_title_' . $hours_uid ),
 					$this->get_field_name('cb_title['.$term_id.'][]'),
 					$hours_uid,
 					checked( true, (isset($cb_title[$term_id]) && is_array($cb_title[$term_id]) && in_array($hours_uid, $cb_title[$term_id])), false )
