@@ -195,66 +195,6 @@ class Inventory_Presser_Taxonomies
 		}
 	}
 
-	private function meta_array_value_single( $meta, $key )
-	{
-		return isset( $meta[$key][0] ) ? $meta[$key][0] : false;
-	}
-
-	function get_hours( $term_id )
-	{
-		$hours = array();
-		$term_meta = get_term_meta( $term_id );
-
-		for( $h=1; $h<=self::LOCATION_MAX_HOURS; $h++ )
-		{
-			//Are there hours in this slot?
-			if( empty( $term_meta['hours_' . $h . '_uid'][0] ) )
-			{
-				//No, we're done with this location
-				break;
-			}
-
-			$set = array(
-				'uid'   => $term_meta['phone_' . $h . '_uid'][0],
-				'title' => $this->meta_array_value_single( $term_meta, 'hours_' . $h . '_title' ),
-			);
-
-			$days = $this->weekdays();
-			for( $d=0; $d<7; $d++ )
-			{
-				$set[$days[$d] . '_appt'] = $this->meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_appt' );
-				$set[$days[$d] . '_open'] = $this->meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_open' );
-				$set[$days[$d] . '_close'] = $this->meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_close' );
-			}
-
-			$hours[] = $set;
-		}
-		return $hours;
-	}
-
-	function get_phones( $term_id )
-	{
-		$phones = array();
-		$term_meta = get_term_meta( $term_id );
-
-		for( $p=1; $p<=self::LOCATION_MAX_PHONES; $p++ )
-		{
-			//Is there a phone number in this slot?
-			if( empty( $term_meta['phone_' . $p . '_uid'][0] ) )
-			{
-				//No, we're done with this location
-				break;
-			}
-
-			$phones[] = array(
-				'uid'         => $term_meta['phone_' . $p . '_uid'][0],
-				'description' => $this->meta_array_value_single( $term_meta, 'phone_' . $p . '_description' ),
-				'number'      => $this->meta_array_value_single( $term_meta, 'phone_' . $p . '_number' ),
-			);
-		}
-		return $phones;
-	}
-
 	function edit_location_field( $term, $taxonomy )
 	{
 		?><tr class="form-field term-group-wrap">
@@ -428,6 +368,61 @@ class Inventory_Presser_Taxonomies
 		return substr( md5( strval( rand() ) . $salt_string ), 0, 12 );
 	}
 
+	public static function get_hours( $term_id )
+	{
+		$hours = array();
+		$term_meta = get_term_meta( $term_id );
+
+		for( $h=1; $h<=self::LOCATION_MAX_HOURS; $h++ )
+		{
+			//Are there hours in this slot?
+			if( empty( $term_meta['hours_' . $h . '_uid'][0] ) )
+			{
+				//No, we're done with this location
+				break;
+			}
+
+			$set = array(
+				'uid'   => $term_meta['phone_' . $h . '_uid'][0],
+				'title' => self::meta_array_value_single( $term_meta, 'hours_' . $h . '_title' ),
+			);
+
+			$days = $this->weekdays();
+			for( $d=0; $d<7; $d++ )
+			{
+				$set[$days[$d] . '_appt'] = self::meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_appt' );
+				$set[$days[$d] . '_open'] = self::meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_open' );
+				$set[$days[$d] . '_close'] = self::meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_close' );
+			}
+
+			$hours[] = $set;
+		}
+		return $hours;
+	}
+
+	function get_phones( $term_id )
+	{
+		$phones = array();
+		$term_meta = get_term_meta( $term_id );
+
+		for( $p=1; $p<=self::LOCATION_MAX_PHONES; $p++ )
+		{
+			//Is there a phone number in this slot?
+			if( empty( $term_meta['phone_' . $p . '_uid'][0] ) )
+			{
+				//No, we're done with this location
+				break;
+			}
+
+			$phones[] = array(
+				'uid'         => $term_meta['phone_' . $p . '_uid'][0],
+				'description' => self::meta_array_value_single( $term_meta, 'phone_' . $p . '_description' ),
+				'number'      => self::meta_array_value_single( $term_meta, 'phone_' . $p . '_number' ),
+			);
+		}
+		return $phones;
+	}
+
 	static function get_term_slug( $taxonomy_name, $post_id )
 	{
 		$terms = wp_get_object_terms( $post_id, $taxonomy_name, array( 'orderby' => 'term_id', 'order' => 'ASC' ) );
@@ -579,6 +574,11 @@ class Inventory_Presser_Taxonomies
 			self::taxonomy_meta_box_html( 'location', apply_filters( 'invp_prefix_meta_key', 'location' ), $post ),
 			Inventory_Presser_Plugin::CUSTOM_POST_TYPE
 		);
+	}
+
+	private static function meta_array_value_single( $meta, $key )
+	{
+		return isset( $meta[$key][0] ) ? $meta[$key][0] : false;
 	}
 
 	//Populate our taxonomies with terms if they do not already exist
