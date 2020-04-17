@@ -256,17 +256,6 @@ class Inventory_Presser_Customize_Dashboard
 			. '<span class="wp-media-buttons-icon"></span> Delete All Media</button>';
 	}
 
-	function default_price_array_keys()
-	{
-		return array(
-			'down_payment',
-			'msrp',
-			'payment',
-			'payment_frequency',
-			'price',
-		);
-	}
-
 	function delete_all_data_and_deactivate()
 	{
 		/**
@@ -776,30 +765,6 @@ class Inventory_Presser_Customize_Dashboard
 			);
 		}
 		echo '</select></td></tr>';
-
-		//handle all other keys in the prices array, could be any keys
-		$prices_meta_key = apply_filters( 'invp_prefix_meta_key', 'prices' );
-		$prices = get_post_meta( $post->ID, $prices_meta_key, true );
-		if( is_array( $prices ) )
-		{
-			foreach( $prices as $key => $value )
-			{
-				if( ! in_array( $key, $this->default_price_array_keys() ) )
-				{
-					//this is a price we need to display
-					printf(
-						'<tr><th scope="row"><label for="%s[%s]">%s</label></th>'
-						. '<td><input type="text" name="%s[%s]" value="%s"></td></tr>',
-						$prices_meta_key,
-						$key,
-						apply_filters( 'invp_custom_price_label', $key ),
-						$prices_meta_key,
-						$key,
-						$value
-					);
-				}
-			}
-		}
 		echo '</tbody></table>';
 	}
 
@@ -1170,33 +1135,6 @@ class Inventory_Presser_Customize_Dashboard
 				update_post_meta( $post->ID, $key, $_POST[$key] );
 			}
 		}
-
-		/**
-		 * Update the prices array
-		 */
-		$price_arr_key = apply_filters( 'invp_prefix_meta_key', 'prices' );
-		$price_arr = get_post_meta( $post->ID, $price_arr_key, true );
-		if( '' == $price_arr ) { $price_arr = []; }
-
-		//our built-in prices should also live in the prices array
-		foreach( $this->default_price_array_keys() as $key )
-		{
-			if( isset( $_POST[ apply_filters( 'invp_prefix_meta_key', $key ) ] ) )
-			{
-				$price_arr[$key] = $_POST[ apply_filters( 'invp_prefix_meta_key', $key ) ];
-			}
-		}
-
-		//other custom prices
-		if( isset( $_POST[ $price_arr_key ] ) )
-		{
-			foreach( $_POST[ $price_arr_key ] as $key => $value )
-			{
-				$price_arr[$key] = $value;
-			}
-		}
-
-		update_post_meta( $post->ID, $price_arr_key, $price_arr );
 
 		/**
 		 * Loop over the keys in the $_POST object to find all the options
