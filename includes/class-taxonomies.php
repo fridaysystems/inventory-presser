@@ -195,27 +195,61 @@ class Inventory_Presser_Taxonomies
 		}
 	}
 
+	private function meta_array_value_single( $meta, $key )
+	{
+		return isset( $meta[$key][0] ) ? $meta[$key][0] : false;
+	}
+
+	function get_hours( $term_id )
+	{
+		$hours = array();
+		$term_meta = get_term_meta( $term_id );
+
+		for( $h=1; $h<=self::LOCATION_MAX_HOURS; $h++ )
+		{
+			//Are there hours in this slot?
+			if( empty( $term_meta['hours_' . $h . '_uid'][0] ) )
+			{
+				//No, we're done with this location
+				break;
+			}
+
+			$set = array(
+				'uid'   => $term_meta['phone_' . $h . '_uid'][0],
+				'title' => $this->meta_array_value_single( $term_meta, 'hours_' . $h . '_title' ),
+			);
+
+			$days = $this->weekdays();
+			for( $d=0; $d<7; $d++ )
+			{
+				$set[$days[$d] . '_appt'] = $this->meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_appt' );
+				$set[$days[$d] . '_open'] = $this->meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_open' );
+				$set[$days[$d] . '_close'] = $this->meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_close' );
+			}
+
+			$hours[] = $set;
+		}
+		return $hours;
+	}
+
 	function get_phones( $term_id )
 	{
 		$phones = array();
-
 		$term_meta = get_term_meta( $term_id );
-		error_log( '$term_meta = ' . print_r( $term_meta, true ) );
 
 		for( $p=1; $p<=self::LOCATION_MAX_PHONES; $p++ )
 		{
 			//Is there a phone number in this slot?
-			$phone_uid = get_term_meta( $term_id, 'phone_' . $p . '_uid', true );
-			if( ! $phone_uid )
+			if( empty( $term_meta['phone_' . $p . '_uid'][0] ) )
 			{
 				//No, we're done with this location
 				break;
 			}
 
 			$phones[] = array(
-				'uid'         => $phone_uid,
-				'description' => get_term_meta( $term_id, 'phone_' . $p . '_description', true ),
-				'number'      => get_term_meta( $term_id, 'phone_' . $p . '_number', true ),
+				'uid'         => $term_meta['phone_' . $p . '_uid'][0],
+				'description' => $this->meta_array_value_single( $term_meta, 'phone_' . $p . '_description' ),
+				'number'      => $this->meta_array_value_single( $term_meta, 'phone_' . $p . '_number' ),
 			);
 		}
 		return $phones;
@@ -279,9 +313,11 @@ class Inventory_Presser_Taxonomies
 				<div class="repeat-group">
 					<div class="repeat-container"><?php
 
-					if ( isset( $location_meta['hours'] ) )
+					$hours_sets = $this->get_hours( $term->term_id );
+					$days = $this->weekdays();
+					if( ! empty( $hours_sets ) )
 					{
-						foreach ( $location_meta['hours'] as $index => $hours )
+						foreach( $hours_sets as $hours )
 						{
 
 						?><div class="repeated">
@@ -300,23 +336,23 @@ class Inventory_Presser_Taxonomies
 									</thead>
 									<tbody><?php
 
-										foreach ( $this->weekdays() as $index => $day )
+										for( $d=0; $d<7; $d++)
 										{
 
 										?><tr>
-										<td><?php echo $day ?></td>
-										<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text" value="<?php echo $hours[$index]['open'] ?>"></td>
+										<td><?php echo ucfirst( substr( $days[$d], 0, 3 ) ); ?></td>
+										<td><input name="hours[<?php echo $d ?>][open][]" class="timepick" type="text" value="<?php echo $hours[$days[$d] . '_open'] ?>"></td>
 										<td>to</td>
-										<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text" value="<?php echo $hours[$index]['close'] ?>"></td>
+										<td><input name="hours[<?php echo $d ?>][close][]" class="timepick" type="text" value="<?php echo $hours[$days[$d] . '_close'] ?>"></td>
 										<td>
-											<select name="hours[<?php echo $index ?>][appt][]" autocomplete="off">
-												<option value="0"<?php echo ($hours[$index]['appt'] == '0') ? ' selected' : ''; ?>><?php _e( 'No', 'inventory-presser' ); ?></option>
-												<option value="1"<?php echo ($hours[$index]['appt'] == '1') ? ' selected' : ''; ?>><?php _e( 'Yes', 'inventory-presser' ); ?></option>
+											<select name="hours[<?php echo $d ?>][appt][]" autocomplete="off">
+												<option value="0"<?php echo ($hours[$days[$d] . '_appt'] == '0') ? ' selected' : ''; ?>><?php _e( 'No', 'inventory-presser' ); ?></option>
+												<option value="1"<?php echo ($hours[$days[$d] . '_appt'] == '1') ? ' selected' : ''; ?>><?php _e( 'Yes', 'inventory-presser' ); ?></option>
 											</select>
 										</td>
 									</tr><?php
 
-									}
+										}
 
 								?></tbody>
 							</table>
@@ -347,16 +383,16 @@ class Inventory_Presser_Taxonomies
 								</thead>
 								<tbody><?php
 
-									foreach ( $this->weekdays() as $index => $day )
+									foreach ( $this->weekdays() as $d => $day )
 									{
 
 									?><tr>
-										<td><?php echo $day ?></td>
-										<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text"></td>
+										<td><?php echo ucfirst( substr( $days[$d], 0, 3 ) ); ?></td>
+										<td><input name="hours[<?php echo $d ?>][open][]" class="timepick" type="text"></td>
 										<td>to</td>
-										<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text"></td>
+										<td><input name="hours[<?php echo $d ?>][close][]" class="timepick" type="text"></td>
 										<td>
-											<select name="hours[<?php echo $index ?>][appt][]">
+											<select name="hours[<?php echo $d ?>][appt][]">
 												<option value="0"><?php _e( 'No', 'inventory-presser' ); ?></option>
 												<option value="1"><?php _e( 'Yes', 'inventory-presser' ); ?></option>
 											</select>
@@ -1304,13 +1340,13 @@ class Inventory_Presser_Taxonomies
 	private function weekdays()
 	{
 		return array(
-			__( 'Mon', 'inventory-presser' ),
-			__( 'Tue', 'inventory-presser' ),
-			__( 'Wed', 'inventory-presser' ),
-			__( 'Thu', 'inventory-presser' ),
-			__( 'Fri', 'inventory-presser' ),
-			__( 'Sat', 'inventory-presser' ),
-			__( 'Sun', 'inventory-presser' ),
+			'monday',
+			'tuesday',
+			'wednesday',
+			'thursday',
+			'friday',
+			'saturday',
+			'sunday',
 		);
 	}
 }
