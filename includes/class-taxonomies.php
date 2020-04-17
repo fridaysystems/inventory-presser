@@ -195,20 +195,44 @@ class Inventory_Presser_Taxonomies
 		}
 	}
 
+	function get_phones( $term_id )
+	{
+		$phones = array();
+
+		$term_meta = get_term_meta( $term_id );
+		error_log( '$term_meta = ' . print_r( $term_meta, true ) );
+
+		for( $p=1; $p<=self::LOCATION_MAX_PHONES; $p++ )
+		{
+			//Is there a phone number in this slot?
+			$phone_uid = get_term_meta( $term_id, 'phone_' . $p . '_uid', true );
+			if( ! $phone_uid )
+			{
+				//No, we're done with this location
+				break;
+			}
+
+			$phones[] = array(
+				'uid'         => $phone_uid,
+				'description' => get_term_meta( $term_id, 'phone_' . $p . '_description', true ),
+				'number'      => get_term_meta( $term_id, 'phone_' . $p . '_number', true ),
+			);
+		}
+		return $phones;
+	}
+
 	function edit_location_field( $term, $taxonomy )
 	{
-		// get current term meta
-		$location_meta = get_term_meta( $term->term_id, 'location-phone-hours', true );
-
 		?><tr class="form-field term-group-wrap">
 			<th scope="row"><label><?php _e( 'Phone Numbers', 'inventory-presser' ); ?></label></th>
 			<td>
 				<div class="repeat-group">
 					<div class="repeat-container"><?php
 
-					if ( isset( $location_meta['phones'] ) )
+					$phones = $this->get_phones( $term->term_id );
+					if( ! empty( $phones ) )
 					{
-						foreach ( $location_meta['phones'] as $index => $phone )
+						foreach( $phones as $phone )
 						{
 							?><div class="repeated">
 							<div class="repeat-form"><?php
@@ -218,9 +242,9 @@ class Inventory_Presser_Taxonomies
 								. '<input type="text" name="phone_description[]" value="%s" placeholder="%s" />'
 								. '<input type="text" name="phone_number[]" value="%s" placeholder="%s" />',
 								$phone['uid'],
-								$phone['phone_description'],
+								$phone['description'],
 								__( 'Label', 'inventory-presser' ),
-								$phone['phone_number'],
+								$phone['number'],
 								__( 'Number', 'inventory-presser' )
 							);
 
