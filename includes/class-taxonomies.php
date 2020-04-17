@@ -13,6 +13,8 @@ defined( 'ABSPATH' ) or exit;
 class Inventory_Presser_Taxonomies
 {
 	const CRON_HOOK_DELETE_TERMS = 'inventory_presser_delete_unused_terms';
+	const LOCATION_MAX_PHONES = 10; //the maximum number of phones a single address holds
+	const LOCATION_MAX_HOURS = 5; //the maximum number of sets of hours a single address holds
 
 	function add_api_term_meta_workaround_fields()
 	{

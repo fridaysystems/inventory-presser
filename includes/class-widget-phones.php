@@ -4,7 +4,6 @@ defined( 'ABSPATH' ) or exit;
 class Inventory_Presser_Location_Phones extends WP_Widget
 {
 	const ID_BASE = '_invp_phone';
-	const MAX_PHONES = 10; //the maximum number of phones a single address holds
 
 	// formats for widget display.  To add more, just follow the pattern
 	function formats()
@@ -115,7 +114,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget
 				continue;
 			}
 
-			for( $p=1; $p<=self::MAX_PHONES; $p++ )
+			for( $p=1; $p<=Inventory_Presser_Taxonomies::LOCATION_MAX_PHONES; $p++ )
 			{
 				$phone_uid = get_term_meta( $term_id, 'phone_' . $p . '_uid', true );
 				if( ! $phone_uid )
@@ -158,7 +157,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget
 		foreach( $location_info as $term_id => $name )
 		{
 			//Output a checkbox for every phone number in this location
-			for( $p=1; $p<=self::MAX_PHONES; $p++ )
+			for( $p=1; $p<=Inventory_Presser_Taxonomies::LOCATION_MAX_PHONES; $p++ )
 			{
 				//Is there a phone number in this slot?
 				$phone_uid = get_term_meta( $term_id, 'phone_' . $p . '_uid', true );
