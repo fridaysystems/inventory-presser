@@ -420,38 +420,12 @@ class Inventory_Presser_Taxonomies
 	/**
 	 * Creates a unique ID for a phone number or set of hours.
 	 *
-	 * Phone numbers and hours are saved as term meta in our location taxonomy.
-	 * When a phone number or set of hours is created, we want to save a unique
-	 * ID with it so that it can be identified in the array of phones and hours
-	 * even if it's label changes.
-	 *
-	 * @since 7.0.0
-	 *
-	 * @param int $term_id The ID of the term in the location taxonomy.
-	 * @param array $others The other phone numbers or hours sets in the meta
-	 * value, used to make sure the return value is unique amongst the set.
-	 * @return string A string of digits.
+	 * @param string $salt_string Any string to be combined with rand() as the value to pass to md5()
+	 * @return string A string of 12 characters.
 	 */
-	function generate_location_uid( $term_id, $others )
+	function generate_location_uid( $salt_string = null )
 	{
-		$dt = new DateTime();
-		$uid = $term_id . $dt->format('su'); //s = seconds, u = microseconds
-		$unique = false;
-		while( ! $unique )
-		{
-			$dt = new DateTime();
-			$uid = $term_id . $dt->format('su'); //s = seconds, u = microseconds
-			$unique = true;
-			foreach( $others as $other )
-			{
-				if( isset( $other['uid'] ) && $uid == $other['uid'] )
-				{
-					$unique = false;
-					break;
-				}
-			}
-		}
-		return $uid;
+		return substr( md5( strval( rand() ) . $salt_string ), 0, 12 );
 	}
 
 	static function get_term_slug( $taxonomy_name, $post_id )
@@ -781,82 +755,96 @@ class Inventory_Presser_Taxonomies
 			return;
 		}
 
-		$meta_final = array(
-			'phones' => array(),
-			'hours'  => array(),
-		);
-
 		// HOURS
-		$count = count( $_POST['hours_title'] ) - 2;
-
-		for ( $i = 0; $i <= $count; $i++ )
+		$hours_count = sizeof( $_POST['hours_title'] ) - 1;
+		for ( $i = 0; $i <= $hours_count; $i++ )
 		{
-			$has_data = false;
-
-			$this_hours = array();
-
 			// if this is an update, carry the id through
+			$uid = '';
 			if ( isset( $_POST['hours_uid'][$i] ) )
 			{
-				$this_hours['uid'] = $_POST['hours_uid'][$i];
+				$uid = sanitize_text_field( $_POST['hours_uid'][$i] );
 			}
 			else
 			{
 				//generate a unique id for these hours
-				$this_hours['uid'] = $this->generate_location_uid( $term_id, $meta_final['hours'] );
+				$uid = $this->generate_location_uid( $term_id . '_hours_' . $i );
 			}
+			update_term_meta( $term_id, 'hours_' . strval($i+1) . '_uid', $uid );
+
 			// title of hours set
-			$this_hours['title'] = sanitize_text_field( $_POST['hours_title'][$i] );
+			update_term_meta( $term_id, 'hours_' . strval($i+1) . '_title', sanitize_text_field( $_POST['hours_title'][$i] ) );
 
-			// add daily hours info to the final array, check to make sure there's data
-			foreach ( $_POST['hours'] as $day => $harray )
+			foreach( $this->weekdays() as $d => $day )
 			{
-				$open = sanitize_text_field( $harray['open'][$i] );
-				$close = sanitize_text_field( $harray['close'][$i] );
-				$appt = sanitize_text_field( $harray['appt'][$i] );
-				if ( !$has_data && ( $open || $close || $appt == '1' ) )
-				{
-					$has_data = true;
-				}
-				$this_hours[$day] = array(
-					'open'  => $open,
-					'close' => $close,
-					'appt'  => $appt,
-				);
-			}
-
-			if ( $has_data )
-			{
-				$meta_final['hours'][] = $this_hours;
+				update_term_meta( $term_id, 'hours_' . strval($i+1) . '_' . $day . '_appt', sanitize_text_field( $_POST['hours'][$d]['appt'][$i] ) );
+				update_term_meta( $term_id, 'hours_' . strval($i+1) . '_' . $day . '_open', sanitize_text_field( $_POST['hours'][$d]['open'][$i] ) );
+				update_term_meta( $term_id, 'hours_' . strval($i+1) . '_' . $day . '_close', sanitize_text_field( $_POST['hours'][$d]['close'][$i] ) );
 			}
 		}
 
 		// PHONE NUMBERS
+		$phones_count = 0;
 		foreach ( $_POST['phone_number'] as $i => $phone_number )
 		{
 			$phone_number = sanitize_text_field( $phone_number );
-			if ( $phone_number )
+			if( empty( $phone_number ) )
 			{
-				$this_phone = array(
-					'phone_number' => $phone_number,
-					'phone_description' => sanitize_text_field( $_POST['phone_description'][$i] ),
-				);
-				// if this is an update, carry the id through
-				if ( isset( $_POST['phone_uid'][$i] ) )
-				{
-					$this_phone['uid'] = $_POST['phone_uid'][$i];
-				}
-				else
-				{
-					//generate a unique id for this phone number
-					$this_phone['uid'] = $this->generate_location_uid( $term_id, $meta_final['phones'] );
-				}
-				// add this phone number to meta array
-				$meta_final['phones'][] = $this_phone;
+				continue;
 			}
+
+			update_term_meta( $term_id, 'phone_' . strval($i+1) . '_number', $phone_number );
+			update_term_meta( $term_id, 'phone_' . strval($i+1) . '_description', sanitize_text_field( $_POST['phone_description'][$i] ) );
+
+			// if this is an update, carry the id through
+			$uid = '';
+			if ( isset( $_POST['phone_uid'][$i] ) )
+			{
+				$uid = $_POST['phone_uid'][$i];
+			}
+			else
+			{
+				//generate a unique id for this phone number
+				$uid = $this->generate_location_uid( $term_id . '_phone_' . $i );
+			}
+			update_term_meta( $term_id, 'phone_' . strval($i+1) . '_uid', $uid );
+
+			$phones_count++;
 		}
 
-		update_term_meta( $term_id, 'location-phone-hours', $meta_final );
+		//delete phones and hours in slots higher than we just filled or deletes are not possible
+		for( $h=$hours_count+1; $h<self::LOCATION_MAX_HOURS; $h++ )
+		{
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_uid' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_title' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_sunday_appt' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_sunday_open' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_sunday_close' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_saturday_appt' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_saturday_open' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_saturday_close' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_friday_appt' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_friday_open' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_friday_close' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_thursday_appt' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_thursday_open' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_thursday_close' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_wednesday_appt' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_wednesday_open' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_wednesday_close' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_tuesday_appt' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_tuesday_open' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_tuesday_close' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_monday_appt' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_monday_open' );
+			delete_term_meta( $term_id, 'hours_' . strval($h) . '_monday_close' );
+		}
+		for( $p=$phones_count+1; $p<self::LOCATION_MAX_PHONES; $p++ )
+		{
+			delete_term_meta( $term_id, 'phone_' . strval($p) . '_uid' );
+			delete_term_meta( $term_id, 'phone_' . strval($p) . '_description' );
+			delete_term_meta( $term_id, 'phone_' . strval($p) . '_number' );
+		}
 	}
 
 	//save custom taxonomy terms when vehicles are saved
