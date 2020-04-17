@@ -33,15 +33,21 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 
 		$cb_showclosed = (isset($instance['cb_showclosed']) && $instance['cb_showclosed'] == 'true');
 
-		// before and after widget arguments are defined by themes TODO??
-		echo $args['before_widget'];
+		/**
+		 * Hold the HTML that begins the widget until we're sure we're going to
+		 * output something.
+		 */
+		$html = '';
+
+		// before and after widget arguments are defined by themes
+		$html .= $args['before_widget'];
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		if ( ! empty( $title ) )
 		{
-			echo $args['before_title'] . $title . $args['after_title'];
+			$html .= $args['before_title'] . $title . $args['after_title'];
 		}
-		echo '<div class="invp-hours">';
+		$html .= '<div class="invp-hours">';
 
 		// get all locations
 		$location_info = get_terms( 'location', array( 'fields' => 'id=>name', 'hide_empty' => false ) );
@@ -67,6 +73,17 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 				//There are hours in is slot $h, has the user configured this widget to display it?
 				if( in_array( $hours_uid, $instance['cb_display'][$term_id] ) )
 				{
+					/**
+					 * The first time we reach this block, we can be sure we have
+					 * some hours content to output in the widget, so dump the
+					 * preamble $html.
+					 */
+					if( ! empty( $html ) )
+					{
+						echo $html;
+						$html = '';
+					}
+
 					$hours_title = '';
 					if( ! empty( $instance['cb_title'][$term_id] )
 						&& is_array( $instance['cb_title'][$term_id] )
@@ -163,7 +180,11 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 				}
 			}
 		}
-		echo '</div>'. $args['after_widget'];
+		//Only output HTML here if $html has been emptied, that means it was echoed
+		if( empty( $html ) )
+		{
+			echo '</div>'. $args['after_widget'];
+		}
 	}
 
 	// Widget Backend
