@@ -400,7 +400,7 @@ class Inventory_Presser_Taxonomies
 		return $hours;
 	}
 
-	function get_phones( $term_id )
+	public static function get_phones( $term_id )
 	{
 		$phones = array();
 		$term_meta = get_term_meta( $term_id );
