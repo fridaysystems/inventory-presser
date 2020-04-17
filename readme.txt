@@ -70,6 +70,10 @@ This plugin requires a few page templates to display listing pages and vehicle d
 * [Fixed] No longer duplicates the delete button when copying the table row to create a new additional listings page. You can't delete a page that isn't saved yet, so this button was misleading.
 * [Changed] Updates the get_book_value() method in our vehicle class to use the new, dedicated meta fields for book values rather than the serialized prices array.
 * [Changed] Changes the single vehicle shortcode to use the vehicle description stored in post meta rather than post_content. This shortcode is used when the active theme does not have a template for a single vehicle page.
+* [Changed] Rewrites the Hours and Phone Number widgets to use the nonserialized location meta values.
+* [Changed] Creating and editing of hours and phone numbers in the dashboard no longer uses the serialized location meta values.
+* [Changed] No longer shows the Google Maps Widget if a the location term cannot be found. Previously, a map pointing at no specific address would show.
+* [Removed] Removes references to the serialized prices array other than the registration of the meta key itself.
 
 = 11.1.2 =
 * [Changed] Changes the tested up to version to 5.4.0
