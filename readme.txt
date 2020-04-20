@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.4.0
-Stable tag: 11.2.0
+Stable tag: 11.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,11 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 
 == Changelog ==
+
+= 11.2.1 =
+* [Fixed] Fixes a bug to account for when connections to carfax.com fail and icons cannot be retrieved. Now falls back to the icons that are bundled with this plugin.
+* [Fixed] Fixes a bug that was sending 'auto' into wp_constrain_dimensions() instead of a numeric pixel value of the height of the image.
+* [Fixed] Fixes a bug that would cause the Hours widget to only be partially output if there were no sets of hours to display. Now, the widget will vanish entirely.
 
 = 11.2.0 =
 * [Added] Adds a view button next to additional listing pages on our Options page.
