@@ -350,10 +350,11 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				'orderby'        => 'meta_value_num',
 				'post_mime_type' => 'image',
 				'post_parent'    => $this->post_ID,
+				'post_status'    => 'inherit',
 				'post_type'      => 'attachment',
 			);
 
-			$images = get_children( $image_args );
+			$images = get_posts( $image_args );
 
 			$image_urls = array();
 			foreach( $images as $image )
@@ -362,7 +363,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				{
 					$img_element = wp_get_attachment_image(
 						$image->ID,
-						$size == 'large' ? array( '1024', 'auto' ) : $size,
+						$size,
 						false,
 						array( 'class' => "attachment-$size size-$size invp-image" )
 					);
