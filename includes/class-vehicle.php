@@ -161,6 +161,13 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				return '';
 			}
 
+			$svg = $this->carfax_icon_svg();
+			if( empty( $svg ) )
+			{
+				//We might have tried to download an SVG from carfax.com and failed
+				return '';
+			}
+
 			return sprintf(
 				'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
 				$this->carfax_report_url(),
@@ -176,6 +183,8 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * A setting this plugin provides allows users to cede control of the
 		 * <svg> payload to Carfax, by using an SVG provided by a URL instead of
 		 * the .svg files that ship with this plugin.
+		 *
+		 * @return string An <svg> HTML element or empty string
 		 */
 		function carfax_icon_svg()
 		{
@@ -192,27 +201,43 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			if( empty( $svg_path ) || ! $settings['use_carfax_provided_buttons'] )
 			{
 				//fallback to the icon that ships with this plugin
-				$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
-				if( $this->is_carfax_one_owner() )
-				{
-					$svg_path .= '-1-owner';
-				}
-				$svg_path .= '.svg';
-				$svg_element = file_get_contents( $svg_path );
+				return $this->carfax_icon_svg_bundled();
 			}
 			else
 			{
 				$svg_element = file_get_contents( $svg_path );
-				/**
-				 * Change CSS class names in Carfax icons hosted by Carfax. They
-				 * didn't anticipate anyone displaying them inline, and they
-				 * get real goofy with certain combinations of duplicate CSS
-				 * class names on the page.
-				 */
-				$stock_number_letters_and_digits = preg_replace( '/[^a-zA-Z0-9]+/', '', $this->stock_number );
-				$svg_element = preg_replace( '/(cls\-[0-9]+)/', '$1-' . $stock_number_letters_and_digits, $svg_element );
+				if( false !== $svg_element )
+				{
+					/**
+					 * Change CSS class names in Carfax icons hosted by Carfax. They
+					 * didn't anticipate anyone displaying them inline, and they
+					 * get real goofy with certain combinations of duplicate CSS
+					 * class names on the page.
+					 */
+					$stock_number_letters_and_digits = preg_replace( '/[^a-zA-Z0-9]+/', '', $this->stock_number );
+					return preg_replace( '/(cls\-[0-9]+)/', '$1-' . $stock_number_letters_and_digits, $svg_element );
+				}
+				//SVG download from carfax.com failed, fall back to bundled icon
+				return $this->carfax_icon_svg_bundled();
 			}
-			return $svg_element;
+		}
+
+		/**
+		 * Carfax icons are bundled with this plugin, and this method returns
+		 * one of them as an <svg> element.
+		 *
+		 * @return string An <svg> HTML element or empty string if the asset cannot be found or loaded
+		 */
+		private function carfax_icon_svg_bundled()
+		{
+			$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
+			if( $this->is_carfax_one_owner() )
+			{
+				$svg_path .= '-1-owner';
+			}
+			$svg_path .= '.svg';
+			$svg_element = file_get_contents( $svg_path );
+			return ( false === $svg_element ? '' : $svg_element );
 		}
 
 		function carfax_report_url()
