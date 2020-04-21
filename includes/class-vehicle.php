@@ -205,7 +205,13 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			}
 			else
 			{
-				$svg_element = file_get_contents( $svg_path );
+				/**
+				 * Suppressing two warnings with the @ in front of
+				 * file_get_contents() is a short-term fix
+				 *  - SSL: Handshake timed out
+				 *  - Failed to enable crypto
+				 */
+				$svg_element = @file_get_contents( $svg_path );
 				if( false !== $svg_element )
 				{
 					/**
