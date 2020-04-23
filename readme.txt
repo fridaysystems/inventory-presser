@@ -70,6 +70,9 @@ This plugin requires a few page templates to display listing pages and vehicle d
 
 == Upgrade Notice ==
 
+= 11.2.1 =
+Version 11.2.1 is the first polished release after the elimination of serialized meta fields. The plugin is now much more secure when it uses vehicle data written via the REST API because allowing remote writes of serialized data risks PHP Object Injection.
+
 = 8.6.0 =
 This is the minimum version required for compatibility with the block editor launched in WordPress 5.0 and a new add-on called [Inventory Presser Elementor Add-on](https://inventorypresser.com/products/plugins/elementor-add-on/). This plugin adds vehicle fields to Elementor's list of Dynamic Tags.
 
