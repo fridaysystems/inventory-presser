@@ -42,16 +42,16 @@ Built the right way and developer-friendly
 == Frequently Asked Questions ==
 
 = How much does this plugin cost? =
-This plugin is free. Free and paid add-ons are available at https://inventorypresser.com/.
+This plugin is free and open source. Free and paid add-ons and services are available at https://inventorypresser.com/.
 
 = Does it decode VINs? =
-Not for free. We have a VIN decoder add-on available at https://inventorypresser.com/. If you know of a free VIN decoder that allows automated, public queries, please show us.
+Not for free. We have a VIN decoder add-on available at https://inventorypresser.com/. If you know of a free VIN decoder that allows many automated, public queries, please show us.
 
 = Can I import my inventory into this system with a bulk feed? =
-Yes. The best way to do this to use the [WordPress REST API](https://developer.wordpress.org/rest-api/). Vehicles are stored in a custom post type, so other options are certainly available. Our first importer was based on a fork of the XML-based [WordPress Importer](https://wordpress.org/plugins/wordpress-importer/). Many CSV/spreadsheet importer plugins work with custom post types as well. If this sounds challenging, Friday Systems feeds many site running Inventory Presser, and it may be easier to feed there and let Friday Systems handle the last leg.
+Yes. The way we do it is with the [WordPress REST API](https://developer.wordpress.org/rest-api/). Vehicles in Inventory Presser are stored in a custom post type using meta fields, taxonomy terms, and photo attachments, and many CSV/spreadsheet importer plugins work with custom post types. Our first importer was based on a fork of the XML-based [WordPress Importer](https://wordpress.org/plugins/wordpress-importer/). If imports sound challenging, Friday Systems (that's us) feeds many sites running this plugin, and it may be easier to feed there and let Friday Systems handle the last leg.
 
-= Does Inventory Presser work with my theme? =
-This plugin requires a few page templates to display listing pages and vehicle detail pages that contain the many attributes that describe a vehicle. To make creating these templates easy, we've released [Lift Kit](https://github.com/fridaysystems/lift-kit), a free set of files that can be added to any WordPress theme or child theme to quickly achieve compatibility. Themes designed for this plugin can also be seen and bought at https://inventorypresser.com/.
+= Will Inventory Presser work with my theme? =
+Yes. If your theme does not include templates to display listing pages and vehicle detail pages, the plugin will provide the markup for those pages automatically. You may certainly design custom templates, too. To make creating templates easy, we released [Lift Kit](https://github.com/fridaysystems/lift-kit), a free set of files that can be added to any WordPress theme or child theme to quickly achieve compatibility.
 
 
 == Screenshots ==
