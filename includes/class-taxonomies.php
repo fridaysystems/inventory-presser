@@ -16,33 +16,6 @@ class Inventory_Presser_Taxonomies
 	const LOCATION_MAX_PHONES = 10; //the maximum number of phones a single address holds
 	const LOCATION_MAX_HOURS = 5; //the maximum number of sets of hours a single address holds
 
-	function add_api_term_meta_workaround_fields()
-	{
-		//location-phone-hours
-		register_rest_field( 'location', 'location-phone-hours', array(
-
-			'get_callback'    => function( $term, $attr, $request, $object_type ) {
-				$term_id = ( is_array( $term ) ? $term['id'] : $term->term_id );
-				return maybe_serialize( get_term_meta( $term_id, $attr, true ) );
-			},
-
-			'update_callback' => function( $value, $term, $attr, $request, $object_type ) {
-				$value = maybe_unserialize( $value );
-				$old_value = get_term_meta( $term->term_id, $attr, true );
-				$result = isset( $term->term_id ) && update_term_meta( $term->term_id, $attr, $value, $old_value );
-				if( true !== $result ) {
-					$result = add_term_meta( $term->term_id, $attr, $value, true );
-				}
-			},
-
-			'schema'          => array(
-				'description' => __( 'An array of phone numbers and hours of operation for this location.', 'inventory-presser' ),
-				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
-			),
-		) );
-	}
-
 	/* location taxonomy */
 	function add_location_fields( $taxonomy )
 	{
@@ -439,7 +412,6 @@ class Inventory_Presser_Taxonomies
 		//create custom taxonomies for vehicles
 		add_action( 'init', array( $this, 'create_taxonomies' ) );
 		add_action( 'init', array( $this, 'register_meta' ) );
-		add_action( 'rest_api_init', array( $this, 'add_api_term_meta_workaround_fields' ) );
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_term_data' ) );
 
