@@ -628,12 +628,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type'   => 'string',
 				),
 				array(
-					'label'         => __( 'Options', 'inventory_presser' ),
-					'name'          => 'option_array',
-					'type'          => null, //'string',
-					'is_serialized' => true,
-				),
-				array(
 					'label' => __( 'Options', 'inventory_presser' ),
 					'name'  => 'options',
 					'type'  => 'string',
@@ -655,12 +649,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'name'   => 'price',
 					'sample' => 13499,
 					'type'   => 'number',
-				),
-				array(
-					'label'         => __( 'Prices', 'inventory_presser' ),
-					'name'          => 'prices',
-					'type'          => null, //'string',
-					'is_serialized' => true,
 				),
 				array(
 					'label'  => __( 'Stock Number', 'inventory_presser' ),

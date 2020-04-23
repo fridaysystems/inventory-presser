@@ -330,36 +330,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 					),
 				)
 			);
-
-			//option_array
-			register_rest_field(
-				self::CUSTOM_POST_TYPE,
-				apply_filters( 'invp_prefix_meta_key', 'option_array' ),
-				array(
-					'get_callback'    => array( $this, 'get_serialized_value_for_rest' ),
-					'update_callback' => array( $this, 'set_serialized_meta_value' ),
-					'schema'          => array(
-						'description' => __( 'An array of vehicle options', 'inventory-presser' ),
-						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
-					),
-				)
-			);
-
-			//prices
-			register_rest_field(
-				self::CUSTOM_POST_TYPE,
-				apply_filters( 'invp_prefix_meta_key', 'prices' ),
-				array(
-					'get_callback'    => array( $this, 'get_serialized_value_for_rest' ),
-					'update_callback' => array( $this, 'set_serialized_meta_value' ),
-					'schema'          => array(
-						'description' => __( 'An array of vehicle prices including asking price, MSRP, and down payment', 'inventory-presser' ),
-						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
-					),
-				)
-			);
 		}
 
 		/**
