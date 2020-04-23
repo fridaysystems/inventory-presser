@@ -1,0 +1,466 @@
+= 11.2.0 =
+* [Added] Adds a view button next to additional listing pages on our Options page.
+* [Fixed] Fixes a bug that would delete attachments when any post was deleted, not just vehicles in our post type
+* [Fixed] Fixes a bug that put an extra comma in street addresses when using the single line address output in the Address widget
+* [Fixed] Fixes a bug in a regular expression that powers our redirect rules that was preventing URLs with more than one filter criteria in them from working, like inventory/model-year/2012/make/bmw/model/528/
+* [Fixed] No longer duplicates the delete button when copying the table row to create a new additional listings page. You can't delete a page that isn't saved yet, so this button was misleading.
+* [Changed] Updates the get_book_value() method in our vehicle class to use the new, dedicated meta fields for book values rather than the serialized prices array.
+* [Changed] Changes the single vehicle shortcode to use the vehicle description stored in post meta rather than post_content. This shortcode is used when the active theme does not have a template for a single vehicle page.
+* [Changed] Rewrites the Hours and Phone Number widgets to use the nonserialized location meta values.
+* [Changed] Creating and editing of hours and phone numbers in the dashboard no longer uses the serialized location meta values.
+* [Changed] No longer shows the Google Maps Widget if a the location term cannot be found. Previously, a map pointing at no specific address would show.
+* [Removed] Removes references to the serialized prices array other than the registration of the meta key itself.
+
+= 11.1.2 =
+* [Changed] Changes the tested up to version to 5.4.0
+* [Changed] Makes the post meta key prefix of `inventory_presser_` optional in the `orderby` querystring parameter for nicer looking URLs
+* [Fixed] Fixes a bug where sorting vehicle archives by odometer would not work if odometer values contained commas
+* [Fixed] Prevents our post meta key prefix remover from damaging a key that does not have the prefix
+
+= 11.1.1 =
+* [Fixed] Fixes a bug introduced with version 11.0.0 to prevent the default menu label for vehicle archives from changing to All Vehicles. Changes it back to Inventory. Only the first menu label under Vehicles in the dashboard was intended to be changed.
+
+= 11.1.0 =
+* [Added] Adds term meta fields to hold the pieces of the street address, phone numbers, and sets of hours of operation in the location taxonomy.
+
+= 11.0.0 =
+* [Added] Adds two meta fields `book_value_kbb` and `book_value_nada` to hold prices provided by Kelley Blue Book and NADA Guides.
+* [Added] Adds meta fields to hold EPA Fuel Economy stats `fuel_economy_annual_consumption`, `fuel_economy_annual_cost`, `fuel_economy_annual_emissions`, `fuel_economy_city`, `fuel_economy_combined`, and `fuel_economy_highway`.
+* [Changed] No longer stores vehicle options as a serialized array in a meta field `option_array`.
+* [Added] A new meta field `options` contains a CSV string of vehicle options.
+* [Changed] No longer stores the vehicle description in post_content of the custom post type. This breaking change must occur so that we can being using the editor blocks provided by this plugin to define the appearance of posts regardless of a site's theme.
+* [Added] A new meta field `description` holds the sentence-form vehicle description.
+* [Fixed] Fixes a bug that prevented Attachments from being deleted when Vehicles were deleted.
+* [Fixed] Fixes a bug in the EPA Fuel Economy widget that prevents the entire widget from showing if a critical stat like the city or highway mileage is missing.
+* [Changed] Changes the dashboard "all" link from Inventory to All Vehicles
+
+= 10.13.0 =
+* [Added] Adds a public method to the additional listings class to make it easier for other plugins to modify queries to satisfy additional listings filter rules.
+
+= 10.12.1 =
+* [Fixed] Fixes a bug when injecting stock numbers into Carfax icon CSS class names where characters that are allowed in stock numbers but not in CSS class names were breaking this hack that lets us show more than one Carfax icon inline on the same page.
+
+= 10.12.0 =
+* [Added] Builds on a the feature launched in 10.11.0 to allow more than additional listing page to be created. Creates a table to manage additional listing page rules on the options page.
+* [Fixed] Fixes a bug in our Vehicle class where requesting a list of the post meta keys without the ones that contain serialized values returned those very keys that contain serialized values.
+
+= 10.11.1 =
+* [Fixed] Fixes a bug where our post meta keys for both vehicles and photos were being registered on the vehicle post type instead of on our post type and on the post type 'attachment'.
+
+= 10.11.0 =
+* [Added] Adds the ability to create a second inventory listing page with a vehicle attribute filter. This new feature makes it easy to create a separate listing page containing only vehicles that have a value for down payment or a boat field like hull material.
+* [Added] Adds filter hooks `invp_rewrite_rules` and `invp_rewrite_slugs` to make it easier to create additional inventory listings pages with the same rewrite rules as our default listings page.
+* [Changed] Changes the way the default sort order stores the meta key to no longer contain the prefix.
+* [Changed] Makes sure to not prefix a meta key that is already prefixed.
+
+= 10.10.0 =
+* [Added] Implements action hooks `invp_archive_buttons` and `invp_single_buttons` to help other plugins add badges near the Carfax report buttons.
+* [Changed] Changes Carfax buttons to use the new action hooks described above instead of relying on templates.
+* [Changed] Changes CSS rules to for larger thumbnails on listings and better alignment on smaller devices.
+
+= 10.9.0 =
+* [Added] Adds a plugin sidebar to allow users to edit vehicle attributes in the Editor using a WordPress 5.0.0 friendly method rather than old Editor meta boxes.
+* [Fixed] Fixes a bug where our Editor block category was only being added when editing posts in the vehicles post type. This was wrong, and the block category should be registered no matter what or the Editor throws JavaScript errors when editing posts of other types.
+* [Fixed] Fixes a bug when registering scripts and styles for the Dashboard. An incomplete path prevented these registrations from succeeding.
+* [Fixed] Now explicitly deletes a vehicle's attachments when vehicles are deleted
+
+= 10.8.0 =
+* [Added] Detects when the active theme does not have templates for vehicles or vehicle archives, and replaces the_content with shortcodes to provide any theme with basic display support.
+* [Added] Shortcode [invp-archive-vehicle]
+* [Added] Shortcode [invp-single-vehicle]
+* [Added] Adds a new price display type for payment and payment frequency so "$75 per week" and similar iterations are now possible
+* [Fixed] Fixes a CSS selector bug and adds more rules for Carfax buttons
+* [Fixed] Fixes a feature launched in version 10.3.0 that allows users to set the inventory archive as the home page. This feature did not work on multisite networks until now.
+
+= 10.7.1 =
+* [Fixed] Fixes a bug in the "${price} / ${down} Down" price display setting where neither price would show if a vehicle did not have a down payment. Starting now, the price will show by itself even when there is no down payment.
+
+= 10.7.0 =
+* [Added] Adds a setting that allows users to choose whether or not to use the latest Carfax buttons loaded from Carfax servers.
+* [Fixed] Fixes a bug where the two arguments to the filter `invp_options_page_sanitized_values` were supplied out of order.
+* [Fixed] Fixes bugs introduced in Carfax CSS rules in 10.6.1
+
+= 10.6.1 =
+* [Fixed] Adds a CSS rule to be deployed with our Customizer setting to help better show Carfax icons on dark backgrounds. The newer icons hosted by Carfax were not affected by our existing rule.
+
+= 10.6.0 =
+* [Added] Adds YouTube video ID to the edit screen so that the field can be edited by users in the dashboard.
+* [Fixed] Bug fix for Carfax-hosted Carfax buttons. Carfax did not anticipate inline display, and certain combinations of buttons on the same page break all sorts of CSS. Now inserting vehicle stock numbers into Carfax CSS class names to avoid conflicts.
+
+= 10.5.2 =
+* [Changed] Changes the flexslider spin up to stretch images that are smaller than the width of the slider.
+
+= 10.5.1 =
+* [Fixed] Fixes a bug when renaming the option when some settings have never been assigned a value
+
+= 10.5.0 =
+* [Added] Adds a Price Display setting that lets users show MSRP values, down payments, or 'Call For Price' instead of vehicle prices. This feature was built into the _dealer theme, but now lives in core so it's easy for widgets to show appropriate prices.
+* [Added] Adds filters `invp_price_display_options` and `invp_price_display` that allow developers to create their own price display options.
+* [Added] Adds a method to the vehicle class that identifies the address where the vehicle is located when there is more than one term in the locations taxonomy containing vehicles.
+* [Added] Adds a filter `invp_vehicle_location_sentence` so that the output of the new location sentence method in the vehicle class can be filtered.
+* [Changed] The location property of the vehicle class is now populated with the location term description (full address) instead of the name (street address line 1).
+* [Changed] The settings() method on the Inventory_Presser_Plugin class is now a static method.
+
+= 10.4.0 =
+* [Added] The vehicle class now tracks two new Carfax fields for report URL and icon URL. Carfax's latest feed to service providers gives the organization a bit more control over the URLs where reports live and the icon that appears on dealer websites. This plugin still ships with Carfax icons, and they will continue to be used when they apply to the vehicle and the newer fields are not available.
+* [Added] The vehicle class now tracks transmission speeds in post meta. The existing transmission taxonomy is unchanged.
+* [Added] Adds a meta value containing the photo order integer to vehicle photos that are uploaded directly into the Media Library
+* [Changed] The vehicle class' transmission member `$vehicle->transmission` will now include the number of speeds in the transmission instead of simply the name of the term in the transmission taxonomy. What was "Automatic" may now be "6 Speed Automatic" if this new field is used.
+* [Removed] Removes a vehicle class member `color_string` that would hold a string like "Blue Exterior / White Interior". This was a feature used in only one theme that we are no longer recommending. This feature was moved to the child themes where it is used. We've decided not to advance the major verison number despite this removal because this plugin is not yet distributed and no current installs are using the member.
+* [Fixed] Fixes a bug in the vehicle class' youtube_url() method
+* [Fixed] Restores functionality that shows odd-size or mismatched aspect ratio photos at full width in flex slider. This functionality was lost in 10.2.0.
+
+= 10.3.1 =
+* [Added] Adds content to the Frequently Asked Questions section of this file
+* [Changed] Moves inline scripts and styles for flexslider into their own files
+* [Changed] Moves some activation and deactivation hooks into the taxonomies class where their callback methods live
+* [Removed] Removes needless files from the copy of WooTheme's flexslider that is embedded in this plugin, including the demo folder and two copies of jQuery that are not useful in this plugin.
+* [Removed] Removes references to Font Awesome, a dependency this plugin no longer has
+
+= 10.3.0 =
+* [Added] Adds the ability to set the Inventory listing as the home page
+
+= 10.2.1 =
+* [Fixed] Fixes a bug in the Vehicle Slider widget when using the "prioritize featured vehicles" setting. Previously, no vehicles were shown (and no slider was included on the page) if no vehicles in inventory were set as featured.
+
+= 10.2.0 =
+* [Added] Adds CSS for the Grid widget and shortcode. Previously, the styles that styled this widget lived in the _dealer theme.
+* [Changed] Upgrades the version of flexslider embedded in this plugin to the latest version, 2.7.2. This changes the previous and next arrow buttons from their location in the top right of photos to the left and right sides of the frame how most sliders operate.
+* [Fixed] Fixes a bug where menu args were assumed to exist before using them to identify a specific menu this plugin modifies.
+
+= 10.1.0 =
+* [Added] Adds a `newest first` parameter to the Inventory Grid Widget and Shortcode
+* [Changed] Combines the code generating the Inventory Grid Widget and Shortcode so that each supports the same parameters and generates the same output while maintaining backwards compatibility
+
+= 10.0.0 =
+* [Removed] Removes the Stock Photo Slider widget. This image slider with included stock automobile photography has been extracted and lives on as a separate plugin.
+* [Fixed] Fixes a bug where custom meta boxes on the vehicle post type were generating errors because they were not called statically
+* [Fixed] Fixes a bug to prevent warnings about a callback passed to register_rest_field() being called statically
+* [Fixed] Fixes a bug in the [invp-inventory-slider] shortcode to make sure the slider appears despite no vehicles in inventory being marked as featured
+
+= 9.1.1 =
+* [Fixed] Make sure some values we anticipate to be strings are strings before trying to use them to load locations or redirect to a make archive
+* [Fixed] Do not load the slick slider JavaScript if another plugin or theme has already loaded it to avoid a conflict and errors
+
+= 9.1.0 =
+* [Added] Deletes unused terms in a handful of the custom taxonomies once a week using a wp-cron job. Years of inventory churn created hundreds of empty terms before this feature.
+
+= 9.0.0 =
+* [Added] Add a setting to both the Grid and Vehicle Slider widgets to order vehicles with the newest ones first
+* [Added] Add editor blocks for most of the vehicle attributes
+* [Added] Add a setting to the Options page that allows users to show all taxonomies under the Vehicles menu in the Dashboard
+* [Added] Enable print buttons in menus on any Custom Link menu item with a target of "#" and a CSS class of "invp-print-button"
+* [Changed] Changes the "Requires at least" version number to 5.0.0 because this version adds editor blocks that do not work on older versions of WordPress
+
+= 8.6.0 =
+* [Added] Adds methods to the vehicle class to output down payment and payment in dollar-formatted strings like the price.
+* [Added] Now provides a type argument when registering meta keys for the Vehicle post type.
+* [Changed] Add and refactor some methods in the vehicle class to make the Carfax report URL and YouTube video URL available as methods.
+* [Changed] Tweak the registration of vehicle attribute taxonomies so they will be visible in the block editor.
+* [Fixed] Fixes a bug in a `the_content` filter when there are no templates in the theme to display vehicles.
+
+= 8.5.0 =
+* [Added] Added `show_ui` arguments when creating vehicle attribute taxonomies so a new add-on plugin, Show All Taxonomies, can filter this data and reveal all our taxonomies to dashboard users.
+
+= 8.4.0 =
+* [Added] Allows updating of serialized meta fields via the REST API via an update callback.
+* [Changed] No longer defines a few functions statically to avoid throwing warnings when updating term meta via the REST API.
+
+= 8.3.2 =
+* [Fixed] Fixes a bug where a misspelled variable name would prevent an instance of our vehicle class from returning the requested size thumbnails.
+
+= 8.3.1 =
+* [Fixed] Fixes a bug where when updating taxonomy terms via the REST API, the old value passed to update_term_meta() would be unnecessarily serialized.
+
+= 8.3.0 =
+* [Added] Built-in taxonomies can now accept multiple filters. For example, a URL such as foo.com/inventory/model/accent/model/grand-cherokee/ will list all Hyundai Accents and Jeep Grand Cherokees.
+* [Removed] Removed a feature that redirects search results that include only one vehicle to that vehicle's details page. This feature is at odds with allowing multiple taxonomies filters and especially with Vehicle Filters Widget version 4.0.0.
+
+= 8.2.0 =
+* [Added] Adds a Google Map widget that points at an address stored in this plugin's location taxonomy of the user's choosing
+* [Fixed] Changes to achieve compatibility with PHP 7.2: a few create_function() calls were rewritten to use anonymous functions
+
+= 8.1.2 =
+* [Fixed] Fixes a bug where a static member was not called statically when updating vehicle taxonomy terms via the REST API
+
+= 8.1.1 =
+* [Changed] Only include stylesheets and scripts for the Vehicle Slider widget if that widget is active.
+* [Removed] Removes a script file and stylesheet for noUiSlider, a JavaScript range slider that was originally added for a price range widget that was never finished.
+
+= 8.1.0 =
+* [Added] Adds a list of full size photo URLs to the response array of the vehicle class' get_images_html_array() method. These accompany the <img> elements that are still part of the response.
+* [Added] Adds JavaScript and CSS payloads and hooks for jQuery.slick, a carousel we've built into our Vehicle Slider widget. This further decouples this plugin from the first theme we built called _dealer.
+
+= 8.0.0 =
+* [Changed] Changed the custom post type definition to always has_archive, despite whether or not the theme has a proper template to show vehicles.
+
+= 7.1.0 =
+* [Added] Added a filter `shortcode_atts_inventory_slider` to the [invp-inventory-slider] shortcode so that the attributes can be filtered. Also added the orderby and order parameters of the queries inside this shortcode to the shortcode attributes so they can be filtered.
+* [Added] Added a filter `invp_slider_widget_query_args` that wraps the arguments that find vehicles that will populate the widget version of the slider.
+* [Fixed] Fix some bugs in the KBB Widget where we were assuming the widget's settings contain values.
+
+= 7.0.0 =
+* [Added] Save a unique ID with phone numbers and sets of hours that are created in the dashboard. These IDs allow numbers or hours to be unique identified even if their labels change.
+* [Changed] Changed the permalink behavior for the vehicles post type to ignore any prefix by setting `with_front` to false. This means sites can have blogs at site.com/blog and vehicles at site.com/inventory instead of site.com/blog/inventory.
+* [Changed] Stop using a deprecated hook `media_buttons_context` and start using `media_buttons` instead.
+* [Fixed] Fixes a bug that prevented our location taxonomy from outputting the phone number and hours array in REST API responses
+* [Removed] Support for AutoCheck reports has been removed from this plugin and now lives in an add-on called AutoCheck Buttons.
+* [Removed] Management of a Friday System's customer index as a meta field in our location taxonomy. In preparation of a public release, this company-specific code has no place in this plugin.
+
+= 6.1.1 =
+* [Fixed] Fixes multiple bugs in the way we redirect requests for vehicles that no longer exist in inventory (instead of returning a 404 error)
+
+= 6.1.0 =
+* [Added] Register term meta for our location taxonomy. This code was commented out since WP version 4.9.4 where term meta via the REST appeared to be broken or unfinished.
+* [Changed] Change the style of phone number and hours inputs in the locations taxonomy terms found at Vehicles > Locations. These controls now more closely match the WordPress dashboard style.
+
+= 6.0.1 =
+* [Changed] The description, FAQ, and History sections of this readme.txt file are updated
+* [Fixed] Fixes a bug where the wrong text-domain was provided for a translatable string
+
+= 6.0.0 =
+* [Changed] Changes the vehicle object to return it's list of attachments ordered by their photo number meta value instead of the order that they were uploaded.
+* [Removed] Removed a member of the vehicle object that was populated with lists of attachment URLs when the get_images_html_array() method executed.
+
+= 5.4.0 =
+* [Added] Help our suite of add-on plugins activate licenses at inventorypresser.com and receive automatic updates by adding a license class
+* [Added] Pass the vehicle object into the invp_zero_price_string filter so the zero price string can be easily changed based on vehicle attributes
+
+= 5.3.1 =
+* [Fixed] Fix a bug introduced in the previous version where only part of a query in the Media Library was corrected
+* [Fixed] Fix a bug by checking that a term ID exists before trying to use it
+* [Fixed] Fix a bug that excluded sold vehicles outside searches and the post_type archives for our custom post type (when the option to hide sold vehicles was set)
+* [Fixed] Fix a bug that prevented filters like min_price and max_odometer from working when no other meta query was present in the request
+
+= 5.3.0 =
+* [Added] Make vehicle thumbnails on edit.php links to the edit page just like the post title
+* [Fixed] Fix a bad query that prevented filtering the Media Library to unattached photos
+
+= 5.2.0 =
+* [Added] Register a meta key to track an MD5 image hash with media attachments.
+
+= 5.1.0 =
+* [Added] REST API fields to allow reading of three serialized meta fields in our vehicle object: epa_fuel_economy, option_array, and prices, which is also an array.
+
+= 5.0.0 =
+* [Added] Created a workaround to save term meta via the REST API, WordPress 4.9.4 seems a bit broken here.
+* [Changed] Do not show sold units in inventory listings by default, and add an option to include them.
+* [Changed] Use lowercase meta field names all the time, and change the vehicle class to not capitalize the id in car_id.
+* [Fixed] Make sure serialized meta values (like vehicle option lists, EPA fuel economy data, and the prices array) are unserialized before saving. Edits via the REST API were resulting in twice-serialized values.
+* [Fixed] Fixed a bug in our logic that redirects users who are trying to view deleted vehicles.
+
+= 4.2.0 =
+* [Added] Include term IDs for each of our custom taxonomies in the REST API responses for our posts.
+* [Added] Register all postmeta fields for our custom post type so that they may be exposed in the REST API.
+* [Added] Expose all custom taxonomies that enable vehicle searches to the REST API.
+* [Fixed] Fixed a bug where a meta key was not being prefixed with the filter and instead had a hard-coded prefix.
+
+= 4.1.0 =
+* [Added] When a search or set of taxonomy filters returns a single vehicle, redirect to that vehicle instead of an archive or results page.
+* [Added] Add two template tags, `invp_get_the_vin()` and `invp_get_the_price()` to make access easy for themes and other items in the loop.
+* [Fixed] Change links to terms in our taxonomies to contain /inventory, so one of our rewrite rules is used to guide the request.
+
+= 4.0.0 =
+* [Changed] Changed a filter hook from 'translate_meta_field_key' to 'invp_prefix_meta_key'
+* [Changed] Changed a filter hook from 'untranslate_meta_field_key' to 'invp_unprefix_meta_key'
+* [Changed] Changed a filter hook from 'order_by_post_meta_widget_ignored_fields' to 'invp_sort_by_widget_ignored_fields'
+* [Changed] Changed an action hook from 'inventory_presser_delete_all_data' to 'invp_delete_all_data'
+* [Changed] Changed an action hook from 'inventory_presser_delete_all_inventory' to 'invp_delete_all_inventory'
+* [Changed] Changed a filter hook from 'inventory_presser_edit_control_vin' to 'invp_edit_control_vin'
+* [Changed] Changed a filter hook from 'inventory_presser_default_options' to 'invp_default_options'
+* [Changed] Changed a filter hook from 'inventory_presser_taxonomy_data' to 'invp_taxonomy_data'
+* [Changed] Changed a filter hook from 'inventory_presser_meta_value_or_meta_value_num' to 'invp_meta_value_or_meta_value_num'
+* [Changed] Changed a filter hook from 'inventory_presser_post_type_args' to 'invp_post_type_args'
+* [Removed] Moved Friday Systems features out of this plugin and into another. No longer save the IDs of contact and financing pages with plugin settings so that menu links to those pages can have querystring variables that identify vehicles appended.
+
+= 3.9.0 =
+* [Added] Modifications to searches to include vehicle data like stock numbers and VINs is extended to searches conducted in the admin dashboard.
+* [Changed] Do not allow non-numeric characters to be entered into the price inputs while editing vehicles.
+* [Changed] Vehicles will no longer go to Trash upon deletion and instead will be permanently deleted.
+
+= 3.8.0 =
+* [Added] Merged a feature plugin into core that enables an "Email a Friend" button on VDP.
+* [Changed] Tested up to 4.9.4
+
+= 3.7.0 =
+* [Added] This plugin is now translation-ready.
+* [Added] A new attribute, size, is added to the `[invp-inventory-grid size="one-fourth"]` shortcode. The size specifies how big each thumbnail in a row will be rendered.
+* [Added] Hide some columns that Yoast SEO adds to the dashboard list of vehicles.
+* [Changed] Renamed almost every widget to remove "Dealer" prefixes and rewrote the descriptions to be less redundant.
+* [Changed] Changed some <td>s to <th>s in widgets to increase accessibility of this tabled information.
+* [Changed] The Order By Post Meta widget now has a prettier form without ugly post meta key names. The widget should still be renamed to something like Vehicle Sort Controls in the future.
+* [Removed] The list of fields by which vehicles can be sorted in listings page by default has been pruned to remove fields that don't make sense as sort fields.
+
+= 3.6.1 =
+* [Changed] Updated the AutoCheck button to the latest SVG version
+* [Fixed] A bug where the order by field is passed via GET but the sort order is not
+* [Removed] A wrapping <div> element around the AutoCheck button HTML
+
+= 3.6.0 =
+* [Added] Added two filters, `invp_sold_string` and `invp_zero_price_string` to wrap the output of the vehicle price when the value is zero or the vehicle is sold
+* [Added] Added filters `invp_default_payment_frequencies`, `invp_default_boat_styles`, and `invp_default_hull_materials` to wrap arrays of default values baked into this plugin
+* [Added] Added some instructional text to the options page to help users understand the features of this plugin
+* [Added] All the values in a vehicle's prices array are now editable in the dashboard. This includes MSRP, down payment, payment, and payment frequency
+* [Changed] Do not show options and prices arrays in the list of default vehicle sort keys on the options page, these are structured data fields
+* [Changed] Move the options meta box to a higher position so it appears directly below the traditional edit box if there are other plugins creating meta boxes
+* [Removed] Removed an option that is implemented in the _dealer theme to affect the way users are redirected after submitting a Contact Form 7 form
+* [Removed] Removed an option that is implemented in the _dealer theme to customize a particular layout style
+* [Removed] Removed an option that is implemented in the _dealer theme to append a page's content to each vehicle details page
+* [Removed] Removed an option that is implemented in the _dealer theme to display vehicle prices in various ways to show discounts
+* [Removed] Removed an option that is implemented in the _dealer theme to change the MSRP label to custom text
+* [Removed] Removed an option that is implemented in the _dealer theme to change the way a Flexslider works
+* [Removed] Removed an option that is implemented in the _dealer theme to control where vehicle descriptions are shown
+* [Removed] Removed an option that is implemented in the _dealer theme to control where CarGurus badges are shown
+* [Removed] Removed an option that is implemented in the _dealer theme to hide footer links
+
+= 3.5.0 =
+* [Added] Added "Wheelchair Access" to the list of default vehicle options
+* [Added] Include Carfax buttons in this plugin instead of relying on themes to provide them, similar to how we handle AutoCheck
+* [Changed] Updated the Carfax buttons to the newest style provided by Carfax in November 2017
+* [Changed] Start using new Instant Carfax Report URLs provided by Carfax in November 2017
+* [Changed] Change the Carfax image widget that shows the plain SHOW ME THE CARFAX image to use one of the new buttons instead of a near duplicate image
+* [Changed] Add rel="noopener noreferrer" to links to Carfax and AutoCheck to protect against target="_blank" vulnerability
+* [Changed] Do not show a Carfax button if there is no report available when the button is clicked
+* [Changed] Stop using "../" in URLs to images, wrap __FILE__ in dirname() instead
+* [Fixed] Bug fix in the address widget where we were assuming an address would always exist, new check for null prevents warnings
+* [Fixed] Prevent the "Sort vehicles by" feature from overriding other meta queries on vehicle archive pages
+
+= 3.4.0 =
+* [Added] The vehicle grid widget now includes a setting to show only featured vehicles
+* [Added] Add a sitemap URL and crawl-delay to robots.txt on multisite installs when Yoast SEO XML sitemaps are enabled
+* [Added] Do not allow our vehicle taxonomies to be included in Yoast SEO XML sitemaps
+
+= 3.3.1 =
+* [Fixed] Do not assume we have sets of hours for a location
+* [Fixed] Also update vehicle price in prices array when the price is changed via the dashboard
+* [Fixed] Make sure a location term query does not return an error before trying to output that term's details
+* [Changed] Create the body styles taxonomy before the location taxonomy so they load in that order, purely for appearance and usability
+
+= 3.3.0 =
+* [Changed] AutoCheck report fetching is rewritten to use a newer end-point at Friday Systems
+
+= 3.2.0 =
+* [Added] When shoppers navigate to vehicles that are no longer on the site, redirect them to an archive page of all vehicles of the same make
+* [Added] Make it easy for themes to include Schema.org structured data for vehicles via a new method on our vehicle class
+* [Added] Include custom taxonomy names and slugs in searches, so searches for "suv" and "diesel" are now possible
+* [Added] A mower vehicle type is now populated in the Type taxonomy
+* [Changed] Now prioritizes featured vehicles when filling the slider
+* [Changed] Tested up to date to 4.8.1
+* [Fixed] A vehicle class member was typoed as drivetrain and changed to drivetype
+* [Removed] An unused theme-specific setting that allowed the footer link text to be overriden has been removed from the options page
+
+= 3.1.0 =
+* Adds a filter hook to the VIN input box on the edit vehicle screen in the dashboard. This permits our newest add-on plugin, [a VIN decoder](https://inventorypresser.com/products/plugins/vin-decoder/), to place a "Decode VIN" button adjacent to the VIN text box.
+* Adds an empty drop down option to the model year selector on the edit vehicle screen in the dashboard. Previously, new vehicle entries would save the current year if the user makes no selection.
+* Screenshots are updated
+
+= 3.0.0 =
+* Consolidates all settings under the Vehicles custom post type menu submenu Options. This saves the default sort field and order in a different location, so those values will need to be migrated when upgrading.
+
+= 2.3.5 =
+* Use save_post_inventory_vehicle instead of save_post and then a check to make sure we are working on our post type
+* Bug fix for the parameters passed into the save_post/save_post_{post-type} action handler
+* Skip the extra stuff that happens when vehicles are saved if the vehicle was just moved to the trash
+
+= 2.3.4 =
+* Bug fix to not modify ORDER BY clauses on term queries for model years and cylinder counts when no order is specified
+
+= 2.3.3 =
+* Bug fix in Order By Post Meta widget. A bad string concatenation prevented the output of list items and links.
+* Bug fix while editing vehicles in the Dashboard. The last modified date was not being saved with the correct timezone offset.
+
+= 2.3.2 =
+* Bug fix when queuing scripts for our shortcodes. Previously, we were using a $post variable before a global $post; call.
+
+= 2.3.1 =
+* Include dashicons on the front-end. Previously, this was handled by a widget that we were also using on every site. That widget has been rewritten and this bug was revealed.
+
+= 2.3.0 =
+* Delete all inventory feature now ignores post status and deletes any and all
+* Delete all inventory method now runs an action hook after the deletions occur, inventory_presser_delete_all_inventory
+* Only insert the default terms into our custom taxonomies during plugin activation instead of on every page load when the taxonomies are created
+
+= 2.2.0 =
+* New features for boat dealers. We have added a propulsion type taxonomy and vehicle fields for beam, length, and hull material. The edit screen will change to accomodate this data when the vehicle type boat is chosen or loaded.
+* Adds a filter to the "Dealer Hours" widget so that our new plugin, Hours Today Shortcode, can add a sentence like "Open until 6:00 pm today" near the table of hours.
+
+= 2.1.0 =
+* Now supports child themes
+* A taxonomy for body style is added
+* Now supports boats and buses
+* Vehicle list in the dashboard now has inline thumbnails
+* Now supports Cargurus badges, AutoCheck report retrieval, Edmunds.com style IDs and YouTube video IDs
+* Delete all data button on options page now deletes all terms in the taxonomies this plugin creates and widget options
+
+= 2.0.0 =
+* Stop manipulating imports. All import related code has been moved to another plugin where it belongs. Lots of code has been deleted.
+
+= 1.5.0 =
+* Stop pruning the pending attachments folder during every import via the import_end hook.
+* Stop copying attachment payloads during imports unless the file date is newer than the payload that was previously imported.
+* Stop uniting orphan attachments with their parents during every import via the import_end hook. Use a new hook to find parent post IDs as the attachments are processed.
+* A new method set_thumbnails() hooks on import_end to set thumbnails for vehicles with attachments.
+
+= 1.4.2 =
+* Obsoleted the postmeta key _inventory_presser_file_name_base now that we live in a world where our photo file name bases are VINs
+* Stop relying on post title and guid to decide if a vehicle exists. Always use the VIN.
+
+= 1.4.1 =
+* Fixed a bug where function_exists() was not used to always make sure get_current_screen() is defined before using it
+
+= 1.4.0 =
+* Location taxonomy added to manage single or multi-lot inventories' addresses, phone numbers and hours
+* Update term meta during imports when terms aready exist
+* Force term recounts when a post is inserted or updated during an import
+
+= 1.3.0 =
+* Add custom fields to searches, so searches for a VIN or the color blue work
+* Introduce VIN-based URLs that redirect to proper permalinks so that it's easy to link to vehicles
+
+= 1.2.1 =
+* Preserves images when deleting vehicles that no longer appear in import files by dissociating them with their parents. This was a weird bug where a vehicle can come through the import with the same VIN but a different unique post slug. Adding this and deleting the old vehicle will lose the photos until the next import runs because they were in the database but deleted at the end of the import. Dissociating the photos allows the new vehicle post to be united with its photos.
+* Bug fixes to allow attachments to live in sub-folders of the uploads folder, or now saving vehicle photos in folders per vehicle instead of polluting the uploads folder.
+* Attempt to delete the folder that a pending attachment lives in when it is deleted. This will clean up those per vehicle folders in the pending directory.
+
+= 1.2.0 =
+* Now implements custom rewrite rules for filtering our post type. These rules lived in a widget until now.
+* Added a widget to allow users to reorder vehicles by post meta keys. This enables sorting by year, make, model, price, odometer, etc. This widget was developed as a separate plugin until being rolled in with this update.
+* Added a setting to specify a default sort order and direction for vehicle search result pages
+* Added checkboxes to the add/edit vehicle page for adding and removing optional equipment
+* Converted the [Delete all Inventory] button on the settings page to use a looping AJAX call that will restart deletions during server timeouts.
+
+= 1.1.0 =
+* Added CARFAX support to the vehicle object and added three CARFAX icons to the assets directory
+
+= 1.0.0 =
+* Changed the post meta key `piped_options` to `option` with the new intent to no longer be a unique key.
+* Changed the place where the options list lives again after realizing a non-unique post meta key would cause more problems than it solved. The vehicle options list now lives in `option_array` as a serialized array.
+* John Norton joins me and starts building the first theme to use this plugin
+
+= 0.2.0 =
+* Moved all code that modifies imports into its own object and file, `includes/class-modify-imports.php`
+* Deeper integration with WXR importers so inventory does not have to be deleted before a new import is run. An option called "When importing a feed, delete units not contained in the new feed" is born. Previously, an option allowed users to delete all inventory before a new feed is run. This is a much more nuanced solution that will not vacate the site of inventory during an import, and also reduce the amount churn on post IDs in the database.
+* A post meta key called `_inventory_presser_photo_file_name_base` is introduced to help this plugin mate attachments to their parents after an import. A more conventional WordPress import from a backup would identify post IDs. It is possible to not specify post IDs in a WXR XML file, and let the database assign IDs as items are imported. We love this approach, but it means that the import file cannot provide a parent ID for media attachments. This meta key is used to say "Any attachment that does not have a parent post ID and whose filename starts with this string is a child of this post."
+
+= 0.1.0 =
+* Implemented semantic versioning
+* An object Inventory_Presser_Vehicle has been defined in includes/class-inventory-presser-vehicle.php to aid theme development
+* Custom taxonomies enhanced with `labels` values
+* Added filter hook `inventory_presser_post_type` so the post type can be renamed
+* Added filter hook `inventory_presser_post_type_args` so the post type can be manipulated before the `register_post_type` call
+* Added filter hook `inventory_presser_default_options` to manipulate the default option values
+* Added filter hook `inventory_presser_taxonomy_data` to filter the built-in taxonomy data
+
+= 0.5 =
+* Created a shortcode [vehicle_field] to make it easy for theme developers to get custom fields out of our custom post type
+* Enhanced imports to mate photo attachments to parent posts, establishing a relationship between this plugin and WXR importers, especially `WordPress Importer for CRON` that I (salzano) have also written. Also sets first photo as featured image. This whole routine operates according to the photo naming convention we employ at Friday Systems.
+* Options page created to hold data deletion buttons
+* `Delete all Vehicles` button implemented on the Options page
+* `Delete all Plugin Data & Deactivate` button implemented on the Options page
+* Attachment count added near Add Media button text
+* This readme file was created
+
+= 0.4 =
+* A pile of code from 2012 is reread and rewritten in September and October of 2015
+* Custom post type & taxonomies completely defined and Add/Edit post screen designed
+* Edit.php is customized for our custom post type to list stock number, color, odometer, price & photo count
