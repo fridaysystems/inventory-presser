@@ -36,6 +36,9 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 		<p>
 			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+		</p><p>
+			<input type="checkbox" id="<?php echo $this->get_field_id('include_annual_stats'); ?>" name="<?php echo $this->get_field_name('include_annual_stats'); ?>" value="true"<?php checked( 'true', ( isset( $instance[ 'include_annual_stats' ] ) ? $instance['include_annual_stats'] : '' ) ); ?>>
+			<label for="<?php echo $this->get_field_id('include_annual_stats'); ?>"><?php _e( 'Include annual consumption, cost &amp; emissions', 'inventory-presser' ); ?></label>
 		</p><?php
 	}
 
@@ -48,7 +51,11 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 	public function update( $new_instance, $old_instance )
 	{
 		$instance = array();
-		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['title'] = sanitize_text_field( $new_instance['title'] );
+		if( ! empty( $new_instance['include_annual_stats'] ) )
+		{
+			$instance['include_annual_stats'] = 'true';
+		}
 		return $instance;
 	}
 
@@ -74,8 +81,6 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 
 		//if the vehicle doesn't have EPA data, abort
 		$vehicle = new Inventory_Presser_Vehicle( $queried_object->ID );
-
-
 		if( empty( $vehicle->fuel_economy_city ) || empty( $vehicle->fuel_economy_highway ) )
 		{
 			return;
