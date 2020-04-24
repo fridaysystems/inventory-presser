@@ -2,6 +2,9 @@
 	display: grid;
 	grid-template-columns: 5.5em 5em 25% 25%;
 	grid-template-rows: 99% 2em;
+	min-width: 300px;
+	max-width: 45%;
+	float: left;
 }
 .fuel-economy-highway,
 .fuel-economy-city{
@@ -79,4 +82,27 @@ svg.fuel-pump,
 	bottom:0;
 	left:0;
 	right:0;
+}
+/* Annual stats */
+dl.fuel-economy-annual-stats{
+	display: inline-block;
+	min-width: 300px;
+	max-width: 50%;
+	padding-left: 3em;
+	margin: 0;
+	width: 99%;
+}
+dl.fuel-economy-annual-stats dt{
+	float: left;
+	clear: left;
+	width: 14em;
+}
+dl.fuel-economy-annual-stats dd{
+	font-weight: bold;
+	float: left;
+	margin: 0;
+}
+dl.fuel-economy-annual-stats dt,
+dl.fuel-economy-annual-stats dd{
+	line-height: 31.2px;
 }

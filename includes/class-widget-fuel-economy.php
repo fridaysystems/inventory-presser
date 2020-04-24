@@ -140,6 +140,62 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 				__( 'highway', 'inventory-presser' )
 			);
 		}
-		echo '</div>' . $after_widget;
+		echo '</div>';
+
+		//Are we including an optional second section with annual consumption, cost & emissions?
+		if( ! empty( $instance['include_annual_stats'] )
+			&& ( ! empty( $vehicle->fuel_economy_annual_consumption )
+				|| ! empty( $vehicle->fuel_economy_annual_cost )
+				|| empty( $vehicle->fuel_economy_annual_emissions ) ) )
+		{
+			//Yes
+			echo '<dl class="fuel-economy-annual-stats">';
+
+			//Annual consumption
+			if( ! empty( $vehicle->fuel_economy_annual_consumption ) )
+			{
+				$number = $vehicle->fuel_economy_annual_consumption;
+				if( is_numeric( $number ) )
+				{
+					$number = round( $number, 2 );
+				}
+				printf(
+					'<dt>%s</dt><dd>%s %s</dd>',
+					__( 'Annual fuel consumption', 'inventory-presser' ),
+					$number,
+					__( 'barrels', 'inventory-presser' )
+				);
+			}
+
+			//Annual cost
+			if( ! empty( $vehicle->fuel_economy_annual_cost ) )
+			{
+				$price = $vehicle->fuel_economy_annual_cost;
+				if( is_numeric( $price ) )
+				{
+					$price = sprintf( '$%s', number_format( $vehicle->fuel_economy_annual_cost, 0, '.', ',' ) );
+				}
+				printf(
+					'<dt>%s</dt><dd>%s</dd>',
+					__( 'Annual fuel cost', 'inventory-presser' ),
+					$price
+				);
+			}
+
+			//Annual emissions
+			if( ! empty( $vehicle->fuel_economy_annual_emissions ) )
+			{
+				printf(
+					'<dt>%s</dt><dd>%s %s</dd>',
+					__( 'Annual tailpipe CO2 emissions', 'inventory-presser' ),
+					$vehicle->fuel_economy_annual_emissions,
+					__( 'grams per mile', 'inventory-presser' )
+				);
+			}
+
+			echo '</dl>';
+		}
+
+		echo $after_widget;
 	}
 }
