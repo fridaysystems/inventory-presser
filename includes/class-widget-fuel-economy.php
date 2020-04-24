@@ -84,6 +84,9 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 		//OK, we have some data and will create output
 		extract( $args );
 
+		//Need the stylesheet for this content
+		wp_enqueue_style( 'invp-epa-fuel-economy' );
+
 		echo $before_widget
 			. $before_title
 			. apply_filters( 'widget_title', ( isset( $instance['title'] ) ? $instance['title'] : '' ) )

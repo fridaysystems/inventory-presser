@@ -1,0 +1,33 @@
+.fuel-economy-highway,
+.fuel-economy-city{
+	vertical-align: bottom;
+}
+.fuel-economy-combined,
+.fuel-economy-city,
+.fuel-economy-highway,
+.fuel-economy-fuel .mpg{
+	font-weight: bold;
+	font-size: 150%;
+}
+.fuel-economy-fuel tr.context td{
+	font-size: 90%;
+}
+.fuel-economy-combined,
+.fuel-economy-city,
+.fuel-economy-fuel tr.context td,
+.fuel-economy-fuel .mpg{
+	text-align: center;
+}
+.fuel-economy-combined{
+	font-size: 450%;
+	line-height: 95%;
+}
+.fuel-economy-fuel .mpg{
+	width: 60px;
+}
+svg.fuel-pump,
+.fuel-pump-img{
+	width: 55px;
+	height: 50px;
+	margin: 0 auto;
+}
