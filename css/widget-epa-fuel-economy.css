@@ -1,8 +1,8 @@
 .fuel-economy-fuel {
 	display: grid;
-	grid-template-columns: 5.5em 5em 25% 25%;
+	grid-template-columns: 5.5em 4em 25% 25%;
 	grid-template-rows: 99% 2em;
-	min-width: 300px;
+	min-width: 280px;
 	max-width: 45%;
 	float: left;
 }
@@ -86,7 +86,7 @@ svg.fuel-pump,
 /* Annual stats */
 dl.fuel-economy-annual-stats{
 	display: inline-block;
-	min-width: 300px;
+	min-width: 280px;
 	max-width: 50%;
 	padding-left: 3em;
 	margin: 0;
@@ -95,7 +95,7 @@ dl.fuel-economy-annual-stats{
 dl.fuel-economy-annual-stats dt{
 	float: left;
 	clear: left;
-	width: 14em;
+	width: 15em;
 }
 dl.fuel-economy-annual-stats dd{
 	font-weight: bold;
