@@ -1,3 +1,7 @@
+.fuel-name{
+	clear: left;
+	padding: .2em 0;
+}
 .fuel-economy-fuel {
 	display: grid;
 	grid-template-columns: 5.5em 4em 25% 25%;

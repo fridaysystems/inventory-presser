@@ -34,12 +34,21 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $epa_fuel_economy = array();
 		var $featured = '0';
 
-		var $fuel_economy_annual_consumption = '';
-		var $fuel_economy_annual_cost = 0;
-		var $fuel_economy_annual_emissions = '';
-		var $fuel_economy_city = 0;
-		var $fuel_economy_combined = 0;
-		var $fuel_economy_highway = 0;
+		var $fuel_economy_1_name = '';
+		var $fuel_economy_1_annual_consumption = '';
+		var $fuel_economy_1_annual_cost = 0;
+		var $fuel_economy_1_annual_emissions = '';
+		var $fuel_economy_1_city = 0;
+		var $fuel_economy_1_combined = 0;
+		var $fuel_economy_1_highway = 0;
+
+		var $fuel_economy_2_name = '';
+		var $fuel_economy_2_annual_consumption = '';
+		var $fuel_economy_2_annual_cost = 0;
+		var $fuel_economy_2_annual_emissions = '';
+		var $fuel_economy_2_city = 0;
+		var $fuel_economy_2_combined = 0;
+		var $fuel_economy_2_highway = 0;
 
 		var $interior_color = '';
 		var $last_modified = '';
@@ -337,6 +346,16 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			return max( intval( $this->book_value_nada ), intval( $this->book_value_kbb ) );
 		}
 
+		/**
+		 * @param int $fuel_type Specifies which of the two fuel types from which to retrieve the value.
+		 * @param string $key One of these fuel economy member suffixes: name, annual_consumption, annual_cost, annual_emissions, combined_mpg, city_mpg, highway_mpg
+		 */
+		public function get_fuel_economy_member( $fuel_type, $key )
+		{
+			$key = 'fuel_economy_' . $fuel_type . '_' . $key;
+			return isset( $this->$key ) ? $this->$key : null;
+		}
+
 		// fill arrays of thumb and large <img> elements
 		function get_images_html_array( $sizes )
 		{
@@ -541,38 +560,86 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type' => 'boolean',
 				),
 				array(
-					'label'  => __( 'Fuel Economy Annual Fuel Consumption', 'inventory_presser' ),
-					'name'   => 'fuel_economy_annual_consumption',
+					'label'  => __( 'Fuel Economy Name (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_name',
+					'sample' => 'Regular Gasoline',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Annual Fuel Consumption (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_annual_consumption',
 					'sample' => '13.18 barrels',
 					'type'   => 'string',
 				),
 				array(
-					'label'  => __( 'Fuel Economy Annual Fuel Cost', 'inventory_presser' ),
-					'name'   => 'fuel_economy_annual_cost',
+					'label'  => __( 'Fuel Economy Annual Fuel Cost (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_annual_cost',
 					'sample' => 1600,
 					'type'   => 'number',
 				),
 				array(
-					'label'  => __( 'Fuel Economy Annual Tailpipe CO2 Emissions', 'inventory_presser' ),
-					'name'   => 'fuel_economy_annual_emissions',
+					'label'  => __( 'Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_annual_emissions',
 					'sample' => '355 grams per mile',
 					'type'   => 'string',
 				),
 				array(
-					'label'  => __( 'Fuel Economy City', 'inventory_presser' ),
-					'name'   => 'fuel_economy_city',
+					'label'  => __( 'Fuel Economy City (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_city',
 					'sample' => 22,
 					'type'   => 'number',
 				),
 				array(
-					'label'  => __( 'Fuel Economy Combined', 'inventory_presser' ),
-					'name'   => 'fuel_economy_combined',
+					'label'  => __( 'Fuel Economy Combined (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_combined',
 					'sample' => 25,
 					'type'   => 'number',
 				),
 				array(
-					'label'  => __( 'Fuel Economy Highway', 'inventory_presser' ),
-					'name'   => 'fuel_economy_highway',
+					'label'  => __( 'Fuel Economy Highway (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_highway',
+					'sample' => 31,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Name (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_name',
+					'sample' => 'Regular Gasoline',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Annual Fuel Consumption (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_annual_consumption',
+					'sample' => '13.18 barrels',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Annual Fuel Cost (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_annual_cost',
+					'sample' => 1600,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_annual_emissions',
+					'sample' => '355 grams per mile',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy City (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_city',
+					'sample' => 22,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Combined (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_combined',
+					'sample' => 25,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Highway (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_highway',
 					'sample' => 31,
 					'type'   => 'number',
 				),
