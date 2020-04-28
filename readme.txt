@@ -62,16 +62,18 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 11.2.1 =
-* [Fixed] Fixes a bug to account for when connections to carfax.com fail and icons cannot be retrieved. Now falls back to the icons that are bundled with this plugin.
-* [Fixed] Fixes a bug that was sending 'auto' into wp_constrain_dimensions() instead of a numeric pixel value of the height of the image.
-* [Fixed] Fixes a bug that would cause the Hours widget to only be partially output if there were no sets of hours to display. Now, the widget will vanish entirely.
+= 11.3.0 =
+* [Added] Adds a stylesheet for the EPA Fuel Economy widget.
+* [Added] Adds three more data points to the EPA Fuel Economy widget and a switch to show them. They are annual cost, annual consumption, and annual emissions, and they make a "second half" of the widget that will display to the right of or below the existing content.
+* [Changed] Doubles the post meta fields for EPA fuel economy data after realizing the data can contain two fuel types for a single vehicle.
+* [Changed] Rewrites the EPA Fuel Economy widget to no longer use serialized meta data and to use CSS grid instead of a <table> element. This rewrite also includes support for two fuel types on a single vehicle.
+* [Removed] Stops registering a meta field on the location taxonomy to hold serialized phones and hours data.
 
 
 == Upgrade Notice ==
 
-= 11.2.1 =
-Version 11.2.1 is the first polished release after the elimination of serialized meta fields.
+= 11.3.0 =
+Version 11.3.0 is a stable & polished release after the elimination of serialized meta fields.
 
 = 8.6.0 =
 This is the minimum version required for compatibility with the block editor launched in WordPress 5.0 and a new add-on called [Inventory Presser Elementor Add-on](https://inventorypresser.com/products/plugins/elementor-add-on/). This plugin adds vehicle fields to Elementor's list of Dynamic Tags.
