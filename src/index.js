@@ -25,13 +25,6 @@ var simple_meta_keys = [
 ];
 for( const key of invp_blocks.keys )
 {
-	//are we going to provide a block for this meta key?
-	if( 'undefined' !== typeof key['is_serialized'] && key['is_serialized'] )
-	{
-		//no
-		continue;
-	}
-
 	if( ! simple_meta_keys.includes( key['name'] ) )
 	{
 		continue;

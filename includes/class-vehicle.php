@@ -31,7 +31,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $down_payment = 0;
 		var $edmunds_style_id = 0;
 		var $engine = ''; //3.9L 8 cylinder
-		var $epa_fuel_economy = array();
 		var $featured = '0';
 
 		var $fuel_economy_1_name = '';
@@ -457,13 +456,13 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * This is an array of the post meta keys this object uses. These keys
 		 * must be prefixed by an apply_filters() call before use.
 		 */
-		function keys( $include_serialized = true )
+		function keys()
 		{
-			$keys_and_types = self::keys_and_types( $include_serialized );
+			$keys_and_types = self::keys_and_types();
 			return array_column( $keys_and_types, 'name' );
 		}
 
-		public static function keys_and_types( $include_serialized = true )
+		public static function keys_and_types()
 		{
 			$keys_and_types = array(
 				array(
@@ -547,12 +546,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'name'   => 'engine',
 					'sample' => '3.7L 5 cylinder',
 					'type'   => 'string',
-				),
-				array(
-					'label'         => __( 'EPA Fuel Economy', 'inventory_presser' ),
-					'name'          => 'epa_fuel_economy',
-					'type'          => null, //'string',
-					'is_serialized' => true,
 				),
 				array(
 					'label'  => __( 'Featured', 'inventory_presser' ),
@@ -760,14 +753,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type'   => 'string',
 				),
 			);
-
-			if( ! $include_serialized )
-			{
-				$keys_and_types = array_filter( $keys_and_types, function( $values, $key ) {
-					return empty( $values['is_serialized'] ) || ! $values['is_serialized'];
-				}, ARRAY_FILTER_USE_BOTH );
-			}
-
 			return $keys_and_types;
 		}
 

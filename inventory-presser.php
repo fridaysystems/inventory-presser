@@ -308,31 +308,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 		}
 
 		/**
-		 * WordPress core won't let us expose serialized meta fields in the REST
-		 * API, so this function puts these meta values in custom API fields
-		 * outside of meta.
-		 *
-		 * @return void
-		 */
-		function create_serialized_api_fields()
-		{
-			//epa_fuel_economy
-			register_rest_field(
-				self::CUSTOM_POST_TYPE,
-				apply_filters( 'invp_prefix_meta_key', 'epa_fuel_economy' ),
-				array(
-					'get_callback'    => array( $this, 'get_serialized_value_for_rest' ),
-					'update_callback' => array( $this, 'set_serialized_meta_value' ),
-					'schema'          => array(
-						'description' => __( 'An array of EPA Fuel Economy data including miles per gallon stats', 'inventory-presser' ),
-						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
-					),
-				)
-			);
-		}
-
-		/**
 		 * Deactivates this plugin
 		 *
 		 * @return void
@@ -479,15 +454,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 			return array_pop( $pieces );
 		}
 
-		/**
-		 * Gets a serialized post meta value for a REST API call, and returns it
-		 * as a serialized string.
-		 */
-		function get_serialized_value_for_rest( $post, $key )
-		{
-			return serialize( get_post_meta( $post['id'], $key, true ) );
-		}
-
 		function hooks()
 		{
 			//include all this plugin's classes that live in external files
@@ -512,9 +478,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) )
 
 			//register all postmeta fields the CPT uses (mostly to expose them in the REST API)
 			add_action( 'init', array( $this, 'register_meta_fields' ), 20 );
-
-			//create workarounds to read serialized meta data from the REST API
-			add_action( 'rest_api_init', array( $this, 'create_serialized_api_fields' ) );
 
 			//Create custom taxonomies
 			$taxonomies = new Inventory_Presser_Taxonomies();
@@ -1041,11 +1004,6 @@ g#show path:nth-child(6n) {
 			{
 				add_action( 'pre_get_posts', array( $this, 'modify_query_for_max_price' ), 99, 1 );
 			}
-		}
-
-		function set_serialized_meta_value( $value, $object, $field_name )
-		{
-			$return = update_post_meta( $object->ID, $field_name, maybe_unserialize( $value ) );
 		}
 
 		//Get this plugin's Options page settings mingled with default values
