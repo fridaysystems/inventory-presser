@@ -853,7 +853,9 @@ g#show path:nth-child(6n) {
 		function modify_query_for_max_price( $query )
 		{
 			//Do not mess with the query if it's not the main one and our CPT
-			if ( !$query->is_main_query() || $query->query_vars['post_type'] != Inventory_Presser_Plugin::CUSTOM_POST_TYPE )
+			if ( ! $query->is_main_query()
+				|| empty( $query->query_vars['post_type'] )
+				|| $query->query_vars['post_type'] != Inventory_Presser_Plugin::CUSTOM_POST_TYPE )
 			{
 				return;
 			}

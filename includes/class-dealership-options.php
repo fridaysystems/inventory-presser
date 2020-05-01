@@ -619,15 +619,18 @@ class Inventory_Presser_Options
 				$url_paths[] = $additional_listing['url_path'];
 			}
 			$sanitary_values['additional_listings_pages'] = $unique_rules;
-		}
 
-		//if the additional listing pages switch is changed, flush rewrite rules
-		//if the switch is on and the array of pages is different, flush rewrite rules
-		$settings = Inventory_Presser_Plugin::settings();
-		if( $sanitary_values['additional_listings_page'] != $settings['additional_listings_page']
-			|| ( $sanitary_values['additional_listings_page'] && $sanitary_values['additional_listings_pages'] != $settings['additional_listings_pages'] ) )
-		{
-			flush_rewrite_rules();
+			/**
+			 * If the additional listing pages switch is changed, or the switch
+			 * is on and the array of pages is different, flush rewrite rules
+			 */
+			$settings = Inventory_Presser_Plugin::settings();
+			if( ! isset( $settings['additional_listings_page'] )
+				|| $sanitary_values['additional_listings_page'] != $settings['additional_listings_page']
+				|| ( $sanitary_values['additional_listings_page'] && $sanitary_values['additional_listings_pages'] != $settings['additional_listings_pages'] ) )
+			{
+				flush_rewrite_rules();
+			}
 		}
 
 		return apply_filters( 'invp_options_page_sanitized_values', $sanitary_values, $input );
