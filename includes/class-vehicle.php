@@ -39,9 +39,9 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 
 		var $fuel_economy_1_name = '';
-		var $fuel_economy_1_annual_consumption = '';
-		var $fuel_economy_1_annual_cost = 0;
-		var $fuel_economy_1_annual_emissions = '';
+		var $fuel_economy_1_annual_consumption = ''; //Annual fuel consumption in barrels
+		var $fuel_economy_1_annual_cost = 0; //Annual fuel cost in US dollars
+		var $fuel_economy_1_annual_emissions = ''; //Annual tailpipe CO2 emissions in grams per mile
 		var $fuel_economy_1_city = 0;
 		var $fuel_economy_1_combined = 0;
 		var $fuel_economy_1_highway = 0;
@@ -54,7 +54,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $fuel_economy_2_combined = 0;
 		var $fuel_economy_2_highway = 0;
 
-		var $fuel_economy_five_year_savings = 0; //Five Year Savings Compared to the Average Vehicle
+		var $fuel_economy_five_year_savings = 0; //Five year savings (in fuel costs) compared to the average vehicle
 
 
 		var $interior_color = '';
