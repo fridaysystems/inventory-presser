@@ -54,7 +54,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $fuel_economy_2_combined = 0;
 		var $fuel_economy_2_highway = 0;
 
-		var $fuel_economy_five_year_savings = 0; //Five year savings (in fuel costs) compared to the average vehicle
+		var $fuel_economy_five_year_savings = 0; //Five year savings in fuel costs in US dollars compared to the average vehicle. Savings are positive.
 
 
 		var $interior_color = '';
@@ -647,7 +647,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				array(
 					'label'  => __( 'Fuel Economy Five Year Savings', 'inventory_presser' ),
 					'name'   => 'fuel_economy_five_year_savings',
-					'sample' => -2250,
+					'sample' => 2250,
 					'type'   => 'number',
 				),
 				array(
