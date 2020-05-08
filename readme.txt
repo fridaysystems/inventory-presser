@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.4.0
-Stable tag: 11.3.0
+Stable tag: 11.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,15 +62,14 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 11.3.0 =
-* [Added] Adds a stylesheet for the EPA Fuel Economy widget.
-* [Added] Adds three more data points to the EPA Fuel Economy widget and a switch to show them. They are annual cost, annual consumption, and annual emissions, and they make a "second half" of the widget that will display to the right of or below the existing content.
-* [Changed] Doubles the post meta fields for EPA fuel economy data after realizing the data can contain two fuel types for a single vehicle.
-* [Changed] Rewrites the EPA Fuel Economy widget to no longer use serialized meta data and to use CSS grid instead of a <table> element. This rewrite also includes support for two fuel types on a single vehicle.
-* [Removed] Stops registering a meta field on the location taxonomy to hold serialized phones and hours data.
+= 11.3.1 =
+* [Fixed] Revert dirname() calls to not use a second parameter for backwards compatibility.
 
 
 == Upgrade Notice ==
+
+= 11.3.1 =
+This version is just like 11.3.0, but it works on PHP versions less than 7.0.0 without producing warnings.
 
 = 11.3.0 =
 Version 11.3.0 is a stable & polished release after the elimination of serialized meta fields.

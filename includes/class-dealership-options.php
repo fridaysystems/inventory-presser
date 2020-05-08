@@ -40,7 +40,7 @@ class Inventory_Presser_Options
 	{
 		wp_register_script(
 			'invp_page_settings',
-			plugins_url( '/js/page-settings.js', dirname( __FILE__, 2 ) . '/inventory-presser.php' ),
+			plugins_url( '/js/page-settings.js', dirname( dirname( __FILE__ ) ) . '/inventory-presser.php' ),
 			array( 'jquery' )
 		);
 	}

@@ -438,11 +438,11 @@ class Inventory_Presser_Taxonomies
 		add_action( self::CRON_HOOK_DELETE_TERMS, array( $this, 'delete_unused_terms' ) );
 
 		//Put terms into our taxonomies when the plugin is activated
-		register_activation_hook( dirname( __FILE__, 2 ) . DIRECTORY_SEPARATOR . 'inventory-presser.php', array( 'Inventory_Presser_Taxonomies', 'populate_default_terms' ) );
+		register_activation_hook( dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inventory-presser.php', array( 'Inventory_Presser_Taxonomies', 'populate_default_terms' ) );
 		//Schedule a weekly wp-cron job to delete empty terms in our taxonomies
-		register_activation_hook( dirname( __FILE__, 2 ) . DIRECTORY_SEPARATOR . 'inventory-presser.php', array( 'Inventory_Presser_Taxonomies', 'schedule_terms_cron_job' ) );
+		register_activation_hook( dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inventory-presser.php', array( 'Inventory_Presser_Taxonomies', 'schedule_terms_cron_job' ) );
 		//Remove the wp-cron job during deactivation
-		register_deactivation_hook( dirname( __FILE__, 2 ) . DIRECTORY_SEPARATOR . 'inventory-presser.php', array( 'Inventory_Presser_Taxonomies', 'remove_terms_cron_job' ) );
+		register_deactivation_hook( dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inventory-presser.php', array( 'Inventory_Presser_Taxonomies', 'remove_terms_cron_job' ) );
 	}
 
 	function load_scripts( $hook )

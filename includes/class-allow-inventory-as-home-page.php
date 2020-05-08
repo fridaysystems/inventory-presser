@@ -112,7 +112,7 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 
 	function hooks()
 	{
-		$file_path = dirname( __FILE__, 2 ) . DIRECTORY_SEPARATOR . 'inventory-presser.php';
+		$file_path = dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inventory-presser.php';
 		register_activation_hook(   $file_path, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'create_pages' ) );
 		register_deactivation_hook( $file_path, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'delete_pages' ) );
 

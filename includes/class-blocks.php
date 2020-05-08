@@ -64,7 +64,7 @@ class Inventory_Presser_Blocks
 			return;
 		}
 
-		$plugin_root_file_path = dirname( __FILE__, 2 ) . '/inventory-presser.php';
+		$plugin_root_file_path = dirname( dirname( __FILE__ ) ) . '/inventory-presser.php';
 
 		$asset_file = include( plugin_dir_path( $plugin_root_file_path ) . 'build/index.asset.php' );
 
