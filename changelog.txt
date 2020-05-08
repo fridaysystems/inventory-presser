@@ -1,3 +1,6 @@
+= 11.3.1 =
+* [Fixed] Revert dirname() calls to not use a second parameter for backwards compatibility.
+
 = 11.3.0 =
 * [Added] Adds a stylesheet for the EPA Fuel Economy widget.
 * [Added] Adds three more data points to the EPA Fuel Economy widget and a switch to show them. They are annual cost, annual consumption, and annual emissions, and they make a "second half" of the widget that will display to the right of or below the existing content.

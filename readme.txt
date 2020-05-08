@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
-Tested up to: 5.4.0
-Stable tag: 11.3.1
+Tested up to: 5.4.1
+Stable tag: 11.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,8 +62,8 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 11.3.1 =
-* [Fixed] Revert dirname() calls to not use a second parameter for backwards compatibility.
+= 11.4.0 =
+* [Added] Adds support for another EPA Fuel Economy stat, the five year savings compared to the average vehicle. This detail will display in the EPA Fuel Economy widget if the "Include annual consumption, cost & emissions" setting is enabled and the vehicle has a value for the field.
 
 
 == Upgrade Notice ==
