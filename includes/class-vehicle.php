@@ -33,6 +33,11 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $engine = ''; //3.9L 8 cylinder
 		var $featured = '0';
 
+		/**
+		 * Fuel Economy members are designed in direct support of this EPA data
+		 * @see https://fueleconomy.gov/feg/epadata/vehicles.csv.zip
+		 */
+
 		var $fuel_economy_1_name = '';
 		var $fuel_economy_1_annual_consumption = '';
 		var $fuel_economy_1_annual_cost = 0;
@@ -48,6 +53,9 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $fuel_economy_2_city = 0;
 		var $fuel_economy_2_combined = 0;
 		var $fuel_economy_2_highway = 0;
+
+		var $fuel_economy_five_year_savings = 0; //Five Year Savings Compared to the Average Vehicle
+
 
 		var $interior_color = '';
 		var $last_modified = '';
@@ -634,6 +642,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'label'  => __( 'Fuel Economy Highway (fuel type 2)', 'inventory_presser' ),
 					'name'   => 'fuel_economy_2_highway',
 					'sample' => 31,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Five Year Savings', 'inventory_presser' ),
+					'name'   => 'fuel_economy_five_year_savings',
+					'sample' => -2250,
 					'type'   => 'number',
 				),
 				array(
