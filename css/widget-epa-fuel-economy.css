@@ -99,7 +99,8 @@ dl.fuel-economy-annual-stats{
 dl.fuel-economy-annual-stats dt{
 	float: left;
 	clear: left;
-	width: 15em;
+	width: 23em;
+	max-width: 100%;
 }
 dl.fuel-economy-annual-stats dd{
 	font-weight: bold;
@@ -108,5 +109,5 @@ dl.fuel-economy-annual-stats dd{
 }
 dl.fuel-economy-annual-stats dt,
 dl.fuel-economy-annual-stats dd{
-	line-height: 31.2px;
+	margin-bottom: .5em;
 }

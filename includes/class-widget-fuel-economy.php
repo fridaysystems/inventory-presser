@@ -159,12 +159,23 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 
 			//Are we including an optional second section with annual consumption, cost & emissions?
 			if( ! empty( $instance['include_annual_stats'] )
-				&& ( ! empty( $vehicle->get_fuel_economy_member( $t, 'annual_consumption' ) )
+				&& ( ! empty( $vehicle->fuel_economy_five_year_savings )
+					|| ! empty( $vehicle->get_fuel_economy_member( $t, 'annual_consumption' ) )
 					|| ! empty( $vehicle->get_fuel_economy_member( $t, 'annual_cost' ) )
 					|| empty( $vehicle->get_fuel_economy_member( $t, 'annual_emissions' ) ) ) )
 			{
 				//Yes
 				echo '<dl class="fuel-economy-annual-stats">';
+
+				//Five year savings
+				if( ! empty( $vehicle->fuel_economy_five_year_savings ) )
+				{
+					printf(
+						'<dt>%s</dt><dd>%s</dd>',
+						__( 'Five year savings compared to average vehicle', 'inventory-presser' ),
+						sprintf( '$%s', number_format( $vehicle->fuel_economy_five_year_savings, 0, '.', ',' ) )
+					);
+				}
 
 				//Annual consumption
 				if( ! empty( $vehicle->get_fuel_economy_member( $t, 'annual_consumption' ) ) )
