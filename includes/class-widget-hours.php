@@ -109,9 +109,9 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 						// do a check to make sure we want to output this row
 						$echo_row = false;
 
-						$open_by_appt = get_term_meta( $term_id, 'hours_' . $h . '_' . $this->weekday( $i ) . '_appt', true );
-						$open = get_term_meta( $term_id, 'hours_' . $h . '_' . $this->weekday( $i ) . '_open', true );
-						$close = get_term_meta( $term_id, 'hours_' . $h . '_' . $this->weekday( $i ) . '_close', true );
+						$open_by_appt = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_appt', true );
+						$open = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_open', true );
+						$close = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_close', true );
 
 						if( ( 1 == $open_by_appt || ! empty( $open ) && ! empty( $close ) ) || $cb_showclosed )
 						{
@@ -122,9 +122,9 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 							// check the remaining days, output current day if there are other displayed days following
 							for( $r=( $i+1 ); $r<7; $r++ )
 							{
-								$future_open_by_appt = get_term_meta( $term_id, 'hours_' . $h . '_' . $this->weekday( $r ) . '_appt', true );
-								$future_open = get_term_meta( $term_id, 'hours_' . $h . '_' . $this->weekday( $r ) . '_open', true );
-								$future_close = get_term_meta( $term_id, 'hours_' . $h . '_' . $this->weekday( $r ) . '_close', true );
+								$future_open_by_appt = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_appt', true );
+								$future_open = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_open', true );
+								$future_close = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_close', true );
 								if( 1 == $future_open_by_appt || ( ! empty( $future_open ) && ! empty( $future_close ) ) )
 								{
 									$echo_row = true;
@@ -145,7 +145,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 							printf(
 								'<tr%s><th>%s</th>',
 								$current_row_class,
-								$this->weekdays()[$i]
+								array_values( INVP::weekdays() )[$i]
 							);
 
 							if( 1 == $open_by_appt && ! empty( $open ) && ! empty( $close ) )
@@ -281,32 +281,5 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 		$instance['cb_title'] = ( !empty( $new_instance['cb_title'] ) ) ? $new_instance['cb_title'] : array();
 		$instance['cb_showclosed'] = ( !empty( $new_instance['cb_showclosed'] ) ) ? $new_instance['cb_showclosed'] : '';
 		return $instance;
-	}
-
-	private function weekday( $zero_through_six )
-	{
-		$days = array(
-			'monday',
-			'tuesday',
-			'wednesday',
-			'thursday',
-			'friday',
-			'saturday',
-			'sunday',
-		);
-		return empty( $days[$zero_through_six] ) ? false : $days[$zero_through_six];
-	}
-
-	private function weekdays()
-	{
-		return array(
-			__( 'Mon', 'inventory-presser' ),
-			__( 'Tue', 'inventory-presser' ),
-			__( 'Wed', 'inventory-presser' ),
-			__( 'Thu', 'inventory-presser' ),
-			__( 'Fri', 'inventory-presser' ),
-			__( 'Sat', 'inventory-presser' ),
-			__( 'Sun', 'inventory-presser' ),
-		);
 	}
 }

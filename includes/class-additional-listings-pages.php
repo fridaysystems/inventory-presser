@@ -13,7 +13,7 @@ class Inventory_Presser_Additional_Listings_Pages
 	function hooks()
 	{
 		//Are additional listings pages enabled?
-		$settings = Inventory_Presser_Plugin::settings();
+		$settings = INVP::settings();
 		if( empty( $settings['additional_listings_page'] ) || ! $settings['additional_listings_page'] )
 		{
 			return;
@@ -59,7 +59,7 @@ class Inventory_Presser_Additional_Listings_Pages
 	public static function additional_listings_pages_array()
 	{
 		//Are there additional listings pages configured?
-		$settings = Inventory_Presser_Plugin::settings();
+		$settings = INVP::settings();
 		if( ! empty( $settings['additional_listings_page'] )
 			&& $settings['additional_listings_page']
 			&& ! empty( $settings['additional_listings_pages'] ) )

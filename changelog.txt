@@ -1,3 +1,9 @@
+= 11.4.1 =
+* [Fixed] Enqueue flexslider styles when the slick-based Slider widget is rendered. We use the same slider button icons in both flexslider and slick, but the slick widget icons only worked when there was also a flexslider on the same page.
+
+= 11.4.0 =
+* [Added] Adds support for another EPA Fuel Economy stat, the five year savings compared to the average vehicle. This detail will display in the EPA Fuel Economy widget if the "Include annual consumption, cost & emissions" setting is enabled and the vehicle has a value for the field.
+
 = 11.3.1 =
 * [Fixed] Revert dirname() calls to not use a second parameter for backwards compatibility.
 

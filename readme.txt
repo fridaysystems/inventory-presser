@@ -62,11 +62,11 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 11.4.1 =
-* [Fixed] Enqueue flexslider styles when the slick-based Slider widget is rendered. We use the same slider button icons in both flexslider and slick, but the slick widget icons only worked when there was also a flexslider on the same page.
-
-= 11.4.0 =
-* [Added] Adds support for another EPA Fuel Economy stat, the five year savings compared to the average vehicle. This detail will display in the EPA Fuel Economy widget if the "Include annual consumption, cost & emissions" setting is enabled and the vehicle has a value for the field.
+= 11.5.0 =
+* [Added] Adds an API class `INVP` to better organize the code.
+* [Changed] Includes a method `INVP::weekdays()` that allows two other classes for taxonomies and the hours widget to be refactored to use this method.
+* [Changed] Moves the `settings()` and `meta_prefix()` methods into the new API class but maintains and rewrites their original locations for backwards compatibility.
+* [Changed] Adds the flexslider CSS class to the Vehicle Slider widget make initialization JavaScript simpler and like other sliders. Tweaks the flexslider initialization JavaScript to not set a line-height attribute on a carousel flexsliders used to show thumbnails below a flexslider containing full size images.
 
 
 == Upgrade Notice ==

@@ -491,7 +491,7 @@ class Inventory_Presser_Options
 	{
 		wp_enqueue_script( 'invp_page_settings' );
 
-		$this->option = Inventory_Presser_Plugin::settings();
+		$this->option = INVP::settings();
 
 		?><div class="wrap">
 			<h2><?php _e( 'Inventory Presser Settings', 'inventory-presser' ); ?></h2>
@@ -624,7 +624,7 @@ class Inventory_Presser_Options
 			 * If the additional listing pages switch is changed, or the switch
 			 * is on and the array of pages is different, flush rewrite rules
 			 */
-			$settings = Inventory_Presser_Plugin::settings();
+			$settings = INVP::settings();
 			if( ! isset( $settings['additional_listings_page'] )
 				|| $sanitary_values['additional_listings_page'] != $settings['additional_listings_page']
 				|| ( $sanitary_values['additional_listings_page'] && $sanitary_values['additional_listings_pages'] != $settings['additional_listings_pages'] ) )

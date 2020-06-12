@@ -56,7 +56,7 @@ class Inventory_Presser_Taxonomies
 							</thead>
 							<tbody><?php
 
-								foreach (self::weekdays() as $index => $day)
+								foreach( array_keys( INVP::weekdays() ) as $index => $day)
 								{
 									?><tr>
 									<th><?php echo $day ?></th>
@@ -227,7 +227,7 @@ class Inventory_Presser_Taxonomies
 					<div class="repeat-container"><?php
 
 					$hours_sets = self::get_hours( $term->term_id );
-					$days = self::weekdays();
+					$days = array_keys( INVP::weekdays() );
 					if( ! empty( $hours_sets ) )
 					{
 						foreach( $hours_sets as $hours )
@@ -296,7 +296,7 @@ class Inventory_Presser_Taxonomies
 								</thead>
 								<tbody><?php
 
-									foreach ( self::weekdays() as $d => $day )
+									foreach( array_keys( INVP::weekdays() ) as $d => $day )
 									{
 
 									?><tr>
@@ -360,7 +360,7 @@ class Inventory_Presser_Taxonomies
 				'title' => self::meta_array_value_single( $term_meta, 'hours_' . $h . '_title' ),
 			);
 
-			$days = self::weekdays();
+			$days = array_keys( INVP::weekdays() );
 			for( $d=0; $d<7; $d++ )
 			{
 				$set[$days[$d] . '_appt'] = self::meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_appt' );
@@ -469,7 +469,7 @@ class Inventory_Presser_Taxonomies
 		}
 
 		//if the checkbox to include sold vehicles is checked, abort
-		$plugin_settings = Inventory_Presser_Plugin::settings();
+		$plugin_settings = INVP::settings();
 		if( isset( $plugin_settings['include_sold_vehicles'] ) && $plugin_settings['include_sold_vehicles'] )
 		{
 			return;
@@ -747,7 +747,7 @@ class Inventory_Presser_Taxonomies
 			// title of hours set
 			update_term_meta( $term_id, 'hours_' . strval($i+1) . '_title', sanitize_text_field( $_POST['hours_title'][$i] ) );
 
-			foreach( self::weekdays() as $d => $day )
+			foreach( array_keys( INVP::weekdays() ) as $d => $day )
 			{
 				update_term_meta( $term_id, 'hours_' . strval($i+1) . '_' . $day . '_appt', sanitize_text_field( $_POST['hours'][$d]['appt'][$i] ) );
 				update_term_meta( $term_id, 'hours_' . strval($i+1) . '_' . $day . '_open', sanitize_text_field( $_POST['hours'][$d]['open'][$i] ) );
@@ -1298,18 +1298,5 @@ class Inventory_Presser_Taxonomies
 			}
 		}
 		return $HTML . '</select>';
-	}
-
-	private static function weekdays()
-	{
-		return array(
-			'monday',
-			'tuesday',
-			'wednesday',
-			'thursday',
-			'friday',
-			'saturday',
-			'sunday',
-		);
 	}
 }

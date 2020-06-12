@@ -213,7 +213,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			 * newer, dynamic icons, fall back to SVGs that ship with this
 			 * plugin.
 			 */
-			$settings = Inventory_Presser_Plugin::settings();
+			$settings = INVP::settings();
 			if( empty( $svg_path ) || ! $settings['use_carfax_provided_buttons'] )
 			{
 				//fallback to the icon that ships with this plugin
@@ -907,7 +907,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			}
 
 			//How are we displaying the price?
-			$settings = Inventory_Presser_Plugin::settings();
+			$settings = INVP::settings();
 
 			if( ! isset( $settings['price_display'] ) )
 			{

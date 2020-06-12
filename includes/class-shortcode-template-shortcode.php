@@ -4,7 +4,7 @@ class Inventory_Presser_Template_Shortcode
 {
 	protected function vehicle_attribute_table( $vehicle )
 	{
-		$invp_settings = Inventory_Presser_Plugin::settings();
+		$invp_settings = INVP::settings();
 
 		/**
 		 * Build an array of items that will make up a table
