@@ -19,11 +19,6 @@ class Inventory_Presser_Slider extends WP_Widget {
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
-
-		//include scripts and styles if widget is used
-		if( is_active_widget( false, false, self::ID_BASE ) ) {
-			add_action( 'wp_enqueue_scripts', array( $this, 'include_scripts' ) );
-		}
 	}
 
 	public function delete_option() {
@@ -39,16 +34,21 @@ class Inventory_Presser_Slider extends WP_Widget {
 		);
 	}
 
-	function include_scripts() {
+	function include_scripts()
+	{
 		//This widget uses a jQuery carousel called slick https://plugins.jquery.com/slick/
 		wp_enqueue_style( 'jquery-slick-style', '//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css' );
 		wp_enqueue_style( 'invp-slick', plugins_url( 'css/slick.css', dirname( __FILE__ ) ) );
 		wp_enqueue_script( 'jquery-slick', '//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js', array('jquery'), '1.6.0' );
 		wp_enqueue_script( 'invp-slick-init', plugins_url( 'js/slick.js', dirname( __FILE__ ) ), array( 'jquery-slick' ) );
+		//Also we're using flexslider-icons font face for the button icons
+		wp_enqueue_style( 'flexslider' );
 	}
 
 	// front-end
-	public function widget( $args, $instance ) {
+	public function widget( $args, $instance )
+	{
+		$this->include_scripts();
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$showcount = $instance['showcount'];
