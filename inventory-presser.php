@@ -582,6 +582,8 @@ class Inventory_Presser_Plugin
 		$shortcodes->hooks();
 		$shortcodes = new Inventory_Presser_Shortcode_Archive_Vehicle();
 		$shortcodes->hooks();
+		$shortcodes = new Inventory_Presser_Shortcode_Hours_Today();
+		$shortcodes->hooks();
 
 		/**
 		 * When the active theme isn't prepared to display vehicles, insert
@@ -625,6 +627,7 @@ class Inventory_Presser_Plugin
 			'class-additional-listings-pages.php',
 			'class-allow-inventory-as-home-page.php',
 			'class-blocks.php',
+			'class-business-day.php',
 			'class-customize-admin-dashboard.php',
 			'class-dealership-options.php',
 			'class-editor-sidebar.php',
@@ -637,6 +640,7 @@ class Inventory_Presser_Plugin
 			'class-photo-numberer.php',
 			'class-redirect-404-vehicles.php',
 			'class-seo.php',
+			'class-shortcode-hours-today.php',
 			'class-shortcode-iframe.php',
 			'class-shortcode-inventory-grid.php',
 			'class-shortcode-inventory-slider.php',
