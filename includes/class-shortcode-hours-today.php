@@ -34,7 +34,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 	/**
 	 * Create a DateTime object from a string like "9:00 AM"
 	 */
-	function create_date_object_from_hour_string( $hour_string )
+	static function create_date_object_from_hour_string( $hour_string )
 	{
 		return DateTime::createFromFormat("g:ia", strtolower( str_replace( ' ', '', $hour_string ) ) );
 	}
@@ -43,7 +43,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 	 * Translate the hours termmeta data structure into
 	 * Inventory_Presser_Business_Day objects
 	 */
-	function create_days_array_from_hours_array( $hours_arr )
+	public static function create_days_array_from_hours_array( $hours_arr )
 	{
 		$days = array();
 		$weekdays = array_keys( INVP::weekdays() );
@@ -59,14 +59,14 @@ class Inventory_Presser_Shortcode_Hours_Today
 			$day->weekday = $d+1;
 
 			//open hour, turn "9:00 AM" into 9 and "4:00 PM" into 15
-			$date_obj = $this->create_date_object_from_hour_string( $hours_arr[$weekdays[$d] . '_open'] );
+			$date_obj = self::create_date_object_from_hour_string( $hours_arr[$weekdays[$d] . '_open'] );
 			if( ! $date_obj ) { continue; }
 
 			$day->open_hour = $date_obj->format('G');
 			$day->open_minute = $date_obj->format('i');
 
 			//close hour
-			$date_obj = $this->create_date_object_from_hour_string( $hours_arr[$weekdays[$d] . '_close'] );
+			$date_obj = self::create_date_object_from_hour_string( $hours_arr[$weekdays[$d] . '_close'] );
 			if( ! $date_obj ) { continue; }
 
 			$day->close_hour = $date_obj->format('G');
@@ -111,7 +111,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 		}
 
 		//find the next day we are open
-		$next_open_day = $this->find_next_open_day( $days );
+		$next_open_day = self::find_next_open_day( $days );
 		if( null == $next_open_day )
 		{
 			return '';
@@ -142,12 +142,19 @@ class Inventory_Presser_Shortcode_Hours_Today
 		/**
 		 * Find hours for which we will create sentence(s)
 		 */
-		$hours_set = null;
+		$hours_set = $this->find_hours_set( $atts );
+		if( null == $hours_set ) { return ''; }
 
-		if( 0 !== $atts['hours_uid'] )
+		$days = $this->create_days_array_from_hours_array( $hours_set );
+		return $this->create_sentence( $days );
+	}
+
+	private function find_hours_set( $shortcode_atts )
+	{
+		if( 0 !== $shortcode_atts['hours_uid'] )
 		{
 			//the hours identified by this unique id
-			$hours_set = $this->find_hours_set_by_uid( $atts['hours_uid'] );
+			return $this->find_hours_set_by_uid( $shortcode_atts['hours_uid'] );
 		}
 		else if( is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) )
 		{
@@ -159,7 +166,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 				$sets = $this->find_hours_sets_by_location_slug( $location_slug );
 				if( ! empty( $sets ) )
 				{
-					$hours_set = $sets[0];
+					return $sets[0];
 				}
 			}
 		}
@@ -184,17 +191,13 @@ class Inventory_Presser_Shortcode_Hours_Today
 					$sets = $this->find_hours_sets_by_location_slug( $slug );
 					if( ! empty( $sets ) )
 					{
-						$hours_set = $sets[0];
-						break;
+						return $sets[0];
 					}
 				}
 			}
 		}
 
-		if( null == $hours_set ) { return ''; }
-
-		$days = $this->create_days_array_from_hours_array( $hours_set );
-		return $this->create_sentence( $days );
+		return null;
 	}
 
 	//Get all sets of hours attached to a term in the location taxonomy
@@ -202,7 +205,6 @@ class Inventory_Presser_Shortcode_Hours_Today
 	{
 		if( ! is_string( $slug ) )
 		{
-			error_log( 'find_hours_sets_by_location_slug() was passed something other than string: ' . print_r( $slug, true ) );
 			return null;
 		}
 
@@ -244,7 +246,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 		return null;
 	}
 
-	public function find_next_open_day( $days )
+	public static function find_next_open_day( $days )
 	{
 		//find today
 		$today_weekday = date( 'w', current_time( 'timestamp' ) ); //0 if today is Sunday

@@ -65,7 +65,6 @@ class Inventory_Presser_Business_Day
 	public function open_right_now()
 	{
 		$now = $this->current_datetime();
-
 		$today_open_date = $this->current_datetime();
 		$today_open_date->setTime( $this->open_hour, $this->open_minute, 0 );
 

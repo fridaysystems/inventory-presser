@@ -71,113 +71,145 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 				}
 
 				//There are hours in is slot $h, has the user configured this widget to display it?
-				if( in_array( $hours_uid, $instance['cb_display'][$term_id] ) )
+				if( ! in_array( $hours_uid, $instance['cb_display'][$term_id] ) )
 				{
-					/**
-					 * The first time we reach this block, we can be sure we have
-					 * some hours content to output in the widget, so dump the
-					 * preamble $html.
-					 */
-					if( ! empty( $html ) )
+					//No
+					continue;
+				}
+
+				/**
+				 * The first time we reach this block, we can be sure we have
+				 * some hours content to output in the widget, so dump the
+				 * preamble $html.
+				 */
+				if( ! empty( $html ) )
+				{
+					echo $html;
+					$html = '';
+				}
+
+
+				$hours_title = '';
+				if( ! empty( $instance['cb_title'][$term_id] )
+					&& is_array( $instance['cb_title'][$term_id] )
+					&& in_array( $hours_uid, $instance['cb_title'][$term_id] ) )
+				{
+					$hours_title = sprintf( '<strong>%s</strong>', get_term_meta( $term_id, 'hours_' . $h . '_title', true ) );
+				}
+				echo apply_filters( 'invp_hours_title', $hours_title, $hours_uid );
+
+				// get current day number, starting on a monday
+				$current_weekday = date('w') - 1;
+				$current_weekday = ($current_weekday == -1) ? 6 : $current_weekday;
+
+				$start_of_week = get_option('start_of_week') -1;
+
+				$hours_sets = Inventory_Presser_Taxonomies::get_hours( $term_id );
+				$hours_set = array();
+				foreach( $hours_sets as $set )
+				{
+					if( $hours_uid == $set['uid'] )
 					{
-						echo $html;
-						$html = '';
+						$hours_set = $set;
+						break;
 					}
+				}
+				$days = Inventory_Presser_Shortcode_Hours_Today::create_days_array_from_hours_array( $hours_set );
+				$next_open_day = Inventory_Presser_Shortcode_Hours_Today::find_next_open_day( $days );
 
-					$hours_title = '';
-					if( ! empty( $instance['cb_title'][$term_id] )
-						&& is_array( $instance['cb_title'][$term_id] )
-						&& in_array( $hours_uid, $instance['cb_title'][$term_id] ) )
+				echo '<table>';
+
+				// output a row for each day
+				for ($z = $start_of_week; $z < ($start_of_week + 7); $z++)
+				{
+					$i = ($z > 6) ? $z - 7 : $z;
+
+					// do a check to make sure we want to output this row
+					$echo_row = false;
+
+					$open_by_appt = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_appt', true );
+					$open = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_open', true );
+					$close = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_close', true );
+
+					if( ( 1 == $open_by_appt || ! empty( $open ) && ! empty( $close ) ) || $cb_showclosed )
 					{
-						$hours_title = sprintf( '<strong>%s</strong>', get_term_meta( $term_id, 'hours_' . $h . '_title', true ) );
+						$echo_row = true;
 					}
-					echo apply_filters( 'invp_hours_title', $hours_title, $hours_uid );
-
-					// get current day number, starting on a monday
-					$current_weekday = date('w') - 1;
-					$current_weekday = ($current_weekday == -1) ? 6 : $current_weekday;
-
-					$start_of_week = get_option('start_of_week') -1;
-
-					echo '<table>';
-
-					// output a row for each day
-					for ($z = $start_of_week; $z < ($start_of_week + 7); $z++)
+					elseif( $i < 6 )
 					{
-						$i = ($z > 6) ? $z - 7 : $z;
-
-						// do a check to make sure we want to output this row
-						$echo_row = false;
-
-						$open_by_appt = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_appt', true );
-						$open = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_open', true );
-						$close = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_close', true );
-
-						if( ( 1 == $open_by_appt || ! empty( $open ) && ! empty( $close ) ) || $cb_showclosed )
+						// check the remaining days, output current day if there are other displayed days following
+						for( $r=( $i+1 ); $r<7; $r++ )
 						{
-							$echo_row = true;
-						}
-						elseif( $i < 6 )
-						{
-							// check the remaining days, output current day if there are other displayed days following
-							for( $r=( $i+1 ); $r<7; $r++ )
+							$future_open_by_appt = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_appt', true );
+							$future_open = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_open', true );
+							$future_close = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_close', true );
+							if( 1 == $future_open_by_appt || ( ! empty( $future_open ) && ! empty( $future_close ) ) )
 							{
-								$future_open_by_appt = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_appt', true );
-								$future_open = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_open', true );
-								$future_close = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_close', true );
-								if( 1 == $future_open_by_appt || ( ! empty( $future_open ) && ! empty( $future_close ) ) )
-								{
-									$echo_row = true;
-									break;
-								}
-							}
-							// if there are no remaining days to display, break out of loop
-							if( ! $echo_row )
-							{
+								$echo_row = true;
 								break;
 							}
 						}
-
-						// output row
-						if( $echo_row )
+						// if there are no remaining days to display, break out of loop
+						if( ! $echo_row )
 						{
-							$current_row_class = ( $current_weekday == $i ) ? ' class="day-highlight"' : '';
-							printf(
-								'<tr%s><th>%s</th>',
-								$current_row_class,
-								array_values( INVP::weekdays() )[$i]
-							);
-
-							if( 1 == $open_by_appt && ! empty( $open ) && ! empty( $close ) )
-							{
-								printf(
-									'<td colspan="2">%s - %s &amp; %s</td>',
-									$open,
-									$close,
-									__( 'Appointment', 'inventory-presser' )
-								);
-							}
-							elseif( 1 == $open_by_appt )
-							{
-								printf( '<td colspan="2">%s</td>', __( 'Appointment Only', 'inventory-presser' ) );
-							}
-							elseif( ! empty( $open ) && ! empty( $close ) )
-							{
-								printf(
-									'<td>%s</td><td>%s</td>',
-									$open,
-									$close
-								);
-							}
-							else
-							{
-								echo '<td colspan="2">Closed</td>';
-							}
-						    echo '</tr>';
+							break;
 						}
 					}
-					echo '</table>';
+
+					// output row
+					if( $echo_row )
+					{
+						/**
+						 * Highlight this row if it's today and we have not
+						 * passed closing time, or highlight it if we've
+						 * closed for the day and $i is $next_open_day
+						 */
+						$current_row_class = '';
+						if( ! empty( $days[$i] ) )
+						{
+							if( ( $days[$i]->open_right_now() && $current_weekday == $i )
+								|| ( $current_weekday != $i && null != $next_open_day && $next_open_day->weekday-1 == $i ) )
+							{
+								$current_row_class = ' class="day-highlight"';
+								$next_open_day = null; //avoid highlighting two days
+							}
+						}
+
+						printf(
+							'<tr%s><th>%s</th>',
+							$current_row_class,
+							array_values( INVP::weekdays() )[$i]
+						);
+
+						if( 1 == $open_by_appt && ! empty( $open ) && ! empty( $close ) )
+						{
+							printf(
+								'<td colspan="2">%s - %s &amp; %s</td>',
+								$open,
+								$close,
+								__( 'Appointment', 'inventory-presser' )
+							);
+						}
+						elseif( 1 == $open_by_appt )
+						{
+							printf( '<td colspan="2">%s</td>', __( 'Appointment Only', 'inventory-presser' ) );
+						}
+						elseif( ! empty( $open ) && ! empty( $close ) )
+						{
+							printf(
+								'<td>%s</td><td>%s</td>',
+								$open,
+								$close
+							);
+						}
+						else
+						{
+							echo '<td colspan="2">Closed</td>';
+						}
+						echo '</tr>';
+					}
 				}
+				echo '</table>';
 			}
 		}
 		//Only output HTML here if $html has been emptied, that means it was echoed
