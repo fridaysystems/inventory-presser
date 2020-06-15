@@ -793,9 +793,17 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				__( 'at', 'inventory-presser' ),
 				$this->location
 			);
+
+			$sentence = apply_filters( 'invp_vehicle_location_sentence', $sentence, $this );
+
+			if( function_exists( 'apply_shortcodes' ) )
+			{
+				$sentence = apply_shortcodes( $sentence );
+			}
+
 			return sprintf(
 				'<div class="vehicle-location">%s</div>',
-				apply_filters( 'invp_vehicle_location_sentence', $sentence, $this )
+				$sentence
 			);
 		}
 

@@ -5,19 +5,11 @@ class Inventory_Presser_Shortcode_Hours_Today
 {
 	function hooks()
 	{
-		//Include this class we
-		include_once( 'includes/business-day.php' );
-
-		//Allow translations
-		add_action( 'plugins_loaded', function() {
-			load_plugin_textdomain( 'inventory-presser-hours-today', false, __DIR__ );
-		} );
-
 		//add a shortcode that outputs hours today
 		add_shortcode( 'invp_hours_today', array( $this, 'driver' ) );
 
 		//add hours today near the "this vehicle is located at" sentence
-		add_filter( '_dealer_vehicle_location_sentence', array( $this, 'append_hours_today_by_location_slug' ), 10, 2 );
+		add_filter( 'invp_vehicle_location_sentence', array( $this, 'append_shortcode' ) );
 
 		//add hours today in the Dealer Hours widget
 		add_filter( 'invp_hours_title', array( $this, 'append_hours_today_to_hours_widget'), 10, 2 );
@@ -35,26 +27,9 @@ class Inventory_Presser_Shortcode_Hours_Today
 		return $hours_title_html . '<p class="invp-hours-today">' . $this->create_sentence( $days ) . '</p>';
 	}
 
-	function append_hours_today_by_location_slug( $content, $location_slug )
+	function append_shortcode( $content )
 	{
-		$sets = $this->find_hours_sets_by_location_slug( $location_slug );
-		if( null == $sets ) { return $content; }
-
-		$hours_set = null;
-		if( 0 < sizeof( $sets ) )
-		{
-			//always take the first, even if there are more than one set
-			$hours_set = $sets[0];
-		}
-		if( null == $hours_set ) { return $content; }
-
-		//remove the period at the end of the $content
-		if( '.' == substr( $content, -1 ) )
-		{
-			$content = substr( $content, 0, strlen( $content ) - 1 );
-		}
-
-		return trim( $content . ', which is ' . lcfirst( $this->create_sentence( $this->create_days_array_from_hours_array( $hours_set ) ) ) . '.' );
+		return trim( $content . ' [invp_hours_today]' );
 	}
 
 	/**
@@ -210,7 +185,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 	{
 		//setup default attributes
 		$atts = shortcode_atts( array(
-			'hours_uid'     => 0,
+			'hours_uid' => 0,
 		), $atts );
 
 		/**
@@ -223,20 +198,17 @@ class Inventory_Presser_Shortcode_Hours_Today
 			//the hours identified by this unique id
 			$hours_set = $this->find_hours_set_by_uid( $atts['hours_uid'] );
 		}
-		else if( is_singular( 'inventory_vehicle' ) )
+		else if( is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) )
 		{
-			if( class_exists( 'Inventory_Presser_Vehicle' ) )
+			//is there a location attached to this vehicle?
+			$location_terms = wp_get_object_terms( get_the_ID(), 'location' );
+			if( ! empty( $location_terms ) )
 			{
-				//is there a location attached to this vehicle?
-				$vehicle = new Inventory_Presser_Vehicle( get_the_ID() );
-
-				if( isset( $vehicle->location ) )
+				$location_slug = $location_terms[0]->slug;
+				$sets = $this->find_hours_sets_by_location_slug( $location_slug );
+				if( ! empty( $sets ) )
 				{
-					$sets = $this->find_hours_sets_by_location_slug( $vehicle->location );
-					if( ! empty( $sets ) )
-					{
-						$hours_set = $sets[0];
-					}
+					$hours_set = $sets[0];
 				}
 			}
 		}

@@ -43,7 +43,7 @@ class INVP
 		 * If a valid parameter is provided, return the lowercase day name
 		 * it identifies.
 		 */
-		if( ! empty( $zero_through_six ) )
+		if( null !== $zero_through_six )
 		{
 			if( 0 <= $zero_through_six && 6 >= $zero_through_six )
 			{
