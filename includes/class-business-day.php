@@ -22,9 +22,57 @@ class Inventory_Presser_Business_Day
 		return $this->time_string( $this->close_hour, $this->close_minute );
 	}
 
+	//use WordPress current_time() to create a DateTime object
+	private function current_datetime()
+	{
+		return new DateTime( date( DATE_RFC2822, current_time( 'timestamp' ) ) );
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function is_tomorrow()
+	{
+		$tomorrow = $this->current_datetime();
+		$tomorrow->add( new DateInterval( 'P1D' ) );
+		return $this->weekday == $tomorrow->format( 'w' );
+	}
+
+	/**
+	 * Does this day have any open hours?
+	 *
+	 * @return boolean
+	 */
 	public function open_in_some_fashion()
 	{
 		return ( 0 != $this->close_hour && $this->open_hour < $this->close_hour );
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function open_later_today()
+	{
+		$now = $this->current_datetime();
+		$today_open_date = $this->current_datetime();
+		$today_open_date->setTime( $this->open_hour, $this->open_minute, 0 );
+		return null != $today_open_date && $now < $today_open_date;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function open_right_now()
+	{
+		$now = $this->current_datetime();
+
+		$today_open_date = $this->current_datetime();
+		$today_open_date->setTime( $this->open_hour, $this->open_minute, 0 );
+
+		$today_close_date = $this->current_datetime();
+		$today_close_date->setTime( $this->close_hour, $this->close_minute, 0 );
+
+		return null != $today_open_date && $now >= $today_open_date && $now < $today_close_date;
 	}
 
 	public function open_string()
