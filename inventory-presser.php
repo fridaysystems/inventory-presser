@@ -761,6 +761,7 @@ fill: #$black;
 		{ ?><script type="text/javascript">
 		    var invp = <?php echo json_encode( array(
 				'meta_prefix' => self::meta_prefix(),
+				'is_singular' => is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ),
 			) ); ?>;
 		</script><?php
 		}

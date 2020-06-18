@@ -160,7 +160,6 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 	{
 		if (jQuery('body').hasClass('single-inventory_vehicle'))
 		{
-			var anispeed = 300;
 			adjustSlideHeight('#slider');
 
 			jQuery(window).resize(function() {

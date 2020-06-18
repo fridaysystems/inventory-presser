@@ -64,6 +64,7 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 = 11.5.0 =
 * [Added] Adds an API class `INVP` to better organize the code.
+* [Changed] Hours Widget no longer highlights today if the dealership has already closed for the day. In this case, the next open business day is highlighted.
 * [Changed] Includes a method `INVP::weekdays()` that allows two other classes for taxonomies and the hours widget to be refactored to use this method.
 * [Changed] Moves the `settings()` and `meta_prefix()` methods into the new API class but maintains and rewrites their original locations for backwards compatibility.
 * [Changed] Adds the flexslider CSS class to the Vehicle Slider widget make initialization JavaScript simpler and like other sliders. Tweaks the flexslider initialization JavaScript to not set a line-height attribute on a carousel flexsliders used to show thumbnails below a flexslider containing full size images.
