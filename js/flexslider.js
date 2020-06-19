@@ -1,5 +1,12 @@
-jQuery(document).ready(function() {
+jQuery(window).load(function() {
+	jQuery(window).resize(function() {
+		setTimeout(function() {
+			adjustSlideHeight('#slider');
+		}, 120);
+	});
+});
 
+jQuery(document).ready(function() {
 	jQuery('.flexslider').not('#carousel').flexslider({
 		animation: 'slide',
 		animationSpeed: invp.is_singular ? 200 : 300,
