@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.4.1
-Stable tag: 11.4.1
+Stable tag: 11.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,8 +62,8 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 11.5.1 =
-* [Fixed] Fixes a bug in our flexslider spin-up code that prevented slideshows from auto-playing.
+= 11.5.2 =
+* [Fixed] Adds backwards compatibility to allow WordPress versions < 5.4.0 to still have the "hours today" sentence added near instances of the Hours Widget by falling back to a `do_shortcode()` call.
 
 
 == Upgrade Notice ==

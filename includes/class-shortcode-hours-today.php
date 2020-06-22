@@ -3,32 +3,49 @@ defined( 'ABSPATH' ) OR exit;
 
 class Inventory_Presser_Shortcode_Hours_Today
 {
-	function hooks()
+	const SHORTCODE_TAG = 'invp_hours_today';
+
+	function add()
 	{
 		//add a shortcode that outputs hours today
-		add_shortcode( 'invp_hours_today', array( $this, 'driver' ) );
+		add_shortcode( self::SHORTCODE_TAG, array( $this, 'driver' ) );
+	}
+
+	function hooks()
+	{
+		add_action( 'init', array( $this, 'add' ) );
 
 		//add hours today near the "this vehicle is located at" sentence
 		add_filter( 'invp_vehicle_location_sentence', array( $this, 'append_shortcode' ) );
 
 		//add hours today in the Hours widget
-		add_filter( 'invp_hours_title', array( $this, 'append_hours_today_to_hours_widget'), 10, 2 );
+		add_filter( 'invp_hours_title', array( $this, 'append_hours_today_to_hours_widget' ), 10, 2 );
 	}
 
 	function append_hours_today_to_hours_widget( $hours_title_html, $hours_uid )
 	{
+		$shortcode = '[' . self::SHORTCODE_TAG . ' hours_uid="' . $hours_uid . '"]';
+		$shortcode_output = '';
 		if( function_exists( 'apply_shortcodes' ) )
 		{
-			$hours_title_html .= '<p class="invp-hours-today">'
-				. apply_shortcodes( '[invp_hours_today hours_uid="' . $hours_uid . '"]' )
-				. '</p>';
+			$shortcode_output = apply_shortcodes( $shortcode );
 		}
-		return $hours_title_html;
+		elseif( function_exists( 'do_shortcode' ) )
+		{
+			$shortcode_output = do_shortcode( $shortcode );
+		}
+
+		if( empty( $shortcode_output ) )
+		{
+			return $hours_title_html;
+		}
+
+		return $hours_title_html . '<p class="invp-hours-today">' . $shortcode_output . '</p>';
 	}
 
 	function append_shortcode( $content )
 	{
-		return trim( $content . ' [invp_hours_today]' );
+		return trim( $content . ' [' . self::SHORTCODE_TAG . ']' );
 	}
 
 	/**
@@ -132,7 +149,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 		return $str;
 	}
 
-	function driver( $atts )
+	public function driver( $atts )
 	{
 		//setup default attributes
 		$atts = shortcode_atts( array(
@@ -143,7 +160,10 @@ class Inventory_Presser_Shortcode_Hours_Today
 		 * Find hours for which we will create sentence(s)
 		 */
 		$hours_set = $this->find_hours_set( $atts );
-		if( null == $hours_set ) { return ''; }
+		if( null == $hours_set )
+		{
+			return '';
+		}
 
 		$days = $this->create_days_array_from_hours_array( $hours_set );
 		return $this->create_sentence( $days );
@@ -151,7 +171,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 
 	private function find_hours_set( $shortcode_atts )
 	{
-		if( 0 !== $shortcode_atts['hours_uid'] )
+		if( ! empty( $shortcode_atts ) && 0 !== $shortcode_atts['hours_uid'] )
 		{
 			//the hours identified by this unique id
 			return $this->find_hours_set_by_uid( $shortcode_atts['hours_uid'] );

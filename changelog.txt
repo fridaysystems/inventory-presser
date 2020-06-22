@@ -1,3 +1,6 @@
+= 11.5.1 =
+* [Fixed] Fixes a bug in our flexslider spin-up code that prevented slideshows from auto-playing.
+
 = 11.5.0 =
 * [Added] Adds an API class `INVP` to better organize the code.
 * [Changed] Hours Widget no longer highlights today if the dealership has already closed for the day. In this case, the next open business day is highlighted.
