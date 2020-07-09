@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
-Tested up to: 5.4.1
-Stable tag: 11.5.2
+Tested up to: 5.4.2
+Stable tag: 11.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,11 +62,14 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 11.5.2 =
-* [Fixed] Adds backwards compatibility to allow WordPress versions < 5.4.0 to still have the "hours today" sentence added near instances of the Hours Widget by falling back to a `do_shortcode()` call.
+= 11.6.0 =
+* [Added] Adds a multi-valued meta field `inventory_presser_options_array` to hold the vehicle options. Version 12 of this plugin will deprecate `inventory_presser_options` that holds a CSV string of options in a single meta field.
 
 
 == Upgrade Notice ==
+
+= 11.6.0 =
+This is the first version that provides a multi-valued meta field to hold vehicle options called `inventory_presser_options_array`.
 
 = 11.3.1 =
 This version is just like 11.3.0, but it works on PHP versions less than 7.0.0 without producing warnings.

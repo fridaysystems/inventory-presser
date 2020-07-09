@@ -1,3 +1,6 @@
+= 11.5.2 =
+* [Fixed] Adds backwards compatibility to allow WordPress versions < 5.4.0 to still have the "hours today" sentence added near instances of the Hours Widget by falling back to a `do_shortcode()` call.
+
 = 11.5.1 =
 * [Fixed] Fixes a bug in our flexslider spin-up code that prevented slideshows from auto-playing.
 
