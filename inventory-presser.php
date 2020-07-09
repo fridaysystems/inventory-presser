@@ -936,12 +936,22 @@ fill: #$black;
 		{
 			$key = apply_filters( 'invp_prefix_meta_key', $key_arr['name'] );
 			register_post_meta( Inventory_Presser_Plugin::CUSTOM_POST_TYPE, $key, array(
-				'sanitize_callback' => 'maybe_unserialize',
-				'show_in_rest'      => true,
-				'single'            => true,
-				'type'              => $key_arr['type'],
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => $key_arr['type'],
 			) );
 		}
+
+		//Register a meta field for a multi-value options array
+		register_post_meta(
+			Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+			apply_filters( 'invp_prefix_meta_key', 'options_array' ),
+			array(
+				'show_in_rest' => true,
+				'single'       => false,
+				'type'         => 'string',
+			)
+		);
 
 		//Add a couple fields that are used on media attachments
 		$attachment_keys = array();
