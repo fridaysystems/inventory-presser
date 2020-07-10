@@ -928,7 +928,7 @@ class Inventory_Presser_Taxonomies
 	}
 
 	//this is an array of taxonomy names and the corresponding arrays of term data
-	static function taxonomy_data()
+	public static function taxonomy_data()
 	{
 		return apply_filters(
 			'invp_taxonomy_data',

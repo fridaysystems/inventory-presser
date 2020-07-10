@@ -477,6 +477,12 @@ class Inventory_Presser_Plugin
 		//register all postmeta fields the CPT uses (mostly to expose them in the REST API)
 		add_action( 'init', array( $this, 'register_meta_fields' ), 20 );
 
+		/**
+		 * When certain meta fields like make & model are updated, also maintain
+		 * terms in taxonomies to make filtering vehicles easy.
+		 */
+		add_action( 'updated_postmeta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
+
 		//Create custom taxonomies
 		$taxonomies = new Inventory_Presser_Taxonomies();
 		$taxonomies->hooks();
@@ -767,6 +773,45 @@ fill: #$black;
 		}
 	}
 
+	function maintain_taxonomy_terms_during_meta_updates( $meta_id, $object_id, $meta_key, $meta_value )
+	{
+		//These are the unprefixed meta keys that have overlapping taxonomies
+		$overlapping_keys = apply_filters( 'invp_overlapping_keys', array(
+			'body_style' => 'style',
+			'make'       => 'make',
+			'model'      => 'model',
+			'year'       => 'model-year',
+		) );
+
+		//unprefix the meta key
+		$unprefixed = apply_filters( 'invp_unprefix_meta_key', $meta_key );
+
+		//does $meta_key have a corresponding taxonomy?
+		if( ! in_array( $unprefixed, array_keys( $overlapping_keys ) ) )
+		{
+			//No
+			return;
+		}
+
+		$taxonomy = $overlapping_keys[$unprefixed];
+
+		//is there already a term for this $meta_value in the taxonomy?
+		$term = get_term_by( 'slug', $this->sluggify( $meta_value ), $taxonomy );
+		if( ! $term )
+		{
+			//No, create a term
+			$term = wp_insert_term( $meta_value, $taxonomy, array(
+				'description' => $meta_value,
+				'slug'        => $this->sluggify( $meta_value ),
+			) );
+		}
+
+		//Assign the new term for this $object_id
+		wp_set_object_terms( $object_id, $term->term_id, $taxonomy );
+
+		return;
+	}
+
 	/**
 	 * Change a query's meta_query value if the meta_query does not already
 	 * contain the provided key.
@@ -1029,6 +1074,17 @@ fill: #$black;
 	public static function settings()
 	{
 		return INVP::settings();
+	}
+
+	/**
+	 * Turns the name of something into a slug that WordPress will accept when
+	 * creating objects like terms. WordPress slugs are described as containing
+	 * only letters, numbers, and hyphens.
+	 */
+	private function sluggify( $name )
+	{
+		$name = preg_replace( '/[^a-zA-Z0-9\\-]/', '', str_replace( '/', '-', str_replace( ' ', '-', $name ) ) );
+		return strtolower( str_replace( '--', '-', str_replace( '---', '-', $name ) ) );
 	}
 
 	/**
