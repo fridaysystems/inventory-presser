@@ -64,6 +64,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $msrp = 0;
 		var $odometer = '';
 		var $option_array = array();
+		var $options_array = array();
 		var $options = '';
 		var $payment = 0;
 		var $payment_frequency = '';
@@ -162,6 +163,9 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			 */
 			$location_terms = wp_get_post_terms( $this->post_ID, 'location' );
 			$this->location = implode( ', ', array_column( $location_terms, 'description' ) );
+
+			//Populate the options array with the multi-valued meta field values
+			$this->options_array = $meta[apply_filters( 'invp_prefix_meta_key', 'options_array' )];
 		}
 
 		//is this a vehicle for which Carfax maintains data?
@@ -830,6 +834,10 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 		public function options_array()
 		{
+			if( ! empty( $this->options_array ) )
+			{
+				return $this->options_array;
+			}
 			return str_getcsv( $this->options );
 		}
 
