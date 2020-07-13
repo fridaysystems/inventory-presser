@@ -1161,6 +1161,9 @@ class Inventory_Presser_Customize_Dashboard
 				delete_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'options_array' ), $val );
 			}
 		}
+
+		//Maintain the CSV string single meta field
+		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'options' ), $this->array_to_csv( $options ) );
 	}
 
 	function sanitize_array( $arr )

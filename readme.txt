@@ -62,6 +62,10 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
+= 11.6.1 =
+* [Fixed] Changes the vehicle options meta box to update `inventory_presser_options_array` in addition to the CSV `inventory_presser_options` meta field
+* [Fixed] Makes sure options are sorted alphabetically when loading them into a vehicle object from the multi-value meta key
+
 = 11.6.0 =
 * [Added] Adds a multi-valued meta field `inventory_presser_options_array` to hold the vehicle options. Version 12 of this plugin will deprecate `inventory_presser_options` that holds a CSV string of options in a single meta field.
 
