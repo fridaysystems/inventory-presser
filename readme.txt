@@ -67,9 +67,6 @@ Yes. If your theme does not include templates to display listing pages and vehic
 * [Fixed] Makes sure options are sorted alphabetically when loading them into a vehicle object from the multi-value meta key
 * [Fixed] Adds meta data to attachments when they are uploaded to vehicles in the editor including the VIN, file date, and file hash. These meta fields are registered and populated by inventory uploader clients, so the editor should create them during uploads, too. The only drawback is that I do not know how to preserve the file date during an upload the Media Library, so the file date on the file and in meta will be the upload date.
 
-= 11.6.0 =
-* [Added] Adds a multi-valued meta field `inventory_presser_options_array` to hold the vehicle options. Version 12 of this plugin will deprecate `inventory_presser_options` that holds a CSV string of options in a single meta field.
-
 
 == Upgrade Notice ==
 
