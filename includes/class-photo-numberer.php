@@ -3,7 +3,8 @@
 /**
  * If a user uploads a photo to a vehicle in the dashboard, it needs meta data
  * that tells this plugin how to order that photo among the others during
- * display. This class sets that meta data.
+ * display. This class sets that meta data. It also sets other meta values,
+ * including the VIN and a file date
  */
 class Inventory_Presser_Photo_Numberer{
 
@@ -32,6 +33,20 @@ class Inventory_Presser_Photo_Numberer{
 			//No
 			return;
 		}
+
+		//Save the VIN in the photo meta
+		$vin = get_post_meta( $attachment->post_parent, apply_filters( 'invp_prefix_meta_key', 'vin' ), true );
+		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'vin' ), $vin );
+
+		//Save the file last modified timestamp in meta
+		//Format 2020-03-26 12:31:36
+		$attachment_path = get_attached_file( $post_id );
+		$file_date = date( 'Y-m-d h:i:s', filemtime( $attachment_path ) );
+		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'file_date' ), $file_date );
+
+		//Save a md5 hash checksum of the attachment in meta
+		$hash = hash_file( 'md5', $attachment_path );
+		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'hash' ), $hash );
 
 		//Does it have a number?
 		$number = get_post_meta( $attachment->ID, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true );
