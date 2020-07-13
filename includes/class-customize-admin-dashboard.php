@@ -1089,12 +1089,6 @@ class Inventory_Presser_Customize_Dashboard
 			return;
 		}
 
-		//if we are not coming from the new/edit post page, we want to abort
-		if( ! isset( $_POST['post_title'] ) )
-		{
-			return;
-		}
-
 		//is this a vehicle?
 		if( ! empty( $_POST['post_type'] ) && Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $_POST['post_type'] )
 		{
@@ -1107,10 +1101,15 @@ class Inventory_Presser_Customize_Dashboard
 		 * It looks like this: Tue, 06 Sep 2016 09:26:12 -0400
 		 */
 		$offset = sprintf( '%+03d00', intval( get_option('gmt_offset') ) );
-		update_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'last_modified' ), current_time( 'D, d M Y h:i:s' ) . ' ' . $offset );
+		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'last_modified' ), current_time( 'D, d M Y h:i:s' ) . ' ' . $offset );
 
 		//Clear this value that is defined by a checkbox
-		update_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'featured' ), '0' );
+		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'featured' ), '0' );
+
+		if( empty( $_POST ) )
+		{
+			return;
+		}
 
 		/**
 		 * Loop over the post meta keys we manage and save their values
@@ -1145,10 +1144,23 @@ class Inventory_Presser_Customize_Dashboard
 		{
 			if( 'option-' == substr( $key, 0, 7 ) )
 			{
-				array_push( $options, $val );
+				$options[] = $val;
+				if( ! in_array( $val, $vehicle->options_array() ) )
+				{
+					//Add this option to the vehicle
+					add_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'options_array' ), $val );
+				}
 			}
 		}
-		update_post_meta( $post->ID, apply_filters( 'invp_prefix_meta_key', 'options' ), $this->array_to_csv( $options ) );
+		//Remove the options in $vehicle that are not in $options
+		$options_to_remove = array_diff( $vehicle->options_array(), $options );
+		if( ! empty( $options_to_remove ) )
+		{
+			foreach( $options_to_remove as $val )
+			{
+				delete_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'options_array' ), $val );
+			}
+		}
 	}
 
 	function sanitize_array( $arr )
