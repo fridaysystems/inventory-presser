@@ -67,7 +67,7 @@ class Inventory_Presser_Template_Shortcode
 
 			//Drive Type
 			array(
-				'member' => 'drivetype',
+				'member' => 'drive_type',
 				'label'  => __( 'Drive Type', 'inventory-presser' ),
 			),
 

@@ -482,6 +482,7 @@ class Inventory_Presser_Plugin
 		 * terms in taxonomies to make filtering vehicles easy.
 		 */
 		add_action( 'updated_postmeta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
+		add_action( 'added_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 
 		//Create custom taxonomies
 		$taxonomies = new Inventory_Presser_Taxonomies();
@@ -780,7 +781,18 @@ fill: #$black;
 			'body_style' => 'style',
 			'make'       => 'make',
 			'model'      => 'model',
-			'year'       => 'model-year',
+			'year'       => 'model_year',
+
+			'availability'    => 'availability',
+			'condition'       => 'condition',
+			'cylinders'       => 'cylinders',
+			'drive_type'      => 'drive_type',
+			'fuel'            => 'fuel',
+			'location'        => 'location',
+			'propulsion_type' => 'propulsion_type',
+			'transmission'    => 'transmission',
+			'type'            => 'type',
+			'wholesale'       => 'availability',
 		) );
 
 		//unprefix the meta key
@@ -795,21 +807,78 @@ fill: #$black;
 
 		$taxonomy = $overlapping_keys[$unprefixed];
 
+		/**
+		 * If we are in the Availability taxonomy, the end of this method
+		 * appends terms instead of replacing. That means if the $meta_value is
+		 * For Sale or Sold, we need to remove the opposite term.
+		 */
+		if( 'availability' == $unprefixed && ! empty( $meta_value ) )
+		{
+			$for_sale_and_sold_term_ids = get_terms( array(
+				'taxonomy' => $taxonomy,
+				'fields'   => 'ids',
+				'slug'     => array( 'for-sale', 'sold' ),
+			) );
+			wp_remove_object_terms( $object_id, $for_sale_and_sold_term_ids, $taxonomy );
+		}
+
+		//if $meta_value is empty, then remove a term & exit
+		//will this only happen for wholesale?
+		if( empty( $meta_value ) )
+		{
+			//remove a term actually
+			$terms = array();
+			if( 'availability' == $taxonomy )
+			{
+				$terms = wp_get_object_terms( $object_id, $taxonomy );
+				for( $t=0; $t<sizeof($terms); $t++ )
+				{
+					if( $unprefixed == $terms[$t]->slug )
+					{
+						/**
+						 * Both $unprefixed and $terms[$t]->slug are 'wholesale'
+						 * or $unprefixed and $taxonomy are both 'availability'
+						 */
+						//trash this one
+						unset( $terms[$t] );
+						break;
+					}
+				}
+			}
+			wp_set_object_terms( $object_id, array_column( $terms, 'term_id' ), $taxonomy );
+			return;
+		}
+
+		/**
+		 * Wholesale is a term in the Availability taxonomy rather than a real
+		 * boolean as the meta field suggests & is registered.
+		 */
+		if( 'wholesale' == $unprefixed )
+		{
+			$meta_value = 'Wholesale';
+		}
+
 		//is there already a term for this $meta_value in the taxonomy?
 		$term = get_term_by( 'slug', $this->sluggify( $meta_value ), $taxonomy );
 		if( ! $term )
 		{
-			//No, create a term
-			$term = wp_insert_term( $meta_value, $taxonomy, array(
-				'description' => $meta_value,
-				'slug'        => $this->sluggify( $meta_value ),
-			) );
+			//it's not a slug, what about a name?
+			$term = get_term_by( 'name', $meta_value, $taxonomy );
+			if( ! $term )
+			{
+				//No, create a term
+				$term = wp_insert_term( $meta_value, $taxonomy, array(
+					'description' => $meta_value,
+					'slug'        => $this->sluggify( $meta_value ),
+				) );
+			}
 		}
 
-		//Assign the new term for this $object_id
-		wp_set_object_terms( $object_id, $term->term_id, $taxonomy );
-
-		return;
+		/** 
+		 * Assign the new term for this $object_id. The Availability taxonomy
+		 * holds For Sale/Sold and Wholesale, so append in that taxonomy.
+		 */
+		wp_set_object_terms( $object_id, $term->term_id, $taxonomy, ( 'availability' == $taxonomy ) );
 	}
 
 	/**

@@ -22,13 +22,17 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		var $leads_id = 0;
 
+		var $availability = '';
 		var $body_style = '';
 		var $book_value_kbb = 0;
 		var $book_value_nada = 0;
 		var $car_id = 0;
 		var $color = '';
+		var $condition = '';
+		var $cylinders;
 		var $description = '';
 		var $down_payment = 0;
+		var $drive_type = '';
 		var $edmunds_style_id = 0;
 		var $engine = ''; //3.9L 8 cylinder
 		var $featured = '0';
@@ -37,6 +41,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Fuel Economy members are designed in direct support of this EPA data
 		 * @see https://fueleconomy.gov/feg/epadata/vehicles.csv.zip
 		 */
+		var $fuel = '';
 
 		var $fuel_economy_1_name = '';
 		var $fuel_economy_1_annual_consumption = ''; //Annual fuel consumption in barrels
@@ -59,6 +64,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 		var $interior_color = '';
 		var $last_modified = '';
+		var $location = '';
 		var $make = '';
 		var $model = '';
 		var $msrp = 0;
@@ -70,12 +76,15 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $payment_frequency = '';
 		var $price = 0;
 		var $prices = array();
+		var $propulsion_type = '';
 		var $stock_number = '';
 		var $title_status = '';
+		var $transmission = '';
 		var $transmission_speeds = 0;
 		var $trim = '';
 		var $type = '';
 		var $vin = '';
+		var $wholesale = false;
 		var $year = 0;
 		var $youtube = '';
 
@@ -89,13 +98,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $carfax_url_icon = '';
 		var $carfax_url_report = '';
 
-		// taxonomy terms
-		var $transmission;
-		var $drivetype;
-		var $fuel;
-		var $location;
-		var $availability;
-
+		//Booleans based on the Availability & Condition taxonomy terms
 		var $is_sold = false;
 		var $is_used = true;
 		var $is_wholesale = false;
@@ -138,8 +141,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				}
 			}
 
-			//get taxonomy terms
-			$this->transmission = $this->get_term_string('transmission');
 			if( ! empty( $this->transmission_speeds ) )
 			{
 				$this->transmission = trim( sprintf(
@@ -149,17 +150,14 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					$this->transmission
 				) );
 			}
-			$this->drivetype = $this->get_term_string('drive_type');
-			$this->fuel = $this->get_term_string('fuel');
-			$this->availability = $this->get_term_string('availability');
+
 			$this->is_sold = false !== strpos( strtolower( $this->availability ), 'sold' );
 			$this->is_wholesale = false !== strpos( strtolower( $this->availability ), 'wholesale' );
 			$this->is_used = has_term( 'used', 'condition', $this->post_ID );
-			$this->type = $this->get_term_string('type');
 
 			/**
 			 * We want the term description from the location taxonomy term
-			 * because the name only contains street address line one.
+			 * because the meta key/term name only contains street address line one.
 			 */
 			$location_terms = wp_get_post_terms( $this->post_ID, 'location' );
 			$this->location = implode( ', ', array_column( $location_terms, 'description' ) );
@@ -479,6 +477,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		{
 			$keys_and_types = array(
 				array(
+					'label'  => __( 'Availability', 'inventory_presser' ),
+					'name'   => 'availability',
+					'sample' => 'For Sale',
+					'type'   => 'string',
+				),
+				array(
 					'label'  => __( 'Beam', 'inventory_presser' ),
 					'name'   => 'beam', //for boats
 					'type'   => 'number',
@@ -533,6 +537,18 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type'   => 'string',
 				),
 				array(
+					'label'  => __( 'Condition', 'inventory_presser' ),
+					'name'   => 'condition',
+					'sample' => 'Used',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Cylinders', 'inventory_presser' ),
+					'name'   => 'cylinders',
+					'sample' => 6,
+					'type'   => 'integer',
+				),
+				array(
 					'label'  => __( 'Dealer ID', 'inventory_presser' ),
 					'name' => 'dealer_id', //friday systems dealer id
 					'type' => 'integer',
@@ -550,6 +566,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type'   => 'number',
 				),
 				array(
+					'label'  => __( 'Drive Type', 'inventory_presser' ),
+					'name'   => 'drive_type',
+					'sample' => 'Rear Wheel Drive',
+					'type'   => 'string',
+				),
+				array(
 					'label'  => __( 'Edmunds Style ID', 'inventory_presser' ),
 					'name'   => 'edmunds_style_id',
 					'type'   => 'integer',
@@ -564,6 +586,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'label'  => __( 'Featured', 'inventory_presser' ),
 					'name' => 'featured',
 					'type' => 'boolean',
+				),
+				array(
+					'label'  => __( 'Fuel', 'inventory_presser' ),
+					'name'   => 'fuel',
+					'sample' => 'Gas',
+					'type'   => 'string',
 				),
 				array(
 					'label'  => __( 'Fuel Economy Name (fuel type 1)', 'inventory_presser' ),
@@ -683,6 +711,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type'   => 'integer',
 				),
 				array(
+					'label'  => __( 'Location', 'inventory_presser' ),
+					'name'   => 'location',
+					'sample' => '120 Mall Blvd',
+					'type'   => 'string',
+				),
+				array(
 					'label'  => __( 'Make', 'inventory_presser' ),
 					'name'   => 'make',
 					'sample' => 'GMC',
@@ -730,6 +764,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type'   => 'number',
 				),
 				array(
+					'label'  => __( 'Propulsion Type', 'inventory_presser' ),
+					'name'   => 'propulsion_type',
+					'sample' => 'Outboard',
+					'type'   => 'string',
+				),
+				array(
 					'label'  => __( 'Stock Number', 'inventory_presser' ),
 					'name'   => 'stock_number',
 					'sample' => '147907',
@@ -739,6 +779,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'label'  => __( 'Title Status', 'inventory_presser' ),
 					'name'   => 'title_status',
 					'sample' => 'Clean',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Transmission', 'inventory_presser' ),
+					'name'   => 'transmission',
+					'sample' => 'Automatic',
 					'type'   => 'string',
 				),
 				array(
@@ -754,10 +800,21 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type'   => 'string',
 				),
 				array(
+					'label'  => __( 'Type', 'inventory_presser' ),
+					'name'   => 'type',
+					'sample' => 'Passenger Car',
+					'type'   => 'string',
+				),
+				array(
 					'label'  => __( 'VIN', 'inventory_presser' ),
 					'name'   => 'vin',
 					'sample' => '1GTKTCDE1A8147907',
 					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Is Wholesale', 'inventory_presser' ),
+					'name'   => 'wholesale',
+					'type'   => 'boolean',
 				),
 				array(
 					'label'  => __( 'Year', 'inventory_presser' ),
@@ -1144,7 +1201,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				$obj['description'] = $this->description;
 			}
 
-			$schema_drive_type = $this->schema_org_drive_type( $this->drivetype );
+			$schema_drive_type = $this->schema_org_drive_type( $this->drive_type );
 			if( null !== $schema_drive_type )
 			{
 				$obj['driveWheelConfiguration'] = $schema_drive_type;
