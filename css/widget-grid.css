@@ -37,3 +37,19 @@
 .grid-slides li a:active {
     outline: none;
 }
+
+.invp-grid ul.columns-2{
+	grid-template-columns: 1fr 1fr;
+}
+.invp-grid ul.columns-3{
+	grid-template-columns: 1fr 1fr 1fr;
+}
+.invp-grid ul.columns-4{
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.invp-grid ul.columns-5{
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+.invp-grid ul.columns-6{
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}

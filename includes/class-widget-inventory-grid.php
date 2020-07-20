@@ -97,8 +97,8 @@ class Inventory_Presser_Grid extends WP_Widget {
 		}
 
 		$grid_html = sprintf(
-			'<div class="invp-grid"><ul class="grid-slides" style="grid-template-columns: %s;">',
-			trim( str_repeat( '1fr ', $args['columns'] ) )
+			'<div class="invp-grid"><ul class="grid-slides columns-%s">',
+			$args['columns']
 		);
 
 		foreach( $inventory_ids as $inventory_id ) {
