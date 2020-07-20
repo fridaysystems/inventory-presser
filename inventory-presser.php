@@ -483,6 +483,7 @@ class Inventory_Presser_Plugin
 		 */
 		add_action( 'updated_postmeta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 		add_action( 'added_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
+		add_action( 'deleted_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 
 		//Create custom taxonomies
 		$taxonomies = new Inventory_Presser_Taxonomies();
