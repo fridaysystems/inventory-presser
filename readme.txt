@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.4.2
-Stable tag: 11.6.0
+Stable tag: 11.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,13 +62,17 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 11.6.1 =
-* [Fixed] Changes the vehicle options meta box to update `inventory_presser_options_array` in addition to the CSV `inventory_presser_options` meta field
-* [Fixed] Makes sure options are sorted alphabetically when loading them into a vehicle object from the multi-value meta key
-* [Fixed] Adds meta data to attachments when they are uploaded to vehicles in the editor including the VIN, file date, and file hash. These meta fields are registered and populated by inventory uploader clients, so the editor should create them during uploads, too. The only drawback is that I do not know how to preserve the file date during an upload the Media Library, so the file date on the file and in meta will be the upload date.
+= 11.7.0 =
+* [Added] Adds meta fields to our vehicle post type that overlap the custom taxonomies. Also adds code that maintains term changes in the taxonomies when the meta values are changed. This simplifies the work of REST API clients that update vehicles by allowing them to submit string meta data and avoid pulling down lists of taxonomy terms to learn their IDs.
+* [Added] Adds icon and banner images to the assets folder in preparation for submission to the .org repo.
+* [Changed] Adds CSS to the Inventory Grid widget and shortcode to ignore the number of columns setting on the smallest devices. Grids will collapse to two columns on small devices at 480 pixels width.
+* [Fixed] Makes all shortcodes operable with underscores as well as hyphens. Keeps versions with hyphens for backwards compatibility.
 
 
 == Upgrade Notice ==
+
+= 11.7.0 =
+This version makes the job of REST API clients that update vehicle data much easier by adding meta fields that overlap and updated all custom taxonomies.
 
 = 11.6.0 =
 This is the first version that provides a multi-valued meta field to hold vehicle options called `inventory_presser_options_array`.
