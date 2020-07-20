@@ -11,6 +11,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 	function hooks()
 	{
 		add_shortcode( 'invp-archive-vehicle', array( $this, 'content' ) );
+		add_shortcode( 'invp_archive_vehicle', array( $this, 'content' ) );
 	}
 
 	function content( $atts )

@@ -11,6 +11,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 	function hooks()
 	{
 		add_shortcode( 'invp-single-vehicle', array( $this, 'content' ) );
+		add_shortcode( 'invp_single_vehicle', array( $this, 'content' ) );
 	}
 
 	function content( $atts )

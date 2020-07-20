@@ -9,6 +9,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 	{
 		//add a shortcode that outputs hours today
 		add_shortcode( self::SHORTCODE_TAG, array( $this, 'driver' ) );
+		add_shortcode( str_replace( '_', '-', self::SHORTCODE_TAG ), array( $this, 'driver' ) );
 	}
 
 	function hooks()

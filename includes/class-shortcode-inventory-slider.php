@@ -5,6 +5,7 @@ class Inventory_Presser_Shortcode_Slider {
 
 	function hooks() {
 		add_shortcode( 'invp-inventory-slider', array( $this, 'content') );
+		add_shortcode( 'invp_inventory_slider', array( $this, 'content') );
 	}
 
 	function content( $atts ) {

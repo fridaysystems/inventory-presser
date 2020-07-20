@@ -8,6 +8,7 @@ class Inventory_Presser_Shortcode_Grid {
 
 	function hooks() {
 		add_shortcode( 'invp-inventory-grid', array( $this, 'content' ) );
+		add_shortcode( 'invp_inventory_grid', array( $this, 'content' ) );
 	}
 
 	function content( $atts ) {
