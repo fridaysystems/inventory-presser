@@ -53,3 +53,12 @@
 .invp-grid ul.columns-6{
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 }
+
+@media screen and (max-width: 480px){
+	.invp-grid ul.columns-3,
+	.invp-grid ul.columns-4,
+	.invp-grid ul.columns-5,
+	.invp-grid ul.columns-6{
+		grid-template-columns: 1fr 1fr;
+	}
+}
