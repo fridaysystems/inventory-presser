@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.4.2
-Stable tag: 11.7.0
+Stable tag: 11.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,9 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 
 == Changelog ==
+
+= 11.7.1 =
+* [Fixed] Prevents a double dollar sign ($$) from being output when using the vehicle object's `payments()` method.
 
 = 11.7.0 =
 * [Added] Adds meta fields to our vehicle post type that overlap the custom taxonomies. Also adds code that maintains term changes in the taxonomies when the meta values are changed. This simplifies the work of REST API clients that update vehicles by allowing them to submit string meta data and avoid pulling down lists of taxonomy terms to learn their IDs.
