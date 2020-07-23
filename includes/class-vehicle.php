@@ -925,7 +925,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			if ( isset( $this->down_payment ) )
 			{
 				return sprintf(
-					'%s %s %s $%s %s',
+					'%s %s %s %s %s',
 					$this->down_payment(),
 					__( 'Down', 'inventory-presser' ),
 					$separator,
