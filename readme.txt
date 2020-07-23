@@ -64,6 +64,7 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 = 11.7.1 =
 * [Fixed] Prevents a double dollar sign ($$) from being output when using the vehicle object's `payments()` method.
+* [Fixed] Makes sure an options_array meta key exists before trying to grab and sort it when loading a vehicle object.
 
 = 11.7.0 =
 * [Added] Adds meta fields to our vehicle post type that overlap the custom taxonomies. Also adds code that maintains term changes in the taxonomies when the meta values are changed. This simplifies the work of REST API clients that update vehicles by allowing them to submit string meta data and avoid pulling down lists of taxonomy terms to learn their IDs.

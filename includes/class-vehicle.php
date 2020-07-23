@@ -163,8 +163,11 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			$this->location = implode( ', ', array_column( $location_terms, 'description' ) );
 
 			//Populate the options array with the multi-valued meta field values
-			$this->options_array = $meta[apply_filters( 'invp_prefix_meta_key', 'options_array' )];
-			sort( $this->options_array );
+			if( isset( $meta[apply_filters( 'invp_prefix_meta_key', 'options_array' )] ) )
+			{
+				$this->options_array = $meta[apply_filters( 'invp_prefix_meta_key', 'options_array' )];
+				sort( $this->options_array );
+			}
 		}
 
 		//is this a vehicle for which Carfax maintains data?
