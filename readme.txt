@@ -116,14 +116,6 @@ Without version 0.5, you will not have this readme.txt file
 
 == History ==
 
-The plan for development in late 2015 was to build a platform on which we could build websites for our independent car dealership customers based on these principles:
-
-* Feed first. The inventory source is primarily a bulk feed and not manual entry.
-* Leverage the platform; do not reinvent the wheel. WordPress allows custom post types and taxonomies. WordPress has already designed edit screens for content objects.
-* Stay small. This plugin will not contain functionality that is not the minimum set of features that will enable users to comfortably manage inventory. Other features will live other plugins.
-
-The first site using the plugin launched in March 2016.
-
-By March of 2018, the plugin was powering more than 100 websites. This milestone coincided with our launch of version 4.2.0 and the introduction of REST API endpoints. The REST API increased the efficiency of inventory updates by an order of magnitude over a delimited file or XML import, and our migration to updating all sites via REST was complete before June 1st, 2018.
-
-A complete development news feed is available on our website at https://inventorypresser.com/news/
+Fall 2015: Corey Salzano starts writing this plugin and an inventory importer companion. John Norton begins creating a theme and widgets for a front-end.
+March 2016: The first site using the plugin launches.
+March 2018: Powering more than 100 websites with version 4.2.0 when REST API endpoints were introduced.
