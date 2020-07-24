@@ -63,8 +63,10 @@ Yes. If your theme does not include templates to display listing pages and vehic
 == Changelog ==
 
 = 11.7.1 =
+* [Fixed] Fixes a bug while saving vehicle meta data. The REST API also invokes the action filter save_post_{post-type}, and the way that checkbox controls where named in the editor meta box was preventing vehicle insertions from setting options because those values were immediately deleted in `save_vehicle_post_meta()`.
 * [Fixed] Prevents a double dollar sign ($$) from being output when using the vehicle object's `payments()` method.
 * [Fixed] Makes sure an options_array meta key exists before trying to grab and sort it when loading a vehicle object.
+* [Fixed] Fixes a bug in the Carfax image widget to check for an array before trying to use one. This is not the Carfax report buttons, this is a mundane widget that shows static images like those that claim "official Carfax dealer" status.
 
 = 11.7.0 =
 * [Added] Adds meta fields to our vehicle post type that overlap the custom taxonomies. Also adds code that maintains term changes in the taxonomies when the meta values are changed. This simplifies the work of REST API clients that update vehicles by allowing them to submit string meta data and avoid pulling down lists of taxonomy terms to learn their IDs.
