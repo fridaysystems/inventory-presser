@@ -703,7 +703,7 @@ class Inventory_Presser_Customize_Dashboard
 			$HTML .= sprintf(
 				'<li><input type="checkbox" id="%s" name="%s" value="%s"%s><label for="%s">%s</label></li>',
 				$id,
-				$id,
+				'inventory_presser_options_array[]',
 				$key,
 				checked( true, $value, false ),
 				$id,
@@ -1096,6 +1096,11 @@ class Inventory_Presser_Customize_Dashboard
 			return;
 		}
 
+		if( empty( $_POST ) )
+		{
+			return;
+		}
+
 		/**
 		 * Tick the last modified date of this vehicle since we're saving changes.
 		 * It looks like this: Tue, 06 Sep 2016 09:26:12 -0400
@@ -1106,64 +1111,48 @@ class Inventory_Presser_Customize_Dashboard
 		//Clear this value that is defined by a checkbox
 		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'featured' ), '0' );
 
-		if( empty( $_POST ) )
-		{
-			return;
-		}
-
 		/**
 		 * Loop over the post meta keys we manage and save their values
 		 * if we find them coming over as part of the post to save.
 		 */
 		$vehicle = new Inventory_Presser_Vehicle( $post_id );
-		$price = 0;
+		$keys = $vehicle->keys();
+		$keys[] = 'options_array';
 
-		foreach( $vehicle->keys() as $key )
+		foreach( $keys as $key )
 		{
 			$key = apply_filters( 'invp_prefix_meta_key', $key );
 			if ( isset( $_POST[$key] ) )
 			{
 				if( is_array( $_POST[$key] ) )
 				{
-					$_POST[$key] = $this->sanitize_array( $_POST[$key] );
+					//delete all meta, this is essentially for the options
+					delete_post_meta( $post->ID, $key );
+					$options = array(); //collect the options to maintain a CSV field for backwards compatibility
+
+					foreach( $this->sanitize_array( $_POST[$key] ) as $value )
+					{
+						add_post_meta( $post->ID, $key, $value );
+						if( 'inventory_presser_options_array' == $key )
+						{
+							$options[] = $value;
+						}
+					}
+
+					if( 'inventory_presser_options_array' == $key )
+					{
+						//Maintain the CSV string single meta field
+						update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'options' ), $this->array_to_csv( $options ) );
+					}
 				}
 				else
 				{
-					$_POST[$key] = sanitize_text_field( $_POST[$key] );
+					//string data
+					update_post_meta( $post->ID, $key, sanitize_text_field( $_POST[$key] ) );
 				}
-				update_post_meta( $post->ID, $key, $_POST[$key] );
+				
 			}
 		}
-
-		/**
-		 * Loop over the keys in the $_POST object to find all the options
-		 * check boxes
-		 */
-		$options = array();
-		foreach( $_POST as $key => $val )
-		{
-			if( 'option-' == substr( $key, 0, 7 ) )
-			{
-				$options[] = $val;
-				if( ! in_array( $val, $vehicle->options_array() ) )
-				{
-					//Add this option to the vehicle
-					add_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'options_array' ), $val );
-				}
-			}
-		}
-		//Remove the options in $vehicle that are not in $options
-		$options_to_remove = array_diff( $vehicle->options_array(), $options );
-		if( ! empty( $options_to_remove ) )
-		{
-			foreach( $options_to_remove as $val )
-			{
-				delete_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'options_array' ), $val );
-			}
-		}
-
-		//Maintain the CSV string single meta field
-		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'options' ), $this->array_to_csv( $options ) );
 	}
 
 	function sanitize_array( $arr )

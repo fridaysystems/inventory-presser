@@ -52,7 +52,11 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
 
 		$image_keys = array_keys( $this->images() );
-		$image = (in_array($instance['image'], $image_keys)) ? $instance['image'] : $image_keys[0];
+		$image =  $image_keys[0];
+		if( ! empty( $instance['image'] ) && in_array( $instance['image'], $image_keys ) )
+		{
+			$image = $instance['image'];
+		}
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		// before and after widget arguments are defined by themes
