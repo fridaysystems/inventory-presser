@@ -868,10 +868,14 @@ fill: #$black;
 			if( ! $term )
 			{
 				//No, create a term
-				$term = wp_insert_term( $meta_value, $taxonomy, array(
+				$term_id_array = wp_insert_term( $meta_value, $taxonomy, array(
 					'description' => $meta_value,
 					'slug'        => $this->sluggify( $meta_value ),
 				) );
+				if( ! empty( $term_id_array['term_id'] ) )
+				{
+					$term = get_term( $term_id_array['term_id'], $taxonomy );
+				}
 			}
 		}
 
