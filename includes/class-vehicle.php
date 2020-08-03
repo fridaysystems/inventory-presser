@@ -141,14 +141,26 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				}
 			}
 
+			/**
+			 * If we have transmission speeds "6" and transmission string 
+			 * "Automatic", change the string to "6 Speed Automatic"
+			 */
 			if( ! empty( $this->transmission_speeds ) )
 			{
-				$this->transmission = trim( sprintf(
-					'%s %s %s',
+				$prefix = sprintf(
+					'%s %s',
 					$this->transmission_speeds,
-					__( 'Speed', 'inventory-presser' ),
-					$this->transmission
-				) );
+					__( 'Speed', 'inventory-presser' )
+				);
+
+				if( false === strpos( $this->transmission, $prefix ) )
+				{
+					$this->transmission = sprintf(
+						'%s %s',
+						$prefix,
+						$this->transmission
+					);
+				}
 			}
 
 			$this->is_sold = false !== strpos( strtolower( $this->availability ), 'sold' );
