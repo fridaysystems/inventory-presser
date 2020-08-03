@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.4.2
-Stable tag: 11.7.1
+Stable tag: 11.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,17 +62,8 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 11.7.1 =
-* [Fixed] Fixes a bug while saving vehicle meta data. The REST API also invokes the action filter save_post_{post-type}, and the way that checkbox controls where named in the editor meta box was preventing vehicle insertions from setting options because those values were immediately deleted in `save_vehicle_post_meta()`.
-* [Fixed] Prevents a double dollar sign ($$) from being output when using the vehicle object's `payments()` method.
-* [Fixed] Makes sure an options_array meta key exists before trying to grab and sort it when loading a vehicle object.
-* [Fixed] Fixes a bug in the Carfax image widget to check for an array before trying to use one. This is not the Carfax report buttons, this is a mundane widget that shows static images like those that claim "official Carfax dealer" status.
-
-= 11.7.0 =
-* [Added] Adds meta fields to our vehicle post type that overlap the custom taxonomies. Also adds code that maintains term changes in the taxonomies when the meta values are changed. This simplifies the work of REST API clients that update vehicles by allowing them to submit string meta data and avoid pulling down lists of taxonomy terms to learn their IDs.
-* [Added] Adds icon and banner images to the assets folder in preparation for submission to the .org repo.
-* [Changed] Adds CSS to the Inventory Grid widget and shortcode to ignore the number of columns setting on the smallest devices. Grids will collapse to two columns on small devices at 480 pixels width.
-* [Fixed] Makes all shortcodes operable with underscores as well as hyphens. Keeps versions with hyphens for backwards compatibility.
+= 11.7.2 =
+* [Fixed] Fixes a bug that was duplicating the transmission speeds in the string for some vehicles like "8 Speed 8 Speed Automatic" 
 
 
 == Upgrade Notice ==
