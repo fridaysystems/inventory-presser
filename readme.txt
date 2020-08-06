@@ -62,6 +62,9 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
+= 11.7.3 =
+* [Fixed] Fixes a bug that prevented the hours today sentence of "Open until 5pm today" from showing up near tables of hours of operation. A filter callback was not working to find the location terms in the site if they were empty. Not all dealerships tag their vehicles with a location, especially if they only have one store. 
+
 = 11.7.2 =
 * [Fixed] Fixes a bug that was duplicating the transmission speeds in the string for some vehicles like "8 Speed 8 Speed Automatic" 
 
