@@ -35,7 +35,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 		{
 			$shortcode_output = do_shortcode( $shortcode );
 		}
-
+		
 		if( empty( $shortcode_output ) )
 		{
 			return $hours_title_html;
@@ -172,7 +172,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 
 	private function find_hours_set( $shortcode_atts )
 	{
-		if( ! empty( $shortcode_atts ) && 0 !== $shortcode_atts['hours_uid'] )
+		if( ! empty( $shortcode_atts['hours_uid'] ) )
 		{
 			//the hours identified by this unique id
 			return $this->find_hours_set_by_uid( $shortcode_atts['hours_uid'] );
@@ -238,9 +238,10 @@ class Inventory_Presser_Shortcode_Hours_Today
 	{
 		//get all term ids in the location taxonomy
 		$location_term_ids = get_terms( array(
-			'fields'   => 'ids',
-			'orderby'  => 'term_id', //oldest first
-			'taxonomy' => 'location',
+			'fields'     => 'ids',
+			'orderby'    => 'term_id', //oldest first
+			'taxonomy'   => 'location',
+			'hide_empty' => false, //Dealers that don't tag each vehicle with a location will have no vehicles
 		) );
 
 		if( ! is_array( $location_term_ids ) )
