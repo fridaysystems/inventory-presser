@@ -49,10 +49,10 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 		}
 
 		//remove line breaks from the term description
-		$address_to_search = str_replace( PHP_EOL, ', ', $location->description );
+		$address_to_search = preg_replace( '#\R+#', ', ', $location->description );
 
 		printf(
-			'<div class="invp-google-maps"><iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=%s&amp;t=m&amp;z=%d&amp;output=embed" aria-label="%s"></iframe></div>',
+			'<div class="invp-google-maps"><iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=%s&t=m&z=%d&output=embed" aria-label="%s"></iframe></div>',
 			rawurlencode( $address_to_search ),
 			'13',
 			esc_attr( $address_to_search )
