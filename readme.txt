@@ -62,11 +62,9 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 11.7.3 =
-* [Fixed] Fixes a bug that prevented the hours today sentence of "Open until 5pm today" from showing up near tables of hours of operation. A filter callback was not working to find the location terms in the site if they were empty. Not all dealerships tag their vehicles with a location, especially if they only have one store. 
-
-= 11.7.2 =
-* [Fixed] Fixes a bug that was duplicating the transmission speeds in the string for some vehicles like "8 Speed 8 Speed Automatic" 
+= 11.7.4 =
+* [Fixed] Changes to a post's taxonomy terms that overlap post meta fields will now update the meta fields. Said another way: if a relationship is created between the year taxonomy term 2020 and a vehicle, that vehicle's model_year meta key is now updated to '2020' by this core plugin.
+* [Fixed] Fixes a bug that allowed line breaks in dealership addresses to remain while using addresses in aria-label attributes on Google Maps widget iframe elements.
 
 
 == Upgrade Notice ==

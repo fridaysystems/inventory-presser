@@ -1,3 +1,9 @@
+= 11.7.3 =
+* [Fixed] Fixes a bug that prevented the hours today sentence of "Open until 5pm today" from showing up near tables of hours of operation. A filter callback was not working to find the location terms in the site if they were empty. Not all dealerships tag their vehicles with a location, especially if they only have one store. 
+
+= 11.7.2 =
+* [Fixed] Fixes a bug that was duplicating the transmission speeds in the string for some vehicles like "8 Speed 8 Speed Automatic" 
+
 = 11.7.1 =
 * [Fixed] Fixes a bug while saving vehicle meta data. The REST API also invokes the action filter save_post_{post-type}, and the way that checkbox controls where named in the editor meta box was preventing vehicle insertions from setting options because those values were immediately deleted in `save_vehicle_post_meta()`.
 * [Fixed] Prevents a double dollar sign ($$) from being output when using the vehicle object's `payments()` method.

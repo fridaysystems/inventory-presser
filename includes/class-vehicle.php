@@ -316,11 +316,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			foreach ( $attachments as $attachment )
 			{
-				if ( false === wp_delete_attachment( $attachment->ID ) )
-				{
-					// Log failure to delete attachment.
-					error_log( 'Failed to delete attachment ' . $attachment->ID . ' in ' . __FILE__ );
-				}
+				wp_delete_attachment( $attachment->ID );
 			}
 		}
 
