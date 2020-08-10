@@ -65,6 +65,7 @@ Yes. If your theme does not include templates to display listing pages and vehic
 = 11.7.4 =
 * [Fixed] Changes to a post's taxonomy terms that overlap post meta fields will now update the meta fields. Said another way: if a relationship is created between the year taxonomy term 2020 and a vehicle, that vehicle's model_year meta key is now updated to '2020' by this core plugin.
 * [Fixed] Fixes a bug that allowed line breaks in dealership addresses to remain while using addresses in aria-label attributes on Google Maps widget iframe elements.
+* [Fixed] Adds a nonce to the AJAX call that deletes all media attachments on a vehicle post.
 
 
 == Upgrade Notice ==
