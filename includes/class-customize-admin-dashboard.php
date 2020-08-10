@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) or exit;
 class Inventory_Presser_Customize_Dashboard
 {
 	const PRODUCT_NAME = 'Inventory Presser';
+	const NONCE_DELETE_ALL_MEDIA = 'invp_delete_all_media';
 
 	function add_columns_to_vehicles_table( $column )
 	{
@@ -252,8 +253,11 @@ class Inventory_Presser_Customize_Dashboard
 		{
 			return '';
 		}
-		return '<button type="button" id="delete-media-button" class="button" onclick="delete_all_post_attachments( );">'
-			. '<span class="wp-media-buttons-icon"></span> Delete All Media</button>';
+		return sprintf( 
+			'<button type="button" id="delete-media-button" class="button" onclick="delete_all_post_attachments();">'
+			. '<span class="wp-media-buttons-icon"></span> %s</button>',
+			__( 'Delete All Media', 'inventory-presser' )
+		);
 	}
 
 	function delete_all_data_and_deactivate()
@@ -391,6 +395,11 @@ class Inventory_Presser_Customize_Dashboard
 
 	function delete_all_post_attachments()
 	{
+		if( empty( $_POST['_ajax_nonce'] ) || ! wp_verify_nonce( $_POST['_ajax_nonce'], self::NONCE_DELETE_ALL_MEDIA ) )
+		{
+			return;
+		}
+
 		$post_id = isset( $_POST['post_ID'] ) ? $_POST['post_ID'] : 0;
 
 		if( ! isset( $post_id ) )
@@ -568,6 +577,7 @@ class Inventory_Presser_Customize_Dashboard
 				'Bi-weekly'    => 'biweekly',
 				'Semi-monthly' => 'semimonthly',
 			) ),
+			'delete_all_media_nonce' => wp_create_nonce( self::NONCE_DELETE_ALL_MEDIA ),
 		) );
 	}
 

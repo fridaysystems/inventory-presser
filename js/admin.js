@@ -6,6 +6,7 @@ function delete_all_data() {
 function delete_all_post_attachments( ) {
 	if( confirm('Are you sure you want to delete all attachments?') ) {
 		var data = {
+			'_ajax_nonce': invp.delete_all_media_nonce,
 			'action': 'delete_all_post_attachments',
 			'post_ID': document.getElementById('post_ID').value
 		};
