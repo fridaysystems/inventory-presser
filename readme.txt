@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
-Tested up to: 5.4.2
-Stable tag: 11.7.2
+Tested up to: 5.5.0
+Stable tag: 11.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,10 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 
 == Changelog ==
+
+= 11.8.0 =
+* [Added] Adds a filter so the "no photo photo", the photo shown when a vehicle has no photos can now be filtered by changing its URL with the `invp_no_photo_url` filter.
+* [Changed] Changes the tested up to version number to 5.5.0.
 
 = 11.7.4 =
 * [Fixed] Changes to a post's taxonomy terms that overlap post meta fields will now update the meta fields. Said another way: if a relationship is created between the year taxonomy term 2020 and a vehicle, that vehicle's model_year meta key is now updated to '2020' by this core plugin.
