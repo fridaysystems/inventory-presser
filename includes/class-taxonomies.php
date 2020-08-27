@@ -103,18 +103,6 @@ class Inventory_Presser_Taxonomies
 		</script><?php
 	}
 
-	/**
-	 * Enable weekly wp-cron jobs
-	 */
-	function add_weekly_cron_interval( $schedules )
-	{
-		$schedules['weekly'] = array(
-			'interval' => 604800,
-			'display'  => esc_html__( 'Every Week' ),
-		);
-		return $schedules;
-	}
-
 	static function create_taxonomies()
 	{
 		//loop over this data, register the taxonomies, and populate the terms if needed
@@ -439,7 +427,6 @@ class Inventory_Presser_Taxonomies
 		 * The counts aren't always updated when deleting vehicles, and I'm not
 		 * yet able to reproduce the bug in local copies of the sites.
 		 */
-		add_filter( 'cron_schedules', array( $this, 'add_weekly_cron_interval' ) );
 		add_action( self::CRON_HOOK_DELETE_TERMS, array( $this, 'delete_unused_terms' ) );
 		add_action( self::CRON_HOOK_DELETE_TERMS, array( $this, 'update_term_counts' ) );
 
@@ -889,7 +876,7 @@ class Inventory_Presser_Taxonomies
 		{
 			if( ! is_multisite() || ! $network_wide )
 			{
-				wp_schedule_event( time(), 'weekly', self::CRON_HOOK_DELETE_TERMS );
+				wp_schedule_event( time(), 'daily', self::CRON_HOOK_DELETE_TERMS );
 				return;
 			}
 
@@ -897,7 +884,7 @@ class Inventory_Presser_Taxonomies
 			foreach( $sites as $site )
 			{
 				switch_to_blog( $site->blog_id );
-				wp_schedule_event( time(), 'weekly', self::CRON_HOOK_DELETE_TERMS );
+				wp_schedule_event( time(), 'daily', self::CRON_HOOK_DELETE_TERMS );
 				restore_current_blog();
 			}
 		}

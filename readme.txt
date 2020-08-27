@@ -64,7 +64,8 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 = 11.8.0 =
 * [Added] Adds a filter so the "no photo photo", the photo shown when a vehicle has no photos can now be filtered by changing its URL with the `invp_no_photo_url` filter.
-* [Added] Adds a query to update term counts to the weekly cron job that deletes unused terms in the years, makes, models, and body styles taxonomies. The query recounts term relationships on all terms, and is included in response to a bug I can't reproduce. We've noticed that term relationships are sometimes lingering after vehicles are deleted via the REST API on our multisites hosted at WP Engine. 
+* [Added] Adds a query to update term counts to the cron job that deletes unused terms in the years, makes, models, and body styles taxonomies. The query recounts term relationships on all terms, and is included in response to a bug I can't reproduce. We've noticed that term relationships are sometimes lingering after vehicles are deleted via the REST API on our multisites hosted at WP Engine. 
+* [Changed] Changes the cron job that deletes unused terms and now recounts term relationships to run daily instead of weekly. The frequency of customer vehicle updates and the new query to correct term relationship counts demand this change.
 * [Changed] Changes the tested up to version number to 5.5.0.
 
 
