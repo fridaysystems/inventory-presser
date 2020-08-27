@@ -434,8 +434,14 @@ class Inventory_Presser_Taxonomies
 		//Do not include sold vehicles in listings unless an option is checked
 		add_action( 'pre_get_posts', array( $this, 'maybe_exclude_sold_vehicles' ) );
 
+		/**
+		 * Run a weekly cron job to delete empty terms and update term counts.
+		 * The counts aren't always updated when deleting vehicles, and I'm not
+		 * yet able to reproduce the bug in local copies of the sites.
+		 */
 		add_filter( 'cron_schedules', array( $this, 'add_weekly_cron_interval' ) );
 		add_action( self::CRON_HOOK_DELETE_TERMS, array( $this, 'delete_unused_terms' ) );
+		add_action( self::CRON_HOOK_DELETE_TERMS, array( $this, 'update_term_counts' ) );
 
 		//Put terms into our taxonomies when the plugin is activated
 		register_activation_hook( dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inventory-presser.php', array( 'Inventory_Presser_Taxonomies', 'populate_default_terms' ) );
@@ -1298,5 +1304,23 @@ class Inventory_Presser_Taxonomies
 			}
 		}
 		return $HTML . '</select>';
+	}
+
+	function update_term_counts()
+	{
+		global $wpdb;
+		$wpdb->query(
+			"UPDATE		$wpdb->term_taxonomy tt
+
+			SET			count = ( 
+				
+				SELECT		count( p.ID )
+				
+				FROM		$wpdb->term_relationships tr
+							LEFT JOIN $wpdb->posts p ON p.ID = tr.object_id
+
+				WHERE		tr.term_taxonomy_id = tt.term_taxonomy_id
+			)"
+		);
 	}
 }

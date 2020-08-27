@@ -64,12 +64,8 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 = 11.8.0 =
 * [Added] Adds a filter so the "no photo photo", the photo shown when a vehicle has no photos can now be filtered by changing its URL with the `invp_no_photo_url` filter.
+* [Added] Adds a query to update term counts to the weekly cron job that deletes unused terms in the years, makes, models, and body styles taxonomies. The query recounts term relationships on all terms, and is included in response to a bug I can't reproduce. We've noticed that term relationships are sometimes lingering after vehicles are deleted via the REST API on our multisites hosted at WP Engine. 
 * [Changed] Changes the tested up to version number to 5.5.0.
-
-= 11.7.4 =
-* [Fixed] Changes to a post's taxonomy terms that overlap post meta fields will now update the meta fields. Said another way: if a relationship is created between the year taxonomy term 2020 and a vehicle, that vehicle's model_year meta key is now updated to '2020' by this core plugin.
-* [Fixed] Fixes a bug that allowed line breaks in dealership addresses to remain while using addresses in aria-label attributes on Google Maps widget iframe elements.
-* [Fixed] Adds a nonce to the AJAX call that deletes all media attachments on a vehicle post.
 
 
 == Upgrade Notice ==
