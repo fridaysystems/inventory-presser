@@ -868,7 +868,10 @@ class Inventory_Presser_Taxonomies
 	}
 
 	/**
-	 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
+	 * schedule_terms_cron_job
+	 *
+	 * @param  boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
+	 * @return void
 	 */
 	public static function schedule_terms_cron_job( $network_wide )
 	{

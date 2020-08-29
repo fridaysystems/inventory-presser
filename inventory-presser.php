@@ -14,13 +14,35 @@ defined( 'ABSPATH' ) or exit;
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+/**
+ * Inventory_Presser_Plugin
+ * 
+ * This class includes dependencies, adds hooks, adds rewrite rules, modifies 
+ * queries, and registers scripts & styles.
+ */
 class Inventory_Presser_Plugin
 {
 	const CUSTOM_POST_TYPE = 'inventory_vehicle';
 	const OPTION_NAME = 'inventory_presser';
-
-	var $settings; //A place to store this plugin's option
-
+	
+	/**
+	 * settings
+	 * 
+	 * A place to store this plugin's option full of settings.
+	 *
+	 * @var mixed
+	 */
+	var $settings;
+	
+	/**
+	 * add_carfax_badge
+	 * 
+	 * Filter callback that outputs HTML markup that creates a Carfax badge if
+	 * $vehicle contains Carfax report data.
+	 *
+	 * @param  object $vehicle An instance of the Inventory_Presser_Vehicle class.
+	 * @return void
+	 */
 	function add_carfax_badge( $vehicle )
 	{
 		$carfax_html = $vehicle->carfax_icon_html();
