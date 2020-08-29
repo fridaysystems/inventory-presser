@@ -366,26 +366,38 @@ class Inventory_Presser_Plugin
 	}
 
 	/**
-	 * Deactivates this plugin
+	 * deactivate
 	 *
+	 * Deactivates this plugin.
+	 * 
 	 * @return void
 	 */
 	function deactivate()
 	{
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 	}
-
+	
+	/**
+	 * delete_options
+	 *
+	 * Deletes the option that contains this plugins settings.
+	 * 
+	 * @return void
+	 */
 	function delete_options()
 	{
 		delete_option( self::OPTION_NAME );
 	}
 
 	/**
+	 * delete_rewrite_rules_option
+	 *
 	 * Deletes the rewrite_rules option so the rewrite rules are generated
 	 * on the next page load without ours. Called during deactivation.
 	 * @see http://wordpress.stackexchange.com/a/44337/13090
-	 *
-	 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
+	 * 
+	 * @param  boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
+	 * @return void
 	 */
 	static function delete_rewrite_rules_option( $network_wide )
 	{
@@ -405,6 +417,8 @@ class Inventory_Presser_Plugin
 	}
 
 	/**
+	 * find_theme_stylesheet_handle
+	 * 
 	 * Finds the registered handle of the active theme's stylesheet.
 	 *
 	 * @return string|null The stylesheet handle or null if there is no stylesheet
@@ -422,33 +436,19 @@ class Inventory_Presser_Plugin
 		}
 		return null;
 	}
-
+	
 	/**
-	 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
+	 * generate_rewrite_rules
+	 * 
+	 * Generate every possible combination of rewrite rules, including paging, based on post type taxonomy
+	 * @see http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
+	 *
+	 * @param  string $post_type
+	 * @param  array $query_vars
+	 * @return void
 	 */
-	static function flush_rewrite( $network_wide )
-	{
-		self::create_custom_post_type( );
-
-		if( ! is_multisite() || ! $network_wide )
-		{
-			flush_rewrite_rules( );
-			return;
-		}
-
-		$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
-		foreach( $sites as $site )
-		{
-			switch_to_blog( $site->blog_id );
-			delete_option( 'rewrite_rules' );
-			restore_current_blog();
-		}
-	}
-
 	function generate_rewrite_rules( $post_type, $query_vars = array() )
 	{
-		// generate every possible combination of rewrite rules, including paging, based on post type taxonomy
-		// from http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
 		global $wp_rewrite;
 
 		if( ! is_object( $post_type ) )
@@ -501,9 +501,11 @@ class Inventory_Presser_Plugin
 	}
 
 	/**
+	 * get_last_word
+	 * 
 	 * Given a string, return the last word.
 	 *
-	 * @param string $str The string from which to extract the last word
+	 * @param  string $str The string from which to extract the last word
 	 * @return string The last word of the input string
 	 */
 	private function get_last_word( $str )
@@ -511,7 +513,15 @@ class Inventory_Presser_Plugin
 		$pieces = explode( ' ', rtrim( $str ) );
 		return array_pop( $pieces );
 	}
-
+	
+	/**
+	 * hooks
+	 * 
+	 * This is the driver function of the entire plugin. Includes dependencies 
+	 * and adds all hooks.
+	 *
+	 * @return void
+	 */
 	function hooks()
 	{
 		//include all this plugin's classes that live in external files
@@ -683,7 +693,15 @@ class Inventory_Presser_Plugin
 		$overlapper = new Inventory_Presser_Taxonomy_Overlapper();
 		$overlapper->hooks();
 	}
-
+	
+	/**
+	 * include_dependencies
+	 * 
+	 * Includes all the includes! This function loads all the other PHP files 
+	 * that contain this plugin's code.
+	 *
+	 * @return void
+	 */
 	function include_dependencies()
 	{
 		//Include our object definition dependencies
@@ -738,7 +756,16 @@ class Inventory_Presser_Plugin
 			}
 		}
 	}
-
+	
+	/**
+	 * include_scripts_and_styles
+	 * 
+	 * Registers JavaScripts and stylesheets for front-end users and dashboard
+	 * users. Includes some inline styles and scripts depending on the plugin
+	 * settings and page request.
+	 *
+	 * @return void
+	 */
 	function include_scripts_and_styles()
 	{
 		//If show carfax buttons
@@ -834,8 +861,17 @@ fill: #$black;
 	}
 
 	/**
-	 * Change a query's meta_query value if the meta_query does not already
-	 * contain the provided key.
+	 * maybe_add_meta_query
+	 * 
+	 * Filter callback that changes a query's meta_query value if the meta_query
+	 * does not already contain the provided $key.
+	 *
+	 * @param  array $meta_query The meta_query member of a WP_Query, retrieved with WP_Query->get('meta_query')
+	 * @param  string $key
+	 * @param  string $value
+	 * @param  string $compare
+	 * @param  string $type
+	 * @return array The modified $meta_query array
 	 */
 	function maybe_add_meta_query( $meta_query, $key, $value, $compare, $type )
 	{
@@ -855,7 +891,10 @@ fill: #$black;
 	}
 
 	/**
+	 * meta_prefix
+	 * 
 	 * @deprecated This method has been moved to the INVP class.
+	 * @return void
 	 */
 	public static function meta_prefix()
 	{
@@ -863,7 +902,13 @@ fill: #$black;
 	}
 
 	/**
-	 * Does a WP_Query's meta_query contain a specific key?
+	 * meta_query_contains_key
+	 * 
+	 * Does a query's meta_query contain a specific key?
+	 *
+	 * @param  array $meta_query The array return value of WP_Query->get('meta_query')
+	 * @param  string $key The meta key to search for
+	 * @return boolean|null
 	 */
 	function meta_query_contains_key( $meta_query, $key )
 	{
@@ -883,8 +928,13 @@ fill: #$black;
 	}
 
 	/**
-	 * Modifieds the query to filter vehicles by prices for the Maximum
+	 * modify_query_for_max_price
+	 * 
+	 * Modifies the $query to filter vehicles by prices for the Maximum
 	 * Price Filter widget.
+	 *
+	 * @param  object $query An instance of the WP_Query class
+	 * @return void
 	 */
 	function modify_query_for_max_price( $query )
 	{
@@ -915,10 +965,18 @@ fill: #$black;
 			);
 			$query->set( 'meta_query', $meta_query );
 		}
-
-		return $query;
 	}
-
+	
+	/**
+	 * modify_query_orderby
+	 * 
+	 * Filter callback. Modifies a query's ORDER BY clause to appropriately 
+	 * sort some meta values as numbers instead of strings while adding fields
+	 * to the ORDER BY clause to account for all of the JOINs to the postmeta.
+	 *
+	 * @param  array $pieces All of a queries syntax organized into an array
+	 * @return array The changed array of database query fragments
+	 */
 	function modify_query_orderby( $pieces )
 	{
 		/**
@@ -968,7 +1026,16 @@ fill: #$black;
 		}
 		return $pieces;
 	}
-
+	
+	/**
+	 * really_delete
+	 *
+	 * Action hook callback. Prevents vehicles from lingering in the Trash after
+	 * they've been deleted by always force deleting.
+	 * 
+	 * @param  integer $post_id
+	 * @return void
+	 */
 	function really_delete( $post_id )
 	{
 		//is the post a vehicle?
@@ -980,7 +1047,16 @@ fill: #$black;
 		//force delete
 		wp_delete_post( $post_id, true );
 	}
-
+	
+	/**
+	 * delete_attachments
+	 *
+	 * Action hook callback. Deletes all a vehicle's attachments when the 
+	 * vehicle is deleted.
+	 * 
+	 * @param  integer $post_id
+	 * @return void
+	 */
 	function delete_attachments( $post_id )
 	{
 		//Is $post_id a vehicle?
@@ -993,8 +1069,15 @@ fill: #$black;
 		$vehicle = new Inventory_Presser_Vehicle();
 		$vehicle->delete_attachments( $post_id );
 	}
-
-	//register all meta fields our CPT uses
+	
+	/**
+	 * register_meta_fields
+	 * 
+	 * Registers all meta fields our custom post type uses to define a vehicle
+	 * and its attachments.
+	 *
+	 * @return void
+	 */
 	function register_meta_fields()
 	{
 		//Add meta fields to our post type
@@ -1051,7 +1134,14 @@ fill: #$black;
 			) );
 		}
 	}
-
+	
+	/**
+	 * register_widgets
+	 * 
+	 * Registers every widget that ships with this plugin.
+	 *
+	 * @return void
+	 */
 	function register_widgets()
 	{
 		/**
@@ -1090,25 +1180,30 @@ fill: #$black;
 	}
 
 	/**
+	 * settings
+	 *
 	 * @deprecated	This method has been moved to the INVP class.
+	 * @return void
 	 */
 	public static function settings()
 	{
 		return INVP::settings();
 	}
-
+	
 	/**
+	 * translate_custom_field_names
+	 *
 	 * Prefixes our post meta field keys so 'make' becomes
 	 * 'inventory_presser_make'. Careful to not prefix a key that has
 	 * already been prefixed.
-	 *
-	 * @param string $nice_name The unprefixed meta key.
+	 * 
+	 * @param  string $nice_name The unprefixed meta key.
 	 * @return string The prefixed meta key.
 	 */
 	function translate_custom_field_names( $nice_name )
 	{
 		$nice_name = strtolower( $nice_name );
-		$prefix = self::meta_prefix();
+		$prefix = INVP::meta_prefix();
 
 		if( $prefix == substr( $nice_name, 0, strlen( $prefix ) ) )
 		{
@@ -1118,13 +1213,15 @@ fill: #$black;
 	}
 
 	/**
+	 * untranslate_custom_field_names
+	 * 
 	 * Removes the prefix from our post meta field keys so
 	 * 'inventory_presser_make' becomes 'make'. Careful to not damage any
 	 * provided key that does not start with our prefix.
 	 *
-	 * @param string $meta_key The prefixed meta key.
+	 * @param  string $meta_key The prefixed meta key.
 	 * @return string The un-prefixed meta key.
-	 */
+	 */	
 	function untranslate_custom_field_names( $meta_key )
 	{
 		if( empty( $meta_key ) )
@@ -1133,7 +1230,7 @@ fill: #$black;
 		}
 		$meta_key = strtolower( $meta_key );
 		//prefix may start with an underscore because previous versions hid some meta keys
-		$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . self::meta_prefix();
+		$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . INVP::meta_prefix();
 
 		//does $meta_key actually start with the $prefix?
 		if( $prefix == substr( $meta_key, 0, strlen( $prefix ) ) )
