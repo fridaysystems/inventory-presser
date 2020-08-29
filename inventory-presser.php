@@ -53,7 +53,16 @@ class Inventory_Presser_Plugin
 			?></div><?php
 		}
 	}
-
+	
+	/**
+	 * add_orderby_to_query
+	 *
+	 * Filter callback that adds an ORDER BY clause to the main query when a 
+	 * user requests a list of vehicles.
+	 * 
+	 * @param  object $query An instance of the WP_Query class
+	 * @return void
+	 */
 	function add_orderby_to_query( $query )
 	{
 		//Do not mess with the query if it's not the main one and our CPT
@@ -241,10 +250,15 @@ class Inventory_Presser_Plugin
 		$query->set( 'order', $direction );
 	}
 
+
 	/**
-	 * @param string $orderby The ORDER BY clause of a main query
-	 * @param WP_Query $query The main query object
+	 * change_order_by_for_odometer
+	 * 
+	 * Removes commas from the meta value used in the ORDER BY of the query so
+	 * that odometer values can be sorted as numbers instead of strings.
 	 *
+	 * @param  string $orderby The ORDER BY clause of a database query
+	 * @param  object $query An instance of the WP_Query class
 	 * @return string The changed ORDER BY clause
 	 */
 	function change_order_by_for_odometer( $orderby, $query )
@@ -257,21 +271,38 @@ class Inventory_Presser_Plugin
 		 */
 		return str_replace( 'wp_postmeta.meta_value+0', "REPLACE( wp_postmeta.meta_value, ',', '' )+0", $orderby );
 	}
-
+	
+	/**
+	 * add_pretty_search_urls
+	 * 
+	 * Action hook callback that adds rewrite rules to the global $wp_rewrite.
+	 * These rewrite rules are what power URLs like /inventory/make/subaru.
+	 *
+	 * @return void
+	 */
 	function add_pretty_search_urls()
 	{
 		global $wp_rewrite;
 		$wp_rewrite->rules = $this->generate_rewrite_rules( self::CUSTOM_POST_TYPE ) + $wp_rewrite->rules;
 	}
 
-	//Change links to terms in our taxonomies to include /inventory before /tax/term
+	/**
+	 * change_term_links
+	 * 
+	 * Change links to terms in our taxonomies to include /inventory before 
+	 * /tax/term.
+	 *
+	 * @param  string $termlink
+	 * @param  object $term An instance of the WP_Term class
+	 * @return string A modified term link that has our post type slug prepended.
+	 */
 	function change_term_links( $termlink, $term )
 	{
 		$taxonomy = get_taxonomy( $term->taxonomy );
 
 		if( ! in_array( self::CUSTOM_POST_TYPE, $taxonomy->object_type ) )
 		{
-			return;
+			return $termlink;
 		}
 
 		$post_type = get_post_type_object( self::CUSTOM_POST_TYPE );
@@ -279,7 +310,14 @@ class Inventory_Presser_Plugin
 
 		return $termlink;
 	}
-
+	
+	/**
+	 * create_custom_post_type
+	 *
+	 * Registers the inventory_vehicle post type that holds vehicles.
+	 * 
+	 * @return void
+	 */
 	static function create_custom_post_type()
 	{
 		//creates a custom post type that will be used by this plugin
