@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.5.0
-Stable tag: 11.8.0
+Stable tag: 11.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,11 +62,9 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 11.8.0 =
-* [Added] Adds a filter so the "no photo photo", the photo shown when a vehicle has no photos can now be filtered by changing its URL with the `invp_no_photo_url` filter.
-* [Added] Adds a query to update term counts to the cron job that deletes unused terms in the years, makes, models, and body styles taxonomies. The query recounts term relationships on all terms, and is included in response to a bug I can't reproduce. We've noticed that term relationships are sometimes lingering after vehicles are deleted via the REST API on our multisites hosted at WP Engine. 
-* [Changed] Changes the cron job that deletes unused terms and now recounts term relationships to run daily instead of weekly. The frequency of customer vehicle updates and the new query to correct term relationship counts demand this change.
-* [Changed] Changes the tested up to version number to 5.5.0.
+= 11.8.1 =
+* [Fixed] Fixes a bug when the availability taxonomy term was changed that prevented the overlapping meta value from being updated. This prevented some sold vehicles from being displayed as sold.
+* [Fixed] Fixes a bug in the Address widget when no location is checked for display.
 
 
 == Upgrade Notice ==
