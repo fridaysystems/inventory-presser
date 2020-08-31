@@ -12,11 +12,25 @@ defined( 'ABSPATH' ) or exit;
  * @author     Corey Salzano <corey@friday.systems>
  */
 
+/**
+ * invp_get_the_vin
+ * 
+ * Returns the vehicles VIN. Must be used inside the loop.
+ *
+ * @return string
+ */
 function invp_get_the_vin()
 {
 	return get_post_meta( get_the_ID(), apply_filters( 'invp_prefix_meta_key', 'vin' ), true );
 }
 
+/**
+ * invp_get_the_price
+ *
+ * Returns the vehicle's price. Must be used inside the loop.
+ * 
+ * @return string
+ */
 function invp_get_the_price()
 {
 	$vehicle = new Inventory_Presser_Vehicle( get_the_ID() );

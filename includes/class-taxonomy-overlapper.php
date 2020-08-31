@@ -277,7 +277,7 @@ class Inventory_Presser_Taxonomy_Overlapper
 				case "for-sale":
 				case "sold":
 					$this->hooks_remove();
-					update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', $taxonomies_and_keys[$taxonomy] ), $term->name );
+					update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'availability' ), $term->name );
 					$this->hooks_add();
 					break;
 

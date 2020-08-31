@@ -11,13 +11,26 @@ defined( 'ABSPATH' ) or exit;
  * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
  */
 
-// Price Filters
+/**
+ * Inventory_Presser_Maximum_Price_Filter
+ * 
+ * This class creates the Maximum Price Filter widget.
+ */
 class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 
 	const ID_BASE = '_invp_price_filters';
 
 	var $price_defaults = array( 5000,10000,15000,20000 );
 
+	/**
+	 * __construct
+	 *
+	 * Calls the parent class' contructor and adds a hook that will delete the
+	 * option that stores this widget's data when the plugin's delete all data
+	 * method is run.
+	 * 
+	 * @return void
+	 */
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
@@ -28,17 +41,36 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
+	/**
+	 * delete_option
+	 * 
+	 * Deletes the option that stores this widget's data.
+	 *
+	 * @return void
+	 */
 	public function delete_option() {
 		delete_option( 'widget_' . self::ID_BASE );
 	}
-
+	
+	/**
+	 * display_types
+	 *
+	 * @return array An associative array of display type choices, including 
+	 * buttons or text.
+	 */
 	function display_types() {
 		return array(
 			'buttons' => __( 'Buttons', 'inventory-presser' ),
 			'text'    => __( 'Text', 'inventory-presser' ),
 		);
 	}
-
+	
+	/**
+	 * orientations
+	 *
+	 * @return array An associative array of display orientations, including 
+	 * horizontal or vertical.
+	 */
 	function orientations() {
 		return array(
 			'horizontal' => __( 'Horizontal', 'inventory-presser' ),
@@ -46,7 +78,15 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 		);
 	}
 
-	// front-end
+	/**
+	 * widget
+	 * 
+	 * Outputs the widget front-end HTML
+	 *
+	 * @param  array $args
+	 * @param  array $instance
+	 * @return void
+	 */
 	public function widget( $args, $instance ) {
 
 		//Need the stylesheet for this content
@@ -106,7 +146,14 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 		echo '</div>' . $args['after_widget'];
 	}
 
-	// Widget Backend
+	/**
+	 * form
+	 * 
+	 * Outputs the widget settings form that is shown in the dashboard.
+	 *
+	 * @param  array $instance
+	 * @return void
+	 */
 	public function form( $instance ) {
 
 		$title = isset($instance['title']) ? $instance[ 'title' ] : __( 'Price Filter', 'inventory-presser' );
@@ -163,7 +210,15 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 		<?php
 	}
 
-	// Updating widget replacing old instances with new
+	/**
+	 * update
+	 *
+	 * Saves the widget settings when a dashboard user clicks the Save button.
+	 * 
+	 * @param  array $new_instance
+	 * @param  array $old_instance
+	 * @return array The updated array full of settings
+	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
 		$instance['title'] = ( !empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';

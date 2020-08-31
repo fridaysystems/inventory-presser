@@ -20,34 +20,45 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 	}
 
 	// front-end
-	public function widget( $args, $instance ) {
+	public function widget( $args, $instance )
+	{
+		if( empty( $instance['cb_display'] ) )
+		{
+			return;
+		}
 
-		$title = apply_filters( 'widget_title', $instance['title'] );
+		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'] );
 		// before and after widget arguments are defined by themes
 		echo $args['before_widget'];
 		if (!empty( $title )) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		if (isset($instance['cb_single_line']) && $instance['cb_single_line'] == 'true') {
-			foreach ($instance['cb_display'] as $i => $term_id) {
+		if ( isset($instance['cb_single_line']) && $instance['cb_single_line'] == 'true')
+		{
+			foreach ($instance['cb_display'] as $i => $term_id)
+			{
 				$location = get_term( $term_id, 'location' );
-				if( ! is_wp_error( $location ) && null != $location ) {
+				if( ! is_wp_error( $location ) && null != $location )
+				{
 					printf(
 						'<span>%s</span>',
 						str_replace( PHP_EOL, ', ', trim( $location->description ) )
 					);
 				}
 			}
-		} else {
-			foreach ($instance['cb_display'] as $i => $term_id) {
+		}
+		else
+		{
+			foreach ($instance['cb_display'] as $i => $term_id)
+			{
 				$location = get_term( $term_id, 'location' );
-				if( ! is_wp_error( $location ) && null != $location ) {
+				if( ! is_wp_error( $location ) && null != $location )
+				{
 					echo '<div>' . nl2br( $location->description ). '</div>';
 				}
 			}
-		}
-
+		}	
 
 		echo $args['after_widget'];
 	}

@@ -1,10 +1,20 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * INVP
+ * 
+ * This API class offers static methods that are useful to more than one other 
+ * class in this plugin.
+ */
 class INVP
 {
 	/**
-	 * The prefix given to all our post meta keys
+	 * meta_prefix
+	 * 
+	 * Returns the prefix added to all vehicle post meta keys.
+	 *
+	 * @return string The prefix added to all vehicle post meta keys
 	 */
 	public static function meta_prefix()
 	{
@@ -12,7 +22,11 @@ class INVP
 	}
 
 	/**
-	 * Get this plugin's option mingled with default values
+	 * settings
+	 * 
+	 * Get this plugin's option mingled with default values.
+	 *
+	 * @return array An associative array containing this plugin's settings
 	 */
 	public static function settings()
 	{
@@ -25,6 +39,14 @@ class INVP
 	}
 
 	/**
+	 * weekdays
+	 * 
+	 * If no parameter is provided, returns an array containing lowercase 
+	 * weekdays as keys and title case, three-letter abbreviations as values.
+	 * If a valid parameter is provided, returns the lowercase day name
+	 * it identifies. If an invalid parameter is provided, returns false.
+	 *
+	 * @param  integer $zero_through_six A number between 0 and 6 to identify a single day to return as a string.
 	 * @return string|Array|false
 	 */
 	public static function weekdays( $zero_through_six = null )
@@ -59,5 +81,4 @@ class INVP
 		//Return the array
 		return $days;
 	}
-
 }

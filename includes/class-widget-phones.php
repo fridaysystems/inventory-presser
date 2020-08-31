@@ -1,11 +1,22 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Inventory_Presser_Location_Phones
+ * 
+ * This class creates the Phone Number widget.
+ */
 class Inventory_Presser_Location_Phones extends WP_Widget
 {
 	const ID_BASE = '_invp_phone';
 
-	// formats for widget display.  To add more, just follow the pattern
+	/**
+	 * formats
+	 * 
+	 * Defines the formats for the widget's display.
+	 *
+	 * @return array
+	 */
 	function formats()
 	{
 		return array(
@@ -60,7 +71,16 @@ class Inventory_Presser_Location_Phones extends WP_Widget
 			),
 		);
 	}
-
+	
+	/**
+	 * __construct
+	 *
+	 * Calls the parent class' contructor and adds a hook that will delete the
+	 * option that stores this widget's data when the plugin's delete all data
+	 * method is run.
+	 * 
+	 * @return void
+	 */
 	function __construct()
 	{
 		parent::__construct(
@@ -71,13 +91,28 @@ class Inventory_Presser_Location_Phones extends WP_Widget
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
-
+	
+	/**
+	 * delete_option
+	 * 
+	 * Deletes the option that stores this widget's data.
+	 *
+	 * @return void
+	 */
 	public function delete_option()
 	{
 		delete_option( 'widget_' . self::ID_BASE );
 	}
 
-	// widget front-end
+	/**
+	 * widget
+	 * 
+	 * Outputs the widget front-end HTML
+	 *
+	 * @param  array $args
+	 * @param  array $instance
+	 * @return void
+	 */
 	public function widget( $args, $instance )
 	{
 		if( ! is_array( $instance['cb_display'] ) || empty( $instance['cb_display'] ) )
@@ -145,7 +180,14 @@ class Inventory_Presser_Location_Phones extends WP_Widget
 			. $args['after_widget'];
 	}
 
-	// Widget Backend
+	/**
+	 * form
+	 * 
+	 * Outputs the widget settings form that is shown in the dashboard.
+	 *
+	 * @param  array $instance
+	 * @return void
+	 */
 	public function form( $instance )
 	{
 		$cb_display = isset($instance['cb_display']) ? $instance['cb_display'] : array();
@@ -225,7 +267,15 @@ class Inventory_Presser_Location_Phones extends WP_Widget
 		<?php
 	}
 
-	// Updating widget replacing old instances with new
+	/**
+	 * update
+	 *
+	 * Saves the widget settings when a dashboard user clicks the Save button.
+	 * 
+	 * @param  array $new_instance
+	 * @param  array $old_instance
+	 * @return array The updated array full of settings
+	 */
 	public function update( $new_instance, $old_instance )
 	{
 		$instance = array();
