@@ -1,6 +1,9 @@
 <?php
+defined( 'ABSPATH' ) or exit;
 
 /**
+ * Inventory_Presser_Taxonomy_Overlapper
+ * 
  * Some of our taxonomies, like year, make, and model, have companion values
  * stored in post meta. This class makes the values match whether taxonomy term
  * relationships are changed or post meta values are updated. The values are 
@@ -8,7 +11,14 @@
  * clients that update vehicles is easier.
  */
 class Inventory_Presser_Taxonomy_Overlapper
-{
+{	
+	/**
+	 * hooks_add
+	 * 
+	 * Adds hooks to catch updates to meta values and term relationships.
+	 *
+	 * @return void
+	 */
 	function hooks_add()
 	{
 		/**
@@ -23,7 +33,15 @@ class Inventory_Presser_Taxonomy_Overlapper
 		add_action( 'set_object_terms', array( $this, 'term_relationship_updated' ), 10, 6 );
 		add_action( 'deleted_term_relationships', array( $this, 'term_relationship_deleted' ), 10, 3 );
 	}
-
+	
+	/**
+	 * hooks_remove
+	 *
+	 * This is the inverse to hooks_add(). It removes all the hooks this class
+	 * adds.
+	 * 
+	 * @return void
+	 */
 	function hooks_remove()
 	{
 		remove_action( 'updated_postmeta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
@@ -34,12 +52,33 @@ class Inventory_Presser_Taxonomy_Overlapper
 		remove_action( 'set_object_terms', array( $this, 'term_relationship_updated' ), 10, 6 );
 		remove_action( 'delete_term_relationships', array( $this, 'term_relationship_deleted' ), 10, 3 );
 	}
-
+	
+	/**
+	 * hooks
+	 * 
+	 * This is a formality to match the method naming scheme of all other 
+	 * classes in this plugin. 
+	 *
+	 * @return void
+	 */
 	function hooks()
 	{
 		$this->hooks_add();
 	}
-
+	
+	/**
+	 * maintain_taxonomy_terms_during_meta_updates
+	 * 
+	 * When post meta values are updated on vehicle posts, check to see if the
+	 * same value is also stored in one of our taxonomies to make filtering 
+	 * easy. If so, mirror the changes by creating a new term relationship.
+	 *
+	 * @param  int $meta_id ID of updated metadata entry.
+	 * @param  int $object_id Post ID.
+	 * @param  string $meta_key Metadata key.
+	 * @param  string|object $meta_value Metadata value. This will be a PHP-serialized string representation of the value if the value is an array, an object, or itself a PHP-serialized string.
+	 * @return void
+	 */
 	function maintain_taxonomy_terms_during_meta_updates( $meta_id, $object_id, $meta_key, $meta_value )
 	{
 		//These are the unprefixed meta keys that have overlapping taxonomies
@@ -142,10 +181,12 @@ class Inventory_Presser_Taxonomy_Overlapper
 	}
 
 	/**
+	 * overlapping_meta_keys
+	 * 
 	 * Returns an array containing keys that are post meta field suffixes. The
 	 * values are the overlapping taxonomy names.
-	 * 
-	 * @return Array
+	 *
+	 * @return array
 	 */
 	private function overlapping_meta_keys()
 	{
@@ -169,16 +210,32 @@ class Inventory_Presser_Taxonomy_Overlapper
 	}
 
 	/**
+	 * sluggify
+	 *
 	 * Turns the name of something into a slug that WordPress will accept when
 	 * creating objects like terms. WordPress slugs are described as containing
 	 * only letters, numbers, and hyphens.
+	 * 
+	 * @param  string $name
+	 * @return string An alteration of $name that WordPress will accept as a term slug
 	 */
 	private function sluggify( $name )
 	{
 		$name = preg_replace( '/[^a-zA-Z0-9\\-]/', '', str_replace( '/', '-', str_replace( ' ', '-', $name ) ) );
 		return strtolower( str_replace( '--', '-', str_replace( '---', '-', $name ) ) );
 	}
-
+	
+	/**
+	 * term_relationship_deleted
+	 * 
+	 * If the term relationship that was just deleted was in a vehicle taxonomy,
+	 * also delete the meta value that contains the same value.
+	 *
+	 * @param  int $object_id Object ID.
+	 * @param  array $tt_ids An array of term taxonomy IDs.
+	 * @param  string $taxonomy Taxonomy slug.
+	 * @return void
+	 */
 	function term_relationship_deleted( $object_id, $tt_ids, $taxonomy )
 	{
 		//Does $object_id belong to a vehicle?
@@ -229,7 +286,18 @@ class Inventory_Presser_Taxonomy_Overlapper
 			$this->hooks_add();
 		}
 	}
-
+	
+	/**
+	 * term_relationship_updated
+	 *
+	 * @param  int $object_id Object ID.
+	 * @param  array $terms An array of object terms.
+	 * @param  array $tt_ids An array of term taxonomy IDs.
+	 * @param  string $taxonomy Taxonomy slug.
+	 * @param  bool $append Whether to append new terms to the old terms.
+	 * @param  array $old_tt_ids Old array of term taxonomy IDs.
+	 * @return void
+	 */
 	function term_relationship_updated( $object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids )
 	{
 		//Does $object_id belong to a vehicle?

@@ -1,25 +1,45 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
-/**
- * Provides single and archive templates for the post type created by this
- * plugin if the active theme does not contain any.
- *
- * @since      10.7.0
- */
 if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
-{
+{	
+	/**
+	 * Inventory_Presser_Template_Provider
+	 * 
+	 * This class provides single and archive templates for the post type 
+	 * created by this plugin if the active theme does not contain any.
+	 * 
+	 * @since      10.7.0
+	 */
 	class Inventory_Presser_Template_Provider
-	{
+	{		
+		/**
+		 * hooks
+		 * 
+		 * Adds hooks to catch requests for vehicle singles and archives.
+		 *
+		 * @return void
+		 */
 		function hooks()
 		{
 			add_filter( 'single_template', array( $this, 'maybe_provide_template' ) );
 			add_filter( 'archive_template', array( $this, 'maybe_provide_template' ) );
 		}
-
+		
+		/**
+		 * lie_about_post_thumbnails
+		 * 
+		 * This method lies about whether vehicles have thumbnails so that all
+		 * template content can be handled by the shortcode.
+		 *
+		 * @param  bool $has_thumbnail
+		 * @param  mixed $post
+		 * @param  int $thumbnail_id
+		 * @return void
+		 */
 		static function lie_about_post_thumbnails( $has_thumbnail, $post, $thumbnail_id )
 		{
-			if( ! empty( $post) && Inventory_Presser_Plugin::CUSTOM_POST_TYPE != get_post_type( $post ) )
+			if( ! empty( $post ) && Inventory_Presser_Plugin::CUSTOM_POST_TYPE != get_post_type( $post ) )
 			{
 				return $has_thumbnail;
 			}
@@ -34,7 +54,19 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
 
 			return false;
 		}
-
+		
+		/**
+		 * maybe_provide_template
+		 * 
+		 * This method decides whether or not to add filters to the_content and
+		 * has_post_thumbnail by examining the template file. If the theme does
+		 * not have templates for vehicle singles and archives, the filters are
+		 * added and shortcodes provide the templates instead. I stole this 
+		 * technique from WooCommerce, and it's kind of beautiful.
+		 *
+		 * @param  string $template The template file to load
+		 * @return string The same template file that was passed in
+		 */
 		function maybe_provide_template( $template )
 		{
 			//is this our vehicle post type?
@@ -73,12 +105,29 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
 			//Still return the empty template
 			return $template;
 		}
-
+		
+		/**
+		 * replace_content_with_shortcode_archive
+		 * 
+		 * Returns the output of the [invp-archive-vehicle] shortcode.
+		 *
+		 * @param  string $content The post content as provided by the the_content filter
+		 * @return string The output of the [invp-archive-vehicle] shortcode.
+		 */
 		function replace_content_with_shortcode_archive( $content )
 		{
 			return do_shortcode( '[invp-archive-vehicle]' );
 		}
-
+		
+		/**
+		 * replace_content_with_shortcode_single
+		 * 
+		 * Filter callback. Returns the output of the [invp-single-vehicle] 
+		 * shortcode regardless of what is passed in.
+		 *
+		 * @param  string $content The post content as provided by the the_content filter
+		 * @return string The output of the [invp-single-vehicle] shortcode
+		 */
 		function replace_content_with_shortcode_single( $content )
 		{
 			// Remove the filter we're in to avoid nested calls.

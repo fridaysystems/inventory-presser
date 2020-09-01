@@ -2,7 +2,13 @@
 defined( 'ABSPATH' ) or exit;
 
 if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
-{
+{	
+	/**
+	 * Inventory_Presser_Vehicle
+	 * 
+	 * This class defines the vehicle object and provides methods to make using
+	 * vehicle data easy.
+	 */
 	class Inventory_Presser_Vehicle
 	{
 		var $post_ID;
@@ -103,7 +109,15 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $is_used = true;
 		var $is_wholesale = false;
 
-		// constructors
+
+		/**
+		 * __construct
+		 * 
+		 * Populates the object with vehicle data
+		 *
+		 * @param  int|null $post_id The post ID of a vehicle
+		 * @return void
+		 */
 		function __construct( $post_id = null )
 		{
 			//Help the order by logic determine which post meta keys are numbers
@@ -196,12 +210,27 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			}
 		}
 
-		//is this a vehicle for which Carfax maintains data?
+		/**
+		 * carfax_eligible
+		 * 
+		 * Answers the question, "is this a vehicle for which Carfax maintains 
+		 * data?" The rules are 17 digit vin and 1980 and newer.
+		 *
+		 * @return bool
+		 */
 		private function carfax_eligible()
 		{
 			return strlen( $this->vin ) >= 17 && $this->year >= 1980;
 		}
-
+		
+		/**
+		 * carfax_icon_html
+		 * 
+		 * Outputs Carfax button HTML or empty string if the vehicle is not 
+		 * eligible or does not have a free report.
+		 *
+		 * @return string HTML that renders a Carfax button or empty string
+		 */
 		function carfax_icon_html()
 		{
 			if( ! $this->carfax_eligible() || ! $this->have_carfax_report() )
@@ -222,8 +251,10 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				$this->carfax_icon_svg()
 			);
 		}
-
+	
 		/**
+		 * carfax_icon_svg
+		 * 
 		 * Returns an SVG element that is one of various Carfax icons, usually
 		 * containing the text, "SHOW ME THE Carfax," but sometimes also
 		 * adorned with a green banner that says "GOOD VALUE."
@@ -277,6 +308,8 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		}
 
 		/**
+		 * carfax_icon_svg_bundled
+		 *
 		 * Carfax icons are bundled with this plugin, and this method returns
 		 * one of them as an <svg> element.
 		 *
@@ -293,7 +326,15 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			$svg_element = file_get_contents( $svg_path );
 			return ( false === $svg_element ? '' : $svg_element );
 		}
-
+		
+		/**
+		 * carfax_report_url
+		 *
+		 * Returns a link to this vehicle's free Carfax report or an empty 
+		 * string is not available.
+		 * 
+		 * @return string The URL to this vehicle's free Carfax report or empty string.
+		 */
 		function carfax_report_url()
 		{
 			if( ! $this->carfax_eligible() || ! $this->have_carfax_report() )
@@ -306,15 +347,26 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				return $this->carfax_url_report;
 			}
 
-			//fallback to the pre-August-2019 URLs
-			return 'http://www.carfax.com/VehicleHistory/p/Report.cfx?partner=FXI_0&vin=' . $this->vin;
+			/**
+			 * Fallback to the pre-August-2019 URLs, save for the partner 
+			 * querystring parameter.
+			 */
+			return 'http://www.carfax.com/VehicleHistory/p/Report.cfx?vin=' . $this->vin;
 		}
-
+		
+		/**
+		 * delete_attachments
+		 * 
+		 * Deletes all a post's attachments.
+		 *
+		 * @param  int $post_id A post ID
+		 * @return void
+		 */
 		function delete_attachments( $post_id = null )
 		{
-			if( null == $post_id )
+			if( empty( $post_id ) )
 			{
-				if( null == $this->post_ID )
+				if( empty( $this->post_ID ) )
 				{
 					return;
 				}
@@ -335,9 +387,11 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		}
 
 		/**
+		 * down_payment
+		 *
 		 * Returns the down payment as a dollar amount except when it is zero.
 		 * Returns empty string if the down payment is zero.
-		 *
+		 * 
 		 * @return string The down payment formatted as a dollar amount except when the price is zero
 		 */
 		function down_payment()
@@ -354,17 +408,31 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			return __( '$', 'inventory-presser' ) . number_format( $this->down_payment, 0, '.', ',' );
 		}
-
-		function extract_digits( $str )
+		
+		/**
+		 * extract_digits
+		 * 
+		 * Extracts all digits from an input string and returns them as an integer.
+		 * 
+		 * This method is used to extract odometer values from strings. Dealers
+		 * will include commas, periods instead of commas, and other characters
+		 * that prevent odometers from being sorted as numbers.
+		 *
+		 * @param  string $str The input string from which digits will be extracted.
+		 * @return int All digits in the input string in the same order, parsed as an integer.
+		 */
+		private function extract_digits( $str )
 		{
 			return abs( (int) filter_var( $str, FILTER_SANITIZE_NUMBER_INT ) );
 		}
 
 		/**
+		 * extract_image_element_src
+		 *
 		 * Given a string containing HTML <img> element markup, extract the
 		 * value of the src element and return it.
-		 *
-		 * @param string $img_element An HTML <img> element
+		 * 
+		 * @param  string $img_element An HTML <img> element
 		 * @return string The value of the src attribute
 		 */
 		function extract_image_element_src( $img_element )
@@ -373,8 +441,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		}
 
 		/**
+		 * get_book_value
+		 * 
 		 * Returns the higher of the two book value prices among NADA Guides and
 		 * Kelley Blue Book.
+		 *
+		 * @return int
 		 */
 		function get_book_value()
 		{
@@ -382,16 +454,29 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		}
 
 		/**
-		 * @param int $fuel_type Specifies which of the two fuel types from which to retrieve the value.
-		 * @param string $key One of these fuel economy member suffixes: name, annual_consumption, annual_cost, annual_emissions, combined_mpg, city_mpg, highway_mpg
+		 * get_fuel_economy_member
+		 * 
+		 * Makes retrieving a fuel economy data point from metadata easier.
+		 *
+		 * @param  int $fuel_type Specifies which of the two fuel types from which to retrieve the value.
+		 * @param  string $key One of these fuel economy member suffixes: name, annual_consumption, annual_cost, annual_emissions, combined_mpg, city_mpg, highway_mpg
+		 * @return string|null The meta value string corresponding to the provided $key or null
 		 */
 		public function get_fuel_economy_member( $fuel_type, $key )
 		{
 			$key = 'fuel_economy_' . $fuel_type . '_' . $key;
-			return isset( $this->$key ) ? $this->$key : null;
+			return ! empty( $this->$key ) ? $this->$key : null;
 		}
 
-		// fill arrays of thumb and large <img> elements
+		/**
+		 * get_images_html_array
+		 * 
+		 * Fill arrays of thumb and large <img> elements to simplify the use of 
+		 * of vehicle photos.
+		 *
+		 * @param  array $sizes
+		 * @return array An array of thumbnail and full size HTML <img> elements
+		 */
 		function get_images_html_array( $sizes )
 		{
 			/**
@@ -448,59 +533,87 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			return $image_urls;
 		}
-
-		function get_image_count()
-		{
-			$image_args = array(
-				'post_parent'    => $this->post_ID,
-				'posts_per_page' => -1,
-				'post_type'      => 'attachment',
-				'post_mime_type' => 'image',
-			);
-			$images = get_children( $image_args );
-			return count( $images );
-		}
-
-		//return taxonomy terms as a comma delimited string
+	
+		/**
+		 * get_term_string
+		 * 
+		 * Returns taxonomy terms as a comma delimited string.
+		 *
+		 * @param  string $taxonomy The name of a taxonomy
+		 * @return string A comma-separated string of term names.
+		 */
 		function get_term_string( $taxonomy )
 		{
 			$term_list = wp_get_post_terms( $this->post_ID, $taxonomy, array( 'fields' => 'names' ) );
 			return implode( ', ', $term_list );
 		}
-
+		
+		/**
+		 * have_carfax_report
+		 * 
+		 * Answers the question, "does this vehicle have a free and 
+		 * publicy-accessible Carfax report?"
+		 *
+		 * @return bool True if this vehicle has a free and publicly-accessible Carfax report.
+		 */
 		function have_carfax_report()
 		{
 			return '1' == $this->carfax_have_report;
 		}
 
 		/**
-		 * Help WordPress understand which post meta values should be treated as
-		 * numbers. By default, they are all strings, and strings sort
-		 * differently than numbers.
+		 * indicate_post_meta_values_are_numbers
+		 * 
+		 * Filter callback. Helps WordPress understand which post meta values 
+		 * should be treated as numbers. By default, they are all strings, and 
+		 * strings sort differently than numbers.
+		 *
+		 * @param  string $value
+		 * @param  string $meta_key
+		 * @return string Returns the input $value or the string 'meta_value_num'
 		 */
 		function indicate_post_meta_values_are_numbers( $value, $meta_key )
 		{
 			return ( self::post_meta_value_is_number( $meta_key ) ? 'meta_value_num' : $value );
 		}
-
+		
+		/**
+		 * is_carfax_one_owner
+		 * 
+		 * Answers the question, "is this vehicle designated a "one owner" by 
+		 * Carfax?
+		 *
+		 * @return bool True if this vehicle is designated as a "one owner" by Carfax
+		 */
 		function is_carfax_one_owner()
 		{
 			return '1' == $this->carfax_one_owner;
 		}
 
 		/**
+		 * keys
+		 *
 		 * This is an array of the post meta keys this object uses. These keys
 		 * must be prefixed by an apply_filters() call before use.
+		 * 
+		 * @return array An array of the post meta keys this vehicle object uses
 		 */
 		function keys()
 		{
-			$keys_and_types = self::keys_and_types();
-			return array_column( $keys_and_types, 'name' );
+			return array_column( self::keys_and_types(), 'name' );
 		}
-
+		
+		/**
+		 * keys_and_types
+		 * 
+		 * Produces an array of arrays that define all the meta fields that
+		 * define our vehicle post type.
+		 *
+		 * @return array An array of arrays, defining the meta fields that are registered and used by this class.
+		 */
 		public static function keys_and_types()
 		{
-			$keys_and_types = array(
+			return array(
 				array(
 					'label'  => __( 'Availability', 'inventory_presser' ),
 					'name'   => 'availability',
@@ -854,13 +967,16 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type'   => 'string',
 				),
 			);
-			return $keys_and_types;
 		}
 
 		/**
+		 * location_sentence
+		 * 
 		 * Creates a short sentence identifying the dealership address where
 		 * this vehicle is located. If there is only one term in the locations
 		 * taxonomy containing vehicles, this method returns an empty string.
+		 *
+		 * @return string An HTML <div> element containing a sentence that identifies the lot where this vehicle is located.
 		 */
 		function location_sentence()
 		{
@@ -894,7 +1010,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			);
 		}
 
-		//if numeric, format the odometer with thousands separators
+		/**
+		 * odometer
+		 *
+		 * @param  string $append A string to be appended to the odometer value
+		 * @return string This vehicle's odometer value
+		 */
 		function odometer( $append = '' )
 		{
 			if( '0' == $this->odometer ) { return ''; }
@@ -903,18 +1024,25 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			if( is_numeric( $this->odometer ) )
 			{
 				$odometer .= number_format( $this->odometer, 0, '.', ',' );
-				if( $append )
-				{
-					$odometer .= $append;
-				}
 			}
 			else
 			{
 				$odometer .= $this->odometer;
 			}
+			if( $append )
+			{
+				$odometer .= $append;
+			}
 			return $odometer;
 		}
-
+		
+		/**
+		 * options_array
+		 * 
+		 * Returns an array of vehicle option strings
+		 *
+		 * @return array An array of this vehicle's options
+		 */
 		public function options_array()
 		{
 			if( ! empty( $this->options_array ) )
@@ -925,6 +1053,8 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		}
 
 		/**
+		 * payment
+		 *
 		 * Returns the payment as a dollar amount except when it is zero or the vehicle is sold.
 		 * Returns empty string if the payment is zero or the vehicle is sold.
 		 *
@@ -944,10 +1074,20 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			return __( '$', 'inventory-presser' ) . number_format( $this->payment, 0, '.', ',' );
 		}
-
+		
+		/**
+		 * payments
+		 * 
+		 * Outputs the down payment and recurring payment in $X Down/$Y Week
+		 * format.
+		 *
+		 * @param  string $zero_string The string to output if the down payment is zero.
+		 * @param  string $separator The string that separates the down payment from the recurring payment.
+		 * @return string A string like $X Down/$Y Week
+		 */
 		function payments( $zero_string = '', $separator = '/' )
 		{
-			if ( isset( $this->down_payment ) )
+			if ( ! empty( $this->down_payment ) )
 			{
 				return sprintf(
 					'%s %s %s %s %s',
@@ -961,17 +1101,37 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			return $this->price( $zero_string );
 		}
-
+		
+		/**
+		 * photo_count
+		 * 
+		 * Returns the number of image attachments to this post. 
+		 *
+		 * @return int The number of attachments to this post.
+		 */
 		function photo_count()
 		{
 			if( empty( $this->post_ID ) )
 			{
 				return 0;
 			}
-			$attachments = get_children( array( 'post_parent' => $this->post_ID ) );
-			return sizeof( $attachments );
+			return sizeof( get_children( array( 
+				'post_mime_type' => 'image',
+				'post_parent'    => $this->post_ID,
+				'post_type'      => 'attachment',			
+				'posts_per_page' => -1,
+			) ) );
 		}
-
+		
+		/**
+		 * post_meta_value_is_number
+		 * 
+		 * Indicates whether or not a provided $post_meta_key is a number data
+		 * type.
+		 *
+		 * @param  string $post_meta_key
+		 * @return bool True if the given $post_meta_key is a number data type.
+		 */
 		public static function post_meta_value_is_number( $post_meta_key )
 		{
 			$keys_and_types = self::keys_and_types();
@@ -986,12 +1146,14 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		}
 
 		/**
+		 * price
+		 * 
 		 * Returns the price as a dollar amount except when it is zero. Returns
 		 * the $zero_string when the price is zero.
 		 *
-		 * @param string $zero_string The text to display when the price is zero
+		 * @param  string $zero_string The text to display when the price is zero
 		 * @return string The price formatted as a dollar amount except when the price is zero
-		 */
+		 */		
 		function price( $zero_string = '' )
 		{
 			//If this vehicle is sold, just say so
@@ -1111,7 +1273,15 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			return $zero_string;
 		}
-
+		
+		/**
+		 * payment_frequency_readable
+		 * 
+		 * Translates a payment frequency meta value into readable words.
+		 *
+		 * @param  string $slug The raw payment frequency meta value.
+		 * @return string A reader-friendly payment frequency like "per month"
+		 */
 		private function payment_frequency_readable( $slug )
 		{
 			switch( $slug )
@@ -1123,7 +1293,16 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				default: return '';
 			}
 		}
-
+		
+		/**
+		 * schema_org_drive_type
+		 * 
+		 * Translates our drive type term name into a schema.org vehicle drive
+		 * type value.
+		 *
+		 * @param  string $drive_type A drive type term name like "Front Wheel Drive"
+		 * @return string|null A schema.org vehicle drive type string like "FrontWheelDriveConfiguration"
+		 */
 		function schema_org_drive_type( $drive_type )
 		{
 			switch( $drive_type )
@@ -1146,7 +1325,11 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		}
 
 		/**
+		 * schema_org_json_ld
+		 *
 		 * Returns Schema.org markup for this Vehicle as a JSON-LD code block
+		 * 
+		 * @return string Schema.org JSON script element
 		 */
 		function schema_org_json_ld()
 		{
@@ -1239,7 +1422,14 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			return '<script type="application/ld+json">' . json_encode( $obj ) . '</script>';
 		}
-
+		
+		/**
+		 * youtube_url
+		 * 
+		 * Returns this vehicle's YouTube video URL or empty string.
+		 *
+		 * @return string This vehicle's YouTube URL or empty string
+		 */
 		function youtube_url()
 		{
 			if ( empty( $this->youtube ) )

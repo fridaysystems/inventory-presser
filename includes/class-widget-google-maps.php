@@ -2,15 +2,26 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
- * Google Maps Widget
- *
+ * Inventory_Presser_Google_Maps_Widget
+ * 
  * Let's users choose an address in the locations taxonomy, and loads a Google
  * Map that points at that address.
+ * 
+ * This class creates the Google Map widget.
  */
 class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 
 	const ID_BASE = '_invp_google_maps';
 
+	/**
+	 * __construct
+	 *
+	 * Calls the parent class' contructor and adds a hook that will delete the
+	 * option that stores this widget's data when the plugin's delete all data
+	 * method is run.
+	 * 
+	 * @return void
+	 */
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
@@ -21,11 +32,26 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
+	/**
+	 * delete_option
+	 * 
+	 * Deletes the option that stores this widget's data.
+	 *
+	 * @return void
+	 */
 	public function delete_option() {
 		delete_option( 'widget_' . self::ID_BASE );
 	}
 
-	// front-end
+	/**
+	 * widget
+	 * 
+	 * Outputs the widget front-end HTML
+	 *
+	 * @param  array $args
+	 * @param  array $instance
+	 * @return void
+	 */
 	public function widget( $args, $instance )
 	{
 		//abort if we don't have an address to show
@@ -61,7 +87,14 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 		echo $args['after_widget'];
 	}
 
-	// Widget admin form
+	/**
+	 * form
+	 * 
+	 * Outputs the widget settings form that is shown in the dashboard.
+	 *
+	 * @param  array $instance
+	 * @return void
+	 */
 	public function form( $instance ) {
 
 		$title = isset( $instance['title'] ) ? $instance['title'] : '';
@@ -94,7 +127,15 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 	    }
 	}
 
-	// Updating widget replacing old instances with new
+	/**
+	 * update
+	 *
+	 * Saves the widget settings when a dashboard user clicks the Save button.
+	 * 
+	 * @param  array $new_instance
+	 * @param  array $old_instance
+	 * @return array The updated array full of settings
+	 */
 	public function update( $new_instance, $old_instance ) {
 		return array(
 			'title'         => ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '',

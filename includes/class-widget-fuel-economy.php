@@ -1,12 +1,23 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Inventory_Presser_Fuel_Economy_Widget
+ * 
+ * This class creates the EPA Fuel Economy widget.
+ */
 class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 {
 	const ID_BASE = '_invp_fuel_economy_widget';
 
 	/**
-	 * Sets up the widgets name etc
+	 * __construct
+	 *
+	 * Calls the parent class' contructor and adds a hook that will delete the
+	 * option that stores this widget's data when the plugin's delete all data
+	 * method is run.
+	 * 
+	 * @return void
 	 */
 	public function __construct()
 	{
@@ -19,15 +30,25 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
+	/**
+	 * delete_option
+	 * 
+	 * Deletes the option that stores this widget's data.
+	 *
+	 * @return void
+	 */
 	public function delete_option()
 	{
 		delete_option( 'widget_' . self::ID_BASE );
 	}
 
 	/**
-	 * Outputs the options form on admin
+	 * form
+	 * 
+	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
-	 * @param array $instance The widget options
+	 * @param  array $instance
+	 * @return void
 	 */
 	public function form( $instance )
 	{
@@ -43,10 +64,13 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 	}
 
 	/**
-	 * Processing widget options on save
+	 * update
 	 *
-	 * @param array $new_instance The new options
-	 * @param array $old_instance The previous options
+	 * Saves the widget settings when a dashboard user clicks the Save button.
+	 * 
+	 * @param  array $new_instance
+	 * @param  array $old_instance
+	 * @return array The updated array full of settings
 	 */
 	public function update( $new_instance, $old_instance )
 	{

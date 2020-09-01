@@ -46,7 +46,7 @@ class INVP
 	 * If a valid parameter is provided, returns the lowercase day name
 	 * it identifies. If an invalid parameter is provided, returns false.
 	 *
-	 * @param  integer $zero_through_six A number between 0 and 6 to identify a single day to return as a string.
+	 * @param  int $zero_through_six A number between 0 and 6 to identify a single day to return as a string.
 	 * @return string|Array|false
 	 */
 	public static function weekdays( $zero_through_six = null )

@@ -1,8 +1,20 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Inventory_Presser_Carfax_Widget
+ * 
+ * This class creates the Carfax Badge widget.
+ */
 class Inventory_Presser_Carfax_Widget extends WP_Widget {
-
+	
+	/**
+	 * images
+	 * 
+	 * Creates an array that defines the available images the widget can display
+	 *
+	 * @return array
+	 */
 	function images() {
 		return array(
 			'default' => array(
@@ -34,6 +46,15 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 
 	const ID_BASE = '_invp_carfax';
 
+	/**
+	 * __construct
+	 *
+	 * Calls the parent class' contructor and adds a hook that will delete the
+	 * option that stores this widget's data when the plugin's delete all data
+	 * method is run.
+	 * 
+	 * @return void
+	 */
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
@@ -44,11 +65,23 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
+	/**
+	 * delete_option
+	 * 
+	 * Deletes the option that stores this widget's data.
+	 *
+	 * @return void
+	 */
 	public function delete_option() {
 		delete_option( 'widget_' . self::ID_BASE );
 	}
 
-	// front-end
+ 	/**
+ 	 * Outputs the content of the widget
+ 	 *
+ 	 * @param array $args
+ 	 * @param array $instance
+	 */
 	public function widget( $args, $instance ) {
 
 		$image_keys = array_keys( $this->images() );
@@ -83,7 +116,14 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 		echo wpautop( $instance['after_image'] ). $args['after_widget'];
 	}
 
-	// Widget Backend
+	/**
+	 * form
+	 * 
+	 * Outputs the widget settings form that is shown in the dashboard.
+	 *
+	 * @param  array $instance
+	 * @return void
+	 */
 	public function form( $instance ) {
 
 		$image_keys = array_keys( $this->images() );
@@ -126,7 +166,15 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 		<?php
 	}
 
-	// Updating widget replacing old instances with new
+	/**
+	 * update
+	 *
+	 * Saves the widget settings when a dashboard user clicks the Save button.
+	 * 
+	 * @param  array $new_instance
+	 * @param  array $old_instance
+	 * @return array The updated array full of settings
+	 */
 	public function update( $new_instance, $old_instance ) {
 		$image_keys = array_keys( $this->images() );
 		$instance = array();

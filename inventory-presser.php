@@ -396,7 +396,7 @@ class Inventory_Presser_Plugin
 	 * on the next page load without ours. Called during deactivation.
 	 * @see http://wordpress.stackexchange.com/a/44337/13090
 	 * 
-	 * @param  boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
+	 * @param  bool $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
 	 * @return void
 	 */
 	static function delete_rewrite_rules_option( $network_wide )
@@ -606,6 +606,7 @@ class Inventory_Presser_Plugin
 
 		//Redirect URLs by VINs to proper vehicle permalinks
 		$allow_urls_by_vin = new Vehicle_URLs_By_VIN();
+		$allow_urls_by_vin->hooks();
 
 		//Redirect 404 vehicles to make archives
 		$redirect_404_vehicles = new Redirect_404_Vehicles();
@@ -908,7 +909,7 @@ fill: #$black;
 	 *
 	 * @param  array $meta_query The array return value of WP_Query->get('meta_query')
 	 * @param  string $key The meta key to search for
-	 * @return boolean|null
+	 * @return bool|null
 	 */
 	function meta_query_contains_key( $meta_query, $key )
 	{
@@ -1033,7 +1034,7 @@ fill: #$black;
 	 * Action hook callback. Prevents vehicles from lingering in the Trash after
 	 * they've been deleted by always force deleting.
 	 * 
-	 * @param  integer $post_id
+	 * @param  int $post_id
 	 * @return void
 	 */
 	function really_delete( $post_id )
@@ -1054,7 +1055,7 @@ fill: #$black;
 	 * Action hook callback. Deletes all a vehicle's attachments when the 
 	 * vehicle is deleted.
 	 * 
-	 * @param  integer $post_id
+	 * @param  int $post_id
 	 * @return void
 	 */
 	function delete_attachments( $post_id )

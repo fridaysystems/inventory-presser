@@ -29,7 +29,7 @@ class Inventory_Presser_Business_Day
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_tomorrow()
 	{
@@ -41,7 +41,7 @@ class Inventory_Presser_Business_Day
 	/**
 	 * Does this day have any open hours?
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function open_in_some_fashion()
 	{
@@ -49,7 +49,7 @@ class Inventory_Presser_Business_Day
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function open_later_today()
 	{
@@ -60,7 +60,7 @@ class Inventory_Presser_Business_Day
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function open_right_now()
 	{
