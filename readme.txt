@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
-Tested up to: 5.5.0
-Stable tag: 11.8.1
+Tested up to: 5.5.1
+Stable tag: 11.8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,12 +62,15 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 11.8.1 =
-* [Fixed] Fixes a bug when the availability taxonomy term was changed that prevented the overlapping meta value from being updated. This prevented some sold vehicles from being displayed as sold.
-* [Fixed] Fixes a bug in the Address widget when no location is checked for display.
+= 11.8.2 =
+* [Added] Adds DocBlock comments in as many places as possible to make publishing documentation easier.
+* [Fixed] Fixes three instances of filter callback methods returning void instead of empty string.
 
 
 == Upgrade Notice ==
+
+= 11.8.2 =
+The first version with DocBlock comments on all classes and methods.
 
 = 11.7.0 =
 This version makes the job of REST API clients that update vehicle data much easier by adding meta fields that overlap and updated all custom taxonomies.
