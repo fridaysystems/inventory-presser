@@ -1,13 +1,33 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Inventory_Presser_Shortcode_Slider
+ * 
+ * This class creates a shortcode to make adding vehicle photo sliders easy
+ */
 class Inventory_Presser_Shortcode_Slider {
-
+	
+	/**
+	 * hooks
+	 * 
+	 * Adds two shortcodes
+	 *
+	 * @return void
+	 */
 	function hooks() {
 		add_shortcode( 'invp-inventory-slider', array( $this, 'content') );
 		add_shortcode( 'invp_inventory_slider', array( $this, 'content') );
 	}
-
+	
+	/**
+	 * content
+	 * 
+	 * Creates the HTML content of the shortcode
+	 *
+	 * @param  array $atts
+	 * @return string HTML that renders a vehicle photo flexslider
+	 */
 	function content( $atts ) {
 
 		//Need flexslider for this content

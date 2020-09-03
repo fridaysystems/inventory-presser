@@ -2,19 +2,14 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
- * Various classes to deal with location taxonomy widgets and checks
- *
- *
+ * Inventory_Presser_Maximum_Price_Filter
+ * 
+ * This class creates the Maximum Price Filter widget.
+ * 
  * @since      1.3.1
  * @package    Inventory_Presser
  * @subpackage Inventory_Presser/includes
  * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
- */
-
-/**
- * Inventory_Presser_Maximum_Price_Filter
- * 
- * This class creates the Maximum Price Filter widget.
  */
 class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 

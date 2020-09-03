@@ -1,18 +1,37 @@
 <?php
+defined( 'ABSPATH' ) or exit;
 
 /**
+ * Inventory_Presser_Photo_Numberer
+ * 
  * If a user uploads a photo to a vehicle in the dashboard, it needs meta data
  * that tells this plugin how to order that photo among the others during
  * display. This class sets that meta data. It also sets other meta values,
- * including the VIN and a file date
+ * including the VIN and a file date.
  */
 class Inventory_Presser_Photo_Numberer{
-
+	
+	/**
+	 * hooks
+	 *
+	 * Adds hooks
+	 * 
+	 * @return void
+	 */
 	function hooks()
 	{
 		add_action( 'add_attachment', array( $this, 'maybe_number_photo' ), 10, 1 );
 	}
-
+	
+	/**
+	 * maybe_number_photo
+	 * 
+	 * Filter callback on add_attachment. Decides whether to write meta values 
+	 * on attachments if they are uploaded to vehicles.
+	 *
+	 * @param  int $post_id
+	 * @return void
+	 */
 	function maybe_number_photo( $post_id )
 	{
 		//Is this new attachment even attached to a post?

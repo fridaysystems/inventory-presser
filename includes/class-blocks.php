@@ -1,8 +1,22 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
+/**
+ * Inventory_Presser_Blocks
+ * 
+ * Creates blocks
+ */
 class Inventory_Presser_Blocks
-{
+{	
+	/**
+	 * add_category
+	 * 
+	 * Adds a block category to hold all our blocks
+	 *
+	 * @param  array $categories
+	 * @param  WP_Post $post
+	 * @return array
+	 */
 	function add_category( $categories, $post )
 	{
 		//is the post a vehicle?
@@ -23,7 +37,14 @@ class Inventory_Presser_Blocks
 			)
 		);
 	}
-
+	
+	/**
+	 * hooks
+	 * 
+	 * Adds hooks
+	 *
+	 * @return void
+	 */
 	function hooks()
 	{
 		add_action( 'enqueue_block_editor_assets', array( $this, 'register_block_types' ) );
@@ -31,8 +52,12 @@ class Inventory_Presser_Blocks
 	}
 
 	/**
+	 * editing_a_vehicle
+	 * 
 	 * True or false, this request originates from the editor and a post in our
 	 * post type is what is being created or edited
+	 *
+	 * @return bool
 	 */
 	private function editing_a_vehicle()
 	{
@@ -50,7 +75,14 @@ class Inventory_Presser_Blocks
 		}
 		return true;
 	}
-
+	
+	/**
+	 * register_block_types
+	 * 
+	 * Registers block types
+	 *
+	 * @return void
+	 */
 	function register_block_types()
 	{
 		if( ! function_exists( 'register_block_type' ) )

@@ -2,6 +2,8 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
+ * Inventory_Presser_Additional_Listings_Pages
+ * 
  * This class makes additional listings pages work at URL paths other than
  * /inventory. For example, a dealer might have some vehicles with down payment
  * values while most of their inventory does not have values for down payment,
@@ -9,7 +11,14 @@ defined( 'ABSPATH' ) or exit;
  * page together.
  */
 class Inventory_Presser_Additional_Listings_Pages
-{
+{	
+	/**
+	 * hooks
+	 * 
+	 * Adds hooks
+	 *
+	 * @return void
+	 */
 	function hooks()
 	{
 		//Are additional listings pages enabled?
@@ -22,7 +31,16 @@ class Inventory_Presser_Additional_Listings_Pages
 		add_filter( 'invp_rewrite_rules', array( $this, 'add_rewrite_rules' ) );
 		add_action( 'pre_get_posts', array( $this, 'modify_query' ) );
 	}
-
+	
+	/**
+	 * add_rewrite_rules
+	 * 
+	 * Adds rewrite rules so WordPress recognizes the places where users want 
+	 * the additional listing pages to live.
+	 *
+	 * @param  array $rules
+	 * @return array
+	 */
 	function add_rewrite_rules( $rules )
 	{
 		foreach( self::additional_listings_pages_array() as $additional_listing )
@@ -41,7 +59,15 @@ class Inventory_Presser_Additional_Listings_Pages
 		}
 		return $rules;
 	}
-
+	
+	/**
+	 * add_rewrite_slugs
+	 * 
+	 * Adds rewrite slugs 
+	 *
+	 * @param  array $slugs
+	 * @return array
+	 */
 	function add_rewrite_slugs( $slugs )
 	{
 		foreach( self::additional_listings_pages_array() as $additional_listing )
@@ -55,7 +81,14 @@ class Inventory_Presser_Additional_Listings_Pages
 		}
 		return $slugs;
 	}
-
+	
+	/**
+	 * additional_listings_pages_array
+	 *
+	 * Makes it easy to get the additional listings pages saved settings.
+	 * 
+	 * @return array
+	 */
 	public static function additional_listings_pages_array()
 	{
 		//Are there additional listings pages configured?
@@ -70,9 +103,14 @@ class Inventory_Presser_Additional_Listings_Pages
 	}
 
 	/**
+	 * get_current_matched_rule
+	 * 
 	 * If the current request is for one of our additional listing pages, return
 	 * that listings page rule so it's easy to extract or replicate the meta
 	 * query.
+	 *
+	 * @param  WP_Query $query
+	 * @return array|false
 	 */
 	public static function get_current_matched_rule( $query = null )
 	{
@@ -105,7 +143,15 @@ class Inventory_Presser_Additional_Listings_Pages
 		}
 		return false;
 	}
-
+	
+	/**
+	 * get_query_meta_array
+	 * 
+	 * Turns additional listing page rules into SQL query pieces.
+	 *
+	 * @param  array $rule
+	 * @return array
+	 */
 	public static function get_query_meta_array( $rule )
 	{
 		$new = null;
@@ -165,9 +211,14 @@ class Inventory_Presser_Additional_Listings_Pages
 	}
 
 	/**
+	 * is_valid_rule
+	 * 
 	 * True or false, a given additional listing page rule has settings that
 	 * allow us to create the page. User might not provide the URL path, for
 	 * example.
+	 *
+	 * @param  array $rule
+	 * @return bool
 	 */
 	public static function is_valid_rule( $rule )
 	{
@@ -205,7 +256,15 @@ class Inventory_Presser_Additional_Listings_Pages
 		//you're probably good man
 		return true;
 	}
-
+	
+	/**
+	 * modify_query
+	 * 
+	 * Changes the query to satisfy the rule for this listings page
+	 *
+	 * @param  WP_Query $query
+	 * @return WP_Query
+	 */
 	function modify_query( $query )
 	{
 		$additional_listing = self::get_current_matched_rule( $query );

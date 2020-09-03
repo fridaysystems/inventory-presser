@@ -2,16 +2,33 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
+ * Inventory_Presser_Shortcode_Iframe
+ * 
  * Creates a shortcode that makes it easy to create iframes. We've found this
  * useful on most sites for a financing application that is hosted on a separate
  * domain.
  */
 class Inventory_Presser_Shortcode_Iframe {
 
+	/**
+	 * hooks
+	 * 
+	 * Adds two shortcodes
+	 *
+	 * @return void
+	 */
 	function hooks() {
 		add_shortcode( 'iframe', array( $this, 'content') );
 	}
 
+	/**
+	 * content
+	 * 
+	 * Creates the HTML content of the shortcode
+	 *
+	 * @param  array $atts
+	 * @return string HTML that renders an iframe that expands to the height of its content
+	 */
 	function content( $atts ) {
 
 		$atts = shortcode_atts( array(

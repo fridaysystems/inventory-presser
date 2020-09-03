@@ -2,13 +2,14 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
+ * Order_By_Widget
+ * 
  * Creates a widget that allows users to sort vehicles by a vehicle attribute.
  *
  * If a menu item of type "Custom Link" exists with "Email a Friend" set as the
  * "Navigation Label", this class will change the URL to a mailto: link
  * containing vehicle information so the vehicle can be sent to a friend via
  * email.
- *
  *
  * @since      3.8.0
  * @package    Inventory_Presser
@@ -20,7 +21,13 @@ class Order_By_Widget extends WP_Widget {
  	const ID_BASE = '_invp_order_by';
 
 	/**
-	 * Sets up the widgets name etc
+	 * __construct
+	 *
+	 * Calls the parent class' contructor and adds a hook that will delete the
+	 * option that stores this widget's data when the plugin's delete all data
+	 * method is run.
+	 * 
+	 * @return void
 	 */
  	public function __construct() {
  		parent::__construct(
@@ -37,14 +44,24 @@ class Order_By_Widget extends WP_Widget {
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
+	/**
+	 * delete_option
+	 * 
+	 * Deletes the option that stores this widget's data.
+	 *
+	 * @return void
+	 */
 	public function delete_option() {
 		delete_option( 'widget_' . self::ID_BASE );
 	}
 
 	/**
-	 * Outputs the options form on admin
+	 * form
+	 * 
+	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
-	 * @param array $instance The widget options
+	 * @param  array $instance The widget options
+	 * @return void
 	 */
 	public function form( $instance ) {
 		$title = ( isset( $instance[ 'title' ] ) ? $instance[ 'title' ] : '' );
@@ -88,10 +105,13 @@ class Order_By_Widget extends WP_Widget {
 	}
 
 	/**
+	 * get_post_meta_keys_and_labels
+	 * 
 	 * Produces an associative array where the post meta keys are the keys
 	 * and the values are human-readable labels.
 	 *
-	 * @param array $instance The widget options
+	 * @param  array $instance The widget options
+	 * @return array
 	 */
 	function get_post_meta_keys_and_labels( $instance ) {
 		/**
@@ -133,21 +153,40 @@ class Order_By_Widget extends WP_Widget {
 		}
 		return $arr;
 	}
-
+	
+	/**
+	 * load_javascript
+	 * 
+	 * Includes a JavaScript file that powers the widget
+	 *
+	 * @return void
+	 */
 	function load_javascript( ) {
 		wp_register_script( 'order-by-widget-javascript', plugins_url( 'js/order-by-post-meta-widget.js', dirname( __FILE__ ) ) );
 		wp_enqueue_script( 'order-by-widget-javascript' );
 	}
-
+	
+	/**
+	 * prettify_meta_key
+	 *
+	 * Crudely takes a post meta key, removes underscores, and converts the 
+	 * string to Title Case.
+	 * 
+	 * @param  string $key
+	 * @return string
+	 */
 	function prettify_meta_key( $key ) {
 		return str_replace( '_', ' ', ucfirst( apply_filters( 'invp_unprefix_meta_key', $key ) ) );
 	}
 
 	/**
-	 * Processing widget options on save
+	 * update
 	 *
-	 * @param array $new_instance The new options
-	 * @param array $old_instance The previous options
+	 * Saves the widget settings when a dashboard user clicks the Save button.
+	 * 
+	 * @param  array $new_instance
+	 * @param  array $old_instance
+	 * @return array The updated array full of settings
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
@@ -173,11 +212,14 @@ class Order_By_Widget extends WP_Widget {
 		return $instance;
 	}
 
- 	/**
- 	 * Outputs the content of the widget
- 	 *
- 	 * @param array $args
- 	 * @param array $instance
+	/**
+	 * widget
+	 * 
+	 * Outputs the widget front-end HTML
+	 *
+	 * @param  array $args
+	 * @param  array $instance
+	 * @return void
 	 */
  	public function widget( $args, $instance ) {
 

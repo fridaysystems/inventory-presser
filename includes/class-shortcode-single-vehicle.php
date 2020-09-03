@@ -2,23 +2,40 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
+ * Inventory_Presser_Shortcode_Single_Vehicle
+ * 
  * A shortcode that allows themes that do not provide a content-single template
  * to show vehicle archives that are similar to the way themes are properly
  * built out for this plugin.
  */
 class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Template_Shortcode
-{
+{	
+	/**
+	 * hooks
+	 * 
+	 * Adds two shortcodes
+	 *
+	 * @return void
+	 */
 	function hooks()
 	{
 		add_shortcode( 'invp-single-vehicle', array( $this, 'content' ) );
 		add_shortcode( 'invp_single_vehicle', array( $this, 'content' ) );
 	}
-
+	
+	/**
+	 * content
+	 * 
+	 * Creates the HTML content of the shortcode
+	 *
+	 * @param  array $atts
+	 * @return string HTML that renders a vehicle single template
+	 */
 	function content( $atts )
 	{
 		if( ! is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) )
 		{
-			return;
+			return '';
 		}
 
 		$vehicle = new Inventory_Presser_Vehicle( get_the_ID() );

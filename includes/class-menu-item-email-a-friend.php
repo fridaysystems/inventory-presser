@@ -2,6 +2,8 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
+ * Inventory_Presser_Email_A_Friend
+ * 
  * Implement a mailto: link in a specific menu item in a specific menu that
  * often exists in Inventory Presser websites.
  *
@@ -19,6 +21,8 @@ defined( 'ABSPATH' ) or exit;
 class Inventory_Presser_Email_A_Friend{
 
 	/**
+	 * hooks
+	 * 
 	 * Set up filter and action hooks
 	 *
 	 * @uses add_filter()
@@ -30,16 +34,18 @@ class Inventory_Presser_Email_A_Friend{
 	}
 
 	/**
-	 * Fills out a mailto: link with vehicle information
+	 * maybe_change_link
+	 *
+	 * Fills out a mailto: link with vehicle information 
 	 *
 	 * Target a specific button in a specific menu and modify the URL.
 	 *
 	 * @uses get_bloginfo(), get_permalink()
 	 *
-	 * @param string $menu_item item HTML
-	 * @param object $item post object for the menu item
-	 * @param int $depth depth of the item for padding
-	 * @param object $args nav menu arguments
+	 * @param  string $menu_item item HTML
+	 * @param  WP_Post $item post object for the menu item
+	 * @param  int $depth depth of the item for padding
+	 * @param  object $args nav menu arguments
 	 * @return string
 	 */
 	function maybe_change_link( $menu_item, $item, $depth, $args ) {
@@ -69,11 +75,13 @@ class Inventory_Presser_Email_A_Friend{
 	}
 
 	/**
+	 * url
+	 * 
 	 * Creates a mailto: url to draft an email containing vehicle information.
 	 *
 	 * @uses get_bloginfo(), get_permalink()
 	 *
-	 * @param object $post a post object of type inventory_vehicle
+	 * @param  WP_Post $post a post object of type inventory_vehicle
 	 * @return string
 	 */
 	public function url( $post ) {

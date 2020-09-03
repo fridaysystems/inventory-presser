@@ -1,21 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
-/**
- * An object that redirects URLs based on a VIN to proper permalinks.
- *
- * Create a redirect that takes a URL like this:
- * 		http://localhost/vin/JM1NB354940406328/
- *
- * and redirects to the post that lives at some permalink like:
- * 		http://localhost/inventory/2004-mazda-speed-miata/
- *
- * @since      1.2.1
- * @package    Inventory_Presser
- * @subpackage Inventory_Presser/includes
- * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
- */
-
 if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) )
 {	
 	/**
@@ -27,6 +12,11 @@ if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) )
 	 * http://localhost/vin/JM1NB354940406328/ and redirects to the post that 
 	 * lives at some permalink like 
 	 * http://localhost/inventory/2004-mazda-speed-miata/
+	 * 
+	 * @since      1.2.1
+	 * @package    Inventory_Presser
+	 * @subpackage Inventory_Presser/includes
+	 * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
 	 */
 	class Vehicle_URLs_By_VIN
 	{		

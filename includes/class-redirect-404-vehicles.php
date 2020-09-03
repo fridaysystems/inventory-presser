@@ -1,21 +1,32 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
-/**
- * A class that detects when requests are made for vehicles that are no longer
- * on the site and redirects the user to that vehicle's make archive. So, a
- * request for a sold or removed Subaru will redirect the user to the archive
- * page containing all Subarus.
- *
- * @since      3.2.0
- * @package    Inventory_Presser
- * @subpackage Inventory_Presser/includes
- * @author     Corey Salzano <corey@friday.systems>
- */
-
 if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
-	class Redirect_404_Vehicles{
 
+	/**
+	 * Redirect_404_Vehicles
+	 * 
+	 * A class that detects when requests are made for vehicles that are no 
+	 * longer on the site and redirects the user to that vehicle's make archive.
+	 * So, a request for a sold or removed Subaru will redirect the user to the 
+	 * archive page containing all Subarus.
+	 *
+	 * @since      3.2.0
+	 * @package    Inventory_Presser
+	 * @subpackage Inventory_Presser/includes
+	 * @author     Corey Salzano <corey@friday.systems>
+	 */
+	class Redirect_404_Vehicles{
+		
+		/**
+		 * extract_make
+		 * 
+		 * Finds the vehicle make from the request whether it was a search or a
+		 * request for a specific vehicle that no longer exists.
+		 *
+		 * @param  mixed $wp_obj
+		 * @return string A vehicle manufacturer name
+		 */
 		function extract_make( $wp_obj ) {
 
 			if( ! $this->is_request_for_vehicle( $wp_obj ) ) {
@@ -41,16 +52,39 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 
 			return '';
 		}
-
+		
+		/**
+		 * hooks
+		 * 
+		 * Adds hooks
+		 *
+		 * @return void
+		 */
 		function hooks() {
 			add_action( 'wp', array( $this, 'maybe_redirect' ) );
 		}
-
+		
+		/**
+		 * is_request_for_vehicle
+		 *
+		 * @param  mixed $wp_obj
+		 * @return bool
+		 */
 		function is_request_for_vehicle( $wp_obj ) {
 			return isset( $wp_obj->query_vars ) && isset( $wp_obj->query_vars['post_type'] )
 				&& Inventory_Presser_Plugin::CUSTOM_POST_TYPE == $wp_obj->query_vars['post_type'];
 		}
-
+		
+		/**
+		 * maybe_redirect
+		 * 
+		 * Checks to see if the request is for a vehicle that no longer exists.
+		 * If it was, it decides where to redirect the user and performs that
+		 * redirect.
+		 *
+		 * @param  mixed $wp_obj
+		 * @return void
+		 */
 		function maybe_redirect( $wp_obj ) {
 
 			//is this a request for a vehicle?

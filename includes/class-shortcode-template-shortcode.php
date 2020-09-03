@@ -1,7 +1,23 @@
 <?php
+defined( 'ABSPATH' ) or exit;
 
+/**
+ * Inventory_Presser_Template_Shortcode
+ * 
+ * This is a parent class that provides a method to both the archive-vehicle
+ * and single-vehicle template shortcodes.
+ */
 class Inventory_Presser_Template_Shortcode
-{
+{	
+	/**
+	 * vehicle_attribute_table
+	 * 
+	 * Creates HTML that produces the vehicle attribute table that accompanies 
+	 * every vehicle listing.
+	 *
+	 * @param  Inventory_Presser_Vehicle $vehicle A vehicle object
+	 * @return string HTML that renders a table containing vehicle attributes
+	 */
 	protected function vehicle_attribute_table( $vehicle )
 	{
 		$invp_settings = INVP::settings();

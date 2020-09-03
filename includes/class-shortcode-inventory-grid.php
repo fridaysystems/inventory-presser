@@ -2,15 +2,32 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
+ * Inventory_Presser_Shortcode_Grid
+ * 
  * Shortcode [invp-inventory-grid] piggybacks on a widget with the same features
  */
 class Inventory_Presser_Shortcode_Grid {
 
+	/**
+	 * hooks
+	 * 
+	 * Adds two shortcodes
+	 *
+	 * @return void
+	 */
 	function hooks() {
 		add_shortcode( 'invp-inventory-grid', array( $this, 'content' ) );
 		add_shortcode( 'invp_inventory_grid', array( $this, 'content' ) );
 	}
 
+	/**
+	 * content
+	 * 
+	 * Creates the HTML content of the shortcode
+	 *
+	 * @param  array $atts
+	 * @return string HTML that renders a vehicle photo grid
+	 */
 	function content( $atts ) {
 
 		/**

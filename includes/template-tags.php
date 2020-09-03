@@ -5,7 +5,6 @@ defined( 'ABSPATH' ) or exit;
  * Template tags: functions that make it easy for other developers to get data
  * about the current vehicle.
  *
- *
  * @since      4.1.0
  * @package    Inventory_Presser
  * @subpackage Inventory_Presser/includes

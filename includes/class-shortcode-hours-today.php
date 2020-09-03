@@ -1,17 +1,38 @@
 <?php
 defined( 'ABSPATH' ) OR exit;
 
+/**
+ * Inventory_Presser_Shortcode_Hours_Today
+ * 
+ * Creates a shortcode that outputs a sentence about whether or not the car lot
+ * is open. Also hooks into vehicle singles and tables of hours to 
+ * automatically deploy the feature.
+ */
 class Inventory_Presser_Shortcode_Hours_Today
 {
 	const SHORTCODE_TAG = 'invp_hours_today';
-
+	
+	/**
+	 * add
+	 * 
+	 * Adds two shortcodes
+	 *
+	 * @return void
+	 */
 	function add()
 	{
 		//add a shortcode that outputs hours today
 		add_shortcode( self::SHORTCODE_TAG, array( $this, 'driver' ) );
 		add_shortcode( str_replace( '_', '-', self::SHORTCODE_TAG ), array( $this, 'driver' ) );
 	}
-
+	
+	/**
+	 * hooks
+	 * 
+	 * Adds hooks that power the shortcode and attach it to other features
+	 *
+	 * @return void
+	 */
 	function hooks()
 	{
 		add_action( 'init', array( $this, 'add' ) );
@@ -22,7 +43,16 @@ class Inventory_Presser_Shortcode_Hours_Today
 		//add hours today in the Hours widget
 		add_filter( 'invp_hours_title', array( $this, 'append_hours_today_to_hours_widget' ), 10, 2 );
 	}
-
+	
+	/**
+	 * append_hours_today_to_hours_widget
+	 * 
+	 * Returns the output of the shortcode wrapped in some HTML
+	 *
+	 * @param  string $hours_title_html
+	 * @param  string $hours_uid
+	 * @return string HTML that renders a sentence
+	 */
 	function append_hours_today_to_hours_widget( $hours_title_html, $hours_uid )
 	{
 		$shortcode = '[' . self::SHORTCODE_TAG . ' hours_uid="' . $hours_uid . '"]';
@@ -43,14 +73,28 @@ class Inventory_Presser_Shortcode_Hours_Today
 
 		return $hours_title_html . '<p class="invp-hours-today">' . $shortcode_output . '</p>';
 	}
-
+	
+	/**
+	 * append_shortcode
+	 * 
+	 * Filter callback that appends the shortcode to the end of a string of 
+	 * content.
+	 *
+	 * @param  string $content
+	 * @return string The provided $content with the shortcode appended to the end
+	 */
 	function append_shortcode( $content )
 	{
 		return trim( $content . ' [' . self::SHORTCODE_TAG . ']' );
 	}
 
 	/**
+	 * create_date_object_from_hour_string
+	 *
 	 * Create a DateTime object from a string like "9:00 AM"
+	 * 
+	 * @param  string $hour_string A string like "9:00 AM"
+	 * @return DateTime
 	 */
 	static function create_date_object_from_hour_string( $hour_string )
 	{
@@ -58,8 +102,13 @@ class Inventory_Presser_Shortcode_Hours_Today
 	}
 
 	/**
+	 * create_days_array_from_hours_array
+	 * 
 	 * Translate the hours termmeta data structure into
 	 * Inventory_Presser_Business_Day objects
+	 *
+	 * @param  array $hours_arr
+	 * @return array And array of Inventory_Presser_Business_Day objects
 	 */
 	public static function create_days_array_from_hours_array( $hours_arr )
 	{
@@ -96,7 +145,13 @@ class Inventory_Presser_Shortcode_Hours_Today
 	}
 
 	/**
-	 * @param Array $days An array of Inventory_Presser_Business_Day objects
+	 * create_sentence
+	 * 
+	 * Examines the array of $days and generates the sentence, the core feature
+	 * of this shortcode. 
+	 *
+	 * @param  array $days An array of Inventory_Presser_Business_Day objects
+	 * @return string A string like "Open today until 5:00pm" or "Closed until 9:00am on Monday"
 	 */
 	function create_sentence( $days )
 	{
@@ -149,7 +204,15 @@ class Inventory_Presser_Shortcode_Hours_Today
 		}
 		return $str;
 	}
-
+	
+	/**
+	 * driver
+	 *
+	 * The shortcode callback method that returns the sentence.
+	 * 
+	 * @param  array $atts
+	 * @return string The sentence
+	 */
 	public function driver( $atts )
 	{
 		//setup default attributes
@@ -169,7 +232,15 @@ class Inventory_Presser_Shortcode_Hours_Today
 		$days = $this->create_days_array_from_hours_array( $hours_set );
 		return $this->create_sentence( $days );
 	}
-
+	
+	/**
+	 * find_hours_set
+	 * 
+	 * Uses the shortcode attributes to find the right set of hours 
+	 *
+	 * @param  array $shortcode_atts The shortcode attributes
+	 * @return array A set of hours
+	 */
 	private function find_hours_set( $shortcode_atts )
 	{
 		if( ! empty( $shortcode_atts['hours_uid'] ) )
@@ -221,7 +292,14 @@ class Inventory_Presser_Shortcode_Hours_Today
 		return null;
 	}
 
-	//Get all sets of hours attached to a term in the location taxonomy
+	/**
+	 * find_hours_sets_by_location_slug
+	 * 
+	 * Get all sets of hours attached to a term in the location taxonomy
+	 *
+	 * @param  string $slug The slug of a term in our location taxonomy
+	 * @return array A set of hours
+	 */
 	function find_hours_sets_by_location_slug( $slug )
 	{
 		if( ! is_string( $slug ) )
@@ -233,7 +311,16 @@ class Inventory_Presser_Shortcode_Hours_Today
 		if( ! $location_term ) { return null; }
 		return Inventory_Presser_Taxonomies::get_hours( $location_term->term_id );
 	}
-
+	
+	/**
+	 * find_hours_set_by_uid
+	 * 
+	 * Get all sets of hours attached to a term in the location taxonomy by
+	 * unique ID
+	 *
+	 * @param  string $uid A unique identifier assigned to a set of hours
+	 * @return array A set of hours
+	 */
 	function find_hours_set_by_uid( $uid )
 	{
 		//get all term ids in the location taxonomy
@@ -267,7 +354,17 @@ class Inventory_Presser_Shortcode_Hours_Today
 		}
 		return null;
 	}
-
+	
+	/**
+	 * find_next_open_day
+	 * 
+	 * Takes an array of days and finds the next day the business has hours. 
+	 * Does not check if the business is still open today. Helps make the jump
+	 * from Friday to the next open day on Monday.
+	 *
+	 * @param  array $days An array of Inventory_Presser_Business_Day objects
+	 * @return Inventory_Presser_Business_Day The next day that has open hours
+	 */
 	public static function find_next_open_day( $days )
 	{
 		//find today

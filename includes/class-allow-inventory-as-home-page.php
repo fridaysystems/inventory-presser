@@ -1,9 +1,23 @@
 <?php
+defined( 'ABSPATH' ) or exit;
 
+/**
+ * Inventory_Presser_Allow_Inventory_As_Home_Page
+ * 
+ * Creates a special page that allows users to see "Inventory" in the list of 
+ * possible home pages in Settings > Reading. 
+ */
 class Inventory_Presser_Allow_Inventory_As_Home_Page
 {
 	const PAGE_META_KEY = '_inventory_presser_hidden_page';
-
+	
+	/**
+	 * create_page
+	 * 
+	 * Creates a page so something shows up in the setting dropdown
+	 *
+	 * @return void
+	 */
 	private static function create_page()
 	{
 		//Does the page already exist?
@@ -24,14 +38,17 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 			'post_type'      => 'page',
 		) );
 	}
-
+	
+	/**
+	 * create_pages
+	 *
+	 * Are we on multi-site? If so, we need to create a page on every blog
+	 * in the multisite network
+	 * 
+	 * @return void
+	 */
 	static function create_pages()
 	{
-		/**
-		 * Are we on multi-site? If so, we need to create a page on every blog
-		 * in the multisite network
-		 */
-
 		if( ! is_multisite() )
 		{
 			self::create_page();
@@ -47,13 +64,17 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 			restore_current_blog();
 		}
 	}
-
+	
+	/**
+	 * delete_pages
+	 *
+	 * Are we on multi-site? If so, we need to delete the page from every
+	 * blog in the multisite network
+	 * 
+	 * @return void
+	 */
 	static function delete_pages()
 	{
-		/**
-		 * Are we on multi-site? If so, we need to delete the page from every
-		 * blog in the multisite network
-		 */
 		if( ! is_multisite() )
 		{
 			wp_delete_post( self::find_page_id(), true );
@@ -71,6 +92,8 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 	}
 
 	/**
+	 * find_page_id
+	 *
 	 * Finds the ID of the page this plugin creates to allow the user to pick
 	 * the inventory listing as a home page option.
 	 *
@@ -92,13 +115,15 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 	}
 
 	/**
+	 * hide_page_from_edit_list
+	 *
 	 * Prevents the page this plugin creates from showing up in the list of
 	 * pages while editing in the dashboard. We need a page to exist in order to
 	 * allow users to choose it as their home page, but we don't want them to
 	 * see an actual page in the list, because the Inventory listing is not a
 	 * page, it's a custom post type archive.
 	 *
-	 * @param WP_Query $query An instance of the WP_Query class
+	 * @param  WP_Query $query An instance of the WP_Query class
 	 * @return void
 	 */
 	function hide_page_from_edit_list( $query )
@@ -109,7 +134,14 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 			$query->query_vars['post__not_in'] = array( self::find_page_id() );
 		}
 	}
-
+	
+	/**
+	 * hooks
+	 *
+	 * Adds hooks
+	 * 
+	 * @return void
+	 */
 	function hooks()
 	{
 		$file_path = dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inventory-presser.php';
@@ -119,7 +151,15 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 		add_filter( 'parse_query', array( $this, 'hide_page_from_edit_list' ) );
 		add_action( 'pre_get_posts', array( $this, 'redirect_the_page' ) );
 	}
-
+	
+	/**
+	 * redirect_the_page
+	 *
+	 * Performs the redirect from our special page to the inventory archive
+	 * 
+	 * @param  WP_Query $wp_query
+	 * @return void
+	 */
 	function redirect_the_page( $wp_query )
 	{
 		if( is_admin() )

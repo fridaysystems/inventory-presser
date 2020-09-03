@@ -2,21 +2,28 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
+ * Inventory_Presser_Options
+ * 
  * Creates an options page in the dashboard to hold this plugin and its add-ons
  * settings.
- *
  *
  * @since      0.5
  * @package    Inventory_Presser
  * @subpackage Inventory_Presser/includes
  * @author     Corey Salzano <corey@friday.systems>
  */
-
 class Inventory_Presser_Options
 {
 	//This plugin's option that holds all the settings
 	private $option;
-
+	
+	/**
+	 * hooks
+	 * 
+	 * Adds hooks
+	 *
+	 * @return void
+	 */
 	public function hooks()
 	{
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_javascript' ) );
@@ -34,7 +41,11 @@ class Inventory_Presser_Options
 	}
 
 	/**
-	 * Registers JavaScript for this settings page.
+	 * register_javascript
+	 * 
+	 * Registers a JavaScript file that powers the settings page.
+	 *
+	 * @return void
 	 */
 	function register_javascript()
 	{
@@ -44,7 +55,14 @@ class Inventory_Presser_Options
 			array( 'jquery' )
 		);
 	}
-
+	
+	/**
+	 * add_options_page
+	 * 
+	 * Adds an options page to the dashboard to hold all this plugin's settings.
+	 *
+	 * @return void
+	 */
 	public function add_options_page()
 	{
 		if ( post_type_exists( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) )
@@ -67,7 +85,14 @@ class Inventory_Presser_Options
 			array( $this, 'options_page_content' ) // function
 		);
 	}
-
+	
+	/**
+	 * add_settings
+	 * 
+	 * Registers sections and settings using the Settings API.
+	 *
+	 * @return void
+	 */
 	public function add_settings()
 	{
 		register_setting(
@@ -172,7 +197,16 @@ class Inventory_Presser_Options
 			'dealership_options_section_carfax' // section
 		);
 	}
-
+	
+	/**
+	 * boolean_checkbox_setting_callback
+	 * 
+	 * Outputs HTML that renders checkboxes.
+	 *
+	 * @param  string $setting_name The name of the setting and control
+	 * @param  string $checkbox_label The checkbox label that the user sees
+	 * @return void
+	 */
 	function boolean_checkbox_setting_callback( $setting_name, $checkbox_label )
 	{
 		printf(
@@ -185,18 +219,20 @@ class Inventory_Presser_Options
 			$checkbox_label
 		);
 	}
-
+	
+	/**
+	 * callback_additional_listings_page
+	 * 
+	 * Outputs controls to manage additional inventory listing pages.
+	 * 
+	 * Helps users create an additional inventory archive at 
+	 * example.com/[cash-deals] that contains vehicles that have a value for 
+	 * field [Down Payment].
+	 *
+	 * @return void
+	 */
 	function callback_additional_listings_page()
 	{
-		/**
-		 * Create an additional inventory archive at pmgautosales.com/[cash-deals]
-		 * that contains vehicles that have a value for field [Down Payment]
-		 */
-
-		$url_slug_id = 'additional_listings_pages_slug';
-		$url_slug_name = Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][0][url_path]';
-		$saved_key = ! empty( $this->option['additional_listings_pages'][0]['key'] ) ? $this->option['additional_listings_pages'][0]['key'] : '';
-
 		?><p><?php
 
 		echo $this->boolean_checkbox_setting_callback(
@@ -299,7 +335,14 @@ class Inventory_Presser_Options
 			<button class="button action" id="add_additional_listings_page">Add Additional Listings Page</button>
 		</div><?php
 	}
-
+	
+	/**
+	 * callback_include_sold_vehicles
+	 * 
+	 * Outputs a checkbox control for the Include Sold Vehicles setting.
+	 *
+	 * @return void
+	 */
 	function callback_include_sold_vehicles()
 	{
 		$this->boolean_checkbox_setting_callback(
@@ -307,7 +350,14 @@ class Inventory_Presser_Options
 			__( 'Include sold vehicles in listings and search results', 'inventory-presser' )
 		);
 	}
-
+	
+	/**
+	 * callback_price_display
+	 * 
+	 * Outputs a dropdown select control for the Price Display setting
+	 *
+	 * @return void
+	 */
 	function callback_price_display()
 	{
 		$price_display_options = apply_filters( 'invp_price_display_options', array(
@@ -348,6 +398,8 @@ class Inventory_Presser_Options
 	}
 
 	/**
+	 * callback_show_all_taxonomies
+	 * 
 	 * Output the controls that create the Show all Taxonomies setting.
 	 *
 	 * @return void
@@ -359,7 +411,14 @@ class Inventory_Presser_Options
 			__( 'Show all taxonomies under Vehicles menu in Dashboard', 'inventory-presser' )
 		);
 	}
-
+	
+	/**
+	 * callback_sort_vehicles_by
+	 * 
+	 * Output the controls that create the default vehicle sort setting.
+	 *
+	 * @return void
+	 */
 	function callback_sort_vehicles_by()
 	{
 		//use these default values if we have none
@@ -395,7 +454,14 @@ class Inventory_Presser_Options
 		}
 		echo '</select> ' . __( 'order', 'inventory-presser' );
 	}
-
+	
+	/**
+	 * callback_use_carfax
+	 * 
+	 * Output the controls that create the Display Carfax Buttons setting.
+	 *
+	 * @return void
+	 */
 	function callback_use_carfax()
 	{
 		$this->boolean_checkbox_setting_callback(
@@ -403,7 +469,14 @@ class Inventory_Presser_Options
 			__( 'Display Carfax buttons near vehicles that link to free Carfax reports', 'inventory-presser' )
 		);
 	}
-
+	
+	/**
+	 * callback_use_carfax_provided_buttons
+	 * 
+	 * Output the controls that create the Use Carfax-provided Buttons setting.
+	 *
+	 * @return void
+	 */
 	function callback_use_carfax_provided_buttons()
 	{
 		$this->boolean_checkbox_setting_callback(
@@ -411,7 +484,16 @@ class Inventory_Presser_Options
 			__( 'Use Carfax-provided, dynamic buttons that may also say things like "GOOD VALUE"', 'inventory-presser' )
 		);
 	}
-
+	
+	/**
+	 * html_select_operator
+	 * 
+	 * Creates a dropdown select that contains logical operators. 
+	 *
+	 * @param  array $attributes
+	 * @param  string $selected_value
+	 * @return string
+	 */
 	private function html_select_operator( $attributes = null, $selected_value = null )
 	{
 		$keys = array(
@@ -447,13 +529,19 @@ class Inventory_Presser_Options
 			$options
 		);
 	}
-
+	
+	/**
+	 * html_select_vehicle_keys
+	 *
+	 * Get a list of all the post meta keys in our CPT. Let the user choose one
+	 * as a default sort.
+	 * 
+	 * @param  array $attributes
+	 * @param  string $selected_value
+	 * @return string
+	 */
 	private function html_select_vehicle_keys( $attributes = null, $selected_value = null )
 	{
-		/**
-		 * Get a list of all the post meta keys in our CPT. Let the user choose
-		 * one as a default sort.
-		 */
 		$vehicle = new Inventory_Presser_Vehicle();
 		$options = '';
 		foreach( $vehicle->keys( false ) as $key )
@@ -486,7 +574,14 @@ class Inventory_Presser_Options
 			$options
 		);
 	}
-
+	
+	/**
+	 * options_page_content
+	 * 
+	 * Outputs the settings page HTML content
+	 *
+	 * @return void
+	 */
 	public function options_page_content()
 	{
 		wp_enqueue_script( 'invp_page_settings' );
@@ -508,8 +603,12 @@ class Inventory_Presser_Options
 	}
 
 	/**
+	 * rename_option
+	 * 
 	 * Rename the option used by this plugin from "_dealer_settings" to
 	 * "inventory_presser"
+	 *
+	 * @return void
 	 */
 	function rename_option()
 	{
@@ -556,7 +655,15 @@ class Inventory_Presser_Options
 
 		update_option( $old_option_name, $old_option );
 	}
-
+	
+	/**
+	 * sanitize_options
+	 * 
+	 * Santitizes the user input into the options inputs before they are saved.
+	 *
+	 * @param  array $input
+	 * @return array
+	 */
 	public function sanitize_options( $input )
 	{
 		$sanitary_values = array();
