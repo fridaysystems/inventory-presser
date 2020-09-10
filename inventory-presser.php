@@ -619,10 +619,6 @@ class Inventory_Presser_Plugin
 		//Include CSS on the frontend
 		add_action( 'wp_enqueue_scripts', array( $this, 'include_scripts_and_styles' ), 11 );
 
-		//Customize the behavior of Yoast SEO, if it is active
-		$seo = new Inventory_Presser_SEO();
-		$seo->hooks();
-
 		//Modify the URL of an "Email a Friend" menu item on the "Vehicle Details Buttons" menu
 		$email_a_friend = new Inventory_Presser_Email_A_Friend();
 		$email_a_friend->hooks();
@@ -723,7 +719,6 @@ class Inventory_Presser_Plugin
 			'class-order-by-post-meta-widget.php',
 			'class-photo-numberer.php',
 			'class-redirect-404-vehicles.php',
-			'class-seo.php',
 			'class-shortcode-hours-today.php',
 			'class-shortcode-iframe.php',
 			'class-shortcode-inventory-grid.php',
