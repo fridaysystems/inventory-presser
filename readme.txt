@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.5.1
-Stable tag: 11.8.2
+Stable tag: 12.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,7 +45,7 @@ Built the right way and developer-friendly
 This plugin is free and open source. Free and paid add-ons and services are available at https://inventorypresser.com/.
 
 = Does it decode VINs? =
-Not for free. We have a VIN decoder add-on available at https://inventorypresser.com/. If you know of a free VIN decoder that allows many automated, public queries, please show us.
+Not for free. We have a VIN decoder add-on available at https://inventorypresser.com/. If you know of a free VIN decoder that allows many automated queries, please show us.
 
 = Can I import my inventory into this system with a bulk feed? =
 Yes. The way we do it is with the [WordPress REST API](https://developer.wordpress.org/rest-api/). Vehicles in Inventory Presser are stored in a custom post type using meta fields, taxonomy terms, and photo attachments, and many CSV/spreadsheet importer plugins work with custom post types. Our first importer was based on a fork of the XML-based [WordPress Importer](https://wordpress.org/plugins/wordpress-importer/). If imports sound challenging, Friday Systems (that's us) feeds many sites running this plugin, and it may be easier to feed there and let Friday Systems handle the last leg.
@@ -62,12 +62,14 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 11.8.2 =
-* [Added] Adds DocBlock comments in as many places as possible to make publishing documentation easier.
-* [Fixed] Fixes three instances of filter callback methods returning void instead of empty string.
-
+= 12.0.0 =
+* [Removed] Removes features that detected the Yoast SEO plugin and added sitemaps URLs to robots.txt and hid Yoast features from the list of vehicles in the dashboard.
+* [Removed] No longer registers a meta key `inventory_presser_options` to hold a CSV string of vehicle options. The multi-valued meta key `inventory_presser_options_array` is now the only place to store and retrieve options.
 
 == Upgrade Notice ==
+
+= 12.0.0 = 
+This release is the one we shipped to wordpress.org for publication.
 
 = 11.8.2 =
 The first version with DocBlock comments on all classes and methods.

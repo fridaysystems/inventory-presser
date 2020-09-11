@@ -879,11 +879,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 					'type'   => 'string',
 				),
 				array(
-					'label' => __( 'Options', 'inventory_presser' ),
-					'name'  => 'options',
-					'type'  => 'string',
-				),
-				array(
 					'label'  => __( 'Payment Frequency', 'inventory_presser' ),
 					'name'   => 'payment',
 					'sample' => 200,

@@ -1,3 +1,7 @@
+= 11.8.2 =
+* [Added] Adds DocBlock comments in as many places as possible to make publishing documentation easier.
+* [Fixed] Fixes three instances of filter callback methods returning void instead of empty string.
+
 = 11.8.1 =
 * [Fixed] Fixes a bug when the availability taxonomy term was changed that prevented the overlapping meta value from being updated. This prevented some sold vehicles from being displayed as sold.
 * [Fixed] Fixes a bug in the Address widget when no location is checked for display.

@@ -1393,12 +1393,6 @@ class Inventory_Presser_Customize_Dashboard
 							$options[] = $value;
 						}
 					}
-
-					if( 'inventory_presser_options_array' == $key )
-					{
-						//Maintain the CSV string single meta field
-						update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'options' ), $this->array_to_csv( $options ) );
-					}
 				}
 				else
 				{
