@@ -8,17 +8,30 @@ defined( 'ABSPATH' ) or exit;
  * useful on most sites for a financing application that is hosted on a separate
  * domain.
  */
-class Inventory_Presser_Shortcode_Iframe {
-
+class Inventory_Presser_Shortcode_Iframe
+{
 	/**
-	 * hooks
+	 * add
 	 * 
 	 * Adds two shortcodes
 	 *
 	 * @return void
 	 */
-	function hooks() {
+	function add()
+	{
 		add_shortcode( 'iframe', array( $this, 'content') );
+	}
+
+	/**
+	 * hooks
+	 * 
+	 * Adds hooks that power the shortcode
+	 *
+	 * @return void
+	 */
+	function hooks()
+	{
+		add_action( 'init', array( $this, 'add' ) );
 	}
 
 	/**

@@ -800,6 +800,10 @@ fill: #$black;
 		 * Register stylesheets that will only be enqueued when specific
 		 * widgets or shortcodes are used.
 		 */
+		if( ! function_exists( 'get_plugin_data' ) )
+		{
+			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		}
 		$plugin_version = get_plugin_data( __FILE__ )['Version'];
 		wp_register_style( 'invp-grid', plugins_url( 'css/widget-grid.css', __FILE__ ), [], $plugin_version );
 		wp_register_style( 'invp-maximum-price-filters', plugins_url( 'css/widget-maximum-price-filters.css', __FILE__ ), [], $plugin_version );

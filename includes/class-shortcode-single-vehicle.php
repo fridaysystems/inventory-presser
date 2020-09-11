@@ -9,18 +9,30 @@ defined( 'ABSPATH' ) or exit;
  * built out for this plugin.
  */
 class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Template_Shortcode
-{	
+{
 	/**
-	 * hooks
+	 * add
 	 * 
 	 * Adds two shortcodes
 	 *
 	 * @return void
 	 */
-	function hooks()
+	function add()
 	{
 		add_shortcode( 'invp-single-vehicle', array( $this, 'content' ) );
 		add_shortcode( 'invp_single_vehicle', array( $this, 'content' ) );
+	}
+
+	/**
+	 * hooks
+	 * 
+	 * Adds hooks that power the shortcode
+	 *
+	 * @return void
+	 */
+	function hooks()
+	{
+		add_action( 'init', array( $this, 'add' ) );
 	}
 	
 	/**
