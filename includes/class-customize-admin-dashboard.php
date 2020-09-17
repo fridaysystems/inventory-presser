@@ -378,7 +378,7 @@ class Inventory_Presser_Customize_Dashboard
 	 */
 	function delete_all_inventory_ajax()
 	{
-		$delete_result = $this->delete_all_inventory();
+		$delete_result = INVP::delete_all_inventory();
 		if ( is_wp_error( $delete_result ) )
 		{
 			//output error
@@ -552,7 +552,7 @@ class Inventory_Presser_Customize_Dashboard
 		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
 
 		//Add a link to the Settings page on the plugin management page
-		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'insert_settings_link' ), 2, 2 );
+		add_filter( 'plugin_action_links_' . INVP_PLUGIN_BASE, array( $this, 'insert_settings_link' ), 2, 2 );
 
 		//Define an AJAX handler for the 'Delete all inventory' button
 		add_action( 'wp_ajax_delete_all_inventory', array( $this, 'delete_all_inventory_ajax' ) );
