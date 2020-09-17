@@ -631,8 +631,6 @@ class Inventory_Presser_Customize_Dashboard
 		//Define an AJAX handler for the 'Delete All Media' button
 		add_filter( 'wp_ajax_delete_all_post_attachments', array( $this, 'delete_all_post_attachments' ) );
 
-		//'add_attachment'
-		//'delete_attachment'
 		//Make our Add Media button annotation available from an AJAX call
 		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
 
