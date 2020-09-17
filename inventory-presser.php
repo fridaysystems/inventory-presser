@@ -379,7 +379,7 @@ class Inventory_Presser_Plugin
 	 */
 	function deactivate()
 	{
-		deactivate_plugins( plugin_basename( __FILE__ ) );
+		deactivate_plugins( INVP_PLUGIN_BASE );
 	}
 	
 	/**
