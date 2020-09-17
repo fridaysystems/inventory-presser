@@ -152,7 +152,7 @@ class Inventory_Presser_Taxonomy_Overlapper
 		}
 
 		//is there already a term for this $meta_value in the taxonomy?
-		$term = get_term_by( 'slug', $this->sluggify( $meta_value ), $taxonomy );
+		$term = get_term_by( 'slug', INVP::sluggify( $meta_value ), $taxonomy );
 		if( ! $term )
 		{
 			//it's not a slug, what about a name?
@@ -162,7 +162,7 @@ class Inventory_Presser_Taxonomy_Overlapper
 				//No, create a term
 				$term_id_array = wp_insert_term( $meta_value, $taxonomy, array(
 					'description' => $meta_value,
-					'slug'        => $this->sluggify( $meta_value ),
+					'slug'        => INVP::sluggify( $meta_value ),
 				) );
 				if( ! empty( $term_id_array['term_id'] ) )
 				{
@@ -207,22 +207,6 @@ class Inventory_Presser_Taxonomy_Overlapper
 			'type'            => 'type',
 			'wholesale'       => 'availability',
 		) );
-	}
-
-	/**
-	 * sluggify
-	 *
-	 * Turns the name of something into a slug that WordPress will accept when
-	 * creating objects like terms. WordPress slugs are described as containing
-	 * only letters, numbers, and hyphens.
-	 * 
-	 * @param  string $name
-	 * @return string An alteration of $name that WordPress will accept as a term slug
-	 */
-	private function sluggify( $name )
-	{
-		$name = preg_replace( '/[^a-zA-Z0-9\\-]/', '', str_replace( '/', '-', str_replace( ' ', '-', $name ) ) );
-		return strtolower( str_replace( '--', '-', str_replace( '---', '-', $name ) ) );
 	}
 	
 	/**

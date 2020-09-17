@@ -39,6 +39,22 @@ class INVP
 	}
 
 	/**
+	 * sluggify
+	 *
+	 * Turns the name of something into a slug that WordPress will accept when
+	 * creating objects like terms. WordPress slugs are described as containing
+	 * only letters, numbers, and hyphens.
+	 * 
+	 * @param  string $name
+	 * @return string An alteration of $name that WordPress will accept as a term slug
+	 */
+	public static function sluggify( $name )
+	{
+		$name = preg_replace( '/[^a-zA-Z0-9\\-]/', '', str_replace( '/', '-', str_replace( ' ', '-', $name ) ) );
+		return strtolower( str_replace( '--', '-', str_replace( '---', '-', $name ) ) );
+	}
+
+	/**
 	 * weekdays
 	 * 
 	 * If no parameter is provided, returns an array containing lowercase 
