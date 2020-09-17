@@ -369,31 +369,7 @@ class Inventory_Presser_Plugin
 			)
 		);
 	}
-
-	/**
-	 * deactivate
-	 *
-	 * Deactivates this plugin.
-	 * 
-	 * @return void
-	 */
-	function deactivate()
-	{
-		deactivate_plugins( INVP_PLUGIN_BASE );
-	}
 	
-	/**
-	 * delete_options
-	 *
-	 * Deletes the option that contains this plugins settings.
-	 * 
-	 * @return void
-	 */
-	function delete_options()
-	{
-		delete_option( self::OPTION_NAME );
-	}
-
 	/**
 	 * delete_rewrite_rules_option
 	 *
@@ -616,10 +592,6 @@ class Inventory_Presser_Plugin
 		//Redirect 404 vehicles to make archives
 		$redirect_404_vehicles = new Redirect_404_Vehicles();
 		$redirect_404_vehicles->hooks();
-
-		add_action( 'invp_delete_all_data', array( $this, 'delete_options' ) );
-		//deactivate so the next page load doesn't restore the option & terms
-		add_action( 'invp_delete_all_data', array( $this, 'deactivate' ), 99 );
 
 		//Include CSS on the frontend
 		add_action( 'wp_enqueue_scripts', array( $this, 'include_scripts_and_styles' ), 11 );
