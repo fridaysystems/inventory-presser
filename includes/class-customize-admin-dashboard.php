@@ -585,9 +585,14 @@ class Inventory_Presser_Customize_Dashboard
 	 */
 	function insert_settings_link( $links )
 	{
+		$url = admin_url( sprintf( 
+			'edit.php?post_type=%s&page=dealership-options',
+			Inventory_Presser_Plugin::CUSTOM_POST_TYPE
+		) );
 		$links[] = sprintf(
-			'<a href="options-general.php?page=%s_settings">Settings</a>',
-			$this->product_name_slug()
+			'<a href="%s">%s</a>',
+			$url,
+			__( 'Settings', 'inventory-presser' )
 		);
 		return $links;
 	}
@@ -1217,17 +1222,6 @@ class Inventory_Presser_Customize_Dashboard
 			default:
 				echo $val;
 		}
-	}
-	
-	/**
-	 * product_name_slug
-	 * 
-	 * @param  string $suffix
-	 * @return string
-	 */
-	function product_name_slug( $suffix = '' )
-	{
-		return strtolower( str_replace( ' ', '_', self::PRODUCT_NAME ) . $suffix );
 	}
 	
 	/**
