@@ -106,4 +106,13 @@ jQuery(document).ready( function(){
 			update_add_media_button_annotation();
 		});
 	}
+
+	//Confirm before deleting all vehicles
+	jQuery('.row-actions .delete-all-vehicles.delete a').on('click',function(){
+		return confirm('Are you sure you want to delete all vehicles and vehicle photos?');
+	});
+	//Confirm before uninstalling the plugin
+	jQuery('.row-actions .uninstall.delete a').on('click',function(){
+		return confirm('Are you sure you want to delete all vehicle data, delete all plugin data, and deactivate?');
+	});
 });
