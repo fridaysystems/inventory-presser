@@ -337,36 +337,6 @@ class Inventory_Presser_Customize_Dashboard
 			__( 'Delete All Media', 'inventory-presser' )
 		);
 	}
-	
-	/**
-	 * delete_all_data_and_deactivate
-	 *
-	 * This function will operate as an uninstall utility. Removes all the
-	 * data we have added to the database.
-	 * 
-	 * @return void
-	 */
-	function delete_all_data_and_deactivate()
-	{
-		//delete all the vehicles
-		INVP::delete_all_inventory();
-
-		//delete all terms
-		$taxonomies = new Inventory_Presser_Taxonomies();
-		foreach( $taxonomies->query_vars_array() as $taxonomy )
-		{
-			$terms = get_terms( array(
-				'taxonomy'   => $taxonomy,
-				'hide_empty' => false,
-			) );
-			foreach( $terms as $term )
-			{
-				wp_delete_term( $term->term_id, $taxonomy );
-			}
-		}
-
-		do_action( 'invp_delete_all_data' );
-	}
 
 	/**
 	 * delete_all_inventory_ajax
