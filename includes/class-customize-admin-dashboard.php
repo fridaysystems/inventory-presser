@@ -348,10 +348,8 @@ class Inventory_Presser_Customize_Dashboard
 	 */
 	function delete_all_data_and_deactivate()
 	{
-		set_time_limit( 0 );
-
 		//delete all the vehicles
-		$deleted_count = $this->delete_all_inventory();
+		INVP::delete_all_inventory();
 
 		//delete all terms
 		$taxonomies = new Inventory_Presser_Taxonomies();
@@ -368,87 +366,6 @@ class Inventory_Presser_Customize_Dashboard
 		}
 
 		do_action( 'invp_delete_all_data' );
-	}
-	
-	/**
-	 * delete_all_inventory
-	 *
-	 * This function deletes all posts that exist of our custom post type
-	 * and their associated meta data. Returns the number of vehicles
-	 * deleted.
-	 * 
-	 * @return int The number of vehicles that were deleted
-	 */
-	function delete_all_inventory()
-	{
-		set_time_limit( 0 );
-
-		$args = array(
-			'post_status'    => 'any',
-			'post_type'      => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
-			'posts_per_page' => -1,
-		);
-		$posts = get_posts( $args );
-		$deleted_count = 0;
-		if ( $posts )
-		{
-			$upload_dir = wp_upload_dir();
-			foreach( $posts as $post )
-			{
-				//delete post attachments
-				$attachment = array(
-					'posts_per_page' => -1,
-					'post_type'      => 'attachment',
-					'post_parent'    => $post->ID,
-				);
-
-				$attachment_dir = '';
-
-				foreach( get_posts( $attachment ) as $attached )
-				{
-					$attachment_dir = get_attached_file( $attached->ID );
-					//delete the attachment
-					wp_delete_attachment( $attached->ID, true );
-				}
-
-				//delete the parent post or vehicle
-				wp_delete_post( $post->ID, true );
-				$deleted_count++;
-
-				//delete the photo folder if it exists (and is empty)
-				if( '' != $attachment_dir )
-				{
-					$dir_path = dirname( $attachment_dir );
-					if( is_dir( $dir_path ) && $dir_path != $upload_dir['basedir'] )
-					{
-						@rmdir( $dir_path );
-					}
-				}
-			}
-		}
-		/**
-		 * Delete media that is managed by this plugin but may not be attached
-		 * to a vehicle at this time.
-		 */
-		$orphan_media = get_posts( array(
-			'posts_per_page' => -1,
-			'post_status'    => 'any',
-			'post_type'      => 'attachment',
-			'meta_query'     => array(
-				array(
-					'key'     => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
-					'compare' => 'EXISTS'
-				)
-			),
-		) );
-		foreach( $orphan_media as $post )
-		{
-			wp_delete_post( $post->ID );
-		}
-
-		do_action( 'invp_delete_all_inventory' );
-
-		return $deleted_count;
 	}
 
 	/**
