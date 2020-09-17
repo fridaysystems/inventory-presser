@@ -14,6 +14,11 @@ defined( 'ABSPATH' ) or exit;
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+if ( ! defined( 'INVP_PLUGIN_BASE' ) )
+{
+	define( 'INVP_PLUGIN_BASE', plugin_basename( __FILE__ ) );
+}
+
 /**
  * Inventory_Presser_Plugin
  * 
@@ -689,6 +694,9 @@ class Inventory_Presser_Plugin
 
 		$overlapper = new Inventory_Presser_Taxonomy_Overlapper();
 		$overlapper->hooks();
+
+		$uninstaller = new Inventory_Presser_Uninstaller();
+		$uninstaller->hooks();
 	}
 	
 	/**
@@ -729,6 +737,7 @@ class Inventory_Presser_Plugin
 			'class-taxonomies.php',
 			'class-taxonomy-overlapper.php',
 			'class-template-provider.php',
+			'class-uninstaller.php',
 			'class-vehicle.php',
 			'class-vehicle-urls-by-vin.php',
 			'class-widget-address.php',
