@@ -63,6 +63,7 @@ Yes. If your theme does not include templates to display listing pages and vehic
 == Changelog ==
 
 = 12.0.0 =
+* [Changed] Adjusts all `add_shortcode()` calls to occur on the `init` hook rather than when the plugin is loaded.
 * [Removed] Removes features that detected the Yoast SEO plugin and added sitemaps URLs to robots.txt and hid Yoast features from the list of vehicles in the dashboard.
 * [Removed] No longer registers a meta key `inventory_presser_options` to hold a CSV string of vehicle options. The multi-valued meta key `inventory_presser_options_array` is now the only place to store and retrieve options.
 
