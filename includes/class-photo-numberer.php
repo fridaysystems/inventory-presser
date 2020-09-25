@@ -47,7 +47,7 @@ class Inventory_Presser_Photo_Numberer{
 		//Is this even attached to a vehicle?
 		if( empty( $parent )
 			|| ! class_exists( 'Inventory_Presser_Plugin' )
-			|| Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $parent->post_type )
+			|| INVP::POST_TYPE != $parent->post_type )
 		{
 			//No
 			return;

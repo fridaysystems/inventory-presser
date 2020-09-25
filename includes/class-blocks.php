@@ -21,7 +21,7 @@ class Inventory_Presser_Blocks
 	{
 		//is the post a vehicle?
 		if( empty( $post ) || empty( $post->post_type )
-			|| $post->post_type != Inventory_Presser_Plugin::CUSTOM_POST_TYPE )
+			|| $post->post_type != INVP::POST_TYPE )
 		{
 			return $categories;
 		}
@@ -64,7 +64,7 @@ class Inventory_Presser_Blocks
 		global $post_type;
 		if( ! empty( $post_type ) )
 		{
-			if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post_type )
+			if( INVP::POST_TYPE != $post_type )
 			{
 				return false;
 			}
@@ -96,9 +96,7 @@ class Inventory_Presser_Blocks
 			return;
 		}
 
-		$plugin_root_file_path = dirname( dirname( __FILE__ ) ) . '/inventory-presser.php';
-
-		$asset_file = include( plugin_dir_path( $plugin_root_file_path ) . 'build/index.asset.php' );
+		$asset_file = include( plugin_dir_path( INVP_PLUGIN_FILE_PATH ) . 'build/index.asset.php' );
 
 		$keys = array(
 			// 'beam',
@@ -124,7 +122,7 @@ class Inventory_Presser_Blocks
 		//localize an odometer units word for the edit vehicle page
 		wp_localize_script( 'invp-blocks', 'invp_blocks', array(
 			'keys'        => Inventory_Presser_Vehicle::keys_and_types(),
-			'meta_prefix' => Inventory_Presser_Plugin::meta_prefix(),
+			'meta_prefix' => INVP::meta_prefix(),
 		) );
 
 		foreach( $keys as $key )

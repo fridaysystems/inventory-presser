@@ -51,7 +51,7 @@ class Inventory_Presser_Options
 	{
 		wp_register_script(
 			'invp_page_settings',
-			plugins_url( '/js/page-settings.js', dirname( dirname( __FILE__ ) ) . '/inventory-presser.php' ),
+			plugins_url( '/js/page-settings.js', INVP_PLUGIN_FILE_PATH ),
 			array( 'jquery' )
 		);
 	}
@@ -65,9 +65,9 @@ class Inventory_Presser_Options
 	 */
 	public function add_options_page()
 	{
-		if ( post_type_exists( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) )
+		if ( post_type_exists( INVP::POST_TYPE ) )
 		{
-			add_submenu_page('edit.php?post_type=' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+			add_submenu_page('edit.php?post_type=' . INVP::POST_TYPE,
 				__( 'Options', 'inventory-presser' ), // page_title
 				__( 'Options', 'inventory-presser' ), // menu_title
 				'manage_options', // capability
@@ -97,7 +97,7 @@ class Inventory_Presser_Options
 	{
 		register_setting(
 			'dealership_options_option_group', // option_group
-			Inventory_Presser_Plugin::OPTION_NAME, // option_name
+			INVP::OPTION_NAME, // option_name
 			array( $this, 'sanitize_options' ) // sanitize_callback
 		);
 
@@ -211,7 +211,7 @@ class Inventory_Presser_Options
 	{
 		printf(
 			'<input type="checkbox" name="%s[%s]" id="%s" %s> <label for="%s">%s</label>',
-			Inventory_Presser_Plugin::OPTION_NAME,
+			INVP::OPTION_NAME,
 			$setting_name,
 			$setting_name,
 			isset( $this->option[$setting_name] ) ? checked( $this->option[$setting_name], true, false ) : '',
@@ -285,7 +285,7 @@ class Inventory_Presser_Options
 							'%s/<input type="text" id="additional_listings_pages_slug_%s" name="%s[additional_listings_pages][%s][url_path]" value="%s" />',
 							site_url(),
 							$a,
-							Inventory_Presser_Plugin::OPTION_NAME,
+							INVP::OPTION_NAME,
 							$a,
 							$additional_listings[$a]['url_path']
 						);
@@ -296,7 +296,7 @@ class Inventory_Presser_Options
 						//select list of vehicle fields
 						echo $this->html_select_vehicle_keys( array(
 							'id'   => 'additional_listings_pages_key_' . $a,
-							'name' => Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][' . $a . '][key]',
+							'name' => INVP::OPTION_NAME . '[additional_listings_pages][' . $a . '][key]',
 						), $additional_listings[$a]['key'] );
 
 						?></td>
@@ -305,7 +305,7 @@ class Inventory_Presser_Options
 						//select list of operators
 						echo $this->html_select_operator( array(
 							'id'    => 'additional_listings_pages_operator_' . $a,
-							'name'  => Inventory_Presser_Plugin::OPTION_NAME . '[additional_listings_pages][' . $a . '][operator]',
+							'name'  => INVP::OPTION_NAME . '[additional_listings_pages][' . $a . '][operator]',
 							'class' => 'operator',
 						), $additional_listings[$a]['operator'] );
 
@@ -316,7 +316,7 @@ class Inventory_Presser_Options
 						printf(
 							'<input type="text" id="additional_listings_pages_value_%s" name="%s[additional_listings_pages][%s][value]" value="%s" />',
 							$a,
-							Inventory_Presser_Plugin::OPTION_NAME,
+							INVP::OPTION_NAME,
 							$a,
 							$additional_listings[$a]['value']
 						);
@@ -378,7 +378,7 @@ class Inventory_Presser_Options
 
 		printf(
 			'<select name="%s[price_display]" id="price_display">',
-			Inventory_Presser_Plugin::OPTION_NAME
+			INVP::OPTION_NAME
 		);
 		foreach( $price_display_options as $val => $name )
 		{
@@ -391,7 +391,7 @@ class Inventory_Presser_Options
 		}
 		printf(
 			'</select><p class="description" id="%s[price_display]-description">&quot;%s&quot; %s.</p>',
-			Inventory_Presser_Plugin::OPTION_NAME,
+			INVP::OPTION_NAME,
 			__( 'Call for Price', 'inventory-presser' ),
 			__( 'will display for any price that is zero', 'inventory-presser' )
 		);
@@ -432,7 +432,7 @@ class Inventory_Presser_Options
 		}
 
 		$select = $this->html_select_vehicle_keys( array(
-			'name' => Inventory_Presser_Plugin::OPTION_NAME . '[sort_vehicles_by]',
+			'name' => INVP::OPTION_NAME . '[sort_vehicles_by]',
 			'id'   => 'sort_vehicles_by',
 		), $this->option['sort_vehicles_by'] );
 
@@ -440,7 +440,7 @@ class Inventory_Presser_Options
 			'%s %s <select name="%s[sort_vehicles_order]" id="sort_vehicles_order">',
 			$select,
 			__( 'in', 'inventory-presser' ),
-			Inventory_Presser_Plugin::OPTION_NAME
+			INVP::OPTION_NAME
 		);
 
 		foreach( array( 'ascending' => 'ASC', 'descending' => 'DESC' ) as $direction => $abbr )
@@ -615,8 +615,8 @@ class Inventory_Presser_Options
 		$old_option_name = '_dealer_settings';
 
 		//Only do this once
-		//Do not use Inventory_Presser_Plugin::settings() because it populates defaults
-		$new_option = get_option( Inventory_Presser_Plugin::OPTION_NAME );
+		//Do not use INVP::settings() because it populates defaults
+		$new_option = get_option( INVP::OPTION_NAME );
 		if( $new_option )
 		{
 			return;
@@ -637,7 +637,7 @@ class Inventory_Presser_Options
 			'use_carfax'            => isset( $old_option['use_carfax'] ) && $old_option['use_carfax'],
 		);
 
-		update_option( Inventory_Presser_Plugin::OPTION_NAME, $new_option );
+		update_option( INVP::OPTION_NAME, $new_option );
 
 		/**
 		 * Now remove this plugin's keys from the old option and update it. Why?

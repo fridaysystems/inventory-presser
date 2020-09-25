@@ -11,51 +11,14 @@ class Inventory_Presser_Uninstaller
 {
 	//We'll use query variables to catch requests and perform the actions
 	const QUERY_VAR_DELETE_VEHICLES = 'invp_delete_all_vehicles';
-	const QUERY_VAR_UNINSTALL = 'invp_uninstall';
 
 	public function hooks()
 	{
 		//Add links to the Plugins page for single sites
 		add_filter( 'plugin_action_links_' . INVP_PLUGIN_BASE, array( $this, 'add_delete_vehicles_link' ), 10, 1 );
-		add_filter( 'plugin_action_links_' . INVP_PLUGIN_BASE, array( $this, 'add_uninstall_link' ), 10, 1 );		
 
-		//Add links to the Plugins page for multisite network admins
-		add_filter( 'network_admin_plugin_action_links_' . INVP_PLUGIN_BASE, array( $this, 'add_uninstall_link' ), 10, 1 );
-		
-	}
-		
-	/**
-	 * add_uninstall_link
-	 * 
-	 * Adds an Uninstall link near the Deactivate link on the plugins page.
-	 *
-	 * @param string[] $actions     An array of plugin action links. By default this can include 'activate',
-	 *                              'deactivate', and 'delete'.
-	 * @return string[] The changed array of plugin action links.
-	 */
-	public function add_uninstall_link( $actions )
-	{
-		if( is_multisite() && ! is_network_admin() )
-		{
-			/**
-			 * Don't ever allow a single site in a multisite network to uninstall 
-			 * the plugin because uninstalling includes deactivation.
-			 */
-			return $actions;
-		}
-
-		if( ! current_user_can( 'activate_plugins' ) )
-		{
-			return $actions;
-		}
-
-		$label = __( 'Uninstall', 'inventory-presser' );
-		$link = sprintf( 
-			'<a href="%s">%s</a>', 
-			esc_url( admin_url( sprintf( 'plugins.php?%s=1', self::QUERY_VAR_UNINSTALL ) ) ), 
-			$label
-		);
-		return array_merge( $actions, array( INVP::sluggify( $label ) . ' delete' => $link ) );
+		//Look for our query variables and dispatch the actions
+		add_action( 'admin_init', array( $this, 'detect_query_vars' ) );
 	}
 
 	/**
@@ -74,12 +37,58 @@ class Inventory_Presser_Uninstaller
 			return $actions;
 		}
 
+		//Are there vehicles? If not, don't show this link
+		if( ! $this->have_vehicles() )
+		{
+			return $actions;
+		}
+
 		$label = __( 'Delete all Vehicles', 'inventory-presser' );
+		$nonce = wp_create_nonce( self::QUERY_VAR_DELETE_VEHICLES );
 		$link = sprintf( 
 			'<a href="%s">%s</a>', 
-			esc_url( admin_url( sprintf( 'plugins.php?%s=1', self::QUERY_VAR_DELETE_VEHICLES ) ) ), 
+			esc_url( admin_url( sprintf( 'plugins.php?%s=1&_wpnonce=%s', self::QUERY_VAR_DELETE_VEHICLES, $nonce ) ) ), 
 			$label
 		);
 		return array_merge( $actions, array( INVP::sluggify( $label ) . ' delete' => $link ) );
+	}
+
+	public function detect_query_vars()
+	{
+		//Is this a GET request?
+		if( 'GET' != $_SERVER['REQUEST_METHOD'] )
+		{
+			return;
+		}
+
+		if( empty( $_GET['_wpnonce'] ) || empty( $_GET[ self::QUERY_VAR_DELETE_VEHICLES ] ) )
+		{
+			return;
+		}
+
+		if( ! wp_verify_nonce( $_GET['_wpnonce'], self::QUERY_VAR_DELETE_VEHICLES ) )
+		{
+			return;
+
+		}
+		
+		//dispatch the delete all vehicles call
+		INVP::delete_all_inventory();
+		return;		
+	}
+	
+	/**
+	 * have_vehicles
+	 * 
+	 * Checks if there are any vehicle posts saved in the site.
+	 *
+	 * @return bool True if there are vehicle posts of any status
+	 */
+	private function have_vehicles()
+	{
+		return 0 < sizeof( get_posts( array(
+			'post_type'   => INVP::POST_TYPE,
+			'post_status' => get_post_stati(),
+		) ) );
 	}
 }

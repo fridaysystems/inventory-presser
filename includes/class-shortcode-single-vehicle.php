@@ -45,7 +45,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 	 */
 	function content( $atts )
 	{
-		if( ! is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) )
+		if( ! is_singular( INVP::POST_TYPE ) )
 		{
 			return '';
 		}

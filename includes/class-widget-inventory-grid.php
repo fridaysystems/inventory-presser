@@ -100,7 +100,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 
 		$post_args = array(
 			'posts_per_page' => $args['limit'],
-			'post_type'      => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+			'post_type'      => INVP::POST_TYPE,
 			'meta_query'     => array(
 				array(
 					'key'     => '_thumbnail_id',
@@ -161,7 +161,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 		if( $args['show_button'] ) {
 			$grid_html .= sprintf(
 				'<div class="invp-grid-button"><button onclick="location.href=\'%s\';" class="button">%s</button></div>',
-				get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ),
+				get_post_type_archive_link( INVP::POST_TYPE ),
 				__( 'Full Inventory', 'inventory-presser' )
 			);
 		}

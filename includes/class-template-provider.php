@@ -39,7 +39,7 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
 		 */
 		static function lie_about_post_thumbnails( $has_thumbnail, $post, $thumbnail_id )
 		{
-			if( ! empty( $post ) && Inventory_Presser_Plugin::CUSTOM_POST_TYPE != get_post_type( $post ) )
+			if( ! empty( $post ) && INVP::POST_TYPE != get_post_type( $post ) )
 			{
 				return $has_thumbnail;
 			}
@@ -76,7 +76,7 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
 				return $template;
 			}
 
-			if ( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post->post_type )
+			if ( INVP::POST_TYPE != $post->post_type )
 			{
 				//no, who cares what happens
 				return $template;
@@ -88,8 +88,8 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
 
 			if( ! empty( $template )
 				&& (
-					( 'archive' == $single_or_archive && 'archive-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '.php' == basename( $template ) )
-					|| ( 'single' == $single_or_archive && 'single-' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE . '.php' == basename( $template ) )
+					( 'archive' == $single_or_archive && 'archive-' . INVP::POST_TYPE . '.php' == basename( $template ) )
+					|| ( 'single' == $single_or_archive && 'single-' . INVP::POST_TYPE . '.php' == basename( $template ) )
 				) )
 			{
 				//the current theme already has a template

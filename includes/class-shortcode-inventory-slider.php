@@ -61,7 +61,7 @@ class Inventory_Presser_Shortcode_Slider
 
 		$gpargs = array(
 			'posts_per_page' => 10,
-			'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+			'post_type'   => INVP::POST_TYPE,
 			'meta_query'  => array(
 				'relation' => 'AND',
 				array(
@@ -85,7 +85,7 @@ class Inventory_Presser_Shortcode_Slider
 
 			$gpargs = array(
 				'posts_per_page' => 10 - (count($inventory_ids)),
-				'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+				'post_type'   => INVP::POST_TYPE,
 				'meta_query'  => array(
 					'relation' => 'AND',
 					array(

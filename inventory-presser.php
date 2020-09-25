@@ -18,6 +18,10 @@ if ( ! defined( 'INVP_PLUGIN_BASE' ) )
 {
 	define( 'INVP_PLUGIN_BASE', plugin_basename( __FILE__ ) );
 }
+if ( ! defined( 'INVP_PLUGIN_FILE_PATH' ) )
+{
+	define( 'INVP_PLUGIN_FILE_PATH', __FILE__ );
+}
 
 /**
  * Inventory_Presser_Plugin
@@ -27,7 +31,16 @@ if ( ! defined( 'INVP_PLUGIN_BASE' ) )
  */
 class Inventory_Presser_Plugin
 {
+	/**
+	 * @var CUSTOM_POST_TYPE
+	 * @deprecated, use INVP::POST_TYPE instead
+	 */
 	const CUSTOM_POST_TYPE = 'inventory_vehicle';
+
+	/**
+	 * @var OPTION_NAME
+	 * @deprecated, use INVP::OPTION_NAME instead
+	 */
 	const OPTION_NAME = 'inventory_presser';
 	
 	/**
@@ -72,7 +85,7 @@ class Inventory_Presser_Plugin
 	{
 		//Do not mess with the query if it's not the main one and our CPT
 		if ( ! $query->is_main_query()
-			|| ! is_post_type_archive( self::CUSTOM_POST_TYPE )
+			|| ! is_post_type_archive( INVP::POST_TYPE )
 			|| ( empty( $_GET['orderby'] ) && empty( $this->settings['sort_vehicles_by'] ) ) )
 		{
 			return;
@@ -284,11 +297,11 @@ class Inventory_Presser_Plugin
 	 * These rewrite rules are what power URLs like /inventory/make/subaru.
 	 *
 	 * @return void
-	 */
+	 */	
 	function add_pretty_search_urls()
 	{
 		global $wp_rewrite;
-		$wp_rewrite->rules = $this->generate_rewrite_rules( self::CUSTOM_POST_TYPE ) + $wp_rewrite->rules;
+		$wp_rewrite->rules = $this->generate_rewrite_rules( INVP::POST_TYPE ) + $wp_rewrite->rules;
 	}
 
 	/**
@@ -305,29 +318,29 @@ class Inventory_Presser_Plugin
 	{
 		$taxonomy = get_taxonomy( $term->taxonomy );
 
-		if( ! in_array( self::CUSTOM_POST_TYPE, $taxonomy->object_type ) )
+		if( ! in_array( INVP::POST_TYPE, $taxonomy->object_type ) )
 		{
 			return $termlink;
 		}
 
-		$post_type = get_post_type_object( self::CUSTOM_POST_TYPE );
+		$post_type = get_post_type_object( INVP::POST_TYPE );
 		$termlink = $post_type->rewrite['slug'] . $termlink;
 
 		return $termlink;
 	}
 	
 	/**
-	 * create_custom_post_type
+	 * create_POST_TYPE
 	 *
 	 * Registers the inventory_vehicle post type that holds vehicles.
 	 * 
 	 * @return void
 	 */
-	static function create_custom_post_type()
+	static function create_post_type()
 	{
 		//creates a custom post type that will be used by this plugin
 		register_post_type(
-			self::CUSTOM_POST_TYPE,
+			INVP::POST_TYPE,
 			apply_filters(
 				'invp_post_type_args',
 				array (
@@ -416,6 +429,33 @@ class Inventory_Presser_Plugin
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * flush_rewrite
+	 *
+	 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
+	 * @return void
+	 */
+	static function flush_rewrite( $network_wide )
+	{
+		self::create_post_type();
+
+		if( ! is_multisite() || ! $network_wide )
+		{
+			flush_rewrite_rules();
+			return;
+		}
+
+		$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
+		foreach( $sites as $site )
+		{
+			switch_to_blog( $site->blog_id );
+			global $wp_rewrite;
+			$wp_rewrite->init(); //important...
+			$wp_rewrite->flush_rules();
+			restore_current_blog();
+		}
 	}
 	
 	/**
@@ -508,6 +548,8 @@ class Inventory_Presser_Plugin
 		//include all this plugin's classes that live in external files
 		$this->include_dependencies();
 
+		INVP::add_hooks();
+
 		//Allow translations
 		add_action( 'plugins_loaded', function()
 		{
@@ -523,7 +565,7 @@ class Inventory_Presser_Plugin
 		 */
 
 		//create a custom post type for the vehicles
-		add_action( 'init', array( $this, 'create_custom_post_type' ) );
+		add_action( 'init', array( $this, 'create_POST_TYPE' ) );
 
 		//register all postmeta fields the CPT uses (mostly to expose them in the REST API)
 		add_action( 'init', array( $this, 'register_meta_fields' ), 20 );
@@ -551,14 +593,6 @@ class Inventory_Presser_Plugin
 
 		//Delete an option during deactivation
 		register_deactivation_hook( __FILE__, array( 'Inventory_Presser_Plugin', 'delete_rewrite_rules_option' ) );
-
-		/**
-		 * These items make it easier to create themes based on our custom post type
-		 */
-
-		//Translate friendly names to actual custom field keys and the other way
-		add_filter( 'invp_prefix_meta_key', array( $this, 'translate_custom_field_names' ) );
-		add_filter( 'invp_unprefix_meta_key', array( $this, 'untranslate_custom_field_names' ) );
 
 		//Register some widgets included with this plugin
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
@@ -834,8 +868,8 @@ fill: #$black;
 		if( ! is_admin() )
 		{ ?><script type="text/javascript">
 		    var invp = <?php echo json_encode( array(
-				'meta_prefix' => self::meta_prefix(),
-				'is_singular' => is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ),
+				'meta_prefix' => INVP::meta_prefix(),
+				'is_singular' => is_singular( INVP::POST_TYPE ),
 			) ); ?>;
 		</script><?php
 		}
@@ -922,7 +956,7 @@ fill: #$black;
 		//Do not mess with the query if it's not the main one and our CPT
 		if ( ! $query->is_main_query()
 			|| empty( $query->query_vars['post_type'] )
-			|| $query->query_vars['post_type'] != Inventory_Presser_Plugin::CUSTOM_POST_TYPE )
+			|| $query->query_vars['post_type'] != INVP::POST_TYPE )
 		{
 			return;
 		}
@@ -1020,7 +1054,7 @@ fill: #$black;
 	function really_delete( $post_id )
 	{
 		//is the post a vehicle?
-		if( self::CUSTOM_POST_TYPE != get_post_type( $post_id ) )
+		if( INVP::POST_TYPE != get_post_type( $post_id ) )
 		{
 			return;
 		}
@@ -1041,7 +1075,7 @@ fill: #$black;
 	function delete_attachments( $post_id )
 	{
 		//Is $post_id a vehicle?
-		if( self::CUSTOM_POST_TYPE != get_post_type( $post_id ) )
+		if( INVP::POST_TYPE != get_post_type( $post_id ) )
 		{
 			//No, abort.
 			return;
@@ -1065,7 +1099,7 @@ fill: #$black;
 		foreach( Inventory_Presser_Vehicle::keys_and_types( true ) as $key_arr )
 		{
 			$key = apply_filters( 'invp_prefix_meta_key', $key_arr['name'] );
-			register_post_meta( Inventory_Presser_Plugin::CUSTOM_POST_TYPE, $key, array(
+			register_post_meta( INVP::POST_TYPE, $key, array(
 				'show_in_rest' => true,
 				'single'       => true,
 				'type'         => $key_arr['type'],
@@ -1074,7 +1108,7 @@ fill: #$black;
 
 		//Register a meta field for a multi-value options array
 		register_post_meta(
-			Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+			INVP::POST_TYPE,
 			apply_filters( 'invp_prefix_meta_key', 'options_array' ),
 			array(
 				'show_in_rest' => true,
@@ -1169,58 +1203,6 @@ fill: #$black;
 	public static function settings()
 	{
 		return INVP::settings();
-	}
-	
-	/**
-	 * translate_custom_field_names
-	 *
-	 * Prefixes our post meta field keys so 'make' becomes
-	 * 'inventory_presser_make'. Careful to not prefix a key that has
-	 * already been prefixed.
-	 * 
-	 * @param  string $nice_name The unprefixed meta key.
-	 * @return string The prefixed meta key.
-	 */
-	function translate_custom_field_names( $nice_name )
-	{
-		$nice_name = strtolower( $nice_name );
-		$prefix = INVP::meta_prefix();
-
-		if( $prefix == substr( $nice_name, 0, strlen( $prefix ) ) )
-		{
-			return $nice_name;
-		}
-		return $prefix . $nice_name;
-	}
-
-	/**
-	 * untranslate_custom_field_names
-	 * 
-	 * Removes the prefix from our post meta field keys so
-	 * 'inventory_presser_make' becomes 'make'. Careful to not damage any
-	 * provided key that does not start with our prefix.
-	 *
-	 * @param  string $meta_key The prefixed meta key.
-	 * @return string The un-prefixed meta key.
-	 */	
-	function untranslate_custom_field_names( $meta_key )
-	{
-		if( empty( $meta_key ) )
-		{
-			return '';
-		}
-		$meta_key = strtolower( $meta_key );
-		//prefix may start with an underscore because previous versions hid some meta keys
-		$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . INVP::meta_prefix();
-
-		//does $meta_key actually start with the $prefix?
-		if( $prefix == substr( $meta_key, 0, strlen( $prefix ) ) )
-		{
-			//remove the prefix
-			return substr( $meta_key, strlen( $prefix ) );
-		}
-
-		return $meta_key;
 	}
 } //end class
 

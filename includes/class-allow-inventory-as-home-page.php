@@ -73,7 +73,7 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 	 * 
 	 * @return void
 	 */
-	static function delete_pages()
+	public static function delete_pages()
 	{
 		if( ! is_multisite() )
 		{
@@ -144,10 +144,8 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 	 */
 	function hooks()
 	{
-		$file_path = dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inventory-presser.php';
-		register_activation_hook(   $file_path, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'create_pages' ) );
-		register_deactivation_hook( $file_path, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'delete_pages' ) );
-
+		register_activation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'create_pages' ) );
+		
 		add_filter( 'parse_query', array( $this, 'hide_page_from_edit_list' ) );
 		add_action( 'pre_get_posts', array( $this, 'redirect_the_page' ) );
 	}
@@ -169,7 +167,7 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page
 
 		if( $wp_query->get( 'page_id' ) == get_option( 'page_on_front' ) && $wp_query->get( 'page_id' ) == self::find_page_id() )
 		{
-			wp_redirect( get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) );
+			wp_redirect( get_post_type_archive_link( INVP::POST_TYPE ) );
 			exit;
 		}
 	}

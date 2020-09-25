@@ -39,8 +39,8 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 			}
 
 			//if this is a request for a single vehicle, parse the make out of the slug
-			if( isset( $wp_obj->query_vars[Inventory_Presser_Plugin::CUSTOM_POST_TYPE] ) ) {
-				$slug_pieces = explode( '-', $wp_obj->query_vars[Inventory_Presser_Plugin::CUSTOM_POST_TYPE] );
+			if( isset( $wp_obj->query_vars[INVP::POST_TYPE] ) ) {
+				$slug_pieces = explode( '-', $wp_obj->query_vars[INVP::POST_TYPE] );
 				if( 2 <= sizeof( $slug_pieces )
 					//is the first piece a number of no more than 4 digits?
 					&& 4 >= strlen( $slug_pieces[0] )
@@ -72,7 +72,7 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 		 */
 		function is_request_for_vehicle( $wp_obj ) {
 			return isset( $wp_obj->query_vars ) && isset( $wp_obj->query_vars['post_type'] )
-				&& Inventory_Presser_Plugin::CUSTOM_POST_TYPE == $wp_obj->query_vars['post_type'];
+				&& INVP::POST_TYPE == $wp_obj->query_vars['post_type'];
 		}
 		
 		/**
@@ -94,7 +94,7 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 			}
 
 			//base link to the inventory page
-			$url = get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE );
+			$url = get_post_type_archive_link( INVP::POST_TYPE );
 
 			//get the make out of the slug
 			$make = $this->extract_make( $wp_obj );

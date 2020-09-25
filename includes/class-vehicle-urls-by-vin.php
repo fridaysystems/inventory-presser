@@ -85,7 +85,7 @@ if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) )
 		 */
 		function find_vehicle_url( $vin ) {
 			$posts = get_posts( array(
-				'post_type'   => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+				'post_type'   => INVP::POST_TYPE,
 				'post_status' => 'publish',
 				'meta_key'    => apply_filters( 'invp_prefix_meta_key', 'vin' ),
 				'meta_value'  => $vin,
@@ -93,7 +93,7 @@ if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) )
 			if( 1 === sizeof( $posts ) ) {
 				return get_permalink( $posts[0] );
 			}
-			return get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE );
+			return get_post_type_archive_link( INVP::POST_TYPE );
 		}
 	}
 }

@@ -248,7 +248,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 			//the hours identified by this unique id
 			return $this->find_hours_set_by_uid( $shortcode_atts['hours_uid'] );
 		}
-		else if( is_singular( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) )
+		else if( is_singular( INVP::POST_TYPE ) )
 		{
 			//is there a location attached to this vehicle?
 			$location_terms = wp_get_object_terms( get_the_ID(), 'location' );

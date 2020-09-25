@@ -20,7 +20,7 @@ class Inventory_Presser_Editor_Sidebar
 	{
 		wp_register_script(
 			'invp-plugin-sidebar',
-			plugins_url( '/js/editor-sidebar.js', dirname( dirname( __FILE__ ) ) . '/inventory-presser.php' ),
+			plugins_url( '/js/editor-sidebar.js', INVP_PLUGIN_FILE_PATH ),
 			array( 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-data' )
 		);
 	}
@@ -36,7 +36,7 @@ class Inventory_Presser_Editor_Sidebar
 	{
 		//Are we editing a vehicle?
 		global $post;
-		if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != $post->post_type )
+		if( INVP::POST_TYPE != $post->post_type )
 		{
 			return;
 		}

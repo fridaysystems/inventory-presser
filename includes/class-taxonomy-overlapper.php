@@ -223,7 +223,7 @@ class Inventory_Presser_Taxonomy_Overlapper
 	function term_relationship_deleted( $object_id, $tt_ids, $taxonomy )
 	{
 		//Does $object_id belong to a vehicle?
-		if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != get_post_type( $object_id ) )
+		if( INVP::POST_TYPE != get_post_type( $object_id ) )
 		{
 			//No
 			return;
@@ -285,7 +285,7 @@ class Inventory_Presser_Taxonomy_Overlapper
 	function term_relationship_updated( $object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids )
 	{
 		//Does $object_id belong to a vehicle?
-		if( Inventory_Presser_Plugin::CUSTOM_POST_TYPE != get_post_type( $object_id ) )
+		if( INVP::POST_TYPE != get_post_type( $object_id ) )
 		{
 			//No
 			return;

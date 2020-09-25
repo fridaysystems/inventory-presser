@@ -9,6 +9,66 @@ defined( 'ABSPATH' ) or exit;
  */
 class INVP
 {
+	const POST_TYPE = 'inventory_vehicle';
+	const OPTION_NAME = 'inventory_presser';
+
+	public static function add_hooks()
+	{
+		//Translate friendly names to actual custom field keys and the other way
+		add_filter( 'invp_prefix_meta_key', array( 'INVP', 'translate_custom_field_names' ) );
+		add_filter( 'invp_unprefix_meta_key', array( 'INVP', 'untranslate_custom_field_names' ) );
+	}
+
+	/**
+	 * delete_all_data
+	 *
+	 * This function will operate as an uninstall utility. Removes all the
+	 * data we have added to the database including vehicle posts, their 
+	 * attachments, the option that holds settings, and terms in custom
+	 * taxonomies.
+	 * 
+	 * @return void
+	 */
+	public static function delete_all_data()
+	{
+		//delete all the vehicles
+		self::delete_all_inventory();
+
+		//delete pages created during activation
+		//uninstall.php doesn't load the whole plugin but calls this method
+		if( ! class_exists( 'Inventory_Presser_Allow_Inventory_As_Home_Page' ) )
+		{
+			require_once( 'class-allow-inventory-as-home-page.php' );
+		}
+		Inventory_Presser_Allow_Inventory_As_Home_Page::delete_pages();
+
+		//delete all terms
+		if( ! is_multisite() )
+		{
+			self::delete_all_terms_on_blog();
+
+			//delete the option where all this plugin's settings are stored
+			delete_option( self::OPTION_NAME );
+		}
+		else
+		{
+			$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
+			foreach( $sites as $site )
+			{
+				switch_to_blog( $site->blog_id );
+
+				self::delete_all_terms_on_blog();
+
+				//delete the option where all this plugin's settings are stored
+				delete_option( self::OPTION_NAME );
+
+				restore_current_blog();
+			}
+		}
+
+		do_action( 'invp_delete_all_data' );
+	}
+
 	/**
 	 * delete_all_inventory
 	 *
@@ -24,12 +84,29 @@ class INVP
 		{
 			return 0;
 		}
-		
+
 		set_time_limit( 0 );
 
+		if( ! is_multisite() )
+		{
+			return self::delete_all_inventory_on_blog();
+		}
+
+		$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
+		foreach( $sites as $site )
+		{
+			switch_to_blog( $site->blog_id );
+			$count = self::delete_all_inventory_on_blog();
+			restore_current_blog();
+			return $count;
+		}
+	}
+
+	private static function delete_all_inventory_on_blog()
+	{
 		$args = array(
-			'post_status'    => 'any',
-			'post_type'      => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+			'post_status'    => get_post_stati(),
+			'post_type'      => self::POST_TYPE,
 			'posts_per_page' => -1,
 		);
 		$posts = get_posts( $args );
@@ -95,6 +172,37 @@ class INVP
 		return $deleted_count;
 	}
 
+	private static function delete_all_terms_on_blog()
+	{	
+		if( ! class_exists( 'Inventory_Presser_Taxonomies' ) )
+		{
+			require_once( 'class-taxonomies.php' );
+		}
+		$taxonomies = new Inventory_Presser_Taxonomies();
+		global $wpdb;
+		foreach( $taxonomies->query_vars_array() as $taxonomy )
+		{
+			$taxonomy_name = str_replace( '-', '_', $taxonomy );
+			$terms = $wpdb->get_results( $wpdb->prepare( 
+				"SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy IN ('%s') ORDER BY t.name ASC", 
+				$taxonomy_name
+			) );
+		
+			//delete terms
+			if ( $terms )
+			{
+				foreach ( $terms as $term )
+				{
+					$wpdb->delete( $wpdb->term_taxonomy, array( 'term_taxonomy_id' => $term->term_taxonomy_id ) );
+					$wpdb->delete( $wpdb->terms, array( 'term_id' => $term->term_id ) );
+				}
+			}
+			
+			//delete taxonomy
+			$wpdb->delete( $wpdb->term_taxonomy, array( 'taxonomy' => $taxonomy_name ), array( '%s' ) );
+		}
+	}
+
 	/**
 	 * meta_prefix
 	 * 
@@ -121,7 +229,7 @@ class INVP
 			'sort_vehicles_order'         => 'ASC',
 			'use_carfax_provided_buttons' => true,
 		);
-		return wp_parse_args( get_option( Inventory_Presser_Plugin::OPTION_NAME ), $defaults );
+		return wp_parse_args( get_option( self::OPTION_NAME ), $defaults );
 	}
 
 	/**
@@ -138,6 +246,58 @@ class INVP
 	{
 		$name = preg_replace( '/[^a-zA-Z0-9\\-]/', '', str_replace( '/', '-', str_replace( ' ', '-', $name ) ) );
 		return strtolower( str_replace( '--', '-', str_replace( '---', '-', $name ) ) );
+	}
+
+		/**
+	 * translate_custom_field_names
+	 *
+	 * Prefixes our post meta field keys so 'make' becomes
+	 * 'inventory_presser_make'. Careful to not prefix a key that has
+	 * already been prefixed.
+	 * 
+	 * @param  string $nice_name The unprefixed meta key.
+	 * @return string The prefixed meta key.
+	 */
+	public static function translate_custom_field_names( $nice_name )
+	{
+		$nice_name = strtolower( $nice_name );
+		$prefix = INVP::meta_prefix();
+
+		if( $prefix == substr( $nice_name, 0, strlen( $prefix ) ) )
+		{
+			return $nice_name;
+		}
+		return $prefix . $nice_name;
+	}
+
+	/**
+	 * untranslate_custom_field_names
+	 * 
+	 * Removes the prefix from our post meta field keys so
+	 * 'inventory_presser_make' becomes 'make'. Careful to not damage any
+	 * provided key that does not start with our prefix.
+	 *
+	 * @param  string $meta_key The prefixed meta key.
+	 * @return string The un-prefixed meta key.
+	 */	
+	public static function untranslate_custom_field_names( $meta_key )
+	{
+		if( empty( $meta_key ) )
+		{
+			return '';
+		}
+		$meta_key = strtolower( $meta_key );
+		//prefix may start with an underscore because previous versions hid some meta keys
+		$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . INVP::meta_prefix();
+
+		//does $meta_key actually start with the $prefix?
+		if( $prefix == substr( $meta_key, 0, strlen( $prefix ) ) )
+		{
+			//remove the prefix
+			return substr( $meta_key, strlen( $prefix ) );
+		}
+
+		return $meta_key;
 	}
 
 	/**

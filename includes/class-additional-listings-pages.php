@@ -55,7 +55,7 @@ class Inventory_Presser_Additional_Listings_Pages
 			 * Create a base rule for this slug because this isn't a
 			 * post type that will just work.
 			 */
-			$rules[$additional_listing['url_path'] . '/?$'] = 'index.php?post_type=' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE;
+			$rules[$additional_listing['url_path'] . '/?$'] = 'index.php?post_type=' . INVP::POST_TYPE;
 		}
 		return $rules;
 	}
@@ -121,7 +121,7 @@ class Inventory_Presser_Additional_Listings_Pages
 		}
 
 		//Must be the main query on a vehicle archive request
-		if ( ! $query->is_main_query() || ! is_post_type_archive( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) )
+		if ( ! $query->is_main_query() || ! is_post_type_archive( INVP::POST_TYPE ) )
 		{
 			return false;
 		}

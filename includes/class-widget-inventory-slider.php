@@ -114,7 +114,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 			),
 			'order'          => 'ASC',
 			'orderby'        => 'rand',
-			'post_type'      => Inventory_Presser_Plugin::CUSTOM_POST_TYPE,
+			'post_type'      => INVP::POST_TYPE,
 			'posts_per_page' => $showcount * 5, //get 5 sets of the number we'll show at one time
 		);
 

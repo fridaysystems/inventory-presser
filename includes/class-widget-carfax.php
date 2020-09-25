@@ -103,13 +103,13 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 			$svg = file_get_contents( dirname( dirname( __FILE__ ) ) . '/assets/' . $this->images()[$image]['img'] );
 			printf(
 				'<a href="%s">%s</a>',
-				get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ),
+				get_post_type_archive_link( INVP::POST_TYPE ),
 				$svg
 			);
 		} else {
 			printf(
 				'<a href="%s"><img src="%s"></a>',
-				get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ),
+				get_post_type_archive_link( INVP::POST_TYPE ),
 				plugins_url( '/assets/' . $this->images()[$image]['img'], dirname(__FILE__) )
 			);
 		}

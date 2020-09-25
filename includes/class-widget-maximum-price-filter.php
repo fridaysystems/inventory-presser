@@ -113,7 +113,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 			$base_link = add_query_arg( array(
 			    'orderby' => apply_filters( 'invp_prefix_meta_key', 'price' ),
 			    'order'   => 'DESC',
-			), get_post_type_archive_link( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) );
+			), get_post_type_archive_link( INVP::POST_TYPE ) );
 
 			$class_string = ($instance['display_type'] == 'buttons') ? ' class="_button _button-med"' : ' class="price-filter-text"';
 

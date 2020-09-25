@@ -477,7 +477,7 @@ class Inventory_Presser_Taxonomies
 		add_filter( 'get_terms_orderby', array( $this, 'sort_terms_as_numbers' ), 10,  3 );
 
 		//Save custom taxonomy terms when posts are saved
-		add_action( 'save_post_' . Inventory_Presser_Plugin::CUSTOM_POST_TYPE, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
+		add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
 
 		//Load our scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
@@ -494,11 +494,11 @@ class Inventory_Presser_Taxonomies
 		add_action( self::CRON_HOOK_DELETE_TERMS, array( $this, 'update_term_counts' ) );
 
 		//Put terms into our taxonomies when the plugin is activated
-		register_activation_hook( dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inventory-presser.php', array( 'Inventory_Presser_Taxonomies', 'populate_default_terms' ) );
+		register_activation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Taxonomies', 'populate_default_terms' ) );
 		//Schedule a weekly wp-cron job to delete empty terms in our taxonomies
-		register_activation_hook( dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inventory-presser.php', array( 'Inventory_Presser_Taxonomies', 'schedule_terms_cron_job' ) );
+		register_activation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Taxonomies', 'schedule_terms_cron_job' ) );
 		//Remove the wp-cron job during deactivation
-		register_deactivation_hook( dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inventory-presser.php', array( 'Inventory_Presser_Taxonomies', 'remove_terms_cron_job' ) );
+		register_deactivation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Taxonomies', 'remove_terms_cron_job' ) );
 	}
 	
 	/**
@@ -513,7 +513,7 @@ class Inventory_Presser_Taxonomies
 	{
 		global $current_screen;
 		if ( ( $hook == 'edit-tags.php' || $hook == 'term.php')
-			&& $current_screen->post_type == Inventory_Presser_Plugin::CUSTOM_POST_TYPE
+			&& $current_screen->post_type == INVP::POST_TYPE
 			&& $current_screen->taxonomy == 'location' )
 		{
 			wp_enqueue_style('inventory-presser-timepicker-css',  plugins_url( '/css/jquery.timepicker.css', dirname( __FILE__ ) ));
@@ -536,7 +536,7 @@ class Inventory_Presser_Taxonomies
 	function maybe_exclude_sold_vehicles( $query )
 	{
 		if( is_admin() || ! $query->is_main_query()
-			|| ! ( is_search() || is_post_type_archive( Inventory_Presser_Plugin::CUSTOM_POST_TYPE ) ) )
+			|| ! ( is_search() || is_post_type_archive( INVP::POST_TYPE ) ) )
 		{
 			return;
 		}
@@ -689,7 +689,7 @@ class Inventory_Presser_Taxonomies
 		printf(
 			'%s<p><a href="edit-tags.php?taxonomy=location&post_type=%s">Manage locations</a></p>',
 			self::taxonomy_meta_box_html( 'location', apply_filters( 'invp_prefix_meta_key', 'location' ), $post ),
-			Inventory_Presser_Plugin::CUSTOM_POST_TYPE
+			INVP::POST_TYPE
 		);
 	}
 	
@@ -886,7 +886,7 @@ class Inventory_Presser_Taxonomies
 		{
 			//create the taxonomy, replace hyphens with underscores
 			$taxonomy_name = str_replace( '-', '_', $taxonomy_data[$i]['args']['query_var'] );
-			register_taxonomy( $taxonomy_name, Inventory_Presser_Plugin::CUSTOM_POST_TYPE, $taxonomy_data[$i]['args'] );
+			register_taxonomy( $taxonomy_name, INVP::POST_TYPE, $taxonomy_data[$i]['args'] );
 		}
 	}
 
