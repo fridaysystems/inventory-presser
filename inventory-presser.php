@@ -303,6 +303,48 @@ class Inventory_Presser_Plugin
 		global $wp_rewrite;
 		$wp_rewrite->rules = $this->generate_rewrite_rules( INVP::POST_TYPE ) + $wp_rewrite->rules;
 	}
+	
+	/**
+	 * change_attachment_urls
+	 * 
+	 * Adds a querystring to vehicle attachment photo URLs to fight caching.
+	 *
+	 * @param  string $url
+	 * @param  int $post_id
+	 * @return string The changed URL
+	 */
+	public function change_attachment_urls( $url, $post_id = null )
+	{
+		if( empty( $post_id ) )
+		{
+			$post_id = attachment_url_to_postid( $url );
+		}
+
+		if( INVP::POST_TYPE != get_post_type( wp_get_post_parent_id( $post_id ) ) )
+		{
+			return $url;
+		}
+
+		//This could be controversial
+		switch( substr( $url, -4 ) )
+		{
+			case 'jpeg':
+			case '.jpg':
+			case '.png':
+				break;
+			default:
+				return $url;
+		}
+
+		//Add a querystring that contains this photo's hash 
+		$hash = get_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'hash' ), true );
+		if( empty( $hash ) )
+		{
+			return $url;
+		}
+
+		return $url . '?' . $hash;
+	}
 
 	/**
 	 * change_term_links
@@ -646,6 +688,9 @@ class Inventory_Presser_Plugin
 
 		//Change links to our taxonomy terms to insert /inventory/
 		add_filter( 'pre_term_link', array( $this, 'change_term_links' ), 10, 2 );
+
+		//Change attachment URLs to prevent aggressive caching from showing users updated JPGs
+		add_filter( 'wp_get_attachment_url', array( $this, 'change_attachment_urls' ) );
 
 		//Allow users to set the Inventory listing page as the home page
 		$page = new Inventory_Presser_Allow_Inventory_As_Home_Page();
