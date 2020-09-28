@@ -76,7 +76,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 		wp_enqueue_style( 'jquery-slick-style', '//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css' );
 		wp_enqueue_style( 'invp-slick', plugins_url( 'css/slick.css', dirname( __FILE__ ) ) );
 		wp_enqueue_script( 'jquery-slick', '//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js', array('jquery'), '1.6.0' );
-		wp_enqueue_script( 'invp-slick-init', plugins_url( 'js/slick.js', dirname( __FILE__ ) ), array( 'jquery-slick' ) );
+		wp_enqueue_script( 'invp-slick-init', plugins_url( 'js/slick.min.js', dirname( __FILE__ ) ), array( 'jquery-slick' ) );
 		//Also we're using flexslider-icons font face for the button icons
 		wp_enqueue_style( 'flexslider' );
 	}

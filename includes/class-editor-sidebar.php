@@ -20,7 +20,7 @@ class Inventory_Presser_Editor_Sidebar
 	{
 		wp_register_script(
 			'invp-plugin-sidebar',
-			plugins_url( '/js/editor-sidebar.js', INVP_PLUGIN_FILE_PATH ),
+			plugins_url( '/js/editor-sidebar.min.js', INVP_PLUGIN_FILE_PATH ),
 			array( 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-data' )
 		);
 	}

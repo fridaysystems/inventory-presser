@@ -51,7 +51,7 @@ class Inventory_Presser_Options
 	{
 		wp_register_script(
 			'invp_page_settings',
-			plugins_url( '/js/page-settings.js', INVP_PLUGIN_FILE_PATH ),
+			plugins_url( '/js/page-settings.min.js', INVP_PLUGIN_FILE_PATH ),
 			array( 'jquery' )
 		);
 	}

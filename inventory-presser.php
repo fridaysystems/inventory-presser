@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 12.0.0
+ * Version: 12.0.0-beta
  * Author: Corey Salzano
  * Author URI: https://profiles.wordpress.org/salzano
  * Text Domain: inventory-presser
@@ -873,7 +873,7 @@ fill: #$black;
 		 * Register flexslider and provide overrides for scripts and styles
 		 */
 		wp_register_script( 'flexslider', plugins_url('/lib/flexslider/jquery.flexslider-min.js', __FILE__ ), array('jquery'), $plugin_version );
-		wp_register_script( 'invp-flexslider', plugins_url('/js/flexslider.js', __FILE__ ), array( 'flexslider' ), $plugin_version );
+		wp_register_script( 'invp-flexslider', plugins_url('/js/flexslider.min.js', __FILE__ ), array( 'flexslider' ), $plugin_version );
 
 		wp_register_style( 'flexslider', plugins_url( '/lib/flexslider/flexslider.css', __FILE__ ), null, $plugin_version );
 		wp_register_style( 'invp-flexslider', plugins_url( '/css/flexslider.css', __FILE__ ), array( 'flexslider' ), $plugin_version );
