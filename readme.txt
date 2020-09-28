@@ -65,12 +65,14 @@ Yes. If your theme does not include templates to display listing pages and vehic
 = 12.0.0 =
 * [Added] Adds an uninstall.php file so that all plugin data is removed when the plugin is deleted using the Delete link on the plugins page.
 * [Added] Adds a "Delete all Vehicles" link near the "Deactivate" link on the plugins page.
-* [Fixed] Fixes a feature that places a "Settings" link near "Deactivate" on the plugins page.
+* [Fixed] Fixes a broken feature that places a "Settings" link near "Deactivate" on the plugins page.
 * [Fixed] Fixes a bug that prevented rewrite rules from being flushed when the plugin is activated.
+* [Fixed] Fixes a broken feature that suggests users change Media settings to better handle vehicle photos in regard to aspect ratios of thumbnail sizes and year- month- folder names for uploads. These warnings arrive in the form of admin notices on this plugin's settings page at Vehicles > Options.
 * [Changed] Adjusts all `add_shortcode()` calls to occur on the `init` hook rather than when the plugin is loaded.
 * [Changed] Moves constants Inventory_Presser_Plugin::CUSTOM_POST_TYPE and Inventory_Presser_Plugin::OPTION_NAME to INVP::POST_TYPE and INVP::OPTION_NAME. The old constants are deprecated but will work until verison 13.
 * [Removed] Removes features that detected the Yoast SEO plugin and added sitemaps URLs to robots.txt and hid Yoast features from the list of vehicles in the dashboard.
 * [Removed] No longer registers a meta key `inventory_presser_options` to hold a CSV string of vehicle options. The multi-valued meta key `inventory_presser_options_array` is now the only place to store and retrieve options.
+* [Removed] No longer checks for this plugin's settings in an option not named `inventory_presser`. This plugin used to share an option with the first theme, and code was added to detect and split the data into two options in 10.5.0.
 
 == Upgrade Notice ==
 

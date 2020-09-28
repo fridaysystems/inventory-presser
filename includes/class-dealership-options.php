@@ -29,15 +29,6 @@ class Inventory_Presser_Options
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_javascript' ) );
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
-
-		/**
-		 * In September 2019, I decided to rename this plugin's option. I made
-		 * this decision after realizing that the _dealer theme uses the same
-		 * option to store its settings. Also, I've always felt that it has been
-		 * unfortunately named something that does not indicate to strangers
-		 * that it belongs to this plugin.
-		 */
-		add_action( 'plugins_loaded', array( $this, 'rename_option' ) );
 	}
 
 	/**
@@ -600,60 +591,6 @@ class Inventory_Presser_Options
 
 			?></form>
 		</div><?php
-	}
-
-	/**
-	 * rename_option
-	 * 
-	 * Rename the option used by this plugin from "_dealer_settings" to
-	 * "inventory_presser"
-	 *
-	 * @return void
-	 */
-	function rename_option()
-	{
-		$old_option_name = '_dealer_settings';
-
-		//Only do this once
-		//Do not use INVP::settings() because it populates defaults
-		$new_option = get_option( INVP::OPTION_NAME );
-		if( $new_option )
-		{
-			return;
-		}
-
-		$old_option = get_option( $old_option_name );
-		if( ! $old_option )
-		{
-			return;
-		}
-
-		$new_option = array(
-			'price_display'         => $old_option['price_display_type'], //Rename this key
-			'sort_vehicles_by'      => $old_option['sort_vehicles_by'],
-			'sort_vehicles_order'   => $old_option['sort_vehicles_order'],
-			'include_sold_vehicles' => isset( $old_option['include_sold_vehicles'] ) && $old_option['include_sold_vehicles'],
-			'show_all_taxonomies'   => isset( $old_option['show_all_taxonomies'] ) && $old_option['show_all_taxonomies'],
-			'use_carfax'            => isset( $old_option['use_carfax'] ) && $old_option['use_carfax'],
-		);
-
-		update_option( INVP::OPTION_NAME, $new_option );
-
-		/**
-		 * Now remove this plugin's keys from the old option and update it. Why?
-		 * Because the old option is actually the option used by the _dealer
-		 * theme. The theme was created after the plugin and a bad decision to
-		 * share the same option was made. A more accurate name for this method
-		 * might be split_the_option().
-		 */
-		unset( $old_option['price_display_type'] );
-		unset( $old_option['sort_vehicles_by'] );
-		unset( $old_option['sort_vehicles_order'] );
-		unset( $old_option['include_sold_vehicles'] );
-		unset( $old_option['show_all_taxonomies'] );
-		unset( $old_option['use_carfax'] );
-
-		update_option( $old_option_name, $old_option );
 	}
 	
 	/**
