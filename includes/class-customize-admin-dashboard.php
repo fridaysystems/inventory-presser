@@ -14,7 +14,6 @@ defined( 'ABSPATH' ) or exit;
  */
 class Inventory_Presser_Customize_Dashboard
 {
-	const PRODUCT_NAME = 'Inventory Presser';
 	const NONCE_DELETE_ALL_MEDIA = 'invp_delete_all_media';
 	
 	/**
@@ -442,36 +441,6 @@ class Inventory_Presser_Customize_Dashboard
 			}
 	   }
 	   return $pieces;
-	}
-
-	/**
-	 * get_admin_notice_html
-	 * 
-	 * Creates HTML that renders an admin notice.
-	 *
-	 * @param  string $message
-	 * @param  string $color A value of 'red', 'yellow', or 'green' that appears as a left border on the notice box
-	 * @return string HTML that renders an admin notice
-	 */
-	function get_admin_notice_html( $message, $color )
-	{
-		switch( $color )
-		{
-			case 'red':
-				$type = 'error';
-				break;
-			case 'yellow':
-				$type = 'update-nag no-pad';
-				break;
-			case 'green':
-				$type = 'updated';
-				break;
-		}
-		return sprintf(
-			'<div class="%s notice"><p><strong>%s</strong></p></div>',
-			$type,
-			__( $message, 'inventory-presser' )
-		);
 	}
 	
 	/**
@@ -1122,38 +1091,6 @@ class Inventory_Presser_Customize_Dashboard
 	}
 	
 	/**
-	 * output_thumbnail_size_error_html
-	 * 
-	 * Outputs an admin notice to warn a user that they have attachment multiple
-	 * aspect ratios of vehicle photos to a single vehicle.
-	 *
-	 * @return void
-	 */
-	function output_thumbnail_size_error_html()
-	{
-		echo $this->get_admin_notice_html(
-			'At least one of your thumbnail sizes does not have an aspect ratio of 4:3, which is the most common smartphone and digital camera aspect ratio. You can change thumbnail sizes <a href="options-media.php">here</a>.',
-			'yellow'
-		);
-	}
-	
-	/**
-	 * output_upload_folder_error_html
-	 * 
-	 * Outputs an admin notice to warn the user if uploads are saved in month-
-	 * and year-based folders.
-	 *
-	 * @return void
-	 */
-	function output_upload_folder_error_html()
-	{
-		echo $this->get_admin_notice_html(
-			'Your media settings are configured to organize uploads into month- and year-based folders. This is not optimal for '.self::PRODUCT_NAME.', and you can turn this setting off on <a href="options-media.php">this page</a>.',
-			'yellow'
-		);
-	}
-	
-	/**
 	 * populate_columns_we_added_to_vehicles_table
 	 * 
 	 * Populates the custom columns we added to the posts table in the 
@@ -1306,33 +1243,6 @@ class Inventory_Presser_Customize_Dashboard
 			}
 		}
 		return $arr;
-	}
-	
-	/**
-	 * scan_for_recommended_settings_and_create_warnings
-	 *
-	 * Suggest values for WordPress internal settings if the user has values
-	 * we do not prefer
-	 * 
-	 * @return void
-	 */
-	function scan_for_recommended_settings_and_create_warnings()
-	{
-		if( '1' == get_option('uploads_use_yearmonth_folders') )
-		{
-			//Organize uploads into yearly and monthly folders is turned on. Recommend otherwise.
-			add_action( 'admin_notices', array( $this, 'output_upload_folder_error_html' ) );
-		}
-
-		//Are thumbnail sizes not 4:3 aspect ratios?
-		if(
-			( ( 4/3 ) != ( get_option('thumbnail_size_w')/get_option('thumbnail_size_h') ) )
-			|| ( ( 4/3 ) != ( get_option('medium_size_w')/get_option('medium_size_h') ) )
-			|| ( ( 4/3 ) != ( get_option('large_size_w')/get_option('large_size_h') ) )
-		){
-			//At least one thumbnail size is not 4:3
-			add_action( 'admin_notices', array( $this, 'output_thumbnail_size_error_html' ) );
-		}
 	}
 	
 	/**

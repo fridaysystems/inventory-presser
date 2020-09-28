@@ -615,6 +615,7 @@ class Inventory_Presser_Plugin
 		$customize_dashboard = new Inventory_Presser_Customize_Dashboard();
 		$customize_dashboard->hooks();
 
+
 		/**
 		 * Create our post type and taxonomies
 		 */
@@ -624,7 +625,6 @@ class Inventory_Presser_Plugin
 
 		//register all postmeta fields the CPT uses (mostly to expose them in the REST API)
 		add_action( 'init', array( $this, 'register_meta_fields' ), 20 );
-
 
 
 		//Create custom taxonomies
@@ -751,6 +751,10 @@ class Inventory_Presser_Plugin
 			$options = new Inventory_Presser_Options();
 			$options->hooks();
 
+			//If the user is looking at our options page, suggest settings tweaks
+			$settings_suggester = new Inventory_Presser_Settings_Suggester();
+			$settings_suggester->hooks();
+
 			//Add a sidebar to the editor when editing vehicles
 			$sidebar = new Inventory_Presser_Editor_Sidebar();
 			$sidebar->hooks();
@@ -791,6 +795,7 @@ class Inventory_Presser_Plugin
 			'class-order-by-post-meta-widget.php',
 			'class-photo-numberer.php',
 			'class-redirect-404-vehicles.php',
+			'class-settings-suggester.php',
 			'class-shortcode-hours-today.php',
 			'class-shortcode-iframe.php',
 			'class-shortcode-inventory-grid.php',
