@@ -336,37 +336,6 @@ class Inventory_Presser_Customize_Dashboard
 			__( 'Delete All Media', 'inventory-presser' )
 		);
 	}
-
-	/**
-	 * delete_all_inventory_ajax
-	 * 
-	 * AJAX handler for the 'Delete all Inventory' button on options page. 
-	 * Deletes all inventory and outputs a response to the JavaScript caller.
-	 *
-	 * @return void
-	 */
-	function delete_all_inventory_ajax()
-	{
-		$delete_result = INVP::delete_all_inventory();
-		if ( is_wp_error( $delete_result ) )
-		{
-			//output error
-			echo "<div id='import-error' class='settings-error'><p><strong>"
-				. $delete_result->get_error_message( ) . "</strong></p></div>";
-		}
-		else
-		{
-			//output the success result, it's a string of html
-			echo '
-				<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible">
-					<p><strong>' .
-					( 0 == $delete_result ? 'There are no vehicles to delete.' : 'Deleted all vehicles.' )
-					. '</strong></p>
-					<button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
-				</div>';
-		}
-		wp_die();
-	}
 	
 	/**
 	 * delete_all_post_attachments
@@ -492,9 +461,6 @@ class Inventory_Presser_Customize_Dashboard
 
 		//Add a link to the Settings page on the plugin management page
 		add_filter( 'plugin_action_links_' . INVP_PLUGIN_BASE, array( $this, 'insert_settings_link' ), 2, 2 );
-
-		//Define an AJAX handler for the 'Delete all inventory' button
-		add_action( 'wp_ajax_delete_all_inventory', array( $this, 'delete_all_inventory_ajax' ) );
 
 		//Add a link to the main menu of the Admin bar
 		add_action( 'admin_bar_menu', array( $this, 'add_vehicles_to_admin_bar' ), 100 );
