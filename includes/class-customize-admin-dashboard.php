@@ -578,7 +578,7 @@ class Inventory_Presser_Customize_Dashboard
 	 */
 	function load_scripts( $hook )
 	{
-		wp_enqueue_style( 'my-admin-theme', plugins_url( '/css/wp-admin.css', INVP_PLUGIN_FILE_PATH ) );
+		wp_enqueue_style( 'my-admin-theme', plugins_url( '/css/wp-admin.min.css', INVP_PLUGIN_FILE_PATH ) );
 		wp_register_script( 'inventory-presser-javascript', plugins_url( '/js/admin.min.js', INVP_PLUGIN_FILE_PATH ) );
 		wp_enqueue_script( 'inventory-presser-javascript' );
 

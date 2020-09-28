@@ -865,9 +865,9 @@ fill: #$black;
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
 		$plugin_version = get_plugin_data( __FILE__ )['Version'];
-		wp_register_style( 'invp-grid', plugins_url( 'css/widget-grid.css', __FILE__ ), [], $plugin_version );
-		wp_register_style( 'invp-maximum-price-filters', plugins_url( 'css/widget-maximum-price-filters.css', __FILE__ ), [], $plugin_version );
-		wp_register_style( 'invp-epa-fuel-economy', plugins_url( 'css/widget-epa-fuel-economy.css', __FILE__ ), [], $plugin_version );
+		wp_register_style( 'invp-grid', plugins_url( 'css/widget-grid.min.css', __FILE__ ), [], $plugin_version );
+		wp_register_style( 'invp-maximum-price-filters', plugins_url( 'css/widget-maximum-price-filters.min.css', __FILE__ ), [], $plugin_version );
+		wp_register_style( 'invp-epa-fuel-economy', plugins_url( 'css/widget-epa-fuel-economy.min.css', __FILE__ ), [], $plugin_version );
 
 		/**
 		 * Register flexslider and provide overrides for scripts and styles
@@ -876,7 +876,7 @@ fill: #$black;
 		wp_register_script( 'invp-flexslider', plugins_url('/js/flexslider.min.js', __FILE__ ), array( 'flexslider' ), $plugin_version );
 
 		wp_register_style( 'flexslider', plugins_url( '/lib/flexslider/flexslider.css', __FILE__ ), null, $plugin_version );
-		wp_register_style( 'invp-flexslider', plugins_url( '/css/flexslider.css', __FILE__ ), array( 'flexslider' ), $plugin_version );
+		wp_register_style( 'invp-flexslider', plugins_url( '/css/flexslider.min.css', __FILE__ ), array( 'flexslider' ), $plugin_version );
 
 		/**
 		 * Register a stylesheet that will be used by two shortcodes,
@@ -884,7 +884,7 @@ fill: #$black;
 		 */
 		wp_register_style(
 			'invp-attribute-table',
-			plugins_url( '/css/vehicle-attribute-table.css', __FILE__ ),
+			plugins_url( '/css/vehicle-attribute-table.min.css', __FILE__ ),
 			null,
 			$plugin_version
 		);
@@ -892,7 +892,7 @@ fill: #$black;
 		//Register a stylesheet for the archive vehicle shortcode
 		wp_register_style(
 			'invp_archive_vehicle',
-			plugins_url( '/css/shortcode-archive-vehicle.css', __FILE__ ),
+			plugins_url( '/css/shortcode-archive-vehicle.min.css', __FILE__ ),
 			null,
 			$plugin_version
 		);
@@ -900,7 +900,7 @@ fill: #$black;
 		//Register a stylesheet for the single vehicle shortcode
 		wp_register_style(
 			'invp_single_vehicle',
-			plugins_url( '/css/shortcode-single-vehicle.css', __FILE__ ),
+			plugins_url( '/css/shortcode-single-vehicle.min.css', __FILE__ ),
 			null,
 			$plugin_version
 		);
