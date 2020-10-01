@@ -21,6 +21,40 @@ class Inventory_Presser_Photo_Numberer{
 	function hooks()
 	{
 		add_action( 'add_attachment', array( $this, 'maybe_number_photo' ), 10, 1 );
+		add_filter( "rest_pre_insert_attachment", array( $this, 'set_post_parent' ), 10, 2 );
+	}
+	
+	/**
+	 * set_post_parent
+	 * 
+	 * The REST API does not support post_parent by default, so we have to move
+	 * the `parent` value from the request into the prepared post in this filter
+	 * callback.
+	 *
+	 * @param  WP_Post $prepared_post
+	 * @param  WP_REST_Request $request
+	 * @return void
+	 */
+	public function set_post_parent( $prepared_post, $request )
+	{
+		if( ! empty( $prepared_post->post_parent ) )
+		{
+			return $prepared_post;
+		}
+
+		if( 'attachment' != $prepared_post->post_type )
+		{
+			return $prepared_post;
+		}
+
+		$post_parent = $request->get_param( 'parent' );
+		if( empty( $post_parent ) )
+		{
+			return $prepared_post;
+		}
+
+		$prepared_post->post_parent = $post_parent;
+		return $prepared_post;
 	}
 	
 	/**
@@ -45,9 +79,7 @@ class Inventory_Presser_Photo_Numberer{
 		$parent = get_post( $attachment->post_parent );
 
 		//Is this even attached to a vehicle?
-		if( empty( $parent )
-			|| ! class_exists( 'Inventory_Presser_Plugin' )
-			|| INVP::POST_TYPE != $parent->post_type )
+		if( empty( $parent ) || INVP::POST_TYPE != $parent->post_type )
 		{
 			//No
 			return;
@@ -58,7 +90,7 @@ class Inventory_Presser_Photo_Numberer{
 		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'vin' ), $vin );
 
 		//Save a md5 hash checksum of the attachment in meta
-		$hash = hash_file( 'md5', $attachment_path );
+		$hash = hash_file( 'md5', get_attached_file( $post_id ) );
 		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'hash' ), $hash );
 
 		//Does it have a number?
@@ -83,12 +115,12 @@ class Inventory_Presser_Photo_Numberer{
 			'posts_per_page' => -1,
 		) );
 
-		if( 0 == sizeof( $photos ) ) {
-			return;
+		$last_number = 0;
+		if( 0 < sizeof( $photos ) )
+		{
+			$last_photo = end( $photos );
+			$last_number = intval( get_post_meta( $last_photo->ID,  apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true ) );
 		}
-
-		$last_photo = end( $photos );
-		$last_number = get_post_meta( $last_photo->ID,  apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true );
 
 		update_post_meta( $attachment->ID, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $last_number + 1 );
 	}
