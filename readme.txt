@@ -68,6 +68,7 @@ Yes. If your theme does not include templates to display listing pages and vehic
 * [Fixed] Fixes a broken feature that places a "Settings" link near "Deactivate" on the plugins page.
 * [Fixed] Fixes a bug that prevented rewrite rules from being flushed when the plugin is activated.
 * [Fixed] Fixes a broken feature that suggests users change Media settings to better handle vehicle photos in regard to aspect ratios of thumbnail sizes and year- month- folder names for uploads. These warnings arrive in the form of admin notices on this plugin's settings page at Vehicles > Options.
+* [Fixed] Fixes a broken feature that generates attachment metadata when photos are uploaded to vehicles in the dashboard or via the REST API.
 * [Changed] Adjusts all `add_shortcode()` calls to occur on the `init` hook rather than when the plugin is loaded.
 * [Changed] Moves constants Inventory_Presser_Plugin::CUSTOM_POST_TYPE and Inventory_Presser_Plugin::OPTION_NAME to INVP::POST_TYPE and INVP::OPTION_NAME. The old constants are deprecated but will work until verison 13.
 * [Removed] Removes features that detected the Yoast SEO plugin and added sitemaps URLs to robots.txt and hid Yoast features from the list of vehicles in the dashboard.
