@@ -1183,10 +1183,6 @@ fill: #$black;
 		//Add a couple fields that are used on media attachments
 		$attachment_keys = array();
 		$attachment_keys[] = array(
-			'name' => 'file_date',
-			'type' => 'string',
-		);
-		$attachment_keys[] = array(
 			'name' => 'hash',
 			'type' => 'string',
 		);
