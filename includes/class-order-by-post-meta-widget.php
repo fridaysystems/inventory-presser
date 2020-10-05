@@ -143,7 +143,7 @@ class Order_By_Widget extends WP_Widget {
 			apply_filters( 'invp_prefix_meta_key', 'featured' ),
 			apply_filters( 'invp_prefix_meta_key', 'interior_color' ),
 			apply_filters( 'invp_prefix_meta_key', 'leads_id' ),
-			apply_filters( 'invp_prefix_meta_key', 'option_array' ),
+			apply_filters( 'invp_prefix_meta_key', 'options_array' ),
 			apply_filters( 'invp_prefix_meta_key', 'prices' ),
 			apply_filters( 'invp_prefix_meta_key', 'trim' ),
 			apply_filters( 'invp_prefix_meta_key', 'vin' ),
