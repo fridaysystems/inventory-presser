@@ -161,12 +161,9 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 					?><ul class="vehicle-features"><?php
 
 					// loop through list of vehicle options
-					if( isset( $vehicle->option_array ) && is_array( $vehicle->option_array ) )
+					foreach($vehicle->options_array() as $option)
 					{
-						foreach($vehicle->option_array as $option)
-						{
-							printf( '<li>%s</li>', $option );
-						}
+						printf( '<li>%s</li>', $option );
 					}
 
 					?></ul>

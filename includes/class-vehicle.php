@@ -17,14 +17,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $image_url;
 
 		/**
-		 * A unique identifier assigned by the inventory provider, if a feed is
-		 * providing inventory updates.
+		 * @var int @dealer_id	A unique identifier assigned to the dealership by the inventory provider.
 		 */
 		var $dealer_id = 0;
 
 		/**
-		 * If leads generated need to be associated with a different dealership
-		 * ID than the one stored in $dealer_id, it is stored here, in $leads_id.
+		 * @var int @leads_id	If leads generated need to be associated with a different dealership ID than the one stored in $dealer_id, it is stored here, in $leads_id.
 		 */
 		var $leads_id = 0;
 
@@ -75,9 +73,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		var $model = '';
 		var $msrp = 0;
 		var $odometer = '';
-		var $option_array = array();
 		var $options_array = array();
-		var $options = '';
 		var $payment = 0;
 		var $payment_frequency = '';
 		var $price = 0;
@@ -1040,11 +1036,11 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		public function options_array()
 		{
-			if( ! empty( $this->options_array ) )
+			if( is_array( empty( $this->options_array ) ) )
 			{
 				return $this->options_array;
 			}
-			return str_getcsv( $this->options );
+			return array();
 		}
 
 		/**
