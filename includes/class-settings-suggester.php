@@ -42,6 +42,13 @@ class Inventory_Presser_Settings_Suggester
 		);
 	}
 
+	/**
+	 * hooks
+	 *
+	 * Adds hooks
+	 * 
+	 * @return void
+	 */
 	public function hooks()
 	{
 		/**
