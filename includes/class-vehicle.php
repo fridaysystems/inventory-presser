@@ -6,8 +6,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 	/**
 	 * Inventory_Presser_Vehicle
 	 * 
-	 * This class defines the vehicle object and provides methods to make using
-	 * vehicle data easy.
+	 * This class is initialized with a post ID belonging to a vehicle, and its methods simplify accessing vehicle data stored in post meta, taxonomy terms, and the Media Library.
 	 */
 	class Inventory_Presser_Vehicle
 	{
