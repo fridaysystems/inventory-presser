@@ -88,12 +88,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
 	switch( $settings['price_display'] )
 	{
 		case 'msrp':
-			$msrp = invp_get_the_msrp( $post_ID );
-			if( ! empty( $msrp ) )
-			{
-				return is_numeric( $msrp ) ? '$' . number_format( $msrp, 0, '.', ',' ) : $msrp;
-			}
-			break;
+			return invp_get_the_msrp( $post_ID );
 
 		//${Price} / ${Down Payment} Down
 		case 'full_or_down':
@@ -133,7 +128,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
 
 		// was_now_discount - MSRP = was price, regular price = now price, discount = was - now.
 		case 'was_now_discount':
-			$msrp = invp_get_the_msrp( $post_ID );
+			$msrp = INVP::get_meta( 'msrp', $post_ID );
 			$price = INVP::get_meta( 'price', $post_ID );
 			if( ! empty( $msrp )
 				&& ! empty( $price )
@@ -141,9 +136,9 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
 			)
 			{
 				return sprintf(
-					'<div class="price-was-discount">%s $%s</div>%s $%s<div class="price-was-discount-save">%s $%s</div>',
+					'<div class="price-was-discount">%s %s</div>%s $%s<div class="price-was-discount-save">%s $%s</div>',
 					__( 'Retail', 'inventory-presser' ),
-					number_format( $msrp, 0, '.', ',' ),
+					invp_get_the_msrp( $post_ID ),
 					__( 'Now', 'inventory-presser' ),
 					number_format( $price, 0, '.', ',' ),
 					__( 'You Save', 'inventory-presser' ),
