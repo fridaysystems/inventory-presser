@@ -1087,9 +1087,7 @@ class Inventory_Presser_Customize_Dashboard
 				break;
 
 			case $column_name == apply_filters( 'invp_prefix_meta_key', 'price' ):
-				$vehicle = new Inventory_Presser_Vehicle();
-				$vehicle->price = $val;
-				echo $vehicle->price( '-' );
+				echo invp_get_the_price( '-', $post_id );
 				break;
 
 			default:

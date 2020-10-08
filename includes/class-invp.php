@@ -202,6 +202,22 @@ class INVP
 			$wpdb->delete( $wpdb->term_taxonomy, array( 'taxonomy' => $taxonomy_name ), array( '%s' ) );
 		}
 	}
+	
+	/**
+	 * get_meta
+	 *
+	 * @param  string $unprefixed_meta_key
+	 * @param  int $post_ID
+	 * @return void
+	 */
+	public static function get_meta( $unprefixed_meta_key, $post_ID = null )
+	{
+		if( empty( $post_ID ) )
+		{
+			$post_ID = get_the_ID();
+		}
+		return get_post_meta( $post_ID, apply_filters( 'invp_prefix_meta_key', $unprefixed_meta_key ), true );
+	}
 
 	/**
 	 * meta_prefix
@@ -214,7 +230,7 @@ class INVP
 	{
 		return apply_filters( 'invp_meta_prefix', 'inventory_presser_' );
 	}
-
+	
 	/**
 	 * settings
 	 * 

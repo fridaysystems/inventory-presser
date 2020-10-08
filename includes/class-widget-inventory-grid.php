@@ -150,7 +150,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 				$grid_html .= sprintf(
 					'<p class="grid-caption">%s&nbsp;%s</p>',
 					$vehicle->post_title,
-					$args['show_prices'] ? $vehicle->price(' ') : ''
+					$args['show_prices'] ? invp_get_the_price( ' ', $inventory_id ) : ''
 				);
 			}
 

@@ -68,7 +68,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 				<div class="post-thumbnail">
 					<div class="vehicle-content">
 						<h2 class="post-title vehicle-price"><?php
-								echo $vehicle->price( __( 'Call For Price', 'inventory-presser' ) );
+								echo invp_get_the_price();
 						?></h2>
 
 						<?php

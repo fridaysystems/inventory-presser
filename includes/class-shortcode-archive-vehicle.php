@@ -104,7 +104,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 
 					<div class="vehicle-price-and-buttons">
 						<h3 class="vehicle-price"><?php
-							echo $vehicle->price( __( 'Call For Price', 'inventory-presser' ) );
+							echo invp_get_the_price();
 						?></h3><?php
 
 						//carfax

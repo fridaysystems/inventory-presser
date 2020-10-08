@@ -206,7 +206,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 					printf( '<h3>%s %s %s</h3>', $vehicle->year, $vehicle->make, $vehicle->model );
 				}
 				if ($showprice) {
-					printf( '<h2>%s</h2>', $vehicle->price( __( 'Call For Price', 'inventory-presser' ) ) );
+					printf( '<h2>%s</h2>', invp_get_the_price( null, $inventory_id ) );
 				}
 				echo '</div>';
 			}

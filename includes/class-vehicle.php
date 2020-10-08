@@ -1071,25 +1071,14 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Outputs the down payment and recurring payment in $X Down/$Y Week
 		 * format.
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_price() instead.
 		 * @param  string $zero_string The string to output if the down payment is zero.
 		 * @param  string $separator The string that separates the down payment from the recurring payment.
 		 * @return string A string like $X Down/$Y Week
 		 */
 		function payments( $zero_string = '', $separator = '/' )
 		{
-			if ( ! empty( $this->down_payment ) )
-			{
-				return sprintf(
-					'%s %s %s %s %s',
-					$this->down_payment(),
-					__( 'Down', 'inventory-presser' ),
-					$separator,
-					$this->payment(),
-					ucfirst( $this->payment_frequency )
-				);
-			}
-
-			return $this->price( $zero_string );
+			return invp_get_the_price( $zero_string );
 		}
 		
 		/**
@@ -1141,147 +1130,22 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Returns the price as a dollar amount except when it is zero. Returns
 		 * the $zero_string when the price is zero.
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_price() instead.
 		 * @param  string $zero_string The text to display when the price is zero
-		 * @return string The price formatted as a dollar amount except when the price is zero
+		 * @return string
 		 */		
 		function price( $zero_string = '' )
 		{
-			//If this vehicle is sold, just say so
-			if ( $this->is_sold )
-			{
-				return apply_filters( 'invp_sold_string', sprintf( '<span class="vehicle-sold">%s</span>', __( 'SOLD!', 'inventory-presser' ) ) );
-			}
-
-			if( '' == $zero_string )
-			{
-				$zero_string = apply_filters( 'invp_zero_price_string', __( 'Call For Price', 'inventory-presser' ), $this );
-			}
-
-			//How are we displaying the price?
-			$settings = INVP::settings();
-
-			if( ! isset( $settings['price_display'] ) )
-			{
-				$settings['price_display'] = 'default';
-			}
-
-			switch( $settings['price_display'] )
-			{
-				case 'msrp':
-					if ( isset( $this->msrp ) && $this->msrp > 0 )
-					{
-						return is_numeric( $this->msrp ) ? '$' . number_format( $this->msrp, 0, '.', ',' ) : $this->msrp;
-					}
-					break;
-
-				//${Price} / ${Down Payment} Down
-				case 'full_or_down':
-
-					$price = '';
-					if ( $this->price > 0 )
-					{
-						$price .= sprintf( '$%s', number_format( $this->price, 0, '.', ',' ) );
-					}
-
-					if ( $this->down_payment > 0 )
-					{
-						$price .= sprintf( ' / $%s Down', number_format( $this->down_payment, 0, '.', ',' ) );
-					}
-
-					if( '' == $price )
-					{
-						return $zero_string;
-					}
-					return $price;
-
-					break;
-
-				// down payment only
-				case 'down_only':
-					if ( $this->down_payment > 0 )
-					{
-						return sprintf( '$%s Down', number_format( $this->down_payment, 0, '.', ',' ) );
-					}
-					break;
-
-				// call_for_price
-				case 'call_for_price':
-
-					return __( 'Call For Price', 'inventory-presser' );
-					break;
-
-				// was_now_discount - MSRP = was price, regular price = now price, discount = was - now.
-				case 'was_now_discount':
-					if ( isset( $this->msrp )
-						&& $this->msrp > 0
-						&& $this->price > 0
-						&& $this->msrp > $this->price
-					)
-					{
-						return sprintf(
-							'<div class="price-was-discount">%s $%s</div>%s $%s<div class="price-was-discount-save">%s $%s</div>',
-							__( 'Retail', 'inventory-presser' ),
-							number_format( $this->msrp, 0, '.', ',' ),
-							__( 'Now', 'inventory-presser' ),
-							number_format( $this->price, 0, '.', ',' ),
-							__( 'You Save', 'inventory-presser' ),
-							number_format( ( $this->msrp - $this->price ), 0, '.', ',' )
-						);
-					}
-					break;
-
-				//$75 per week
-				case 'payment_only':
-					if( empty( $this->payment ) || empty( $this->payment_frequency ) )
-					{
-						return $zero_string;
-					}
-					return sprintf(
-						'$%s %s',
-						number_format( $this->payment, 0, '.', ',' ),
-						$this->payment_frequency_readable( $this->payment_frequency )
-					);
-					break;
-
-				case 'default':
-					//Normally, show the price field as currency.
-					if( 0 == $this->price )
-					{
-						return $zero_string;
-					}
-					return '$' . number_format( $this->price, 0, '.', ',' );
-					break;
-
-				default:
-					/**
-					 * The price display type is something beyond what this
-					 * plugin supports. Allow the value to be filtered.
-					 */
-					return apply_filters( 'invp_price_display', __( 'Call For Price', 'inventory-presser' ), $settings['price_display'], $this );
-					break;
-			}
-
-			return $zero_string;
-		}
-		
-		/**
-		 * payment_frequency_readable
-		 * 
-		 * Translates a payment frequency meta value into readable words.
-		 *
-		 * @param  string $slug The raw payment frequency meta value.
-		 * @return string A reader-friendly payment frequency like "per month"
-		 */
-		private function payment_frequency_readable( $slug )
-		{
-			switch( $slug )
-			{
-				case 'weekly':      return __( 'per week', 'inventory-presser' );
-				case 'monthly':     return __( 'per month', 'inventory-presser' );
-				case 'biweekly':    return __( 'every other week', 'inventory-presser' );
-				case 'semimonthly': return __( 'twice a month', 'inventory-presser' );
-				default: return '';
-			}
+			_doing_it_wrong(
+				__FUNCTION__,
+				sprintf(
+					__( '%s was deprecated in version 12.0.0. Use %s instead.', 'inventory-presser' ),
+					'<code>Inventory_Presser_Vehicle->price()</code>',
+					'<code>invp_get_the_price()</code>'
+				),
+				'12.0.0'
+			);
+			return invp_get_the_price( $zero_string );
 		}
 		
 		/**
