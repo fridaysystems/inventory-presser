@@ -12,13 +12,13 @@ defined( 'ABSPATH' ) or exit;
  */
 
 /**
- * invp_get_the_vin
+ * invp_get_the_VIN
  * 
- * Returns the vehicles VIN. Must be used inside the loop.
+ * Template tag. Returns the vehicles VIN. Must be used inside the loop.
  *
  * @return string
  */
-function invp_get_the_vin()
+function invp_get_the_VIN()
 {
 	return get_post_meta( get_the_ID(), apply_filters( 'invp_prefix_meta_key', 'vin' ), true );
 }
@@ -26,7 +26,7 @@ function invp_get_the_vin()
 /**
  * invp_get_the_price
  *
- * Returns the vehicle's price. Must be used inside the loop.
+ * Template tag. Returns the vehicle's price. Must be used inside the loop.
  * 
  * @return string
  */
