@@ -24,7 +24,13 @@ function invp_get_the_down_payment( $post_ID = null )
 
 function invp_get_the_msrp( $post_ID = null )
 {
-	return INVP::get_meta( 'msrp', $post_ID );
+	$msrp = INVP::get_meta( 'msrp', $post_ID );
+	if( empty( $msrp ) )
+	{
+		return '';
+	}
+
+	return '$' . number_format( $msrp, 0, '.', ',' );
 }
 
 function invp_get_the_payment( $post_ID = null )
