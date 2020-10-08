@@ -247,7 +247,7 @@ class Inventory_Presser_Additional_Listings_Pages
 		 * If the key points to a value that is not a number and the operator
 		 * is less than or greater than, you might have a bad time.
 		 */
-		if( ! Inventory_Presser_Vehicle::post_meta_value_is_number( apply_filters( 'invp_prefix_meta_key', $rule['key'] ) )
+		if( ! INVP::meta_value_is_number( apply_filters( 'invp_prefix_meta_key', $rule['key'] ) )
 			&& ( 'less_than' == $rule['operator'] || 'greater_than' == $rule['operator'] ) )
 		{
 			return false;

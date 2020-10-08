@@ -208,7 +208,7 @@ class INVP
 	 *
 	 * @param  string $unprefixed_meta_key
 	 * @param  int $post_ID
-	 * @return void
+	 * @return string|int|double
 	 */
 	public static function get_meta( $unprefixed_meta_key, $post_ID = null )
 	{
@@ -216,7 +216,24 @@ class INVP
 		{
 			$post_ID = get_the_ID();
 		}
-		return get_post_meta( $post_ID, apply_filters( 'invp_prefix_meta_key', $unprefixed_meta_key ), true );
+
+		$meta_key = apply_filters( 'invp_prefix_meta_key', $unprefixed_meta_key );
+		$meta_value = get_post_meta( $post_ID, $meta_key, true );
+
+		//If the meta key is a number, return a number, and zero instead of empty string
+		if( self::meta_value_is_number( $meta_key ) )
+		{
+			if( empty( $meta_value ) )
+			{
+				return 0;
+			}
+			if( false === strpos( $meta_value, '.' ) )
+			{
+				return (int) $meta_value;
+			}
+			return (double) $meta_value;
+		}
+		return $meta_value;
 	}
 
 	/**
@@ -229,6 +246,28 @@ class INVP
 	public static function meta_prefix()
 	{
 		return apply_filters( 'invp_meta_prefix', 'inventory_presser_' );
+	}
+
+	/**
+	 * meta_value_is_number
+	 * 
+	 * Indicates whether or not a provided $post_meta_key is a number data
+	 * type.
+	 *
+	 * @param  string $post_meta_key
+	 * @return bool True if the given $post_meta_key is a number data type.
+	 */
+	public static function meta_value_is_number( $post_meta_key )
+	{
+		$keys_and_types = self::keys_and_types();
+		foreach( $keys_and_types as $key_and_type )
+		{
+			if( apply_filters( 'invp_prefix_meta_key', $key_and_type['name'] ) == $post_meta_key )
+			{
+				return 'number' == $key_and_type['type'] || 'integer' == $key_and_type['type'];
+			}
+		}
+		return false;
 	}
 	
 	/**

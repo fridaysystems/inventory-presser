@@ -387,21 +387,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Returns the down payment as a dollar amount except when it is zero.
 		 * Returns empty string if the down payment is zero.
 		 * 
+		 * @deprecated 12.0.0 Use invp_get_the_down_payment() instead.
 		 * @return string The down payment formatted as a dollar amount except when the price is zero
 		 */
 		function down_payment()
 		{
-			if ( $this->is_sold )
-			{
-				return '';
-			}
-
-			if( empty( $this->down_payment ) )
-			{
-				return '';
-			}
-
-			return __( '$', 'inventory-presser' ) . number_format( $this->down_payment, 0, '.', ',' );
+			return invp_get_the_down_payment();
 		}
 		
 		/**
@@ -569,7 +560,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		function indicate_post_meta_values_are_numbers( $value, $meta_key )
 		{
-			return ( self::post_meta_value_is_number( $meta_key ) ? 'meta_value_num' : $value );
+			return ( INVP::meta_value_is_number( $meta_key ) ? 'meta_value_num' : $value );
 		}
 		
 		/**
@@ -1108,20 +1099,13 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Indicates whether or not a provided $post_meta_key is a number data
 		 * type.
 		 *
+		 * @deprecated 12.0.0 Use INVP::meta_value_is_number() instead.
 		 * @param  string $post_meta_key
 		 * @return bool True if the given $post_meta_key is a number data type.
 		 */
 		public static function post_meta_value_is_number( $post_meta_key )
 		{
-			$keys_and_types = self::keys_and_types();
-			foreach( $keys_and_types as $key_and_type )
-			{
-				if( apply_filters( 'invp_prefix_meta_key', $key_and_type['name'] ) == $post_meta_key )
-				{
-					return 'number' == $key_and_type['type'] || 'integer' == $key_and_type['type'];
-				}
-			}
-			return false;
+			return INVP::meta_value_is_number( $post_meta_key );
 		}
 
 		/**

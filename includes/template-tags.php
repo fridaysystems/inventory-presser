@@ -13,7 +13,13 @@ defined( 'ABSPATH' ) or exit;
 
 function invp_get_the_down_payment( $post_ID = null )
 {
-	return INVP::get_meta( 'down_payment', $post_ID );
+	$down_payment = INVP::get_meta( 'down_payment', $post_ID );
+	if( empty( $down_payment ) )
+	{
+		return '';
+	}
+
+	return '$' . number_format( $down_payment, 0, '.', ',' );
 }
 
 function invp_get_the_msrp( $post_ID = null )
@@ -95,7 +101,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
 			$down_payment = invp_get_the_down_payment();
 			if( ! empty( $down_payment ) )
 			{
-				$output .= sprintf( ' / $%s Down', number_format( $down_payment, 0, '.', ',' ) );
+				$output .= sprintf( ' / %s Down', $down_payment );
 			}
 
 			if( '' == $output )
@@ -109,7 +115,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
 			$down_payment = invp_get_the_down_payment();
 			if( ! empty( $down_payment ) )
 			{
-				return sprintf( '$%s Down', number_format( $down_payment, 0, '.', ',' ) );
+				return sprintf( '%s Down', $down_payment );
 			}
 			break;
 

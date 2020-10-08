@@ -732,7 +732,6 @@ class Inventory_Presser_Customize_Dashboard
 		foreach( $prices as $key => $label )
 		{
 			$meta_key = apply_filters( 'invp_prefix_meta_key', $key );
-			$value = get_post_meta( $post->ID, $meta_key, true );
 
 			printf(
 				'<tr><th scope="row"><label for="%s">%s</label></th>'
@@ -740,7 +739,7 @@ class Inventory_Presser_Customize_Dashboard
 				$meta_key,
 				$label,
 				$meta_key,
-				$value
+				INVP::get_meta( $key, $post->ID )
 			);
 		}
 
@@ -1235,7 +1234,7 @@ class Inventory_Presser_Customize_Dashboard
 			if ( $orderby == $meta_key )
 			{
 	            $query->set( 'meta_key', $meta_key );
-	            $query->set( 'orderby', 'meta_value' . ( Inventory_Presser_Vehicle::post_meta_value_is_number( $meta_key ) ? '_num' : '' ) );
+	            $query->set( 'orderby', 'meta_value' . ( INVP::meta_value_is_number( $meta_key ) ? '_num' : '' ) );
 	            return;
 			}
 		}

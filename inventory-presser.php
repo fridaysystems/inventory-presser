@@ -252,7 +252,7 @@ class Inventory_Presser_Plugin
 		$meta_value_or_meta_value_num = 'meta_value';
 		$key_is_odometer = $key == apply_filters( 'invp_prefix_meta_key', 'odometer' );
 
-		if( Inventory_Presser_Vehicle::post_meta_value_is_number( $key ) || $key_is_odometer )
+		if( INVP::meta_value_is_number( $key ) || $key_is_odometer )
 		{
 			$meta_value_or_meta_value_num .= '_num';
 		}
@@ -1083,12 +1083,12 @@ fill: #$black;
 				/**
 				 * Determine if this meta field should be sorted as a number
 				 * 1. Parse out the meta key name from $pieces['where']
-				 * 2. Run it through Inventory_Presser_Vehicle::post_meta_value_is_number
+				 * 2. Run it through INVP::meta_value_is_number
 				 */
 				$field_start = strpos( $pieces['where'], 'mt' . ( $m+1 ) . '.meta_key = \'')+16;
 				$field_end = strpos( $pieces['where'], "'", $field_start )-$field_start;
 				$field_name = substr( $pieces['where'], $field_start, $field_end );
-				if( Inventory_Presser_Vehicle::post_meta_value_is_number( $field_name ) )
+				if( INVP::meta_value_is_number( $field_name ) )
 				{
 					$replacement .= '+0';
 				}
