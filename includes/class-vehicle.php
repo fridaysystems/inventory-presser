@@ -1039,21 +1039,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Returns the payment as a dollar amount except when it is zero or the vehicle is sold.
 		 * Returns empty string if the payment is zero or the vehicle is sold.
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_payment() instead.
 		 * @return string The payment formatted as a dollar amount except when the payment is zero or the vehicle is sold
 		 */
 		function payment()
 		{
-			if ( $this->is_sold )
-			{
-				return '';
-			}
-
-			if( empty( $this->payment ) )
-			{
-				return '';
-			}
-
-			return __( '$', 'inventory-presser' ) . number_format( $this->payment, 0, '.', ',' );
+			return invp_get_the_payment();
 		}
 		
 		/**

@@ -13,6 +13,11 @@ defined( 'ABSPATH' ) or exit;
 
 function invp_get_the_down_payment( $post_ID = null )
 {
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	
 	$down_payment = INVP::get_meta( 'down_payment', $post_ID );
 	if( empty( $down_payment ) )
 	{
@@ -24,6 +29,11 @@ function invp_get_the_down_payment( $post_ID = null )
 
 function invp_get_the_msrp( $post_ID = null )
 {
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
 	$msrp = INVP::get_meta( 'msrp', $post_ID );
 	if( empty( $msrp ) )
 	{
@@ -35,11 +45,31 @@ function invp_get_the_msrp( $post_ID = null )
 
 function invp_get_the_payment( $post_ID = null )
 {
-	return INVP::get_meta( 'payment', $post_ID );
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	if ( invp_is_sold( $post_ID ) )
+	{
+		return '';
+	}
+
+	$payment = INVP::get_meta( 'payment', $post_ID );
+	if( empty( $payment ) )
+	{
+		return '';
+	}
+
+	return '$' . number_format( $payment, 0, '.', ',' );
 }
 
 function invp_get_the_payment_frequency( $post_ID = null )
 {
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
 	return INVP::get_meta( 'payment_frequency', $post_ID );
 }
 
@@ -226,10 +256,18 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
  */
 function invp_get_the_VIN( $post_ID = null )
 {
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
 	return INVP::get_meta( 'vin', $post_ID );
 }
 
 function invp_is_sold( $post_ID = null )
 {
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
 	return false !== strpos( strtolower( INVP::get_meta( 'availability', $post_ID ) ), 'sold' );
 }
