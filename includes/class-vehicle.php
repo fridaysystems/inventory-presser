@@ -949,7 +949,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		public function options_array()
 		{
-			if( is_array( empty( $this->options_array ) ) )
+			if( is_array( $this->options_array ) )
 			{
 				return $this->options_array;
 			}
