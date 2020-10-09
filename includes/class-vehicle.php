@@ -470,20 +470,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			return $image_urls;
 		}
-	
-		/**
-		 * get_term_string
-		 * 
-		 * Returns taxonomy terms as a comma delimited string.
-		 *
-		 * @param  string $taxonomy The name of a taxonomy
-		 * @return string A comma-separated string of term names.
-		 */
-		function get_term_string( $taxonomy )
-		{
-			$term_list = wp_get_post_terms( $this->post_ID, $taxonomy, array( 'fields' => 'names' ) );
-			return implode( ', ', $term_list );
-		}
 		
 		/**
 		 * have_carfax_report
