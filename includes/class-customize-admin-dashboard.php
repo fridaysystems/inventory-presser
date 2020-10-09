@@ -368,8 +368,7 @@ class Inventory_Presser_Customize_Dashboard
 		}
 		else
 		{
-			$vehicle = new Inventory_Presser_Vehicle();
-			$vehicle->delete_attachments( $post_id );
+			INVP::delete_attachments( $post_id );
 		}
 	}
 

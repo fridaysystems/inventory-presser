@@ -697,7 +697,7 @@ class Inventory_Presser_Plugin
 		add_action( 'trashed_post', array( $this, 'really_delete' ) );
 
 		//When vehicles are deleted, delete their attachments, too
-		add_action( 'before_delete_post', array( $this, 'delete_attachments' ), 10, 1 );
+		add_action( 'before_delete_post', array( 'INVP', 'delete_attachments' ), 10, 1 );
 
 		//Change links to our taxonomy terms to insert /inventory/
 		add_filter( 'pre_term_link', array( $this, 'change_term_links' ), 10, 2 );
@@ -1124,28 +1124,6 @@ fill: #$black;
 
 		//force delete
 		wp_delete_post( $post_id, true );
-	}
-	
-	/**
-	 * delete_attachments
-	 *
-	 * Action hook callback. Deletes all a vehicle's attachments when the 
-	 * vehicle is deleted.
-	 * 
-	 * @param  int $post_id
-	 * @return void
-	 */
-	function delete_attachments( $post_id )
-	{
-		//Is $post_id a vehicle?
-		if( INVP::POST_TYPE != get_post_type( $post_id ) )
-		{
-			//No, abort.
-			return;
-		}
-
-		$vehicle = new Inventory_Presser_Vehicle();
-		$vehicle->delete_attachments( $post_id );
 	}
 	
 	/**

@@ -204,6 +204,37 @@ class INVP
 	}
 	
 	/**
+	 * delete_attachments
+	 *
+	 * Action hook callback. Deletes all a vehicle's attachments when the 
+	 * vehicle is deleted.
+	 * 
+	 * @param  int $post_id
+	 * @return void
+	 */
+	public static function delete_attachments( $post_id )
+	{
+		//Is $post_id a vehicle?
+		if( self::POST_TYPE != get_post_type( $post_id ) )
+		{
+			//No, abort.
+			return;
+		}
+
+		$attachments = get_posts( array(
+			'post_parent'    => $post_id,
+			'post_status'    => 'inherit',
+			'post_type'      => 'attachment',
+			'posts_per_page' => -1,
+		) );
+
+		foreach ( $attachments as $attachment )
+		{
+			wp_delete_attachment( $attachment->ID );
+		}
+	}
+
+	/**
 	 * get_meta
 	 *
 	 * @param  string $unprefixed_meta_key

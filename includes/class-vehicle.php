@@ -350,38 +350,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		}
 		
 		/**
-		 * delete_attachments
-		 * 
-		 * Deletes all a post's attachments.
-		 *
-		 * @param  int $post_id A post ID
-		 * @return void
-		 */
-		function delete_attachments( $post_id = null )
-		{
-			if( empty( $post_id ) )
-			{
-				if( empty( $this->post_ID ) )
-				{
-					return;
-				}
-				$post_id = $this->post_ID;
-			}
-
-			$attachments = get_posts( array(
-				'post_parent'    => $post_id,
-				'post_status'    => 'inherit',
-				'post_type'      => 'attachment',
-				'posts_per_page' => -1,
-			) );
-
-			foreach ( $attachments as $attachment )
-			{
-				wp_delete_attachment( $attachment->ID );
-			}
-		}
-
-		/**
 		 * down_payment
 		 *
 		 * Returns the down payment as a dollar amount except when it is zero.
