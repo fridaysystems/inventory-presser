@@ -216,7 +216,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		function carfax_icon_html()
 		{
 			//Does this vehicle have a Carfax-eligible VIN? 
-			if( strlen( invp_get_the_VIN( $this->post_ID ) ) != 17 || $this->year < 1980 )
+			if( strlen( invp_get_the_VIN( $this->post_ID ) ) != 17 || invp_get_the_year( $this->post_ID ) < 1980 )
 			{
 				return '';
 			}
@@ -1109,9 +1109,10 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				$obj['vehicleIdentificationNumber'] = $vin;
 			}
 
-			if( 0 != $this->year )
+			$year = invp_get_the_year( $this->post_ID );
+			if( 0 != $year )
 			{
-				$obj['vehicleModelDate'] = $this->year;
+				$obj['vehicleModelDate'] = $year;
 			}
 
 			//if the image does not end with 'no-photo.png'
