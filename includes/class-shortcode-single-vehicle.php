@@ -211,11 +211,6 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 	});
 --></script><?php
 
-		if( method_exists( $vehicle, 'schema_org_json_ld' ) && apply_filters( 'invp_include_schema_org_json_ld', true ) )
-		{
-			echo $vehicle->schema_org_json_ld();
-		}
-
 		return ob_get_clean();
 	}
 }

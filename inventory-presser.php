@@ -765,6 +765,9 @@ class Inventory_Presser_Plugin
 
 		$uninstaller = new Inventory_Presser_Uninstaller();
 		$uninstaller->hooks();
+
+		$schema_generator = new Inventory_Presser_Schema_Org_Generator();
+		$schema_generator->hooks();
 	}
 	
 	/**
@@ -795,6 +798,7 @@ class Inventory_Presser_Plugin
 			'class-order-by-post-meta-widget.php',
 			'class-photo-numberer.php',
 			'class-redirect-404-vehicles.php',
+			'class-schema-org-generator.php',
 			'class-settings-suggester.php',
 			'class-shortcode-hours-today.php',
 			'class-shortcode-iframe.php',
