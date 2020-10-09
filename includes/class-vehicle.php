@@ -204,19 +204,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				sort( $this->options_array );
 			}
 		}
-
-		/**
-		 * carfax_eligible
-		 * 
-		 * Answers the question, "is this a vehicle for which Carfax maintains 
-		 * data?" The rules are 17 digit vin and 1980 and newer.
-		 *
-		 * @return bool
-		 */
-		private function carfax_eligible()
-		{
-			return strlen( invp_get_the_VIN() ) >= 17 && $this->year >= 1980;
-		}
 		
 		/**
 		 * carfax_icon_html
@@ -228,7 +215,18 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		function carfax_icon_html()
 		{
-			if( ! $this->carfax_eligible() || ! $this->have_carfax_report() )
+			//Does this vehicle have a Carfax-eligible VIN? 
+			if( strlen( invp_get_the_VIN() ) != 17 || $this->year < 1980 )
+			{
+				return '';
+			}
+
+			/**
+			 * Do we have a report? Can't just rely on there being a report URL
+			 * because as long as we have a VIN we can create a fallback report
+			 * URL.
+			 */
+			if( ! invp_have_carfax_report() )
 			{
 				return '';
 			}
@@ -242,8 +240,8 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			return sprintf(
 				'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
-				$this->carfax_report_url(),
-				$this->carfax_icon_svg()
+				invp_get_the_carfax_url_report(),
+				$svg
 			);
 		}
 	
@@ -277,29 +275,28 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				//fallback to the icon that ships with this plugin
 				return $this->carfax_icon_svg_bundled();
 			}
-			else
+			
+			/**
+			 * Suppressing two warnings with the @ in front of
+			 * file_get_contents() is a short-term fix
+			 *  - SSL: Handshake timed out
+			 *  - Failed to enable crypto
+			 */
+			$svg_element = @file_get_contents( $svg_path );
+			if( false !== $svg_element )
 			{
 				/**
-				 * Suppressing two warnings with the @ in front of
-				 * file_get_contents() is a short-term fix
-				 *  - SSL: Handshake timed out
-				 *  - Failed to enable crypto
+				 * Change CSS class names in Carfax icons hosted by Carfax. They
+				 * didn't anticipate anyone displaying them inline, and they
+				 * get real goofy with certain combinations of duplicate CSS
+				 * class names on the page.
 				 */
-				$svg_element = @file_get_contents( $svg_path );
-				if( false !== $svg_element )
-				{
-					/**
-					 * Change CSS class names in Carfax icons hosted by Carfax. They
-					 * didn't anticipate anyone displaying them inline, and they
-					 * get real goofy with certain combinations of duplicate CSS
-					 * class names on the page.
-					 */
-					$stock_number_letters_and_digits = preg_replace( '/[^a-zA-Z0-9]+/', '', $this->stock_number );
-					return preg_replace( '/(cls\-[0-9]+)/', '$1-' . $stock_number_letters_and_digits, $svg_element );
-				}
-				//SVG download from carfax.com failed, fall back to bundled icon
-				return $this->carfax_icon_svg_bundled();
+				$stock_number_letters_and_digits = preg_replace( '/[^a-zA-Z0-9]+/', '', $this->stock_number );
+				return preg_replace( '/(cls\-[0-9]+)/', '$1-' . $stock_number_letters_and_digits, $svg_element );
 			}
+
+			//SVG download from carfax.com failed, fall back to bundled icon
+			return $this->carfax_icon_svg_bundled();
 		}
 
 		/**
@@ -328,25 +325,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Returns a link to this vehicle's free Carfax report or an empty 
 		 * string is not available.
 		 * 
+		 * @deprecated 12.0.0 Use invp_get_the_carfax_url_report() instead.
 		 * @return string The URL to this vehicle's free Carfax report or empty string.
 		 */
 		function carfax_report_url()
 		{
-			if( ! $this->carfax_eligible() || ! $this->have_carfax_report() )
-			{
-				return '';
-			}
-
-			if( ! empty( $this->carfax_url_report ) )
-			{
-				return $this->carfax_url_report;
-			}
-
-			/**
-			 * Fallback to the pre-August-2019 URLs, save for the partner 
-			 * querystring parameter.
-			 */
-			return 'http://www.carfax.com/VehicleHistory/p/Report.cfx?vin=' . invp_get_the_VIN();
+			return invp_get_the_carfax_url_report();
 		}
 		
 		/**
@@ -477,11 +461,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Answers the question, "does this vehicle have a free and 
 		 * publicy-accessible Carfax report?"
 		 *
+		 * @deprecated 12.0.0 Use invp_have_carfax_report() instead.
 		 * @return bool True if this vehicle has a free and publicly-accessible Carfax report.
 		 */
 		function have_carfax_report()
 		{
-			return '1' == $this->carfax_have_report;
+			return invp_have_carfax_report();
 		}
 
 		/**
@@ -1197,16 +1182,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * 
 		 * Returns this vehicle's YouTube video URL or empty string.
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_youtube_url() instead.
 		 * @return string This vehicle's YouTube URL or empty string
 		 */
 		function youtube_url()
 		{
-			if ( empty( $this->youtube ) )
-			{
-				return '';
-			}
-
-			return 'https://www.youtube.com/watch?v=' . $this->youtube;
+			return invp_get_the_youtube_url();
 		}
 	}
 }

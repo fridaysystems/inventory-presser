@@ -11,6 +11,26 @@ defined( 'ABSPATH' ) or exit;
  * @author     Corey Salzano <corey@friday.systems>
  */
 
+function invp_get_the_carfax_url_report( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	$raw = INVP::get_meta( 'carfax_url_report', $post_ID );
+	if( ! empty( $raw ) )
+	{
+		return $raw;
+	}
+	
+	/**
+	 * Fallback to the pre-August-2019 URLs, save for the partner 
+	 * querystring parameter.
+	 */
+	return 'http://www.carfax.com/VehicleHistory/p/Report.cfx?vin=' . invp_get_the_VIN();
+}
+
 function invp_get_the_down_payment( $post_ID = null )
 {
 	if( empty( $post_ID ) )
@@ -205,8 +225,8 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
 					break;
 			}
 			return sprintf(
-				'$%s %s',
-				number_format( $payment, 0, '.', ',' ),
+				'%s %s',
+				$payment,
 				$payment_frequency
 			);
 			break;
@@ -261,6 +281,39 @@ function invp_get_the_VIN( $post_ID = null )
 		$post_ID = get_the_ID();
 	}
 	return INVP::get_meta( 'vin', $post_ID );
+}
+
+/**
+ * invp_get_the_youtube_url
+ * 
+ * Returns this vehicle's YouTube video URL or empty string.
+ *
+ * @return string This vehicle's YouTube URL or empty string
+ */
+function invp_get_the_youtube_url( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	$video_id = INVP::get_meta( 'youtube', $post_ID );
+	if ( empty( $video_id ) )
+	{
+		return '';
+	}
+
+	return 'https://www.youtube.com/watch?v=' . $video_id;
+}
+
+function invp_have_carfax_report( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	return ! empty( INVP::get_meta( 'carfax_have_report', $post_ID ) );
 }
 
 function invp_is_sold( $post_ID = null )

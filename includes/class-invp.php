@@ -290,7 +290,7 @@ class INVP
 	 */
 	public static function meta_value_is_number( $post_meta_key )
 	{
-		$keys_and_types = self::keys_and_types();
+		$keys_and_types = Inventory_Presser_Vehicle::keys_and_types();
 		foreach( $keys_and_types as $key_and_type )
 		{
 			if( apply_filters( 'invp_prefix_meta_key', $key_and_type['name'] ) == $post_meta_key )
