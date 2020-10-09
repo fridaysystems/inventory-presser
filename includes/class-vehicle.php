@@ -364,23 +364,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		}
 		
 		/**
-		 * extract_digits
-		 * 
-		 * Extracts all digits from an input string and returns them as an integer.
-		 * 
-		 * This method is used to extract odometer values from strings. Dealers
-		 * will include commas, periods instead of commas, and other characters
-		 * that prevent odometers from being sorted as numbers.
-		 *
-		 * @param  string $str The input string from which digits will be extracted.
-		 * @return int All digits in the input string in the same order, parsed as an integer.
-		 */
-		private function extract_digits( $str )
-		{
-			return abs( (int) filter_var( $str, FILTER_SANITIZE_NUMBER_INT ) );
-		}
-
-		/**
 		 * extract_image_element_src
 		 *
 		 * Given a string containing HTML <img> element markup, extract the
@@ -1167,9 +1150,11 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			if( '' != $this->odometer )
 			{
+				//Extract just digits from the odometer value
+				$odometer_digits = abs( (int) filter_var( $this->odometer, FILTER_SANITIZE_NUMBER_INT ) );
 				$obj['mileageFromOdometer'] = [
 					'@type'    => 'QuantitativeValue',
-					'value'    => $this->extract_digits( $this->odometer ),
+					'value'    => $odometer_digits,
 					'unitCode' => 'SMI'
 				];
 			}
