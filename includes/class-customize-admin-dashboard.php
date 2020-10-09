@@ -744,9 +744,6 @@ class Inventory_Presser_Customize_Dashboard
 		}
 
 		//Payment frequency is a drop-down
-		$meta_key = apply_filters( 'invp_prefix_meta_key', 'payment_frequency' );
-		$payment_frequency = get_post_meta( $post->ID, $meta_key, true );
-
 		printf(
 			'<tr><th scope="row"><label for="%s">Payment frequency</label></th>'
 			. '<td><select name="%s"><option></option>',
@@ -765,12 +762,12 @@ class Inventory_Presser_Customize_Dashboard
 			printf(
 				'<option value="%s"%s>%s</option>',
 				$value,
-				selected( $payment_frequency, $value, false ),
+				selected( invp_get_the_payment_frequency( $post->ID ), $value, false ),
 				$key
 			);
 		}
-		echo '</select></td></tr>';
-		echo '</tbody></table>';
+		echo '</select></td></tr>'
+			. '</tbody></table>';
 	}
 	
 	/**

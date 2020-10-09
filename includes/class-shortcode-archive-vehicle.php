@@ -122,7 +122,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 						// autocheck icon
 						if( shortcode_exists( 'autocheck_button' ) )
 						{
-							$autocheck_html = do_shortcode( sprintf( '[autocheck_button vin="%s"]', $vehicle->vin ) );
+							$autocheck_html = do_shortcode( sprintf( '[autocheck_button vin="%s"]', invp_get_the_VIN() ) );
 							if( '' != $autocheck_html )
 							{
 								?><div class="autocheck-wrapper"><?php

@@ -215,7 +215,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		private function carfax_eligible()
 		{
-			return strlen( $this->vin ) >= 17 && $this->year >= 1980;
+			return strlen( invp_get_the_VIN() ) >= 17 && $this->year >= 1980;
 		}
 		
 		/**
@@ -346,7 +346,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			 * Fallback to the pre-August-2019 URLs, save for the partner 
 			 * querystring parameter.
 			 */
-			return 'http://www.carfax.com/VehicleHistory/p/Report.cfx?vin=' . $this->vin;
+			return 'http://www.carfax.com/VehicleHistory/p/Report.cfx?vin=' . invp_get_the_VIN();
 		}
 		
 		/**
@@ -1180,9 +1180,10 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				];
 			}
 
-			if( '' != $this->vin )
+			$vin = invp_get_the_VIN();
+			if( '' != $vin )
 			{
-				$obj['vehicleIdentificationNumber'] = $this->vin;
+				$obj['vehicleIdentificationNumber'] = $vin;
 			}
 
 			if( 0 != $this->year )

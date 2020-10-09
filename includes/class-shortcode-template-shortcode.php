@@ -97,7 +97,7 @@ class Inventory_Presser_Template_Shortcode
 			array(
 				'member' => 'vin',
 				'label'  => 'boat' == $vehicle->type ? __( 'HIN', 'inventory-presser' ) : __( 'VIN', 'inventory-presser' ),
-				'value'  => $vehicle->vin,
+				'value'  => invp_get_the_VIN(),
 			),
 		) );
 
