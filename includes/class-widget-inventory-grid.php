@@ -142,14 +142,14 @@ class Inventory_Presser_Grid extends WP_Widget {
 
 			$grid_html .= sprintf(
 				'<li><a class="grid-link" href="%s"><div class="grid-image" style="background-image: url(%s);"></div>',
-				$vehicle->url,
+				get_the_permalink( $inventory_id ),
 				wp_get_attachment_image_url( get_post_thumbnail_id( $inventory_id ), 'large' )
 			);
 
 			if( $args['show_captions'] ) {
 				$grid_html .= sprintf(
 					'<p class="grid-caption">%s&nbsp;%s</p>',
-					$vehicle->post_title,
+					get_the_title( $inventory_id ),
 					$args['show_prices'] ? invp_get_the_price( ' ', $inventory_id ) : ''
 				);
 			}

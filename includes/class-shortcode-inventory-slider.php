@@ -130,14 +130,14 @@ class Inventory_Presser_Shortcode_Slider
 				'<li><a class="flex-link" href="%s">'
 				. '<div class="grid-image" style="background-image: url(\'%s\');">'
 				. '</div>',
-				$vehicle->url,
+				get_the_permalink( $inventory_id ),
 				wp_get_attachment_image_url( get_post_thumbnail_id( $inventory_id ), 'large')
 			);
 
 			if( $atts['captions'] ) {
 				$flex_html .= sprintf(
 					'<p class="flex-caption">%s</p>',
-					$vehicle->post_title
+					get_the_title( $inventory_id )
 				);
 			}
 

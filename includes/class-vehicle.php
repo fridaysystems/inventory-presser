@@ -11,8 +11,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 	class Inventory_Presser_Vehicle
 	{
 		var $post_ID;
-		var $post_title;
-		var $url;
 		var $image_url;
 
 		/**
@@ -125,8 +123,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			// put wp vars into our object properties
 			$this->post_ID = $post_id;
-			$this->post_title = get_the_title($this->post_ID);
-			$this->url = get_permalink($this->post_ID);
 
 			//Does this vehicle have photos?
 			$thumbnail_id = get_post_thumbnail_id( $this->post_ID, 'medium' );
@@ -1090,11 +1086,8 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				'@type'    => 'Vehicle'
 			];
 
-			if( isset( $this->post_title ) && '' != $this->post_title )
-			{
-				$obj['name'] = $this->post_title;
-			}
-
+			$obj['name'] = get_the_title( $this->post_ID );
+			
 			if( '' != $this->make )
 			{
 				$obj['brand'] = [
