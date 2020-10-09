@@ -316,6 +316,24 @@ function invp_have_carfax_report( $post_ID = null )
 	return ! empty( INVP::get_meta( 'carfax_have_report', $post_ID ) );
 }
 
+/**
+ * invp_is_carfax_one_owner
+ * 
+ * Answers the question, "is this vehicle designated a "one owner" by 
+ * Carfax?
+ *
+ * @return bool True if this vehicle is designated as a "one owner" by Carfax
+ */
+function invp_is_carfax_one_owner( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	return ! empty( INVP::get_meta( 'carfax_one_owner', $post_ID ) );
+}
+
 function invp_is_sold( $post_ID = null )
 {
 	if( empty( $post_ID ) )

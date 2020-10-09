@@ -216,7 +216,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		function carfax_icon_html()
 		{
 			//Does this vehicle have a Carfax-eligible VIN? 
-			if( strlen( invp_get_the_VIN() ) != 17 || $this->year < 1980 )
+			if( strlen( invp_get_the_VIN( $this->post_ID ) ) != 17 || $this->year < 1980 )
 			{
 				return '';
 			}
@@ -226,7 +226,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			 * because as long as we have a VIN we can create a fallback report
 			 * URL.
 			 */
-			if( ! invp_have_carfax_report() )
+			if( ! invp_have_carfax_report( $this->post_ID ) )
 			{
 				return '';
 			}
@@ -240,7 +240,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			return sprintf(
 				'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
-				invp_get_the_carfax_url_report(),
+				invp_get_the_carfax_url_report( $this->post_ID ),
 				$svg
 			);
 		}
@@ -310,7 +310,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		private function carfax_icon_svg_bundled()
 		{
 			$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
-			if( $this->is_carfax_one_owner() )
+			if( invp_is_carfax_one_owner( $this->post_ID ) )
 			{
 				$svg_path .= '-1-owner';
 			}
@@ -330,7 +330,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		function carfax_report_url()
 		{
-			return invp_get_the_carfax_url_report();
+			return invp_get_the_carfax_url_report( $this->post_ID );
 		}
 		
 		/**
@@ -344,7 +344,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		function down_payment()
 		{
-			return invp_get_the_down_payment();
+			return invp_get_the_down_payment( $this->post_ID );
 		}
 		
 		/**
@@ -466,7 +466,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		function have_carfax_report()
 		{
-			return invp_have_carfax_report();
+			return invp_have_carfax_report( $this->post_ID );
 		}
 
 		/**
@@ -491,11 +491,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Answers the question, "is this vehicle designated a "one owner" by 
 		 * Carfax?
 		 *
+		 * @deprecated 12.0.0 Use invp_is_carfax_one_owner() instead.
 		 * @return bool True if this vehicle is designated as a "one owner" by Carfax
 		 */
 		function is_carfax_one_owner()
 		{
-			return '1' == $this->carfax_one_owner;
+			return invp_is_carfax_one_owner( $this->post_ID );
 		}
 
 		/**
@@ -966,7 +967,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		function payment()
 		{
-			return invp_get_the_payment();
+			return invp_get_the_payment( $this->post_ID );
 		}
 		
 		/**
@@ -982,7 +983,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		function payments( $zero_string = '', $separator = '/' )
 		{
-			return invp_get_the_price( $zero_string );
+			return invp_get_the_price( $zero_string, $this->post_ID );
 		}
 		
 		/**
@@ -1042,7 +1043,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				),
 				'12.0.0'
 			);
-			return invp_get_the_price( $zero_string );
+			return invp_get_the_price( $zero_string. $this->post_ID );
 		}
 		
 		/**
@@ -1102,7 +1103,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				];
 			}
 
-			$vin = invp_get_the_VIN();
+			$vin = invp_get_the_VIN( $this->post_ID );
 			if( '' != $vin )
 			{
 				$obj['vehicleIdentificationNumber'] = $vin;
@@ -1187,7 +1188,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		function youtube_url()
 		{
-			return invp_get_the_youtube_url();
+			return invp_get_the_youtube_url( $this->post_ID );
 		}
 	}
 }
