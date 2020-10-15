@@ -281,6 +281,15 @@ function invp_get_the_make( $post_ID = null )
 	return INVP::get_meta( 'make', $post_ID );
 }
 
+function invp_get_the_model( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'model', $post_ID );
+}
+
 function invp_get_the_msrp( $post_ID = null )
 {
 	if( empty( $post_ID ) )

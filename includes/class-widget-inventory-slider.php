@@ -203,7 +203,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 			if ($showtext != 'none') {
 				printf( '<div class="slick-text slick-text-%s">', $showtext );
 				if ($showtitle) {
-					printf( '<h3>%s %s %s</h3>', invp_get_the_year( $inventory_id ), invp_get_the_make( $inventory_id ), $vehicle->model );
+					printf( '<h3>%s %s %s</h3>', invp_get_the_year( $inventory_id ), invp_get_the_make( $inventory_id ), invp_get_the_model( $inventory_id ) );
 				}
 				if ($showprice) {
 					printf( '<h2>%s</h2>', invp_get_the_price( null, $inventory_id ) );
