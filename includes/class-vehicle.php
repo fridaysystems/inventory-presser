@@ -269,7 +269,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			if( empty( $svg_path ) || ! $settings['use_carfax_provided_buttons'] )
 			{
 				//fallback to the icon that ships with this plugin
-				return $this->carfax_icon_svg_bundled();
+				return invp_get_the_carfax_icon_svg_bundle( $this->post_ID );
 			}
 			
 			/**
@@ -292,7 +292,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			}
 
 			//SVG download from carfax.com failed, fall back to bundled icon
-			return $this->carfax_icon_svg_bundled();
+			return invp_get_the_carfax_icon_svg_bundle( $this->post_ID );
 		}
 
 		/**
@@ -301,18 +301,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Carfax icons are bundled with this plugin, and this method returns
 		 * one of them as an <svg> element.
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_carfax_icon_svg_bundled() instead.
 		 * @return string An <svg> HTML element or empty string if the asset cannot be found or loaded
 		 */
 		private function carfax_icon_svg_bundled()
 		{
-			$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
-			if( invp_is_carfax_one_owner( $this->post_ID ) )
-			{
-				$svg_path .= '-1-owner';
-			}
-			$svg_path .= '.svg';
-			$svg_element = file_get_contents( $svg_path );
-			return ( false === $svg_element ? '' : $svg_element );
+			return invp_get_the_carfax_icon_svg_bundled( $this->post_ID );
 		}
 		
 		/**

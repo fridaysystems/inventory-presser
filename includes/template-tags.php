@@ -48,6 +48,31 @@ function invp_get_the_book_value( $post_ID = null )
 	return '$' . number_format( invp_get_raw_book_value( $post_ID ), 0, '.', ',' );
 }
 
+/**
+ * invp_get_the_carfax_icon_svg_bundled
+ *
+ * Template tag. Returns an <svg> element that produces a Carfax icon that comes
+ * bundled with this plugin.
+ *
+ * @return string An <svg> HTML element or empty string if the asset cannot be found or loaded
+ */
+function invp_get_the_carfax_icon_svg_bundled( $post_ID )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
+	if( invp_is_carfax_one_owner( $post_ID ) )
+	{
+		$svg_path .= '-1-owner';
+	}
+	$svg_path .= '.svg';
+	$svg_element = file_get_contents( $svg_path );
+	return ( false === $svg_element ? '' : $svg_element );
+}
+
 function invp_get_the_carfax_url_report( $post_ID = null )
 {
 	if( empty( $post_ID ) )
