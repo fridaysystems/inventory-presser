@@ -680,7 +680,7 @@ class Inventory_Presser_Customize_Dashboard
 		$options = array_fill_keys( $options, false );
 
 		$vehicle = new Inventory_Presser_Vehicle( $post->ID );
-		$options_array = $vehicle->options_array();
+		$options_array = invp_get_the_options( $post->ID );
 		if( is_array( $options_array ) )
 		{
 			foreach( $options_array as $option )

@@ -63,6 +63,28 @@ function invp_get_the_msrp( $post_ID = null )
 	return '$' . number_format( $msrp, 0, '.', ',' );
 }
 
+/**
+ * invp_get_the_options
+ *
+ * @param  int $post_ID
+ * @return array An array of vehicle options
+ */
+function invp_get_the_options( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	$raw = INVP::get_meta( 'options_array', $post_ID );
+	if( empty( $raw ) )
+	{
+		return array();
+	}
+	sort( $raw );
+	return $raw;
+}
+
 function invp_get_the_payment( $post_ID = null )
 {
 	if( empty( $post_ID ) )

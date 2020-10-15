@@ -941,15 +941,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * 
 		 * Returns an array of vehicle option strings
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_options() instead.
 		 * @return array An array of this vehicle's options
 		 */
 		public function options_array()
 		{
-			if( is_array( $this->options_array ) )
-			{
-				return $this->options_array;
-			}
-			return array();
+			return invp_get_the_options( $this->post_ID );
 		}
 
 		/**

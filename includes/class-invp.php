@@ -249,7 +249,11 @@ class INVP
 		}
 
 		$meta_key = apply_filters( 'invp_prefix_meta_key', $unprefixed_meta_key );
-		$meta_value = get_post_meta( $post_ID, $meta_key, true );
+
+		//Options are stored as a multi-valued meta field
+		$single = $unprefixed_meta_key != 'options_array';
+
+		$meta_value = get_post_meta( $post_ID, $meta_key, $single );
 
 		//If the meta key is a number, return a number, and zero instead of empty string
 		if( self::meta_value_is_number( $meta_key ) )
