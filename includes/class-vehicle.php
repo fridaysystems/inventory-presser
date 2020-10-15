@@ -227,7 +227,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 				return '';
 			}
 
-			$svg = $this->carfax_icon_svg();
+			$svg = invp_get_the_carfax_icon_svg( $this->post_ID );
 			if( empty( $svg ) )
 			{
 				//We might have tried to download an SVG from carfax.com and failed
@@ -252,47 +252,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * <svg> payload to Carfax, by using an SVG provided by a URL instead of
 		 * the .svg files that ship with this plugin.
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_carfax_icon_svg() instead.
 		 * @return string An <svg> HTML element or empty string
 		 */
 		function carfax_icon_svg()
 		{
-			//A per-vehicle icon URL is provided by Carfax during daily IICR
-			$svg_path = $this->carfax_url_icon;
-			$svg_element = '';
-
-			/**
-			 * If we don't have a URL from IICR, or the user has turned off the
-			 * newer, dynamic icons, fall back to SVGs that ship with this
-			 * plugin.
-			 */
-			$settings = INVP::settings();
-			if( empty( $svg_path ) || ! $settings['use_carfax_provided_buttons'] )
-			{
-				//fallback to the icon that ships with this plugin
-				return invp_get_the_carfax_icon_svg_bundle( $this->post_ID );
-			}
-			
-			/**
-			 * Suppressing two warnings with the @ in front of
-			 * file_get_contents() is a short-term fix
-			 *  - SSL: Handshake timed out
-			 *  - Failed to enable crypto
-			 */
-			$svg_element = @file_get_contents( $svg_path );
-			if( false !== $svg_element )
-			{
-				/**
-				 * Change CSS class names in Carfax icons hosted by Carfax. They
-				 * didn't anticipate anyone displaying them inline, and they
-				 * get real goofy with certain combinations of duplicate CSS
-				 * class names on the page.
-				 */
-				$stock_number_letters_and_digits = preg_replace( '/[^a-zA-Z0-9]+/', '', $this->stock_number );
-				return preg_replace( '/(cls\-[0-9]+)/', '$1-' . $stock_number_letters_and_digits, $svg_element );
-			}
-
-			//SVG download from carfax.com failed, fall back to bundled icon
-			return invp_get_the_carfax_icon_svg_bundle( $this->post_ID );
+			return invp_get_the_carfax_icon_svg( $this->post_ID );
 		}
 
 		/**
