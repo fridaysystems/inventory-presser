@@ -50,7 +50,7 @@ class Inventory_Presser_Template_Shortcode
 			$table_items[] = array(
 				'member' => 'odometer',
 				'label'  => apply_filters( 'invp_label-odometer', apply_filters( 'invp_odometer_word', __( 'Mileage', 'inventory-presser' ) ) ),
-				'value'  => $vehicle->odometer( ' ' . apply_filters( 'invp_odometer_word', 'Miles' ) ),
+				'value'  => invp_get_the_odometer( ' ' . apply_filters( 'invp_odometer_word', 'Miles' ), $vehicle->post_ID ),
 			);
 		}
 

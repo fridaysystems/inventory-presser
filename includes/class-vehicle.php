@@ -913,27 +913,13 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		/**
 		 * odometer
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_odometer() instead.
 		 * @param  string $append A string to be appended to the odometer value
 		 * @return string This vehicle's odometer value
 		 */
 		function odometer( $append = '' )
 		{
-			if( '0' == $this->odometer ) { return ''; }
-
-			$odometer = '';
-			if( is_numeric( $this->odometer ) )
-			{
-				$odometer .= number_format( $this->odometer, 0, '.', ',' );
-			}
-			else
-			{
-				$odometer .= $this->odometer;
-			}
-			if( $append )
-			{
-				$odometer .= $append;
-			}
-			return $odometer;
+			return invp_get_the_odometer( $append, $this->post_ID );
 		}
 		
 		/**

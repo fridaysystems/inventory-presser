@@ -1072,9 +1072,7 @@ class Inventory_Presser_Customize_Dashboard
 				break;
 
 			case $column_name == apply_filters( 'invp_prefix_meta_key', 'odometer' ):
-				$vehicle = new Inventory_Presser_Vehicle();
-				$vehicle->odometer = $val;
-				echo $vehicle->odometer();
+				echo invp_get_the_odometer('', $post_id );
 				break;
 
 			case $column_name == apply_filters( 'invp_prefix_meta_key', 'photo_count' ):
