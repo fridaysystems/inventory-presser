@@ -279,6 +279,15 @@ function invp_get_the_photo_count( $post_ID = null )
 	) ) );
 }
 
+function invp_get_raw_price( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'price', $post_ID );
+}
+
 /**
  * invp_get_the_price
  *
@@ -329,7 +338,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
 		//${Price} / ${Down Payment} Down
 		case 'full_or_down':
 			$output = '';
-			$price = INVP::get_meta( 'price', $post_ID );
+			$price = invp_get_raw_price( $post_ID );
 			if( ! empty( $price ) )
 			{
 				$output .= sprintf( '$%s', number_format( $price, 0, '.', ',' ) );
@@ -365,7 +374,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
 		// was_now_discount - MSRP = was price, regular price = now price, discount = was - now.
 		case 'was_now_discount':
 			$msrp = INVP::get_meta( 'msrp', $post_ID );
-			$price = INVP::get_meta( 'price', $post_ID );
+			$price = invp_get_raw_price( $post_ID );
 			if( ! empty( $msrp )
 				&& ! empty( $price )
 				&& $msrp > $price
@@ -419,7 +428,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
 
 		case 'default':
 			//Normally, show the price field as currency.
-			$price = INVP::get_meta( 'price', $post_ID );
+			$price = invp_get_raw_price( $post_ID );
 			if( empty( $price ) )
 			{
 				return $zero_string;

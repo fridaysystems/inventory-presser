@@ -35,7 +35,7 @@ class Inventory_Presser_Template_Shortcode
 		{
 			$book_value = invp_get_the_book_value( $vehicle->post_ID );
 			if( ! empty( $book_value )
-				&& invp_get_raw_book_value( $vehicle->post_ID ) > intval( INVP::get_meta( 'price', $vehicle->post_ID ) ) )
+				&& invp_get_raw_book_value( $vehicle->post_ID ) > invp_get_raw_price( $vehicle->post_ID ) )
 			{
 				$table_items[] = array(
 					'member' => 'book_value',
