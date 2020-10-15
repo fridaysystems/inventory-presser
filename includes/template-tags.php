@@ -94,6 +94,29 @@ function invp_get_the_payment_frequency( $post_ID = null )
 }
 
 /**
+ * invp_get_the_photo_count
+ * 
+ * Template tag. Returns the number of images attached to the vehicle post.
+ *
+ * @param  int $post_ID
+ * @return int
+ */
+function invp_get_the_photo_count( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	return sizeof( get_children( array( 
+		'post_mime_type' => 'image',
+		'post_parent'    => $post_ID,
+		'post_type'      => 'attachment',			
+		'posts_per_page' => -1,
+	) ) );
+}
+
+/**
  * invp_get_the_price
  *
  * Template tag. Returns the vehicle's price.

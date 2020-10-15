@@ -987,20 +987,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * 
 		 * Returns the number of image attachments to this post. 
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_photo_count() instead.
 		 * @return int The number of attachments to this post.
 		 */
 		function photo_count()
 		{
-			if( empty( $this->post_ID ) )
-			{
-				return 0;
-			}
-			return sizeof( get_children( array( 
-				'post_mime_type' => 'image',
-				'post_parent'    => $this->post_ID,
-				'post_type'      => 'attachment',			
-				'posts_per_page' => -1,
-			) ) );
+			return invp_get_the_photo_count( $this->post_ID );
 		}
 		
 		/**

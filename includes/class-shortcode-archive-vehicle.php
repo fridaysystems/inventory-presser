@@ -81,7 +81,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 							?></a>
 						</div><?php
 
-							$photo_count = $vehicle->photo_count();
+							$photo_count = invp_get_the_photo_count();
 							if( 0 < $photo_count )
 							{
 						?><span class="photo-count"><a href="<?php the_permalink(); ?>"><?php
