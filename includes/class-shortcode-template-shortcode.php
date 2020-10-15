@@ -73,7 +73,7 @@ class Inventory_Presser_Template_Shortcode
 			array(
 				'member' => 'engine',
 				'label'  => __( 'Engine', 'inventory-presser' ),
-				'value'  => implode( ' ', array( $vehicle->fuel, invp_get_the_engine( $vehicle->post_ID ) ) ),
+				'value'  => implode( ' ', array( invp_get_the_fuel( $vehicle->post_ID ), invp_get_the_engine( $vehicle->post_ID ) ) ),
 			),
 
 			//Transmission

@@ -221,6 +221,14 @@ function invp_get_the_engine( $post_ID = null )
 	return INVP::get_meta( 'engine', $post_ID );
 }
 
+function invp_get_the_fuel( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'fuel', $post_ID );
+}
 
 /**
  * location_sentence

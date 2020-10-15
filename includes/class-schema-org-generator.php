@@ -119,16 +119,16 @@ class Inventory_Presser_Schema_Org_Generator
 			];
 		}
 
-		if( '' != invp_get_the_engine( $post_ID ) || ( isset( $vehicle->fuel ) && '' != $vehicle->fuel ) )
+		if( '' != invp_get_the_engine( $post_ID ) || '' != invp_get_the_fuel( $post_ID ) )
 		{
 			$obj['vehicleEngine'] = [];
 			if( '' != invp_get_the_engine( $post_ID ) )
 			{
 				$obj['vehicleEngine']['engineType'] = invp_get_the_engine( $post_ID );
 			}
-			if( isset( $vehicle->fuel ) && '' != $vehicle->fuel )
+			if( '' != invp_get_the_fuel( $post_ID ) )
 			{
-				$obj['vehicleEngine']['fuelType'] = $vehicle->fuel;
+				$obj['vehicleEngine']['fuelType'] = invp_get_the_fuel( $post_ID );
 			}
 		}
 
