@@ -11,6 +11,43 @@ defined( 'ABSPATH' ) or exit;
  * @author     Corey Salzano <corey@friday.systems>
  */
 
+/**
+ * invp_get_raw_book_value
+ * 
+ * Template tag. Returns the raw book value price as a number and therefore no
+ * string formatting or dollar sign.
+ *
+ * @param  mixed $post_ID
+ * @return double
+ */
+function invp_get_raw_book_value( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	$raw_kbb = INVP::get_meta( 'book_value_kbb', $post_ID );
+	$raw_nada = INVP::get_meta( 'book_value_nada', $post_ID );
+	return max( $raw_nada, $raw_kbb );
+}
+
+/**
+ * get_book_value
+ * 
+ * Returns the higher of the two book value prices among NADA Guides and
+ * Kelley Blue Book.
+ *
+ * @return string
+ */
+function invp_get_the_book_value( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return '$' . number_format( invp_get_raw_book_value( $post_ID ), 0, '.', ',' );
+}
+
 function invp_get_the_carfax_url_report( $post_ID = null )
 {
 	if( empty( $post_ID ) )

@@ -363,11 +363,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Returns the higher of the two book value prices among NADA Guides and
 		 * Kelley Blue Book.
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_book_value() instead.
 		 * @return int
 		 */
 		function get_book_value()
 		{
-			return max( intval( $this->book_value_nada ), intval( $this->book_value_kbb ) );
+			return invp_get_the_book_value( $this->post_ID );
 		}
 
 		/**

@@ -33,8 +33,9 @@ class Inventory_Presser_Template_Shortcode
 		//Book Value
 		if( ! isset( $invp_settings['price_display'] ) || 'genes' != $invp_settings['price_display'] )
 		{
-			$book_value = $vehicle->get_book_value();
-			if( $book_value > 0  && $book_value > intval( INVP::get_meta( 'price', $vehicle->post_ID ) ) )
+			$book_value = invp_get_the_book_value( $vehicle->post_ID );
+			if( ! empty( $book_value )
+				&& invp_get_raw_book_value( $vehicle->post_ID ) > intval( INVP::get_meta( 'price', $vehicle->post_ID ) ) )
 			{
 				$table_items[] = array(
 					'member' => 'book_value',
