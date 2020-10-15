@@ -107,10 +107,11 @@ class Inventory_Presser_Schema_Org_Generator
 			$obj['image'] = $vehicle->image_url;
 		}
 
-		if( '' != $vehicle->odometer )
+		$odometer = invp_get_the_odometer( '', $post_ID );
+		if( '' != $odometer )
 		{
 			//Extract just digits from the odometer value
-			$odometer_digits = abs( (int) filter_var( $vehicle->odometer, FILTER_SANITIZE_NUMBER_INT ) );
+			$odometer_digits = abs( (int) filter_var( $odometer, FILTER_SANITIZE_NUMBER_INT ) );
 			$obj['mileageFromOdometer'] = [
 				'@type'    => 'QuantitativeValue',
 				'value'    => $odometer_digits,
