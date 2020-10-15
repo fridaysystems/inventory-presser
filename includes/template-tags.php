@@ -212,6 +212,16 @@ function invp_get_the_down_payment( $post_ID = null )
 	return '$' . number_format( $down_payment, 0, '.', ',' );
 }
 
+function invp_get_the_engine( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'engine', $post_ID );
+}
+
+
 /**
  * location_sentence
  * 
