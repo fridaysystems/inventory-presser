@@ -138,7 +138,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 					?></div>
 					<div class="vehicle-buttons"><?php
 						// carfax
-						$carfax_html = $vehicle->carfax_icon_html();
+						$carfax_html = invp_get_the_carfax_icon_html();
 						if ( isset( $invp_settings['use_carfax'] ) && $invp_settings['use_carfax'] && '' != $carfax_html )
 						{
 							printf( '<div class="carfax-wrapper">%s</div>', $carfax_html );

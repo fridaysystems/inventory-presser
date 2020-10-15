@@ -110,7 +110,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 						//carfax
 						if ( isset( $invp_settings['use_carfax'] ) && $invp_settings['use_carfax'] )
 						{
-							$carfax_html = $vehicle->carfax_icon_html();
+							$carfax_html = invp_get_the_carfax_icon_html();
 							if( '' != $carfax_html )
 							{
 								?><div class="carfax-wrapper"><?php

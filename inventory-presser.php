@@ -63,7 +63,7 @@ class Inventory_Presser_Plugin
 	 */
 	function add_carfax_badge( $vehicle )
 	{
-		$carfax_html = $vehicle->carfax_icon_html();
+		$carfax_html = invp_get_the_carfax_icon_html( $vehicle->post_ID );
 		if( '' != $carfax_html )
 		{
 			?><div class="carfax-wrapper"><?php

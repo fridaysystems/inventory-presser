@@ -207,38 +207,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Outputs Carfax button HTML or empty string if the vehicle is not 
 		 * eligible or does not have a free report.
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_carfax_icon_html() instead.
 		 * @return string HTML that renders a Carfax button or empty string
 		 */
 		function carfax_icon_html()
 		{
-			//Does this vehicle have a Carfax-eligible VIN? 
-			if( strlen( invp_get_the_VIN( $this->post_ID ) ) != 17 || invp_get_the_year( $this->post_ID ) < 1980 )
-			{
-				return '';
-			}
-
-			/**
-			 * Do we have a report? Can't just rely on there being a report URL
-			 * because as long as we have a VIN we can create a fallback report
-			 * URL.
-			 */
-			if( ! invp_have_carfax_report( $this->post_ID ) )
-			{
-				return '';
-			}
-
-			$svg = invp_get_the_carfax_icon_svg( $this->post_ID );
-			if( empty( $svg ) )
-			{
-				//We might have tried to download an SVG from carfax.com and failed
-				return '';
-			}
-
-			return sprintf(
-				'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
-				invp_get_the_carfax_url_report( $this->post_ID ),
-				$svg
-			);
+			return invp_get_the_carfax_icon_html( $this->post_ID );
 		}
 	
 		/**

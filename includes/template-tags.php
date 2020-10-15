@@ -49,6 +49,51 @@ function invp_get_the_book_value( $post_ID = null )
 }
 
 /**
+ * invp_get_the_carfax_icon_html
+ * 
+ * Outputs Carfax button HTML or empty string if the vehicle is not 
+ * eligible or does not have a free report.
+ *
+ * @return string HTML that renders a Carfax button or empty string
+ */
+function invp_get_the_carfax_icon_html( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	//Does this vehicle have a Carfax-eligible VIN? 
+	if( strlen( invp_get_the_VIN( $post_ID ) ) != 17 || invp_get_the_year( $post_ID ) < 1980 )
+	{
+		return '';
+	}
+
+	/**
+	 * Do we have a report? Can't just rely on there being a report URL
+	 * because as long as we have a VIN we can create a fallback report
+	 * URL.
+	 */
+	if( ! invp_have_carfax_report( $post_ID ) )
+	{
+		return '';
+	}
+
+	$svg = invp_get_the_carfax_icon_svg( $post_ID );
+	if( empty( $svg ) )
+	{
+		//We might have tried to download an SVG from carfax.com and failed
+		return '';
+	}
+
+	return sprintf(
+		'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+		invp_get_the_carfax_url_report( $post_ID ),
+		$svg
+	);
+}
+
+/**
  * invp_get_the_carfax_icon_svg
  * 
  * Returns an SVG element that is one of various Carfax icons, usually
