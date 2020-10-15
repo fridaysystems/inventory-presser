@@ -876,38 +876,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * this vehicle is located. If there is only one term in the locations
 		 * taxonomy containing vehicles, this method returns an empty string.
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_location_sentence() instead.
 		 * @return string An HTML <div> element containing a sentence that identifies the lot where this vehicle is located.
 		 */
 		function location_sentence()
 		{
-			//How many locations does this dealer have?
-			$location_terms = get_terms( 'location', array( 'hide_empty' => true ) );
-			$location_count = ! is_wp_error( $location_terms ) ? sizeof( $location_terms ) : 0;
-
-			if( 1 >= $location_count || empty( $this->location ) )
-			{
-				return '';
-			}
-
-			$sentence = sprintf(
-				'%s %s %s <strong><address>%s</address></strong>',
-				__( 'See this', 'inventory-presser' ),
-				$this->make,
-				__( 'at', 'inventory-presser' ),
-				$this->location
-			);
-
-			$sentence = apply_filters( 'invp_vehicle_location_sentence', $sentence, $this );
-
-			if( function_exists( 'apply_shortcodes' ) )
-			{
-				$sentence = apply_shortcodes( $sentence );
-			}
-
-			return sprintf(
-				'<div class="vehicle-location">%s</div>',
-				$sentence
-			);
+			return invp_get_the_location_sentence( $this->post_ID );
 		}
 
 		/**

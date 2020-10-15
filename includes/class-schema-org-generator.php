@@ -78,14 +78,13 @@ class Inventory_Presser_Schema_Org_Generator
 		];
 
 		$obj['name'] = get_the_title( $post_ID );
-
-		$vehicle = new Inventory_Presser_Vehicle( $post_ID );
 		
-		if( '' != $vehicle->make )
+		$make = invp_get_the_make( $post_ID );
+		if( '' != $make )
 		{
 			$obj['brand'] = [
 				'@type' => 'Thing',
-				'name'  => $vehicle->make
+				'name'  => $make,
 			];
 		}
 
@@ -101,6 +100,7 @@ class Inventory_Presser_Schema_Org_Generator
 			$obj['vehicleModelDate'] = $year;
 		}
 
+		$vehicle = new Inventory_Presser_Vehicle( $post_ID );
 		//if the image does not end with 'no-photo.png'
 		if( 'no-photo.png' != substr( $vehicle->image_url, 12 ) )
 		{

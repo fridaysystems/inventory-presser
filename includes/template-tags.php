@@ -47,6 +47,75 @@ function invp_get_the_down_payment( $post_ID = null )
 	return '$' . number_format( $down_payment, 0, '.', ',' );
 }
 
+/**
+ * location_sentence
+ * 
+ * Creates a short sentence identifying the dealership address where
+ * this vehicle is located. If there is only one term in the locations
+ * taxonomy containing vehicles, this method returns an empty string.
+ *
+ * @return string An HTML <div> element containing a sentence that identifies the lot where this vehicle is located.
+ */
+function invp_get_the_location_sentence( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	/**
+	 * How many locations does this dealer have? If only one, return empty 
+	 * string because there's no reason to point out where this vehicle is, the
+	 * dealership address is all over the website.
+	 */
+	$location_terms = get_terms( 'location', array( 'hide_empty' => true ) );
+	$location_count = ! is_wp_error( $location_terms ) ? sizeof( $location_terms ) : 0;
+
+	if( 1 >= $location_count )
+	{
+		return '';
+	}
+
+	/**
+	 * We want the term description from the location taxonomy term because the 
+	 * meta key/term name only contains street address line one. The term 
+	 * description has the full address.
+	 */
+	$location_terms = wp_get_post_terms( $post_ID, 'location' );
+	$location = implode( ', ', array_column( $location_terms, 'description' ) );
+
+	if( empty( $location ) )
+	{
+		return '';
+	}
+
+	$sentence = sprintf(
+		'%s %s %s <strong><address>%s</address></strong>',
+		__( 'See this', 'inventory-presser' ),
+		invp_get_the_make( $post_ID ),
+		__( 'at', 'inventory-presser' ),
+		$location
+	);
+
+	$sentence = apply_filters( 'invp_vehicle_location_sentence', $sentence, $post_ID );
+
+	if( function_exists( 'apply_shortcodes' ) )
+	{
+		$sentence = apply_shortcodes( $sentence );
+	}
+
+	return $sentence;
+}
+
+function invp_get_the_make( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'make', $post_ID );
+}
+
 function invp_get_the_msrp( $post_ID = null )
 {
 	if( empty( $post_ID ) )

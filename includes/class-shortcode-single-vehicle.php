@@ -73,7 +73,14 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 
 						<?php
 						// if dealership has multiple locations, display the location of this vehicle
-						echo $vehicle->location_sentence();
+						$location_sentence = invp_get_the_location_sentence();
+						if( ! empty( $location_sentence ) )
+						{
+							printf(
+								'<div class="vehicle-location">%s</div>',
+								$location_sentence
+							);
+						}
 
 					?></div>
 					<div class="vehicle-images">
