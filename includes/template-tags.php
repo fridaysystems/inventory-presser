@@ -689,6 +689,15 @@ function invp_get_the_stock_number( $post_ID = null )
 	return INVP::get_meta( 'stock_number', $post_ID );
 }
 
+function invp_get_the_type( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'type', $post_ID );
+}
+
 /**
  * invp_get_the_VIN
  * 
