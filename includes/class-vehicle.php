@@ -145,18 +145,10 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			}
 
 			$this->transmission = invp_get_the_transmission( $post_id );
-
 			$this->is_sold = invp_is_sold( $post_id );
 			$this->is_wholesale = invp_is_wholesale( $post_id );
 			$this->is_used = invp_is_used( $post_id );
-
-			/**
-			 * We want the term description from the location taxonomy term
-			 * because the meta key/term name only contains street address line one.
-			 */
-			$location_terms = wp_get_post_terms( $post_id, 'location' );
-			$this->location = implode( ', ', array_column( $location_terms, 'description' ) );
-
+			$this->location = invp_get_the_location( $post_id );
 			$this->options_array = invp_get_the_options( $post_id );
 		}
 		

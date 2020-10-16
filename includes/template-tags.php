@@ -294,6 +294,33 @@ function invp_get_the_interior_color( $post_ID = null )
 }
 
 /**
+ * invp_get_the_location
+ *
+ * Template tag. Returns the address where this vehicle is located. Address may
+ * contain line break characters.
+ * 
+ * The location taxonomy terms contain full street addresses in the term 
+ * description.
+ * 
+ * @param  int $post_ID
+ * @return string
+ */
+function invp_get_the_location( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	/**
+	 * We want the term description from the location taxonomy term
+	 * because the meta key/term name only contains street address line one.
+	 */
+	$location_terms = wp_get_post_terms( $post_ID, 'location' );
+	return implode( ', ', array_column( $location_terms, 'description' ) );
+}
+
+/**
  * location_sentence
  * 
  * Creates a short sentence identifying the dealership address where
