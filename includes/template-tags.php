@@ -332,6 +332,23 @@ function invp_get_the_fuel_economy_value( $key, $fuel_type = 1, $post_ID = null 
 	return INVP::get_meta( $key, $post_ID );
 }
 
+/**
+ * invp_get_the_hull_material
+ * 
+ * Template tag. Boat field.
+ *
+ * @param  int $post_ID
+ * @return string
+ */
+function invp_get_the_hull_material( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'hull_material', $post_ID );
+}
+
 function invp_get_the_interior_color( $post_ID = null )
 {
 	if( empty( $post_ID ) )
