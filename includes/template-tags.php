@@ -11,6 +11,15 @@ defined( 'ABSPATH' ) or exit;
  * @author     Corey Salzano <corey@friday.systems>
  */
 
+function invp_get_the_availability( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'availability', $post_ID );
+}
+
 /**
  * invp_get_the_beam
  * 
