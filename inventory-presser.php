@@ -1141,7 +1141,7 @@ fill: #$black;
 	function register_meta_fields()
 	{
 		//Add meta fields to our post type
-		foreach( Inventory_Presser_Vehicle::keys_and_types( true ) as $key_arr )
+		foreach( INVP::keys_and_types( true ) as $key_arr )
 		{
 			$key = apply_filters( 'invp_prefix_meta_key', $key_arr['name'] );
 			register_post_meta( INVP::POST_TYPE, $key, array(

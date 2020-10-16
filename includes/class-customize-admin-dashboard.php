@@ -1143,8 +1143,7 @@ class Inventory_Presser_Customize_Dashboard
 		 * Loop over the post meta keys we manage and save their values
 		 * if we find them coming over as part of the post to save.
 		 */
-		$vehicle = new Inventory_Presser_Vehicle( $post_id );
-		$keys = $vehicle->keys();
+		$keys = INVP::keys();
 		$keys[] = 'options_array';
 
 		foreach( $keys as $key )

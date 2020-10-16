@@ -121,7 +121,7 @@ class Inventory_Presser_Blocks
 
 		//localize an odometer units word for the edit vehicle page
 		wp_localize_script( 'invp-blocks', 'invp_blocks', array(
-			'keys'        => Inventory_Presser_Vehicle::keys_and_types(),
+			'keys'        => INVP::keys_and_types(),
 			'meta_prefix' => INVP::meta_prefix(),
 		) );
 

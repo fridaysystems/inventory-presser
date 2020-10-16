@@ -124,8 +124,7 @@ class Order_By_Widget extends WP_Widget {
 		 *
 		 */
 		$arr = array();
-		$v = new Inventory_Presser_Vehicle();
-		foreach( $v->keys() as $key ) {
+		foreach( INVP::keys() as $key ) {
 			$key = apply_filters( 'invp_prefix_meta_key', $key );
 			//if we have a saved label, use that. otherwise, create a label
 			$arr[$key] = ( isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $this->prettify_meta_key( $key ) );
@@ -197,7 +196,7 @@ class Order_By_Widget extends WP_Widget {
 		);
 		$keys = array();
 		$v = new Inventory_Presser_Vehicle();
-		foreach( $v->keys() as $key ) {
+		foreach( INVP::keys() as $key ) {
 			$key = apply_filters( 'invp_prefix_meta_key', $key );
 			if( isset( $_REQUEST['obpm-key-' . $key] ) ) {
 				array_push( $keys, $key );
