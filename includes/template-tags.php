@@ -206,6 +206,23 @@ function invp_get_the_carfax_url_report( $post_ID = null )
 	return 'http://www.carfax.com/VehicleHistory/p/Report.cfx?vin=' . invp_get_the_VIN();
 }
 
+/**
+ * invp_get_the_color
+ * 
+ * Template tag. Returns the exterior color of the vehicle.
+ *
+ * @param  int $post_ID
+ * @return string
+ */
+function invp_get_the_color( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'color', $post_ID );
+}
+
 function invp_get_the_down_payment( $post_ID = null )
 {
 	if( empty( $post_ID ) )

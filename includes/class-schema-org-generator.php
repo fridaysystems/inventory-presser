@@ -137,9 +137,9 @@ class Inventory_Presser_Schema_Org_Generator
 			$obj['bodyType'] = invp_get_the_body_style( $post_ID );
 		}
 
-		if( '' != $vehicle->color )
+		if( '' != invp_get_the_color( $post_ID ) )
 		{
-			$obj['color'] = $vehicle->color;
+			$obj['color'] = invp_get_the_color( $post_ID );
 		}
 
 		if( '' != $vehicle->interior_color )
