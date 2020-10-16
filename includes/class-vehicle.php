@@ -146,9 +146,9 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			$this->transmission = invp_get_the_transmission( $post_id );
 
-			$this->is_sold = false !== strpos( strtolower( $this->availability ), 'sold' );
+			$this->is_sold = invp_is_sold( $post_id );
 			$this->is_wholesale = invp_is_wholesale( $post_id );
-			$this->is_used = has_term( 'used', 'condition', $post_id );
+			$this->is_used = invp_is_used( $post_id );
 
 			/**
 			 * We want the term description from the location taxonomy term

@@ -847,6 +847,15 @@ function invp_is_sold( $post_ID = null )
 	return false !== strpos( strtolower( INVP::get_meta( 'availability', $post_ID ) ), 'sold' );
 }
 
+function invp_is_used( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return has_term( 'used', 'condition', $post_ID );
+}
+
 function invp_is_wholesale( $post_ID = null )
 {
 	if( empty( $post_ID ) )
