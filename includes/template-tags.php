@@ -342,6 +342,23 @@ function invp_get_the_interior_color( $post_ID = null )
 }
 
 /**
+ * invp_get_the_length
+ * 
+ * Template tag. Boat field. Returns the length of the boat.
+ *
+ * @param  int $post_ID
+ * @return int
+ */
+function invp_get_the_length( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'length', $post_ID );
+}
+
+/**
  * invp_get_the_location
  *
  * Template tag. Returns the address where this vehicle is located. Address may
