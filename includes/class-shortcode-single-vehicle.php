@@ -50,8 +50,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 			return '';
 		}
 
-		$vehicle = new Inventory_Presser_Vehicle( get_the_ID() );
-		$image_url_lists = $vehicle->get_images_html_array( array( 'large', 'thumb' ) );
+		$image_url_lists = invp_get_the_photos( array( 'large', 'thumb' ) );
 
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'flexslider' );
@@ -133,7 +132,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 				<div class="vehicle-columns">
 					<div class="vehicle-summary"><?php
 
-						echo $this->vehicle_attribute_table( $vehicle );
+						echo $this->vehicle_attribute_table();
 
 					?></div>
 					<div class="vehicle-buttons"><?php

@@ -53,8 +53,6 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'invp_archive_vehicle' );
 
-		$vehicle = new Inventory_Presser_Vehicle( get_the_ID() );
-
  		ob_start();
 		?>
 
@@ -98,7 +96,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 
 					<div class="vehicle-summary"><?php
 
-						echo $this->vehicle_attribute_table( $vehicle );
+						echo $this->vehicle_attribute_table();
 
 					?></div>
 
@@ -131,7 +129,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 							}
 						}
 
-						do_action( 'invp_archive_buttons', $vehicle );
+						do_action( 'invp_archive_buttons' );
 
 						?><a class="wp-block-button__link" href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php _e( 'View Details', 'inventory-presser' ); ?></a>
 					</div>

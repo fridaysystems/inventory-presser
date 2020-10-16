@@ -534,9 +534,8 @@ class Inventory_Presser_Options
 	 */
 	private function html_select_vehicle_keys( $attributes = null, $selected_value = null )
 	{
-		$vehicle = new Inventory_Presser_Vehicle();
 		$options = '';
-		foreach( $vehicle->keys( false ) as $key )
+		foreach( INVP::keys( false ) as $key )
 		{
 			$meta_key = apply_filters( 'invp_prefix_meta_key', $key );
 

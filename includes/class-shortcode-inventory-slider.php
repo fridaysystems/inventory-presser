@@ -122,10 +122,8 @@ class Inventory_Presser_Shortcode_Slider
 		$flex_html = '<div class="flexslider flex-native">'
 			. '<ul class="slides">';
 
-		foreach( $inventory_ids as $inventory_id ) {
-
-			$vehicle = new Inventory_Presser_Vehicle( $inventory_id );
-
+		foreach( $inventory_ids as $inventory_id )
+		{
 			$flex_html .= sprintf(
 				'<li><a class="flex-link" href="%s">'
 				. '<div class="grid-image" style="background-image: url(\'%s\');">'

@@ -114,7 +114,7 @@ class Inventory_Presser_Blocks
 
 		wp_enqueue_script(
 			'invp-blocks',
-			plugins_url( 'build/index.js', $plugin_root_file_path ),
+			plugins_url( 'build/index.js', INVP_PLUGIN_FILE_PATH ),
 			$asset_file['dependencies'],
 			$asset_file['version']
 		);

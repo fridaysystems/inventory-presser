@@ -15,11 +15,16 @@ class Inventory_Presser_Template_Shortcode
 	 * Creates HTML that produces the vehicle attribute table that accompanies 
 	 * every vehicle listing.
 	 *
-	 * @param  Inventory_Presser_Vehicle $vehicle A vehicle object
+	 * @param  int $post_ID A vehicle post ID
 	 * @return string HTML that renders a table containing vehicle attributes
 	 */
-	protected function vehicle_attribute_table( $vehicle )
+	protected function vehicle_attribute_table( $post_ID = null )
 	{
+		if( empty( $post_ID ) )
+		{
+			$post_ID = get_the_ID();
+		}
+
 		$invp_settings = INVP::settings();
 
 		/**
@@ -33,9 +38,9 @@ class Inventory_Presser_Template_Shortcode
 		//Book Value
 		if( ! isset( $invp_settings['price_display'] ) || 'genes' != $invp_settings['price_display'] )
 		{
-			$book_value = invp_get_the_book_value( $vehicle->post_ID );
+			$book_value = invp_get_the_book_value( $post_ID );
 			if( ! empty( $book_value )
-				&& invp_get_raw_book_value( $vehicle->post_ID ) > invp_get_raw_price( $vehicle->post_ID ) )
+				&& invp_get_raw_book_value( $post_ID ) > invp_get_raw_price( $post_ID ) )
 			{
 				$table_items[] = array(
 					'member' => 'book_value',
@@ -46,12 +51,12 @@ class Inventory_Presser_Template_Shortcode
 		}
 
 		//Odometer
-		if( 'boat' != invp_get_the_type( $vehicle->post_ID ) )
+		if( 'boat' != invp_get_the_type( $post_ID ) )
 		{
 			$table_items[] = array(
 				'member' => 'odometer',
 				'label'  => apply_filters( 'invp_label-odometer', apply_filters( 'invp_odometer_word', __( 'Mileage', 'inventory-presser' ) ) ),
-				'value'  => invp_get_the_odometer( ' ' . apply_filters( 'invp_odometer_word', 'Miles' ), $vehicle->post_ID ),
+				'value'  => invp_get_the_odometer( ' ' . apply_filters( 'invp_odometer_word', 'Miles' ), $post_ID ),
 			);
 		}
 
@@ -61,49 +66,54 @@ class Inventory_Presser_Template_Shortcode
 			array(
 				'member' => 'color',
 				'label'  => __( 'Color', 'inventory_presser' ),
+				'value'  => invp_get_the_color( $post_ID ),
 			),
 
 			//Interior Color
 			array(
 				'member' => 'interior_color',
 				'label'  => __( 'Interior', 'inventory_presser' ),
+				'value'  => invp_get_the_interior_color( $post_ID ),
 			),
 
 			//Fuel + Engine
 			array(
 				'member' => 'engine',
 				'label'  => __( 'Engine', 'inventory-presser' ),
-				'value'  => implode( ' ', array( invp_get_the_fuel( $vehicle->post_ID ), invp_get_the_engine( $vehicle->post_ID ) ) ),
+				'value'  => implode( ' ', array( invp_get_the_fuel( $post_ID ), invp_get_the_engine( $post_ID ) ) ),
 			),
 
 			//Transmission
 			array(
 				'member' => 'transmission',
 				'label'  => __( 'Transmission', 'inventory-presser' ),
+				'value'  => invp_get_the_transmission( $post_ID ),
 			),
 
 			//Drive Type
 			array(
 				'member' => 'drive_type',
 				'label'  => __( 'Drive Type', 'inventory-presser' ),
+				'value'  => invp_get_the_drive_type( $post_ID ),
 			),
 
 			//Stock Number
 			array(
 				'member' => 'stock_number',
 				'label'  => __( 'Stock', 'inventory-presser' ),
+				'value'  => invp_get_the_stock_number( $post_ID ),
 			),
 
 			//VIN
 			array(
 				'member' => 'vin',
-				'label'  => 'boat' == invp_get_the_type( $vehicle->post_ID ) ? __( 'HIN', 'inventory-presser' ) : __( 'VIN', 'inventory-presser' ),
-				'value'  => invp_get_the_VIN(),
+				'label'  => 'boat' == invp_get_the_type( $post_ID ) ? __( 'HIN', 'inventory-presser' ) : __( 'VIN', 'inventory-presser' ),
+				'value'  => invp_get_the_VIN( $post_ID ),
 			),
 		) );
 
 		//Boat-specific fields
-		if( 'boat' == invp_get_the_type( $vehicle->post_ID ) )
+		if( 'boat' == invp_get_the_type( $post_ID ) )
 		{
 			//Beam
 			$table_items[] = array(
@@ -130,7 +140,7 @@ class Inventory_Presser_Template_Shortcode
 		{
 			//does the vehicle have a value for this member?
 			$member = $item['member'];
-			if( empty( $item['value'] ) && empty( $vehicle->$member ) )
+			if( empty( $item['value'] ) && empty( INVP::get_meta( $member, $post_ID ) ) )
 			{
 				//no
 				continue;
@@ -139,7 +149,7 @@ class Inventory_Presser_Template_Shortcode
 			$html .= sprintf(
 				'<div class="item"><div class="label">%s</div><div class="value vehicle-content-initcaps">%s</div></div>',
 				apply_filters( 'invp_label-' . $member, $item['label'] ),
-				empty( $item['value'] ) ? strtolower( $vehicle->$member ) : $item['value']
+				empty( $item['value'] ) ? strtolower( INVP::get_meta( $member, $post_ID ) ) : $item['value']
 			);
 		}
 

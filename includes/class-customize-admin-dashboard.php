@@ -679,7 +679,6 @@ class Inventory_Presser_Customize_Dashboard
 		//turn the array into an associative array with value false for all
 		$options = array_fill_keys( $options, false );
 
-		$vehicle = new Inventory_Presser_Vehicle( $post->ID );
 		$options_array = invp_get_the_options( $post->ID );
 		if( is_array( $options_array ) )
 		{

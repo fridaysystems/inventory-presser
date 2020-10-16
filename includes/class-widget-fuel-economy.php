@@ -104,8 +104,7 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 		}
 
 		//if the vehicle doesn't have EPA data, abort
-		$vehicle = new Inventory_Presser_Vehicle( $queried_object->ID );
-		if( empty( $vehicle->fuel_economy_1_city ) || empty( $vehicle->fuel_economy_1_highway ) )
+		if( empty( invp_get_the_fuel_economy_value( 'city', 1, $queried_object->ID ) ) || empty( invp_get_the_fuel_economy_value( 'highway', 1, $queried_object->ID ) ) )
 		{
 			return;
 		}
@@ -124,12 +123,12 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 		//There could be two fuel types
 		$fuel_types = 0;
 
-		if( ! empty( $vehicle->fuel_economy_1_city ) )
+		if( ! empty( invp_get_the_fuel_economy_value( 'city', 1, $queried_object->ID ) ) )
 		{
 			$fuel_types++;
 		}
 
-		if( ! empty( $vehicle->fuel_economy_2_city ) )
+		if( ! empty( invp_get_the_fuel_economy_value( 'city', 2, $queried_object->ID ) ) )
 		{
 			$fuel_types++;
 		}
@@ -137,19 +136,19 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 		for( $t=1; $t<=$fuel_types; $t++ )
 		{
 			//name
-			if( ! empty( $vehicle->get_fuel_economy_member( $t, 'name' ) ) )
+			if( ! empty( invp_get_the_fuel_economy_value( 'name', $t, $queried_object->ID ) ) )
 			{
-				printf( '<div class="fuel-name">%s</div>', $vehicle->get_fuel_economy_member( $t, 'name' ) );
+				printf( '<div class="fuel-name">%s</div>', invp_get_the_fuel_economy_value( 'name', $t, $queried_object->ID ) );
 			}
 
 			echo '<div class="fuel-economy-fuel">';
 
 			//Combined
-			if( ! empty( $vehicle->get_fuel_economy_member( $t, 'combined' ) ) )
+			if( ! empty( invp_get_the_fuel_economy_value( 'combined', $t, $queried_object->ID ) ) )
 			{
 				printf(
 					'<div class="fuel-economy-combined"><span class="number">%s</span></div><div class="fuel-economy-combined-label">%s</div>',
-					$vehicle->get_fuel_economy_member( $t, 'combined' ),
+					invp_get_the_fuel_economy_value( 'combined', $t, $queried_object->ID ),
 					__( 'combined', 'inventory-presser' )
 				);
 			}
@@ -162,20 +161,20 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 				__( 'MPG', 'inventory-presser' )
 			);
 
-			if( ! empty( $vehicle->get_fuel_economy_member( $t, 'city' ) ) )
+			if( ! empty( invp_get_the_fuel_economy_value( 'city', $t, $queried_object->ID ) ) )
 			{
 				printf(
 					'<div class="fuel-economy-city"><span class="number">%s</span></div><div class="fuel-economy-city-label">%s</div>',
-					$vehicle->get_fuel_economy_member( $t, 'city' ),
+					invp_get_the_fuel_economy_value( 'city', $t, $queried_object->ID ),
 					__( 'city', 'inventory-presser' )
 				);
 			}
 
-			if( ! empty( $vehicle->get_fuel_economy_member( $t, 'highway' ) ) )
+			if( ! empty( invp_get_the_fuel_economy_value( 'highways', $t, $queried_object->ID ) ) )
 			{
 				printf(
 					'<div class="fuel-economy-highway"><span class="number">%s</span></div><div class="fuel-economy-highway-label">%s</div>',
-					$vehicle->get_fuel_economy_member( $t, 'highway' ),
+					invp_get_the_fuel_economy_value( 'highway', $t, $queried_object->ID ),
 					__( 'highway', 'inventory-presser' )
 				);
 			}
@@ -183,28 +182,28 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 
 			//Are we including an optional second section with annual consumption, cost & emissions?
 			if( ! empty( $instance['include_annual_stats'] )
-				&& ( ! empty( $vehicle->fuel_economy_five_year_savings )
-					|| ! empty( $vehicle->get_fuel_economy_member( $t, 'annual_consumption' ) )
-					|| ! empty( $vehicle->get_fuel_economy_member( $t, 'annual_cost' ) )
-					|| empty( $vehicle->get_fuel_economy_member( $t, 'annual_emissions' ) ) ) )
+				&& ( ! empty( invp_get_the_fuel_economy_value( 'five_year_savings', null, $queried_object->ID ) )
+					|| ! empty( invp_get_the_fuel_economy_value( 'annual_consumption', $t, $queried_object->ID ) )
+					|| ! empty( invp_get_the_fuel_economy_value( 'annual_cost', $t, $queried_object->ID ) )
+					|| empty( invp_get_the_fuel_economy_value( 'annual_emissions', $t, $queried_object->ID  ) ) ) )
 			{
 				//Yes
 				echo '<dl class="fuel-economy-annual-stats">';
 
 				//Five year savings
-				if( ! empty( $vehicle->fuel_economy_five_year_savings ) )
+				if( ! empty( invp_get_the_fuel_economy_value( 'five_year_savings', null, $queried_object->ID ) ) )
 				{
 					printf(
 						'<dt>%s</dt><dd>%s</dd>',
 						__( 'Five year savings compared to average vehicle', 'inventory-presser' ),
-						sprintf( '$%s', number_format( $vehicle->fuel_economy_five_year_savings, 0, '.', ',' ) )
+						sprintf( '$%s', number_format( invp_get_the_fuel_economy_value( 'five_year_savings', null, $queried_object->ID ), 0, '.', ',' ) )
 					);
 				}
 
 				//Annual consumption
-				if( ! empty( $vehicle->get_fuel_economy_member( $t, 'annual_consumption' ) ) )
+				if( ! empty( invp_get_the_fuel_economy_value( 'annual_consumption', $t, $queried_object->ID ) ) )
 				{
-					$number = $vehicle->get_fuel_economy_member( $t, 'annual_consumption' );
+					$number = invp_get_the_fuel_economy_value( 'annual_consumption', $t, $queried_object->ID );
 					if( is_numeric( $number ) )
 					{
 						$number = round( $number, 2 );
@@ -218,9 +217,9 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 				}
 
 				//Annual cost
-				if( ! empty( $vehicle->get_fuel_economy_member( $t, 'annual_cost' ) ) )
+				if( ! empty( invp_get_the_fuel_economy_value( 'annual_cost', $t, $queried_object->ID ) ) )
 				{
-					$price = $vehicle->get_fuel_economy_member( $t, 'annual_cost' );
+					$price = invp_get_the_fuel_economy_value( 'annual_cost', $t, $queried_object->ID );
 					if( is_numeric( $price ) )
 					{
 						$price = sprintf( '$%s', number_format( $price, 0, '.', ',' ) );
@@ -233,12 +232,12 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 				}
 
 				//Annual emissions
-				if( ! empty( $vehicle->get_fuel_economy_member( $t, 'annual_emissions' ) ) )
+				if( ! empty( invp_get_the_fuel_economy_value( 'annual_emissions', $t, $queried_object->ID ) ) )
 				{
 					printf(
 						'<dt>%s</dt><dd>%s %s</dd>',
 						__( 'Annual tailpipe CO2 emissions', 'inventory-presser' ),
-						$vehicle->get_fuel_economy_member( $t, 'annual_emissions' ),
+						invp_get_the_fuel_economy_value( 'annual_emissions', $t, $queried_object->ID ),
 						__( 'grams per mile', 'inventory-presser' )
 					);
 				}

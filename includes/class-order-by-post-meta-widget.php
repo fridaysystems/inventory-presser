@@ -190,12 +190,7 @@ class Order_By_Widget extends WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
 		$instance['title'] = strip_tags( $new_instance['title'] );
-		$tax_args = array(
-			'public'   => true,
-			'_builtin' => false,
-		);
 		$keys = array();
-		$v = new Inventory_Presser_Vehicle();
 		foreach( INVP::keys() as $key ) {
 			$key = apply_filters( 'invp_prefix_meta_key', $key );
 			if( isset( $_REQUEST['obpm-key-' . $key] ) ) {

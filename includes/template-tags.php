@@ -284,6 +284,38 @@ function invp_get_the_fuel( $post_ID = null )
 	return INVP::get_meta( 'fuel', $post_ID );
 }
 
+/**
+ * invp_get_the_fuel_economy_value
+ * 
+ * Makes retrieving a fuel economy data point from metadata easier.
+ *
+ * @param  string $key One of these fuel economy member suffixes: name, annual_consumption, annual_cost, annual_emissions, combined_mpg, city_mpg, highway_mpg
+ * @param  int $fuel_type Specifies which of the two fuel types from which to retrieve the value.
+ * @return string The meta value string corresponding to the provided $key or empty string.
+ */
+function invp_get_the_fuel_economy_value( $key, $fuel_type = 1, $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	
+	/**
+	 * The meta key fuel_economy_five_year_savings does not apply to either fuel
+	 * type, so ignore $fuel_type when this key is passed.
+	 */
+	if( 'fuel_economy_five_year_savings' == $key )
+	{
+		$key = 'fuel_economy_' . $key;
+	}
+	else
+	{
+		$key = 'fuel_economy_' . $fuel_type . '_' . $key;
+	}
+
+	return INVP::get_meta( $key, $post_ID );
+}
+
 function invp_get_the_interior_color( $post_ID = null )
 {
 	if( empty( $post_ID ) )
@@ -537,6 +569,11 @@ function invp_get_the_photo_url( $size = 'medium', $post_ID = null )
 		$size = 'medium';
 	}
 
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
 	$thumbnail_id = get_post_thumbnail_id( $post_ID, $size );
 	if( ! is_wp_error( $thumbnail_id ) && ! empty( $thumbnail_id ) )
 	{
@@ -544,6 +581,77 @@ function invp_get_the_photo_url( $size = 'medium', $post_ID = null )
 	}
 
 	return apply_filters( 'invp_no_photo_url', plugins_url( 'assets/no-photo.svg', dirname( __FILE__ ) ), $post_ID );	
+}
+
+/**
+ * invp_get_the_photos
+ * 
+ * Fill arrays of thumb and large <img> elements and URLs to simplify the use of 
+ * of vehicle photos.
+ *
+ * @param  array $sizes
+ * @return array An array of thumbnail and full size HTML <img> elements plus URLs
+ */
+function invp_get_the_photos( $sizes, $post_ID = null )
+{
+	/**
+	 * Backwards compatibility to versions before 5.4.0 where the
+	 * incoming argument was a string not an array.
+	 */
+	if( ! is_array( $sizes ) )
+	{
+		$sizes = array( $sizes );
+	}
+
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	$image_args = array(
+		'meta_key'       => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
+		'posts_per_page' => -1,
+		'order'          => 'ASC',
+		'orderby'        => 'meta_value_num',
+		'post_mime_type' => 'image',
+		'post_parent'    => $post_ID,
+		'post_status'    => 'inherit',
+		'post_type'      => 'attachment',
+	);
+
+	$images = get_posts( $image_args );
+
+	$image_urls = array();
+	foreach( $images as $image )
+	{
+		foreach( $sizes as $size )
+		{
+			$img_element = wp_get_attachment_image(
+				$image->ID,
+				$size,
+				false,
+				array( 'class' => "attachment-$size size-$size invp-image" )
+			);
+
+			$image_urls[$size][] = $img_element;
+
+			if( 'large' == $size )
+			{
+				$image_urls['urls'][] = INVP::extract_image_element_src( $img_element );
+			}
+		}
+	}
+
+	/**
+	 * Backwards compatibility to versions before 5.4.0 where the
+	 * incoming argument was a string not an array.
+	 */
+	if( 1 == sizeof( $sizes ) )
+	{
+		return $image_urls[$sizes[0]];
+	}
+
+	return $image_urls;		
 }
 
 function invp_get_raw_price( $post_ID = null )

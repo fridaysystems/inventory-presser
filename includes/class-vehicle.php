@@ -226,20 +226,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		{
 			return invp_get_the_down_payment( $this->post_ID );
 		}
-		
-		/**
-		 * extract_image_element_src
-		 *
-		 * Given a string containing HTML <img> element markup, extract the
-		 * value of the src element and return it.
-		 * 
-		 * @param  string $img_element An HTML <img> element
-		 * @return string The value of the src attribute
-		 */
-		private function extract_image_element_src( $img_element )
-		{
-			return preg_replace( "/\">?.*/", "", preg_replace( "/.*<img[\s\S]+src=\"/", "", $img_element ) );
-		}
 
 		/**
 		 * get_book_value
@@ -260,14 +246,14 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * 
 		 * Makes retrieving a fuel economy data point from metadata easier.
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_fuel_economy_value() instead.
 		 * @param  int $fuel_type Specifies which of the two fuel types from which to retrieve the value.
 		 * @param  string $key One of these fuel economy member suffixes: name, annual_consumption, annual_cost, annual_emissions, combined_mpg, city_mpg, highway_mpg
 		 * @return string|null The meta value string corresponding to the provided $key or null
 		 */
 		public function get_fuel_economy_member( $fuel_type, $key )
 		{
-			$key = 'fuel_economy_' . $fuel_type . '_' . $key;
-			return ! empty( $this->$key ) ? $this->$key : null;
+			return invp_get_the_fuel_economy_value( $fuel_type, $key, $this->post_ID );
 		}
 
 		/**
@@ -276,64 +262,13 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 * Fill arrays of thumb and large <img> elements to simplify the use of 
 		 * of vehicle photos.
 		 *
+		 * @deprecated 12.0.0 Use invp_get_the_photos() instead.
 		 * @param  array $sizes
 		 * @return array An array of thumbnail and full size HTML <img> elements
 		 */
 		function get_images_html_array( $sizes )
 		{
-			/**
-			 * Backwards compatibility to versions before 5.4.0 where the
-			 * incoming argument was a string not an array.
-			 */
-			if( ! is_array( $sizes ) )
-			{
-				$sizes = array( $sizes );
-			}
-
-			$image_args = array(
-				'meta_key'       => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
-				'posts_per_page' => -1,
-				'order'          => 'ASC',
-				'orderby'        => 'meta_value_num',
-				'post_mime_type' => 'image',
-				'post_parent'    => $this->post_ID,
-				'post_status'    => 'inherit',
-				'post_type'      => 'attachment',
-			);
-
-			$images = get_posts( $image_args );
-
-			$image_urls = array();
-			foreach( $images as $image )
-			{
-				foreach( $sizes as $size )
-				{
-					$img_element = wp_get_attachment_image(
-						$image->ID,
-						$size,
-						false,
-						array( 'class' => "attachment-$size size-$size invp-image" )
-					);
-
-					$image_urls[$size][] = $img_element;
-
-					if( 'large' == $size )
-					{
-						$image_urls['urls'][] = $this->extract_image_element_src( $img_element );
-					}
-				}
-			}
-
-			/**
-			 * Backwards compatibility to versions before 5.4.0 where the
-			 * incoming argument was a string not an array.
-			 */
-			if( 1 == sizeof( $sizes ) )
-			{
-				return $image_urls[$sizes[0]];
-			}
-
-			return $image_urls;
+			return invp_get_the_photos( $sizes, $this->post_ID );
 		}
 		
 		/**

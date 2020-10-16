@@ -58,12 +58,11 @@ class Inventory_Presser_Plugin
 	 * Filter callback that outputs HTML markup that creates a Carfax badge if
 	 * $vehicle contains Carfax report data.
 	 *
-	 * @param  object $vehicle An instance of the Inventory_Presser_Vehicle class.
 	 * @return void
 	 */
-	function add_carfax_badge( $vehicle )
+	function add_carfax_badge()
 	{
-		$carfax_html = invp_get_the_carfax_icon_html( $vehicle->post_ID );
+		$carfax_html = invp_get_the_carfax_icon_html();
 		if( '' != $carfax_html )
 		{
 			?><div class="carfax-wrapper"><?php
@@ -666,8 +665,8 @@ class Inventory_Presser_Plugin
 		//If Carfax is enabled, add the badge to pages
 		if ( isset( $this->settings['use_carfax'] ) && $this->settings['use_carfax'] )
 		{
-			add_action( 'invp_archive_buttons', array( $this, 'add_carfax_badge' ), 10, 1 );
-			add_action( 'invp_single_buttons',  array( $this, 'add_carfax_badge' ), 10, 1 );
+			add_action( 'invp_archive_buttons', array( $this, 'add_carfax_badge' ) );
+			add_action( 'invp_single_buttons',  array( $this, 'add_carfax_badge' ) );
 		}
 
 		//Allow custom fields to be searched
