@@ -11,6 +11,22 @@ defined( 'ABSPATH' ) or exit;
  * @author     Corey Salzano <corey@friday.systems>
  */
 
+/**
+ * invp_get_the_beam
+ * 
+ * Template tag. Boat field. A boat's width at its widest point.
+ *
+ * @param  int $post_ID
+ * @return double
+ */
+function invp_get_the_beam( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'beam', $post_ID );
+}
 
 function invp_get_the_body_style( $post_ID = null )
 {
