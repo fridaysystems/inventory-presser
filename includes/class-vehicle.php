@@ -125,7 +125,7 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			$this->image_url = invp_get_the_photo_url( 'medium', $post_id );
 
 			//get all data using the post ID
-			$meta = get_post_meta( $this->post_ID );
+			$meta = get_post_meta( $post_id );
 
 			//get these post meta values
 			foreach( $this->keys() as $key )
@@ -147,22 +147,17 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 			$this->transmission = invp_get_the_transmission( $post_id );
 
 			$this->is_sold = false !== strpos( strtolower( $this->availability ), 'sold' );
-			$this->is_wholesale = false !== strpos( strtolower( $this->availability ), 'wholesale' );
-			$this->is_used = has_term( 'used', 'condition', $this->post_ID );
+			$this->is_wholesale = invp_is_wholesale( $post_id );
+			$this->is_used = has_term( 'used', 'condition', $post_id );
 
 			/**
 			 * We want the term description from the location taxonomy term
 			 * because the meta key/term name only contains street address line one.
 			 */
-			$location_terms = wp_get_post_terms( $this->post_ID, 'location' );
+			$location_terms = wp_get_post_terms( $post_id, 'location' );
 			$this->location = implode( ', ', array_column( $location_terms, 'description' ) );
 
-			//Populate the options array with the multi-valued meta field values
-			if( isset( $meta[apply_filters( 'invp_prefix_meta_key', 'options_array' )] ) )
-			{
-				$this->options_array = $meta[apply_filters( 'invp_prefix_meta_key', 'options_array' )];
-				sort( $this->options_array );
-			}
+			$this->options_array = invp_get_the_options( $post_id );
 		}
 		
 		/**

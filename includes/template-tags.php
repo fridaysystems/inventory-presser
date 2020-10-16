@@ -509,7 +509,7 @@ function invp_get_the_photo_url( $size = 'medium', $post_ID = null )
 	{
 		$size = 'medium';
 	}
-	
+
 	$thumbnail_id = get_post_thumbnail_id( $post_ID, $size );
 	if( ! is_wp_error( $thumbnail_id ) && ! empty( $thumbnail_id ) )
 	{
@@ -845,4 +845,13 @@ function invp_is_sold( $post_ID = null )
 		$post_ID = get_the_ID();
 	}
 	return false !== strpos( strtolower( INVP::get_meta( 'availability', $post_ID ) ), 'sold' );
+}
+
+function invp_is_wholesale( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return false !== strpos( strtolower( INVP::get_meta( 'availability', $post_ID ) ), 'wholesale' );
 }
