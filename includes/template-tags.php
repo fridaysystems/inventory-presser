@@ -956,6 +956,15 @@ function invp_get_the_transmission_speeds( $post_ID )
 	return INVP::get_meta( 'transmission_speeds', $post_ID );
 }
 
+function invp_get_the_trim( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'trim', $post_ID );
+}
+
 function invp_get_the_type( $post_ID = null )
 {
 	if( empty( $post_ID ) )
