@@ -689,6 +689,48 @@ function invp_get_the_stock_number( $post_ID = null )
 	return INVP::get_meta( 'stock_number', $post_ID );
 }
 
+function invp_get_the_transmission( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	$raw = INVP::get_meta( 'transmission', $post_ID );
+
+	/**
+	 * If we have transmission speeds "6" and transmission string 
+	 * "Automatic", change the string to "6 Speed Automatic"
+	 */
+	if( ! empty( invp_get_the_transmission_speeds( $post_ID ) ) )
+	{
+		$prefix = sprintf(
+			'%s %s',
+			invp_get_the_transmission_speeds( $post_ID ),
+			__( 'Speed', 'inventory-presser' )
+		);
+
+		if( false === strpos( $raw, $prefix ) )
+		{
+			$raw = sprintf(
+				'%s %s',
+				$prefix,
+				$raw
+			);
+		}
+	}
+
+	return $raw;
+}
+
+function invp_get_the_transmission_speeds( $post_ID )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'transmission_speeds', $post_ID );
+}
+
 function invp_get_the_type( $post_ID = null )
 {
 	if( empty( $post_ID ) )
