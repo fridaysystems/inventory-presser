@@ -492,9 +492,31 @@ function invp_get_the_photo_count( $post_ID = null )
 	return sizeof( get_children( array( 
 		'post_mime_type' => 'image',
 		'post_parent'    => $post_ID,
-		'post_type'      => 'attachment',			
+		'post_type'      => 'attachment',
 		'posts_per_page' => -1,
 	) ) );
+}
+
+/**
+ * invp_get_the_photo_url
+ *
+ * @param  int $post_ID
+ * @return string A URL that points to a photo
+ */
+function invp_get_the_photo_url( $size = 'medium', $post_ID = null )
+{
+	if( empty( $size ) )
+	{
+		$size = 'medium';
+	}
+	
+	$thumbnail_id = get_post_thumbnail_id( $post_ID, $size );
+	if( ! is_wp_error( $thumbnail_id ) && ! empty( $thumbnail_id ) )
+	{
+		return wp_get_attachment_url( $thumbnail_id );
+	}
+
+	return apply_filters( 'invp_no_photo_url', plugins_url( 'assets/no-photo.svg', dirname( __FILE__ ) ), $post_ID );	
 }
 
 function invp_get_raw_price( $post_ID = null )

@@ -100,11 +100,10 @@ class Inventory_Presser_Schema_Org_Generator
 			$obj['vehicleModelDate'] = $year;
 		}
 
-		$vehicle = new Inventory_Presser_Vehicle( $post_ID );
 		//if the image does not end with 'no-photo.png'
-		if( 'no-photo.png' != substr( $vehicle->image_url, 12 ) )
+		if( 'no-photo.png' != substr( invp_get_the_photo_url( $post_ID ), 12 ) )
 		{
-			$obj['image'] = $vehicle->image_url;
+			$obj['image'] = invp_get_the_photo_url( $post_ID );
 		}
 
 		$odometer = invp_get_the_odometer( '', $post_ID );

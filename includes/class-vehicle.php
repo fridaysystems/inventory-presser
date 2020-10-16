@@ -121,24 +121,8 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 
 			if( is_null( $post_id ) ) { return; }
 
-			// put wp vars into our object properties
 			$this->post_ID = $post_id;
-
-			//Does this vehicle have photos?
-			$thumbnail_id = get_post_thumbnail_id( $this->post_ID, 'medium' );
-			if( ! is_wp_error( $thumbnail_id ) && ! empty( $thumbnail_id ) )
-			{
-				$this->image_url = wp_get_attachment_url( $thumbnail_id );
-			}
-			else
-			{
-				/**
-				 * Allow the URL of the "no photo photo," or the photo we show 
-				 * when a vehicle has zero photos, to be changed by other
-				 * developers with a filter hook.
-				 */
-				$this->image_url = apply_filters( 'invp_no_photo_url', plugins_url( 'assets/no-photo.svg', dirname( __FILE__ ) ), $this->post_ID );
-			}
+			$this->image_url = invp_get_the_photo_url( 'medium', $post_id );
 
 			//get all data using the post ID
 			$meta = get_post_meta( $this->post_ID );

@@ -131,7 +131,7 @@ class Inventory_Presser_Shortcode_Slider
 				. '<div class="grid-image" style="background-image: url(\'%s\');">'
 				. '</div>',
 				get_the_permalink( $inventory_id ),
-				wp_get_attachment_image_url( get_post_thumbnail_id( $inventory_id ), 'large')
+				invp_get_the_photo_url( 'large', $inventory_id )
 			);
 
 			if( $atts['captions'] ) {

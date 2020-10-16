@@ -194,11 +194,10 @@ class Inventory_Presser_Slider extends WP_Widget {
 
 		foreach ($inventory_ids as $inventory_id) {
 
-			$vehicle = new Inventory_Presser_Vehicle($inventory_id);
 			printf(
 				'<div class="widget-inventory-slide-wrap"><a href="%s"><div class="slick-background-image" style="background-image: url(%s);">',
 				get_the_permalink( $inventory_id ),
-				wp_get_attachment_image_url( get_post_thumbnail_id( $inventory_id ), 'large' )
+				invp_get_the_photo_url( 'large', $inventory_id )
 			);
 			if ($showtext != 'none') {
 				printf( '<div class="slick-text slick-text-%s">', $showtext );
