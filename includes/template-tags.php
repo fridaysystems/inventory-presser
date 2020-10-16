@@ -11,6 +11,16 @@ defined( 'ABSPATH' ) or exit;
  * @author     Corey Salzano <corey@friday.systems>
  */
 
+
+function invp_get_the_body_style( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'body_style', $post_ID );
+}
+
 /**
  * invp_get_raw_book_value
  * 
