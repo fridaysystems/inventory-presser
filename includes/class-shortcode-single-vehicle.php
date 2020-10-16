@@ -157,12 +157,12 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 				</div>
 
 				<div class="vehicle-content">
-					<div class="vehicle-content-wrap"><?php echo $vehicle->description; ?></div><?php
+					<div class="vehicle-content-wrap"><?php echo invp_get_the_description(); ?></div><?php
 
 					// if there's a youtube video associated with this vehicle, embed it
-					if ( $vehicle->youtube )
+					if ( invp_get_the_youtube_url() )
 					{
-						echo wp_oembed_get( 'https://www.youtube.com/watch?v=' . $vehicle->youtube );
+						echo wp_oembed_get( invp_get_the_youtube_url() );
 					}
 
 					?><ul class="vehicle-features"><?php

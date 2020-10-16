@@ -223,6 +223,15 @@ function invp_get_the_color( $post_ID = null )
 	return INVP::get_meta( 'color', $post_ID );
 }
 
+function invp_get_the_description( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'description', $post_ID );
+}
+
 function invp_get_the_down_payment( $post_ID = null )
 {
 	if( empty( $post_ID ) )
