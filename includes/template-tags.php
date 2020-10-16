@@ -291,6 +291,15 @@ function invp_get_the_drive_type( $post_ID = null )
 	return INVP::get_meta( 'drive_type', $post_ID );
 }
 
+function invp_get_the_edmunds_style_id( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'edmunds_style_id', $post_ID );
+}
+
 function invp_get_the_engine( $post_ID = null )
 {
 	if( empty( $post_ID ) )
