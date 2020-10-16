@@ -142,9 +142,9 @@ class Inventory_Presser_Schema_Org_Generator
 			$obj['color'] = invp_get_the_color( $post_ID );
 		}
 
-		if( '' != $vehicle->interior_color )
+		if( '' != invp_get_the_interior_color( $post_ID ) )
 		{
-			$obj['vehicleInteriorColor'] = $vehicle->interior_color;
+			$obj['vehicleInteriorColor'] = invp_get_the_interior_color( $post_ID );
 		}
 
 		if( invp_get_the_description( $post_ID ) )
