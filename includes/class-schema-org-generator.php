@@ -152,7 +152,7 @@ class Inventory_Presser_Schema_Org_Generator
 			$obj['description'] = $vehicle->description;
 		}
 
-		$schema_drive_type = $this->schema_org_drive_type( $vehicle->drive_type );
+		$schema_drive_type = $this->schema_org_drive_type( invp_get_the_drive_type( $post_ID ) );
 		if( null !== $schema_drive_type )
 		{
 			$obj['driveWheelConfiguration'] = $schema_drive_type;

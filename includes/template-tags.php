@@ -239,6 +239,24 @@ function invp_get_the_down_payment( $post_ID = null )
 	return '$' . number_format( $down_payment, 0, '.', ',' );
 }
 
+/**
+ * invp_get_the_drive_type
+ * 
+ * Template tag. Returns the drive type, or a description of how many driven 
+ * wheels are on the vehicle.
+ *
+ * @param  int $post_ID
+ * @return string
+ */
+function invp_get_the_drive_type( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'drive_type', $post_ID );
+}
+
 function invp_get_the_engine( $post_ID = null )
 {
 	if( empty( $post_ID ) )
