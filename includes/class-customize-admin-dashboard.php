@@ -28,12 +28,12 @@ class Inventory_Presser_Customize_Dashboard
 	function add_columns_to_vehicles_table( $column )
 	{
 		//add our columns
-		$column[apply_filters( 'invp_prefix_meta_key', 'stock_number' )] = 'Stock #';
-		$column[apply_filters( 'invp_prefix_meta_key', 'color' )] = 'Color';
-		$column[apply_filters( 'invp_prefix_meta_key', 'odometer' )] = 'Odometer';
-		$column[apply_filters( 'invp_prefix_meta_key', 'price' )] = 'Price';
-		$column[apply_filters( 'invp_prefix_meta_key', 'photo_count' )] = 'Photos';
-		$column[apply_filters( 'invp_prefix_meta_key', 'thumbnail' )] = 'Thumbnail';
+		$column[apply_filters( 'invp_prefix_meta_key', 'stock_number' )] = __( 'Stock #', 'inventory-presser' );
+		$column[apply_filters( 'invp_prefix_meta_key', 'color' )] = __( 'Color', 'inventory-presser' );
+		$column[apply_filters( 'invp_prefix_meta_key', 'odometer' )] = __( 'Odometer', 'inventory-presser' );
+		$column[apply_filters( 'invp_prefix_meta_key', 'price' )] = __( 'Price', 'inventory-presser' );
+		$column[apply_filters( 'invp_prefix_meta_key', 'photo_count' )] = __( 'Photos', 'inventory-presser' );
+		$column[apply_filters( 'invp_prefix_meta_key', 'thumbnail' )] = __( 'Thumbnail', 'inventory-presser' );
 		//remove the date and tags columns
 		unset( $column['date'] );
 		unset( $column['tags'] );
@@ -108,7 +108,7 @@ class Inventory_Presser_Customize_Dashboard
 		global $wp_admin_bar;
 		$wp_admin_bar->add_node( array(
 			'id'     => 'wp-admin-bar-vehicles',
-			'title'  => 'Vehicles',
+			'title'  => __( 'Vehicles', 'inventory-presser' ),
 			'href'   => admin_url( 'edit.php?post_type=' . INVP::POST_TYPE ),
 			'parent' => 'site-name',
 		) );
@@ -805,18 +805,19 @@ class Inventory_Presser_Customize_Dashboard
 			'<table class="form-table"><tbody>'
 
 		//VIN
-			. '<tr><th scope="row"><label for="%s">VIN</label></th>'
+			. '<tr><th scope="row"><label for="%s">%s</label></th>'
 			. '<td>%s</td>'
 
 		//Stock number
-			. '<tr><th scope="row"><label for="%s">Stock number</label></th>'
+			. '<tr><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><input type="text" name="%s" value="%s"></td>'
 
 		//Year
-			. '<tr><th scope="row"><label for="%s">Year</label></th>'
+			. '<tr><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><select name="%s"><option></option>',
 
 			apply_filters( 'invp_prefix_meta_key', 'vin' ),
+			__( 'VIN', 'inventory-presser' ),
 			apply_filters( 'invp_edit_control_vin', sprintf(
 				'<input type="text" name="%s" maxlength="17" value="%s">',
 				apply_filters( 'invp_prefix_meta_key', 'vin' ),
@@ -824,10 +825,12 @@ class Inventory_Presser_Customize_Dashboard
 			) ),
 
 			apply_filters( 'invp_prefix_meta_key', 'stock_number' ),
+			__( 'Stock number', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'stock_number' ),
 			$stock_number,
 
 			apply_filters( 'invp_prefix_meta_key', 'year' ),
+			__( 'Year', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'year' )
 		);
 
@@ -844,44 +847,49 @@ class Inventory_Presser_Customize_Dashboard
 			'</select></td></tr>'
 
 		//Make
-			. '<tr><th scope="row"><label for="%s">Make</label></th>'
+			. '<tr><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Model
-			. '<tr><th scope="row"><label for="%s">Model</label></th>'
+			. '<tr><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Trim level
-			. '<tr><th scope="row"><label for="%s">Trim</label></th>'
+			. '<tr><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Engine
-			. '<tr><th scope="row"><label for="%s">Engine</label></th>'
+			. '<tr><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Body style
-			. '<tr><th scope="row"><label for="%s">Body style</label></th>'
+			. '<tr><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><input type="text" name="%s" id="%s" value="%s">'
 
 			. '<select name="%s_hidden" id="%s_hidden">',
 
 			apply_filters( 'invp_prefix_meta_key', 'make' ),
+			__( 'Make', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'make' ),
 			$make,
 
 			apply_filters( 'invp_prefix_meta_key', 'model' ),
+			__( 'Model', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'model' ),
 			$model,
 
 			apply_filters( 'invp_prefix_meta_key', 'trim' ),
+			__( 'Trim', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'trim' ),
 			$trim,
 
 			apply_filters( 'invp_prefix_meta_key', 'engine' ),
+			__( 'Engine', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'engine' ),
 			$engine,
 
 			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
+			__( 'Body style', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
 			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
 			$body_style,
@@ -911,15 +919,15 @@ class Inventory_Presser_Customize_Dashboard
 		printf( '</select></td></tr>'
 
 		//Color
-			. '<tr><th scope="row"><label for="%s">Color</label></th>'
+			. '<tr><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Interior color
-			. '<tr><th scope="row"><label for="%s">Interior color</label></th>'
+			. '<tr><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Odometer
-			. '<tr><th scope="row"><label for="%s">Odometer</label></th>'
+			. '<tr><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><input type="text" name="%s" value="%s">'
 			. ' <span class="invp_odometer_units">%s</span></td></tr>'
 
@@ -928,26 +936,29 @@ class Inventory_Presser_Customize_Dashboard
 			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Beam (boats)
-			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">Beam</label></th>'
+			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Length (boats)
-			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">Length</label></th>'
+			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><input type="text" name="%s" value="%s"></td></tr>'
 
 		//Hull material
-			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">Hull material</label></th>'
+			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">%s</label></th>'
 			. '<td><select name="%s"><option></option>',
 
 			apply_filters( 'invp_prefix_meta_key', 'color' ),
+			__( 'Color', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'color' ),
 			$color,
 
 			apply_filters( 'invp_prefix_meta_key', 'interior_color' ),
+			__( 'Interior color', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'interior_color' ),
 			$interior_color,
 
 			apply_filters( 'invp_prefix_meta_key', 'odometer' ),
+			__( 'Odometer', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'odometer' ),
 			$odometer,
 			apply_filters( 'invp_odometer_word', 'miles' ),
@@ -958,14 +969,17 @@ class Inventory_Presser_Customize_Dashboard
 			$youtube,
 
 			apply_filters( 'invp_prefix_meta_key', 'beam' ),
+			__( 'Beam', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'beam' ),
 			$beam,
 
 			apply_filters( 'invp_prefix_meta_key', 'length' ),
+			__( 'Length', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'length' ),
 			$length,
 
 			apply_filters( 'invp_prefix_meta_key', 'hull_material' ),
+			__( 'Hull material', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'hull_material' )
 		);
 
