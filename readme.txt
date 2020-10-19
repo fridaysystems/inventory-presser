@@ -65,6 +65,7 @@ Yes. If your theme does not include templates to display listing pages and vehic
 = 12.0.0 =
 * [Added] Adds an uninstall.php file so that all plugin data is removed when the plugin is deleted using the Delete link on the plugins page.
 * [Added] Adds a "Delete all Vehicles" link near the "Deactivate" link on the plugins page.
+* [Added] Adds more support for translating strings into other languages when customizing the dashboard.
 * [Fixed] Fixes a broken feature that places a "Settings" link near "Deactivate" on the plugins page.
 * [Fixed] Fixes a bug that prevented rewrite rules from being flushed when the plugin is activated.
 * [Fixed] Fixes a broken feature that suggests users change Media settings to better handle vehicle photos in regard to aspect ratios of thumbnail sizes and year- month- folder names for uploads. These warnings arrive in the form of admin notices on this plugin's settings page at Vehicles > Options.
