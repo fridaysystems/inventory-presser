@@ -113,6 +113,12 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		 */
 		function __construct( $post_id = null )
 		{
+			_doing_it_wrong(
+				__FUNCTION__,
+				__( 'The vehicle class Inventory_Presser_Vehicle was deprecated as a method to access vehicle attributes in version 12.0.0. Use template tags instead. See https://inventorypresser.com/docs/template-tags/', 'inventory-presser' ),
+				'12.0.0'
+			);
+
 			//Help the order by logic determine which post meta keys are numbers
 			if( ! has_filter( 'invp_meta_value_or_meta_value_num', array( $this, 'indicate_post_meta_values_are_numbers' ) ) )
 			{
