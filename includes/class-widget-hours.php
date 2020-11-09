@@ -325,7 +325,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 		$hours_table .= '</tbody></table>';
 
 		// Widget admin form
-		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : _( 'Hours', 'inventory-presser' );
+		$title = isset($instance[ 'title' ]) ? $instance[ 'title' ] : __( 'Hours', 'inventory-presser' );
 		?>
 		<p>
 		<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e( 'Main Title', 'inventory-presser' ); ?></label>
