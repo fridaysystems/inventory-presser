@@ -94,8 +94,8 @@ class Inventory_Presser_Slider extends WP_Widget {
 	{
 		$this->include_scripts();
 
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		$showcount = $instance['showcount'];
+		$title = empty( $instance['title'] ) ? '' : apply_filters( 'widget_title', $instance['title'] );
+		$showcount = empty( $instance['showcount'] ) ? false : $instance['showcount'];
 		$showtext = isset( $instance['showtext'] ) ? $instance['showtext'] : false;
 		$featured_select_slugs = array_keys( $this->featured_select_options() );
 		$featured_select = isset($instance['featured_select']) ? $instance[ 'featured_select' ] : $featured_select_slugs[0];
