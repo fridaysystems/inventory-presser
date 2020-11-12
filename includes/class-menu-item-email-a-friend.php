@@ -67,7 +67,7 @@ class Inventory_Presser_Email_A_Friend{
 		global $post;
 		$menu_item = str_replace(
 			'mailto:',
-			get_the_permalink( $post ) . '" target="_blank',
+			$this->url( $post ) . '" target="_blank',
 			$menu_item
 		);
 
