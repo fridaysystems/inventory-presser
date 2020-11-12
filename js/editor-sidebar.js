@@ -174,7 +174,7 @@
 				{
 					name: 'invp-plugin-sidebar',
 					icon: 'admin-network',
-					title: 'Inventory Presser',
+					title: 'Inventory Presser'
 				},
 				el( 'div',
 					{ className: 'invp-editor-sidebar' },
