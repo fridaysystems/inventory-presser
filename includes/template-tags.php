@@ -160,7 +160,7 @@ function invp_get_the_carfax_icon_svg( $post_ID = null )
 	if( empty( $svg_path ) || ! INVP::settings()['use_carfax_provided_buttons'] )
 	{
 		//fallback to the icon that ships with this plugin
-		return invp_get_the_carfax_icon_svg_bundle( $post_ID );
+		return invp_get_the_carfax_icon_svg_bundled( $post_ID );
 	}
 	
 	/**
@@ -183,7 +183,7 @@ function invp_get_the_carfax_icon_svg( $post_ID = null )
 	}
 
 	//SVG download from carfax.com failed, fall back to bundled icon
-	return invp_get_the_carfax_icon_svg_bundle( $post_ID );
+	return invp_get_the_carfax_icon_svg_bundled( $post_ID );
 }
 
 /**
