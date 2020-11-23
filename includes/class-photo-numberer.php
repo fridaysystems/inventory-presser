@@ -93,35 +93,39 @@ class Inventory_Presser_Photo_Numberer{
 		$hash = hash_file( 'md5', get_attached_file( $post_id ) );
 		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'hash' ), $hash );
 
-		//Does it have a number?
-		$number = get_post_meta( $attachment->ID, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true );
-		if( '' !== $number ) {
-			//Yes
-			return;
-		}
-
-		//Give it a number. How many photos does this vehicle have already?
-		$photos = get_posts( array(
-			'meta_query'     => array(
-				array(
-					'key'     => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
-					'compare' => 'EXISTS'
-				)
-			),
-			'order'          => 'ASC',
-			'orderby'        => 'meta_value_num',
-			'post_parent'    => $parent->ID,
-			'post_type'      => 'attachment',
-			'posts_per_page' => -1,
-		) );
-
-		$last_number = 0;
-		if( 0 < sizeof( $photos ) )
+		//Give it a number. Is the number in the slug?
+		//photo-5-of-19-of-vinsgsdkdkdkgf
+		$number = 0;
+		if( ! empty( $_POST['slug'] ) && preg_match( '/photo\-([0-9]+)\-of\-[0-9]+\-of\-.*/', $_POST['slug'], $matches ) )
 		{
-			$last_photo = end( $photos );
-			$last_number = intval( get_post_meta( $last_photo->ID,  apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true ) );
+			$number = $matches[1];
 		}
-
-		update_post_meta( $attachment->ID, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $last_number + 1 );
+		else
+		{
+			//Append the photo to the end
+			//How many photos does this vehicle have already?
+			$photos = get_posts( array(
+				'meta_query'     => array(
+					array(
+						'key'     => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
+						'compare' => 'EXISTS'
+					)
+				),
+				'order'          => 'ASC',
+				'orderby'        => 'meta_value_num',
+				'post_parent'    => $parent->ID,
+				'post_type'      => 'attachment',
+				'posts_per_page' => -1,
+			) );
+			
+			if( 0 < sizeof( $photos ) )
+			{
+				$last_photo = end( $photos );
+				$last_number = intval( get_post_meta( $last_photo->ID,  apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true ) );
+				$number = $last_number + 1;
+			}
+		}
+		
+		update_post_meta( $attachment->ID, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $number );
 	}
 }
