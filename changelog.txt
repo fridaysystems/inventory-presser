@@ -1,3 +1,21 @@
+= 12.0.1 =
+* [Fixed] Fixes a bug in the Vehicle Slider widget that prevented the setting "Priority for featured vehicles" from working when there were no featured vehicles.
+* [Fixed] Fixes a bug in the template tag definitions where a method name was misspelled.
+
+= 12.0.0 =
+* [Added] Adds an uninstall.php file so that all plugin data is removed when the plugin is deleted using the Delete link on the plugins page.
+* [Added] Adds a "Delete all Vehicles" link near the "Deactivate" link on the plugins page.
+* [Added] Adds more support for translating strings into other languages when customizing the dashboard.
+* [Fixed] Fixes a broken feature that places a "Settings" link near "Deactivate" on the plugins page.
+* [Fixed] Fixes a bug that prevented rewrite rules from being flushed when the plugin is activated.
+* [Fixed] Fixes a broken feature that suggests users change Media settings to better handle vehicle photos in regard to aspect ratios of thumbnail sizes and year- month- folder names for uploads. These warnings arrive in the form of admin notices on this plugin's settings page at Vehicles > Options.
+* [Fixed] Fixes a broken feature that generates attachment metadata when photos are uploaded to vehicles in the dashboard or via the REST API.
+* [Changed] Adjusts all `add_shortcode()` calls to occur on the `init` hook rather than when the plugin is loaded.
+* [Changed] Moves constants Inventory_Presser_Plugin::CUSTOM_POST_TYPE and Inventory_Presser_Plugin::OPTION_NAME to INVP::POST_TYPE and INVP::OPTION_NAME. The old constants are deprecated but will work until verison 13.
+* [Removed] Removes features that detected the Yoast SEO plugin and added sitemaps URLs to robots.txt and hid Yoast features from the list of vehicles in the dashboard.
+* [Removed] No longer registers a meta key `inventory_presser_options` to hold a CSV string of vehicle options. The multi-valued meta key `inventory_presser_options_array` is now the only place to store and retrieve options.
+* [Removed] No longer checks for this plugin's settings in an option not named `inventory_presser`. This plugin used to share an option with the first theme, and code was added to detect and split the data into two options in 10.5.0.
+
 = 11.8.2 =
 * [Added] Adds DocBlock comments in as many places as possible to make publishing documentation easier.
 * [Fixed] Fixes three instances of filter callback methods returning void instead of empty string.
