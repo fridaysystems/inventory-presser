@@ -437,9 +437,9 @@ function invp_get_the_location_sentence( $post_ID = null )
 	}
 
 	/**
-	 * How many locations does this dealer have? If only one, return empty 
-	 * string because there's no reason to point out where this vehicle is, the
-	 * dealership address is all over the website.
+	 * How many locations *with vehicles* does this dealer have? If only one, 
+	 * return empty string because there's no reason to point out where this 
+	 * vehicle is, the dealership address is all over the website.
 	 */
 	$location_terms = get_terms( 'location', array( 'hide_empty' => true ) );
 	$location_count = ! is_wp_error( $location_terms ) ? sizeof( $location_terms ) : 0;
@@ -455,8 +455,9 @@ function invp_get_the_location_sentence( $post_ID = null )
 	 * description has the full address.
 	 */
 	$location_terms = wp_get_post_terms( $post_ID, 'location' );
-	$location = implode( ', ', array_column( $location_terms, 'description' ) );
-
+	
+	//Could have two locations on the same vehicle, so just take the first
+	$location = str_replace( chr( 13 ) . chr( 10 ), ', ', $location_terms[0]->description );
 	if( empty( $location ) )
 	{
 		return '';
@@ -467,8 +468,29 @@ function invp_get_the_location_sentence( $post_ID = null )
 		__( 'See this', 'inventory-presser' ),
 		invp_get_the_make( $post_ID ),
 		__( 'at', 'inventory-presser' ),
-		$location
+		apply_filters( 'invp_vehicle_location_sentence_address', $location )
 	);
+
+	//Does this location have a phone number?
+	$phones = Inventory_Presser_Taxonomies::get_phones( $location_terms[0]->term_id );
+	if( 0 < sizeof( $phones ) )
+	{
+		//Yes, at least one.
+		foreach( $phones as $phone )
+		{
+			//Try to avoid fax numbers
+			if( preg_match( '/\bfax\b/i', $phone['description'] ) )
+			{
+				continue;
+			}
+			$sentence .= sprintf( 
+				' %s %s',
+				__( 'Call', 'inventory-presser' ),
+				apply_filters( 'invp_vehicle_location_sentence_phone', $phone['number'] )
+			);
+			break; //only add one phone number to the sentence
+		}
+	}
 
 	$sentence = apply_filters( 'invp_vehicle_location_sentence', $sentence, $post_ID );
 
