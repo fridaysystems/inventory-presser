@@ -85,7 +85,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 	 */
 	function append_shortcode( $content )
 	{
-		return trim( $content . ' [' . self::SHORTCODE_TAG . ']' );
+		return trim( $content . ' <p>[' . self::SHORTCODE_TAG . ']</p>' );
 	}
 
 	/**
