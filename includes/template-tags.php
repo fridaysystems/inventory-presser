@@ -483,10 +483,13 @@ function invp_get_the_location_sentence( $post_ID = null )
 			{
 				continue;
 			}
+
+			$number = apply_filters( 'invp_vehicle_location_sentence_phone', $phone['number'] );
 			$sentence .= sprintf( 
-				' %s %s',
+				'<span class="location-phone">%s <a href="tel:+%s">%s</a></span>',
 				__( 'Call', 'inventory-presser' ),
-				apply_filters( 'invp_vehicle_location_sentence_phone', $phone['number'] )
+				INVP::prepare_phone_number_for_link( $number ),
+				$number
 			);
 			break; //only add one phone number to the sentence
 		}

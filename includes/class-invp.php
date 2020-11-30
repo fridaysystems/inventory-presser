@@ -691,6 +691,33 @@ class INVP
 		}
 		return false;
 	}
+
+	public static function prepare_phone_number_for_link( $number )
+	{
+		//get rid of anything that isn't a digit or a letter
+		$number = preg_replace( '/[^0-9A-Za-z]+/', '', $number );
+
+		//convert letters to digits
+		$number = preg_replace( '/a|b|c/', '2', strtolower( $number ) );
+		$number = preg_replace( '/d|e|f/', '3', strtolower( $number ) );
+		$number = preg_replace( '/g|h|i/', '4', strtolower( $number ) );
+		$number = preg_replace( '/j|k|l/', '5', strtolower( $number ) );
+		$number = preg_replace( '/m|n|o/', '6', strtolower( $number ) );
+		$number = preg_replace( '/p|q|r|s/', '7', strtolower( $number ) );
+		$number = preg_replace( '/t|u|v/', '8', strtolower( $number ) );
+		$number = preg_replace( '/w|x|y|z/', '9', strtolower( $number ) );
+
+		//does it have a country code already?
+		if( 10 < strlen( $number ) )
+		{
+			//yes
+			return $number;
+		}
+
+		//no, default to USA
+		$country_code = apply_filters( 'invp_country_calling_code', '1' );
+		return $country_code . $number;
+	}
 	
 	/**
 	 * settings
