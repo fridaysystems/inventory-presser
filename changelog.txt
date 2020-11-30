@@ -1,3 +1,6 @@
+= 12.0.2 = 
+* [Fixed] Fixes a bug in the photo numberer class. The `add_attachment` hook is too early to assume meta values will be saved on attachment posts. Now relies on the post slug coming in $_POST to parse out the photo sequence number. Falls back to appending the photo to the end of the list if the slug isn't found or doesn't appear to be of our naming scheme.
+
 = 12.0.1 =
 * [Fixed] Fixes a bug in the Vehicle Slider widget that prevented the setting "Priority for featured vehicles" from working when there were no featured vehicles.
 * [Fixed] Fixes a bug in the template tag definitions where a method name was misspelled.

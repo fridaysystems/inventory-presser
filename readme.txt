@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, motorcycle
 Requires at least: 5.0.0
 Tested up to: 5.5.3
-Stable tag: 12.0.2
+Stable tag: 12.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,13 +62,13 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
-= 12.0.2 = 
-* [Fixed] Fixes a bug in the photo numberer class. The `add_attachment` hook is too early to assume meta values will be saved on attachment posts. Now relies on the post slug coming in $_POST to parse out the photo sequence number. Falls back to appending the photo to the end of the list if the slug isn't found or doesn't appear to be of our naming scheme.
+= 12.1.0 =
+* [Added] Upgrades the vehicle location sentence to add the lot phone number. Also adds two filters, `invp_vehicle_location_sentence_address` and `invp_vehicle_location_sentence_phone` to allow each piece to be filtered separately.
 
 
 == Upgrade Notice ==
 
-= 12.0.2 =
+= 12.1.0 =
 This release is the one we shipped to wordpress.org for publication.
 
 = 11.8.2 =
