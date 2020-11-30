@@ -24,49 +24,49 @@ class Inventory_Presser_Location_Phones extends WP_Widget
 				'selector'    => __( 'Small, left label', 'inventory-presser' ),
 				'uses_labels' => true,
 				'before'      => '<table>',
-				'repeater'    => '<tr><th>%1$s</th><td class="phone-link"><a href="tel:%2$s">%2$s</a></td><tr>',
+				'repeater'    => '<tr><th>%1$s</th><td class="phone-link"><a href="tel:+%2$s">%3$s</a></td><tr>',
 				'after'       => '</table>',
 			),
 			'large_no_label' => array(
 				'selector'    => __( 'Large, no label', 'inventory-presser' ),
 				'uses_labels' => false,
 				'before'      => '',
-				'repeater'    => '<h2><a href="tel:%1$s">%1$s</a></h2>',
+				'repeater'    => '<h2><a href="tel:+%1$s">%2$s</a></h2>',
 				'after'       => '',
 			),
 			'large_table_left' => array(
 				'selector'    => __( 'Large tabled, left label', 'inventory-presser' ),
 				'uses_labels' => true,
 				'before'      => '<table>',
-				'repeater'    => '<tr><th>%1$s</th><td class="phone-link"><a href="tel:%2$s">%2$s</a></td><tr>',
+				'repeater'    => '<tr><th>%1$s</th><td class="phone-link"><a href="tel:+%2$s">%3$s</a></td><tr>',
 				'after'       => '</table>',
 			),
 			'large_left_label' => array(
 				'selector'    => __( 'Large, small left label', 'inventory-presser' ),
 				'uses_labels' => true,
 				'before'      => '<table>',
-				'repeater'    => '<tr><th>%1$s</th><td><h2><a href="tel:%2$s">%2$s</a></h2></td><tr>',
+				'repeater'    => '<tr><th>%1$s</th><td><h2><a href="tel:+%2$s">%3$s</a></h2></td><tr>',
 				'after'       => '</table>',
 			),
 			'large_right_label' => array(
 				'selector'    => __( 'Large, small right label', 'inventory-presser' ),
 				'uses_labels' => true,
 				'before'      => '<table>',
-				'repeater'    => '<tr><td><h2><a href="tel:%2$s">%2$s</a></h2></td><th>%1$s</th><tr>',
+				'repeater'    => '<tr><td><h2><a href="tel:+%2$s">%3$s</a></h2></td><th>%1$s</th><tr>',
 				'after'       => '</table>',
 			),
 			'single_line_labels' => array(
 				'selector'    => __( 'Single line with labels', 'inventory-presser' ),
 				'uses_labels' => true,
 				'before'      => '',
-				'repeater'    => '<span>%1$s:</span> <a href="tel:%2$s">%2$s</a>',
+				'repeater'    => '<span>%1$s:</span> <a href="tel:+%2$s">%3$s</a>',
 				'after'       => '',
 			),
 			'single_line_no_labels' => array(
 				'selector'    => __( 'Single line no labels', 'inventory-presser' ),
 				'uses_labels' => false,
 				'before'      => '',
-				'repeater'    => '<span><a href="tel:%1$s">%1$s</a></span>',
+				'repeater'    => '<span><a href="tel:+%1$s">%2$s</a></span>',
 				'after'       => '',
 			),
 		);
@@ -165,11 +165,11 @@ class Inventory_Presser_Location_Phones extends WP_Widget
 					if( $this->formats()[$format]['uses_labels'] )
 					{
 						$description = get_term_meta( $term_id, 'phone_' . $p . '_description', true );
-						printf( $this->formats()[$format]['repeater'], $description, $number );
+						printf( $this->formats()[$format]['repeater'], $description, INVP::prepare_phone_number_for_link( $number ), $number );
 					}
 					else
 					{
-						printf( $this->formats()[$format]['repeater'], $number );
+						printf( $this->formats()[$format]['repeater'], INVP::prepare_phone_number_for_link( $number ), $number );
 					}
 				}
 			}

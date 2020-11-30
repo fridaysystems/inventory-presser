@@ -691,7 +691,19 @@ class INVP
 		}
 		return false;
 	}
-
+	
+	/**
+	 * prepare_phone_number_for_link
+	 * 
+	 * Takes a phone number and prepares it for the href attribute of a link.
+	 * 
+	 * Removes all non-alphanumeric characters, converts letters to dial pad 
+	 * digits, and prepends a country dialing code if the number is 10 digits or
+	 * less.
+	 * 
+	 * @param  string $number The phone number to prepare.
+	 * @return string A version of the phone number provided with letters converted to dial pad digits, non-numeric characters removed, and a country code prepended if the length of the provided number was 10 or less. 
+	 */
 	public static function prepare_phone_number_for_link( $number )
 	{
 		//get rid of anything that isn't a digit or a letter
