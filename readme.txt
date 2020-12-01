@@ -66,7 +66,9 @@ Yes. If your theme does not include templates to display listing pages and vehic
 * [Added] Upgrades the vehicle location sentence to add the lot's phone number.
 * [Added] Adds two filters, `invp_vehicle_location_sentence_address` and `invp_vehicle_location_sentence_phone` to allow each piece of the phone number in the location sentence to be filtered separately.
 * [Added] Adds an API method `prepare_phone_number_for_link()` that better parses phone numbers for hyperlinks. 
+* [Added] Adds an alt attribute on the <img> elements that contain Carfax buttons.
 * [Changed] Changes the Phone Number widget to use the new API method to create better hyperlinks that dial phone numbers.
+* [Changed] Changes the way Carfax buttons are included on pages to use an <img> element that sources an SVG instead of a raw <svg>. The dynamic Carfax buttons are now compatible with sites with black backgrounds, so all the SVG parsing is no longer necessary. 
 
 
 == Upgrade Notice ==
