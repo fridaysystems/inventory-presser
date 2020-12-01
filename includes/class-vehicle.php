@@ -171,39 +171,6 @@ if ( ! class_exists( 'Inventory_Presser_Vehicle' ) )
 		{
 			return invp_get_the_carfax_icon_html( $this->post_ID );
 		}
-	
-		/**
-		 * carfax_icon_svg
-		 * 
-		 * Returns an SVG element that is one of various Carfax icons, usually
-		 * containing the text, "SHOW ME THE Carfax," but sometimes also
-		 * adorned with a green banner that says "GOOD VALUE."
-		 *
-		 * A setting this plugin provides allows users to cede control of the
-		 * <svg> payload to Carfax, by using an SVG provided by a URL instead of
-		 * the .svg files that ship with this plugin.
-		 *
-		 * @deprecated 12.0.0 Use invp_get_the_carfax_icon_svg() instead.
-		 * @return string An <svg> HTML element or empty string
-		 */
-		function carfax_icon_svg()
-		{
-			return invp_get_the_carfax_icon_svg( $this->post_ID );
-		}
-
-		/**
-		 * carfax_icon_svg_bundled
-		 *
-		 * Carfax icons are bundled with this plugin, and this method returns
-		 * one of them as an <svg> element.
-		 *
-		 * @deprecated 12.0.0 Use invp_get_the_carfax_icon_svg_bundled() instead.
-		 * @return string An <svg> HTML element or empty string if the asset cannot be found or loaded
-		 */
-		private function carfax_icon_svg_bundled()
-		{
-			return invp_get_the_carfax_icon_svg_bundled( $this->post_ID );
-		}
 		
 		/**
 		 * carfax_report_url

@@ -61,37 +61,6 @@ class Inventory_Presser_Customize_Dashboard
 		//Add a meta box to the side column for a featured vehicle checkbox
 		add_meta_box('featured', 'Featured Vehicle', array( $this, 'meta_box_html_featured' ), INVP::POST_TYPE, 'side', 'low' );
 	}
-
-	/**
-	 * add_settings_to_customizer
-	 * 
-	 * Add a setting to the customizer's Colors panel for Carfax button text	
-	 *
-	 * @param  mixed $wp_customize
-	 * @return void
-	 */
-	function add_settings_to_customizer( $wp_customize )
-	{
-		$wp_customize->add_setting( 'carfax_text_color', array(
-			'type'       => 'theme_mod',
-			'capability' => 'edit_theme_options',
-			'default'    => 'black',
-			'transport'  => 'refresh',
-		) );
-
-		$wp_customize->add_control( 'carfax_text_color', array(
-			'type'        => 'select',
-			'settings'    => 'carfax_text_color',
-			'priority'    => 40,
-			'section'     => 'colors',
-			'label'       => __( 'Carfax Button Text', 'inventory-presser' ),
-			'description' => __( 'The color of the words "SHOW ME THE" in Carfax buttons.', 'inventory-presser' ),
-            'choices'  => array(
-                'black' => 'Black',
-                'white' => 'White',
-             ),
-		) );
-	}
 	
 	/**
 	 * add_vehicles_to_admin_bar
@@ -465,9 +434,6 @@ class Inventory_Presser_Customize_Dashboard
 		add_action( 'admin_bar_menu', array( $this, 'add_vehicles_to_admin_bar' ), 100 );
 
 		$options = INVP::settings();
-		if( isset( $options['use_carfax'] ) && $options['use_carfax'] ) {
-			add_action( 'customize_register', array( $this, 'add_settings_to_customizer' ) );
-		}
 
 		//If the Show All Taxonomies setting is checked, change the way we register taxonomies
 		if( isset( $options['show_all_taxonomies'] ) && $options['show_all_taxonomies'] ) {
