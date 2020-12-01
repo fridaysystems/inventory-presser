@@ -114,101 +114,55 @@ function invp_get_the_carfax_icon_html( $post_ID = null )
 		return '';
 	}
 
-	$svg = invp_get_the_carfax_icon_svg( $post_ID );
-	if( empty( $svg ) )
+	$svg_url = invp_get_the_carfax_url_svg( $post_ID );
+	if( empty( $svg_url ) )
 	{
-		//We might have tried to download an SVG from carfax.com and failed
 		return '';
 	}
 
 	return sprintf(
-		'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+		'<a href="%s" target="_blank" rel="noopener noreferrer"><img src="%s" alt="SHOW ME THE CARFAX" /></a>',
 		invp_get_the_carfax_url_report( $post_ID ),
-		$svg
+		$svg_url
 	);
 }
 
 /**
- * invp_get_the_carfax_icon_svg
+ * invp_get_the_carfax_url_svg
  * 
- * Returns an SVG element that is one of various Carfax icons, usually
- * containing the text, "SHOW ME THE Carfax," but sometimes also
- * adorned with a green banner that says "GOOD VALUE."
+ * Returns a URL to an SVG image button that users click to view Carfax reports
+ * or empty string. Sometimes the URL points to an SVG hosted on carfax.com,
+ * sometimes it's an SVG bundled with this plugin.
  *
- * A setting this plugin provides allows users to cede control of the
- * <svg> payload to Carfax, by using an SVG provided by a URL instead of
- * the .svg files that ship with this plugin.
- *
- * @return string An <svg> HTML element or empty string
+ * @param  int $post_ID 
+ * @return string A URL to an SVG image or empty string
  */
-function invp_get_the_carfax_icon_svg( $post_ID = null )
+function invp_get_the_carfax_url_svg( $post_ID = null )
 {
 	if( empty( $post_ID ) )
 	{
 		$post_ID = get_the_ID();
 	}
 
-	//A per-vehicle icon URL is provided by Carfax during daily IICR
-	$svg_path = INVP::get_meta( 'carfax_url_icon', $post_ID );
-	$svg_element = '';
+	$url = INVP::get_meta( 'carfax_url_icon', $post_ID );
 
 	/**
 	 * If we don't have a URL from Carfax IICR, or the user has turned off the
 	 * newer, dynamic icons, fall back to SVGs that ship with this
 	 * plugin.
 	 */
-	if( empty( $svg_path ) || ! INVP::settings()['use_carfax_provided_buttons'] )
+	if( empty( $url ) || ! INVP::settings()['use_carfax_provided_buttons'] )
 	{
 		//fallback to the icon that ships with this plugin
-		return invp_get_the_carfax_icon_svg_bundled( $post_ID );
-	}
-	
-	/**
-	 * Suppressing two warnings with the @ in front of
-	 * file_get_contents() is a short-term fix
-	 *  - SSL: Handshake timed out
-	 *  - Failed to enable crypto
-	 */
-	$svg_element = @file_get_contents( $svg_path );
-	if( false !== $svg_element )
-	{
-		/**
-		 * Change CSS class names in Carfax icons hosted by Carfax. They
-		 * didn't anticipate anyone displaying them inline, and they
-		 * get real goofy with certain combinations of duplicate CSS
-		 * class names on the page.
-		 */
-		$stock_number_letters_and_digits = preg_replace( '/[^a-zA-Z0-9]+/', '', invp_get_the_stock_number( $post_ID ) );
-		return preg_replace( '/(cls\-[0-9]+)/', '$1-' . $stock_number_letters_and_digits, $svg_element );
+		$url = plugin_dir_url( INVP_PLUGIN_FILE_PATH ) . '/assets/show-me-carfax';
+		if( invp_is_carfax_one_owner( $post_ID ) )
+		{
+			$url .= '-1-owner';
+		}
+		$url .= '.svg';
 	}
 
-	//SVG download from carfax.com failed, fall back to bundled icon
-	return invp_get_the_carfax_icon_svg_bundled( $post_ID );
-}
-
-/**
- * invp_get_the_carfax_icon_svg_bundled
- *
- * Template tag. Returns an <svg> element that produces a Carfax icon that comes
- * bundled with this plugin.
- *
- * @return string An <svg> HTML element or empty string if the asset cannot be found or loaded
- */
-function invp_get_the_carfax_icon_svg_bundled( $post_ID )
-{
-	if( empty( $post_ID ) )
-	{
-		$post_ID = get_the_ID();
-	}
-
-	$svg_path = dirname( dirname( __FILE__ ) ) . '/assets/show-me-carfax';
-	if( invp_is_carfax_one_owner( $post_ID ) )
-	{
-		$svg_path .= '-1-owner';
-	}
-	$svg_path .= '.svg';
-	$svg_element = file_get_contents( $svg_path );
-	return ( false === $svg_element ? '' : $svg_element );
+	return $url;
 }
 
 function invp_get_the_carfax_url_report( $post_ID = null )
