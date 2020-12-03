@@ -276,10 +276,10 @@ class Inventory_Presser_Slider extends WP_Widget {
 		</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id('cb_showtitle'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showtitle'); ?>" name="<?php echo $this->get_field_name('cb_showtitle'); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showtitle'] ) && $instance['cb_showtitle'] == 'true' ) ); ?>> <?php _e( 'Show Vehicle Title', 'inventory-presser' ); ?></label>
+		<label for="<?php echo $this->get_field_id('cb_showtitle'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showtitle'); ?>" name="<?php echo $this->get_field_name('cb_showtitle'); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showtitle'] ) && $instance['cb_showtitle'] == 'true' ) ); ?>> <?php _e( 'Show year, make, & model', 'inventory-presser' ); ?></label>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id('cb_showprice'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showprice'); ?>" name="<?php echo $this->get_field_name('cb_showprice'); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showprice'] ) && $instance['cb_showprice'] == 'true' ) ); ?>> <?php _e( 'Show Vehicle Price', 'inventory-presser' ); ?></label>
+		<label for="<?php echo $this->get_field_id('cb_showprice'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showprice'); ?>" name="<?php echo $this->get_field_name('cb_showprice'); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showprice'] ) && $instance['cb_showprice'] == 'true' ) ); ?>> <?php _e( 'Show prices', 'inventory-presser' ); ?></label>
 		</p>
 
 		<?php
