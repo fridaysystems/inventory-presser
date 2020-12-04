@@ -42,7 +42,7 @@ Built the right way and developer-friendly
 == Frequently Asked Questions ==
 
 = How much does this plugin cost? =
-This plugin is free and open source. Free and paid add-ons and services are available at https://inventorypresser.com/.
+This plugin is free and open source. Free and paid add-ons & services are available at https://inventorypresser.com/.
 
 = Does it decode VINs? =
 Not for free. We have a VIN decoder add-on available at https://inventorypresser.com/. If you know of a free VIN decoder that allows many automated queries, please show us.
