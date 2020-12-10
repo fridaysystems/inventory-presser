@@ -52,6 +52,7 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
 				return $has_thumbnail;
 			}
 
+			//if it's a vehicle with a vehicle photo, lie and say no
 			return false;
 		}
 		
