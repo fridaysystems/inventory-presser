@@ -2,7 +2,7 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 5.5.3
+Tested up to: 5.6.0
 Stable tag: 12.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -65,6 +65,7 @@ Yes. If your theme does not include templates to display listing pages and vehic
 = 12.2.0 =
 * [Added] Adds a shortcode [invp_archive] that can be used by itself in a page to create a vehicle listing page. Designed to help users build archives if their themes can't be altered to disable excerpts in archives.
 * [Added] Adds a shortcode [invp_iframe] that replaces [iframe]. All users of the responsive iframe shortcode should adjust their shortcodes.
+* [Changed] Changes the tested up to version number to 5.6.0.
 
 = 12.1.0 =
 * [Added] Upgrades the vehicle location sentence to add the lot's phone number.
