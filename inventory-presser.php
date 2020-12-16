@@ -696,6 +696,8 @@ class Inventory_Presser_Plugin
 		$shortcodes->hooks();
 		$shortcodes = new Inventory_Presser_Shortcode_Single_Vehicle();
 		$shortcodes->hooks();
+		$shortcodes = new Inventory_Presser_Shortcode_Archive();
+		$shortcodes->hooks();
 		$shortcodes = new Inventory_Presser_Shortcode_Archive_Vehicle();
 		$shortcodes->hooks();
 		$shortcodes = new Inventory_Presser_Shortcode_Hours_Today();
@@ -783,6 +785,7 @@ class Inventory_Presser_Plugin
 			'class-shortcode-inventory-grid.php',
 			'class-shortcode-inventory-slider.php',
 			'class-shortcode-template-shortcode.php',
+			'class-shortcode-archive.php',
 			'class-shortcode-archive-vehicle.php',
 			'class-shortcode-single-vehicle.php',
 			'class-taxonomies.php',

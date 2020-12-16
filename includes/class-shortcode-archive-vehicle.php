@@ -45,11 +45,6 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 	 */
 	function content( $atts )
 	{
-		if( ! is_post_type_archive( INVP::POST_TYPE ) )
-		{
-			return '';
-		}
-
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'invp_archive_vehicle' );
 
