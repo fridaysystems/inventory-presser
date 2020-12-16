@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.5.3
-Stable tag: 12.1.0
+Stable tag: 12.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,9 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Changelog ==
 
+= 12.2.0 =
+* [Added] Adds a shortcode [invp_archive] that can be used by itself in a page to create a vehicle listing page. Designed to help users build archives if their themes can't be altered to disable excerpts in archives.
+
 = 12.1.0 =
 * [Added] Upgrades the vehicle location sentence to add the lot's phone number.
 * [Added] Adds two filters, `invp_vehicle_location_sentence_address` and `invp_vehicle_location_sentence_phone` to allow each piece of the phone number in the location sentence to be filtered separately.
@@ -75,7 +78,7 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 == Upgrade Notice ==
 
-= 12.1.0 =
+= 12.2.0 =
 This release is the one we shipped to wordpress.org and the world as our open source launch.
 
 = 11.8.2 =
