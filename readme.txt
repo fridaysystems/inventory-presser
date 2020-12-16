@@ -64,6 +64,7 @@ Yes. If your theme does not include templates to display listing pages and vehic
 
 = 12.2.0 =
 * [Added] Adds a shortcode [invp_archive] that can be used by itself in a page to create a vehicle listing page. Designed to help users build archives if their themes can't be altered to disable excerpts in archives.
+* [Added] Adds a shortcode [invp_iframe] that replaces [iframe]. All users of the responsive iframe shortcode should adjust their shortcodes.
 
 = 12.1.0 =
 * [Added] Upgrades the vehicle location sentence to add the lot's phone number.
