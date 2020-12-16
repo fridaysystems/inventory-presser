@@ -4,9 +4,10 @@ defined( 'ABSPATH' ) or exit;
 /**
  * Inventory_Presser_Shortcode_Archive_Vehicle
  * 
- * A shortcode that allows themes that do not provide a content-archive template
- * to show vehicle archives that are similar to the way themes are properly
- * built out for this plugin.
+ * A shortcode that outputs a single archive vehicle in an <article> element.
+ * Designed to help any theme show an archive of vehicles. Not intended to be 
+ * used outright. We use this shortcode on the_content hook to provide better
+ * output than a theme that doesn't know anything about our custom post type.
  */
 class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Template_Shortcode
 {		
