@@ -7,28 +7,28 @@ Stable tag: 12.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Turn WordPress into a dealership website. Import or directly manage an automobile or powersports dealer inventory.
+Turn WordPress into a dealership website. Provides vehicle listing templates and a custom post type for automobiles or powersports.
 
 == Description ==
 
-This plugin tranforms WordPress into a powerful dealer website platform that makes managing a vehicle inventory easy.
+This plugin tranforms WordPress into a powerful dealer website platform that makes displaying a vehicle inventory easy.
 
 * Supports automobiles, motorcycles, ATVs, RVs, and boats
-* Accepts bulk inventory feeds and allows manual-entry
+* Manage multiple lot locations and separate phone numbers & hours for each
 * VIN-decoding add-on available
+* Custom post type `inventory_vehicle` makes importing data easy
 * Categorizes inventory by type, body style, fuel, transmission, drive type, availability, and new or used
 * Includes many widgets including vehicle sliders and inventory grids
 
 Built the right way and developer-friendly
 
-* Creates a custom post type that represents a vehicle
-* The Add/Edit post screen is enhanced with vehicle attributes as postmeta fields
-* The post content editor manages only the long form vehicle description
+* Creates a custom post type & 11 taxonomies to store and group vehicles
+* Editor sidebar integrates custom fields into the block editor
 * Adds columns to the posts list for vehicles for stock number, color, odometer, price, photo count, and thumbnail
 * Implements custom taxonomies to group vehicles by type, fuel, transmission, drive type, availability, new or used, and body style
-* Puts media counts next to the Add Media button while editing vehicles
 * Hooks in all the right places
-* Vehicle object and template tags make front-end development easy
+* Template tags make front-end development easy
+* Runs on any theme & provides shortcodes for the stubborn ones.
 * Many add-ons both free and paid available at https://inventorypresser.com/
 
 
@@ -36,7 +36,7 @@ Built the right way and developer-friendly
 
 1. Upload the `inventory-presser` directory to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Read this plugin's Frequently Asked Question called "Does Inventory Presser work with my theme?" to learn how vehicles can best be displayed
+1. Read this plugin's Frequently Asked Question called "Will Inventory Presser work with my theme?" to learn how vehicles can best be displayed
 
 
 == Frequently Asked Questions ==
@@ -47,11 +47,11 @@ This plugin is free and open source. Free and paid add-ons & services are availa
 = Does it decode VINs? =
 Not for free. We have a VIN decoder add-on available at https://inventorypresser.com/. If you know of a free VIN decoder that allows many automated queries, please show us.
 
-= Can I import my inventory into this system with a bulk feed? =
-Yes. The way we do it is with the [WordPress REST API](https://developer.wordpress.org/rest-api/). Vehicles in Inventory Presser are stored in a custom post type using meta fields, taxonomy terms, and photo attachments, and many CSV/spreadsheet importer plugins work with custom post types. Our first importer was based on a fork of the XML-based [WordPress Importer](https://wordpress.org/plugins/wordpress-importer/). If imports sound challenging, Friday Systems (that's us) feeds many sites running this plugin, and it may be easier to feed there and let Friday Systems handle the last leg.
+= Can I import my inventory into this system? =
+Yes. We use the [WordPress REST API](https://developer.wordpress.org/rest-api/) to deliver inventory updates. Read how we do it. Vehicles in Inventory Presser are stored in a custom post type using meta fields, taxonomy terms, and photo attachments, and many CSV/spreadsheet importer plugins work with custom post types. If imports sound challenging, Friday Systems (that's us) feeds many sites running this plugin, and it may be easier to feed there and let Friday Systems handle the last leg.
 
 = Will Inventory Presser work with my theme? =
-Yes. If your theme does not include templates to display listing pages and vehicle detail pages, the plugin will provide the markup for those pages automatically. You may certainly design custom templates, too. To make creating templates easy, we released [Lift Kit](https://github.com/fridaysystems/lift-kit), a free set of files that can be added to any WordPress theme or child theme to quickly achieve compatibility.
+Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/). If your theme does not include templates to display listing pages and vehicle detail pages, the plugin will provide the markup for those pages automatically. There are shortcodes like `[invp_archive]` and `[invp_single_vehicle]` as a last resort. A number of [Template Tags](https://inventorypresser.com/docs/template-tags/) make designing custom templates easy.
 
 
 == Screenshots ==
