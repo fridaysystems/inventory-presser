@@ -1,0 +1,49 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "6c57111b1d86668f911e8ec46f832e3f",
+    "packages": [
+        {
+            "name": "woocommerce/FlexSlider",
+            "version": "2.7.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/woocommerce/FlexSlider.git",
+                "reference": "690832b7f972298e76e2965714657a2beec9e35c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/woocommerce/FlexSlider/zipball/690832b7f972298e76e2965714657a2beec9e35c",
+                "reference": "690832b7f972298e76e2965714657a2beec9e35c",
+                "shasum": ""
+            },
+            "type": "library",
+            "description": "An awesome, fully responsive jQuery slider toolkit.",
+            "homepage": "https://github.com/woocommerce/FlexSlider",
+            "keywords": [
+                "automattic",
+                "flexslider",
+                "jquery",
+                "slider",
+                "woocommerce"
+            ],
+            "support": {
+                "source": "https://github.com/woocommerce/FlexSlider/tree/2.7.2",
+                "issues": "https://github.com/woocommerce/FlexSlider/issues"
+            },
+            "time": "2019-03-07T17:07:18+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
+}

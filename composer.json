@@ -1,0 +1,11 @@
+{
+	"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/woocommerce/flexslider"
+        }
+    ],
+    "require": {
+        "woocommerce/flexslider": "^2.7.2"
+    }
+}

@@ -846,10 +846,12 @@ class Inventory_Presser_Plugin
 		/**
 		 * Register flexslider and provide overrides for scripts and styles
 		 */
-		wp_register_script( 'flexslider', plugins_url('/lib/flexslider/jquery.flexslider-min.js', __FILE__ ), array('jquery'), $plugin_version );
+		wp_register_script( 'flexslider', plugins_url('/vendor/woocommerce/FlexSlider/jquery.flexslider-min.js', __FILE__ ), array('jquery'), $plugin_version );
+		//Our overrides
 		wp_register_script( 'invp-flexslider', plugins_url('/js/flexslider.min.js', __FILE__ ), array( 'flexslider' ), $plugin_version );
 
-		wp_register_style( 'flexslider', plugins_url( '/lib/flexslider/flexslider.css', __FILE__ ), null, $plugin_version );
+		wp_register_style( 'flexslider', plugins_url( '/vendor/woocommerce/FlexSlider/flexslider.css', __FILE__ ), null, $plugin_version );
+		//Our overrides
 		wp_register_style( 'invp-flexslider', plugins_url( '/css/flexslider.min.css', __FILE__ ), array( 'flexslider' ), $plugin_version );
 
 		/**

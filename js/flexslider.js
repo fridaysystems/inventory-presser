@@ -65,7 +65,7 @@ function adjustSlideHeight(wrapper)
 
 function flexslider_maybe_resize_current_image()
 {
-	el = jQuery('.flexslider .flex-active-slide img')[0];
+	var el = jQuery('.flexslider .flex-active-slide img')[0];
 
 	if( typeof el === 'undefined' )
 	{
@@ -78,7 +78,7 @@ function flexslider_maybe_resize_current_image()
 		- parseInt( el_slider.css( 'border-right-width' ).replace(/[^0-9]/g, '') );
 
 	//if the photo isn't taking up the whole width of the slider, remove inline height so it does
-	if( slider_width > el.width )
+	if( slider_width > el.width && jQuery(el).attr('srcset') )
 	{
 		jQuery(el).css('height','' );
 		//set the inline width of the photo to be the real largest width or 100%
