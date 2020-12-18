@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.6.0
-Stable tag: 12.2.0
+Stable tag: 12.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,25 +62,18 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 12.2.1 =
+* [Changed] Changes our dependency on woocommerce/flexslider from version 2.7.2 living in the /lib/flexslider folder to using composer to identify the library as a dependency.
+
 = 12.2.0 =
 * [Added] Adds a shortcode [invp_archive] that can be used by itself in a page to create a vehicle listing page. Designed to help users build archives if their themes can't be altered to disable excerpts in archives.
 * [Added] Adds a shortcode [invp_iframe] that replaces [iframe]. All users of the responsive iframe shortcode should adjust their shortcodes.
 * [Changed] Changes the tested up to version number to 5.6.0.
 
-= 12.1.0 =
-* [Added] Upgrades the vehicle location sentence to add the lot's phone number.
-* [Added] Adds two filters, `invp_vehicle_location_sentence_address` and `invp_vehicle_location_sentence_phone` to allow each piece of the phone number in the location sentence to be filtered separately.
-* [Added] Adds an API method `prepare_phone_number_for_link()` that better parses phone numbers for hyperlinks. 
-* [Added] Adds an alt attribute on the <img> elements that contain Carfax buttons.
-* [Added] Adds a new class called Inventory_Presser_Addon_License_Validator. It validates add-on licenses with the store at inventorypresser.com.
-* [Changed] Deprecates the Inventory_Presser_License class. It is succeeded by Inventory_Presser_Addon_License_Validator.
-* [Changed] Changes the Phone Number widget to use the new API method to create better hyperlinks that dial phone numbers.
-* [Changed] Changes the way Carfax buttons are included on pages to use an <img> element that sources an SVG instead of a raw <svg>. The dynamic Carfax buttons are now compatible with sites with black backgrounds, so all the SVG parsing is no longer necessary. 
-
 
 == Upgrade Notice ==
 
-= 12.2.0 =
+= 12.2.1 =
 This release is the one we shipped to wordpress.org and the world as our open source launch.
 
 = 11.8.2 =
