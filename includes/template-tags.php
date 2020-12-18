@@ -965,7 +965,7 @@ function invp_get_the_type( $post_ID = null )
 /**
  * invp_get_the_VIN
  * 
- * Template tag. Returns the vehicles VIN. Must be used inside the loop.
+ * Template tag. Returns the vehicles VIN.
  *
  * @return string
  */
