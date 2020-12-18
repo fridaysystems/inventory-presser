@@ -760,6 +760,9 @@ class Inventory_Presser_Plugin
 	 */
 	function include_dependencies()
 	{
+		// include composer dependencies
+		include_once 'vendor/autoload.php';
+
 		//Include our object definition dependencies
 		$file_names = array(
 			'class-add-custom-fields-to-search.php',
