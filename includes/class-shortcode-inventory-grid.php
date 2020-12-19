@@ -4,7 +4,8 @@ defined( 'ABSPATH' ) or exit;
 /**
  * Inventory_Presser_Shortcode_Grid
  * 
- * Shortcode [invp-inventory-grid] piggybacks on a widget with the same features
+ * A shortcode that piggybacks on the Inventory Grid widget by delivering the 
+ * same features but as a shortcode.
  */
 class Inventory_Presser_Shortcode_Grid
 {

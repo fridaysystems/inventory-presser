@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) or exit;
 /**
  * Inventory_Presser_Shortcode_Slider
  * 
- * This class creates a shortcode to make adding vehicle photo sliders easy
+ * Creates a shortcode that produces vehicle photo sliders based on FlexSlider.
  */
 class Inventory_Presser_Shortcode_Slider
 {

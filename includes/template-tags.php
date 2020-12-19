@@ -11,6 +11,12 @@ defined( 'ABSPATH' ) or exit;
  * @author     Corey Salzano <corey@friday.systems>
  */
 
+/**
+ * invp_get_the_availability
+ *
+ * @param  int $post_ID
+ * @return string
+ */
 function invp_get_the_availability( $post_ID = null )
 {
 	if( empty( $post_ID ) )
