@@ -55,8 +55,10 @@ class Inventory_Presser_Shortcode_Archive extends Inventory_Presser_Template_Sho
 			'paged'          => ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1,
 			'posts_per_page' => get_option( 'posts_per_page' ),
 			'post_status'    => 'publish',
-			'post_type'      => INVP::POST_TYPE,
 		), $atts );
+
+		//Don't let input change the post type, that would be silly.
+		$atts['post_type'] = INVP::POST_TYPE;
 	 
 		query_posts( $atts );
 		$output = '';
