@@ -25,11 +25,11 @@ Built the right way and developer-friendly
 * Creates a custom post type & 11 taxonomies to store and group vehicles
 * Editor sidebar integrates custom fields into the block editor
 * Adds columns to the posts list for vehicles for stock number, color, odometer, price, photo count, and thumbnail
-* Implements custom taxonomies to group vehicles by type, fuel, transmission, drive type, availability, new or used, and body style
+* Implements custom taxonomies to group vehicles by year, make, model, type, fuel, transmission, drive type, availability, new or used, and body style
 * Hooks in all the right places
-* Template tags make front-end development easy
-* Runs on any theme & provides shortcodes for the stubborn ones.
-* Many add-ons both free and paid available at https://inventorypresser.com/
+* [Template tags](https://inventorypresser.com/docs/template-tags/) make front-end development easy
+* [Runs on any theme](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/) & provides shortcodes for the stubborn ones.
+* More documentation https://inventorypresser.com/
 
 
 == Installation ==
@@ -63,7 +63,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Changelog ==
 
 = 12.2.1 =
-* [Changed] Changes our dependency on woocommerce/flexslider from version 2.7.2 living in the /lib/flexslider folder to using composer to identify the library as a dependency.
+* [Changed] Changes our dependency on woocommerce/flexslider from a copy of version 2.7.2 living in the /lib/flexslider folder to using composer to identify the library as a dependency.
 
 = 12.2.0 =
 * [Added] Adds a shortcode [invp_archive] that can be used by itself in a page to create a vehicle listing page. Designed to help users build archives if their themes can't be altered to disable excerpts in archives.
@@ -82,42 +82,17 @@ The first version with DocBlock comments on all classes and methods.
 = 11.7.0 =
 This version makes the job of REST API clients that update vehicle data much easier by adding meta fields that overlap and updated all custom taxonomies.
 
-= 11.6.0 =
-This is the first version that provides a multi-valued meta field to hold vehicle options called `inventory_presser_options_array`.
-
-= 11.3.1 =
-This version is just like 11.3.0, but it works on PHP versions less than 7.0.0 without producing warnings.
-
-= 11.3.0 =
-Version 11.3.0 is a stable & polished release after the elimination of serialized meta fields.
-
-= 8.6.0 =
-This is the minimum version required for compatibility with the block editor launched in WordPress 5.0 and a new add-on called [Inventory Presser Elementor Add-on](https://inventorypresser.com/products/plugins/elementor-add-on/). This plugin adds vehicle fields to Elementor's list of Dynamic Tags.
-
-= 4.2.0 =
-This version is the first that includes REST API endpoints that allow efficient vehicle updates.
-
-= 3.1.0 =
-This is the required minimum version for compatibility with our [VIN decoder add-on](https://inventorypresser.com/products/plugins/vin-decoder/).
-
-= 2.3.1 =
-Dashicons were being included by a companion widget until said widget was rewritten. They are used by this plugin but were not enqueued until this version.
-
-= 2.0.0 =
-We are still in a private beta, but this version is the new stable tag.
-
-= 1 4.0 =
-The new location taxonomy links a vehicle to the address where a vehicle is located, making multi-lot management simple
-
-= 1.2.0 =
-This is the first version of the plugin that is part of a launched website, so there is no reason to not have at least this version.
-
-= 0.5 =
-Without version 0.5, you will not have this readme.txt file
-
 
 == History ==
 
-Fall 2015: Corey Salzano starts writing this plugin and an inventory importer companion. John Norton begins creating a theme and widgets for a front-end.
-March 2016: The first site using the plugin launches.
-March 2018: Powering more than 100 websites with version 4.2.0 when REST API endpoints were introduced.
+= Fall 2015 =
+Corey Salzano starts writing this plugin and an inventory importer companion. John Norton begins creating a theme and widgets for a front-end.
+
+= March 2016 =
+The first site using the plugin launches.
+
+= March 2018 =
+Powering more than 100 websites with version 4.2.0 when REST API endpoints were introduced.
+
+= December 2020 =
+Version 12.2.1 is submitted to wordpress.org for inclusion in the Plugin Repository. Github repo is flipped from private to public.
