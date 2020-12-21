@@ -4,9 +4,7 @@ defined( 'ABSPATH' ) or exit;
 /**
  * Inventory_Presser_Shortcode_Single_Vehicle
  * 
- * A shortcode that allows themes that do not provide a content-single template
- * to show vehicle archives that are similar to the way themes are properly
- * built out for this plugin.
+ * A shortcode that creates a content-single template for the vehicle post type.
  */
 class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Template_Shortcode
 {
