@@ -63,6 +63,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Changelog ==
 
 = 12.2.1 =
+* [Added] Adds a filter `invp_vehicle_attribute_table` to allow the HTML that produces the vehicle attribute table in our shortcodes to be altered before it is returned for output.
 * [Changed] Changes our dependency on woocommerce/flexslider from a copy of version 2.7.2 living in the /lib/flexslider folder to using composer to identify the library as a dependency.
 * [Changed] Changes our JavaScript that customizes flexslider to be compatibile with newer versions of jQuery where .load() is deprecated and replaced by .on( 'load' ).
 * [Changed] Changes the custom post type description so the phrase "auto or powersports dealership" is never output on a user's site.
