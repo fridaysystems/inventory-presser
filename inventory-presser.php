@@ -385,7 +385,7 @@ class Inventory_Presser_Plugin
 			apply_filters(
 				'invp_post_type_args',
 				array (
-					'description'  => __( 'Vehicles for sale in an automobile or powersports dealership', 'inventory-presser' ),
+					'description'  => __( 'Vehicles for sale', 'inventory-presser' ),
 					/**
 					 * Check if the theme (or the parent theme) has a CPT
 					 * archive template.  If not, we will assume that the
