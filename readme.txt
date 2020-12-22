@@ -26,10 +26,10 @@ Built the right way and developer-friendly
 * Editor sidebar integrates custom fields into the block editor
 * Adds columns to the posts list for vehicles for stock number, color, odometer, price, photo count, and thumbnail
 * Implements custom taxonomies to group vehicles by year, make, model, type, fuel, transmission, drive type, availability, new or used, and body style
-* Hooks in all the right places
+* Hooks in all the right places & four powerful [shortcodes](https://inventorypresser.com/docs/shortcodes/)
 * [Template tags](https://inventorypresser.com/docs/template-tags/) make front-end development easy
 * [Runs on any theme](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/) & provides shortcodes for the stubborn ones.
-* More documentation https://inventorypresser.com/
+* Full feature list & more documentation https://inventorypresser.com/
 
 
 == Installation ==
@@ -64,6 +64,10 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 12.2.1 =
 * [Changed] Changes our dependency on woocommerce/flexslider from a copy of version 2.7.2 living in the /lib/flexslider folder to using composer to identify the library as a dependency.
+* [Changed] Changes our JavaScript that customizes flexslider to be compatibile with newer versions of jQuery where .load() is deprecated and replaced by .on( 'load' ).
+* [Changed] Changes the custom post type description so the phrase "auto or powersports dealership" is never output on a user's site.
+* [Changed] Updates to this readme file to include more links to feature lists and documentation.
+* [Removed] Removes a CSS rule that shrunk text in the [invp_archive_vehicle] shortcode output.
 
 = 12.2.0 =
 * [Added] Adds a shortcode [invp_archive] that can be used by itself in a page to create a vehicle listing page. Designed to help users build archives if their themes can't be altered to disable excerpts in archives.
