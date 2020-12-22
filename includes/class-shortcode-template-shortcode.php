@@ -153,6 +153,6 @@ class Inventory_Presser_Template_Shortcode
 			);
 		}
 
-		return $html;
+		return apply_filters( 'invp_vehicle_attribute_table', $html );
 	}
 }
