@@ -149,7 +149,7 @@ class Inventory_Presser_Template_Shortcode
 			$html .= sprintf(
 				'<div class="item"><div class="label">%s</div><div class="value vehicle-content-initcaps">%s</div></div>',
 				apply_filters( 'invp_label-' . $member, $item['label'] ),
-				empty( $item['value'] ) ? strtolower( INVP::get_meta( $member, $post_ID ) ) : $item['value']
+				apply_filters( 'invp_vehicle_attribute_table_cell', empty( $item['value'] ) ? strtolower( INVP::get_meta( $member, $post_ID ) ) : $item['value'] )
 			);
 		}
 
