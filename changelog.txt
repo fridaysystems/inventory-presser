@@ -1,3 +1,8 @@
+= 12.2.0 =
+* [Added] Adds a shortcode [invp_archive] that can be used by itself in a page to create a vehicle listing page. Designed to help users build archives if their themes can't be altered to disable excerpts in archives.
+* [Added] Adds a shortcode [invp_iframe] that replaces [iframe]. All users of the responsive iframe shortcode should adjust their shortcodes.
+* [Changed] Changes the tested up to version number to 5.6.0.
+
 = 12.1.0 =
 * [Added] Upgrades the vehicle location sentence to add the lot's phone number.
 * [Added] Adds two filters, `invp_vehicle_location_sentence_address` and `invp_vehicle_location_sentence_phone` to allow each piece of the phone number in the location sentence to be filtered separately.
