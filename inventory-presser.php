@@ -101,13 +101,13 @@ class Inventory_Presser_Plugin
 		$direction = $this->settings['sort_vehicles_order'];
 		if( isset( $_GET['order'] ) )
 		{
-			$direction = $_GET['order'];
+			$direction = sanitize_text_field( $_GET['order'] );
 		}
 
 		$key = $this->settings['sort_vehicles_by'];
 		if( isset( $_GET['orderby'] ) )
 		{
-			$key = $_GET['orderby'];
+			$key = sanitize_text_field( $_GET['orderby'] );
 		}
 
 		//Make sure the meta key has the prefix

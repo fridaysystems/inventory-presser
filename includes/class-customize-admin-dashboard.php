@@ -206,7 +206,7 @@ class Inventory_Presser_Customize_Dashboard
 			 * This function is being called via AJAX and the
 			 * post_id is incoming, so get the post
 			 */
-			$post = get_post( $_POST['post_ID'] );
+			$post = get_post( intval( $_POST['post_ID'] ) );
 		}
 
 		if( INVP::POST_TYPE != $post->post_type )

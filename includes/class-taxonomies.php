@@ -978,7 +978,7 @@ class Inventory_Presser_Taxonomies
 			$uid = '';
 			if ( isset( $_POST['phone_uid'][$i] ) )
 			{
-				$uid = $_POST['phone_uid'][$i];
+				$uid = sanitize_text_field( $_POST['phone_uid'][$i] );
 			}
 			else
 			{

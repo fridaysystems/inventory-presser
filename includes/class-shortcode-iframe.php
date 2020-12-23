@@ -67,7 +67,7 @@ class Inventory_Presser_Shortcode_Iframe
 
 		//Stock number may arrive in a querystring variable with key 'stock'
 		if( isset( $_GET['stock'] ) ) {
-			$atts['src'] = esc_url( add_query_arg( 'stock', $_GET['stock'], $atts['src'] ) );
+			$atts['src'] = esc_url( add_query_arg( 'stock', sanitize_text_field( $_GET['stock'] ), $atts['src'] ) );
 		}
 
 		$html = '<iframe';
