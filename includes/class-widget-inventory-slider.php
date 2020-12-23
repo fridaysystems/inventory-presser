@@ -72,12 +72,19 @@ class Inventory_Presser_Slider extends WP_Widget {
 	 */
 	function include_scripts()
 	{
-		//This widget uses a jQuery carousel called slick https://plugins.jquery.com/slick/
-		wp_enqueue_style( 'jquery-slick-style', '//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css' );
-		wp_enqueue_style( 'invp-slick', plugins_url( 'css/slick.min.css', dirname( __FILE__ ) ) );
-		wp_enqueue_script( 'jquery-slick', '//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js', array('jquery'), '1.6.0' );
-		wp_enqueue_script( 'invp-slick-init', plugins_url( 'js/slick.min.js', dirname( __FILE__ ) ), array( 'jquery-slick' ) );
+		/**
+		 * This widget uses a jQuery plugin called slick.js
+		 * 
+		 * @see https://plugins.jquery.com/slick/
+		 */
+		wp_enqueue_style( 'jquery-slick-style', plugins_url( 'vendor/kenwheeler/slick/slick/slick.css', INVP_PLUGIN_FILE_PATH ) );
+		wp_enqueue_style( 'invp-slick', plugins_url( 'css/slick.min.css', INVP_PLUGIN_FILE_PATH ) );
+
+		wp_enqueue_script( 'jquery-slick', plugins_url( 'vendor/kenwheeler/slick/slick/slick.min.js', INVP_PLUGIN_FILE_PATH ), array('jquery'), '1.6.0' );
+		wp_enqueue_script( 'invp-slick-init', plugins_url( 'js/slick.min.js', INVP_PLUGIN_FILE_PATH ), array( 'jquery-slick' ) );
+		
 		//Also we're using flexslider-icons font face for the button icons
+		//(Since we also depend on woocommerce/flexslider)
 		wp_enqueue_style( 'flexslider' );
 	}
 
