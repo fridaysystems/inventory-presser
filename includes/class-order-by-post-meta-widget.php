@@ -161,7 +161,7 @@ class Order_By_Widget extends WP_Widget {
 	 * @return void
 	 */
 	function load_javascript( ) {
-		wp_register_script( 'order-by-widget-javascript', plugins_url( 'js/order-by-post-meta-widget.min.js', dirname( __FILE__ ) ) );
+		wp_register_script( 'order-by-widget-javascript', plugins_url( 'js/order-by-post-meta-widget.min.js', INVP_PLUGIN_FILE_PATH ) );
 		wp_enqueue_script( 'order-by-widget-javascript' );
 	}
 	

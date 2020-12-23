@@ -516,10 +516,10 @@ class Inventory_Presser_Taxonomies
 			&& $current_screen->post_type == INVP::POST_TYPE
 			&& $current_screen->taxonomy == 'location' )
 		{
-			wp_enqueue_style('inventory-presser-timepicker-css',  plugins_url( '/css/jquery.timepicker.min.css', dirname( __FILE__ ) ));
-			wp_enqueue_script('inventory-presser-timepicker', plugins_url( '/js/jquery.timepicker.min.js', dirname( __FILE__ ) ), array('jquery'), '1.8.10');
+			wp_enqueue_style('inventory-presser-timepicker-css',  plugins_url( '/css/jquery.timepicker.min.css', INVP_PLUGIN_FILE_PATH ) );
+			wp_enqueue_script('inventory-presser-timepicker', plugins_url( '/js/jquery.timepicker.min.js', INVP_PLUGIN_FILE_PATH ), array('jquery'), '1.8.10');
 			wp_enqueue_script('jquery-ui-sortable');
-			wp_enqueue_script('inventory-presser-location', plugins_url( '/js/tax-location.min.js', dirname( __FILE__ ) ), array('inventory-presser-timepicker','jquery-ui-sortable'));
+			wp_enqueue_script('inventory-presser-location', plugins_url( '/js/tax-location.min.js', INVP_PLUGIN_FILE_PATH ), array('inventory-presser-timepicker','jquery-ui-sortable'));
 		}
 
 	}

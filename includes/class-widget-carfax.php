@@ -110,7 +110,7 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 			printf(
 				'<a href="%s"><img src="%s"></a>',
 				get_post_type_archive_link( INVP::POST_TYPE ),
-				plugins_url( '/assets/' . $this->images()[$image]['img'], dirname(__FILE__) )
+				plugins_url( '/assets/' . $this->images()[$image]['img'], INVP_PLUGIN_FILE_PATH )
 			);
 		}
 		echo wpautop( $instance['after_image'] ). $args['after_widget'];
