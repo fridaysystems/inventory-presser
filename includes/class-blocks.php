@@ -50,31 +50,6 @@ class Inventory_Presser_Blocks
 		add_action( 'enqueue_block_editor_assets', array( $this, 'register_block_types' ) );
 		add_filter( 'block_categories', array( $this, 'add_category' ), 10, 2 );
 	}
-
-	/**
-	 * editing_a_vehicle
-	 * 
-	 * True or false, this request originates from the editor and a post in our
-	 * post type is what is being created or edited
-	 *
-	 * @return bool
-	 */
-	private function editing_a_vehicle()
-	{
-		global $post_type;
-		if( ! empty( $post_type ) )
-		{
-			if( INVP::POST_TYPE != $post_type )
-			{
-				return false;
-			}
-		}
-		elseif( empty( $_POST['post_type'] ) )
-		{
-			return false;
-		}
-		return true;
-	}
 	
 	/**
 	 * register_block_types
@@ -88,11 +63,6 @@ class Inventory_Presser_Blocks
 		if( ! function_exists( 'register_block_type' ) )
 		{
 			//running on WordPress < 5.0.0, no blocks for you
-			return;
-		}
-
-		if( ! $this->editing_a_vehicle() )
-		{
 			return;
 		}
 
