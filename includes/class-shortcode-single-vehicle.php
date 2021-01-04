@@ -134,12 +134,8 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 
 					?></div>
 					<div class="vehicle-buttons"><?php
-						// carfax
-						$carfax_html = invp_get_the_carfax_icon_html();
-						if ( isset( $invp_settings['use_carfax'] ) && $invp_settings['use_carfax'] && '' != $carfax_html )
-						{
-							printf( '<div class="carfax-wrapper">%s</div>', $carfax_html );
-						}
+						
+						do_action( 'invp_single_buttons' );
 
 						// autocheck icon
 						if( shortcode_exists( 'autocheck_button' ) )
@@ -150,6 +146,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 								printf( '<div class="autocheck-wrapper">%s</div>', $autocheck_html );
 							}
 						}
+												
 					?></div>
 				</div>
 
