@@ -35,6 +35,21 @@ class Inventory_Presser_Shortcode_Archive extends Inventory_Presser_Template_Sho
 	}
 	
 	/**
+	 * clean_attributes_for_query
+	 * 
+	 * Removes shortcode attributes from the attributes array that are not also
+	 * query parameters for a posts query.
+	 *
+	 * @param  array $atts
+	 * @return array
+	 */
+	private function clean_attributes_for_query( $atts )
+	{
+		unset( $atts['show_titles'] );
+		return $atts;
+	}
+	
+	/**
 	 * content
 	 * 
 	 * Creates the HTML content of the shortcode
@@ -55,19 +70,22 @@ class Inventory_Presser_Shortcode_Archive extends Inventory_Presser_Template_Sho
 			'paged'          => ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1,
 			'posts_per_page' => get_option( 'posts_per_page' ),
 			'post_status'    => 'publish',
+			'show_titles'    => true,
 		), $atts );
 
 		//Don't let input change the post type, that would be silly.
 		$atts['post_type'] = INVP::POST_TYPE;
 	 
-		query_posts( $atts );
+		query_posts( $this->clean_attributes_for_query( $atts ) );
 		$output = '';
 		if ( have_posts() )
 		{
 			while ( have_posts() )
 			{
 				the_post();
-				$output .= apply_shortcodes( '[invp_archive_vehicle]' );
+				$shortcode = sprintf( '[invp_archive_vehicle show_titles="%s"]', strval( $atts['show_titles'] ) );
+				error_log( $shortcode . ', $atts[\'show_titles\'] = ' . ( $atts['show_titles'] ? '1' : '0' ) );
+				$output .= apply_shortcodes(  $shortcode );
 			}
 		}
 

@@ -46,6 +46,21 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 	 */
 	function content( $atts )
 	{
+		/**
+		 * Default show_titles to false because this shortcode is used to 
+		 * replace the_content when themes handle our custom post type, and 
+		 * those themes will output a title.
+		 */
+		$atts = shortcode_atts( array(
+ 			'show_titles'   => false,
+		), $atts );
+
+		//We want real booleans, please
+		if( is_string( $atts['show_titles'] ) )
+		{
+			$atts['show_titles'] = filter_var( $atts['show_titles'], FILTER_VALIDATE_BOOLEAN );
+		}
+
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'invp_archive_vehicle' );
 
@@ -53,8 +68,16 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 		?>
 
 		<article id="post-<?php the_ID(); ?>" <?php post_class('post-vehicle'); ?>>
-			<div class="vehicle-info">
-				<div class="post-inner">
+			<div class="vehicle-info"><?php
+
+				if( $atts['show_titles'] )
+				{
+					?><div class="entry-header">
+							<h2 class="entry-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>							
+						</div><?php
+				}
+
+				?><div class="post-inner">
 					<div class="post-thumbnail">
 						<div class="vehicle-images">
 							<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php
