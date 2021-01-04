@@ -67,6 +67,8 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Added] Adds a link to readme.txt about how we update vehicles running this plugin using the WordPress REST API.
 * [Changed] Adds post titles to the [invp_archive] shortcode output, while preventing double titles on post archives in themes that do not contain templates for our custom post type.
 * [Changed] Adds blocks created by this plugin to the block editor all the time instead of only when users are editing vehicle posts.
+* [Fixed] The [invp_single_vehicle] shortcode now calls the action hook `invp_single_buttons`.
+* [Removed] Removes a call to invp_get_the_carfax_icon_html() inside the [invp_single_vehicle] shortcode.
 
 
 == Upgrade Notice ==
