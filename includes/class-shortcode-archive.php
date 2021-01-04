@@ -84,8 +84,7 @@ class Inventory_Presser_Shortcode_Archive extends Inventory_Presser_Template_Sho
 			{
 				the_post();
 				$shortcode = sprintf( '[invp_archive_vehicle show_titles="%s"]', strval( $atts['show_titles'] ) );
-				error_log( $shortcode . ', $atts[\'show_titles\'] = ' . ( $atts['show_titles'] ? '1' : '0' ) );
-				$output .= apply_shortcodes(  $shortcode );
+				$output .= apply_shortcodes( $shortcode );
 			}
 		}
 

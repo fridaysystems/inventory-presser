@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.6.0
-Stable tag: 12.2.2
+Stable tag: 12.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,18 +62,11 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
-= 12.2.2 =
-* [Added] Adds a filter `invp_vehicle_attribute_table_cell` after a user request to wrap the output of each item in the vehicle attribute table before the generated HTML is output in our shortcodes [invp_archive_vehicle] and [invp_single_vehicle].
-* [Changed] Changes our dependency on kenwheeler/slick from loading from jsdelivr.net to a composer dependency. Slick.js is used in the Vehicle Slider widget.
-* [Fixed] Now sanitizes or parses values passed via $_POST and $_GET before they are used.
-
-= 12.2.1 =
-* [Added] Adds a filter `invp_vehicle_attribute_table` to allow the HTML that produces the vehicle attribute table in our shortcodes to be altered before it is returned for output.
-* [Changed] Changes our dependency on woocommerce/flexslider from a copy of version 2.7.2 living in the /lib/flexslider folder to using composer to identify the library as a dependency.
-* [Changed] Changes our JavaScript that customizes flexslider to be compatibile with newer versions of jQuery where .load() is deprecated and replaced by .on( 'load' ).
-* [Changed] Changes the custom post type description so the phrase "auto or powersports dealership" is never output on a user's site.
-* [Changed] Updates to this readme file to include more links to feature lists and documentation.
-* [Removed] Removes a CSS rule that shrunk text in the [invp_archive_vehicle] shortcode output.
+= 12.2.3 =
+* [Added] Adds an attribute  `show_titles` to both the [invp_archive] and [invp_archive_vehicle] shortcodes. The default value is true for the former and false for the latter.
+* [Added] Adds a link to readme.txt about how we update vehicles running this plugin using the WordPress REST API.
+* [Changed] Adds post titles to the [invp_archive] shortcode output, while preventing double titles on post archives in themes that do not contain templates for our custom post type.
+* [Changed] Adds blocks created by this plugin to the block editor all the time instead of only when users are editing vehicle posts.
 
 
 == Upgrade Notice ==
