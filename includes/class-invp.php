@@ -568,6 +568,11 @@ class INVP
 				'type'   => 'number',
 			),
 			array(
+				'label'  => __( 'NextGear Inspection URL', 'inventory_presser' ),
+				'name'   => 'nextgear_inspection_url',
+				'type'   => 'string',
+			),
+			array(
 				'label'  => __( 'Odometer', 'inventory_presser' ),
 				'name'   => 'odometer',
 				'sample' => '102000',
