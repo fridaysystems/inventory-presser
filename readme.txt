@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.6.0
-Stable tag: 12.2.3
+Stable tag: 12.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 12.2.4 =
+* [Added] Adds a meta field to vehicle posts to hold URLs for NextGear Digital Vehicle Inspections `inventory_presser_nextgear_inspection_url`
 
 = 12.2.3 =
 * [Added] Adds an attribute  `show_titles` to both the [invp_archive] and [invp_archive_vehicle] shortcodes. The default value is true for the former and false for the latter.
