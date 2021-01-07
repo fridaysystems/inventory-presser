@@ -64,6 +64,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 12.2.4 =
 * [Added] Adds a meta field to vehicle posts to hold URLs for NextGear Digital Vehicle Inspections `inventory_presser_nextgear_inspection_url`
+* [Added] Adds a button near vehicles in archives and single pages to "See Digital Inspection Report" when vehicles have a value in the new `inventory_presser_nextgear_inspection_url` meta field.
 * [Fixed] Fixes a bug in CSS rules for the output of our [invp_single_vehicle] shortcode that was hiding vehicle buttons output during the `invp_single_buttons` action hook like Carfax.
 * [Fixed] Fixes a bug in the template tag `invp_get_the_price()` where our filter on the zero string, `invp_zero_price_string`, would never be applied. The filter allows other developers to change what is shown when a vehicle has zero for a price.
 
