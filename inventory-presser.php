@@ -53,25 +53,6 @@ class Inventory_Presser_Plugin
 	var $settings;
 	
 	/**
-	 * add_carfax_badge
-	 * 
-	 * Filter callback that outputs HTML markup that creates a Carfax badge if
-	 * $vehicle contains Carfax report data.
-	 *
-	 * @return void
-	 */
-	function add_carfax_badge()
-	{
-		$carfax_html = invp_get_the_carfax_icon_html();
-		if( '' != $carfax_html )
-		{
-			?><div class="carfax-wrapper"><?php
-				echo $carfax_html;
-			?></div><?php
-		}
-	}
-	
-	/**
 	 * add_orderby_to_query
 	 *
 	 * Filter callback that adds an ORDER BY clause to the main query when a 
@@ -641,13 +622,6 @@ class Inventory_Presser_Plugin
 			add_action( 'pre_get_posts', array( $this, 'add_orderby_to_query' ) );
 		}
 
-		//If Carfax is enabled, add the badge to pages
-		if ( isset( $this->settings['use_carfax'] ) && $this->settings['use_carfax'] )
-		{
-			add_action( 'invp_archive_buttons', array( $this, 'add_carfax_badge' ) );
-			add_action( 'invp_single_buttons',  array( $this, 'add_carfax_badge' ) );
-		}
-
 		//Allow custom fields to be searched
 		$add_custom_fields_to_search = new Add_Custom_Fields_To_Search();
 		$add_custom_fields_to_search->hooks();
@@ -655,6 +629,10 @@ class Inventory_Presser_Plugin
 		//Redirect URLs by VINs to proper vehicle permalinks
 		$allow_urls_by_vin = new Vehicle_URLs_By_VIN();
 		$allow_urls_by_vin->hooks();
+
+		//Add buttons near vehicles for Carfax reports or NextGear inspections
+		$badges = new Inventory_Presser_Badges();
+		$badges->hooks();
 
 		//Redirect 404 vehicles to make archives
 		$redirect_404_vehicles = new Redirect_404_Vehicles();
@@ -768,6 +746,7 @@ class Inventory_Presser_Plugin
 			'class-add-custom-fields-to-search.php',
 			'class-additional-listings-pages.php',
 			'class-allow-inventory-as-home-page.php',
+			'class-badges.php',
 			'class-blocks.php',
 			'class-business-day.php',
 			'class-customize-admin-dashboard.php',
