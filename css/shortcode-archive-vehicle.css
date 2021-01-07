@@ -111,6 +111,9 @@ ul.vehicle-features {
 .vehicle-price-and-buttons > *.vehicle-price {
 	margin-bottom: .75em;
 }
+.vehicle-price-and-buttons .wp-block-button__link.button:last-child { /* View Details button */
+	margin-top: .8em;
+}
 
 @media screen and (max-width: 700px){
 	.vehicle-info .post-inner{
