@@ -2,6 +2,9 @@
 	background: none;
 	border: none;
 }
+#carousel{ 
+	margin-top: 1em;
+}
 .vehicle-price{
 	text-align: right;
 }
@@ -13,7 +16,13 @@ ul.vehicle-features {
 .vehicle-buttons{
 	max-width: 48%;
 }
+.vehicle-buttons div{ 
+	min-width: 250px; 
+}
 .vehicle-columns{
 	display: flex;
 	justify-content: space-between;
+}
+.vehicle-summary{
+	margin-top: .5em;
 }
