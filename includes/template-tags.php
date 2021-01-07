@@ -730,11 +730,6 @@ function invp_get_raw_price( $post_ID = null )
  */
 function invp_get_the_price( $zero_string = null, $post_ID = null )
 {
-	if( empty( $zero_string ) )
-	{
-		$zero_string = __( 'Call For Price', 'inventory-presser' );
-	}
-
 	if( empty( $post_ID ) )
 	{
 		$post_ID = get_the_ID();
@@ -746,11 +741,12 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
 		return apply_filters( 'invp_sold_string', sprintf( '<span class="vehicle-sold">%s</span>', __( 'SOLD!', 'inventory-presser' ) ) );
 	}
 
-	if( '' == $zero_string )
+	if( empty( $zero_string ) )
 	{
-		$zero_string = apply_filters( 'invp_zero_price_string', $zero_string, $post_ID );
+		$zero_string = __( 'Call For Price', 'inventory-presser' );
 	}
-
+	$zero_string = apply_filters( 'invp_zero_price_string', $zero_string, $post_ID );
+	
 	//How are we displaying the price?
 	$settings = INVP::settings();
 	if( ! isset( $settings['price_display'] ) )
