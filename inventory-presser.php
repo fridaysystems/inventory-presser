@@ -744,6 +744,7 @@ class Inventory_Presser_Plugin
 		//Include our object definition dependencies
 		$file_names = array(
 			'class-add-custom-fields-to-search.php',
+			'class-addon-license-validator.php',
 			'class-additional-listings-pages.php',
 			'class-allow-inventory-as-home-page.php',
 			'class-badges.php',
