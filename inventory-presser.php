@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) or exit;
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
  * Version: 12.2.4
  * Author: Corey Salzano
- * Author URI: https://profiles.wordpress.org/salzano
+ * Author URI: https://github.com/csalzano
  * Text Domain: inventory-presser
  * Domain Path: /languages
  * License: GPLv2 or later
