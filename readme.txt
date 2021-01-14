@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.6.0
-Stable tag: 12.2.4
+Stable tag: 12.2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,9 +58,16 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 1. This is a list of vehicles in the administrator dashboard that the user sees when she clicks the Vehicles or All Vehicles menu items. Each vehicle is listed by year, make, model, trim, stock number, color, odometer, price, and photo count. If the vehicle has photos, a thumbnail is also shown. This screen shot was taken on version 3.1.0.
 2. This is the edit screen that adds or edits a single vehicle. The post content box is demoted to handle only the sentence-form vehicle description, and the entire edit screen is enhanced to support vehicle attributes. This screen shot was taken on version 3.1.0.
+3. This screenshot shows a vehicle post in the WordPress block editor. An editor sidebar for the Inventory Presser plugin is expanded and contains vehicle attribute fields. An arrow points to a button with a key on it that reveals the editor sidebar.
+4. This screenshot shows a vehicle archive on the Twenty Twenty theme before any customization.
 
 
 == Changelog ==
+
+= 12.2.5 =
+* [Added] Adds a screenshots that show a vehicle being edited in the block editor and vehicle archive output on the Twenty Twenty theme.
+* [Changed] Moves image files out of /assets and into /images. The /assets folder must contain wordpress.org icons and banners only.
+* [Changed] Updates the npm development dependency @wordpress/scripts to version 12.6.1.
 
 = 12.2.4 =
 * [Added] Adds a meta field to vehicle posts to hold URLs for NextGear Digital Vehicle Inspections `inventory_presser_nextgear_inspection_url`
