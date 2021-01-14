@@ -86,7 +86,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Upgrade Notice ==
 
-= 12.2.1 =
+= 12.2.5 =
 This release is the one we shipped to wordpress.org and the world as our open source launch.
 
 = 11.8.2 =
@@ -94,18 +94,3 @@ The first version with DocBlock comments on all classes and methods.
 
 = 11.7.0 =
 This version makes the job of REST API clients that update vehicle data much easier by adding meta fields that overlap and updated all custom taxonomies.
-
-
-== History ==
-
-= Fall 2015 =
-Corey Salzano starts writing this plugin and an inventory importer companion. John Norton begins creating a theme and widgets for a front-end.
-
-= March 2016 =
-The first site using the plugin launches.
-
-= March 2018 =
-Powering more than 100 websites with version 4.2.0 when REST API endpoints were introduced.
-
-= December 2020 =
-Version 12.2.1 is submitted to wordpress.org for inclusion in the Plugin Repository. Github repo is flipped from private to public.
