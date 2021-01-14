@@ -21,6 +21,6 @@
 	},
 	"homepage": "https://github.com/csalzano/inventory-presser#readme",
 	"devDependencies": {
-		"@wordpress/scripts": "7.1.1"
+		"@wordpress/scripts": "^12.6.1"
 	}
 }
