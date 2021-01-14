@@ -90,7 +90,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 								}
 								else
 								{
-									?><img class="no-photo-available" src="<?php echo plugins_url( '/assets/no-photo.png', INVP_PLUGIN_FILE_PATH ); ?>" alt="<?php the_title(); ?>" /><?php
+									?><img class="no-photo-available" src="<?php echo plugins_url( '/images/no-photo.png', INVP_PLUGIN_FILE_PATH ); ?>" alt="<?php the_title(); ?>" /><?php
 								}
 								//Resume lying about thumbnails
 								add_filter( 'has_post_thumbnail', array( 'Inventory_Presser_Template_Provider', 'lie_about_post_thumbnails' ), 10, 3 );

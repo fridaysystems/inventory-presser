@@ -160,7 +160,7 @@ function invp_get_the_carfax_url_svg( $post_ID = null )
 	if( empty( $url ) || ! INVP::settings()['use_carfax_provided_buttons'] )
 	{
 		//fallback to the icon that ships with this plugin
-		$url = plugin_dir_url( INVP_PLUGIN_FILE_PATH ) . '/assets/show-me-carfax';
+		$url = plugin_dir_url( INVP_PLUGIN_FILE_PATH ) . '/images/show-me-carfax';
 		if( invp_is_carfax_one_owner( $post_ID ) )
 		{
 			$url .= '-1-owner';

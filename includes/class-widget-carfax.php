@@ -100,7 +100,7 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 		echo wpautop( $instance['before_image'] );
 		if( 'svg' == strtolower( pathinfo( $this->images()[$image]['img'], PATHINFO_EXTENSION ) ) ) {
 			//Include the SVG inline instead of using an <img> element
-			$svg = file_get_contents( dirname( dirname( __FILE__ ) ) . '/assets/' . $this->images()[$image]['img'] );
+			$svg = file_get_contents( dirname( dirname( __FILE__ ) ) . '/images/' . $this->images()[$image]['img'] );
 			printf(
 				'<a href="%s">%s</a>',
 				get_post_type_archive_link( INVP::POST_TYPE ),
@@ -110,7 +110,7 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 			printf(
 				'<a href="%s"><img src="%s"></a>',
 				get_post_type_archive_link( INVP::POST_TYPE ),
-				plugins_url( '/assets/' . $this->images()[$image]['img'], INVP_PLUGIN_FILE_PATH )
+				plugins_url( '/images/' . $this->images()[$image]['img'], INVP_PLUGIN_FILE_PATH )
 			);
 		}
 		echo wpautop( $instance['after_image'] ). $args['after_widget'];
