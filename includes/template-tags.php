@@ -721,8 +721,9 @@ function invp_get_raw_price( $post_ID = null )
  *
  * Template tag. Returns the vehicle's price.
  * 
- * Returns the price as a dollar amount except when it is zero. Returns
- * the $zero_string when the price is zero.
+ * Returns the price as a dollar amount with a dollar sign except when it is 
+ * zero or the vehicle is sold. Returns the $zero_string when the price is zero.
+ * Returns "SOLD!" when the vehicle is sold.
  * 
  * @param  string $zero_string The text to display when the price is zero
  * @param  int|null $post_ID The post ID of a vehicle. Must be passed when using this method outside the loop.
