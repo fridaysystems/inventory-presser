@@ -29,6 +29,48 @@ class Inventory_Presser_Options
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_javascript' ) );
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
+
+		/**
+		 * When the option is updated, check if the additional listings pages 
+		 * settings changed. If they have, flush permalinks.
+		 */
+		add_action( 'update_option_' . INVP::OPTION_NAME, array( $this, 'maybe_flush_permalinks' ), 10, 2 );
+	}
+
+	/**
+	 * maybe_flush_permalinks
+	 *
+	 * If the additional listing pages settings are changed, or the switch
+	 * is on and the array of pages is different, flush rewrite rules
+	 * 
+	 * @param  string $option
+	 * @param  mixed $old_value
+	 * @param  mixed $value
+	 * @return void
+	 */
+	public function maybe_flush_permalinks( $old_value, $value )
+	{
+		//Did the additional listings pages settings change?
+		if ( ( ! isset( $old_value['additional_listings_pages'] ) && isset( $value['additional_listings_pages'] ) )
+			|| ( isset( $old_value['additional_listings_pages'] ) && ! isset( $value['additional_listings_pages'] ) )
+			|| ( isset( $old_value['additional_listings_pages'] ) && isset( $value['additional_listings_pages'] ) && $old_value['additional_listings_pages'] !== $value['additional_listings_pages'] ) )
+		{
+			if( ! is_multisite() )
+			{
+				flush_rewrite_rules();
+				return;
+			}
+	
+			$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
+			foreach( $sites as $site )
+			{
+				switch_to_blog( $site->blog_id );
+				global $wp_rewrite;
+				$wp_rewrite->init(); //important...
+				$wp_rewrite->flush_rules();
+				restore_current_blog();
+			}
+		}
 	}
 
 	/**
@@ -663,18 +705,6 @@ class Inventory_Presser_Options
 				$url_paths[] = $additional_listing['url_path'];
 			}
 			$sanitary_values['additional_listings_pages'] = $unique_rules;
-
-			/**
-			 * If the additional listing pages switch is changed, or the switch
-			 * is on and the array of pages is different, flush rewrite rules
-			 */
-			$settings = INVP::settings();
-			if( ! isset( $settings['additional_listings_page'] )
-				|| $sanitary_values['additional_listings_page'] != $settings['additional_listings_page']
-				|| ( $sanitary_values['additional_listings_page'] && $sanitary_values['additional_listings_pages'] != $settings['additional_listings_pages'] ) )
-			{
-				flush_rewrite_rules();
-			}
 		}
 
 		return apply_filters( 'invp_options_page_sanitized_values', $sanitary_values, $input );
