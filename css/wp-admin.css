@@ -115,8 +115,8 @@ th.column-inventory_presser_thumbnail{
 }
 
 /* Location taxonomy inputs */
-table.hours th.day-col{
-	width: 3em;
+table.hours th{
+	white-space: nowrap;
 }
 table.hours th.to-col{
 	width: 1em;
