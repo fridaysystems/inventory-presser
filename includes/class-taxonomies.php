@@ -67,7 +67,7 @@ class Inventory_Presser_Taxonomies
 								foreach( array_keys( INVP::weekdays() ) as $index => $day)
 								{
 									?><tr>
-									<th><?php echo $day ?></th>
+									<th><?php echo ucfirst( $day ); ?></th>
 									<td><input name="hours[<?php echo $index ?>][open][]" class="timepick" type="text"></td>
 									<th>to</th>
 									<td><input name="hours[<?php echo $index ?>][close][]" class="timepick" type="text"></td>
