@@ -64,6 +64,11 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 12.2.6 = 
+* [Changed] Changes the default button text for NextGear vehicle inspection reports from "See Digital Inspection Report" to "Mechanic's Report"
+* [Fixed] Fixes the way hours of tables display in the dashboard while editing location terms buy removing a CSS rule governing table column widths and capitalizes the first letter of the days of the week.
+* [Fixed] Fixes a broken attempt to flush rewrite rules/re-save permalinks after changes to the Additional Listing Pages settings occurs. The flush was happening too soon, and was not compatible with multisite. Users will now see instant changes after saving Additional Listings Pages settings instead of having to re-save permalinks first.
+
 = 12.2.5 =
 * [Added] Adds a screenshots that show a vehicle being edited in the block editor and vehicle archive output on the Twenty Twenty theme.
 * [Changed] Moves image files out of /assets and into /images. The /assets folder must contain wordpress.org icons and banners only.
