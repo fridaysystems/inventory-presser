@@ -40,7 +40,7 @@ class Inventory_Presser_Badges
 			?><div class="nextgear-wrapper">
 				<a class="<?php echo $classes; ?>" href="<?php echo $url; ?>"><?php
 
-				echo apply_filters( 'invp_button_text_nextgear_inspection_url', __( 'See Digital Inspection Report', 'inventory-presser' ) );
+				echo apply_filters( 'invp_button_text_nextgear_inspection_url', __( 'Mechanic\'s Report', 'inventory-presser' ) );
 
 			?></a>
 			</div><?php
