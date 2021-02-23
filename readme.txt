@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 5.6.0
-Stable tag: 12.2.5
+Tested up to: 5.6.2
+Stable tag: 12.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Changelog ==
 
 = 12.2.6 = 
+* [Changed] Changes the tested up to version number to 5.6.2.
 * [Changed] Changes the default button text for NextGear vehicle inspection reports from "See Digital Inspection Report" to "Mechanic's Report"
 * [Fixed] Fixes the way hours of tables display in the dashboard while editing location terms buy removing a CSS rule governing table column widths and capitalizes the first letter of the days of the week.
 * [Fixed] Fixes a broken attempt to flush rewrite rules/re-save permalinks after changes to the Additional Listing Pages settings occurs. The flush was happening too soon, and was not compatible with multisite. Users will now see instant changes after saving Additional Listings Pages settings instead of having to re-save permalinks first.
@@ -90,6 +91,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 12.2.6 =
+Changes the default button text for NextGear vehicle inspection reports from "See Digital Inspection Report" to "Mechanic's Report." Fixes bugs.
 
 = 12.2.5 =
 This release is the one we shipped to wordpress.org and the world as our open source launch.
