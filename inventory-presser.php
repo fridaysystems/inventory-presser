@@ -5,9 +5,9 @@ defined( 'ABSPATH' ) or exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: An inventory management plugin for Car Dealers. Create or import an automobile or powersports dealership inventory.
- * Version: 12.2.6
- * Author: Corey Salzano
- * Author URI: https://github.com/csalzano
+ * Version: 12.2.7
+ * Author: Friday Systems
+ * Author URI: https://inventorypresser.com
  * Text Domain: inventory-presser
  * Domain Path: /languages
  * License: GPLv2 or later
