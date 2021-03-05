@@ -228,7 +228,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 		$featured_select = isset($instance['featured_select']) ? $instance[ 'featured_select' ] : $featured_select_slugs[0];
 
 		$text_displays_slugs = array_keys($this->text_displays);
-		$showtext = isset($instance['showtext']) ? $instance[ 'showtext' ] : $text_displays_slugs[0];
+		$showtext = isset($instance['showtext']) ? $instance[ 'showtext' ] : $text_displays_slugs[0]; //"none"
 
 		// Widget admin form
 		?>
@@ -281,12 +281,42 @@ class Inventory_Presser_Slider extends WP_Widget {
 			}
 		?>
 		</select>
+		</p><?php
+
+			/**
+			 * This inline JavaScript disables two checkboxes depending on the
+			 * value of the Text Overlay dropdown above. Some trickery is 
+			 * involved, because the readonly attribute only locks an inputs
+			 * value and a checkbox being checked isn't the value, it's the
+			 * state. A click handler is added and removed to prevent state
+			 * changes to the two checkboxes if Text Overlay is set to None.
+			 */
+
+		?><script type="text/javascript">
+		<!--
+			function __return_false(){ return false; }
+			jQuery(document).ready(function(){
+				var sel = jQuery('#<?php echo $this->get_field_id( 'showtext' ); ?>');
+				sel.on('change', function(){
+					var chks =jQuery('#<?php echo $this->get_field_id('cb_showtitle'); ?>,#<?php echo $this->get_field_id('cb_showprice'); ?>');
+					chks.attr('readonly', ('none'==sel.val()));			
+					if('none'==sel.val())
+					{
+						chks.on('click',__return_false);
+					}
+					else
+					{
+						chks.off('click', __return_false);
+					}
+				});
+			});
+		//-->
+		</script>
+		<p>
+		<label for="<?php echo $this->get_field_id('cb_showtitle'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showtitle'); ?>" name="<?php echo $this->get_field_name('cb_showtitle'); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showtitle'] ) && $instance['cb_showtitle'] == 'true' ) ); ?>> <?php _e( 'Overlay year, make, & model', 'inventory-presser' ); ?></label>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id('cb_showtitle'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showtitle'); ?>" name="<?php echo $this->get_field_name('cb_showtitle'); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showtitle'] ) && $instance['cb_showtitle'] == 'true' ) ); ?>> <?php _e( 'Show year, make, & model', 'inventory-presser' ); ?></label>
-		</p>
-		<p>
-		<label for="<?php echo $this->get_field_id('cb_showprice'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showprice'); ?>" name="<?php echo $this->get_field_name('cb_showprice'); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showprice'] ) && $instance['cb_showprice'] == 'true' ) ); ?>> <?php _e( 'Show prices', 'inventory-presser' ); ?></label>
+		<label for="<?php echo $this->get_field_id('cb_showprice'); ?>"><input type="checkbox" id="<?php echo $this->get_field_id('cb_showprice'); ?>" name="<?php echo $this->get_field_name('cb_showprice'); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showprice'] ) && $instance['cb_showprice'] == 'true' ) ); ?>> <?php _e( 'Overlay price', 'inventory-presser' ); ?></label>
 		</p>
 
 		<?php
