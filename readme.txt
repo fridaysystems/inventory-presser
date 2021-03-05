@@ -64,6 +64,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 12.2.7 =
+* [Fixed] Fixes a bug in the Hours widget where Monday would be highlighted as the current day during the last day of the prior week a dealership was open. 
+
 = 12.2.6 = 
 * [Changed] Changes the tested up to version number to 5.6.2.
 * [Changed] Changes the default button text for NextGear vehicle inspection reports from "See Digital Inspection Report" to "Mechanic's Report"
