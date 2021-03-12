@@ -65,6 +65,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Changelog ==
 
 = 12.2.7 =
+* [Added] Adds a title attribute to the [iframe] shortcode we use to embed credit application forms on web pages for accessibility.
 * [Fixed] Fixes a bug in the Hours widget where Monday would be highlighted as the current day during the last day of the prior week a dealership was open. 
 
 = 12.2.6 = 
