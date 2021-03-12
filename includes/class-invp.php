@@ -382,9 +382,15 @@ class INVP
 				'type'   => 'integer',
 			),
 			array(
+				'label'  => __( 'Date Entered', 'inventory_presser' ),
+				'name'   => 'date_entered',
+				'sample' => 'Mon, 24 Feb 2020 08:17:37 -0500',
+				'type'   => 'string',
+			),
+			array(
 				'label'  => __( 'Dealer ID', 'inventory_presser' ),
-				'name' => 'dealer_id', //friday systems dealer id
-				'type' => 'integer',
+				'name'   => 'dealer_id', //friday systems dealer id
+				'type'   => 'integer',
 			),
 			array(
 				'label'  => __( 'Description', 'inventory_presser' ),
