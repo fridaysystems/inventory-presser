@@ -62,7 +62,8 @@ class Inventory_Presser_Shortcode_Iframe
 			'scrolling'   => 'yes',
 			'src'         => '',
 			'class'       => 'iframe-class',
-			'frameborder' => '0'
+			'frameborder' => '0',
+			'title'       => '',
 		), $atts );
 
 		//Stock number may arrive in a querystring variable with key 'stock'
