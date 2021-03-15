@@ -71,31 +71,6 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Fixed] Fixes a bug in the Hours widget where Monday would be highlighted as the current day during the last day of the prior week a dealership was open. 
 * [Fixed] Updates a dependency https://github.com/indutny/elliptic
 
-= 12.2.6 = 
-* [Changed] Changes the tested up to version number to 5.6.2.
-* [Changed] Changes the default button text for NextGear vehicle inspection reports from "See Digital Inspection Report" to "Mechanic's Report"
-* [Fixed] Fixes the way hours of tables display in the dashboard while editing location terms buy removing a CSS rule governing table column widths and capitalizes the first letter of the days of the week.
-* [Fixed] Fixes a broken attempt to flush rewrite rules/re-save permalinks after changes to the Additional Listing Pages settings occurs. The flush was happening too soon, and was not compatible with multisite. Users will now see instant changes after saving Additional Listings Pages settings instead of having to re-save permalinks first.
-
-= 12.2.5 =
-* [Added] Adds a screenshots that show a vehicle being edited in the block editor and vehicle archive output on the Twenty Twenty theme.
-* [Changed] Moves image files out of /assets and into /images. The /assets folder must contain wordpress.org icons and banners only.
-* [Changed] Updates the npm development dependency @wordpress/scripts to version 12.6.1.
-
-= 12.2.4 =
-* [Added] Adds a meta field to vehicle posts to hold URLs for NextGear Digital Vehicle Inspections `inventory_presser_nextgear_inspection_url`
-* [Added] Adds a button near vehicles in archives and single pages to "See Digital Inspection Report" when vehicles have a value in the new `inventory_presser_nextgear_inspection_url` meta field.
-* [Fixed] Fixes a bug in CSS rules for the output of our [invp_single_vehicle] shortcode that was hiding vehicle buttons output during the `invp_single_buttons` action hook like Carfax.
-* [Fixed] Fixes a bug in the template tag `invp_get_the_price()` where our filter on the zero string, `invp_zero_price_string`, would never be applied. The filter allows other developers to change what is shown when a vehicle has zero for a price.
-
-= 12.2.3 =
-* [Added] Adds an attribute  `show_titles` to both the [invp_archive] and [invp_archive_vehicle] shortcodes. The default value is true for the former and false for the latter.
-* [Added] Adds a link to readme.txt about how we update vehicles running this plugin using the WordPress REST API.
-* [Changed] Adds post titles to the [invp_archive] shortcode output, while preventing double titles on post archives in themes that do not contain templates for our custom post type.
-* [Changed] Adds blocks created by this plugin to the block editor all the time instead of only when users are editing vehicle posts.
-* [Fixed] The [invp_single_vehicle] shortcode now calls the action hook `invp_single_buttons`.
-* [Removed] Removes a call to invp_get_the_carfax_icon_html() inside the [invp_single_vehicle] shortcode.
-
 
 == Upgrade Notice ==
 
