@@ -1203,7 +1203,7 @@ class Inventory_Presser_Taxonomies
 						'singular_label' => 'Model year',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
-						'show_ui'        => false,
+						'show_ui'        => true,
 					),
 				),
 				array (
@@ -1222,7 +1222,7 @@ class Inventory_Presser_Taxonomies
 						'singular_label' => 'Make',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
-						'show_ui'        => false,
+						'show_ui'        => true,
 					),
 				),
 				array (
@@ -1241,7 +1241,7 @@ class Inventory_Presser_Taxonomies
 						'singular_label' => 'Model',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
-						'show_ui'        => false,
+						'show_ui'        => true,
 					),
 				),
 				array (
@@ -1487,7 +1487,7 @@ class Inventory_Presser_Taxonomies
 						'singular_label' => 'Body style',
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
-						'show_ui'        => false,
+						'show_ui'        => true,
 					),
 				),
 				array (
