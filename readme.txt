@@ -69,6 +69,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Added] Adds a title attribute to the [iframe] shortcode we use to embed credit application forms on web pages for accessibility.
 * [Changed] Changes the tested up to version number to 5.7.0
 * [Changed] No longer hides the Year, Make, Model, and Body Style taxonomies from showing in editor user interfaces.
+* [Fixed] Fixes a bug during meta field registration where both payment and payment frequency had a label of just "payment"
 * [Fixed] Fixes a bug in the Hours widget where Monday would be highlighted as the current day during the last day of the prior week a dealership was open. 
 * [Fixed] Updates a dependency https://github.com/indutny/elliptic
 
