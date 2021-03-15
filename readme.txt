@@ -74,6 +74,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Upgrade Notice ==
 
+= 12.2.7 =
+First version that adds a "date entered" field to vehicles posts. Bug fix in the hours widget to no longer highlight Friday and Monday at the same time for some sets of hours. 
+
 = 12.2.6 =
 Changes the default button text for NextGear vehicle inspection reports from "See Digital Inspection Report" to "Mechanic's Report." Fixes bugs.
 
