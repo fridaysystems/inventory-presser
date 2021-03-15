@@ -585,7 +585,7 @@ class INVP
 				'type'   => 'string',
 			),
 			array(
-				'label'  => __( 'Payment Frequency', 'inventory_presser' ),
+				'label'  => __( 'Payment', 'inventory_presser' ),
 				'name'   => 'payment',
 				'sample' => 200,
 				'type'   => 'number',
