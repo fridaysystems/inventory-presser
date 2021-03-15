@@ -2,7 +2,7 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 5.6.2
+Tested up to: 5.7.0
 Stable tag: 12.2.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -67,7 +67,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 = 12.2.7 =
 * [Added] Adds a new vehicle field to track the date entered. The meta key is `inventory_presser_date_entered`.
 * [Added] Adds a title attribute to the [iframe] shortcode we use to embed credit application forms on web pages for accessibility.
+* [Changed] Changes the tested up to version number to 5.7.0
 * [Fixed] Fixes a bug in the Hours widget where Monday would be highlighted as the current day during the last day of the prior week a dealership was open. 
+* [Fixed] Updates a dependency https://github.com/indutny/elliptic
 
 = 12.2.6 = 
 * [Changed] Changes the tested up to version number to 5.6.2.
