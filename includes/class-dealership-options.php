@@ -171,6 +171,15 @@ class Inventory_Presser_Options
 			'dealership_options_setting_section' // section
 		);
 
+		//[x] Skip trash when deleting vehicles and delete permanently
+		add_settings_field(
+			'skip_trash', // id
+			__( 'Skip Trash', 'inventory-presser' ), // title
+			array( $this, 'callback_skip_trash' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
 		/**
 		 * SECTION Listings
 		 */
@@ -445,6 +454,21 @@ class Inventory_Presser_Options
 			__( 'Show all taxonomies under Vehicles menu in Dashboard', 'inventory-presser' )
 		);
 	}
+
+	/**
+	 * callback_skip_trash
+	 * 
+	 * Output the controls that create the Skip Trash setting.
+	 *
+	 * @return void
+	 */
+	function callback_skip_trash()
+	{
+		$this->boolean_checkbox_setting_callback(
+			'skip_trash',
+			__( 'Skip trash when deleting vehicles and delete permanently', 'inventory-presser' )
+		);
+	}
 	
 	/**
 	 * callback_sort_vehicles_by
@@ -651,6 +675,7 @@ class Inventory_Presser_Options
 			'additional_listings_page',
 			'include_sold_vehicles',
 			'show_all_taxonomies',
+			'skip_trash',
 			'use_carfax',
 			'use_carfax_provided_buttons',
 		);

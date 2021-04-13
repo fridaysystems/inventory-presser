@@ -649,8 +649,8 @@ class Inventory_Presser_Plugin
 		$print_button = new Inventory_Presser_Menu_Item_Print();
 		$print_button->hooks();
 
-		//Skip the trash bin and always permanently delete vehicles & photos
-		add_action( 'trashed_post', array( $this, 'really_delete' ) );
+		//Maybe skip the trash bin and permanently delete vehicles & photos
+		add_action( 'trashed_post', array( $this, 'maybe_force_delete' ) );
 
 		//When vehicles are deleted, delete their attachments, too
 		add_action( 'before_delete_post', array( 'INVP', 'delete_attachments' ), 10, 1 );
@@ -1047,18 +1047,24 @@ class Inventory_Presser_Plugin
 	}
 	
 	/**
-	 * really_delete
+	 * maybe_force_delete
 	 *
 	 * Action hook callback. Prevents vehicles from lingering in the Trash after
-	 * they've been deleted by always force deleting.
+	 * they've been deleted if a plugin setting dictates such behavior.
 	 * 
 	 * @param  int $post_id
 	 * @return void
 	 */
-	function really_delete( $post_id )
+	function maybe_force_delete( $post_id )
 	{
 		//is the post a vehicle?
 		if( INVP::POST_TYPE != get_post_type( $post_id ) )
+		{
+			return;
+		}
+
+		$settings = INVP::settings();
+		if( ! $settings['skip_trash'] )
 		{
 			return;
 		}

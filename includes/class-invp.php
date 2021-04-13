@@ -34,6 +34,9 @@ class INVP
 		//delete all the vehicles
 		self::delete_all_inventory();
 
+		//delete unattached photos with meta keys that identify them as vehicle photos
+		self::delete_attachment_orphans();
+
 		//delete pages created during activation
 		//uninstall.php doesn't load the whole plugin but calls this method
 		if( ! class_exists( 'Inventory_Presser_Allow_Inventory_As_Home_Page' ) )
@@ -111,60 +114,23 @@ class INVP
 		);
 		$posts = get_posts( $args );
 		$deleted_count = 0;
+		$settings = self::settings();
+
 		if ( $posts )
 		{
-			$upload_dir = wp_upload_dir();
 			foreach( $posts as $post )
 			{
-				//delete post attachments
-				$attachment = array(
-					'posts_per_page' => -1,
-					'post_type'      => 'attachment',
-					'post_parent'    => $post->ID,
-				);
-
-				$attachment_dir = '';
-
-				foreach( get_posts( $attachment ) as $attached )
-				{
-					$attachment_dir = get_attached_file( $attached->ID );
-					//delete the attachment
-					wp_delete_attachment( $attached->ID, true );
-				}
-
 				//delete the parent post or vehicle
-				wp_delete_post( $post->ID, true );
-				$deleted_count++;
-
-				//delete the photo folder if it exists (and is empty)
-				if( '' != $attachment_dir )
+				if( $settings['skip_trash'] )
 				{
-					$dir_path = dirname( $attachment_dir );
-					if( is_dir( $dir_path ) && $dir_path != $upload_dir['basedir'] )
-					{
-						@rmdir( $dir_path );
-					}
+					wp_delete_post( $post->ID, $settings['skip_trash'] );
 				}
+				else
+				{
+					wp_trash_post( $post->ID );
+				}
+				$deleted_count++;
 			}
-		}
-		/**
-		 * Delete media that is managed by this plugin but may not be attached
-		 * to a vehicle at this time.
-		 */
-		$orphan_media = get_posts( array(
-			'posts_per_page' => -1,
-			'post_status'    => 'any',
-			'post_type'      => 'attachment',
-			'meta_query'     => array(
-				array(
-					'key'     => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
-					'compare' => 'EXISTS'
-				)
-			),
-		) );
-		foreach( $orphan_media as $post )
-		{
-			wp_delete_attachment( $post->ID, true );
 		}
 
 		do_action( 'invp_delete_all_inventory', $deleted_count );
@@ -231,6 +197,30 @@ class INVP
 		foreach ( $attachments as $attachment )
 		{
 			wp_delete_attachment( $attachment->ID );
+		}
+	}
+
+	public static function delete_attachment_orphans()
+	{
+		/**
+		 * Delete media that is managed by this plugin but may not be attached
+		 * to a vehicle at this time.
+		 */
+		$orphan_media = get_posts( array(
+			'posts_per_page' => -1,
+			'post_status'    => 'any',
+			'post_type'      => 'attachment',
+			'meta_query'     => array(
+				array(
+					'key'     => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
+					'compare' => 'EXISTS'
+				)
+			),
+		) );
+		$settings = self::settings();
+		foreach( $orphan_media as $post )
+		{
+			wp_delete_attachment( $post->ID, $settings['skip_trash'] );
 		}
 	}
 
@@ -752,6 +742,7 @@ class INVP
 	public static function settings()
 	{
 		$defaults = array(
+			'skip_trash'                  => true,
 			'sort_vehicles_by'            => 'make',
 			'sort_vehicles_order'         => 'ASC',
 			'use_carfax_provided_buttons' => true,
