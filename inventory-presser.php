@@ -649,6 +649,14 @@ class Inventory_Presser_Plugin
 		$print_button = new Inventory_Presser_Menu_Item_Print();
 		$print_button->hooks();
 
+		/**
+		 * When vehicle posts are inserted, make sure they create a relationship
+		 * with the "For Sale" term in the Availabilities taxonomy. Some queries
+		 * that honor the "Include Sold Vehicles" setting in this plugin will 
+		 * exclude them without a relationship to a term in that taxonomy.
+		 */
+		add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'mark_vehicles_for_sale_during_insertion' ), 10, 3 );
+
 		//Maybe skip the trash bin and permanently delete vehicles & photos
 		add_action( 'trashed_post', array( $this, 'maybe_force_delete' ) );
 
@@ -877,6 +885,33 @@ class Inventory_Presser_Plugin
 			) ); ?>;
 		</script><?php
 		}
+	}
+
+	/**
+	 * Fires once a vehicle post has been saved.
+	 *
+	 * @param int     $post_ID Post ID.
+	 * @param WP_Post $post    Post object.
+	 * @param bool    $update  Whether this is an existing post being updated.
+	 */
+	function mark_vehicles_for_sale_during_insertion( $post_ID, $post, $update )
+	{
+		if( $update )
+		{
+			//Abort, we only want to affect insertions
+			return;
+		}
+
+		//Does the vehicle already have a term in the Availabilities taxonomy?
+		$terms = wp_get_object_terms( $post_ID, 'availability' );
+		if( ! empty( $terms ) && is_array( $terms ) )
+		{
+			//Yes, abort
+			return;	
+		}
+
+		//No, create a relationship with "For Sale"
+		wp_set_object_terms( $post_ID, 'for-sale', 'availability' );
 	}
 
 	/**
