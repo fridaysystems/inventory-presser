@@ -66,6 +66,8 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 12.3.0 =
 * [Added] Adds a setting to allow users to control whether vehicles are sent to Trash when deleted. Previously, all vehicles and their attachments were force deleted and skipped trash. The new setting defaults to true to maintain backwards compatibility, but allows users to toggle whether or not they want to use trash. 
+* [Added] Creates a relationship between vehicles the the "For Sale" term in the Availability taxonomy when vehicle posts are created.
+* [Fixed] Fixes a bug where boat fields were not always included in the vehicle attribute table for boats because of a case sensitive string comparison.
 
 = 12.2.7 =
 * [Added] Adds a new vehicle field to track the date entered. The meta key is `inventory_presser_date_entered`.
