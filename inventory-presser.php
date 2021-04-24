@@ -735,7 +735,7 @@ class Inventory_Presser_Plugin
 		$schema_generator = new Inventory_Presser_Schema_Org_Generator();
 		$schema_generator->hooks();
 	}
-	
+
 	/**
 	 * include_dependencies
 	 * 
