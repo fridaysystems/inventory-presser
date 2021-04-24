@@ -51,7 +51,7 @@ class Inventory_Presser_Template_Shortcode
 		}
 
 		//Odometer
-		if( 'boat' != invp_get_the_type( $post_ID ) )
+		if( 'boat' != strtolower( invp_get_the_type( $post_ID ) ) )
 		{
 			$table_items[] = array(
 				'member' => 'odometer',
@@ -107,13 +107,13 @@ class Inventory_Presser_Template_Shortcode
 			//VIN
 			array(
 				'member' => 'vin',
-				'label'  => 'boat' == invp_get_the_type( $post_ID ) ? __( 'HIN', 'inventory-presser' ) : __( 'VIN', 'inventory-presser' ),
+				'label'  => 'boat' == strtolower( invp_get_the_type( $post_ID ) ) ? __( 'HIN', 'inventory-presser' ) : __( 'VIN', 'inventory-presser' ),
 				'value'  => invp_get_the_VIN( $post_ID ),
 			),
 		) );
 
 		//Boat-specific fields
-		if( 'boat' == invp_get_the_type( $post_ID ) )
+		if( 'boat' == strtolower( invp_get_the_type( $post_ID ) ) )
 		{
 			//Beam
 			$table_items[] = array(
