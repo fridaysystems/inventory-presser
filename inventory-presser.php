@@ -688,6 +688,8 @@ class Inventory_Presser_Plugin
 		$shortcodes->hooks();
 		$shortcodes = new Inventory_Presser_Shortcode_Hours_Today();
 		$shortcodes->hooks();
+		$shortcodes = new  Inventory_Presser_Shortcode_Photo_Slider();
+		$shortcodes->hooks();
 
 		/**
 		 * When the active theme isn't prepared to display vehicles, insert
@@ -775,6 +777,7 @@ class Inventory_Presser_Plugin
 			'class-shortcode-iframe.php',
 			'class-shortcode-inventory-grid.php',
 			'class-shortcode-inventory-slider.php',
+			'class-shortcode-photo-slider.php',
 			'class-shortcode-template-shortcode.php',
 			'class-shortcode-archive.php',
 			'class-shortcode-archive-vehicle.php',
