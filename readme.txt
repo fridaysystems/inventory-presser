@@ -2,7 +2,7 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 5.7.0
+Tested up to: 5.7.1
 Stable tag: 12.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -66,6 +66,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 12.3.0 =
 * [Added] Adds a setting to allow users to control whether vehicles are sent to Trash when deleted. Previously, all vehicles and their attachments were force deleted and skipped trash. The new setting defaults to true to maintain backwards compatibility, but allows users to toggle whether or not they want to use trash. 
+* [Added] Adds a shortcode [invp_photo_slider] that outputs the photo gallery used in the single page template for vehicle singles.
 * [Added] Creates a relationship between vehicles the the "For Sale" term in the Availability taxonomy when vehicle posts are created.
 * [Fixed] Fixes a bug where boat fields were not always included in the vehicle attribute table for boats because of a case sensitive string comparison.
 
