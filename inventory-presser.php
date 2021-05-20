@@ -1205,7 +1205,6 @@ class Inventory_Presser_Plugin
 		register_widget( 'Inventory_Presser_Location_Hours' );
 		register_widget( 'Inventory_Presser_Location_Phones' );
 		register_widget( 'Inventory_Presser_Slider' );
-
 		register_widget( 'Inventory_Presser_Maximum_Price_Filter' );
 		/**
 		 * The query needs to be altered for the Maximum Price Filters widget.
