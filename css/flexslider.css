@@ -12,6 +12,7 @@
 	transition: none;
 	opacity: 1;
 	color: #fff;
+	margin: 0;
 }
 .flex-direction-nav a:before{
 	color: #fff;
