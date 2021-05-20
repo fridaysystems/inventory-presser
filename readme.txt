@@ -64,23 +64,21 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 13.0.0 =
+* [Changed] Changes the Vehicle Slider widget to use flexslider instead of slick.js. The widget looks identical to previous versions.
+* [Removed] Removes a dependency on slick.js and all references to it throughout the project. Instead of shipping with two different slider libraries, all sliders are now powered by flexslider. No functionality has been lost, and the Vehicle Slider widget still looks and operates the same way as in 12.x versions.
+
 = 12.3.0 =
 * [Added] Adds a setting to allow users to control whether vehicles are sent to Trash when deleted. Previously, all vehicles and their attachments were force deleted and skipped trash. The new setting defaults to true to maintain backwards compatibility, but allows users to toggle whether or not they want to use trash. 
 * [Added] Adds a shortcode [invp_photo_slider] that outputs the photo gallery used in the single page template for vehicle singles.
 * [Added] Creates a relationship between vehicles the the "For Sale" term in the Availability taxonomy when vehicle posts are created.
 * [Fixed] Fixes a bug where boat fields were not always included in the vehicle attribute table for boats because of a case sensitive string comparison.
 
-= 12.2.7 =
-* [Added] Adds a new vehicle field to track the date entered. The meta key is `inventory_presser_date_entered`.
-* [Added] Adds a title attribute to the [iframe] shortcode we use to embed credit application forms on web pages for accessibility.
-* [Changed] Changes the tested up to version number to 5.7.0
-* [Changed] No longer hides the Year, Make, Model, and Body Style taxonomies from showing in editor user interfaces.
-* [Fixed] Fixes a bug during meta field registration where both payment and payment frequency had a label of just "payment"
-* [Fixed] Fixes a bug in the Hours widget where Monday would be highlighted as the current day during the last day of the prior week a dealership was open. 
-* [Fixed] Updates a dependency https://github.com/indutny/elliptic
-
 
 == Upgrade Notice ==
+
+= 13.0.0 =
+Version 13 is smaller than version 12! Instead of shipping with two sliders, all slideshows are now powered by flexslider. This version drops a dependency on slick.js without losing functionality or changing the look and feel of sliders.
 
 = 12.3.0 =
 Adds a setting to control whether vehicles use Trash when deleted. Adds a shortcode [invp_photo_slider]. Creates relationship with "For Sale" term in Availabilities taxonomy when vehicles are added with the editor. Fixes a bug that prevented boat fields from appearing in the vehicle attribute table.
