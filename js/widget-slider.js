@@ -12,7 +12,7 @@ jQuery(document).ready(function(){
 		itemWidth: (Math.round(jQuery('.widget__invp_slick #slider-width').width() / widget_slider.showcount + .5)), /* widget_slider.showcount is how many slides to show at one time*/
 		smoothHeight: true, /* Allow height of the slider to animate smoothly in horizontal mode */
 		start: function(){
-			var current_image_height = jQuery('.widget__invp_slick .flexslider .slides').css('height').replace( 'px', '' );
+			var current_image_height = jQuery('.widget__invp_slick .flexslider').css('height').replace( 'px', '' );
 			//when the slide changes, reset the next/prev text line-height
 			jQuery('.widget__invp_slick .flexslider .flex-direction-nav a,.widget__invp_slick .flexslider .flex-direction-nav li').css('line-height', current_image_height + 'px' );
 		}
