@@ -1,12 +1,11 @@
 {
-	"repositories": [
+    "repositories": [
         {
             "type": "vcs",
             "url": "https://github.com/woocommerce/flexslider"
         }
     ],
     "require": {
-        "kenwheeler/slick": "^1.6.0",
         "woocommerce/flexslider": "^2.7.2"
     }
 }

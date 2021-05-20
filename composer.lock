@@ -4,29 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c916e249249e878bb2616e63406a2a29",
+    "content-hash": "6c57111b1d86668f911e8ec46f832e3f",
     "packages": [
-        {
-            "name": "kenwheeler/slick",
-            "version": "1.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Alexander2Leb/slick.git",
-                "reference": "76f05b1f6a1bd4792cd877d2c9ae22d0c7bcb712"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Alexander2Leb/slick/zipball/76f05b1f6a1bd4792cd877d2c9ae22d0c7bcb712",
-                "reference": "76f05b1f6a1bd4792cd877d2c9ae22d0c7bcb712",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "support": {
-                "source": "https://github.com/Alexander2Leb/slick/tree/1.6.1"
-            },
-            "time": "2017-03-31T12:40:41+00:00"
-        },
         {
             "name": "woocommerce/FlexSlider",
             "version": "2.7.2",
