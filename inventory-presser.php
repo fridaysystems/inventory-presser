@@ -836,6 +836,7 @@ class Inventory_Presser_Plugin
 		wp_register_style( 'invp-grid', plugins_url( 'css/widget-grid.min.css', __FILE__ ), [], $plugin_version );
 		wp_register_style( 'invp-maximum-price-filters', plugins_url( 'css/widget-maximum-price-filters.min.css', __FILE__ ), [], $plugin_version );
 		wp_register_style( 'invp-epa-fuel-economy', plugins_url( 'css/widget-epa-fuel-economy.min.css', __FILE__ ), [], $plugin_version );
+		wp_register_style( 'invp-slider', plugins_url( 'css/widget-slider.min.css', __FILE__ ), [], $plugin_version );
 
 		/**
 		 * Register flexslider and provide overrides for scripts and styles
@@ -843,6 +844,8 @@ class Inventory_Presser_Plugin
 		wp_register_script( 'flexslider', plugins_url('/vendor/woocommerce/FlexSlider/jquery.flexslider-min.js', __FILE__ ), array('jquery'), $plugin_version );
 		//Our overrides
 		wp_register_script( 'invp-flexslider', plugins_url('/js/flexslider.min.js', __FILE__ ), array( 'flexslider' ), $plugin_version );
+		//Another flexslider spin-up script for the Vehicle Slider widget
+		wp_register_script( 'invp-slider', plugins_url( '/js/widget-slider.min.js', __FILE__ ), array( 'flexslider' ), $plugin_version );
 
 		wp_register_style( 'flexslider', plugins_url( '/vendor/woocommerce/FlexSlider/flexslider.css', __FILE__ ), null, $plugin_version );
 		//Our overrides

@@ -1,0 +1,40 @@
+.widget__invp_slick .flex-caption{
+	position: absolute;
+	text-align: center;
+	width: 100%;
+}
+
+.widget__invp_slick .flex-caption h2,
+.widget__invp_slick .flex-caption h3 {
+	color: #FFFFFF;
+	text-shadow:
+		-1px -1px 3px #000,
+		1px -1px 3px #000,
+		-1px 1px 3px #000,
+		1px 1px 3px #000;
+}
+
+.widget__invp_slick .flex-caption-top {
+	top: 18px;
+	padding-top: 1em;
+}
+
+.widget__invp_slick .flex-caption-bottom {
+	bottom: 10px;
+	padding-bottom: 1em;
+}
+
+.widget__invp_slick #slider .flex-direction-nav a{
+	width: 30px;
+	padding: 0;
+	opacity: .6;
+}
+.widget__invp_slick #slider .flex-direction-nav a:hover{
+	opacity: 1;
+}
+
+.widget__invp_slick .flex-direction-nav a::before{
+	font-size: 25px;
+	padding: 0 25%;
+	text-shadow: none;
+}

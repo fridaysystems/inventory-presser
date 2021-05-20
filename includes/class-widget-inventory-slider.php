@@ -70,22 +70,19 @@ class Inventory_Presser_Slider extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	function include_scripts()
+	function include_scripts( $instance )
 	{
-		/**
-		 * This widget uses a jQuery plugin called slick.js
-		 * 
-		 * @see https://plugins.jquery.com/slick/
-		 */
-		wp_enqueue_style( 'jquery-slick-style', plugins_url( 'vendor/kenwheeler/slick/slick/slick.css', INVP_PLUGIN_FILE_PATH ) );
-		wp_enqueue_style( 'invp-slick', plugins_url( 'css/slick.min.css', INVP_PLUGIN_FILE_PATH ) );
-
-		wp_enqueue_script( 'jquery-slick', plugins_url( 'vendor/kenwheeler/slick/slick/slick.min.js', INVP_PLUGIN_FILE_PATH ), array('jquery'), '1.6.0' );
-		wp_enqueue_script( 'invp-slick-init', plugins_url( 'js/slick.min.js', INVP_PLUGIN_FILE_PATH ), array( 'jquery-slick' ) );
-		
-		//Also we're using flexslider-icons font face for the button icons
-		//(Since we also depend on woocommerce/flexslider)
+		//Need flexslider scripts and styles
 		wp_enqueue_style( 'flexslider' );
+		wp_enqueue_style( 'invp-flexslider' );
+		wp_enqueue_style( 'invp-slider' );
+
+		//Spin-up script
+		wp_enqueue_script( 'invp-slider' );
+		//Localize one of the widget settings so it can use it
+		wp_localize_script( 'invp-slider', 'widget_slider', array(
+			'showcount' => $instance['showcount'],
+		) );
 	}
 
 	/**
@@ -99,7 +96,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 	 */
 	public function widget( $args, $instance )
 	{
-		$this->include_scripts();
+		$this->include_scripts( $instance );
 
 		$title = empty( $instance['title'] ) ? '' : apply_filters( 'widget_title', $instance['title'] );
 		$showcount = empty( $instance['showcount'] ) ? 3 : $instance['showcount'];
@@ -182,22 +179,17 @@ class Inventory_Presser_Slider extends WP_Widget {
 		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
+		echo '<div id="slider-width"></div><div id="slider" class="flexslider"><ul class="slides">';
 
-		printf(
-			'<div class="slick-slider-element" data-slick=\'{"slidesToShow": %1$d, "slidesToScroll": %1$d, "easing": "ease", "autoplaySpeed": %2$d, "speed": 4000}\'>',
-			$showcount,
-			( $showcount * 1000 ) + 1000
-		);
-
-		foreach ($inventory_ids as $inventory_id) {
-
+		foreach ($inventory_ids as $inventory_id)
+		{
 			printf(
-				'<div class="widget-inventory-slide-wrap"><a href="%s"><div class="slick-background-image" style="background-image: url(%s);">',
+				'<li style="position: relative"><a href="%s">%s',
 				get_the_permalink( $inventory_id ),
-				invp_get_the_photo_url( 'large', $inventory_id )
+				get_the_post_thumbnail( $inventory_id, 'large' )
 			);
 			if ($showtext != 'none') {
-				printf( '<div class="slick-text slick-text-%s">', $showtext );
+				printf( '<div class="flex-caption flex-caption-%s">', $showtext );
 				if ($showtitle) {
 					printf( '<h3>%s %s %s</h3>', invp_get_the_year( $inventory_id ), invp_get_the_make( $inventory_id ), invp_get_the_model( $inventory_id ) );
 				}
@@ -206,9 +198,9 @@ class Inventory_Presser_Slider extends WP_Widget {
 				}
 				echo '</div>';
 			}
-			echo '</div></a></div>';
+			echo '</a></li>';
 		}
-		echo '</div>' . $args['after_widget'];
+		echo '</ul></div>' . $args['after_widget'];
 	}
 
 	/**
