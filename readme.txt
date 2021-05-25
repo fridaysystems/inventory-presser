@@ -66,6 +66,8 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 13.0.0 =
 * [Changed] Changes the Vehicle Slider widget to use flexslider instead of slick.js. The widget looks identical to previous versions.
+* [Changed] Specifies new minimum versions in dependencies for security fixes.
+* [Fixed] Fixes a bug in the path to no-photo.svg, and image used when vehicles do not have photos. This was broken since 12.2.5 when images were moved from /assets to /images to prepare for launching on wordpress.org.
 * [Removed] Removes a dependency on slick.js and all references to it throughout the project. Instead of shipping with two different slider libraries, all sliders are now powered by flexslider. No functionality has been lost, and the Vehicle Slider widget still looks and operates the same way as in 12.x versions.
 
 = 12.3.0 =
@@ -78,7 +80,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Upgrade Notice ==
 
 = 13.0.0 =
-Version 13 is smaller than version 12! Instead of shipping with two sliders, all slideshows are now powered by flexslider. This version drops a dependency on slick.js without losing functionality or changing the look and feel of sliders.
+Version 13 is smaller than version 12! Instead of shipping with two sliders, all slideshows are now powered by flexslider. This version drops a dependency on slick.js without losing functionality or changing the look and feel of sliders. Fixes a bug when displaying our placeholder "no photo photo" near vehicles that have zero photos.
 
 = 12.3.0 =
 Adds a setting to control whether vehicles use Trash when deleted. Adds a shortcode [invp_photo_slider]. Creates relationship with "For Sale" term in Availabilities taxonomy when vehicles are added with the editor. Fixes a bug that prevented boat fields from appearing in the vehicle attribute table.
