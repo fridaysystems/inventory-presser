@@ -633,7 +633,7 @@ function invp_get_the_photo_url( $size = 'medium', $post_ID = null )
 		return wp_get_attachment_url( $thumbnail_id );
 	}
 
-	return apply_filters( 'invp_no_photo_url', plugins_url( 'assets/no-photo.svg', INVP_PLUGIN_FILE_PATH ), $post_ID );	
+	return apply_filters( 'invp_no_photo_url', plugins_url( 'images/no-photo.svg', INVP_PLUGIN_FILE_PATH ), $post_ID );	
 }
 
 /**
