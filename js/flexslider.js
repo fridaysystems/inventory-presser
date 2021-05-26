@@ -30,7 +30,6 @@ jQuery(document).ready(function() {
 		slideshow: false,
 		smoothHeight: true,
 		itemWidth: 150,
-		itemMargin: 10,
 		asNavFor: '#slider',
 		prevText: '',
 		nextText: ''

@@ -203,7 +203,6 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 				slideshow: false,
 				smoothHeight: true,
 				itemWidth: 150,
-				itemMargin: 10,
 				asNavFor: '#slider',
 				prevText: '',
 				nextText: ''
