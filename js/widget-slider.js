@@ -10,7 +10,7 @@ jQuery(document).ready(function(){
 		prevText: '', /* Set the text for the "previous" directionNav item */
 		nextText: '', /* Set the text for the "next" directionNav item */
 		itemWidth: (Math.round(jQuery('.widget__invp_slick #slider-width').width() / widget_slider.showcount + .5)), /* widget_slider.showcount is how many slides to show at one time*/
-		smoothHeight: true, /* Allow height of the slider to animate smoothly in horizontal mode */
+		smoothHeight: false, /* Allow height of the slider to animate smoothly in horizontal mode */
 		start: function(){
 			var current_image_height = jQuery('.widget__invp_slick .flexslider').css('height').replace( 'px', '' );
 			//when the slide changes, reset the next/prev text line-height
