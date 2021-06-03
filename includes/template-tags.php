@@ -742,7 +742,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
 		return apply_filters( 'invp_sold_string', sprintf( '<span class="vehicle-sold">%s</span>', __( 'SOLD!', 'inventory-presser' ) ) );
 	}
 
-	if( empty( $zero_string ) )
+	if( null === $zero_string )
 	{
 		$zero_string = __( 'Call For Price', 'inventory-presser' );
 	}
