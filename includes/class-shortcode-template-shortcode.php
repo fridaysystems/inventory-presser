@@ -45,7 +45,7 @@ class Inventory_Presser_Template_Shortcode
 				$table_items[] = array(
 					'member' => 'book_value',
 					'label'  => __( 'Book Value', 'inventory-presser' ),
-					'value'  => '$' . number_format( $book_value, 0, '.', ',' ),
+					'value'  => $book_value,
 				);
 			}
 		}
