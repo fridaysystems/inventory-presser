@@ -479,11 +479,11 @@ class Inventory_Presser_Customize_Dashboard
 	function load_scripts( $hook )
 	{
 		wp_enqueue_style( 'my-admin-theme', plugins_url( '/css/wp-admin.min.css', INVP_PLUGIN_FILE_PATH ) );
-		wp_register_script( 'inventory-presser-javascript', plugins_url( '/js/admin.min.js', INVP_PLUGIN_FILE_PATH ) );
-		wp_enqueue_script( 'inventory-presser-javascript' );
+		wp_register_script( 'invp-js', plugins_url( '/js/admin.min.js', INVP_PLUGIN_FILE_PATH ) );
+		wp_enqueue_script( 'invp-js' );
 
 		//localize an odometer units word for the edit vehicle page
-		wp_localize_script( 'inventory-presser-javascript', 'invp', array(
+		wp_localize_script( 'invp-js', 'invp', array(
 			'hull_materials'      => apply_filters( 'invp_default_hull_materials', array(
 				'Aluminum',
 				'Carbon Fiber',
