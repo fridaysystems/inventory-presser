@@ -71,12 +71,6 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Removed] Removes styling like white borders around sliders on vehicle singles. Those choices should be handled by themes.
 * [Removed] Removes a dependency on slick.js and all references to it throughout the project. Instead of shipping with two different slider libraries, all sliders are now powered by flexslider. No functionality has been lost, and the Vehicle Slider widget still operates and looks the same way as in 12.x versions.
 
-= 12.3.0 =
-* [Added] Adds a setting to allow users to control whether vehicles are sent to Trash when deleted. Previously, all vehicles and their attachments were force deleted and skipped trash. The new setting defaults to true to maintain backwards compatibility, but allows users to toggle whether or not they want to use trash. 
-* [Added] Adds a shortcode [invp_photo_slider] that outputs the photo gallery used in the single page template for vehicle singles.
-* [Added] Creates a relationship between vehicles the the "For Sale" term in the Availability taxonomy when vehicle posts are created.
-* [Fixed] Fixes a bug where boat fields were not always included in the vehicle attribute table for boats because of a case sensitive string comparison.
-
 
 == Upgrade Notice ==
 
