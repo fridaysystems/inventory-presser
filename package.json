@@ -1,6 +1,6 @@
 {
 	"name": "inventory-presser",
-	"version": "10.12.0",
+	"version": "13.1.0",
 	"description": "An inventory management plugin for car dealers.",
 	"main": "build/index.js",
 	"directories": {
@@ -8,7 +8,7 @@
 	},
 	"scripts": {
 		"start": "wp-scripts start",
-		"build": "wp-scripts build"
+		"build": "wp-scripts build && cp -R node_modules/leaflet/dist js/leaflet"
 	},
 	"repository": {
 		"type": "git",
@@ -21,6 +21,8 @@
 	},
 	"homepage": "https://github.com/csalzano/inventory-presser#readme",
 	"devDependencies": {
-		"@wordpress/scripts": "^12.6.1"
-	}
+		"@wordpress/scripts": "^12.6.1",
+		"leaflet": "^1.7.1"
+	},
+	"dependencies": {}
 }

@@ -796,6 +796,7 @@ class Inventory_Presser_Plugin
 			'class-widget-inventory-grid.php',
 			'class-widget-inventory-slider.php',
 			'class-widget-kbb.php',
+			'class-widget-map.php',
 			'class-widget-phones.php',
 			'class-widget-maximum-price-filter.php',
 			'template-tags.php',
@@ -1200,6 +1201,7 @@ class Inventory_Presser_Plugin
 		 * the addresses in our location taxonomy.
 		 */
 		register_widget( 'Inventory_Presser_Google_Maps_Widget' );
+		register_widget( 'Inventory_Presser_Map_Widget' );
 
 		register_widget( 'Inventory_Presser_Carfax_Widget' );
 		register_widget( 'Inventory_Presser_Grid' );

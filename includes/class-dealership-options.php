@@ -180,6 +180,15 @@ class Inventory_Presser_Options
 			'dealership_options_setting_section' // section
 		);
 
+		//MapBox Public Token [____________]
+		add_settings_field(
+			'mapbox_public_token', // id
+			__( 'MapBox Public Token', 'inventory-presser' ), // title
+			array( $this, 'callback_mapbox_public_token' ), // callback
+			'dealership-options-admin', // page
+			'dealership_options_setting_section' // section
+		);
+
 		/**
 		 * SECTION Listings
 		 */
@@ -392,6 +401,27 @@ class Inventory_Presser_Options
 			__( 'Include sold vehicles in listings and search results', 'inventory-presser' )
 		);
 	}
+	
+	/**
+	 * callback_mapbox_public_token
+	 * 
+	 * Outputs a text box control for the MapBox Public Token setting
+	 *
+	 * @return void
+	 */
+	function callback_mapbox_public_token()
+	{
+		printf(
+			'<p><input type="text" name="%1$s" class="regular-text code" id="%1$s" value="%2$s" /></p><p class="description">%3$s <a href="%4$s">%5$s</a> %6$s</p>',
+			'inventory_presser[mapbox_public_token]',
+			isset( $this->option['mapbox_public_token'] ) ? $this->option['mapbox_public_token'] : '',
+			__( 'Obtain a key at', 'inventory-presser' ),
+			'https://mapbox.com/',
+			'mapbox.com',
+			__( 'to use the Map widget.', 'inventory-presser' )
+		);
+	}
+
 	
 	/**
 	 * callback_price_display
@@ -687,6 +717,11 @@ class Inventory_Presser_Options
 		if ( isset( $input['price_display'] ) )
 		{
 			$sanitary_values['price_display'] = $input['price_display'];
+		}
+
+		if ( isset( $input['mapbox_public_token'] ) )
+		{
+			$sanitary_values['mapbox_public_token'] = $input['mapbox_public_token'];
 		}
 
 		if ( isset( $input['sort_vehicles_by'] ) )
