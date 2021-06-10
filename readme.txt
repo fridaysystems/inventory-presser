@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.7.1
-Stable tag: 13.0.0
+Stable tag: 13.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,12 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 13.1.0 =
+* [Added] Adds a new maps widget called Map. This widget can plot more than one address at a time, and is built on currently-supported APIs. The existing maps widget, Google Map, is built on an API that Google no longer supports or guarantees will continue working. The new Map widget is built on leaflet.js and uses MapBox tiles that do require an API key. Instructions are embedded in the widget form to help onboarding.
+* [Changed] Changes the vehicle slider widget to not show the price zero-string "Call For Price" in text overlays to avoid wrapping on smaller sized screens.
+* [Fixed] Fixes a bug in the price template tag to allow empty string to be passed as the zero-string and not trigger the default "Call For Price" value.
+* [Fixed] Bug fix removes a doubled $ when outputting vehicle book values.
+
 = 13.0.0 =
 * [Changed] Changes the Vehicle Slider widget to use flexslider instead of slick.js. The widget looks identical to previous versions.
 * [Changed] Specifies new minimum versions in dependencies for security fixes.
@@ -73,6 +79,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 13.1.0 =
+Contains bug fixes and adds a new maps widget called Map that succeeds the Google Map widget. Google deprecated the API upon which the Google Map widget is built, and has indicated it will cease working any day. The new widget is built on leaflet.js and uses map tiles/imagery from MapBox.
 
 = 13.0.0 =
 Version 13 is smaller than version 12! Instead of shipping with two sliders, all slideshows are now powered by flexslider. This version drops a dependency on slick.js without losing functionality or changing the look and feel of sliders. Fixes a bug when displaying our placeholder "no photo photo" near vehicles that have zero photos.
