@@ -112,7 +112,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			//Location title/dealership name
 			$popup->name = $this->escape_single_quotes( $location_terms[$t]->name );
 			//Address
-			$popup->address = str_replace( PHP_EOL, '<br />', $this->escape_single_quotes( $location_terms[$t]->description ) );
+			$popup->address = str_replace( "\r", '', str_replace( PHP_EOL, '<br />', $this->escape_single_quotes( $location_terms[$t]->description ) ) );
 			//Get latitude and longitude
 			$location = $this->get_latitude_and_longitude( str_replace( PHP_EOL, ', ', $location_terms[$t]->description ) );
 			if( false !== $location )
