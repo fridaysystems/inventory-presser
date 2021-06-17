@@ -120,8 +120,18 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 				$popup->coords = new stdClass();
 				$popup->coords->lat = $location->lat;
 				$popup->coords->lon = $location->lon;
-			}
-			$popups[] = $popup;
+				$popups[] = $popup;
+			}			
+		}
+
+		if( empty( $popups ) )
+		{
+			/**
+			 * We didn't find any latitude & longitude coordinates using the 
+			 * addresses on openstreetmap.org. It is likely that the addresses
+			 * need to be added to the buildings for this dealer's locations.
+			 */
+			return;
 		}
 		
 		//Enqueue leaflet.js scripts and styles
