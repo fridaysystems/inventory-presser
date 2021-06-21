@@ -88,7 +88,11 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		 * the address without street address line two (unless that version of 
 		 * the address has been added to OpenStreetMap.org).
 		 */
-		$address_str = $meta['address_street'][0];
+		$address_str = '';
+		if( ! empty( $meta['address_street'][0] ) )
+		{
+			$address_str .= $meta['address_street'][0];
+		}
 		if( ! empty( $meta['address_city'][0] ) )
 		{
 			$address_str .= ', ' . $meta['address_city'][0];
