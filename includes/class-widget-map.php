@@ -36,6 +36,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		//Register script and style files for leaflet.js
 		wp_register_script( self::SCRIPT_HANDLE_LEAFLET, plugins_url( 'js/leaflet/leaflet.js', INVP_PLUGIN_FILE_PATH ) );
 		wp_register_style( self::SCRIPT_HANDLE_LEAFLET, plugins_url( 'js/leaflet/leaflet.css', INVP_PLUGIN_FILE_PATH ) );
+		wp_register_style( self::ID_BASE, plugins_url( 'css/widget-map.min.css', INVP_PLUGIN_FILE_PATH ) );
 	}
 
 	/**
@@ -202,6 +203,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		//Enqueue leaflet.js scripts and styles
 		wp_enqueue_script( self::SCRIPT_HANDLE_LEAFLET );
 		wp_enqueue_style( self::SCRIPT_HANDLE_LEAFLET );
+		wp_enqueue_style( self::ID_BASE );
 
 		//Include the JavaScript file that powers the map
 		$handle = 'invp-maps';
@@ -220,8 +222,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		echo '<div class="invp-google-maps" id="map" style="height: 28em;"></div>'
-			. $args['after_widget'];
+		echo '<div class="invp-map" id="map"></div>' . $args['after_widget'];
 	}
 
 	/**
