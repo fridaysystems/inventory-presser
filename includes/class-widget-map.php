@@ -53,9 +53,58 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 	{
 		return str_replace( "'", "\'", $string );
 	}
-
-	private function get_latitude_and_longitude( $address_str )
+	
+	/**
+	 * get_latitude_and_longitude
+	 * 
+	 * Given the ID of a term in the locations taxonomy, this method returns an
+	 * object with members `lat` and `lon` that contain latitude and longitude 
+	 * coordinates of the address. If the coordinates are saved in meta keys 
+	 * `address_lat` and `address_lon`, those are provided. If no coordinates 
+	 * are saved, it bounces the address off OpenStreetMap.org to see if that 
+	 * service knows where the address is located. If coordinates cannot be 
+	 * found, false is returned.
+	 *
+	 * @param  int $location_term_id The ID of a term in the locations taxonomy
+	 * @return object|false An object with members "lat" and "lon" or false
+	 */
+	private function get_latitude_and_longitude( $location_term_id )
 	{
+		//Get all term meta for this location
+		$meta = get_term_meta( $location_term_id );
+		//Do we already have a saved latitude and longitude pair?
+		if( ! empty( $meta['address_lat'][0] ) && ! empty( $meta['address_lon'][0] ) )
+		{
+			//Yes
+			return (object) array(
+				'lat' => $meta['address_lat'][0],
+				'lon' => $meta['address_lon'][0],
+			);
+		}
+
+		/**
+		 * Get latitude and longitude using the address, but use a version of 
+		 * the address without street address line two (unless that version of 
+		 * the address has been added to OpenStreetMap.org).
+		 */
+		$address_str = $meta['address_street'][0];
+		if( ! empty( $meta['address_city'][0] ) )
+		{
+			$address_str .= ', ' . $meta['address_city'][0];
+		}
+		if( ! empty( $meta['address_state'][0] ) )
+		{
+			$address_str .= ', ' . $meta['address_state'][0];
+		}
+		if( ! empty( $meta['address_zip'][0] ) )
+		{
+			$address_str .= ' ' . $meta['address_zip'][0];
+		}
+		if( empty( trim( $address_str ) ) )
+		{
+			return false;
+		}
+
 		$url = 'https://nominatim.openstreetmap.org/search?format=json&q=' . rawurlencode( $address_str );
 		$result = wp_remote_get( $url );
 		if( is_wp_error( $result ) )
@@ -63,7 +112,23 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			return false;
 		}
 		$body = json_decode( wp_remote_retrieve_body( $result ) );
-		return $body[0];
+		if( ! empty( $body[0] ) && ! empty( $body[0]->lat ) && ! empty( $body[0]->lon ) )
+		{
+			/**
+			 * Save the latitude and longitude coordinates so we don't have to
+			 * look them up again.
+			 */
+			update_term_meta( $location_term_id, 'address_lat', $body[0]->lat );		
+			update_term_meta( $location_term_id, 'address_lon', $body[0]->lon );
+			
+			return (object) array(
+				'lat' => $body[0]->lat,
+				'lon' => $body[0]->lon,
+			);
+		}
+
+		//The address probably doesn't exist on OpenStreetMap.org. (Go add it!)
+		return false;
 	}
 
 	/**
@@ -113,8 +178,8 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			$popup->name = $this->escape_single_quotes( $location_terms[$t]->name );
 			//Address
 			$popup->address = str_replace( "\r", '', str_replace( PHP_EOL, '<br />', $this->escape_single_quotes( $location_terms[$t]->description ) ) );
-			//Get latitude and longitude
-			$location = $this->get_latitude_and_longitude( str_replace( PHP_EOL, ', ', $location_terms[$t]->description ) );
+			//Get the latitude and longitude coordinates for this address
+			$location = $this->get_latitude_and_longitude( $location_terms[$t]->term_id );
 			if( false !== $location )
 			{
 				$popup->coords = new stdClass();
