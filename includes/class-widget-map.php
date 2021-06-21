@@ -280,18 +280,18 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			$location_slug = array( $location_slug );
 		}
 
-	    // loop through each location, set up form
-	   	foreach( $location_terms as $index => $term_object ) {
-	   		printf(
-	   			'<p><input id="%s" name="%s[]" value="%s" type="checkbox"%s> <label for="%s">%s</label></p>',
-	   			$this->get_field_id( $term_object->slug ),
-	   			$this->get_field_name('location_slug'),
-	   			$term_object->slug,
-	   			checked( true, in_array( $term_object->slug, $location_slug ), false ),
-	   			$this->get_field_id( $term_object->slug ),
-	   			str_replace( PHP_EOL, ', ', $term_object->description )
-	   		);
-	    }
+		// loop through each location, set up form
+		foreach( $location_terms as $index => $term_object ) {
+			printf(
+				'<p><input id="%s" name="%s[]" value="%s" type="checkbox"%s> <label for="%s">%s</label></p>',
+				$this->get_field_id( $term_object->slug ),
+				$this->get_field_name('location_slug'),
+				$term_object->slug,
+				checked( true, in_array( $term_object->slug, $location_slug ), false ),
+				$this->get_field_id( $term_object->slug ),
+				str_replace( "\r", '', str_replace( PHP_EOL, ', ', $term_object->description ) )
+			);
+		}
 
 		//Only show this if the API key is missing
 		$settings = INVP::settings();
