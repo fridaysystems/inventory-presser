@@ -787,6 +787,8 @@ class Inventory_Presser_Taxonomies
 			'address_city',
 			'address_state',
 			'address_zip',
+			'address_lat',
+			'address_lon',
 		);
 		foreach( $address_keys as $meta_key )
 		{
