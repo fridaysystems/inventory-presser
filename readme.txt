@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.7.2
-Stable tag: 13.1.0
+Stable tag: 13.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,13 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 13.1.1 =
+* [Added] Registers two new term meta keys `address_lat` and `address_lon` to store latitude and longitude coordinates on terms in our locations taxonomy.
+* [Added] Adds a CSS file to store a rule that was previously hard-coded into the Map widget output.
+* [Changed] Stores longitude and latitude coordinates after they are fetched from openstreetmap.org by the Map widget so they need not be requested again.
+* [Fixed] Prevents the Map widget from showing if there are no addresses to plot.
+* [Fixed] Prevents JavaScript errors and broken maps when more than one Map widget is placed on the same page.
 
 = 13.1.0 =
 * [Added] Adds a new maps widget called Map. This widget can plot more than one address at a time, and is built on currently-supported APIs. The existing maps widget, Google Map, is built on an API that Google no longer supports or guarantees will continue working. The new Map widget is built on leaflet.js and uses MapBox tiles that do require an API key. Instructions are embedded in the widget form to help onboarding.
