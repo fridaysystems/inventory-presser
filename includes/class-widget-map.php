@@ -175,6 +175,11 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		for( $t=0; $t<sizeof( $location_terms ); $t++ )
 		{
 			$popup = new stdClass();
+			/**
+			 * Store the widget ID in case there are two instances of this
+			 * widget on the same page.
+			 */
+			$popup->widget_id = $args['widget_id'];
 			//Location title/dealership name
 			$popup->name = $this->escape_single_quotes( $location_terms[$t]->name );
 			//Address
@@ -201,18 +206,38 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		}
 		
 		//Enqueue leaflet.js scripts and styles
-		wp_enqueue_script( self::SCRIPT_HANDLE_LEAFLET );
-		wp_enqueue_style( self::SCRIPT_HANDLE_LEAFLET );
-		wp_enqueue_style( self::ID_BASE );
+		if( ! wp_script_is( self::SCRIPT_HANDLE_LEAFLET ) )
+		{
+			wp_enqueue_script( self::SCRIPT_HANDLE_LEAFLET );
+			wp_enqueue_style( self::SCRIPT_HANDLE_LEAFLET );
+			wp_enqueue_style( self::ID_BASE );
+		}
 
-		//Include the JavaScript file that powers the map
+		//Include the JavaScript file that powers the map, but only once
 		$handle = 'invp-maps';
-		wp_enqueue_script( $handle, plugins_url( 'js/widget-map.min.js', INVP_PLUGIN_FILE_PATH ) );
-		//Localize an API key and the popups array we built data for JavaScript
-		wp_add_inline_script( $handle, 'const invp_maps = ' . json_encode( array(
-			'mapbox_public_token' => $settings['mapbox_public_token'],
-			'popups'              => $popups,
-		) ), 'before' );
+		/**
+		 * If there are two Map widgets on the same page, we need to avoid the
+		 * second one redefining the same invp_maps constant because that will
+		 * produce a JavaScript error.
+		 */
+		if( ! wp_script_is( $handle ) )
+		{
+			//First instance of this widget on the page
+			wp_enqueue_script( $handle, plugins_url( 'js/widget-map.min.js', INVP_PLUGIN_FILE_PATH ) );
+			//Localize an API key and the popups array we built data for JavaScript
+			wp_add_inline_script( $handle, 'const invp_maps = ' . json_encode( array(
+				'mapbox_public_token' => $settings['mapbox_public_token'],
+				'popups'              => $popups,
+			) ), 'before' );
+		}
+		else
+		{
+			//There is another Map widget on this page already
+			foreach( $popups as $popup )
+			{
+				wp_add_inline_script( $handle, 'invp_maps.popups.push( ' . json_encode( $popup ) . ' );', 'before' );
+			}
+		}
 
 		// before and after widget arguments are defined by themes
 		echo $args['before_widget'];
@@ -222,7 +247,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		echo '<div class="invp-map" id="map"></div>' . $args['after_widget'];
+		echo sprintf( '<div class="invp-map %1$s" id="%1$s"></div>', $args['widget_id'] ) . $args['after_widget'];
 	}
 
 	/**
