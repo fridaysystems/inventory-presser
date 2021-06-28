@@ -70,6 +70,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Changed] Stores longitude and latitude coordinates after they are fetched from openstreetmap.org by the Map widget so they need not be requested again.
 * [Fixed] Prevents the Map widget from showing if there are no addresses to plot.
 * [Fixed] Prevents JavaScript errors and broken maps when more than one Map widget is placed on the same page.
+* [Fixed] Bug fix in Hours widget when checking whether or not to highlight a row
 
 = 13.1.0 =
 * [Added] Adds a new maps widget called Map. This widget can plot more than one address at a time, and is built on currently-supported APIs. The existing maps widget, Google Map, is built on an API that Google no longer supports or guarantees will continue working. The new Map widget is built on leaflet.js and uses MapBox tiles that do require an API key. Instructions are embedded in the widget form to help onboarding.
@@ -79,6 +80,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 13.1.1 = 
+Now saves latitude and longitude coordinates with location term addresses when they are fetched from OpenStreetMap.org for use in the Map widget. Enables more than one Map widget to appear on the same page. Bug fix in the Hours widget.
 
 = 13.1.0 =
 Contains bug fixes and adds a new maps widget called Map that succeeds the Google Map widget. Google deprecated the API upon which the Google Map widget is built, and has indicated it will cease working any day. The new widget is built on leaflet.js and uses map tiles/imagery from MapBox.
