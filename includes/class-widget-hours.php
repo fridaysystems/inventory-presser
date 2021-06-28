@@ -197,7 +197,9 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 						$current_row_class = '';
 						if( ! empty( $days[$i] ) && 
 							( ( $days[$i]->open_right_now() && $current_weekday == $i ) //if it's today and we're open, highlight the row
-								|| ( $current_weekday != $i && $next_open_day->weekday-1 == $i && ! $days[$current_weekday]->open_right_now() ) ) )
+								|| ( $current_weekday != $i && $next_open_day->weekday-1 == $i 
+								&& ! empty( $days[$current_weekday] ) 
+								&& ! $days[$current_weekday]->open_right_now() ) ) )
 						{							
 							$current_row_class = ' class="day-highlight"';							
 						}
