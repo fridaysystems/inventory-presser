@@ -77,13 +77,6 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Fixed] Fixes a bug in the price template tag to allow empty string to be passed as the zero-string and not trigger the default "Call For Price" value.
 * [Fixed] Bug fix removes a doubled $ when outputting vehicle book values.
 
-= 13.0.0 =
-* [Changed] Changes the Vehicle Slider widget to use flexslider instead of slick.js. The widget looks identical to previous versions.
-* [Changed] Specifies new minimum versions in dependencies for security fixes.
-* [Fixed] Fixes a bug in the path to no-photo.svg, and image used when vehicles do not have photos. This was broken since 12.2.5 when images were moved from /assets to /images to prepare for launching on wordpress.org.
-* [Removed] Removes styling like white borders around sliders on vehicle singles. Those choices should be handled by themes.
-* [Removed] Removes a dependency on slick.js and all references to it throughout the project. Instead of shipping with two different slider libraries, all sliders are now powered by flexslider. No functionality has been lost, and the Vehicle Slider widget still operates and looks the same way as in 12.x versions.
-
 
 == Upgrade Notice ==
 
