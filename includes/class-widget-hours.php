@@ -149,6 +149,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 				echo '<table>';
 
 				// output a row for each day
+				$highlighted_a_row = false;
 				for ($z = $start_of_week; $z < ($start_of_week + 7); $z++)
 				{
 					$i = ($z > 6) ? $z - 7 : $z;
@@ -195,15 +196,21 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 						 * $next_open_day
 						 */
 						$current_row_class = '';
-						if( ! empty( $days[$i] ) && 
-							( ( $days[$i]->open_right_now() && $current_weekday == $i ) //if it's today and we're open, highlight the row
-								|| ( $current_weekday != $i && $next_open_day->weekday-1 == $i 
-								&& ! empty( $days[$current_weekday] ) 
-								&& ! $days[$current_weekday]->open_right_now() ) ) )
-						{							
-							$current_row_class = ' class="day-highlight"';							
-						}
+						if( ! $highlighted_a_row &&
+							( ( ! empty( $days[$i] ) 
+								&& $days[$i]->open_right_now() 
+								&& $current_weekday == $i ) //if it's today and we're open, highlight the row
 
+							|| ( $current_weekday != $i 
+								&& $next_open_day->weekday-1 == $i ) //it's not today, it's the next open day though
+							)
+						)
+						{
+							$current_row_class = ' class="day-highlight"';
+							$highlighted_a_row = true;
+						}
+											
+						
 						printf(
 							'<tr%s><th>%s</th>',
 							$current_row_class,
