@@ -87,7 +87,10 @@ class Inventory_Presser_Photo_Numberer{
 
 		//Save the VIN in the photo meta
 		$vin = get_post_meta( $attachment->post_parent, apply_filters( 'invp_prefix_meta_key', 'vin' ), true );
-		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'vin' ), $vin );
+		if( ! empty( $vin ) )
+		{
+			update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'vin' ), $vin );
+		}
 
 		//Save a md5 hash checksum of the attachment in meta
 		$hash = hash_file( 'md5', get_attached_file( $post_id ) );
