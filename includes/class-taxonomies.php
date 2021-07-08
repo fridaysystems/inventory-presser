@@ -801,6 +801,17 @@ class Inventory_Presser_Taxonomies
 		}
 
 		/**
+		 * Register a dealer_id field on location terms to help when there are
+		 * many location terms.
+		 */
+		register_term_meta( 'location', 'dealer_id', array(
+			'sanitize_callback' => 'intval',
+			'show_in_rest'      => true,
+			'single'            => true,
+			'type'              => 'integer',
+		) );
+
+		/**
 		 * Phone Numbers
 		 */
 		$phone_key_suffixes = array(
