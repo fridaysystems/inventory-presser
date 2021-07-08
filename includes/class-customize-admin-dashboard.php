@@ -482,8 +482,8 @@ class Inventory_Presser_Customize_Dashboard
 		wp_register_script( 'invp-js', plugins_url( '/js/admin.min.js', INVP_PLUGIN_FILE_PATH ) );
 		wp_enqueue_script( 'invp-js' );
 
-		//localize an odometer units word for the edit vehicle page
-		wp_localize_script( 'invp-js', 'invp', array(
+		//Provide data to JavaScript for the editor
+		wp_add_inline_script( 'invp-js', 'const invp = ' . json_encode( array(
 			'hull_materials'      => apply_filters( 'invp_default_hull_materials', array(
 				'Aluminum',
 				'Carbon Fiber',
@@ -505,7 +505,7 @@ class Inventory_Presser_Customize_Dashboard
 				'Semi-monthly' => 'semimonthly',
 			) ),
 			'delete_all_media_nonce' => wp_create_nonce( self::NONCE_DELETE_ALL_MEDIA ),
-		) );
+		) ), 'before' );
 	}
 	
 	/**

@@ -79,10 +79,11 @@ class Inventory_Presser_Slider extends WP_Widget {
 
 		//Spin-up script
 		wp_enqueue_script( 'invp-slider' );
-		//Localize one of the widget settings so it can use it
-		wp_localize_script( 'invp-slider', 'widget_slider', array(
+		//Provide one of the widget settings to JavaScript
+		wp_add_inline_script( 'invp-slider', 'const widget_slider = ' . json_encode( array(
 			'showcount' => $instance['showcount'],
-		) );
+		) ), 'before' );
+
 	}
 
 	/**

@@ -89,11 +89,12 @@ class Inventory_Presser_Blocks
 			$asset_file['version']
 		);
 
-		//localize an odometer units word for the edit vehicle page
-		wp_localize_script( 'invp-blocks', 'invp_blocks', array(
+		//Provide the vehicle post type meta keys and prefix to JavaScript
+		wp_add_inline_script( 'invp-blocks', 'const invp_blocks = ' . json_encode( array(
 			'keys'        => INVP::keys_and_types(),
 			'meta_prefix' => INVP::meta_prefix(),
-		) );
+		) ), 'before' );
+
 
 		foreach( $keys as $key )
 		{
