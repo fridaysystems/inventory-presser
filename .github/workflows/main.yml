@@ -30,7 +30,6 @@ jobs:
         env:
           # The WP Engine environment to deploy to that is labeled as Production, Staging or Development.
           WPE_ENV_NAME: "inventorypress"
-        with:
           # The public RSA key you save in the WP Engine User Portal
           WPE_SSHG_KEY_PUBLIC: ${{ secrets.WPE_SSHG_KEY_PUBLIC }} 
           # The private RSA key you will save in the Github Secrets
