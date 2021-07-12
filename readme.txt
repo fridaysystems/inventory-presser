@@ -64,6 +64,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 13.1.2 =
+* [Added] Now registers a term meta key `dealer_id` to our locations taxonomy terms to hold a dealer identifier.
+
 = 13.1.1 =
 * [Added] Registers two new term meta keys `address_lat` and `address_lon` to store latitude and longitude coordinates on terms in our locations taxonomy.
 * [Added] Adds a CSS file to store a rule that was previously hard-coded into the Map widget output.
