@@ -38,3 +38,6 @@ jobs:
           #TPO_SRC_PATH: # optional
           # An optional destination directory to deploy to other than the WordPress root.
           TPO_PATH: "wp-content/plugins/inventory-presser/"
+
+      - name: Run phpdoc-parser to Build Documentation
+        run: wp parser create ../../sites/inventorypress/wp-content/plugins/inventory-presser/ --user=corey
