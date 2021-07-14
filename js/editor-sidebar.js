@@ -19,6 +19,9 @@
 		{
 			case 'body_style':
 				return 'Body Style';
+			
+			case 'down_payment':
+				return 'Down Payment';
 
 			case 'hull_material':
 				return 'Hull Material';
