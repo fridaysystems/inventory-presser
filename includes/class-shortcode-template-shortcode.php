@@ -97,6 +97,13 @@ class Inventory_Presser_Template_Shortcode
 				'value'  => invp_get_the_drive_type( $post_ID ),
 			),
 
+			//Doors
+			array(
+				'member' => 'doors',
+				'label'  => __( 'Doors', 'inventory-presser' ),
+				'value'  => invp_get_the_doors( $post_ID ),
+			),
+
 			//Stock Number
 			array(
 				'member' => 'stock_number',
