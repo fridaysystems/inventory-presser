@@ -75,12 +75,6 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Fixed] Prevents JavaScript errors and broken maps when more than one Map widget is placed on the same page.
 * [Fixed] Bug fix in Hours widget when checking whether or not to highlight a row
 
-= 13.1.0 =
-* [Added] Adds a new maps widget called Map. This widget can plot more than one address at a time, and is built on currently-supported APIs. The existing maps widget, Google Map, is built on an API that Google no longer supports or guarantees will continue working. The new Map widget is built on leaflet.js and uses MapBox tiles that do require an API key. Instructions are embedded in the widget form to help onboarding.
-* [Changed] Changes the vehicle slider widget to not show the price zero-string "Call For Price" in text overlays to avoid wrapping on smaller sized screens.
-* [Fixed] Fixes a bug in the price template tag to allow empty string to be passed as the zero-string and not trigger the default "Call For Price" value.
-* [Fixed] Bug fix removes a doubled $ when outputting vehicle book values.
-
 
 == Upgrade Notice ==
 
