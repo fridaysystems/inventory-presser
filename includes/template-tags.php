@@ -217,6 +217,16 @@ function invp_get_the_description( $post_ID = null )
 	return INVP::get_meta( 'description', $post_ID );
 }
 
+function invp_get_the_doors( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	$value = INVP::get_meta( 'doors', $post_ID );
+	return 0 == $value ? '' : $value;
+}
+
 function invp_get_the_down_payment( $post_ID = null )
 {
 	if( empty( $post_ID ) )
