@@ -207,6 +207,10 @@
 						id:        'inventory_presser_body_style',
 					} ),
 					el( MetaBlockField, {
+						fieldName: 'inventory_presser_doors',
+						id:        'inventory_presser_doors',
+					} ),
+					el( MetaBlockField, {
 						fieldName: 'inventory_presser_color',
 						id:        'inventory_presser_color'
 					} ),
