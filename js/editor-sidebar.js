@@ -15,45 +15,29 @@
 			return meta_key;
 		}
 
-		switch( meta_key.substring( 18 ) )
+		var key = meta_key.substring( 18 );
+		switch( key )
 		{
-			case 'body_style':
-				return 'Body Style';
-			
-			case 'down_payment':
-				return 'Down Payment';
-
-			case 'hull_material':
-				return 'Hull Material';
-
-			case 'interior_color':
-				return 'Interior Color';
+			case 'book_value_kbb':
+				return 'Book Value KBB';
+			case 'book_value_nada':
+				return 'Book Value NADA';
 
 			case 'msrp':
-				return 'MSRP';
+			case 'vin':
+				return key.toUpperCase();
 
 			case 'odometer':
 				return 'Odometer (' + invp.miles_word + ')';
 
-			case 'payment_frequency':
-				return 'Payment Frequency';
-
-			case 'stock_number':
-				return 'Stock Number';
-
-			case 'vin':
-				return 'VIN';
-
 			case 'youtube':
 				return 'YouTube Video ID';
-		}
 
-		//Just capitalize the first letter
-		//make
-		//model
-		//year
-		var key = meta_key.substring( 18 );
-		return key.charAt(0).toUpperCase() + key.slice(1);
+			default:
+				//Replace underscores with spaces and capitalize the first letter
+				const pattern = /_/g;
+				return ucwords( key.replace( pattern, ' ' ) );
+		}
 	}
 
 	function hullMaterialOptions()
@@ -108,9 +92,12 @@
 
 	function ucFirst( str )
 	{
-		str += ''
-		var f = str.charAt(0).toUpperCase()
-		return f + str.substr(1)
+		return (str + '').charAt(0).toUpperCase() + str.substr(1);
+	}
+
+	function ucwords( str )
+	{
+		return (str + '').split(' ').map( x => x.charAt(0).toUpperCase() + x.substr(1) ).join(' ');
 	}
 
 	var MetaBlockField = compose(
@@ -260,6 +247,14 @@
 						fieldName: 'inventory_presser_payment_frequency',
 						id:        'inventory_presser_payment_frequency',
 						optionArray: paymentFrequencyOptions()
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_book_value_kbb',
+						id:        'inventory_presser_book_value_kbb'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_book_value_nada',
+						id:        'inventory_presser_book_value_nada'
 					} ),
 					el(
 						'h2',
