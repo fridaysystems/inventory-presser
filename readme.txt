@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.7.2
-Stable tag: 13.1.1
+Stable tag: 13.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,8 +64,10 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
-= 13.1.2 =
+= 13.2.0 =
 * [Added] Now registers a term meta key `dealer_id` to our locations taxonomy terms to hold a dealer identifier.
+* [Added] Adds a new meta key `inventory_presser_doors` to hold the number of doors. Adds this field to the editor sidebar so it can be VIN decoded and edited by users. Adds this field to the vehicle attribute table in the built-in single vehicle template.
+* [Added] Adds KBB & NADA book value fields to the editor sidebar so they can be edited by users.
 
 = 13.1.1 =
 * [Added] Registers two new term meta keys `address_lat` and `address_lon` to store latitude and longitude coordinates on terms in our locations taxonomy.
