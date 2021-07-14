@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v2
 
       # Deploy to WP Engine
-      - name: Deploy WordPress to WP Engine
+      - name: Deploy to WP Engine
         # You may pin to the exact commit or the version.
         # uses: wpengine/github-action-wpe-site-deploy@78e54ef1e8ce6591267521095a03e304a2b837f1
         uses: wpengine/github-action-wpe-site-deploy@main
@@ -39,5 +39,6 @@ jobs:
           # An optional destination directory to deploy to other than the WordPress root.
           TPO_PATH: "wp-content/plugins/inventory-presser/"
 
+      # Run phpdoc-parser to Build Documentation
       - name: Run phpdoc-parser to Build Documentation
         run: wp parser create ../../sites/inventorypress/wp-content/plugins/inventory-presser/ --user=corey
