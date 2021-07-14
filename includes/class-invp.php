@@ -389,6 +389,12 @@ class INVP
 				'type'   => 'string',
 			),
 			array(
+				'label'  => __( 'Doors', 'inventory_presser' ),
+				'name'   => 'doors',
+				'sample' => 4,
+				'type'   => 'number',
+			),
+			array(
 				'label'  => __( 'Down Payment', 'inventory_presser' ),
 				'name'   => 'down_payment',
 				'sample' => 2500,
