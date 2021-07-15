@@ -41,4 +41,4 @@ jobs:
 
       # Run phpdoc-parser to Build Documentation
       - name: Run phpdoc-parser to Build Documentation
-        run: wp parser create ../../sites/inventorypress/wp-content/plugins/inventory-presser/ --user=corey
+        run: /usr/local/bin/wp parser create ../../sites/inventorypress/wp-content/plugins/inventory-presser/ --user=corey
