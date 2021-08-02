@@ -49,11 +49,6 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 	public function delete_option() {
 		delete_option( 'widget_' . self::ID_BASE );
 	}
-
-	private function escape_single_quotes( $string )
-	{
-		return str_replace( "'", "\'", $string );
-	}
 	
 	/**
 	 * get_latitude_and_longitude
@@ -185,9 +180,9 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			 */
 			$popup->widget_id = $args['widget_id'];
 			//Location title/dealership name
-			$popup->name = $this->escape_single_quotes( $location_terms[$t]->name );
+			$popup->name = $location_terms[$t]->name;
 			//Address
-			$popup->address = str_replace( "\r", '', str_replace( PHP_EOL, '<br />', $this->escape_single_quotes( $location_terms[$t]->description ) ) );
+			$popup->address = str_replace( "\r", '', str_replace( PHP_EOL, '<br />', $location_terms[$t]->description ) );
 			//Get the latitude and longitude coordinates for this address
 			$location = $this->get_latitude_and_longitude( $location_terms[$t]->term_id );
 			if( false !== $location )
