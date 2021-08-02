@@ -41,4 +41,9 @@ jobs:
 
       # Run phpdoc-parser to Build Documentation
       - name: Run phpdoc-parser to Build Documentation
-        run: wp parser create ../../sites/inventorypress/wp-content/plugins/inventory-presser/ --user=corey
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: wp parser create ../../sites/inventorypress/wp-content/plugins/inventory-presser/ --user=corey
+          host: inventorypress.ssh.wpengine.net
+          username: inventorypress
+          privateKey: ${{ secrets.WPE_SSHG_KEY_PRIVATE }} 
