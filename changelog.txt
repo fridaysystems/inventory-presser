@@ -1,3 +1,16 @@
+= 13.2.0 =
+* [Added] Now registers a term meta key `dealer_id` to our locations taxonomy terms to hold a dealer identifier.
+* [Added] Adds a new meta key `inventory_presser_doors` to hold the number of doors. Adds this field to the editor sidebar so it can be VIN decoded and edited by users. Adds this field to the vehicle attribute table in the built-in single vehicle template.
+* [Added] Adds KBB & NADA book value fields to the editor sidebar so they can be edited by users.
+
+= 13.1.1 =
+* [Added] Registers two new term meta keys `address_lat` and `address_lon` to store latitude and longitude coordinates on terms in our locations taxonomy.
+* [Added] Adds a CSS file to store a rule that was previously hard-coded into the Map widget output.
+* [Changed] Stores longitude and latitude coordinates after they are fetched from openstreetmap.org by the Map widget so they need not be requested again.
+* [Fixed] Prevents the Map widget from showing if there are no addresses to plot.
+* [Fixed] Prevents JavaScript errors and broken maps when more than one Map widget is placed on the same page.
+* [Fixed] Bug fix in Hours widget when checking whether or not to highlight a row
+
 = 13.1.0 =
 * [Added] Adds a new maps widget called Map. This widget can plot more than one address at a time, and is built on currently-supported APIs. The existing maps widget, Google Map, is built on an API that Google no longer supports or guarantees will continue working. The new Map widget is built on leaflet.js and uses MapBox tiles that do require an API key. Instructions are embedded in the widget form to help onboarding.
 * [Changed] Changes the vehicle slider widget to not show the price zero-string "Call For Price" in text overlays to avoid wrapping on smaller sized screens.

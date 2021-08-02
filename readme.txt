@@ -64,21 +64,15 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
-= 13.2.0 =
-* [Added] Now registers a term meta key `dealer_id` to our locations taxonomy terms to hold a dealer identifier.
-* [Added] Adds a new meta key `inventory_presser_doors` to hold the number of doors. Adds this field to the editor sidebar so it can be VIN decoded and edited by users. Adds this field to the vehicle attribute table in the built-in single vehicle template.
-* [Added] Adds KBB & NADA book value fields to the editor sidebar so they can be edited by users.
-
-= 13.1.1 =
-* [Added] Registers two new term meta keys `address_lat` and `address_lon` to store latitude and longitude coordinates on terms in our locations taxonomy.
-* [Added] Adds a CSS file to store a rule that was previously hard-coded into the Map widget output.
-* [Changed] Stores longitude and latitude coordinates after they are fetched from openstreetmap.org by the Map widget so they need not be requested again.
-* [Fixed] Prevents the Map widget from showing if there are no addresses to plot.
-* [Fixed] Prevents JavaScript errors and broken maps when more than one Map widget is placed on the same page.
-* [Fixed] Bug fix in Hours widget when checking whether or not to highlight a row
+= 13.2.1 =
+* [Changed] Changes the tested up to version number to 5.8.0.
+* [Fixed] Fixes a bug in the Map widget that was hiding the widget title underneath the map. 
 
 
 == Upgrade Notice ==
+
+= 13.2.1 =
+Contains a bug fix in the Map widget to prevent widget titles from sitting underneath the map. Changes tested up to version number to 5.8.0.
 
 = 13.1.1 = 
 Now saves latitude and longitude coordinates with location term addresses when they are fetched from OpenStreetMap.org for use in the Map widget. Enables more than one Map widget to appear on the same page. Bug fix in the Hours widget.
