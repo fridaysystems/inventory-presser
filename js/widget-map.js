@@ -14,7 +14,7 @@ Array.prototype.map.call( maps, function(map) {
 	var markers = [];
 	for( var p=0; p<invp_maps.popups.length; p++ )
 	{
-		if( invp_maps.popups[p].widget_id != map.id )
+		if( invp_maps.popups[p].widget_id != map.id.replace( '-inner', '' ) )
 		{
 			//there must be more than one Map widget on this page
 			continue;

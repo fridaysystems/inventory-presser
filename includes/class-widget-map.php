@@ -251,7 +251,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		echo sprintf( '<div class="invp-map %1$s" id="%1$s"></div>', $args['widget_id'] ) . $args['after_widget'];
+		echo sprintf( '<div class="invp-map %1$s" id="%1$s-inner"></div>', $args['widget_id'] ) . $args['after_widget'];
 	}
 
 	/**
