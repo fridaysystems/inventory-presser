@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.8.0
-Stable tag: 13.2.1
+Stable tag: 13.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 13.2.2 = 
+* [Fixed] Bug fix when registering a term meta key `dealer_id` in locations taxonomy. Sanitize callback of `intval()` prevent updates to the terms in the locations taxonomy. Changed to use `sanitize_text_field()` instead.
 
 = 13.2.1 =
 * [Changed] Changes the tested up to version number to 5.8.0.
