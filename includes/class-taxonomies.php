@@ -805,7 +805,7 @@ class Inventory_Presser_Taxonomies
 		 * many location terms.
 		 */
 		register_term_meta( 'location', 'dealer_id', array(
-			'sanitize_callback' => 'intval',
+			'sanitize_callback' => 'sanitize_text_field',
 			'show_in_rest'      => true,
 			'single'            => true,
 			'type'              => 'integer',
