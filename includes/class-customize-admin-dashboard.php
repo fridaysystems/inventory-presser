@@ -1205,9 +1205,9 @@ class Inventory_Presser_Customize_Dashboard
 			$meta_key = apply_filters( 'invp_prefix_meta_key', $column );
 			if ( $orderby == $meta_key )
 			{
-	            $query->set( 'meta_key', $meta_key );
-	            $query->set( 'orderby', 'meta_value' . ( INVP::meta_value_is_number( $meta_key ) ? '_num' : '' ) );
-	            return;
+				$query->set( 'meta_key', $meta_key );
+				$query->set( 'orderby', 'meta_value' . ( INVP::meta_value_is_number( $meta_key ) ? '_num' : '' ) );
+				return;
 			}
 		}
 	}
