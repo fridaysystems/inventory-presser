@@ -580,7 +580,7 @@ class Inventory_Presser_Plugin
 		 */
 
 		//create a custom post type for the vehicles
-		add_action( 'init', array( $this, 'create_POST_TYPE' ) );
+		add_action( 'init', array( $this, 'create_post_type' ) );
 
 		//register all postmeta fields the CPT uses (mostly to expose them in the REST API)
 		add_action( 'init', array( $this, 'register_meta_fields' ), 20 );
