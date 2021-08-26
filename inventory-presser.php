@@ -736,6 +736,9 @@ class Inventory_Presser_Plugin
 
 		$schema_generator = new Inventory_Presser_Schema_Org_Generator();
 		$schema_generator->hooks();
+
+		//Fire an action hook after Inventory Presser is finished loading
+		do_action( 'invp_loaded' );
 	}
 
 	/**
