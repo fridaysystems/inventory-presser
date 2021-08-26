@@ -360,6 +360,12 @@ class INVP
 				'type'   => 'string',
 			),
 			array(
+				'label'  => __( 'Base Color', 'inventory_presser' ),
+				'name'   => 'color_base',
+				'sample' => 'Red',
+				'type'   => 'string',
+			),
+			array(
 				'label'  => __( 'Condition', 'inventory_presser' ),
 				'name'   => 'condition',
 				'sample' => 'Used',

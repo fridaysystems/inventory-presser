@@ -346,8 +346,12 @@ class Inventory_Presser_Plugin
 		}
 
 		$post_type = get_post_type_object( INVP::POST_TYPE );
-		$termlink = $post_type->rewrite['slug'] . $termlink;
+		if( empty( $post_type ) )
+		{
+			return $termlink;
+		}
 
+		$termlink = $post_type->rewrite['slug'] . $termlink;
 		return $termlink;
 	}
 	
