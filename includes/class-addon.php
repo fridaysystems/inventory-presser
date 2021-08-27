@@ -72,7 +72,7 @@ if( ! class_exists( 'Inventory_Presser_Addon' ) )
 				);
 			}, 20 );
 
-			add_filter( $sanitize_values_hook_name, array( __CLASS__, 'sanitize_license_key' ), 10, 2 );
+			add_filter( $sanitize_values_hook_name, array( __CLASS__, 'sanitize_and_activate_license_key' ), 10, 3 );
 		}
 
 		public static function make_sure_license_is_activated( $license_item, $license_key )
@@ -84,11 +84,12 @@ if( ! class_exists( 'Inventory_Presser_Addon' ) )
 			if( ! $license->is_active() ) { $license->activate(); }
 		}
 		
-		public static function sanitize_license_key( $sanitized, $input )
+		public static function sanitize_and_activate_license_key( $sanitized, $input, $license_item )
 		{				
 			if ( isset( $input['license_key'] ) )
 			{
 				$sanitized['license_key'] = sanitize_text_field( $input['license_key'] );
+				self::make_sure_license_is_activated( $license_item, $sanitized['license_key'] );
 			}
 			return $sanitized;
 		}
