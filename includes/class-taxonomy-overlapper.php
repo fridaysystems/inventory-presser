@@ -197,6 +197,7 @@ class Inventory_Presser_Taxonomy_Overlapper
 			'year'            => 'model_year',
 
 			'availability'    => 'availability',
+			'color_base'      => 'colors',
 			'condition'       => 'condition',
 			'cylinders'       => 'cylinders',
 			'drive_type'      => 'drive_type',

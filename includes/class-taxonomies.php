@@ -568,6 +568,19 @@ class Inventory_Presser_Taxonomies
 
 		$query->set( 'tax_query', $tax_query );
 	}
+
+	/**
+	 * meta_box_html_colors
+	 * 
+	 * Outputs HTML that renders a meta box for the colors taxonomy
+	 *
+	 * @param  mixed $post
+	 * @return void
+	 */
+	static function meta_box_html_colors( $post )
+	{
+		echo self::taxonomy_meta_box_html( 'colors', apply_filters( 'invp_prefix_meta_key', 'color_base' ), $post );
+	}
 	
 	/**
 	 * meta_box_html_condition
@@ -1501,6 +1514,42 @@ class Inventory_Presser_Taxonomies
 						'show_in_menu'   => false,
 						'show_in_rest'   => true,
 						'show_ui'        => true,
+					),
+				),
+				array (
+					'args' => array (
+						'hierarchical'   => true,
+						'label'          => 'Colors',
+						'labels'         => array (
+							'name'          => 'Color',
+							'singular_name' => 'Color',
+							'search_items'  => 'Search colors',
+							'popular_items' => 'Popular colors',
+							'all_items'     => 'All colors',
+						),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_colors' ),
+						'query_var'      => 'colors',
+						'singular_label' => 'Color',
+						'show_in_menu'   => false,
+						'show_in_rest'   => true,
+						'show_ui'        => true,
+					),
+					'term_data' =>	array (
+						'Beige'    => 'Beige',
+						'Black'    => 'Black',
+						'Blue'     => 'Blue',
+						'Brown'    => 'Brown',
+						'Burgundy' => 'Burgundy',
+						'Gold'     => 'Gold',
+						'Grey'     => 'Grey',
+						'Green'    => 'Green',
+						'Ivory'    => 'Ivory',
+						'Orange'   => 'Orange',
+						'Purple'   => 'Purple',
+						'Red'      => 'Red',
+						'Silver'   => 'Silver',
+						'White'    => 'White',
+						'Yellow'   => 'Yellow',
 					),
 				),
 				array (
