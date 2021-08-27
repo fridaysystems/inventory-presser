@@ -566,13 +566,9 @@ class Inventory_Presser_Plugin
 		//include all this plugin's classes that live in external files
 		$this->include_dependencies();
 
-		INVP::add_hooks();
-
-		//Allow translations
-		add_action( 'plugins_loaded', function()
-		{
-			load_plugin_textdomain( 'inventory-presser', false, __DIR__ );
-		} );
+		//Translate friendly names to actual custom field keys and the other way
+		add_filter( 'invp_prefix_meta_key', array( 'INVP', 'translate_custom_field_names' ) );
+		add_filter( 'invp_unprefix_meta_key', array( 'INVP', 'untranslate_custom_field_names' ) );
 
 		//Modify the administrator dashboard
 		$customize_dashboard = new Inventory_Presser_Customize_Dashboard();
@@ -740,6 +736,14 @@ class Inventory_Presser_Plugin
 
 		$schema_generator = new Inventory_Presser_Schema_Org_Generator();
 		$schema_generator->hooks();
+
+		add_action( 'plugins_loaded', array( $this, 'loaded' ) );
+	}
+
+	function loaded()
+	{
+		//Allow translations
+		load_plugin_textdomain( 'inventory-presser', false, __DIR__ );
 
 		//Fire an action hook after Inventory Presser is finished loading
 		do_action( 'invp_loaded' );

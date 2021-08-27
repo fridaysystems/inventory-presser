@@ -12,13 +12,6 @@ class INVP
 	const POST_TYPE = 'inventory_vehicle';
 	const OPTION_NAME = 'inventory_presser';
 
-	public static function add_hooks()
-	{
-		//Translate friendly names to actual custom field keys and the other way
-		add_filter( 'invp_prefix_meta_key', array( 'INVP', 'translate_custom_field_names' ) );
-		add_filter( 'invp_unprefix_meta_key', array( 'INVP', 'untranslate_custom_field_names' ) );
-	}
-
 	/**
 	 * delete_all_data
 	 *
