@@ -29,9 +29,7 @@ jobs:
         uses: wpengine/github-action-wpe-site-deploy@main
         with:
           # The WP Engine environment to deploy to that is labeled as Production, Staging or Development.
-          WPE_ENV_NAME: "inventorypress"
-          # The public RSA key you save in the WP Engine User Portal
-          WPE_SSHG_KEY_PUBLIC: ${{ secrets.WPE_SSHG_KEY_PUBLIC }} 
+          PRD_ENV: "inventorypress"
           # The private RSA key you will save in the Github Secrets
           WPE_SSHG_KEY_PRIVATE: ${{ secrets.WPE_SSHG_KEY_PRIVATE }} 
           # An optional source directory to deploy other than the root directory that is being versioned.
