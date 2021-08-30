@@ -51,7 +51,7 @@ if( ! class_exists( 'Inventory_Presser_Addon' ) )
 
 				//is $settings_section an existing section?
 				global $wp_settings_sections;
-				if( empty( $wp_settings_sections['dealership-options-admin'][$settings_section] ) )
+				if( empty( $wp_settings_sections[INVP::option_page()][$settings_section] ) )
 				{
 					//no, abort
 					return;
@@ -67,7 +67,7 @@ if( ! class_exists( 'Inventory_Presser_Addon' ) )
 						?><p><input type="text" name="<?php echo $option_name; ?>[license_key]" class="regular-text code" id="<?php echo $option_name; ?>[license_key]" value="<?php echo $current_value; ?>" /></p>
 						<p class="description"><?php printf( '%s <a href="https://inventorypresser.com/">https://inventorypresser.com/</a> %s', __( 'Obtain a key at', 'inventory-presser' ), __( 'to receive plugin updates.', 'inventory-presser-divert-cf7' ) ); ?></p><?php
 					}, // callback
-					'dealership-options-admin', // page
+					INVP::option_page(), // page
 					$settings_section // section
 				);
 			}, 20 );

@@ -129,7 +129,7 @@ class Inventory_Presser_Options
 	public function add_settings()
 	{
 		register_setting(
-			'dealership_options_option_group', // option_group
+			INVP::option_group(), // option_group
 			INVP::OPTION_NAME, // option_name
 			array( $this, 'sanitize_options' ) // sanitize_callback
 		);
@@ -141,7 +141,7 @@ class Inventory_Presser_Options
 			'dealership_options_setting_section', // id
 			__( 'General', 'inventory-presser' ), // title
 			'__return_empty_string', // callback
-			'dealership-options-admin' // page
+			INVP::option_page() // page
 		);
 
 		//Price Display
@@ -149,7 +149,7 @@ class Inventory_Presser_Options
 			'price_display', // id
 			__( 'Price Display', 'inventory-presser' ), // title
 			array( $this, 'callback_price_display' ), // callback
-			'dealership-options-admin', // page
+			INVP::option_page(), // page
 			'dealership_options_setting_section' // section
 		);
 
@@ -158,7 +158,7 @@ class Inventory_Presser_Options
 			'include_sold_vehicles', // id
 			__( 'Sold Vehicles', 'inventory-presser' ), // title
 			array( $this, 'callback_include_sold_vehicles' ), // callback
-			'dealership-options-admin', // page
+			INVP::option_page(), // page
 			'dealership_options_setting_section' // section
 		);
 
@@ -167,7 +167,7 @@ class Inventory_Presser_Options
 			'show_all_taxonomies', // id
 			__( 'Show All Taxonomies', 'inventory-presser' ), // title
 			array( $this, 'callback_show_all_taxonomies' ), // callback
-			'dealership-options-admin', // page
+			INVP::option_page(), // page
 			'dealership_options_setting_section' // section
 		);
 
@@ -176,7 +176,7 @@ class Inventory_Presser_Options
 			'skip_trash', // id
 			__( 'Skip Trash', 'inventory-presser' ), // title
 			array( $this, 'callback_skip_trash' ), // callback
-			'dealership-options-admin', // page
+			INVP::option_page(), // page
 			'dealership_options_setting_section' // section
 		);
 
@@ -185,7 +185,7 @@ class Inventory_Presser_Options
 			'mapbox_public_token', // id
 			__( 'MapBox Public Token', 'inventory-presser' ), // title
 			array( $this, 'callback_mapbox_public_token' ), // callback
-			'dealership-options-admin', // page
+			INVP::option_page(), // page
 			'dealership_options_setting_section' // section
 		);
 
@@ -196,7 +196,7 @@ class Inventory_Presser_Options
 			'dealership_options_section_listings', // id
 			__( 'Listings', 'inventory-presser' ), // title
 			'__return_empty_string', // callback
-			'dealership-options-admin' // page
+			INVP::option_page() // page
 		);
 
 		//Sort vehicles by [Field] in [Ascending] order
@@ -204,7 +204,7 @@ class Inventory_Presser_Options
 			'sort_vehicles_by', // id
 			__( 'Sort Vehicles By', 'inventory-presser' ), // title
 			array( $this, 'callback_sort_vehicles_by' ), // callback
-			'dealership-options-admin', // page
+			INVP::option_page(), // page
 			'dealership_options_section_listings' // section
 		);
 
@@ -216,7 +216,7 @@ class Inventory_Presser_Options
 			'additional_listings_page', // id
 			__( 'Additional Listings Page', 'inventory-presser' ), // title
 			array( $this, 'callback_additional_listings_page' ), // callback
-			'dealership-options-admin', // page
+			INVP::option_page(), // page
 			'dealership_options_section_listings' // section
 		);
 
@@ -227,7 +227,7 @@ class Inventory_Presser_Options
 			'dealership_options_section_carfax', // id
 			__( 'Carfax', 'inventory-presser' ), // title
 			'__return_empty_string', // callback
-			'dealership-options-admin' // page
+			INVP::option_page() // page
 		);
 
 		//[x] Display Carfax buttons near vehicles that link to free Carfax reports
@@ -235,7 +235,7 @@ class Inventory_Presser_Options
 			'use_carfax', // id
 			__( 'Enable Carfax', 'inventory-presser' ), // title
 			array( $this, 'callback_use_carfax' ), // callback
-			'dealership-options-admin', // page
+			INVP::option_page(), // page
 			'dealership_options_section_carfax' // section
 		);
 
@@ -244,7 +244,7 @@ class Inventory_Presser_Options
 			'use_carfax_provided_buttons', // id
 			__( 'Use Newest Buttons', 'inventory-presser' ), // title
 			array( $this, 'callback_use_carfax_provided_buttons' ), // callback
-			'dealership-options-admin', // page
+			INVP::option_page(), // page
 			'dealership_options_section_carfax' // section
 		);
 	}
@@ -681,8 +681,8 @@ class Inventory_Presser_Options
 
 			?><form method="post" action="options.php">
 				<?php
-					settings_fields( 'dealership_options_option_group' );
-					do_settings_sections( 'dealership-options-admin' );
+					settings_fields( INVP::option_group() );
+					do_settings_sections( INVP::option_page() );
 					submit_button();
 
 			?></form>
