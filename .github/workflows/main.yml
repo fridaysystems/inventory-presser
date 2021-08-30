@@ -27,7 +27,7 @@ jobs:
         # You may pin to the exact commit or the version.
         # uses: wpengine/github-action-wpe-site-deploy@78e54ef1e8ce6591267521095a03e304a2b837f1
         uses: wpengine/github-action-wpe-site-deploy@main
-        env:
+        with:
           # The WP Engine environment to deploy to that is labeled as Production, Staging or Development.
           WPE_ENV_NAME: "inventorypress"
           # The public RSA key you save in the WP Engine User Portal
