@@ -699,6 +699,32 @@ class INVP
 	}
 	
 	/**
+	 * option_group
+	 * 
+	 * Provides the option group string that is needed for register_setting() 
+	 * calls.
+	 *
+	 * @return string
+	 */
+	public static function option_group()
+	{
+		return apply_filters( 'invp_option_group', 'dealership_options_option_group' );
+	}
+	
+	/**
+	 * option_page
+	 * 
+	 * Provides the option page string that determines where the settings
+	 * sections are rendered.
+	 *
+	 * @return string
+	 */
+	public static function option_page()
+	{
+		return apply_filters( 'invp_option_page', 'dealership-options-admin' );
+	}
+	
+	/**
 	 * prepare_phone_number_for_link
 	 * 
 	 * Takes a phone number and prepares it for the href attribute of a link.
