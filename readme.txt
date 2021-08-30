@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.8.0
-Stable tag: 13.2.2
+Stable tag: 13.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,12 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 13.3.0 =
+* [Added] Adds a colors taxonomy to help users shop by vehicle color. This taxonomy is designed to hold the base color. That means the value might be "Red" rather than "Ruby Mist Metallic".
+* [Added] Adds new classes Inventory_Presser_Addon and Inventory_Presser_Addon_Updater to help add-on plugins store license keys and obtain updates from inventorypresser.com.
+* [Added] Adds two API methods INVP::option_group() and INVP::option_page() to help add-ons avoid hard-coding string slugs for the page and group where this plugin's settings are manipulated.
+* [Added] Adds an action hook `invp_loaded` that runs on the `plugins_loaded` hook but after Inventory Presser has finished loading. This hook is designed as an add-on entry point.
+
 = 13.2.2 = 
 * [Fixed] Bug fix when registering a term meta key `dealer_id` in locations taxonomy. Sanitize callback of `intval()` prevent updates to the terms in the locations taxonomy. Changed to use `sanitize_text_field()` instead.
 
@@ -73,6 +79,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 13.3.0 =
+Upgrades the add-on framework to simplify the building and integrating of add-on plugins. Adds a colors taxonomy to help users shop by base color.
 
 = 13.2.1 =
 Contains a bug fix in the Map widget to prevent widget titles from sitting underneath the map. Changes tested up to version number to 5.8.0.
