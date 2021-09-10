@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.8.0
-Stable tag: 13.3.0
+Stable tag: 13.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,10 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 13.3.1 =
+* [Fixed] Fixes a bug in the taxonomy overlapper that was causing sold vehicles to show as available. Meta keys were not always being updated when the overlapping taxonomy term relationships were changed.
+* [Changed] Changes the add-on updater to not show a plugin update nag unless a download link is available.
 
 = 13.3.0 =
 * [Added] Adds a colors taxonomy to help users shop by vehicle color. This taxonomy is designed to hold the base color. That means the value might be "Red" rather than "Ruby Mist Metallic".
