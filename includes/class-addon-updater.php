@@ -238,40 +238,32 @@ if( ! class_exists( 'Inventory_Presser_Addon_Updater' ) )
 			// Restore our filter
 			add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
 	
-			if ( ! empty( $update_cache->response[ $this->name ] ) && version_compare( $this->version, $version_info->new_version, '<' ) ) {
-	
+			if ( ! empty( $update_cache->response[ $this->name ] ) 
+				&& version_compare( $this->version, $version_info->new_version, '<' ) 
+				&&  ! empty( $version_info->download_link ) )
+			{
 				// build a plugin list row, with update notification
-				$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
+				//$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
 				# <tr class="plugin-update-tr"><td colspan="' . $wp_list_table->get_column_count() . '" class="plugin-update colspanchange">
 				echo '<tr class="plugin-update-tr" id="' . $this->slug . '-update" data-slug="' . $this->slug . '" data-plugin="' . $this->slug . '/' . $file . '">';
 				echo '<td colspan="3" class="plugin-update colspanchange">';
 				echo '<div class="update-message notice inline notice-warning notice-alt">';
 	
 				$changelog_link = self_admin_url( 'index.php?edd_sl_action=view_plugin_changelog&plugin=' . $this->name . '&slug=' . $this->slug . '&TB_iframe=true&width=772&height=911' );
-	
-				if ( empty( $version_info->download_link ) ) {
-					printf(
-						__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'easy-digital-downloads' ),
-						esc_html( $version_info->name ),
-						'<a target="_blank" class="thickbox" href="' . esc_url( $changelog_link ) . '">',
-						esc_html( $version_info->new_version ),
-						'</a>'
-					);
-				} else {
-					printf(
-						__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'easy-digital-downloads' ),
-						esc_html( $version_info->name ),
-						'<a target="_blank" class="thickbox" href="' . esc_url( $changelog_link ) . '">',
-						esc_html( $version_info->new_version ),
-						'</a>',
-						'<a href="' . esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $this->name, 'upgrade-plugin_' . $this->name ) ) .'">',
-						'</a>'
-					);
-				}
-	
+
+				printf(
+					__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'easy-digital-downloads' ),
+					esc_html( $version_info->name ),
+					'<a target="_blank" class="thickbox" href="' . esc_url( $changelog_link ) . '">',
+					esc_html( $version_info->new_version ),
+					'</a>',
+					'<a href="' . esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $this->name, 'upgrade-plugin_' . $this->name ) ) .'">',
+					'</a>'
+				);
+
 				do_action( "in_plugin_update_message-{$file}", $plugin, $version_info );
-	
-				echo '</div></td></tr>';
+
+				echo '</div></td></tr>';				
 			}
 		}
 	
