@@ -21,36 +21,60 @@ class Inventory_Presser_Taxonomy_Overlapper
 	 */
 	function hooks_add()
 	{
+		$this->hooks_add_meta();
+		$this->hooks_add_terms();
+	}
+
+	function hooks_add_meta()
+	{
 		/**
 		 * When certain post meta fields like make & model are updated, also 
 		 * maintain terms in taxonomies to make filtering vehicles easy.
 		 */
 		add_action( 'updated_postmeta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 		add_action( 'added_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
-		add_action( 'deleted_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
+		//add_action( 'deleted_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
+	}
 
+	function hooks_add_terms()
+	{
 		//Do the same when taxonomy term relationships are changed
-		add_action( 'set_object_terms', array( $this, 'term_relationship_updated' ), 10, 6 );
+		add_action( 'added_term_relationship', array( $this, 'term_relationship_updated' ), 10, 3 );
 		add_action( 'deleted_term_relationships', array( $this, 'term_relationship_deleted' ), 10, 3 );
+	}
+
+	function hooks_remove()
+	{
+		$this->hooks_remove_meta();
+		$this->hooks_remove_terms();
 	}
 	
 	/**
-	 * hooks_remove
+	 * hooks_remove_meta
 	 *
-	 * This is the inverse to hooks_add(). It removes all the hooks this class
-	 * adds.
+	 * Removes the hooks from post meta adds, updates, and deletes.
 	 * 
 	 * @return void
 	 */
-	function hooks_remove()
+	function hooks_remove_meta()
 	{
 		remove_action( 'updated_postmeta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 		remove_action( 'added_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 		remove_action( 'deleted_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
-
+	}
+	
+	/**
+	 * hooks_remove_terms
+	 * 
+	 * Removes the hooks from taxonomy term updates and removals.
+	 *
+	 * @return void
+	 */
+	function hooks_remove_terms()
+	{
 		//Do the same when taxonomy term relationships are changed
-		remove_action( 'set_object_terms', array( $this, 'term_relationship_updated' ), 10, 6 );
-		remove_action( 'delete_term_relationships', array( $this, 'term_relationship_deleted' ), 10, 3 );
+		remove_action( 'added_term_relationship', array( $this, 'term_relationship_updated' ), 10, 3 );
+		remove_action( 'deleted_term_relationships', array( $this, 'term_relationship_deleted' ), 10, 3 );
 	}
 	
 	/**
@@ -81,6 +105,11 @@ class Inventory_Presser_Taxonomy_Overlapper
 	 */
 	function maintain_taxonomy_terms_during_meta_updates( $meta_id, $object_id, $meta_key, $meta_value )
 	{
+		if( '_edit_lock' == strtolower( $meta_key ) )
+		{
+			return;
+		}
+		
 		//These are the unprefixed meta keys that have overlapping taxonomies
 		$overlapping_keys = $this->overlapping_meta_keys();
 		//unprefix the meta key
@@ -100,12 +129,14 @@ class Inventory_Presser_Taxonomy_Overlapper
 		 * appends terms instead of replacing. That means if the $meta_value is
 		 * For Sale or Sold, we need to remove the opposite term.
 		 */
-		if( 'availability' == $unprefixed && ! empty( $meta_value ) )
+		if( 'availability' == strtolower( $unprefixed ) 
+			&& ! empty( $meta_value ) 
+			&& in_array( INVP::sluggify( $meta_value ), array( 'for-sale', 'sold' ) ) )
 		{
 			$for_sale_and_sold_term_ids = get_terms( array(
 				'taxonomy' => $taxonomy,
 				'fields'   => 'ids',
-				'slug'     => array( 'for-sale', 'sold' ),
+				'slug'     => 'sold' == INVP::sluggify( $meta_value ) ? 'for-sale' : 'sold',
 			) );
 			$this->hooks_remove();
 			wp_remove_object_terms( $object_id, $for_sale_and_sold_term_ids, $taxonomy );
@@ -118,7 +149,7 @@ class Inventory_Presser_Taxonomy_Overlapper
 		{
 			//remove a term actually
 			$terms = array();
-			if( 'availability' == $taxonomy )
+			if( 'availability' == strtolower( $taxonomy ) )
 			{
 				$terms = wp_get_object_terms( $object_id, $taxonomy );
 				for( $t=0; $t<sizeof($terms); $t++ )
@@ -146,7 +177,7 @@ class Inventory_Presser_Taxonomy_Overlapper
 		 * Wholesale is a term in the Availability taxonomy rather than a real
 		 * boolean as the meta field suggests & is registered.
 		 */
-		if( 'wholesale' == $unprefixed )
+		if( 'wholesale' == strtolower( $unprefixed ) )
 		{
 			$meta_value = 'Wholesale';
 		}
@@ -176,7 +207,7 @@ class Inventory_Presser_Taxonomy_Overlapper
 		 * holds For Sale/Sold and Wholesale, so append in that taxonomy.
 		 */
 		$this->hooks_remove();
-		wp_set_object_terms( $object_id, $term->term_id, $taxonomy, ( 'availability' == $taxonomy ) );
+		wp_set_object_terms( $object_id, $term->term_id, $taxonomy, ( 'availability' == strtolower( $taxonomy ) ) );
 		$this->hooks_add();
 	}
 
@@ -242,11 +273,11 @@ class Inventory_Presser_Taxonomy_Overlapper
 		//delete post meta values from this post 
 		foreach( $tt_ids as $term_taxonomy_id )
 		{
-			if( 'availability' != $taxonomy )
+			if( 'availability' != strtolower( $taxonomy ) )
 			{
-				$this->hooks_remove();
+				$this->hooks_remove_meta();
 				delete_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', $taxonomies_and_keys[$taxonomy] ) );
-				$this->hooks_add();
+				$this->hooks_add_meta();
 				continue;
 			}
 
@@ -257,18 +288,18 @@ class Inventory_Presser_Taxonomy_Overlapper
 				continue;
 			}
 
-			if( 'wholesale' == $term->slug )
+			if( 'wholesale' == strtolower( $term->slug ) )
 			{
-				$this->hooks_remove();
+				$this->hooks_remove_meta();
 				delete_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'wholesale' ) );
-				$this->hooks_add();
+				$this->hooks_add_meta();
 				continue;
 			}
 
 			//$term->slug must be for-sale or sold
-			$this->hooks_remove();
+			$this->hooks_remove_meta();
 			delete_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'availability' ) );
-			$this->hooks_add();
+			$this->hooks_add_meta();
 		}
 	}
 	
@@ -276,14 +307,11 @@ class Inventory_Presser_Taxonomy_Overlapper
 	 * term_relationship_updated
 	 *
 	 * @param  int $object_id Object ID.
-	 * @param  array $terms An array of object terms.
-	 * @param  array $tt_ids An array of term taxonomy IDs.
+	 * @param  int $tt_id A term taxonomy ID.
 	 * @param  string $taxonomy Taxonomy slug.
-	 * @param  bool $append Whether to append new terms to the old terms.
-	 * @param  array $old_tt_ids Old array of term taxonomy IDs.
 	 * @return void
 	 */
-	function term_relationship_updated( $object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids )
+	function term_relationship_updated( $object_id, $tt_id, $taxonomy )
 	{
 		//Does $object_id belong to a vehicle?
 		if( INVP::POST_TYPE != get_post_type( $object_id ) )
@@ -302,44 +330,42 @@ class Inventory_Presser_Taxonomy_Overlapper
 		}
 
 		//An empty array of terms is passed often
-		if( empty( $terms ) )
+		if( empty( $tt_id ) )
 		{
 			return;
 		}
 
-		foreach( $terms as $term_id )
+
+		$term = get_term_by( 'term_taxonomy_id', $tt_id, $taxonomy );
+		if( ! is_object( $term ) || 'WP_Term' != get_class( $term ) )
 		{
-			$term = get_term( $term_id, $taxonomy );
-			if( ! is_object( $term ) || 'WP_Term' != get_class( $term ) )
-			{
-				continue;
-			}
+			return;
+		}
 
-			//For most taxonomies, we can just save the term name in the post meta field
-			if( 'availability' != $taxonomy )
-			{
-				$this->hooks_remove();
-				update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', $taxonomies_and_keys[$taxonomy] ), $term->name );
-				$this->hooks_add();
-				continue;
-			}
+		//For most taxonomies, we can just save the term name in the post meta field
+		if( 'availability' != strtolower( $taxonomy ) )
+		{
+			$this->hooks_remove_meta();
+			update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', $taxonomies_and_keys[$taxonomy] ), $term->name );
+			$this->hooks_add_meta();
+			return;
+		}
 
-			//The availability taxonomy was the one updated
-			switch( $term->slug )
-			{
-				case "for-sale":
-				case "sold":
-					$this->hooks_remove();
-					update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'availability' ), $term->name );
-					$this->hooks_add();
-					break;
+		//The availability taxonomy was the one updated
+		switch( strtolower( $term->slug ) )
+		{
+			case "for-sale":
+			case "sold":
+				$this->hooks_remove_meta();
+				update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'availability' ), $term->name );
+				$this->hooks_add_meta();
+				break;
 
-				case "wholesale":
-					$this->hooks_remove();
-					update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'wholesale' ), true );
-					$this->hooks_add();
-					break;
-			}
+			case "wholesale":
+				$this->hooks_remove_meta();
+				update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'wholesale' ), true );
+				$this->hooks_add_meta();
+				break;
 		}
 	}
 }
