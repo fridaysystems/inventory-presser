@@ -737,7 +737,23 @@ class Inventory_Presser_Plugin
 		$schema_generator = new Inventory_Presser_Schema_Org_Generator();
 		$schema_generator->hooks();
 
+		add_action( 'invp_archive_buttons', array( $this, 'add_view_details_button' ) );
+
 		add_action( 'plugins_loaded', array( $this, 'loaded' ) );
+	}
+
+	public function add_view_details_button()
+	{
+		if( ! in_the_loop() )
+		{
+			return;
+		}
+
+		$css_classes = apply_filters( 'invp_css_classes_view_details_button', array(
+			'wp-block-button__link',
+			'button',
+		) );
+		?><a class="<?php echo esc_attr( implode( ' ', $css_classes ) ); ?>" href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php _e( 'View Details', 'inventory-presser' ); ?></a><?php
 	}
 
 	function loaded()
