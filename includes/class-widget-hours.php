@@ -202,6 +202,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 								&& $current_weekday == $i ) //if it's today and we're open, highlight the row
 
 							|| ( $current_weekday != $i 
+								&& ! empty( $next_open_day )
 								&& $next_open_day->weekday-1 == $i ) //it's not today, it's the next open day though
 							)
 						)
