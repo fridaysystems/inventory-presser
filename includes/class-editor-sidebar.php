@@ -36,7 +36,7 @@ class Inventory_Presser_Editor_Sidebar
 	{
 		//Are we editing a vehicle?
 		global $post;
-		if( INVP::POST_TYPE != $post->post_type )
+		if( empty( $post ) || INVP::POST_TYPE != $post->post_type )
 		{
 			return;
 		}
