@@ -40,7 +40,7 @@ class Inventory_Presser_Shortcode_Iframe
 	{
 		_doing_it_wrong(
 			__FUNCTION__,
-			__( 'The [iframe] shortcode was deprecated in version 12.2.0. Use [invp_iframe] instead. See https://inventorypresser.com/docs/shortcodes/', 'inventory-presser' ),
+			site_url() . ' ' . __( 'The [iframe] shortcode was deprecated in version 12.2.0. Use [invp_iframe] instead. See https://inventorypresser.com/docs/shortcodes/', 'inventory-presser' ),
 			'12.2.0'
 		);
 		return $this->content( $atts );
