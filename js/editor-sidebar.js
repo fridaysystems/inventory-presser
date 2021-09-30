@@ -66,14 +66,14 @@
 		return options;
 	}
 
-	function yearOptions()
+	function titleStatusOptions()
 	{
-		var options = [];
-		for(var y=new Date().getFullYear(); y>1919; y-- )
+		var options = [{label:'',value:''}];
+		for( var l=0; l<invp.title_statuses.length; l++ )
 		{
 			options.push({
-				label: y,
-				value: y
+				label: invp.title_statuses[l],
+				value: invp.title_statuses[l]
 			});
 		}
 		return options;
@@ -221,6 +221,11 @@
 					el( MetaBlockField, {
 						fieldName: 'inventory_presser_odometer',
 						id:        'inventory_presser_odometer'
+					} ),
+					el( MetaBlockFieldSelect, {
+						fieldName: 'inventory_presser_title_status',
+						id:        'inventory_presser_title_status',
+						optionArray: titleStatusOptions()
 					} ),
 					el( MetaBlockField, {
 						fieldName: 'inventory_presser_youtube',

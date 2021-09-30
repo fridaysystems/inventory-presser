@@ -504,6 +504,16 @@ class Inventory_Presser_Customize_Dashboard
 				'Bi-weekly'    => 'biweekly',
 				'Semi-monthly' => 'semimonthly',
 			) ),
+			'title_statuses' => apply_filters( 'invp_default_title_statuses', array(
+				'Unspecified',
+				'Clear',
+				'Clean',
+				'Flood, Water Damage',
+				'Lemon and Manufacturers Buyback',
+				'Rebuild, Rebuildable, and Reconstructed',
+				'Salvage',
+				'Other',
+			) ),
 			'delete_all_media_nonce' => wp_create_nonce( self::NONCE_DELETE_ALL_MEDIA ),
 		) ), 'before' );
 	}
