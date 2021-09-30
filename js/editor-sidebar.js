@@ -18,11 +18,6 @@
 		var key = meta_key.substring( 18 );
 		switch( key )
 		{
-			case 'book_value_kbb':
-				return 'Book Value KBB';
-			case 'book_value_nada':
-				return 'Book Value NADA';
-
 			case 'msrp':
 			case 'vin':
 				return key.toUpperCase();
@@ -34,9 +29,17 @@
 				return 'YouTube Video ID';
 
 			default:
-				//Replace underscores with spaces and capitalize the first letter
+				/**
+				 * Replace underscores with spaces, capitalize the first letter,
+				 * and capitalize ID, KBB, NADA, and URL.
+				 */
 				const pattern = /_/g;
-				return ucwords( key.replace( pattern, ' ' ) );
+				return ucwords( key.replace( pattern, ' ' ) )
+					.replace( 'Id', 'ID' )
+					.replace( 'Kbb', 'KBB' )
+					.replace( 'Nada', 'NADA' )
+					.replace( 'Url', 'URL' );
+					
 		}
 	}
 
