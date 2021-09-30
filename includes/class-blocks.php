@@ -48,7 +48,7 @@ class Inventory_Presser_Blocks
 	function hooks()
 	{
 		add_action( 'enqueue_block_editor_assets', array( $this, 'register_block_types' ) );
-		add_filter( 'block_categories', array( $this, 'add_category' ), 10, 2 );
+		add_filter( 'block_categories_all', array( $this, 'add_category' ), 10, 2 );
 	}
 	
 	/**
