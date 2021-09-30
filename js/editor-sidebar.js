@@ -131,14 +131,15 @@
 		} );
 	} );
 
-	//Drop down for model year
+	//Drop down
 	var MetaBlockFieldSelect = compose(
 		withDispatch( function( dispatch, props ) {
 			return {
 				setMetaFieldValue: function( value ) {
 					dispatch( 'core/editor' ).editPost(
-						{ meta: { [ props.fieldName ]: value },
-						 model_year: findTermID( value, 'model_year' ) }
+						{ meta: { [ props.fieldName ]: value }
+						  //,model_year: findTermID( value, 'model_year' ) 
+						}
 					);
 				}
 			}
