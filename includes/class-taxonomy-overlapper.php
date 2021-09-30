@@ -11,7 +11,67 @@ defined( 'ABSPATH' ) or exit;
  * clients that update vehicles is easier.
  */
 class Inventory_Presser_Taxonomy_Overlapper
-{	
+{
+	/**
+	 * delete_transmission_speeds_meta
+	 * 
+	 * When a relationship in the Transmissions taxonomy is deleted, delete a
+	 * post meta value that holds the transmission speeds, too.
+	 *
+	 * @param  mixed $object_id
+	 * @param  mixed $taxonomy
+	 * @param  mixed $term
+	 * @return void
+	 */
+	public function delete_transmission_speeds_meta( $object_id, $taxonomy, $term )
+	{
+		if( 'transmission' != strtolower( $taxonomy ) )
+		{
+			return;
+		}
+		delete_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'transmission_speeds' ), $this->extract_speeds( $term->name ) );
+	}
+	
+	/**
+	 * extract_speeds
+	 *
+	 * Takes a transmission taxonomy term name like "6 Speed Automatic",
+	 * "5 Speed Manual", "Continuously Variable", or "Unknown" and returns "6",
+	 * "5", "V", and "U", respectively.
+	 * 
+	 * @param  string $transmission_term_name
+	 * @return string
+	 */
+	private function extract_speeds( $transmission_term_name )
+	{
+		//Does the term identify the number of speeds?
+		$patterns = array(
+			'/([0-9]+) Speed Automatic/',
+			'/([0-9]+) Speed Automanual/',
+			'/([0-9]+) Speed Manual/',
+		);
+		foreach( $patterns as $pattern )
+		{
+			preg_match( $pattern, $transmission_term_name, $matches );
+			if( ! empty( $matches ) )
+			{
+				//Yes
+				return $matches[1];
+			}
+		}
+
+		//Is it unknown or variable?
+		if( 'continuously variable' == strtolower( $transmission_term_name )
+			|| 'CVT' == strtoupper( $transmission_term_name ) )
+		{
+			//It's variable
+			return 'V';
+		}
+
+		//It's unknown
+		return 'U';
+	}
+
 	/**
 	 * hooks_add
 	 * 
@@ -23,6 +83,8 @@ class Inventory_Presser_Taxonomy_Overlapper
 	{
 		$this->hooks_add_meta();
 		$this->hooks_add_terms();
+		add_action( 'invp_taxonomy_overlapper_updated_meta', array( $this, 'update_transmission_speeds_meta' ), 10, 3 );
+		add_action( 'invp_taxonomy_overlapper_deleted_meta', array( $this, 'delete_transmission_speeds_meta' ), 10, 3 );
 	}
 
 	function hooks_add_meta()
@@ -47,6 +109,8 @@ class Inventory_Presser_Taxonomy_Overlapper
 	{
 		$this->hooks_remove_meta();
 		$this->hooks_remove_terms();
+		remove_action( 'invp_taxonomy_overlapper_updated_meta', array( $this, 'update_transmission_speeds_meta' ), 10, 3 );
+		remove_action( 'invp_taxonomy_overlapper_deleted_meta', array( $this, 'delete_transmission_speeds_meta' ), 10, 3 );
 	}
 	
 	/**
@@ -273,16 +337,19 @@ class Inventory_Presser_Taxonomy_Overlapper
 		//delete post meta values from this post 
 		foreach( $tt_ids as $term_taxonomy_id )
 		{
+			$term = get_term_by( 'term_taxonomy_id', $term_taxonomy_id, $taxonomy );
+
 			if( 'availability' != strtolower( $taxonomy ) )
 			{
 				$this->hooks_remove_meta();
-				delete_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', $taxonomies_and_keys[$taxonomy] ) );
+				delete_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', $taxonomies_and_keys[$taxonomy] ), $term->name );
 				$this->hooks_add_meta();
+
+				do_action( 'invp_taxonomy_overlapper_deleted_meta', $object_id, $taxonomy, $term );
 				continue;
 			}
 
 			//The availability taxonomy can contain more than one term, so don't just blindly delete
-			$term = get_term_by( 'term_taxonomy_id', $term_taxonomy_id, $taxonomy );
 			if( empty( $term->slug ) )
 			{
 				continue;
@@ -291,15 +358,19 @@ class Inventory_Presser_Taxonomy_Overlapper
 			if( 'wholesale' == strtolower( $term->slug ) )
 			{
 				$this->hooks_remove_meta();
-				delete_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'wholesale' ) );
+				delete_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'wholesale' ), $term->name );
 				$this->hooks_add_meta();
+
+				do_action( 'invp_taxonomy_overlapper_deleted_meta', $object_id, $taxonomy, $term );
 				continue;
 			}
 
 			//$term->slug must be for-sale or sold
 			$this->hooks_remove_meta();
-			delete_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'availability' ) );
+			delete_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'availability' ), $term->name );
 			$this->hooks_add_meta();
+
+			do_action( 'invp_taxonomy_overlapper_deleted_meta', $object_id, $taxonomy, $term );
 		}
 	}
 	
@@ -348,6 +419,9 @@ class Inventory_Presser_Taxonomy_Overlapper
 			$this->hooks_remove_meta();
 			update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', $taxonomies_and_keys[$taxonomy] ), $term->name );
 			$this->hooks_add_meta();
+
+			do_action( 'invp_taxonomy_overlapper_updated_meta', $object_id, $taxonomy, $term );
+
 			return;
 		}
 
@@ -366,6 +440,31 @@ class Inventory_Presser_Taxonomy_Overlapper
 				update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'wholesale' ), true );
 				$this->hooks_add_meta();
 				break;
+
+			default:
+				return; //Makes sure the action hook below only runs after an update
 		}
+
+		do_action( 'invp_taxonomy_overlapper_updated_meta', $object_id, $taxonomy, $term );
+	}
+
+	/**
+	 * update_transmission_speeds_meta
+	 * 
+	 * When a relationship in the Transmissions taxonomy is changed, update a
+	 * post meta value that holds the transmission speeds, too.
+	 *
+	 * @param  mixed $object_id
+	 * @param  mixed $taxonomy
+	 * @param  mixed $term
+	 * @return void
+	 */
+	public function update_transmission_speeds_meta( $object_id, $taxonomy, $term )
+	{
+		if( 'transmission' != strtolower( $taxonomy ) )
+		{
+			return;
+		}
+		update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'transmission_speeds' ), $this->extract_speeds( $term->name ) );
 	}
 }
