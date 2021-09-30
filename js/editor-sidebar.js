@@ -185,19 +185,6 @@
 						fieldName: 'inventory_presser_stock_number',
 						id:        'inventory_presser_stock_number'
 					} ),
-					el( MetaBlockFieldSelect, {
-						fieldName: 'inventory_presser_year',
-						id:        'inventory_presser_year',
-						optionArray: yearOptions(),
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_make',
-						id:        'inventory_presser_make',
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_model',
-						id:        'inventory_presser_model'
-					} ),
 					el( MetaBlockField, {
 						fieldName: 'inventory_presser_trim',
 						id:        'inventory_presser_trim',
@@ -205,10 +192,6 @@
 					el( MetaBlockField, {
 						fieldName: 'inventory_presser_engine',
 						id:        'inventory_presser_engine'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_body_style',
-						id:        'inventory_presser_body_style',
 					} ),
 					el( MetaBlockField, {
 						fieldName: 'inventory_presser_doors',
