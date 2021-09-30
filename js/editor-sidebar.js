@@ -215,8 +215,16 @@
 						optionArray: titleStatusOptions()
 					} ),
 					el( MetaBlockField, {
-						fieldName: 'inventory_presser_youtube',
-						id:        'inventory_presser_youtube'
+						fieldName: 'inventory_presser_car_id',
+						id:        'inventory_presser_car_id'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_dealer_id',
+						id:        'inventory_presser_dealer_id'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_leads_id',
+						id:        'inventory_presser_leads_id'
 					} ),
 					el(
 						'h2',
@@ -251,6 +259,23 @@
 					el( MetaBlockField, {
 						fieldName: 'inventory_presser_book_value_nada',
 						id:        'inventory_presser_book_value_nada'
+					} ),
+					el(
+						'h2',
+						{},
+						'Third Parties'
+					),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_edmunds_style_id',
+						id:        'inventory_presser_edmunds_style_id'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_nextgear_inspection_url',
+						id:        'inventory_presser_nextgear_inspection_url'
+					} ),
+					el( MetaBlockField, {
+						fieldName: 'inventory_presser_youtube',
+						id:        'inventory_presser_youtube'
 					} ),
 					el(
 						'h2',
