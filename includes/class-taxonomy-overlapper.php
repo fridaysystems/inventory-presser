@@ -11,7 +11,36 @@ defined( 'ABSPATH' ) or exit;
  * clients that update vehicles is easier.
  */
 class Inventory_Presser_Taxonomy_Overlapper
-{
+{	
+	/**
+	 * check_for_remaining_term_relationship
+	 * 
+	 * A meta value was just deleted after a term relationship was deleted.
+	 * Check for another term relationship in the same taxonomy. A user 
+	 * could have marked a vehicle as both an Acura and Audi by mistake, and
+	 * removed one. We want to make sure the meta value contains the 
+	 * remaining term name.
+	 *
+	 * @param  mixed $object_id
+	 * @param  mixed $taxonomy
+	 * @param  mixed $term
+	 * @return void
+	 */
+	public function check_for_remaining_term_relationship( $object_id, $taxonomy, $term )
+	{
+		$terms = wp_get_object_terms( $object_id, $taxonomy );
+		if( empty( $terms ) )
+		{
+			return;
+		}
+
+		$taxonomies_and_keys = array_flip( $this->overlapping_meta_keys() );
+
+		$this->hooks_remove_meta();
+		update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', $taxonomies_and_keys[$taxonomy] ), $terms[0]->name );
+		$this->hooks_add_meta();
+	}
+
 	/**
 	 * delete_transmission_speeds_meta
 	 * 
@@ -85,6 +114,8 @@ class Inventory_Presser_Taxonomy_Overlapper
 		$this->hooks_add_terms();
 		add_action( 'invp_taxonomy_overlapper_updated_meta', array( $this, 'update_transmission_speeds_meta' ), 10, 3 );
 		add_action( 'invp_taxonomy_overlapper_deleted_meta', array( $this, 'delete_transmission_speeds_meta' ), 10, 3 );
+		
+		add_action( 'invp_taxonomy_overlapper_deleted_meta', array( $this, 'check_for_remaining_term_relationship' ), 11, 3 );
 	}
 
 	function hooks_add_meta()
@@ -111,6 +142,8 @@ class Inventory_Presser_Taxonomy_Overlapper
 		$this->hooks_remove_terms();
 		remove_action( 'invp_taxonomy_overlapper_updated_meta', array( $this, 'update_transmission_speeds_meta' ), 10, 3 );
 		remove_action( 'invp_taxonomy_overlapper_deleted_meta', array( $this, 'delete_transmission_speeds_meta' ), 10, 3 );
+
+		remove_action( 'invp_taxonomy_overlapper_deleted_meta', array( $this, 'check_for_remaining_term_relationship' ), 11, 3 );
 	}
 	
 	/**
