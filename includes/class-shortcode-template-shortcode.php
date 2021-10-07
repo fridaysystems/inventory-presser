@@ -141,8 +141,9 @@ class Inventory_Presser_Template_Shortcode
 			);
 		}
 
-		$html = '';
+		$table_items = apply_filters( 'invp_vehicle_attribute_table_items', $table_items );
 
+		$html = '';
 		foreach( $table_items as $item )
 		{
 			//does the vehicle have a value for this member?
