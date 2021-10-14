@@ -536,6 +536,11 @@ function invp_get_the_odometer( $append = '', $post_ID = null )
 		$odometer .= $raw;
 	}
 
+	if( empty( $odometer ) )
+	{
+		return '';
+	}
+
 	//Did the user pass a string to append?
 	if( $append )
 	{
