@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.8.0
-Stable tag: 13.3.1
+Stable tag: 13.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,16 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 13.4.0 =
+* [Added] Adds the ability for add-ons to store their license key in a key with a name that is not `license_key`. A few add-ons already use `_license_key`.
+* [Added] Adds a filter `invp_vehicle_attribute_table_items` that allows the vehicle attribute table items to be manipulated just before they are parsed into HTML.
+* [Added] Upgrades the taxonomy overlapper class to allow the updating of the transmission speeds meta key when term relationships in the transmission taxonomy are changed.
+* [Added] Adds car ID, dealer ID, leads ID, Edmunds Style ID, title status, and Next Gear Inspection URL to the editor sidebar.
+* [Changed] Changes the taxonomy overlapper to make sure the meta value matches a term name with which a vehicle has a relationship when relationships are deleted. For example, if a vehicle is erroneously assigned both "Convertible" and "Sedan" body styles, this change makes sure Sedan is saved in the meta field when Convertible is removed.
+* [Changed] Re-implements the archive "View Details" button as a hook on `invp_archive_buttons` rather than expecting all templates to implement it. Adds a filter `invp_css_classes_view_details_button` on the CSS classes because that is a feature we need on day one for the two different themes we have on production sites.
+* [Fixed] Fixes bugs in the `invp_get_the_odometer()` template tag and the vehicle attribute table to avoid outputting odometer and engine attributes that do not actually contain values.
+* [Removed] Removes fields from the editor sidebar that are managed via taxonomies and the taxonomy overlapper: year, make, model, and body style.
 
 = 13.3.1 =
 * [Fixed] Fixes a bug in the taxonomy overlapper that was causing sold vehicles to show as available. Meta keys were not always being updated when the overlapping taxonomy term relationships were changed.
