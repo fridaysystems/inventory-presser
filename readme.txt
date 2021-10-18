@@ -29,7 +29,7 @@ Built the right way and developer-friendly
 * Hooks in all the right places & four powerful [shortcodes](https://inventorypresser.com/docs/shortcodes/)
 * [Template tags](https://inventorypresser.com/docs/template-tags/) make front-end development easy
 * [Runs on any theme](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/) & provides shortcodes for the stubborn ones.
-* Full feature list & more documentation https://inventorypresser.com/
+* Full feature list & more documentation [inventorypresser.com](https://inventorypresser.com/)
 
 
 == Installation ==
