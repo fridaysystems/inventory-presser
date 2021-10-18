@@ -30,6 +30,8 @@ jobs:
         with:
           # The WP Engine environment to deploy to that is labeled as Production, Staging or Development.
           PRD_ENV: "inventorypress"
+          # Branch name
+          PRD_BRANCH: "master"
           # The private RSA key you will save in the Github Secrets
           WPE_SSHG_KEY_PRIVATE: ${{ secrets.WPE_SSHG_KEY_PRIVATE }} 
           # An optional source directory to deploy other than the root directory that is being versioned.
