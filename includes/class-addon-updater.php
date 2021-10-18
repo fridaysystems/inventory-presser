@@ -240,7 +240,7 @@ if( ! class_exists( 'Inventory_Presser_Addon_Updater' ) )
 	
 			if ( ! empty( $update_cache->response[ $this->name ] ) 
 				&& version_compare( $this->version, $version_info->new_version, '<' ) 
-				&&  ! empty( $version_info->download_link ) )
+				&&  ! empty( $version_info->download_link ) ) //this seems to break update nags on multisite networks
 			{
 				// build a plugin list row, with update notification
 				//$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
