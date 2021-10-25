@@ -170,7 +170,7 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget
 				);
 			}
 
-			if( ! empty( invp_get_the_fuel_economy_value( 'highways', $t, $queried_object->ID ) ) )
+			if( ! empty( invp_get_the_fuel_economy_value( 'highway', $t, $queried_object->ID ) ) )
 			{
 				printf(
 					'<div class="fuel-economy-highway"><span class="number">%s</span></div><div class="fuel-economy-highway-label">%s</div>',
