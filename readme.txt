@@ -14,22 +14,21 @@ Turn WordPress into a dealership website. Provides vehicle listing templates and
 This plugin tranforms WordPress into a powerful dealer website platform that makes displaying a vehicle inventory easy.
 
 * Supports automobiles, motorcycles, ATVs, RVs, and boats
-* Manage multiple lot locations and separate phone numbers & hours for each
-* VIN-decoding add-on available
-* Custom post type `inventory_vehicle` makes importing data easy
-* Categorizes inventory by type, body style, fuel, transmission, drive type, availability, and new or used
-* Includes many widgets including vehicle sliders and inventory grids
+* [Manage multiple lot locations](https://inventorypresser.com/docs/vehicle-post-type/locations-taxonomy/) and separate phone numbers & hours for each
+* [VIN-decoding add-on](https://inventorypresser.com/products/plugins/add-vins-to-vehicle-urls/) available
+* Categorizes inventory by type, body style, fuel, transmission, drive type, availability, new or used, location, and more
+* Includes [more than 10 widgets](https://inventorypresser.com/docs/feature-list/widgets/) including vehicle sliders and inventory grids
 
 Built the right way and developer-friendly
 
-* Creates a custom post type & 11 taxonomies to store and group vehicles
+* [Custom post type `inventory_vehicle`](https://inventorypresser.com/docs/vehicle-post-type/) enables [vehicle data imports](https://inventorypresser.com/docs/using-the-rest-api-to-update-vehicle-listings-in-wordpress/)
 * Editor sidebar integrates custom fields into the block editor
 * Adds columns to the posts list for vehicles for stock number, color, odometer, price, photo count, and thumbnail
-* Implements custom taxonomies to group vehicles by year, make, model, type, fuel, transmission, drive type, availability, new or used, and body style
-* Hooks in all the right places & four powerful [shortcodes](https://inventorypresser.com/docs/shortcodes/)
+* Implements 10+ custom taxonomies to group vehicles by year, make, model, type, body style, fuel, transmission, drive type, availability, new or used, location, and more
+* [Hooks](https://inventorypresser.com/docs/hooks/) in all the right places & powerful [shortcodes](https://inventorypresser.com/docs/shortcodes/)
 * [Template tags](https://inventorypresser.com/docs/template-tags/) make front-end development easy
 * [Runs on any theme](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/) & provides shortcodes for the stubborn ones.
-* Full feature list & more documentation [inventorypresser.com](https://inventorypresser.com/)
+* [Full feature list](https://inventorypresser.com/docs/feature-list/) & more documentation [inventorypresser.com](https://inventorypresser.com/)
 
 
 == Installation ==
