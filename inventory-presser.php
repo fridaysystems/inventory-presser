@@ -356,9 +356,11 @@ class Inventory_Presser_Plugin
 	}
 	
 	/**
-	 * create_POST_TYPE
+	 * create_post_type
 	 *
-	 * Registers the inventory_vehicle post type that holds vehicles.
+	 * Registers the inventory_vehicle post type that holds vehicles. The post 
+	 * type name is available in the API class constant INVP::POST_TYPE. The 
+	 * arguments array can be altered using the invp_post_type_args filter hook.
 	 * 
 	 * @return void
 	 */
@@ -371,12 +373,6 @@ class Inventory_Presser_Plugin
 				'invp_post_type_args',
 				array (
 					'description'  => __( 'Vehicles for sale', 'inventory-presser' ),
-					/**
-					 * Check if the theme (or the parent theme) has a CPT
-					 * archive template.  If not, we will assume that the
-					 * inventory is going to be displayed via shortcode, and
-					 * we won't be using the theme archive
-					 */
 					'has_archive'  => true,
 					'hierarchical' => false,
 					'labels'       => array (
