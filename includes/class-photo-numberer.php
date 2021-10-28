@@ -101,7 +101,7 @@ class Inventory_Presser_Photo_Numberer{
 		$number = 0;
 		if( ! empty( $_POST['slug'] ) && preg_match( '/photo\-([0-9]+)\-of\-[0-9]+\-of\-.*/', $_POST['slug'], $matches ) )
 		{
-			$number = $matches[1];
+			$number = intval( $matches[1] );
 		}
 		else
 		{
@@ -127,8 +127,15 @@ class Inventory_Presser_Photo_Numberer{
 				$last_number = intval( get_post_meta( $last_photo->ID,  apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true ) );
 				$number = $last_number + 1;
 			}
+			else
+			{
+				$number = 1;
+			}
 		}
 		
-		update_post_meta( $attachment->ID, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $number );
+		if( 0 !== $number )
+		{
+			update_post_meta( $attachment->ID, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $number );
+		}
 	}
 }
