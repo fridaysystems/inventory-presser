@@ -61,7 +61,9 @@ class Inventory_Presser_Photo_Numberer{
 	 * maybe_number_photo
 	 * 
 	 * Filter callback on add_attachment. Decides whether to write meta values 
-	 * on attachments if they are uploaded to vehicles.
+	 * on attachments if they are uploaded to vehicles. If this method 
+	 * determines the photo sequence number to be 1, the attachment is also set
+	 * as the featured image.
 	 *
 	 * @param  int $post_id
 	 * @return void
@@ -130,6 +132,8 @@ class Inventory_Presser_Photo_Numberer{
 			else
 			{
 				$number = 1;
+				//This is photo number 1, it should be the featured image
+				set_post_thumbnail( $parent->ID, $post_id );
 			}
 		}
 		
