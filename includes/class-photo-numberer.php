@@ -149,39 +149,47 @@ class Inventory_Presser_Photo_Numberer{
 	 * number dictates the order in which the photos will be disabled in sliders
 	 * and galleries.
 	 *
-	 * @param  int $post_id
-	 * @param  int $parent_post_id
+	 * @param  int $post_id The post ID of the attachment
+	 * @param  int $parent_post_id The post ID of the vehicle to which $post_id is a child
+	 * @param  int $sequence_number The sequence number to save. Do not provide to append.
 	 * @return void
 	 */
-	protected static function save_meta_photo_number( $post_id, $parent_post_id )
+	protected static function save_meta_photo_number( $post_id, $parent_post_id, $sequence_number = null )
 	{
-		//Does this photo already have a sequence number? 
-		if( ! empty( get_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $number ) ) )
+		//Does this photo already have a sequence number?
+		if( null == $sequence_number )
 		{
-			//Yes
-			return;
-		}
+			if( ! empty( get_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $number ) ) )
+			{
+				//Yes
+				return;
+			}
 
-		//Is the number in the slug?
-		//photo-5-of-19-of-vinsgsdkdkdkgf
-		$number = 0;
-		if( ! empty( $_POST['slug'] ) && preg_match( '/photo\-([0-9]+)\-of\-[0-9]+\-of\-.*/', $_POST['slug'], $matches ) )
-		{
-			$number = intval( $matches[1] );
+			//Is the number in the slug?
+			//photo-5-of-19-of-vinsgsdkdkdkgf
+			$number = 0;
+			if( ! empty( $_POST['slug'] ) && preg_match( '/photo\-([0-9]+)\-of\-[0-9]+\-of\-.*/', $_POST['slug'], $matches ) )
+			{
+				$number = intval( $matches[1] );
+			}
+			else
+			{
+				//Append the photo to the end
+				//This hook fires after the attachment is added.
+				//How many photos does this vehicle have?
+				$number = invp_get_the_photo_count( $parent_post_id );
+				if( 1 == $number )
+				{
+					//This is photo number 1, it should be the featured image
+					set_post_thumbnail( $parent_post_id, $post_id );
+				}
+			}
 		}
 		else
 		{
-			//Append the photo to the end
-			//This hook fires after the attachment is added.
-			//How many photos does this vehicle have?
-			$number = invp_get_the_photo_count( $parent_post_id );
-			if( 1 == $number )
-			{
-				//This is photo number 1, it should be the featured image
-				set_post_thumbnail( $parent_post_id, $post_id );
-			}
+			$number = $sequence_number;
 		}
-		
+			
 		if( 0 !== $number )
 		{
 			update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $number );
