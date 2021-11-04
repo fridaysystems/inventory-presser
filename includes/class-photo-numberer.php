@@ -6,8 +6,10 @@ defined( 'ABSPATH' ) or exit;
  * 
  * If a user uploads a photo to a vehicle in the dashboard, it needs meta data
  * that tells this plugin how to order that photo among the others during
- * display. This class sets that meta data. It also sets other meta values,
- * including the VIN, and md5 hash checksum of the photo file.
+ * display. This class sets that and other meta values, including the VIN, and 
+ * md5 hash checksum of the photo file. If it determines a photo upload is the
+ * first photo to be attached to a vehicle, that photo is set as the featured
+ * image for the vehicle post.
  */
 class Inventory_Presser_Photo_Numberer{
 	
