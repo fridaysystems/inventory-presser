@@ -20,7 +20,7 @@ class Inventory_Presser_Photo_Numberer{
 	 * 
 	 * @return void
 	 */
-	function hooks()
+	public function hooks()
 	{
 		add_action( 'add_attachment', array( $this, 'maybe_number_photo' ), 10, 1 );
 		add_filter( 'rest_pre_insert_attachment', array( $this, 'set_post_parent' ), 10, 2 );
