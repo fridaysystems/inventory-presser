@@ -67,10 +67,12 @@ class Inventory_Presser_Photo_Numberer{
 		}
 
 		//Get the photo count
-		return sprintf( '%s (%s %s)',
+		return sprintf( '%s (%s %s %s %s)',
 			$title,
 			__( 'Photo', 'inventory-presser' ),
-			get_post_meta( $id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true )
+			get_post_meta( $id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true ),
+			__( 'of', 'inventory-presser' ),
+			invp_get_the_photo_count( $parent->ID )
 		);
 
 	}
