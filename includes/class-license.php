@@ -41,7 +41,7 @@ if( ! class_exists( 'Inventory_Presser_License' ) ) {
 		 */
 		public function is_active() {
 			$response = $this->api_response( 'check_license', $this->license_key );
-			return isset( $response->license ) && 'valid' == $response->license;
+			return isset( $response['license'] ) && 'valid' == $response['license'];
 		}
 		
 		/**
@@ -53,7 +53,7 @@ if( ! class_exists( 'Inventory_Presser_License' ) ) {
 		 */
 		public function activate() {
 			$response = $this->api_response( 'activate_license', $this->license_key, $this->product_id );
-			return isset( $response->license ) && 'valid' == $response->license;
+			return isset( $response['license'] ) && 'valid' == $response['license'];
 		}
 
 		/**
