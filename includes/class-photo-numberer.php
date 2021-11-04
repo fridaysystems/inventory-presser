@@ -78,39 +78,6 @@ class Inventory_Presser_Photo_Numberer{
 	}
 	
 	/**
-	 * set_post_parent
-	 * 
-	 * The REST API does not support post_parent by default, so we have to move
-	 * the `parent` value from the request into the prepared post in this filter
-	 * callback.
-	 *
-	 * @param  WP_Post $prepared_post
-	 * @param  WP_REST_Request $request
-	 * @return void
-	 */
-	public function set_post_parent( $prepared_post, $request )
-	{
-		if( ! empty( $prepared_post->post_parent ) )
-		{
-			return $prepared_post;
-		}
-
-		if( 'attachment' != $prepared_post->post_type )
-		{
-			return $prepared_post;
-		}
-
-		$post_parent = $request->get_param( 'parent' );
-		if( empty( $post_parent ) )
-		{
-			return $prepared_post;
-		}
-
-		$prepared_post->post_parent = $post_parent;
-		return $prepared_post;
-	}
-	
-	/**
 	 * maybe_number_photo
 	 * 
 	 * Filter callback on add_attachment. Decides whether to write meta values 
@@ -239,5 +206,38 @@ class Inventory_Presser_Photo_Numberer{
 			return;
 		}
 		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'vin' ), $vin );
+	}
+
+	/**
+	 * set_post_parent
+	 * 
+	 * The REST API does not support post_parent by default, so we have to move
+	 * the `parent` value from the request into the prepared post in this filter
+	 * callback.
+	 *
+	 * @param  WP_Post $prepared_post
+	 * @param  WP_REST_Request $request
+	 * @return void
+	 */
+	public function set_post_parent( $prepared_post, $request )
+	{
+		if( ! empty( $prepared_post->post_parent ) )
+		{
+			return $prepared_post;
+		}
+
+		if( 'attachment' != $prepared_post->post_type )
+		{
+			return $prepared_post;
+		}
+
+		$post_parent = $request->get_param( 'parent' );
+		if( empty( $post_parent ) )
+		{
+			return $prepared_post;
+		}
+
+		$prepared_post->post_parent = $post_parent;
+		return $prepared_post;
 	}
 }
