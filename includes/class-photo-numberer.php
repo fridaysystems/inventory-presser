@@ -22,8 +22,57 @@ class Inventory_Presser_Photo_Numberer{
 	 */
 	public function hooks()
 	{
-		add_action( 'add_attachment', array( $this, 'maybe_number_photo' ), 10, 1 );
+		add_action( 'add_attachment', array( __CLASS__, 'maybe_number_photo' ), 10, 1 );
 		add_filter( 'rest_pre_insert_attachment', array( $this, 'set_post_parent' ), 10, 2 );
+
+		/**
+		 * Put the sequence number in the title of the post to which photos are
+		 * attached in the Media Library table view. 
+		 */
+		add_filter( 'the_title', array( $this, 'add_sequence_number_to_titles' ), 10, 2 );
+	}
+
+	public function add_sequence_number_to_titles( $title, $id )
+	{
+		if( ! is_admin() )
+		{
+			return $title;
+		}
+
+		//Is this the Media Library upload.php?
+		if( function_exists( 'get_current_screen' ) && $screen = get_current_screen() )
+		{
+			if( empty( $screen->parent_file ) || 'upload.php' != $screen->parent_file )
+			{
+				//No
+				return $title;
+			}
+		}
+		else
+		{
+			return $title;
+		}
+
+		//Is this post ID a vehicle photo?
+		if( 'attachment' != get_post_type( $id ) )
+		{
+			return $title;
+		}
+
+		$parent = get_post_parent( $id );
+		if( empty( $parent ) || INVP::POST_TYPE != $parent->post_type )
+		{
+			//No
+			return $title;
+		}
+
+		//Get the photo count
+		return sprintf( '%s (%s %s)',
+			$title,
+			__( 'Photo', 'inventory-presser' ),
+			get_post_meta( $id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true )
+		);
+
 	}
 	
 	/**
@@ -70,7 +119,7 @@ class Inventory_Presser_Photo_Numberer{
 	 * @param  int $post_id
 	 * @return void
 	 */
-	function maybe_number_photo( $post_id )
+	public static function maybe_number_photo( $post_id )
 	{
 		//Is this new attachment even attached to a post?
 		$attachment = get_post( $post_id );
@@ -90,17 +139,61 @@ class Inventory_Presser_Photo_Numberer{
 		}
 
 		//Save the VIN in the photo meta
-		$vin = get_post_meta( $attachment->post_parent, apply_filters( 'invp_prefix_meta_key', 'vin' ), true );
-		if( ! empty( $vin ) )
-		{
-			update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'vin' ), $vin );
-		}
+		self::save_meta_vin( $post_id, $attachment->post_parent );
 
 		//Save a md5 hash checksum of the attachment in meta
-		$hash = hash_file( 'md5', get_attached_file( $post_id ) );
-		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'hash' ), $hash );
+		self::save_meta_hash( $post_id );
 
-		//Give it a number. Is the number in the slug?
+		//Assign and save a sequence number for the photo like 1, 2, 3, etc
+		self::save_meta_photo_number( $post_id, $attachment->post_parent );
+	}
+	
+	/**
+	 * save_meta_hash
+	 * 
+	 * Saves an MD5 hash checksum of the attachment file bytes in the attachment
+	 * post meta. This 32 character string can be used for file comparisons
+	 * while not taxing the server as much as other methods.
+	 *
+	 * @param  int $post_id
+	 * @return void
+	 */
+	protected static function save_meta_hash( $post_id )
+	{
+		//Save a md5 hash checksum of the attachment in meta
+		$file_path = get_attached_file( $post_id );
+		if( false === $file_path )
+		{
+			return;
+		}
+		update_post_meta( 
+			$post_id, 
+			apply_filters( 'invp_prefix_meta_key', 'hash' ), 
+			hash_file( 'md5', $file_path )
+		);
+	}
+		
+	/**
+	 * save_meta_photo_number
+	 * 
+	 * Saves a sequence number like 1, 2, or 99 in attachment post meta. This
+	 * number dictates the order in which the photos will be disabled in sliders
+	 * and galleries.
+	 *
+	 * @param  int $post_id
+	 * @param  int $parent_post_id
+	 * @return void
+	 */
+	protected static function save_meta_photo_number( $post_id, $parent_post_id )
+	{
+		//Does this photo already have a sequence number? 
+		if( ! empty( get_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $number ) ) )
+		{
+			//Yes
+			return;
+		}
+		
+		//Is the number in the slug?
 		//photo-5-of-19-of-vinsgsdkdkdkgf
 		$number = 0;
 		if( ! empty( $_POST['slug'] ) && preg_match( '/photo\-([0-9]+)\-of\-[0-9]+\-of\-.*/', $_POST['slug'], $matches ) )
@@ -110,38 +203,39 @@ class Inventory_Presser_Photo_Numberer{
 		else
 		{
 			//Append the photo to the end
-			//How many photos does this vehicle have already?
-			$photos = get_posts( array(
-				'meta_query'     => array(
-					array(
-						'key'     => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
-						'compare' => 'EXISTS'
-					)
-				),
-				'order'          => 'ASC',
-				'orderby'        => 'meta_value_num',
-				'post_parent'    => $parent->ID,
-				'post_type'      => 'attachment',
-				'posts_per_page' => -1,
-			) );
-			
-			if( 0 < sizeof( $photos ) )
+			//This hook fires after the attachment is added.
+			//How many photos does this vehicle have?
+			$number = invp_get_the_photo_count( $parent_post_id );
+			if( 1 == $number )
 			{
-				$last_photo = end( $photos );
-				$last_number = intval( get_post_meta( $last_photo->ID,  apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true ) );
-				$number = $last_number + 1;
-			}
-			else
-			{
-				$number = 1;
 				//This is photo number 1, it should be the featured image
-				set_post_thumbnail( $parent->ID, $post_id );
+				set_post_thumbnail( $parent_post_id, $post_id );
 			}
 		}
 		
 		if( 0 !== $number )
 		{
-			update_post_meta( $attachment->ID, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $number );
+			update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $number );
 		}
+	}
+
+	/**
+	 * save_meta_vin
+	 *
+	 * Saves the vehicle VIN in attachment meta when an attachment is uploaded
+	 * to a vehicle post.
+	 *
+	 * @param  int $post_id
+	 * @param  int $attachment
+	 * @return void
+	 */
+	protected static function save_meta_vin( $post_id, $parent_post_id )
+	{
+		$vin = get_post_meta( $parent_post_id, apply_filters( 'invp_prefix_meta_key', 'vin' ), true );
+		if( empty( $vin ) )
+		{
+			return;
+		}
+		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'vin' ), $vin );
 	}
 }
