@@ -161,7 +161,7 @@ class Inventory_Presser_Photo_Numberer{
 			//Yes
 			return;
 		}
-		
+
 		//Is the number in the slug?
 		//photo-5-of-19-of-vinsgsdkdkdkgf
 		$number = 0;
