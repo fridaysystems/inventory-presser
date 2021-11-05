@@ -1065,7 +1065,7 @@ class Inventory_Presser_Customize_Dashboard
 				break;
 
 			case $column_name == apply_filters( 'invp_prefix_meta_key', 'photo_count' ):
-				echo count( get_children( array( 'post_parent' => $post_id ) ) );
+				echo invp_get_the_photo_count( $post_id );
 				break;
 
 			case $column_name == apply_filters( 'invp_prefix_meta_key', 'price' ):
