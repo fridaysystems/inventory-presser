@@ -63,6 +63,14 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 13.4.1 =
+* [Added] Adds photo sequence numbers like "(Photo 2 of 44)" to post titles in the Media Library
+* [Fixed] Finds a few places to use the template tag invp_get_the_photo_number() instead of a unique get_children() call.
+* [Fixed] Fixes a typo that prevented highway MPG from displaying in the EPA Fuel Economy widget
+* [Fixed] Assigns photos uploaded in the dashboard an accurate photo sequence number instead of zero
+* [Fixed] Sets the first photo uploaded in the dashboard as the vehicle's featured image
+* [Fixed] Fixes the add-on license activator class to properly examine API responses and activate licenses
+
 = 13.4.0 =
 * [Added] Adds the ability for add-ons to store their license key in a key with a name that is not `license_key`. A few add-ons already use `_license_key`.
 * [Added] Adds a filter `invp_vehicle_attribute_table_items` that allows the vehicle attribute table items to be manipulated just before they are parsed into HTML.

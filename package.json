@@ -1,6 +1,6 @@
 {
 	"name": "inventory-presser",
-	"version": "13.4.0",
+	"version": "13.4.1",
 	"description": "An inventory management plugin for car dealers.",
 	"main": "build/index.js",
 	"directories": {
