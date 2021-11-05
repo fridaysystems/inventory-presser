@@ -180,7 +180,7 @@ class Inventory_Presser_Photo_Numberer{
 	 * @param  int $sequence_number The sequence number to save. Do not provide to append.
 	 * @return void
 	 */
-	protected static function save_meta_photo_number( $post_id, $parent_post_id, $sequence_number = null )
+	public static function save_meta_photo_number( $post_id, $parent_post_id, $sequence_number = null )
 	{
 		//Does this photo already have a sequence number?
 		if( null == $sequence_number )
