@@ -118,6 +118,32 @@ class Inventory_Presser_Photo_Numberer{
 	}
 	
 	/**
+	 * renumber_photos
+	 * 
+	 * Reassigns sequence numbers to all photos attached to a vehicle post.
+	 * 
+	 * Designed to run after a photo is deleted from the middle.
+	 *
+	 * @param  int $post_id The post ID of a vehicle
+	 * @return void
+	 */
+	public static function renumber_photos( $post_id )
+	{
+		//Get all of this vehicle's photos
+		$posts = get_children( array(
+			'meta_key'    => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
+			'orderby'     => 'meta_value_num',
+			'post_parent' => $post_id,
+			'post_type'   => 'attachment',
+		) );
+
+		for( $s=1; $s<=sizeof( $posts ); $s++ )
+		{
+			self::save_meta_photo_number( $post->ID, $post_id, $s );
+		}
+	}
+
+	/**
 	 * save_meta_hash
 	 * 
 	 * Saves an MD5 hash checksum of the attachment file bytes in the attachment
