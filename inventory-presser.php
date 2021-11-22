@@ -777,9 +777,10 @@ class Inventory_Presser_Plugin
 		//Include our object definition dependencies
 		$file_names = array(
 			'class-add-custom-fields-to-search.php',
-			'class-addon.php',
-			'class-addon-license-validator.php',
-			'class-addon-updater.php',
+			'addon/class-addon-license-validator.php',
+			'addon/class-addon-license.php',
+			'addon/class-addon-updater.php',
+			'addon/class-addon.php',
 			'class-additional-listings-pages.php',
 			'class-allow-inventory-as-home-page.php',
 			'class-badges.php',
@@ -789,7 +790,6 @@ class Inventory_Presser_Plugin
 			'class-dealership-options.php',
 			'class-editor-sidebar.php',
 			'class-invp.php',
-			'class-license.php',
 			'class-menu-item-email-a-friend.php',
 			'class-menu-item-print.php',
 			'class-option-manager.php',
