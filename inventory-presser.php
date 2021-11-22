@@ -817,6 +817,7 @@ class Inventory_Presser_Plugin
 			'class-widget-carfax.php',
 			'class-widget-fuel-economy.php',
 			'class-widget-google-maps.php',
+			'class-widget-google-maps-v3.php',
 			'class-widget-hours.php',
 			'class-widget-inventory-grid.php',
 			'class-widget-inventory-slider.php',
@@ -1226,6 +1227,7 @@ class Inventory_Presser_Plugin
 		 * the addresses in our location taxonomy.
 		 */
 		register_widget( 'Inventory_Presser_Google_Maps_Widget' );
+		register_widget( 'Inventory_Presser_Google_Maps_Widget_V3' );
 		register_widget( 'Inventory_Presser_Map_Widget' );
 
 		register_widget( 'Inventory_Presser_Carfax_Widget' );
