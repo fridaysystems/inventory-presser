@@ -532,13 +532,8 @@ class Inventory_Presser_Taxonomies
 		//Do not include sold vehicles in listings unless an option is checked
 		add_action( 'pre_get_posts', array( $this, 'maybe_exclude_sold_vehicles' ) );
 
-		/**
-		 * Run a weekly cron job to delete empty terms and update term counts.
-		 * The counts aren't always updated when deleting vehicles, and I'm not
-		 * yet able to reproduce the bug in local copies of the sites.
-		 */
+		//Run a weekly cron job to delete empty terms.
 		add_action( self::CRON_HOOK_DELETE_TERMS, array( $this, 'delete_unused_terms' ) );
-		add_action( self::CRON_HOOK_DELETE_TERMS, array( $this, 'update_term_counts' ) );
 
 		//Put terms into our taxonomies when the plugin is activated
 		register_activation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Taxonomies', 'populate_default_terms' ) );
@@ -1742,35 +1737,5 @@ class Inventory_Presser_Taxonomies
 			'description' => trim( $line_one . "\n". trim( $line_two . "\n" . $line_three ) ),
 		) );
 		add_action( 'edited_location', array( $this, 'save_location_meta'), 10, 2 );
-	}
-	
-	/**
-	 * update_term_counts
-	 * 
-	 * Runs an UPDATE query that updates term counts. Runs daily in a WordPress
-	 * cron job. 
-	 * 
-	 * I can't reproduce a phenomenon we're seeing on some dealer sites where 
-	 * term counts are not decremented after vehicles are deleted, so this is a
-	 * band-aid that fixes term counts.
-	 *
-	 * @return void
-	 */
-	function update_term_counts()
-	{
-		global $wpdb;
-		$wpdb->query(
-			"UPDATE		$wpdb->term_taxonomy tt
-
-			SET			count = ( 
-				
-				SELECT		count( p.ID )
-				
-				FROM		$wpdb->term_relationships tr
-							LEFT JOIN $wpdb->posts p ON p.ID = tr.object_id
-
-				WHERE		tr.term_taxonomy_id = tt.term_taxonomy_id
-			)"
-		);
 	}
 }
