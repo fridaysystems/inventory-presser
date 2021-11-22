@@ -103,7 +103,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			//Address
 			$popup->address = str_replace( "\r", '', str_replace( PHP_EOL, '<br />', $location_terms[$t]->description ) );
 			//Get the latitude and longitude coordinates for this address
-			$location = INVP::get_latitude_and_longitude( $location_terms[$t]->term_id );
+			$location = INVP::fetch_latitude_and_longitude( $location_terms[$t]->term_id );
 			if( false !== $location )
 			{
 				$popup->coords = new stdClass();

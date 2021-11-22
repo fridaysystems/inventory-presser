@@ -232,7 +232,7 @@ class INVP
 	}
 
 	/**
-	 * get_latitude_and_longitude
+	 * fetch_latitude_and_longitude
 	 *
 	 * Given the ID of a term in the locations taxonomy, this method returns an
 	 * object with members `lat` and `lon` that contain latitude and longitude
@@ -245,7 +245,7 @@ class INVP
 	 * @param  int $location_term_id The ID of a term in the locations taxonomy
 	 * @return object|false An object with members "lat" and "lon" or false
 	 */
-	public static function get_latitude_and_longitude( $location_term_id )
+	public static function fetch_latitude_and_longitude( $location_term_id )
 	{
 		//Get all term meta for this location
 		$meta = get_term_meta( $location_term_id );
