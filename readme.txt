@@ -63,6 +63,12 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 13.5.0 =
+* [Added] Adds street address, street address line two, city, state, and zip fields to the Edit form when editing a term in the locations taxonomy. Allows users to specify and save the pieces of the address instead of the whole, multi-line address we store in the term description. This makes latitude and longitude decoding more accessible to users. When a location term is saved, these meta values are used to populate the term description.
+* [Added] Adds a Google Map widget. This new widget implements the v3 JavaScript API and requires an API key. 
+* [Changed] Makes the term description box on the edit term screen readonly when editing a term in the locations taxonomy.
+* [Changed] Renames the Google Map widget to Google Map (legacy). It still works for an unknown amount of time.
+
 = 13.4.1 =
 * [Added] Adds photo sequence numbers like "(Photo 2 of 44)" to post titles in the Media Library
 * [Fixed] Finds a few places to use the template tag invp_get_the_photo_number() instead of a unique get_children() call.
