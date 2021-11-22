@@ -12,8 +12,9 @@
 
 		// hijack the built in taxonomy description for the location address.
 		$('.term-description-wrap label').text('Address');
-		$('.term-description-wrap p').text('Enter the address as you would like it to appear on your site.');
-
+		$('.term-description-wrap p').text('Use the fields below to edit the address.');
+		$('#description').attr('readonly',true);
+ 
 		$('.repeat-group').each(function(index,group){
 
 			var group = $(this);
