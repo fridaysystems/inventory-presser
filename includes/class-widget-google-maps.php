@@ -25,7 +25,7 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
-			__( 'Google Map', 'inventory-presser' ),
+			__( 'Google Map (legacy)', 'inventory-presser' ),
 			array( 'description' => __( 'Embeds a Google Map pointed at a dealership address.', 'inventory-presser' ), )
 		);
 
