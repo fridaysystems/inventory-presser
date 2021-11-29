@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
- * Inventory_Presser_Settings_Suggester
+ * Inventory_Presser_Admin_Settings_Suggester
  * 
  * This class creates admin notices on this plugin's settings page at Vehicles >
  * Options in the dashboard. The notices recommend users make changes to 
@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) or exit;
  * 
  * @since 12.0.0
  */
-class Inventory_Presser_Settings_Suggester
+class Inventory_Presser_Admin_Settings_Suggester
 {
 	/**
 	 * get_admin_notice_html

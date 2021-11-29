@@ -721,7 +721,7 @@ class Inventory_Presser_Plugin
 			$options->hooks();
 
 			//If the user is looking at our options page, suggest settings tweaks
-			$settings_suggester = new Inventory_Presser_Settings_Suggester();
+			$settings_suggester = new Inventory_Presser_Admin_Settings_Suggester();
 			$settings_suggester->hooks();
 
 			//Add a sidebar to the editor when editing vehicles
@@ -789,6 +789,7 @@ class Inventory_Presser_Plugin
 			'admin/class-admin-editor-sidebar.php',
 			'admin/class-admin-location-meta.php',
 			'admin/class-admin-options.php',
+			'admin/class-admin-settings-suggester.php',
 			'class-additional-listings-pages.php',
 			'class-allow-inventory-as-home-page.php',
 			'class-badges.php',
@@ -802,7 +803,6 @@ class Inventory_Presser_Plugin
 			'class-photo-numberer.php',
 			'class-redirect-404-vehicles.php',
 			'class-schema-org-generator.php',
-			'class-settings-suggester.php',
 			'shortcodes/class-shortcode-hours-today.php',
 			'shortcodes/class-shortcode-iframe.php',
 			'shortcodes/class-shortcode-inventory-grid.php',
