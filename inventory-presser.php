@@ -799,7 +799,6 @@ class Inventory_Presser_Plugin
 			'class-menu-item-email-a-friend.php',
 			'class-menu-item-print.php',
 			'class-option-manager.php',
-			'class-order-by-post-meta-widget.php',
 			'class-photo-numberer.php',
 			'class-redirect-404-vehicles.php',
 			'class-schema-org-generator.php',
@@ -829,6 +828,7 @@ class Inventory_Presser_Plugin
 			'widgets/class-widget-inventory-slider.php',
 			'widgets/class-widget-kbb.php',
 			'widgets/class-widget-map.php',
+			'widgets/class-widget-order-by.php',
 			'widgets/class-widget-phones.php',
 			'widgets/class-widget-maximum-price-filter.php',
 			'template-tags.php',
@@ -1221,7 +1221,7 @@ class Inventory_Presser_Plugin
 		 * Make a widget available to sort vehicles by post meta fields.
 		 * Or, enable order by year, make, price, odometer, etc.
 		 */
-		register_widget( "Order_By_Widget" );
+		register_widget( "Inventory_Presser_Order_By_Widget" );
 
 		/**
 		 * Make a widget available to show EPA Fuel Economy data

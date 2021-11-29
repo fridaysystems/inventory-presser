@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
- * Order_By_Widget
+ * Inventory_Presser_Order_By_Widget
  * 
  * Creates a widget that allows users to sort vehicles by a vehicle attribute.
  *
@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) or exit;
  * @subpackage Inventory_Presser/includes
  * @author     Corey Salzano <corey@friday.systems>
  */
-class Order_By_Widget extends WP_Widget {
+class Inventory_Presser_Order_By_Widget extends WP_Widget {
 
  	const ID_BASE = '_invp_order_by';
 
