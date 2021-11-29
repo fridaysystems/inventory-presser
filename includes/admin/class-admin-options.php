@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
- * Inventory_Presser_Options
+ * Inventory_Presser_Admin_Options
  * 
  * Creates an options page in the dashboard to hold this plugin and its add-ons
  * settings.
@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) or exit;
  * @subpackage Inventory_Presser/includes
  * @author     Corey Salzano <corey@friday.systems>
  */
-class Inventory_Presser_Options
+class Inventory_Presser_Admin_Options
 {
 	//This plugin's option that holds all the settings
 	private $option;

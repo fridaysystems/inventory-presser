@@ -717,7 +717,7 @@ class Inventory_Presser_Plugin
 		if ( is_admin() )
 		{
 			//Initialize our Settings page in the Dashboard
-			$options = new Inventory_Presser_Options();
+			$options = new Inventory_Presser_Admin_Options();
 			$options->hooks();
 
 			//If the user is looking at our options page, suggest settings tweaks
@@ -788,13 +788,13 @@ class Inventory_Presser_Plugin
 			'addon/class-addon.php',
 			'admin/class-admin-editor-sidebar.php',
 			'admin/class-admin-location-meta.php',
+			'admin/class-admin-options.php',
 			'class-additional-listings-pages.php',
 			'class-allow-inventory-as-home-page.php',
 			'class-badges.php',
 			'class-blocks.php',
 			'class-business-day.php',
 			'class-customize-admin-dashboard.php',
-			'class-dealership-options.php',
 			'class-invp.php',
 			'class-menu-item-email-a-friend.php',
 			'class-menu-item-print.php',
