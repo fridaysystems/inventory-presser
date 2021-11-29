@@ -9,8 +9,10 @@ defined( 'ABSPATH' ) or exit;
  */
 class INVP
 {
+	const LOCATION_MAX_PHONES = 10; //the maximum number of phones a single address holds
+	const LOCATION_MAX_HOURS = 5; //the maximum number of sets of hours a single address holds
 	const POST_TYPE = 'inventory_vehicle';
-	const OPTION_NAME = 'inventory_presser';
+	const OPTION_NAME = 'inventory_presser';	
 
 	/**
 	 * delete_all_data

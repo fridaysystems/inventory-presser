@@ -414,7 +414,7 @@ class Inventory_Presser_Admin_Location_Meta
 			}
 
 			//delete hours in slots higher than we just filled or deletes are not possible
-			for( $h=$hours_count+1; $h<Inventory_Presser_Taxonomies::LOCATION_MAX_HOURS; $h++ )
+			for( $h=$hours_count+1; $h<INVP::LOCATION_MAX_HOURS; $h++ )
 			{
 				delete_term_meta( $term_id, 'hours_' . strval($h) . '_uid' );
 				delete_term_meta( $term_id, 'hours_' . strval($h) . '_title' );
@@ -474,7 +474,7 @@ class Inventory_Presser_Admin_Location_Meta
 			}
 
 			//delete phones in slots higher than we just filled or deletes are not possible
-			for( $p=$phones_count+1; $p<Inventory_Presser_Taxonomies::LOCATION_MAX_PHONES; $p++ )
+			for( $p=$phones_count+1; $p<INVP::LOCATION_MAX_PHONES; $p++ )
 			{
 				delete_term_meta( $term_id, 'phone_' . strval($p) . '_uid' );
 				delete_term_meta( $term_id, 'phone_' . strval($p) . '_description' );

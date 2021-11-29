@@ -91,7 +91,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 				continue;
 			}
 
-			for( $h=1; $h<=Inventory_Presser_Taxonomies::LOCATION_MAX_HOURS; $h++ )
+			for( $h=1; $h<=INVP::LOCATION_MAX_HOURS; $h++ )
 			{
 				$hours_uid = get_term_meta( $term_id, 'hours_' . $h . '_uid', true );
 				if( ! $hours_uid )
@@ -278,7 +278,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 		foreach ( $location_info as $term_id => $name )
 		{
 			//Output a checkbox for every set of hours in this location
-			for( $h=1; $h<=Inventory_Presser_Taxonomies::LOCATION_MAX_HOURS; $h++ )
+			for( $h=1; $h<=INVP::LOCATION_MAX_HOURS; $h++ )
 			{
 				//Are there hours in this slot?
 				$hours_uid = get_term_meta( $term_id, 'hours_' . $h . '_uid', true );
