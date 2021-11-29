@@ -567,7 +567,7 @@ class Inventory_Presser_Plugin
 		add_filter( 'invp_unprefix_meta_key', array( 'INVP', 'untranslate_custom_field_names' ) );
 
 		//Modify the administrator dashboard
-		$customize_dashboard = new Inventory_Presser_Customize_Dashboard();
+		$customize_dashboard = new Inventory_Presser_Admin_Customize_Dashboard();
 		$customize_dashboard->hooks();
 
 
@@ -786,6 +786,7 @@ class Inventory_Presser_Plugin
 			'addon/class-addon-license.php',
 			'addon/class-addon-updater.php',
 			'addon/class-addon.php',
+			'admin/class-admin-customize-dashboard.php',
 			'admin/class-admin-editor-sidebar.php',
 			'admin/class-admin-location-meta.php',
 			'admin/class-admin-options.php',
@@ -795,7 +796,6 @@ class Inventory_Presser_Plugin
 			'class-badges.php',
 			'class-blocks.php',
 			'class-business-day.php',
-			'class-customize-admin-dashboard.php',
 			'class-invp.php',
 			'class-menu-item-email-a-friend.php',
 			'class-menu-item-print.php',
@@ -914,7 +914,7 @@ class Inventory_Presser_Plugin
 		/**
 		 * Make the meta prefix to the front-end (the object name invp is
 		 * localized for the admin dashboard in
-		 * Inventory_Presser_Customize_Dashboard)
+		 * Inventory_Presser_Admin_Customize_Dashboard)
 		 */
 		if( ! is_admin() )
 		{ ?><script type="text/javascript">

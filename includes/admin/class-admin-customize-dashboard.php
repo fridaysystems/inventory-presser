@@ -2,17 +2,17 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
- * Inventory_Presser_Customize_Dashboard
+ * Inventory_Presser_Admin_Customize_Dashboard
  * 
  * An object that customizes the administrator dashboard to make managing an
  * inventory of vehicles easy.
  *
  * @since      1.3.1
  * @package    Inventory_Presser
- * @subpackage Inventory_Presser/includes
+ * @subpackage Inventory_Presser/includes/admin
  * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
  */
-class Inventory_Presser_Customize_Dashboard
+class Inventory_Presser_Admin_Customize_Dashboard
 {
 	const NONCE_DELETE_ALL_MEDIA = 'invp_delete_all_media';
 	
