@@ -84,70 +84,27 @@ class Inventory_Presser_Taxonomies
 	 * 
 	 * Loads sets of hours from post meta into an array.
 	 *
+	 * @deprecated 13.5.0 Use INVP::get_hours() instead
 	 * @param  int $term_id The location term ID from which to extract hours
 	 * @return array An array of hours arrays
 	 */
 	public static function get_hours( $term_id )
 	{
-		$hours = array();
-		$term_meta = get_term_meta( $term_id );
-
-		for( $h=1; $h<=self::LOCATION_MAX_HOURS; $h++ )
-		{
-			//Are there hours in this slot?
-			if( empty( $term_meta['hours_' . $h . '_uid'][0] ) )
-			{
-				//No, we're done with this location
-				break;
-			}
-
-			$set = array(
-				'uid'   => $term_meta['hours_' . $h . '_uid'][0],
-				'title' => self::meta_array_value_single( $term_meta, 'hours_' . $h . '_title' ),
-			);
-
-			$days = array_keys( INVP::weekdays() );
-			for( $d=0; $d<7; $d++ )
-			{
-				$set[$days[$d] . '_appt'] = self::meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_appt' );
-				$set[$days[$d] . '_open'] = self::meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_open' );
-				$set[$days[$d] . '_close'] = self::meta_array_value_single( $term_meta, 'hours_' . $h . '_' . $days[$d] . '_close' );
-			}
-
-			$hours[] = $set;
-		}
-		return $hours;
+		INVP::get_hours( $term_id );
 	}
-	
+
 	/**
 	 * get_phones
 	 * 
 	 * Loads phone numbers from post meta into an array.
 	 *
+	 * @deprecated 13.5.0 Use INVP::get_phones() instead
 	 * @param  int $term_id The location term ID from which to extract phones
 	 * @return array An array of arrays describing phone numbers
 	 */
 	public static function get_phones( $term_id )
 	{
-		$phones = array();
-		$term_meta = get_term_meta( $term_id );
-
-		for( $p=1; $p<=self::LOCATION_MAX_PHONES; $p++ )
-		{
-			//Is there a phone number in this slot?
-			if( empty( $term_meta['phone_' . $p . '_uid'][0] ) )
-			{
-				//No, we're done with this location
-				break;
-			}
-
-			$phones[] = array(
-				'uid'         => $term_meta['phone_' . $p . '_uid'][0],
-				'description' => self::meta_array_value_single( $term_meta, 'phone_' . $p . '_description' ),
-				'number'      => self::meta_array_value_single( $term_meta, 'phone_' . $p . '_number' ),
-			);
-		}
-		return $phones;
+		INVP::get_phones( $term_id );
 	}
 	
 	/**
@@ -382,21 +339,6 @@ class Inventory_Presser_Taxonomies
 			self::taxonomy_meta_box_html( 'location', apply_filters( 'invp_prefix_meta_key', 'location' ), $post ),
 			INVP::POST_TYPE
 		);
-	}
-	
-	/**
-	 * meta_array_value_single
-	 * 
-	 * Given a $meta array collection of a post's entire meta data, retrieves
-	 * the single or first value stored in $key.
-	 *
-	 * @param  array $meta
-	 * @param  string $key A meta key
-	 * @return string|bool A single meta value or false if the value does not exist
-	 */
-	private static function meta_array_value_single( $meta, $key )
-	{
-		return isset( $meta[$key][0] ) ? $meta[$key][0] : false;
 	}
 
 	/**

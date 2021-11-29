@@ -442,7 +442,7 @@ function invp_get_the_location_sentence( $post_ID = null )
 	);
 
 	//Does this location have a phone number?
-	$phones = Inventory_Presser_Taxonomies::get_phones( $location_terms[0]->term_id );
+	$phones = INVP::get_phones( $location_terms[0]->term_id );
 	if( 0 < sizeof( $phones ) )
 	{
 		//Yes, at least one.

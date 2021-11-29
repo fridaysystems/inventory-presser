@@ -158,7 +158,7 @@ class Inventory_Presser_Admin_Location_Meta
 						<div class="repeat-group">
 							<div class="repeat-container"><?php
 
-							$phones = Inventory_Presser_Taxonomies::get_phones( $term->term_id );
+							$phones = INVP::get_phones( $term->term_id );
 							if( ! empty( $phones ) )
 							{
 								foreach( $phones as $phone )
@@ -208,7 +208,7 @@ class Inventory_Presser_Admin_Location_Meta
 						<div class="repeat-group">
 							<div class="repeat-container"><?php
 
-							$hours_sets = Inventory_Presser_Taxonomies::get_hours( $term->term_id );
+							$hours_sets = INVP::get_hours( $term->term_id );
 							$days = array_keys( INVP::weekdays() );
 							if( ! empty( $hours_sets ) )
 							{

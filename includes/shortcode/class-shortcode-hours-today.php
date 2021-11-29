@@ -309,7 +309,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 
 		$location_term = get_term_by( 'slug', $slug, 'location' );
 		if( ! $location_term ) { return null; }
-		return Inventory_Presser_Taxonomies::get_hours( $location_term->term_id );
+		return INVP::get_hours( $location_term->term_id );
 	}
 	
 	/**
@@ -338,7 +338,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 
 		foreach( $location_term_ids as $term_id )
 		{
-			$sets = Inventory_Presser_Taxonomies::get_hours( $term_id );
+			$sets = INVP::get_hours( $term_id );
 			if( empty( $sets ) )
 			{
 				continue;

@@ -133,7 +133,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget
 
 				$start_of_week = get_option('start_of_week') -1;
 
-				$hours_sets = Inventory_Presser_Taxonomies::get_hours( $term_id );
+				$hours_sets = INVP::get_hours( $term_id );
 				$hours_set = array();
 				foreach( $hours_sets as $set )
 				{
