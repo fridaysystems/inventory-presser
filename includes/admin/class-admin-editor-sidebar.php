@@ -2,12 +2,12 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
- * Inventory_Presser_Editor_Sidebar
+ * Inventory_Presser_Admin_Editor_Sidebar
  * 
  * Adds a sidebar to the WordPress editor so that meta fields can be edited
  * outside of blocks.
  */
-class Inventory_Presser_Editor_Sidebar
+class Inventory_Presser_Admin_Editor_Sidebar
 {	
 	/**
 	 * sidebar_plugin_register

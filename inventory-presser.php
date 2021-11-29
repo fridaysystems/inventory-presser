@@ -725,7 +725,7 @@ class Inventory_Presser_Plugin
 			$settings_suggester->hooks();
 
 			//Add a sidebar to the editor when editing vehicles
-			$sidebar = new Inventory_Presser_Editor_Sidebar();
+			$sidebar = new Inventory_Presser_Admin_Editor_Sidebar();
 			$sidebar->hooks();
 		}
 
@@ -786,6 +786,7 @@ class Inventory_Presser_Plugin
 			'addon/class-addon-license.php',
 			'addon/class-addon-updater.php',
 			'addon/class-addon.php',
+			'admin/class-admin-editor-sidebar.php',
 			'admin/class-admin-location-meta.php',
 			'class-additional-listings-pages.php',
 			'class-allow-inventory-as-home-page.php',
@@ -794,7 +795,6 @@ class Inventory_Presser_Plugin
 			'class-business-day.php',
 			'class-customize-admin-dashboard.php',
 			'class-dealership-options.php',
-			'class-editor-sidebar.php',
 			'class-invp.php',
 			'class-menu-item-email-a-friend.php',
 			'class-menu-item-print.php',
