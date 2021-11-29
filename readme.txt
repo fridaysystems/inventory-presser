@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 5.8.1
-Stable tag: 13.4.1
+Tested up to: 5.8.2
+Stable tag: 13.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,6 +68,8 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Added] Adds a Google Map widget. This new widget implements the v3 JavaScript API and requires an API key. 
 * [Changed] Makes the term description box on the edit term screen readonly when editing a term in the locations taxonomy.
 * [Changed] Renames the Google Map widget to Google Map (legacy). It still works for an unknown amount of time.
+* [Changed] Updates node JS packages
+* [Removed] Removes a weekly cron job that tabulated term relationship counts. This was a legacy bug fix that is no longer needed.
 
 = 13.4.1 =
 * [Added] Adds photo sequence numbers like "(Photo 2 of 44)" to post titles in the Media Library
@@ -106,6 +108,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 13.5.0 =
+Renames the Google Map widget to Google Map (legacy). It still works for an unknown amount of time. Adds a Google Map widget. This new widget implements the v3 JavaScript API and requires an API key. Adds street address, street address line two, city, state, and zip fields to the Edit form when editing a term in the locations taxonomy. Allows users to specify and save the pieces of the address instead of the whole, multi-line address we store in the term description. This makes latitude and longitude decoding more accessible to users. When a location term is saved, these meta values are used to populate the term description.
 
 = 13.3.0 =
 Upgrades the add-on framework to simplify the building and integrating of add-on plugins. Adds a colors taxonomy to help users shop by base color.
