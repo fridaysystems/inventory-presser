@@ -101,26 +101,6 @@ class Inventory_Presser_Customize_Dashboard
 			$this->create_add_media_button_annotation()
 		);
 	}
-
-	/**
-	 * array_to_csv
-	 * 
-	 * Converts a one-dimensional array into an equivalent comma-separated v
-	 * values string. Input of array( 1, 2, 3 ) returns "1","2","3"
-	 *
-	 * @param  array $arr
-	 * @return string
-	 */
-	private function array_to_csv( $arr )
-	{
-		$csv = '';
-		foreach( $arr as $item )
-		{
-			$csv .= "\"" . str_replace( "\"", "\"\"", $item ) . "\",";
-		}
-		//ignore last comma
-		return substr( $csv, 0, -1 );
-	}
 	
 	/**
 	 * change_post_updated_messages
