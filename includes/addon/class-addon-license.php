@@ -1,10 +1,10 @@
 <?php
 defined( 'ABSPATH' ) or exit;
 
-if( ! class_exists( 'Inventory_Presser_License' ) ) {
+if( ! class_exists( 'Inventory_Presser_Addon_License' ) ) {
 
 	/**
-	 * Inventory_Presser_License
+	 * Inventory_Presser_Addon_License
 	 * 
 	 * Helps send a license key to inventorypresser.com for this core plugin or any
 	 * of its add-ons to verify an active site and allow updates to be downloaded.
@@ -14,7 +14,7 @@ if( ! class_exists( 'Inventory_Presser_License' ) ) {
 	 * @subpackage Inventory_Presser/includes
 	 * @author     Corey Salzano <corey@friday.systems>
 	 */
-	class Inventory_Presser_License{
+	class Inventory_Presser_Addon_License{
 
 		const STORE_URL = 'https://inventorypresser.com/';
 		var $license_key;
@@ -89,3 +89,9 @@ if( ! class_exists( 'Inventory_Presser_License' ) ) {
 		}
 	}
 }
+
+/**
+ * Inventory_Presser_License
+ * @deprecated 13.5.0 use Inventory_Presser_Addon_License instead
+ */
+class Inventory_Presser_License extends Inventory_Presser_Addon_License { }

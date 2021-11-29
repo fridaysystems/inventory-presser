@@ -78,7 +78,7 @@ if( ! class_exists( 'Inventory_Presser_Addon' ) )
 
 		public static function make_sure_license_is_activated( $license_item, $license_key )
 		{
-			$license = new Inventory_Presser_License(
+			$license = new Inventory_Presser_Addon_License(
 				$license_key,
 				$license_item
 			);
