@@ -586,6 +586,11 @@ class Inventory_Presser_Plugin
 		$taxonomies = new Inventory_Presser_Taxonomies();
 		$taxonomies->hooks();
 
+		//Modify edit-tags.php for our location taxonomy to manage term meta
+		$location_meta = new Inventory_Presser_Admin_Location_Meta();
+		$location_meta->add_hooks();
+
+
 		/**
 		 * Some custom rewrite rules are created and destroyed
 		 */
@@ -781,6 +786,7 @@ class Inventory_Presser_Plugin
 			'addon/class-addon-license.php',
 			'addon/class-addon-updater.php',
 			'addon/class-addon.php',
+			'admin/class-admin-location-meta.php',
 			'class-additional-listings-pages.php',
 			'class-allow-inventory-as-home-page.php',
 			'class-badges.php',

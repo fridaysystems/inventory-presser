@@ -53,6 +53,10 @@
 
 		$('.timepick').timepicker({ 'timeFormat': 'g:i A', 'scrollDefault': 'now' });
 
+		//Populate the slug as the name is typed into the Add New Location form
+		$('#tag-name').on('input', function(){
+			$('#tag-slug').val( $(this).val().replace(' ', '-').replace(/[^a-z\-0-9]/gi,'').toLowerCase());
+		});
 	});
 
 	// listen for WP ajax call to add location tag, reset the term meta forms when it happens
