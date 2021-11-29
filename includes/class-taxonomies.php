@@ -523,9 +523,6 @@ class Inventory_Presser_Taxonomies
 		//Sort some taxonomy terms as numbers
 		add_filter( 'get_terms_orderby', array( $this, 'sort_terms_as_numbers' ), 10,  3 );
 
-		//Save custom taxonomy terms when posts are saved
-		add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
-
 		//Load our scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 
@@ -1117,33 +1114,6 @@ class Inventory_Presser_Taxonomies
 				delete_term_meta( $term_id, 'phone_' . strval($p) . '_description' );
 				delete_term_meta( $term_id, 'phone_' . strval($p) . '_number' );
 			}
-		}
-	}
-
-	/**
-	 * save_vehicle_taxonomy_terms
-	 * 
-	 * Saves custom taxonomy terms when vehicles are saved	
-	 *
-	 * @param  int $post_id
-	 * @param  bool $is_update
-	 * @return void
-	 */
-	function save_vehicle_taxonomy_terms( $post_id, $is_update )
-	{
-		foreach( $this->slugs_array() as $slug )
-		{
-			$taxonomy_name = $slug;
-			switch( $slug )
-			{
-				case 'style':
-					$slug = 'body_style';
-					break;
-				case 'model_year':
-					$slug = 'year';
-					break;
-			}
-			$this->save_taxonomy_term( $post_id, $taxonomy_name, apply_filters( 'invp_prefix_meta_key', $slug ) );
 		}
 	}
 	

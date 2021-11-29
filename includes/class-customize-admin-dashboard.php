@@ -371,8 +371,9 @@ class Inventory_Presser_Customize_Dashboard
 	{
 		add_filter( 'posts_clauses', array( $this, 'enable_order_by_attachment_count' ), 1, 2 );
 
-		//Save custom post data when posts are saved
+		//Save custom post meta and term relationships when posts are saved
 		add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_post_meta' ), 10, 3 );
+		add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
 
 		//Add columns to the table that lists all the Vehicles on edit.php
 		add_filter( 'manage_' . INVP::POST_TYPE . '_posts_columns', array( $this, 'add_columns_to_vehicles_table' ) );
@@ -1142,6 +1143,33 @@ class Inventory_Presser_Customize_Dashboard
 				}
 				
 			}
+		}
+	}
+
+	/**
+	 * save_vehicle_taxonomy_terms
+	 * 
+	 * Saves custom taxonomy terms when vehicles are saved	
+	 *
+	 * @param  int $post_id
+	 * @param  bool $is_update
+	 * @return void
+	 */
+	function save_vehicle_taxonomy_terms( $post_id, $is_update )
+	{
+		foreach( $this->slugs_array() as $slug )
+		{
+			$taxonomy_name = $slug;
+			switch( $slug )
+			{
+				case 'style':
+					$slug = 'body_style';
+					break;
+				case 'model_year':
+					$slug = 'year';
+					break;
+			}
+			$this->save_taxonomy_term( $post_id, $taxonomy_name, apply_filters( 'invp_prefix_meta_key', $slug ) );
 		}
 	}
 	
