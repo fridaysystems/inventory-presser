@@ -78,7 +78,13 @@ if( ! class_exists( 'Inventory_Presser_Addon_Updater' ) )
 			remove_action( 'after_plugin_row_' . $this->name, 'wp_plugin_update_row', 10 );
 			add_action( 'after_plugin_row_' . $this->name, array( $this, 'show_update_notification' ), 10, 2 );
 			add_action( 'admin_init', array( $this, 'show_changelog' ) );
-	
+
+			/**
+			 * Changes "Automatic update is unavailable for this plugin." to
+			 * "License key is missing at Vehicles → Options" if the problem is
+			 * a missing license key for one of our add-ons.
+			 */
+			add_filter( 'site_transient_update_plugins', array( $this, 'show_missing_license_notice' ), 10, 2 );
 		}
 	
 		/**
@@ -155,7 +161,70 @@ if( ! class_exists( 'Inventory_Presser_Addon_Updater' ) )
 	
 			return $version_info;
 		}
-	
+
+		/**
+		 * show_missing_license_notice
+		 *
+		 * Changes "Automatic update is unavailable for this plugin." to
+		 * "License key is missing at Vehicles → Options" if the problem is
+		 * a missing license key for one of our add-ons.
+		 *
+		 * Does nothing for the WordPress Updates page. The message this method
+		 * helps change appears only on the Plugins page.
+		 *
+		 * @param  object $value
+		 * @param  mixed $transient
+		 * @return object
+		 */
+		public function show_missing_license_notice( $value, $transient )
+		{
+			//Store a list of strings to avoid outputting JavaScript for the same plugin more than once
+			static $handled_plugin_slugs = array();
+
+			if( empty( $value->response ) )
+			{
+				return $value;
+			}
+
+			//Is there a response from inventorypresser.com in this transient?
+			foreach( $value->response as $plugin_path => $update_response )
+			{
+				if( ! is_object( $update_response ) || empty( $update_response->slug ) )
+				{
+					continue;
+				}
+
+				if( strlen( $update_response->url ) < strlen( Inventory_Presser_Addon_License::STORE_URL )
+					|| Inventory_Presser_Addon_License::STORE_URL != substr( $update_response->url, 0, strlen( Inventory_Presser_Addon_License::STORE_URL ) ) )
+				{
+					continue;
+				}
+
+				//This is a plugin from inventorypresser.com
+				//Is the problem a missing license key?
+				if( 'No license key has been provided.' == $update_response->msg
+					&& ! in_array( $update_response->slug, $handled_plugin_slugs ) )
+				{
+					/**
+					 * Yes, output JavaScript that will change
+					 * "Automatic update is unavailable for this plugin." to
+					 * "License key is missing at Vehicles → Options"
+					 */
+					add_action( 'admin_print_footer_scripts', function() use ( $update_response )
+					{
+						?><script type="text/javascript"><!--
+jQuery(document).ready(function(){
+	jQuery('#<?php echo $update_response->slug; ?>-update .update-message p em').html( 'License key is missing at Vehicles → Options');
+});
+--></script><?php
+					} );
+
+					$handled_plugin_slugs[] = $update_response->slug;
+				}
+			}
+			return $value;
+		}
+
 		/**
 		 * show update nofication row -- needed for multisite subsites, because WP won't tell you otherwise!
 		 *
