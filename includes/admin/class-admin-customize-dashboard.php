@@ -1147,6 +1147,53 @@ class Inventory_Presser_Admin_Customize_Dashboard
 	}
 
 	/**
+	 * save_taxonomy_term
+	 * 
+	 * Create a term relationship between a post and a term. Inserts the term
+	 * first if it does not exist.
+	 *
+	 * @param  int $post_id
+	 * @param  string $taxonomy_name
+	 * @param  string $element_name
+	 * @return void
+	 */
+	function save_taxonomy_term( $post_id, $taxonomy_name, $element_name )
+	{
+		if ( ! isset( $_POST[$element_name] ) )
+		{
+			return;
+		}
+
+		$term_slug = sanitize_text_field( $_POST[$element_name] );
+		if ( '' == $term_slug )
+		{
+			// the user is setting the vehicle type to empty string
+			wp_remove_object_terms( $post_id, Inventory_Presser_Taxonomies::get_term_slug( $taxonomy_name, $post_id ), $taxonomy_name );
+			return;
+		}
+		$term = get_term_by( 'slug', $term_slug, $taxonomy_name );
+		if ( empty( $term ) || is_wp_error( $term ) )
+		{
+			//the term does not exist. create it
+			$term_arr = array(
+				'slug'        => sanitize_title( $term_slug ),
+				'description' => $term_slug,
+				'name'        => $term_slug,
+			);
+			$id_arr = wp_insert_term( $term_slug, $taxonomy_name, $term_arr );
+			if( ! is_wp_error( $id_arr ) )
+			{
+				$term->term_id = $id_arr['term_id'];
+			}
+		}
+		$set = wp_set_object_terms( $post_id, $term->term_id, $taxonomy_name, false );
+		if ( is_wp_error( $set ) )
+		{
+			//There was an error setting the term
+		}
+	}
+
+	/**
 	 * save_vehicle_taxonomy_terms
 	 * 
 	 * Saves custom taxonomy terms when vehicles are saved	
@@ -1194,6 +1241,23 @@ class Inventory_Presser_Admin_Customize_Dashboard
 			{
 				$arr[$key] = sanitize_text_field( $value );
 			}
+		}
+		return $arr;
+	}
+
+	/**
+	 * taxonomies_slugs_array
+	 *
+	 * Returns an array of all our taxonomy slugs
+	 *
+	 * @return array An array of taxonomy slugs
+	 */
+	protected function taxonomies_slugs_array()
+	{
+		$arr = array();
+		foreach( Inventory_Presser_Taxonomies::query_vars_array() as $query_var )
+		{
+			array_push( $arr, str_replace( '-', '_', $query_var ) );
 		}
 		return $arr;
 	}
