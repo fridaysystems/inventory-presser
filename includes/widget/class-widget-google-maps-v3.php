@@ -161,6 +161,10 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 		$location_terms = get_terms( 'location', array( 'hide_empty' => false ) );
 
 		$location_slugs = isset( $instance['location_slugs'] ) ? $instance['location_slugs'] : array();
+		if( ! is_array( $location_slugs ) )
+		{
+			$location_slugs = array( $location_slugs );
+		}
 
 		// loop through each location, set up form
 		foreach( $location_terms as $index => $term_object ) {
