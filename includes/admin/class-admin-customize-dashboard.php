@@ -1157,7 +1157,7 @@ class Inventory_Presser_Admin_Customize_Dashboard
 	 */
 	function save_vehicle_taxonomy_terms( $post_id, $is_update )
 	{
-		foreach( $this->slugs_array() as $slug )
+		foreach( $this->taxonomies_slugs_array() as $slug )
 		{
 			$taxonomy_name = $slug;
 			switch( $slug )
