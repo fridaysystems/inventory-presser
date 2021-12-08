@@ -446,6 +446,27 @@ class Inventory_Presser_Plugin
 	}
 
 	/**
+	 * edit_attachment_post_type
+	 *
+	 * Changes the attachment post type args just before the type is registered.
+	 * Changes hierarchical to true so that `parent` is exposed in the REST API.
+	 *
+	 * @param array  $args      Array of arguments for registering a post type.
+	 *                          See the register_post_type() function for accepted arguments.
+	 * @param string $post_type Post type key.
+	 * @return array
+	 */
+	public function edit_attachment_post_type( $args, $type )
+	{
+		if( 'attachment' != $type )
+		{
+			return $args;
+		}
+		$args['hierarchical'] = true;
+		return $args;
+	}
+
+	/**
 	 * flush_rewrite
 	 *
 	 * @param boolean $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
@@ -580,6 +601,9 @@ class Inventory_Presser_Plugin
 
 		//register all postmeta fields the CPT uses (mostly to expose them in the REST API)
 		add_action( 'init', array( $this, 'register_meta_fields' ), 20 );
+
+		//Filter the attachment post type to make sure `parent` is exposed in the REST API
+		add_filter( 'register_post_type_args', array( $this, 'edit_attachment_post_type' ), 10, 2 );
 
 
 		//Create custom taxonomies
