@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.8.2
-Stable tag: 13.5.0
+Stable tag: 13.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,12 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 13.5.1 =
+* [Added] Filters the attachment post type to expose the `parent` member in REST
+* [Added] Adds a feature to the add-on updater class that changes the "Automatic update is unavailable for this plugin." text to "License key is missing at Vehicles → Options" if the problem is a missing license key for one of our add-ons.
+* [Fixed] Fixes a bug introduced in 13.5.0 when moving methods from the taxonomies class to the customize dashboard class.
+* [Fixed] Bug fixes when accessing variables to make sure they have values before trying to use them in the Phone Number widget, Google Maps widget, and Editor Sidebar.
 
 = 13.5.0 =
 * [Added] Adds street address, street address line two, city, state, and zip fields to the Edit form when editing a term in the locations taxonomy. Allows users to specify and save the pieces of the address instead of the whole, multi-line address we store in the term description. This makes latitude and longitude decoding more accessible to users. When a location term is saved, these meta values are used to populate the term description.
