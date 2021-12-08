@@ -115,7 +115,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget
 	 */
 	public function widget( $args, $instance )
 	{
-		if( ! is_array( $instance['cb_display'] ) || empty( $instance['cb_display'] ) )
+		if( empty( $instance['cb_display'] ) || ! is_array( $instance['cb_display'] ) )
 		{
 			return;
 		}
