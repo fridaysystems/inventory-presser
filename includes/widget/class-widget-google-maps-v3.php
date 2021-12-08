@@ -74,7 +74,7 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 			 * Store the widget ID in case there are two instances of this
 			 * widget on the same page.
 			 */
-			$popup->widget_id = $args['widget_id'];
+			$popup->widget_id = $args['widget_id'] ?? 0;
 			//Location title/dealership name
 			$popup->name = $location_terms[$t]->name;
 			//Address
