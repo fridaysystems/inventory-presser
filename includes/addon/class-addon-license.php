@@ -90,8 +90,12 @@ if( ! class_exists( 'Inventory_Presser_Addon_License' ) ) {
 	}
 }
 
-/**
- * Inventory_Presser_License
- * @deprecated 13.5.0 use Inventory_Presser_Addon_License instead
- */
-class Inventory_Presser_License extends Inventory_Presser_Addon_License { }
+
+if( ! class_exists( 'Inventory_Presser_License' ) )
+{
+	/**
+	 * Inventory_Presser_License
+	 * @deprecated 13.5.0 use Inventory_Presser_Addon_License instead
+	 */
+	class Inventory_Presser_License extends Inventory_Presser_Addon_License { }
+}
