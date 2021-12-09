@@ -185,7 +185,7 @@ class Inventory_Presser_Photo_Numberer{
 		//Does this photo already have a sequence number?
 		if( null == $sequence_number )
 		{
-			if( ! empty( get_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $number ) ) )
+			if( ! empty( get_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true ) ) )
 			{
 				//Yes
 				return;
