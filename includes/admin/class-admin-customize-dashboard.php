@@ -535,7 +535,7 @@ class Inventory_Presser_Admin_Customize_Dashboard
 		printf( '<input type="checkbox" id="%s" name="%s" value="1"%s><label for="%s">%s</label>',
 			$meta_key,
 			$meta_key,
-			checked( '1', get_post_meta( $post->ID, $meta_key, true ), false ),
+			checked( '1', INVP::get_meta( $meta_key, $post->ID ), false ),
 			$meta_key,
 			__( 'Featured in Slideshows', 'inventory-presser' )
 		);

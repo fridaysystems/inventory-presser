@@ -317,7 +317,7 @@ class Inventory_Presser_Plugin
 		}
 
 		//Add a querystring that contains this photo's hash 
-		$hash = get_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'hash' ), true );
+		$hash = INVP::get_meta( 'hash', $post_id );
 		if( empty( $hash ) )
 		{
 			return $url;

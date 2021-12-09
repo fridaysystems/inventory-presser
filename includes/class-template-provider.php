@@ -45,7 +45,7 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
 			}
 
 			$is_vehicle_photo = 'attachment' == get_post_type( $thumbnail_id )
-				&& ! empty( get_post_meta( $thumbnail_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true ) );
+				&& ! empty( INVP::get_meta( 'photo_number', $thumbnail_id ) );
 
 			if( ! $is_vehicle_photo )
 			{

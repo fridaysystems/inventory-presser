@@ -70,7 +70,7 @@ class Inventory_Presser_Photo_Numberer{
 		return sprintf( '%s (%s %s %s %s)',
 			$title,
 			__( 'Photo', 'inventory-presser' ),
-			get_post_meta( $id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true ),
+			INVP::get_meta( 'photo_number', $id ),
 			__( 'of', 'inventory-presser' ),
 			invp_get_the_photo_count( $parent->ID )
 		);
@@ -185,7 +185,7 @@ class Inventory_Presser_Photo_Numberer{
 		//Does this photo already have a sequence number?
 		if( null == $sequence_number )
 		{
-			if( ! empty( get_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), true ) ) )
+			if( ! empty( INVP::get_meta( 'photo_number', $post_id ) ) )
 			{
 				//Yes
 				return;
@@ -234,7 +234,7 @@ class Inventory_Presser_Photo_Numberer{
 	 */
 	protected static function save_meta_vin( $post_id, $parent_post_id )
 	{
-		$vin = get_post_meta( $parent_post_id, apply_filters( 'invp_prefix_meta_key', 'vin' ), true );
+		$vin = invp_get_the_VIN( $parent_post_id );
 		if( empty( $vin ) )
 		{
 			return;
