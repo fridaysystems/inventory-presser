@@ -202,7 +202,8 @@ if( ! class_exists( 'Inventory_Presser_Addon_Updater' ) )
 
 				//This is a plugin from inventorypresser.com
 				//Is the problem a missing license key?
-				if( 'No license key has been provided.' == $update_response->msg
+				if( ! empty( $update_response->msg ) 
+					&& 'No license key has been provided.' == $update_response->msg
 					&& ! in_array( $update_response->slug, $handled_plugin_slugs ) )
 				{
 					/**
