@@ -138,7 +138,7 @@ class Inventory_Presser_Photo_Numberer{
 
 		for( $s=1; $s<=sizeof( $posts ); $s++ )
 		{
-			self::save_meta_photo_number( $post->ID, $post_id, $s );
+			self::save_meta_photo_number( $posts[$s]->ID, $post_id, $s );
 		}
 	}
 
