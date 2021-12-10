@@ -63,6 +63,13 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 13.5.2 = 
+* [Fixed] Fixes a bug when checking if a photo already has a sequence number
+* [Fixed] Fixes a bug introduced in 13.5.1 when checking plugin update responses
+* [Fixed] Fixes a bug when renumbering all photos when a user deletes one in the dashboard
+* [Changed] Removes all get_post_meta() calls in favor of template tags or INVP::get_meta() calls
+* [Changed] Now shows the Delete all Vehicles link on the Plugins page all the time without checking if there are vehicles first
+
 = 13.5.1 =
 * [Added] Filters the attachment post type to expose the `parent` member in REST
 * [Added] Adds a feature to the add-on updater class that changes the "Automatic update is unavailable for this plugin." text to "License key is missing at Vehicles → Options" if the problem is a missing license key for one of our add-ons.
