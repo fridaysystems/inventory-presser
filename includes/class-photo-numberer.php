@@ -23,7 +23,6 @@ class Inventory_Presser_Photo_Numberer{
 	public function hooks()
 	{
 		add_action( 'add_attachment', array( __CLASS__, 'maybe_number_photo' ), 10, 1 );
-		add_filter( 'rest_pre_insert_attachment', array( $this, 'set_post_parent' ), 10, 2 );
 
 		/**
 		 * Put the sequence number in the title of the post to which photos are
@@ -240,38 +239,5 @@ class Inventory_Presser_Photo_Numberer{
 			return;
 		}
 		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'vin' ), $vin );
-	}
-
-	/**
-	 * set_post_parent
-	 * 
-	 * The REST API does not support post_parent by default, so we have to move
-	 * the `parent` value from the request into the prepared post in this filter
-	 * callback.
-	 *
-	 * @param  WP_Post $prepared_post
-	 * @param  WP_REST_Request $request
-	 * @return void
-	 */
-	public function set_post_parent( $prepared_post, $request )
-	{
-		if( ! empty( $prepared_post->post_parent ) )
-		{
-			return $prepared_post;
-		}
-
-		if( 'attachment' != $prepared_post->post_type )
-		{
-			return $prepared_post;
-		}
-
-		$post_parent = $request->get_param( 'parent' );
-		if( empty( $post_parent ) )
-		{
-			return $prepared_post;
-		}
-
-		$prepared_post->post_parent = $post_parent;
-		return $prepared_post;
 	}
 }
