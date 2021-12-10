@@ -37,12 +37,6 @@ class Inventory_Presser_Uninstaller
 			return $actions;
 		}
 
-		//Are there vehicles? If not, don't show this link
-		if( ! $this->have_vehicles() )
-		{
-			return $actions;
-		}
-
 		$label = __( 'Delete all Vehicles', 'inventory-presser' );
 		$nonce = wp_create_nonce( self::QUERY_VAR_DELETE_VEHICLES );
 		$link = sprintf( 
@@ -75,20 +69,5 @@ class Inventory_Presser_Uninstaller
 		//dispatch the delete all vehicles call
 		INVP::delete_all_inventory();
 		return;		
-	}
-	
-	/**
-	 * have_vehicles
-	 * 
-	 * Checks if there are any vehicle posts saved in the site.
-	 *
-	 * @return bool True if there are vehicle posts of any status
-	 */
-	private function have_vehicles()
-	{
-		return 0 < sizeof( get_posts( array(
-			'post_type'   => INVP::POST_TYPE,
-			'post_status' => get_post_stati(),
-		) ) );
 	}
 }
