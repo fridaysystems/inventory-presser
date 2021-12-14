@@ -1057,6 +1057,23 @@ function invp_is_carfax_one_owner( $post_ID = null )
 	return ! empty( INVP::get_meta( 'carfax_one_owner', $post_ID ) );
 }
 
+/**
+ * invp_is_featured
+ *
+ * Is this vehicle featured in slideshows?
+ *
+ * @param  int $post_ID
+ * @return bool
+ */
+function invp_is_featured( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return ! empty( INVP::get_meta( 'featured', $post_ID ) );
+}
+
 function invp_is_sold( $post_ID = null )
 {
 	if( empty( $post_ID ) )
