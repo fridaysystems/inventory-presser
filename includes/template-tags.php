@@ -1044,6 +1044,7 @@ function invp_have_carfax_report( $post_ID = null )
  * Answers the question, "is this vehicle designated a "one owner" by 
  * Carfax?
  *
+ * @param  int $post_ID
  * @return bool True if this vehicle is designated as a "one owner" by Carfax
  */
 function invp_is_carfax_one_owner( $post_ID = null )
