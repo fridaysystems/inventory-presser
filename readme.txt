@@ -63,6 +63,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 13.6.0 = 
+* [Added] Adds a template tag invp_is_featured()
+
 = 13.5.2 = 
 * [Fixed] Fixes a bug when checking if a photo already has a sequence number
 * [Fixed] Fixes a bug introduced in 13.5.1 when checking plugin update responses
