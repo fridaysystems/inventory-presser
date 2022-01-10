@@ -65,6 +65,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 13.6.0 = 
 * [Added] Adds a template tag invp_is_featured()
+* [Fixed] Allows taxonomy filters to work when using the [invp_archive] shortcode at /inventory
 
 = 13.5.2 = 
 * [Fixed] Fixes a bug when checking if a photo already has a sequence number
