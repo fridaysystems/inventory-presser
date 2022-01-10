@@ -73,8 +73,15 @@ class Inventory_Presser_Shortcode_Archive extends Inventory_Presser_Template_Sho
 			'show_titles'    => true,
 		), $atts );
 
-		//Don't let input change the post type, that would be silly.
+		//Don't let input change the post type
 		$atts['post_type'] = INVP::POST_TYPE;
+
+		//Add all taxonomy query vars to $atts so filters work
+		$taxonomies = get_object_taxonomies( $atts['post_type'], 'objects' );
+		foreach( $taxonomies as $taxonomy )
+		{
+			$atts[$taxonomy->query_var] = get_query_var( $taxonomy->query_var );
+		}
 	 
 		query_posts( $this->clean_attributes_for_query( $atts ) );
 		$output = '';
