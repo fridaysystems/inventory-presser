@@ -95,7 +95,12 @@ class Inventory_Presser_Plugin
 		$key = apply_filters( 'invp_prefix_meta_key', $key );
 		$query->set( 'meta_key', $key );
 
-		//maybe append to the meta_query if it is already set
+		/**
+		 * Maybe append to the meta_query if it is already set. If we are 
+		 * sorting by make, then we want to also add a secondary sort of model
+		 * and a tertiary sort of trim. That's what users want. Apply the same
+		 * logic to sorts by year and model.
+		 */
 		$old = $query->get( 'meta_query', array() );
 		switch( apply_filters( 'invp_unprefix_meta_key', $query->query_vars['meta_key'] ) )
 		{
