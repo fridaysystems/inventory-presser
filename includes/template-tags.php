@@ -830,6 +830,13 @@ function invp_get_the_price( $zero_string = null, $post_ID = null )
 					number_format( ( $msrp - $price ), 0, '.', ',' )
 				);
 			}
+
+			//Either no discount between the two prices or one is empty
+			if( ! empty( $price ) )
+			{
+				//We have a price, so fallback to "default" behavior and show it
+				return '$' . number_format( $price, 0, '.', ',' );
+			}
 			break;
 
 		//$75 per week
