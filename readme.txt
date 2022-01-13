@@ -66,6 +66,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 = 13.6.0 = 
 * [Added] Adds a template tag invp_is_featured()
 * [Fixed] Allows taxonomy filters to work when using the [invp_archive] shortcode at /inventory
+* [Changed] Changes the "was now discount" price display to fallback to showing the price when the MSRP is empty or the difference is not a positive discount. Previously, the setting would fallback to "Call for Price" even if a price value was available.
 
 = 13.5.2 = 
 * [Fixed] Fixes a bug when checking if a photo already has a sequence number
