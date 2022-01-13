@@ -82,6 +82,52 @@ class Inventory_Presser_Shortcode_Archive extends Inventory_Presser_Template_Sho
 		{
 			$atts[$taxonomy->query_var] = get_query_var( $taxonomy->query_var );
 		}
+
+		/**
+		 * Handle querystring filters min_price, max_price, and max_odometer.
+		 * This array $querystring_filters has no significance other than 
+		 * allowing the foreach loop below to handle 3 parameters similarly.
+		 */
+		$querystring_filters = array(
+			array(
+				'param'    => 'min_price', //querystring parameter name
+				'field'    => 'price', //meta field suffix
+				'operator' => '>=', //comparison operator
+			),
+			array(
+				'param'    => 'max_price',
+				'field'    => 'price',
+				'operator' => '<=',
+			),
+			array(
+				'param'    => 'max_odometer',
+				'field'    => 'odometer',
+				'operator' => '<=',
+			),
+		);
+
+		foreach( $querystring_filters as $arr )
+		{
+			//Do we even have the querystring parameter?
+			if( empty( $_GET[$arr['param']] ) )
+			{
+				continue;
+			}
+
+			$atts['meta_query'] = Inventory_Presser_Plugin::maybe_add_meta_query(
+				$atts['meta_query'],
+				apply_filters( 'invp_prefix_meta_key', $arr['field'] ),
+				(int) $_GET[$arr['param']],
+				$arr['operator'],
+				'numeric'
+			);
+			if( ! empty( $atts['meta_key'] ) )
+			{
+				unset( $atts['meta_key'] );
+			}
+		}
+
+		//TODO orderby, order
 	 
 		query_posts( $this->clean_attributes_for_query( $atts ) );
 		$output = '';

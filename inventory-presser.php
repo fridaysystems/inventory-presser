@@ -990,10 +990,10 @@ class Inventory_Presser_Plugin
 	 * @param  string $type
 	 * @return array The modified $meta_query array
 	 */
-	function maybe_add_meta_query( $meta_query, $key, $value, $compare, $type )
+	public static function maybe_add_meta_query( $meta_query, $key, $value, $compare, $type )
 	{
 		//Make sure there is not already $key item in the meta_query
-		if( $this->meta_query_contains_key( $meta_query, $key ) )
+		if( self::meta_query_contains_clause( $meta_query, $key, $value, $compare, $type ) )
 		{
 			return $meta_query;
 		}
@@ -1019,29 +1019,35 @@ class Inventory_Presser_Plugin
 	}
 
 	/**
-	 * meta_query_contains_key
+	 * meta_query_contains_clause
 	 * 
-	 * Does a query's meta_query contain a specific key?
+	 * Does a meta_query already contain a clause?
 	 *
 	 * @param  array $meta_query The array return value of WP_Query->get('meta_query')
 	 * @param  string $key The meta key to search for
-	 * @return bool|null
+	 * @return bool
 	 */
-	function meta_query_contains_key( $meta_query, $key )
+	public static function meta_query_contains_clause( $meta_query, $key, $value, $compare, $type )
 	{
 		if( is_array( $meta_query ) )
 		{
-			if( isset( $meta_query['key'] ) )
+			if( isset( $meta_query['key'] )
+				&& isset( $meta_query['value'] )
+				&& isset( $meta_query['compare'] )
+				&& isset( $meta_query['type'] ) )
 			{
-				return $meta_query['key'] == $key;
+				return $meta_query['key'] == $key
+					&& $meta_query['value'] == $value
+					&& $meta_query['compare'] == $compare
+					&& $meta_query['type'] == $type;
 			}
 
 			foreach( $meta_query as $another )
 			{
-				return $this->meta_query_contains_key( $another, $key );
+				return self::meta_query_contains_clause( $another, $key, $value, $compare, $type );
 			}
 		}
-		return null;
+		return false;
 	}
 
 	/**
@@ -1073,7 +1079,7 @@ class Inventory_Presser_Plugin
 		if ( isset( $_GET['max_price'] ) )
 		{
 			$meta_query['relation'] = 'AND';
-			$meta_query = $this->maybe_add_meta_query(
+			$meta_query = self::maybe_add_meta_query(
 				$meta_query,
 				apply_filters( 'invp_prefix_meta_key', 'price' ),
 				(int) $_GET['max_price'],
