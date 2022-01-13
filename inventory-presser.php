@@ -64,7 +64,7 @@ class Inventory_Presser_Plugin
 	function add_orderby_to_query( $query )
 	{
 		//Do not mess with the query if it's not the main one and our CPT
-		if ( ! $query->is_main_query()
+		if ( ( apply_filters( 'invp_apply_orderby_to_main_query_only', true ) && ! $query->is_main_query() )
 			|| ! is_post_type_archive( INVP::POST_TYPE )
 			|| ( empty( $_GET['orderby'] ) && empty( $this->settings['sort_vehicles_by'] ) ) )
 		{

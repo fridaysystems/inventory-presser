@@ -64,9 +64,6 @@ class Inventory_Presser_Shortcode_Archive extends Inventory_Presser_Template_Sho
 		$plugin_settings = INVP::settings();
 
 		$atts = shortcode_atts( array(
-			'meta_key'       => apply_filters( 'invp_prefix_meta_key', $plugin_settings['sort_vehicles_by'] ),
-			'order'          => $plugin_settings['sort_vehicles_order'],
-			'orderby'        => apply_filters( 'invp_prefix_meta_key', $plugin_settings['sort_vehicles_by'] ),
 			'paged'          => ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1,
 			'posts_per_page' => get_option( 'posts_per_page' ),
 			'post_status'    => 'publish',
@@ -127,9 +124,11 @@ class Inventory_Presser_Shortcode_Archive extends Inventory_Presser_Template_Sho
 			}
 		}
 
-		//TODO orderby, order
-	 
+		//Allow our order by mods to affect this query_posts() call	 
+		add_filter( 'invp_apply_orderby_to_main_query_only', '__return_false' );
 		query_posts( $this->clean_attributes_for_query( $atts ) );
+		remove_filter( 'invp_apply_orderby_to_main_query_only', '__return_false' );
+
 		$output = '';
 		if ( have_posts() )
 		{
