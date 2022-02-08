@@ -718,7 +718,9 @@ class Inventory_Presser_Plugin
 		$shortcodes->hooks();
 		$shortcodes = new Inventory_Presser_Shortcode_Hours_Today();
 		$shortcodes->hooks();
-		$shortcodes = new  Inventory_Presser_Shortcode_Photo_Slider();
+		$shortcodes = new Inventory_Presser_Shortcode_Photo_Slider();
+		$shortcodes->hooks();
+		$shortcodes = new Inventory_Presser_Shortcode_Vin();
 		$shortcodes->hooks();
 
 		/**
