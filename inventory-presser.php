@@ -847,6 +847,7 @@ class Inventory_Presser_Plugin
 			'shortcode/class-shortcode-archive.php',
 			'shortcode/class-shortcode-archive-vehicle.php',
 			'shortcode/class-shortcode-single-vehicle.php',
+			'shortcode/class-shortcode-vin.php',
 			'class-taxonomies.php',
 			'class-taxonomy-overlapper.php',
 			'class-template-provider.php',
