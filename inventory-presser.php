@@ -770,6 +770,9 @@ class Inventory_Presser_Plugin
 		add_action( 'invp_archive_buttons', array( $this, 'add_view_details_button' ) );
 
 		add_action( 'plugins_loaded', array( $this, 'loaded' ) );
+
+		$rest = new Inventory_Presser_REST();
+		$rest->add_hooks();
 	}
 
 	public function add_view_details_button()
@@ -831,6 +834,7 @@ class Inventory_Presser_Plugin
 			'class-option-manager.php',
 			'class-photo-numberer.php',
 			'class-redirect-404-vehicles.php',
+			'class-rest.php',
 			'class-schema-org-generator.php',
 			'shortcode/class-shortcode-hours-today.php',
 			'shortcode/class-shortcode-iframe.php',
