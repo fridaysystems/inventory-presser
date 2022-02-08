@@ -63,6 +63,12 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 13.6.1 =
+* [Added] Adds a shortcode [invp_vin] that outputs the value of the template tag invp_get_the_vin()
+* [Added] Adds a REST API route at /wp-json/invp/v1/settings to expose the core "Show Carfax buttons" switch
+* [Fixed] Bug fix in block category creation. Instead of all blocks ending up in "Widgets", they now correctly group under "Inventory Presser"
+* [Fixed] Prevents non-numeric characters from being entered in the Odometer field in the editor sidebar
+
 = 13.6.0 = 
 * [Added] Adds a template tag invp_is_featured()
 * [Fixed] Allows taxonomy filters to work when using the [invp_archive] shortcode at /inventory
