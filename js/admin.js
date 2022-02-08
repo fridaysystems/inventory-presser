@@ -115,4 +115,9 @@ jQuery(document).ready( function(){
 	jQuery('.row-actions .uninstall.delete a').on('click',function(){
 		return confirm('Are you sure you want to delete all vehicle data, delete all plugin data, and deactivate?');
 	});
+
+	//Only allow digits in the odometer text box in the editor sidebar
+	jQuery('.components-base-control #inventory_presser_odometer').on( 'input', function() {
+		jQuery(this).val(jQuery(this).val().replace( /[^0-9]+/g, '' ));
+	});
 });
