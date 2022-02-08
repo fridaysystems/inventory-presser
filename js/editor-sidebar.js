@@ -82,22 +82,6 @@
 		return options;
 	}
 
-	function findTermID( name, taxonomy )
-	{
-		let terms = new wp.api.collections[ucFirst( taxonomy )];
-		terms.fetch().done( function( t ){
-			let target = t.find( x => name === x.name );
-			if( ! target ) { return; }
-			console.log( target.id );
-			return target.id;
-		});
-	}
-
-	function ucFirst( str )
-	{
-		return (str + '').charAt(0).toUpperCase() + str.substr(1);
-	}
-
 	function ucwords( str )
 	{
 		return (str + '').split(' ').map( x => x.charAt(0).toUpperCase() + x.substr(1) ).join(' ');
@@ -137,9 +121,7 @@
 			return {
 				setMetaFieldValue: function( value ) {
 					dispatch( 'core/editor' ).editPost(
-						{ meta: { [ props.fieldName ]: value }
-						  //,model_year: findTermID( value, 'model_year' ) 
-						}
+						{ meta: { [ props.fieldName ]: value } }
 					);
 				}
 			}
