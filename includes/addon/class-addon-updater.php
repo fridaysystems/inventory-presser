@@ -204,7 +204,8 @@ if( ! class_exists( 'Inventory_Presser_Addon_Updater' ) )
 				//Is the problem a missing license key?
 				if( ! empty( $update_response->msg ) 
 					&& 'No license key has been provided.' == $update_response->msg
-					&& ! in_array( $update_response->slug, $handled_plugin_slugs ) )
+					&& ! in_array( $update_response->slug, $handled_plugin_slugs ) 
+					&& ( ! is_multisite() || is_blog_admin() ) )
 				{
 					/**
 					 * Yes, output JavaScript that will change
