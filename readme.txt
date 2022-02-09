@@ -69,6 +69,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Fixed] Bug fix in block category creation. Instead of all blocks ending up in "Widgets", they now correctly group under "Inventory Presser"
 * [Fixed] Prevents non-numeric characters from being entered in the Odometer field in the editor sidebar
 * [Fixed] Prevent the Delete all Vehicles feature from deleting vehicles more than once if the user reloads the page after using the feature
+* [Fixed] Starts populating the inventory_presser_date_entered meta value when vehicles are saved
 
 = 13.6.0 = 
 * [Added] Adds a template tag invp_is_featured()
