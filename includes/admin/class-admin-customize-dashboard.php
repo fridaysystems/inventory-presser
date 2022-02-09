@@ -1104,15 +1104,21 @@ class Inventory_Presser_Admin_Customize_Dashboard
 		 * It looks like this: Tue, 06 Sep 2016 09:26:12 -0400
 		 */
 		$offset = sprintf( '%+03d00', intval( get_option('gmt_offset') ) );
-		$timestamp = current_time( 'D, d M Y h:i:s' ) . ' ' . $offset;
+		$timestamp_format = 'D, d M Y h:i:s';
+		//use post_modified to set last_modified
+		$post_modified = DateTime::createFromFormat( 'Y-m-d H:i:s', $post->post_modified );
+		$timestamp = $post_modified->format( $timestamp_format ) . ' ' . $offset;
 		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'last_modified' ), $timestamp );
 
 		/**
-		 * If this is not an update, or if it is an update and there is no 
-		 * date entered meta value yet, set the date_entered meta value.
+		 * If this is not an update or there is no date entered post meta value,
+		 * set the date_entered meta value using the post_date
 		 */
 		if( ! $is_update || empty( INVP::get_meta( 'date_entered', $post_id ) ) )
 		{
+			//use post_date to set date_entered
+			$post_date = DateTime::createFromFormat( 'Y-m-d H:i:s', $post->post_date );
+			$timestamp = $post_date->format( $timestamp_format ) . ' ' . $offset;
 			update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'date_entered' ), $timestamp );
 		}
 
