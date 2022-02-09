@@ -1104,7 +1104,17 @@ class Inventory_Presser_Admin_Customize_Dashboard
 		 * It looks like this: Tue, 06 Sep 2016 09:26:12 -0400
 		 */
 		$offset = sprintf( '%+03d00', intval( get_option('gmt_offset') ) );
-		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'last_modified' ), current_time( 'D, d M Y h:i:s' ) . ' ' . $offset );
+		$timestamp = current_time( 'D, d M Y h:i:s' ) . ' ' . $offset;
+		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'last_modified' ), $timestamp );
+
+		/**
+		 * If this is not an update, or if it is an update and there is no 
+		 * date entered meta value yet, set the date_entered meta value.
+		 */
+		if( ! $is_update || empty( INVP::get_meta( 'date_entered', $post_id ) ) )
+		{
+			update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'date_entered' ), $timestamp );
+		}
 
 		//Clear this value that is defined by a checkbox
 		update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'featured' ), '0' );
