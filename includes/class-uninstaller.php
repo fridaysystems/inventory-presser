@@ -68,6 +68,9 @@ class Inventory_Presser_Uninstaller
 		
 		//dispatch the delete all vehicles call
 		INVP::delete_all_inventory();
-		return;		
+
+		//redirect to a URL that won't cause more deletes on page reloads
+		wp_redirect( admin_url( 'plugins.php' ) );
+		exit;
 	}
 }
