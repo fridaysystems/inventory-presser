@@ -86,6 +86,11 @@ class Inventory_Presser_Plugin
 		}
 
 		$key = $this->settings['sort_vehicles_by'];
+
+		//Backwards compatibility for pre 13.7.1 when there was a bug
+		if( 'date_entered' == $key ) { $key = 'post_date'; }
+		if( 'last_modified' == $key ) { $key = 'post_modified'; }
+
 		if( isset( $_GET['orderby'] ) )
 		{
 			$key = sanitize_text_field( $_GET['orderby'] );
