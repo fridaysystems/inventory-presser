@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.9.0
-Stable tag: 13.7.0
+Stable tag: 13.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 13.7.1 = 
+* [Fixed] Fixes the Sort Vehicles By setting when "Date entered" or "Last modified" is chosen. These keys did not previously work.
 
 = 13.7.0 =
 * [Added] Adds a shortcode [invp_vin] that outputs the value of the template tag invp_get_the_vin()
