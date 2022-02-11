@@ -91,6 +91,14 @@ class Inventory_Presser_Plugin
 			$key = sanitize_text_field( $_GET['orderby'] );
 		}
 
+		//post_date and post_modified are not meta keys
+		if( in_array( $key, array( 'post_date', 'post_modified' ) ) )
+		{
+			$query->set( 'orderby', $key );
+			$query->set( 'order', $direction );
+			return;
+		}
+
 		//Make sure the meta key has the prefix
 		$key = apply_filters( 'invp_prefix_meta_key', $key );
 		$query->set( 'meta_key', $key );

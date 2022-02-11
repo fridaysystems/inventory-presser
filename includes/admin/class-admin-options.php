@@ -499,6 +499,13 @@ class Inventory_Presser_Admin_Options
 			__( 'Skip trash when deleting vehicles and delete permanently', 'inventory-presser' )
 		);
 	}
+
+	public function change_sort_by_option_values( $value )
+	{
+		if( 'date_entered' == $value ) { return 'post_date'; }
+		if( 'last_modified' == $value ) { return 'post_modified'; }
+		return $value;
+	}
 	
 	/**
 	 * callback_sort_vehicles_by
@@ -519,10 +526,14 @@ class Inventory_Presser_Admin_Options
 			$this->option['sort_vehicles_order'] = 'ASC';
 		}
 
+		add_filter( 'invp_html_select_vehicle_keys_value', array( $this, 'change_sort_by_option_values' ) );
+
 		$select = $this->html_select_vehicle_keys( array(
 			'name' => INVP::OPTION_NAME . '[sort_vehicles_by]',
 			'id'   => 'sort_vehicles_by',
 		), $this->option['sort_vehicles_by'] );
+
+		remove_filter( 'invp_html_select_vehicle_keys_value', array( $this, 'change_sort_by_option_values' ) );
 
 		printf(
 			'%s %s <select name="%s[sort_vehicles_order]" id="sort_vehicles_order">',
@@ -641,10 +652,12 @@ class Inventory_Presser_Admin_Options
 				continue;
 			}
 
+			$value = apply_filters( 'invp_html_select_vehicle_keys_value', $key );
+
 			$options .= sprintf(
 				'<option value="%s"%s>%s</option>',
-				$key,
-				selected( $selected_value, $key, false ),
+				$value,
+				selected( $selected_value, $value, false ),
 				str_replace( '_', ' ', ucfirst( $key ) )
 			);
 		}
