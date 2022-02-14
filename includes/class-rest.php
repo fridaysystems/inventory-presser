@@ -16,8 +16,9 @@ class Inventory_Presser_REST
 	public function add_route()
 	{
 		register_rest_route( 'invp/v1', '/settings/', array(
-			'methods' => 'GET',
-			'callback' => array( $this, 'response' ),
+			'methods'             => 'GET',
+			'callback'            => array( $this, 'response' ),
+			'permission_callback' => '__return_true',
 		) );
 	}
 
