@@ -65,6 +65,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 13.7.1 = 
 * [Fixed] Fixes the Sort Vehicles By setting when "Date entered" or "Last modified" is chosen. These keys did not previously work.
+* [Fixed] Fixes the registration of the new REST route at /wp-json/invp/v1/settings to specify a missing permission_callback.
+* [Fixed] Bug fix in block category creation. Instead of all blocks ending up in "Widgets", they now correctly group under "Inventory Presser". This was intended for 13.7.0 but didn't get shipped somehow.
+* [Fixed] Avoid throwing warnings in the Map, Inventory Grid, and Inventory Slider widgets when widget settings and attributes are not provided or are unavailable.
 
 = 13.7.0 =
 * [Added] Adds a shortcode [invp_vin] that outputs the value of the template tag invp_get_the_vin()
