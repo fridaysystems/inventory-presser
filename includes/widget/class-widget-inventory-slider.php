@@ -81,7 +81,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 		wp_enqueue_script( 'invp-slider' );
 		//Provide one of the widget settings to JavaScript
 		wp_add_inline_script( 'invp-slider', 'const widget_slider = ' . json_encode( array(
-			'showcount' => $instance['showcount'],
+			'showcount' => $instance['showcount'] ?? 3,
 		) ), 'before' );
 
 	}

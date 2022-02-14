@@ -85,6 +85,12 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			return;
 		}
 
+		if( empty( $args['widget_id'] ) )
+		{
+			//Sometimes the widget ID is unavailable in stuff like Elementor
+			$args['widget_id'] = '9999';
+		}
+
 		/**
 		 * Create an array that contains the data needed to create the markers 
 		 * and popups: location names, addresses, and lat lon coords
