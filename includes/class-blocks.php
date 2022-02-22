@@ -13,21 +13,21 @@ class Inventory_Presser_Blocks
 	 * 
 	 * Adds a block category to hold all our blocks
 	 *
-	 * @param  array $categories
-	 * @param  WP_Post $post
+	 * @param  array $block_categories
+	 * @param  WP_Block_Editor_Context $block_editor_context
 	 * @return array
 	 */
-	function add_category( $categories, $post )
+	function add_category( $block_categories, $block_editor_context )
 	{
 		//is the post a vehicle?
-		if( empty( $post ) || empty( $post->post_type )
-			|| $post->post_type != INVP::POST_TYPE )
+		if( empty( $block_editor_context->post->post_type )
+			|| $block_editor_context->post->post_type != INVP::POST_TYPE )
 		{
-			return $categories;
+			return $block_categories;
 		}
 
 		return array_merge(
-			$categories,
+			$block_categories,
 			array(
 				array(
 					'slug'  => 'inventory-presser',
