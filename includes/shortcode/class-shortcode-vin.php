@@ -17,8 +17,8 @@ class Inventory_Presser_Shortcode_Vin
 	 */
 	function add()
 	{
-		add_shortcode( 'invp-vin', array( $this, 'content') );
-		add_shortcode( 'invp_vin', array( $this, 'content') );
+		add_shortcode( 'invp-vin', 'invp_get_the_vin' );
+		add_shortcode( 'invp_vin', 'invp_get_the_vin' );
 	}
 
 	/**
@@ -31,18 +31,5 @@ class Inventory_Presser_Shortcode_Vin
 	function hooks()
 	{
 		add_action( 'init', array( $this, 'add' ) );
-	}
-
-	/**
-	 * content
-	 * 
-	 * Creates the HTML content of the shortcode
-	 *
-	 * @param  array $atts
-	 * @return string The return value of the template tag invp_get_the_vin()
-	 */
-	function content( $atts ) {
-
-		return invp_get_the_vin();
 	}
 }
