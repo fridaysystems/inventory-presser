@@ -35,7 +35,7 @@ class Inventory_Presser_Badges
 		if( ! empty( $url ) )
 		{
 			//CSS classes on the <a>
-			$classes = apply_filters( 'invp_button_classes_nextgear_inspection_url', 'wp-block-button__link button' );
+			$classes = apply_filters( 'invp_button_classes_nextgear_inspection_url', 'wp-block-button__link button _button _button-small' );
 
 			?><div class="nextgear-wrapper">
 				<a class="<?php echo $classes; ?>" href="<?php echo $url; ?>"><?php
