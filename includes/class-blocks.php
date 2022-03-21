@@ -89,10 +89,14 @@ class Inventory_Presser_Blocks
 			$asset_file['version']
 		);
 
+		$settings = INVP::settings();
+
 		//Provide the vehicle post type meta keys and prefix to JavaScript
 		wp_add_inline_script( 'invp-blocks', 'const invp_blocks = ' . json_encode( array(
-			'keys'        => INVP::keys_and_types(),
-			'meta_prefix' => INVP::meta_prefix(),
+			'keys'                        => INVP::keys_and_types(),
+			'meta_prefix'                 => INVP::meta_prefix(),
+			'use_carfax'                  => $settings['use_carfax'],
+			'use_carfax_provided_buttons' => $settings['use_carfax_provided_buttons'],
 		) ), 'before' );
 
 
