@@ -1,3 +1,59 @@
+= 13.5.2 = 
+* [Fixed] Fixes a bug when checking if a photo already has a sequence number
+* [Fixed] Fixes a bug introduced in 13.5.1 when checking plugin update responses
+* [Fixed] Fixes a bug when renumbering all photos when a user deletes one in the dashboard
+* [Changed] Removes all get_post_meta() calls in favor of template tags or INVP::get_meta() calls
+* [Changed] Now shows the Delete all Vehicles link on the Plugins page all the time without checking if there are vehicles first
+
+= 13.5.1 =
+* [Added] Filters the attachment post type to expose the `parent` member in REST
+* [Added] Adds a feature to the add-on updater class that changes the "Automatic update is unavailable for this plugin." text to "License key is missing at Vehicles → Options" if the problem is a missing license key for one of our add-ons.
+* [Fixed] Fixes a bug introduced in 13.5.0 when moving methods from the taxonomies class to the customize dashboard class.
+* [Fixed] Bug fixes when accessing variables to make sure they have values before trying to use them in the Phone Number widget, Google Maps widget, and Editor Sidebar.
+
+= 13.5.0 =
+* [Added] Adds street address, street address line two, city, state, and zip fields to the Edit form when editing a term in the locations taxonomy. Allows users to specify and save the pieces of the address instead of the whole, multi-line address we store in the term description. This makes latitude and longitude decoding more accessible to users. When a location term is saved, these meta values are used to populate the term description.
+* [Added] Adds a Google Map widget. This new widget implements the v3 JavaScript API and requires an API key. 
+* [Changed] Makes the term description box on the edit term screen readonly when editing a term in the locations taxonomy.
+* [Changed] Renames the Google Map widget to Google Map (legacy). It still works for an unknown amount of time.
+* [Changed] Updates node JS packages
+* [Removed] Removes a weekly cron job that tabulated term relationship counts. This was a legacy bug fix that is no longer needed.
+
+= 13.4.1 =
+* [Added] Adds photo sequence numbers like "(Photo 2 of 44)" to post titles in the Media Library
+* [Fixed] Finds a few places to use the template tag invp_get_the_photo_number() instead of a unique get_children() call.
+* [Fixed] Fixes a typo that prevented highway MPG from displaying in the EPA Fuel Economy widget
+* [Fixed] Assigns photos uploaded in the dashboard an accurate photo sequence number instead of zero
+* [Fixed] Sets the first photo uploaded in the dashboard as the vehicle's featured image
+* [Fixed] Fixes the add-on license activator class to properly examine API responses and activate licenses
+
+= 13.4.0 =
+* [Added] Adds the ability for add-ons to store their license key in a key with a name that is not `license_key`. A few add-ons already use `_license_key`.
+* [Added] Adds a filter `invp_vehicle_attribute_table_items` that allows the vehicle attribute table items to be manipulated just before they are parsed into HTML.
+* [Added] Upgrades the taxonomy overlapper class to allow the updating of the transmission speeds meta key when term relationships in the transmission taxonomy are changed.
+* [Added] Adds car ID, dealer ID, leads ID, Edmunds Style ID, title status, and Next Gear Inspection URL to the editor sidebar.
+* [Changed] Changes the taxonomy overlapper to make sure the meta value matches a term name with which a vehicle has a relationship when relationships are deleted. For example, if a vehicle is erroneously assigned both "Convertible" and "Sedan" body styles, this change makes sure Sedan is saved in the meta field when Convertible is removed.
+* [Changed] Re-implements the archive "View Details" button as a hook on `invp_archive_buttons` rather than expecting all templates to implement it. Adds a filter `invp_css_classes_view_details_button` on the CSS classes because that is a feature we need on day one for the two different themes we have on production sites.
+* [Fixed] Fixes bugs in the `invp_get_the_odometer()` template tag and the vehicle attribute table to avoid outputting odometer and engine attributes that do not actually contain values.
+* [Removed] Removes fields from the editor sidebar that are managed via taxonomies and the taxonomy overlapper: year, make, model, and body style.
+
+= 13.3.1 =
+* [Fixed] Fixes a bug in the taxonomy overlapper that was causing sold vehicles to show as available. Meta keys were not always being updated when the overlapping taxonomy term relationships were changed.
+* [Changed] Changes the add-on updater to not show a plugin update nag unless a download link is available.
+
+= 13.3.0 =
+* [Added] Adds a colors taxonomy to help users shop by vehicle color. This taxonomy is designed to hold the base color. That means the value might be "Red" rather than "Ruby Mist Metallic".
+* [Added] Adds new classes Inventory_Presser_Addon and Inventory_Presser_Addon_Updater to help add-on plugins store license keys and obtain updates from inventorypresser.com.
+* [Added] Adds two API methods INVP::option_group() and INVP::option_page() to help add-ons avoid hard-coding string slugs for the page and group where this plugin's settings are manipulated.
+* [Added] Adds an action hook `invp_loaded` that runs on the `plugins_loaded` hook but after Inventory Presser has finished loading. This hook is designed as an add-on entry point.
+
+= 13.2.2 = 
+* [Fixed] Bug fix when registering a term meta key `dealer_id` in locations taxonomy. Sanitize callback of `intval()` prevent updates to the terms in the locations taxonomy. Changed to use `sanitize_text_field()` instead.
+
+= 13.2.1 =
+* [Changed] Changes the tested up to version number to 5.8.0.
+* [Fixed] Fixes a bug in the Map widget that was hiding the widget title underneath the map. 
+
 = 13.2.0 =
 * [Added] Now registers a term meta key `dealer_id` to our locations taxonomy terms to hold a dealer identifier.
 * [Added] Adds a new meta key `inventory_presser_doors` to hold the number of doors. Adds this field to the editor sidebar so it can be VIN decoded and edited by users. Adds this field to the vehicle attribute table in the built-in single vehicle template.
