@@ -308,11 +308,7 @@ function invp_get_the_fuel_economy_value( $key, $fuel_type = 1, $post_ID = null 
 	 * The meta key fuel_economy_five_year_savings does not apply to either fuel
 	 * type, so ignore $fuel_type when this key is passed.
 	 */
-	if( 'fuel_economy_five_year_savings' == $key )
-	{
-		$key = 'fuel_economy_' . $key;
-	}
-	else
+	if( 'fuel_economy_five_year_savings' != $key )
 	{
 		$key = 'fuel_economy_' . $fuel_type . '_' . $key;
 	}
