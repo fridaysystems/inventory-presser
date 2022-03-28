@@ -71,6 +71,8 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Fixed] Fixes the registration of the new REST route at /wp-json/invp/v1/settings to specify a missing permission_callback.
 * [Fixed] Bug fix in block category creation. Instead of all blocks ending up in "Widgets", they now correctly group under "Inventory Presser". This was intended for 13.7.0 but didn't get shipped somehow.
 * [Fixed] Avoid throwing warnings in the Map, Inventory Grid, and Inventory Slider widgets when widget settings and attributes are not provided or are unavailable.
+* [Fixed] Allows our template provider class to help vehicle details pages work on more themes out of the box. No longer limits our hook on the_content to only run once for themes that fetch post content and apply the filter multiple times.
+* [Fixed] Fixes the plugin update nag HTML for add-ons to better match the core plugin update nags. Removes a condition clause that was preventing the nag from showing on network admin plugin pages.
 * [Changed] Changes tested up to version number to 5.9.2.
 
 = 13.7.0 =
@@ -90,6 +92,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 13.7.1 = 
+Changes tested up to version number 5.9.2. Increases compatibility with more themes out of the box, and specifically themes like GeneratePress that call and filter the_content multiple times when rendering a page. Fixes block category creation so all this plugin's blocks are nicley grouped. Fix in the Sort Vehicles By setting when a date field like last modified is chosen. Fixes plugin update nags in multisite installations to look more like core update nags.
 
 = 13.6.0 =
 Upgrades the [invp_archive] shortcode to support taxonomy and querystring filters and sorts. Adds a template tag invp_is_featured(). Changes the "was now discount" price display to fallback to showing the price when the MSRP is empty or the difference is not a positive discount. Previously, the setting would fallback to "Call for Price" even if a price value was available.
