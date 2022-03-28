@@ -233,21 +233,24 @@ jQuery(document).ready(function(){
 		 * @param string  $file
 		 * @param array   $plugin
 		 */
-		public function show_update_notification( $file, $plugin ) {
-	
-			if ( is_network_admin() ) {
+		public function show_update_notification( $file, $plugin )
+		{
+			/**
+			 * If this is a multi-site install, only show the update on the
+			 * network plugins page.
+			 */
+			if ( is_multisite() && ! is_network_admin() )
+			{
 				return;
 			}
 	
-			if( ! current_user_can( 'update_plugins' ) ) {
+			if( ! current_user_can( 'update_plugins' ) )
+			{
 				return;
 			}
 	
-			if( ! is_multisite() ) {
-				return;
-			}
-	
-			if ( $this->name != $file ) {
+			if ( $this->name != $file )
+			{
 				return;
 			}
 	
@@ -310,31 +313,48 @@ jQuery(document).ready(function(){
 			add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
 	
 			if ( ! empty( $update_cache->response[ $this->name ] ) 
-				&& version_compare( $this->version, $version_info->new_version, '<' ) 
-				&&  ! empty( $version_info->download_link ) ) //this seems to break update nags on multisite networks
+				&& version_compare( $this->version, $version_info->new_version, '<' ) )
 			{
 				// build a plugin list row, with update notification
-				//$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
-				# <tr class="plugin-update-tr"><td colspan="' . $wp_list_table->get_column_count() . '" class="plugin-update colspanchange">
-				echo '<tr class="plugin-update-tr" id="' . $this->slug . '-update" data-slug="' . $this->slug . '" data-plugin="' . $this->slug . '/' . $file . '">';
-				echo '<td colspan="3" class="plugin-update colspanchange">';
-				echo '<div class="update-message notice inline notice-warning notice-alt">';
-	
-				$changelog_link = self_admin_url( 'index.php?edd_sl_action=view_plugin_changelog&plugin=' . $this->name . '&slug=' . $this->slug . '&TB_iframe=true&width=772&height=911' );
-
 				printf(
-					__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'easy-digital-downloads' ),
+					'<tr class="plugin-update-tr active" id="%1$s-update" data-slug="%1$s" data-plugin="%2$s">'
+						. '<td colspan="3" class="plugin-update colspanchange">'
+						. '<div class="update-message notice inline notice-warning notice-alt"><p>',
+					$this->slug,
+					$file
+				);
+	
+				$changelog_link = self_admin_url( sprintf( 
+					'index.php?edd_sl_action=view_plugin_changelog&plugin=%s&slug=%s&TB_iframe=true&width=772&height=911',
+					$this->name,
+					$this->slug
+				) );
+
+				printf( 
+					'%s %s %s <a href="%s" class="thickbox" aria-label="%s %s %s %s %s">%s %s %s</a> %s <a href="%s" aria-label="%s %s %s">%s</a>',
+					__( 'There is a new version of', 'inventory-presser' ),
 					esc_html( $version_info->name ),
-					'<a target="_blank" class="thickbox" href="' . esc_url( $changelog_link ) . '">',
+					__( 'available.', 'inventory-presser' ),
+					esc_url( $changelog_link ),
+					__( 'View', 'inventory-presser' ),
+					esc_html( $version_info->name ),
+					__( 'version', 'inventory-presser' ),
 					esc_html( $version_info->new_version ),
-					'</a>',
-					'<a href="' . esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $this->name, 'upgrade-plugin_' . $this->name ) ) .'">',
-					'</a>'
+					__( 'details', 'inventory-presser' ),
+					__( 'View version', 'inventory-presser' ),
+					esc_html( $version_info->new_version ),
+					__( 'details', 'inventory-presser' ),
+					__( 'or', 'inventory-presser' ),
+					esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $this->name, 'upgrade-plugin_' . $this->name ) ),
+					__( 'Update', 'inventory-presser' ),
+					esc_html( $version_info->name ),
+					__( 'now', 'inventory-presser' ),
+					__( 'update now', 'inventory-presser' )
 				);
 
 				do_action( "in_plugin_update_message-{$file}", $plugin, $version_info );
 
-				echo '</div></td></tr>';				
+				echo '</p></div></td></tr>';
 			}
 		}
 	
@@ -566,7 +586,7 @@ jQuery(document).ready(function(){
 			}
 	
 			if( ! current_user_can( 'update_plugins' ) ) {
-				wp_die( __( 'You do not have permission to install plugin updates', 'easy-digital-downloads' ), __( 'Error', 'easy-digital-downloads' ), array( 'response' => 403 ) );
+				wp_die( __( 'You do not have permission to install plugin updates', 'inventory-presser' ), __( 'Error', 'inventory-presser' ), array( 'response' => 403 ) );
 			}
 	
 			$data         = $edd_plugin_data[ $_REQUEST['slug'] ];
