@@ -103,7 +103,7 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
 			//filter the post content to use a shortcode instead
 			add_filter( 'the_content', array( $this, 'replace_content_with_shortcode_' . $single_or_archive ) );
 
-			//Still return the empty template
+			//Still return the template
 			return $template;
 		}
 		
@@ -131,8 +131,16 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) )
 		 */
 		function replace_content_with_shortcode_single( $content )
 		{
-			// Remove the filter we're in to avoid nested calls.
-			remove_filter( 'the_content', array( $this, 'replace_content_with_shortcode_single' ) );
+			/**
+			 * Avoid running the shortcode more than necessary by checking if 
+			 * this stylesheet is already enqueued. Some themes, like 
+			 * GeneratePress, apply filters to the_content a few times.
+			 */
+			if( wp_style_is( 'invp_single_vehicle' ) )
+			{
+				// Remove the filter we're in to avoid nested calls.
+				remove_filter( 'the_content', array( $this, 'replace_content_with_shortcode_single' ) );
+			}
 			return do_shortcode( '[invp-single-vehicle]' );
 		}
 	}
