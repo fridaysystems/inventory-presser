@@ -343,6 +343,49 @@ function invp_get_the_interior_color( $post_ID = null )
 }
 
 /**
+ * invp_get_raw_last_modified
+ * 
+ * Template tag. Returns the timestamp the vehicle was last modified
+ *
+ * @param  int $post_ID
+ * @return string
+ */
+function invp_get_raw_last_modified( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'last_modified', $post_ID );
+}
+
+/**
+ * invp_get_the_last_modified
+ * 
+ * Template tag. Returns the timestamp the vehicle was last modified formatted
+ * as a string according to WordPress' date and time format as set at Settings →
+ * General.
+ *
+ * @param  int $post_ID
+ * @return string
+ */
+function invp_get_the_last_modified( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	$date_format = get_option( 'date_format' );
+	$time_format = get_option( 'time_format' );
+
+	//Mon, 25 Apr 2022 01:45:46 -0400
+	$date = DateTime::createFromFormat( 'D, d M Y h:i:s O', invp_get_raw_last_modified() );
+
+	return date( $date_format . ' ' . $time_format, $date->getTimestamp() );
+}
+
+/**
  * invp_get_the_length
  * 
  * Template tag. Boat field. Returns the length of the boat.
