@@ -999,7 +999,7 @@ function invp_get_the_transmission( $post_ID = null )
 	return $raw;
 }
 
-function invp_get_the_transmission_speeds( $post_ID )
+function invp_get_the_transmission_speeds( $post_ID = null )
 {
 	if( empty( $post_ID ) )
 	{
