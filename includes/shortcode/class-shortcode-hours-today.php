@@ -300,7 +300,7 @@ class Inventory_Presser_Shortcode_Hours_Today
 	 * @param  string $slug The slug of a term in our location taxonomy
 	 * @return array A set of hours
 	 */
-	function find_hours_sets_by_location_slug( $slug )
+	public function find_hours_sets_by_location_slug( $slug )
 	{
 		if( ! is_string( $slug ) )
 		{
