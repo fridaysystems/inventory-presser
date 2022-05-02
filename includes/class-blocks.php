@@ -68,20 +68,6 @@ class Inventory_Presser_Blocks
 
 		$asset_file = include( plugin_dir_path( INVP_PLUGIN_FILE_PATH ) . 'build/index.asset.php' );
 
-		$keys = array(
-			// 'beam',
-			// 'body-style',
-			// 'color',
-			// 'engine',
-			// 'hull-material',
-			// 'interior-color',
-			// 'last-modified',
-			// 'length',
-			'make',
-			'model',
-			// 'odometer',
-		);
-
 		wp_enqueue_script(
 			'invp-blocks',
 			plugins_url( 'build/index.js', INVP_PLUGIN_FILE_PATH ),
@@ -98,13 +84,5 @@ class Inventory_Presser_Blocks
 			'use_carfax'                  => $settings['use_carfax'],
 			'use_carfax_provided_buttons' => $settings['use_carfax_provided_buttons'],
 		) ), 'before' );
-
-
-		foreach( $keys as $key )
-		{
-			register_block_type( 'inventory-presser/' . $key, array(
-				'editor_script' => 'invp-blocks',
-			) );
-		}
 	}
 }
