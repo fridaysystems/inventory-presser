@@ -54,7 +54,11 @@ class Inventory_Presser_Shortcode_Iframe
 	 * @param  array $atts
 	 * @return string HTML that renders an iframe that expands to the height of its content
 	 */
-	function content( $atts ) {
+	function content( $atts )
+	{
+		$script_handle = 'invp-iframe-resizer';
+		wp_enqueue_script( $script_handle );
+		wp_add_inline_script( $script_handle, 'iFrameResize({ log:false,sizeWidth:true });' );
 
 		$atts = shortcode_atts( array(
 			'width'       => '100%',

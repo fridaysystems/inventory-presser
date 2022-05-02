@@ -934,6 +934,9 @@ class Inventory_Presser_Plugin
 		//Our overrides
 		wp_register_style( 'invp-flexslider', plugins_url( '/css/flexslider.min.css', __FILE__ ), array( 'flexslider' ), $plugin_version );
 
+		//Register the iFrameResizer.js script for use by our [invp_iframe] shortcode and Iframe block
+		wp_register_script( 'invp-iframe-resizer', plugins_url( '/js/iframe-resizer/iframeResizer.min.js', __FILE__ ), [], $plugin_version );
+
 		/**
 		 * Register a stylesheet that will be used by two shortcodes,
 		 * [invp-archive-vehicle] and [invp-single-vehicle]
