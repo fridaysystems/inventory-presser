@@ -382,6 +382,11 @@ function invp_get_the_last_modified( $post_ID = null )
 	//Mon, 25 Apr 2022 01:45:46 -0400
 	$date = DateTime::createFromFormat( 'D, d M Y h:i:s O', invp_get_raw_last_modified() );
 
+	if( ! $date )
+	{
+		return '';
+	}
+
 	return date( $date_format . ' ' . $time_format, $date->getTimestamp() );
 }
 
