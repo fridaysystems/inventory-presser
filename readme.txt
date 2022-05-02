@@ -100,6 +100,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Upgrade Notice ==
 
+= 13.8.0 =
+Adds template tags `invp_get_the_last_modified()` and `invp_get_raw_last_modified()`. Registers all scripts and styles on the `enqueue_block_editor_assets` hook so blocks can use them. Adds & implements iFrameResizer.js in the [invp_iframe] shortcode instead of relying on the themes like _dealer to provide the library and resize iframes. Bug fix when looking for an SVG file path in the Carfax Widget. Bug fix in the `invp_get_the_transmission_speeds()` template tag. The single `$post_id` argument is now optional, matching all other template tags.
+
 = 13.7.1 = 
 Changes tested up to version number 5.9.2. Increases compatibility with more themes out of the box, and specifically themes like GeneratePress that call and filter the_content multiple times when rendering a page. Fixes block category creation so all this plugin's blocks are nicley grouped. Fix in the Sort Vehicles By setting when a date field like last modified is chosen. Fixes plugin update nags in multisite installations to look more like core update nags.
 
