@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 5.9.2
-Stable tag: 13.7.1
+Tested up to: 5.9.3
+Stable tag: 13.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,12 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 13.8.0 =
+* [Added] Adds template tags `invp_get_the_last_modified()` and `invp_get_raw_last_modified()`
+* [Added] Registers all scripts and styles on the `enqueue_block_editor_assets` hook so blocks can use them 
+* [Fixed] Bug fix when looking for an SVG file path in the Carfax Widget
+* [Fixed] Bug fix in the `invp_get_the_transmission_speeds()` template tag. The single `$post_id` argument is now optional, matching all other template tags.
 
 = 13.7.1 = 
 * [Added] Adds Carfax settings to the inv_blocks JavaScript object so that upcoming blocks can make use of the values.
