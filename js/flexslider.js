@@ -55,7 +55,8 @@ function adjustSlideHeight(wrapper)
 	jQuery(wrapper + ' .slides li img').each(function() {
 		ratios.push(jQuery(this).attr('height')/jQuery(this).attr('width'));
 	});
-	height = Math.ceil(jQuery('#slider-width').width() * Math.min.apply(Math,ratios));
+	var width = Math.min(getLargestWidthFromSrcset(jQuery('.flexslider .flex-active-slide img')[0]), jQuery('#slider-width').width());
+	height = Math.ceil(width * Math.min.apply(Math,ratios));
 	jQuery(wrapper + ' .slides li img').each(function() {
 		jQuery(this).css('height', height);
 		jQuery(this).css('width', 'auto');
@@ -99,4 +100,24 @@ function flexslider_maybe_resize_current_image()
 	jQuery('.flexslider:not(#carousel) .flex-direction-nav a').css('line-height', current_image_height + 'px' );
 	//and resize the whole slider based on the height of the current image
 	jQuery('.flexslider:not(#carousel) .flex-viewport').css('height', current_image_height + 'px' );
+}
+
+//https://stackoverflow.com/a/60487971/338432
+function getLargestWidthFromSrcset(element) {
+	if (element.getAttribute("srcset")) {
+		return element
+			.getAttribute("srcset")
+			.split(",")
+			.reduce(
+				(acc, item) => {
+					let [url, width] = item.trim().split(" ");
+					width = parseInt(width);
+					if (width > acc.width) return { width, url };
+					return acc;
+				},
+				{ width: 0, url: "" }
+			).width;
+	}
+  
+	return element.getAttribute("width");
 }
