@@ -11,10 +11,10 @@ Turn WordPress into a dealership website. Provides vehicle listing templates and
 
 == Description ==
 
-This plugin tranforms WordPress into a powerful dealer website platform that makes displaying a vehicle inventory easy.
+Manage and market a dealership inventory
 
 * Supports automobiles, motorcycles, ATVs, RVs, and boats
-* [Manage multiple lot locations](https://inventorypresser.com/docs/vehicle-post-type/locations-taxonomy/) and separate phone numbers & hours for each
+* [Manage multiple lot locations](https://inventorypresser.com/docs/vehicle-post-type/locations-taxonomy/) across inventory, and maintain separate phone numbers & hours for each
 * [VIN-decoding add-on](https://inventorypresser.com/products/plugins/add-vins-to-vehicle-urls/) available
 * Categorizes inventory by type, body style, fuel, transmission, drive type, availability, new or used, location, and more
 * Includes [more than 10 widgets](https://inventorypresser.com/docs/feature-list/widgets/) including vehicle sliders and inventory grids
@@ -55,10 +55,12 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Screenshots ==
 
-1. This is a list of vehicles in the administrator dashboard that the user sees when she clicks the Vehicles or All Vehicles menu items. Each vehicle is listed by year, make, model, trim, stock number, color, odometer, price, and photo count. If the vehicle has photos, a thumbnail is also shown. This screen shot was taken on version 3.1.0.
-2. This is the edit screen that adds or edits a single vehicle. The post content box is demoted to handle only the sentence-form vehicle description, and the entire edit screen is enhanced to support vehicle attributes. This screen shot was taken on version 3.1.0.
-3. This screenshot shows a vehicle post in the WordPress block editor. An editor sidebar for the Inventory Presser plugin is expanded and contains vehicle attribute fields. An arrow points to a button with a key on it that reveals the editor sidebar.
-4. This screenshot shows a vehicle archive on the Twenty Twenty theme before any customization.
+1. This is a vehicle post archive showing post title, full size featured image, price, vehicle attribute table, carfax button, and link to vehicle post single.
+2. This is an inventory grid showing featured image thumbnails and post titles. A full inventory link takes users to the vehicle post archive.
+3. This is a list of vehicles in the administrator dashboard that the user sees when she clicks the Vehicles or All Vehicles menu items. Each vehicle is listed by year, make, model, trim, stock number, color, odometer, price, and photo count. If the vehicle has photos, a thumbnail is also shown. This screen shot was taken on version 3.1.0.
+4. This is the edit screen that adds or edits a single vehicle. The post content box is demoted to handle only the sentence-form vehicle description, and the entire edit screen is enhanced to support vehicle attributes. This screen shot was taken on version 3.1.0.
+5. This screenshot shows a vehicle post in the WordPress block editor. An editor sidebar for the Inventory Presser plugin is expanded and contains vehicle attribute fields. An arrow points to a button with a key on it that reveals the editor sidebar.
+6. This screenshot shows a vehicle archive on the Twenty Twenty theme before any customization.
 
 
 == Changelog ==
