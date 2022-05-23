@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 5.9.3
-Stable tag: 13.8.0
+Stable tag: 13.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,10 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 13.8.1 =
+* [Added] Adds a minimized version of the leaflet.js CSS file. This file is used by the Map widget.
+* [Fixed] Bug fix when resizing flexslider images to avoid stretching images wider than their full size dimensions.
+
 = 13.8.0 =
 * [Added] Adds template tags `invp_get_the_last_modified()` and `invp_get_raw_last_modified()`
 * [Added] Registers all scripts and styles on the `enqueue_block_editor_assets` hook so blocks can use them 
@@ -101,6 +105,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 13.8.1 = 
+Adds a minimized version of the leaflet.js CSS file. This file is used by the Map widget. Bug fix when resizing flexslider images to avoid stretching images wider than their full size dimensions.
 
 = 13.8.0 =
 Adds template tags `invp_get_the_last_modified()` and `invp_get_raw_last_modified()`. Registers all scripts and styles on the `enqueue_block_editor_assets` hook so blocks can use them. Adds & implements iFrameResizer.js in the [invp_iframe] shortcode instead of relying on the themes like _dealer to provide the library and resize iframes. Bug fix when looking for an SVG file path in the Carfax Widget. Bug fix in the `invp_get_the_transmission_speeds()` template tag. The single `$post_id` argument is now optional, matching all other template tags.
