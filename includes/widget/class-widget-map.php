@@ -35,7 +35,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 
 		//Register script and style files for leaflet.js
 		wp_register_script( self::SCRIPT_HANDLE_LEAFLET, plugins_url( 'js/leaflet/leaflet.js', INVP_PLUGIN_FILE_PATH ) );
-		wp_register_style( self::SCRIPT_HANDLE_LEAFLET, plugins_url( 'js/leaflet/leaflet.css', INVP_PLUGIN_FILE_PATH ) );
+		wp_register_style( self::SCRIPT_HANDLE_LEAFLET, plugins_url( 'js/leaflet/leaflet.min.css', INVP_PLUGIN_FILE_PATH ) );
 		wp_register_style( self::ID_BASE, plugins_url( 'css/widget-map.min.css', INVP_PLUGIN_FILE_PATH ) );
 	}
 

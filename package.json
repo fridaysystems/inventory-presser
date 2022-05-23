@@ -8,7 +8,7 @@
 	},
 	"scripts": {
 		"start": "wp-scripts start",
-		"build": "wp-scripts build && cp -R node_modules/leaflet/dist/ js/leaflet  && cp -R node_modules/iframe-resizer/js/ js/iframe-resizer"
+		"build": "wp-scripts build && cp -R node_modules/leaflet/dist/ js/leaflet  && cp -R node_modules/iframe-resizer/js/ js/iframe-resizer && minify js/leaflet/leaflet.css > js/leaflet/leaflet.min.css"
 	},
 	"repository": {
 		"type": "git",
@@ -23,6 +23,7 @@
 	"devDependencies": {
 		"@wordpress/scripts": "^19.2.2",
 		"iframe-resizer": "^4.3.2",
-		"leaflet": "^1.7.1"
+		"leaflet": "^1.7.1",
+		"minify": "^8.0.4"
 	}
 }
