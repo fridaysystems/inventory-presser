@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) or exit;
 class Inventory_Presser_Map_Widget extends WP_Widget {
 
 	const ID_BASE = '_invp_map';
-	const SCRIPT_HANDLE_LEAFLET = 'invp-leaflet';
+	const SCRIPT_HANDLE_LEAFLET = 'invp-leaflet-widget';
 
 	/**
 	 * __construct
