@@ -601,7 +601,15 @@ class Inventory_Presser_Taxonomies
 	 */
 	function sort_terms_as_numbers( $order_by, $args, $taxonomies )
 	{
-		if( '' == $order_by ) { return ''; }
+		if( '' == $order_by )
+		{
+			return $order_by;
+		}
+
+		if( null === $taxonomies )
+		{
+			return $order_by;
+		}
 
 		$taxonomies_to_sort = array(
 			'cylinders',
