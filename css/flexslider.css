@@ -44,6 +44,7 @@ ul.flex-direction-nav li{
 }
 /* speed up animation when the next and previous buttons move */
 .flex-viewport{
+	width: 100%;
 	-webkit-transition: all .2s ease;
 	-moz-transition: all .2s ease;
 	-ms-transition: all .2s ease;
