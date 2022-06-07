@@ -241,8 +241,11 @@ class Inventory_Presser_Slider extends WP_Widget {
 				);
 			}
 		?>
-		</select>
-		</p>
+		</select></p><p class="description"><?php 
+
+		_e( 'Limited to two (2) on display widths of 480px and less.', 'inventory-presser' );
+
+		?></p>
 
 		<p>
 		<label for="<?php echo $this->get_field_id( 'featured_select' ); ?>"><?php _e( 'Vehicle Selection:', 'inventory-presser' ); ?></label>

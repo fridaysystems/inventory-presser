@@ -1,4 +1,14 @@
 jQuery(document).ready(function(){
+	/**
+	 * The more slides shown at once, the shorter the slider is. Cap at 2 in
+	 * frame at one time so the thumbnails do not appear smaller than postage
+	 * stamps on smaller devices.
+	 */
+	if( document.documentElement.clientWidth <= 480 
+		&& widget_slider.showcount > 2 )
+	{
+		widget_slider.showcount = 2;
+	}
 	var flexslider = jQuery('.widget__invp_slick .flexslider');
 	flexslider.flexslider({
 		animation: 'slide', /* Select your animation type, "fade" or "slide" */
