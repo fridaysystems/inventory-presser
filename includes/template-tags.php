@@ -469,6 +469,10 @@ function invp_get_the_location_sentence( $post_ID = null )
 	 * description has the full address.
 	 */
 	$location_terms = wp_get_post_terms( $post_ID, 'location' );
+	if( empty( $location_terms ) )
+	{
+		return '';
+	}
 	
 	//Could have two locations on the same vehicle, so just take the first
 	$location = str_replace( chr( 13 ) . chr( 10 ), ', ', $location_terms[0]->description );
