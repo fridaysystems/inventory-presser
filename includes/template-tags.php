@@ -724,7 +724,7 @@ function invp_get_the_photos( $sizes, $post_ID = null )
 		$post_ID = get_the_ID();
 	}
 
-	$image_args = array(
+	$images = get_posts( array(
 		'meta_key'       => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
 		'posts_per_page' => -1,
 		'order'          => 'ASC',
@@ -733,9 +733,25 @@ function invp_get_the_photos( $sizes, $post_ID = null )
 		'post_parent'    => $post_ID,
 		'post_status'    => 'inherit',
 		'post_type'      => 'attachment',
-	);
+	) );
 
-	$images = get_posts( $image_args );
+	//Did we find any photos?
+	if( empty( $images ) )
+	{
+		/**
+		 * No. Perhaps this vehicle has attachments, but they don't have our
+		 * meta key. Just rely on the post date for sequencing.
+		 */
+		$images = get_posts( array(
+			'posts_per_page' => -1,
+			'order'          => 'ASC',
+			'orderby'        => 'post_date',
+			'post_mime_type' => 'image',
+			'post_parent'    => $post_ID,
+			'post_status'    => 'inherit',
+			'post_type'      => 'attachment',
+		) );
+	}
 
 	$image_urls = array();
 	foreach( $images as $image )
