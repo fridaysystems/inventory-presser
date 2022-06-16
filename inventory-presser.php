@@ -789,6 +789,9 @@ class Inventory_Presser_Plugin
 
 		$rest = new Inventory_Presser_REST();
 		$rest->add_hooks();
+
+		$wp_all_import = new Inventory_Presser_WP_All_Import();
+		$wp_all_import->add_hooks();
 	}
 
 	public function add_view_details_button()
@@ -852,6 +855,7 @@ class Inventory_Presser_Plugin
 			'class-redirect-404-vehicles.php',
 			'class-rest.php',
 			'class-schema-org-generator.php',
+			'integrations/class-wp-all-import.php',
 			'shortcode/class-shortcode-hours-today.php',
 			'shortcode/class-shortcode-iframe.php',
 			'shortcode/class-shortcode-inventory-grid.php',
