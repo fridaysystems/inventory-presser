@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 5.9.3
-Stable tag: 13.8.1
+Tested up to: 6.0.0
+Stable tag: 13.8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,13 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 13.8.2 =
+* [Fixed] Bug fix. invp_get_the_location_sentence() assumed the site had at least one location term before this fix.
+* [Fixed] Allows invp_get_the_photos() to find attachments to the post even if they do not have our sequencing meta value. Relies on the post_date for sequence instead.
+* [Fixed] No longer attempts to change a query order by in get_terms() if there are no taxonomy names provided to the filter callback.
+* [Changed] Changes the slider widget to show only 2 vehicles at a time on smaller devices.
+* [Changed] Changes tested up to version number to 6.0.0.
+
 = 13.8.1 =
 * [Added] Adds a minimized version of the leaflet.js CSS file. This file is used by the Map widget.
 * [Fixed] Bug fix when resizing flexslider images to avoid stretching images wider than their full size dimensions.
@@ -105,6 +112,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 13.8.2 = 
+Changes the slider widget to show only 2 vehicles at a time on smaller devices. Bug fixes. Increases compatibility with inventory photos that were inserted by other services and do not have sequence numbers saved in post meta. Relies on the post_date for photo sequence when our meta key is not found.
 
 = 13.8.1 = 
 Adds a minimized version of the leaflet.js CSS file. This file is used by the Map widget. Bug fix when resizing flexslider images to avoid stretching images wider than their full size dimensions.
