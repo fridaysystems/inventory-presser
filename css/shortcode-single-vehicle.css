@@ -15,9 +15,10 @@ ul.vehicle-features {
 }
 .vehicle-buttons{
 	max-width: 48%;
+	flex-grow: 1;
 }
 .vehicle-buttons div{ 
-	min-width: 250px; 
+	min-width: 180px; 
 }
 .vehicle-columns{
 	display: flex;
@@ -25,4 +26,10 @@ ul.vehicle-features {
 }
 .vehicle-summary{
 	margin-top: .5em;
+	flex-grow: 2;
+	max-width: none;
+}
+.vehicle-columns .vehicle-summary .item {
+  display: inline-block;
+  width: 50%;
 }
