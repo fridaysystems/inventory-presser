@@ -124,30 +124,6 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 							echo invp_get_the_price();
 						?></h3><?php
 
-						//carfax
-						if ( isset( $invp_settings['use_carfax'] ) && $invp_settings['use_carfax'] )
-						{
-							$carfax_html = invp_get_the_carfax_icon_html();
-							if( '' != $carfax_html )
-							{
-								?><div class="carfax-wrapper"><?php
-									echo $carfax_html;
-								?></div><?php
-							}
-						}
-
-						// autocheck icon
-						if( shortcode_exists( 'autocheck_button' ) )
-						{
-							$autocheck_html = do_shortcode( sprintf( '[autocheck_button vin="%s"]', invp_get_the_VIN() ) );
-							if( '' != $autocheck_html )
-							{
-								?><div class="autocheck-wrapper"><?php
-									echo $autocheck_html;
-								?></div><?php
-							}
-						}
-
 						do_action( 'invp_archive_buttons' );
 
 					?></div>
