@@ -67,6 +67,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 14.0.0 =
 * [Added] Integrates WP All Import. Detects and saves piped options in the `inventory_presser_options_array` meta field. Marks all imported vehicles for sale in the availabilities taxonomy if they do not already have a relationship in the taxonomy.
+* [Added] Adds a shortcode [invp_attribute_table] to make the feature more accessible to templates.
 * [Added] Adds a filter `invp_single_sections` to let users edit or add to the Description and Features sections of [invp_single_vehicle]
 * [Fixed] No longer changes thumbnail photo sizes in the dashboard's list of vehicles at `wp-admin/edit.php?post_type=inventory_vehicle`
 * [Changed] Improves the way [invp_single_vehicle] organizes content sections with CSS and HTML changes.
