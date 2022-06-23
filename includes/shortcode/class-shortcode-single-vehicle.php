@@ -127,38 +127,68 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 					?></div>
 				</div><!--/.post-thumbnail-->
 
-				<div class="vehicle-columns">
-					<div class="vehicle-summary"><?php
+				<div class="vehicle-columns"><?php
 
-						echo $this->vehicle_attribute_table();
+					$attribute_table = $this->vehicle_attribute_table();
+					if( ! empty( $attribute_table ) ) {
 
-					?></div>
-					<div class="vehicle-buttons"><?php
+						?><div class="vehicle-summary"><?php
+
+						echo $attribute_table;
+
+					?></div><?php
+
+					}
+
+					?><div class="vehicle-buttons"><?php
 						
 						do_action( 'invp_single_buttons' );
 
 					?></div>
 				</div>
 
-				<div class="vehicle-content">
-					<div class="vehicle-content-wrap"><?php echo invp_get_the_description(); ?></div><?php
+				<div class="vehicle-content"><?php
+
+					$sections = [];
+
+					$description = invp_get_the_description();
+					if( ! empty( $description ) )
+					{
+						$sections['description'] = sprintf(
+							'<h2 class="vehicle-content-wrap">%s</h2><div class="vehicle-content-wrap">%s</div>',
+							__( 'Description', 'inventory-presser' ),
+							wpautop( $description )
+						);
+					}
 
 					// if there's a youtube video associated with this vehicle, embed it
 					if ( invp_get_the_youtube_url() )
 					{
-						echo wp_oembed_get( invp_get_the_youtube_url() );
+						$sections['youtube'] = wp_oembed_get( invp_get_the_youtube_url() );
 					}
 
-					?><ul class="vehicle-features"><?php
-
-					// loop through list of vehicle options
-					foreach( invp_get_the_options() as $option)
+					$options_array = invp_get_the_options(); 
+					if( ! empty( $options_array ) )
 					{
-						printf( '<li>%s</li>', $option );
+						// loop through list of vehicle options
+						$options_html = '';
+						foreach( invp_get_the_options() as $option)
+						{
+							$options_html .= sprintf( '<li>%s</li>', $option );
+						}
+
+						$sections['options'] = sprintf( 
+							'<h2 class="vehicle-features">%s</h2><ul class="vehicle-features">%s</ul>',
+							__( 'Options', 'inventory-presser' ),
+							$options_html
+						);
 					}
 
-					?></ul>
-				</div>
+					$sections = apply_filters( 'invp_single_sections', $sections );
+
+					array_walk( $sections, function( $value ) { echo $value; } );
+
+				?></div>
 			</div><!--/.post-inner-->
 		</div><script type="text/javascript"><!--
 	function adjustSlideHeight(wrapper)
