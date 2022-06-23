@@ -65,6 +65,13 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 14.0.0 =
+* [Added] Integrates WP All Import. Detects and saves piped options in the `inventory_presser_options_array` meta field. Marks all imported vehicles for sale in the availabilities taxonomy if they do not already have a relationship in the taxonomy.
+* [Added] Adds a filter `invp_single_sections` to let users edit or add to the Description and Features sections of [invp_single_vehicle]
+* [Fixed] No longer changes thumbnail photo sizes in the dashboard's list of vehicles at `wp-admin/edit.php?post_type=inventory_vehicle`
+* [Changed] Improves the way [invp_single_vehicle] organizes content sections with CSS and HTML changes.
+* [Removed] Removes AutoCheck integration in [invp_single_vehicle] and [invp_archive_vehicle]. The AutoCheck add-on now adds the button to the `invp_single_buttons` and `invp_archive_buttons` hooks.
+
 = 13.8.2 =
 * [Fixed] Bug fix. invp_get_the_location_sentence() assumed the site had at least one location term before this fix.
 * [Fixed] Allows invp_get_the_photos() to find attachments to the post even if they do not have our sequencing meta value. Relies on the post_date for sequence instead.
