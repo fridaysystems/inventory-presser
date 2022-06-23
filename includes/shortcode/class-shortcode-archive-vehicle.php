@@ -115,7 +115,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Temp
 
 					<div class="vehicle-summary"><?php
 
-						echo $this->vehicle_attribute_table();
+						echo apply_shortcodes( '[invp_attribute_table]' );
 
 					?></div>
 

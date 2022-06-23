@@ -730,6 +730,8 @@ class Inventory_Presser_Plugin
 		$shortcodes->hooks();
 		$shortcodes = new Inventory_Presser_Shortcode_Archive_Vehicle();
 		$shortcodes->hooks();
+		$shortcodes = new Inventory_Presser_Shortcode_Attribute_Table();
+		$shortcodes->hooks();
 		$shortcodes = new Inventory_Presser_Shortcode_Hours_Today();
 		$shortcodes->hooks();
 		$shortcodes = new Inventory_Presser_Shortcode_Photo_Slider();
@@ -864,6 +866,7 @@ class Inventory_Presser_Plugin
 			'shortcode/class-shortcode-template-shortcode.php',
 			'shortcode/class-shortcode-archive.php',
 			'shortcode/class-shortcode-archive-vehicle.php',
+			'shortcode/class-shortcode-attribute-table.php',
 			'shortcode/class-shortcode-single-vehicle.php',
 			'shortcode/class-shortcode-vin.php',
 			'class-taxonomies.php',

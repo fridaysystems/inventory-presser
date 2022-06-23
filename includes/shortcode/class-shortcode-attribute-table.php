@@ -2,31 +2,32 @@
 defined( 'ABSPATH' ) or exit;
 
 /**
- * Inventory_Presser_Template_Shortcode
+ * Inventory_Presser_Shortcode_Vin
  * 
- * This is a parent class that provides a method to both the archive-vehicle
- * and single-vehicle template shortcodes.
+ * Creates a shortcode that outputs a vehicle identification number.
  */
-class Inventory_Presser_Template_Shortcode
-{	
+class Inventory_Presser_Shortcode_Attribute_Table
+{
 	/**
-	 * vehicle_attribute_table
+	 * add
 	 * 
-	 * Creates HTML that produces the vehicle attribute table that accompanies 
-	 * every vehicle listing.
+	 * Adds two shortcodes
 	 *
-	 * @deprecated 14.0.0 Use [invp_attribute_table] shortcode instead
-	 * 
-	 * @param  int $post_ID A vehicle post ID
-	 * @return string HTML that renders a table containing vehicle attributes
+	 * @return void
 	 */
-	protected function vehicle_attribute_table( $post_ID = null )
+	function add()
 	{
-		if( empty( $post_ID ) )
-		{
-			$post_ID = get_the_ID();
-		}
+		add_shortcode( 'invp-attribute-table', array( $this, 'content' ) );
+		add_shortcode( 'invp_attribute_table', array( $this, 'content' ) );
+	}
 
+	public function content( $atts )
+	{
+		$atts = shortcode_atts( array(
+			//uh
+		), $atts, 'attribute_table' ); //Use shortcode_atts_attribute_table to filter the incoming attributes
+
+		$post_ID = get_the_ID();
 		$invp_settings = INVP::settings();
 
 		/**
@@ -164,5 +165,17 @@ class Inventory_Presser_Template_Shortcode
 		}
 
 		return apply_filters( 'invp_vehicle_attribute_table', $html );
+	}
+
+	/**
+	 * hooks
+	 * 
+	 * Adds hooks that power the shortcode
+	 *
+	 * @return void
+	 */
+	function hooks()
+	{
+		add_action( 'init', array( $this, 'add' ) );
 	}
 }

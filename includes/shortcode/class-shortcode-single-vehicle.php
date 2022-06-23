@@ -129,7 +129,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Templ
 
 				<div class="vehicle-columns"><?php
 
-					$attribute_table = $this->vehicle_attribute_table();
+					$attribute_table = apply_shortcodes( '[invp_attribute_table]' );
 					if( ! empty( $attribute_table ) ) {
 
 						?><div class="vehicle-summary"><?php
