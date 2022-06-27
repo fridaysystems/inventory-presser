@@ -32,18 +32,6 @@ if ( ! defined( 'INVP_PLUGIN_FILE_PATH' ) )
 class Inventory_Presser_Plugin
 {
 	/**
-	 * @var CUSTOM_POST_TYPE
-	 * @deprecated, use INVP::POST_TYPE instead
-	 */
-	const CUSTOM_POST_TYPE = 'inventory_vehicle';
-
-	/**
-	 * @var OPTION_NAME
-	 * @deprecated, use INVP::OPTION_NAME instead
-	 */
-	const OPTION_NAME = 'inventory_presser';
-	
-	/**
 	 * settings
 	 * 
 	 * A place to store this plugin's option full of settings.
@@ -1042,17 +1030,6 @@ class Inventory_Presser_Plugin
 	}
 
 	/**
-	 * meta_prefix
-	 * 
-	 * @deprecated This method has been moved to the INVP class.
-	 * @return void
-	 */
-	public static function meta_prefix()
-	{
-		return INVP::meta_prefix();
-	}
-
-	/**
 	 * meta_query_contains_clause
 	 * 
 	 * Does a meta_query already contain a clause?
@@ -1316,18 +1293,7 @@ class Inventory_Presser_Plugin
 			add_action( 'pre_get_posts', array( $this, 'modify_query_for_max_price' ), 99, 1 );
 		}
 	}
-
-	/**
-	 * settings
-	 *
-	 * @deprecated	This method has been moved to the INVP class.
-	 * @return void
-	 */
-	public static function settings()
-	{
-		return INVP::settings();
-	}
-} //end class
+}
 
 $inventory_presser = new Inventory_Presser_Plugin();
 $inventory_presser->hooks();

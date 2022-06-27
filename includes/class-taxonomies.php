@@ -15,15 +15,6 @@ class Inventory_Presser_Taxonomies
 {
 	const CRON_HOOK_DELETE_TERMS = 'inventory_presser_delete_unused_terms';
 
-	
-	/**
-	 * @deprecated
-	 */
-	static function create_taxonomies()
-	{
-		self::register_taxonomies();
-	}
-
 	/**
 	 * delete_term_data
 	 * 
@@ -75,34 +66,6 @@ class Inventory_Presser_Taxonomies
 				wp_delete_term( $term->term_id, $term->taxonomy );
 			}
 		}
-	}
-	
-	/**
-	 * get_hours
-	 * 
-	 * Loads sets of hours from post meta into an array.
-	 *
-	 * @deprecated 13.5.0 Use INVP::get_hours() instead
-	 * @param  int $term_id The location term ID from which to extract hours
-	 * @return array An array of hours arrays
-	 */
-	public static function get_hours( $term_id )
-	{
-		INVP::get_hours( $term_id );
-	}
-
-	/**
-	 * get_phones
-	 * 
-	 * Loads phone numbers from post meta into an array.
-	 *
-	 * @deprecated 13.5.0 Use INVP::get_phones() instead
-	 * @param  int $term_id The location term ID from which to extract phones
-	 * @return array An array of arrays describing phone numbers
-	 */
-	public static function get_phones( $term_id )
-	{
-		INVP::get_phones( $term_id );
 	}
 	
 	/**

@@ -19,7 +19,6 @@ class Inventory_Presser_Shortcode_Iframe
 	 */
 	function add()
 	{
-		add_shortcode( 'iframe', array( $this, 'content_but_wrong') );
 		add_shortcode( 'invp-iframe', array( $this, 'content') );
 		add_shortcode( 'invp_iframe', array( $this, 'content') );
 	}
@@ -34,16 +33,6 @@ class Inventory_Presser_Shortcode_Iframe
 	function hooks()
 	{
 		add_action( 'init', array( $this, 'add' ) );
-	}
-
-	function content_but_wrong( $atts )
-	{
-		_doing_it_wrong(
-			__FUNCTION__,
-			site_url() . ' ' . __( 'The [iframe] shortcode was deprecated in version 12.2.0. Use [invp_iframe] instead. See https://inventorypresser.com/docs/shortcodes/', 'inventory-presser' ),
-			'12.2.0'
-		);
-		return $this->content( $atts );
 	}
 
 	/**
