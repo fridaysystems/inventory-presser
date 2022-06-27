@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) or exit;
  * A shortcode that allows themes that do not provide a content-archive template
  * to show a vehicle archive.
  */
-class Inventory_Presser_Shortcode_Archive extends Inventory_Presser_Template_Shortcode
+class Inventory_Presser_Shortcode_Archive
 {		
 	/**
 	 * add

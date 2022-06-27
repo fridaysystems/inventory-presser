@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or exit;
  * 
  * A shortcode that creates a content-single template for the vehicle post type.
  */
-class Inventory_Presser_Shortcode_Single_Vehicle extends Inventory_Presser_Template_Shortcode
+class Inventory_Presser_Shortcode_Single_Vehicle
 {
 	/**
 	 * add

@@ -863,7 +863,6 @@ class Inventory_Presser_Plugin
 			'shortcode/class-shortcode-inventory-grid.php',
 			'shortcode/class-shortcode-inventory-slider.php',
 			'shortcode/class-shortcode-photo-slider.php',
-			'shortcode/class-shortcode-template-shortcode.php',
 			'shortcode/class-shortcode-archive.php',
 			'shortcode/class-shortcode-archive-vehicle.php',
 			'shortcode/class-shortcode-attribute-table.php',

@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) or exit;
  * used outright. We use this shortcode on the_content hook to provide better
  * output than a theme that doesn't know anything about our custom post type.
  */
-class Inventory_Presser_Shortcode_Archive_Vehicle extends Inventory_Presser_Template_Shortcode
+class Inventory_Presser_Shortcode_Archive_Vehicle
 {		
 	/**
 	 * add
