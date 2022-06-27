@@ -873,7 +873,6 @@ class Inventory_Presser_Plugin
 			'class-taxonomy-overlapper.php',
 			'class-template-provider.php',
 			'class-uninstaller.php',
-			'class-vehicle.php',
 			'class-vehicle-urls-by-vin.php',
 			'widget/class-widget-address.php',
 			'widget/class-widget-carfax.php',
