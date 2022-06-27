@@ -65,27 +65,6 @@ class Inventory_Presser_Shortcode_Attribute_Table
 
 		$table_items = array_merge( $table_items, array(
 
-			//Exterior Color
-			array(
-				'member' => 'color',
-				'label'  => __( 'Color', 'inventory_presser' ),
-				'value'  => invp_get_the_color( $post_ID ),
-			),
-
-			//Interior Color
-			array(
-				'member' => 'interior_color',
-				'label'  => __( 'Interior', 'inventory_presser' ),
-				'value'  => invp_get_the_interior_color( $post_ID ),
-			),
-
-			//Fuel + Engine
-			array(
-				'member' => 'engine',
-				'label'  => __( 'Engine', 'inventory-presser' ),
-				'value'  => trim( implode( ' ', array( invp_get_the_fuel( $post_ID ), invp_get_the_engine( $post_ID ) ) ) ),
-			),
-
 			//Transmission
 			array(
 				'member' => 'transmission',
@@ -93,11 +72,25 @@ class Inventory_Presser_Shortcode_Attribute_Table
 				'value'  => invp_get_the_transmission( $post_ID ),
 			),
 
+			//Exterior Color
+			array(
+				'member' => 'color',
+				'label'  => __( 'Color', 'inventory_presser' ),
+				'value'  => invp_get_the_color( $post_ID ),
+			),
+
 			//Drive Type
 			array(
 				'member' => 'drive_type',
 				'label'  => __( 'Drive Type', 'inventory-presser' ),
 				'value'  => invp_get_the_drive_type( $post_ID ),
+			),
+
+			//Interior Color
+			array(
+				'member' => 'interior_color',
+				'label'  => __( 'Interior', 'inventory_presser' ),
+				'value'  => invp_get_the_interior_color( $post_ID ),
 			),
 
 			//Doors
@@ -112,6 +105,13 @@ class Inventory_Presser_Shortcode_Attribute_Table
 				'member' => 'stock_number',
 				'label'  => __( 'Stock', 'inventory-presser' ),
 				'value'  => invp_get_the_stock_number( $post_ID ),
+			),
+
+			//Fuel + Engine
+			array(
+				'member' => 'engine',
+				'label'  => __( 'Engine', 'inventory-presser' ),
+				'value'  => trim( implode( ' ', array( invp_get_the_fuel( $post_ID ), invp_get_the_engine( $post_ID ) ) ) ),
 			),
 
 			//VIN
