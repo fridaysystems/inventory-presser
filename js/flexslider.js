@@ -104,6 +104,10 @@ function flexslider_maybe_resize_current_image()
 
 //https://stackoverflow.com/a/60487971/338432
 function getLargestWidthFromSrcset(element) {
+	if(!element)
+	{
+		return 2048;
+	}
 	if (element.getAttribute("srcset")) {
 		return element
 			.getAttribute("srcset")
