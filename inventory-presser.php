@@ -782,6 +782,9 @@ class Inventory_Presser_Plugin
 
 		$wp_all_import = new Inventory_Presser_WP_All_Import();
 		$wp_all_import->add_hooks();
+
+		$contact_form_7 = new Inventory_Presser_Contact_Form_7();
+		$contact_form_7->add_hooks();
 	}
 
 	public function add_view_details_button()
@@ -846,6 +849,7 @@ class Inventory_Presser_Plugin
 			'class-rest.php',
 			'class-schema-org-generator.php',
 			'integrations/class-wp-all-import.php',
+			'integrations/class-contact-form-7.php',
 			'shortcode/class-shortcode-hours-today.php',
 			'shortcode/class-shortcode-iframe.php',
 			'shortcode/class-shortcode-inventory-grid.php',
