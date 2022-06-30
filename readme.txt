@@ -67,11 +67,14 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 14.0.0 =
 * [Added] Integrates WP All Import. Detects and saves piped options in the `inventory_presser_options_array` meta field. Marks all imported vehicles for sale in the availabilities taxonomy if they do not already have a relationship in the taxonomy.
-* [Added] Adds a shortcode [invp_attribute_table] to make the feature more accessible to templates.
+* [Added] Integrates Contact Form 7. Adds a form tag [invp_vehicle] to help users put vehicle drop downs or hidden elements in forms.
+* [Added] Adds a shortcode [invp_attribute_table] to make the feature more accessible to templates. Re-orders some attributes in the table to better suit a two-column layout.
 * [Added] Adds a filter `invp_single_sections` to let users edit or add to the Description and Features sections of [invp_single_vehicle]
 * [Fixed] No longer changes thumbnail photo sizes in the dashboard's list of vehicles at `wp-admin/edit.php?post_type=inventory_vehicle`
 * [Changed] Improves the way [invp_single_vehicle] organizes content sections with CSS and HTML changes.
 * [Removed] Removes AutoCheck integration in [invp_single_vehicle] and [invp_archive_vehicle]. The AutoCheck add-on now adds the button to the `invp_single_buttons` and `invp_archive_buttons` hooks.
+* [Removed] Removes the [iframe] shortcode. This was replaced with [invp_iframe].
+* [Removed] Removes all deprecated methods and constants including the entire vehicle class. All items have had replacements for many months.
 
 = 13.8.2 =
 * [Fixed] Bug fix. invp_get_the_location_sentence() assumed the site had at least one location term before this fix.
@@ -122,7 +125,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Upgrade Notice ==
 
 = 14.0.0 =
-Integrates WP All Import to allow CSV feed imports. Improves [invp_single_vehicle] output and adds a filter `invp_single_sections` to allow customization.
+Integrates WP All Import to allow CSV feed imports. Integrates Contact Form 7 to add a [invp_vehicle] form tag. Improves [invp_single_vehicle] output and adds a filter `invp_single_sections` to allow customization. Removes all deprecated methods and constants, all of which have replacements. Removes the [iframe] shortcode that was replaced by [invp_iframe].
 
 = 13.8.2 = 
 Changes the slider widget to show only 2 vehicles at a time on smaller devices. Bug fixes. Increases compatibility with inventory photos that were inserted by other services and do not have sequence numbers saved in post meta. Relies on the post_date for photo sequence when our meta key is not found.
