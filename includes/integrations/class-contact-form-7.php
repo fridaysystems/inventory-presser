@@ -11,9 +11,20 @@ class Inventory_Presser_Contact_Form_7
 {
 	public function add_hooks()
 	{
+		//Add an [invp_vehicle] form tag
 		add_action( 'wpcf7_init', array( $this, 'add_form_tags' ) );
+
+		//Add a link to the vehicle before emails are sent
+		add_filter( 'wpcf7_mail_tag_replaced_invp_vehicle', array( $this, 'add_link' ), 10, 4 );
 	}
- 
+
+	/**
+	 * add_form_tags
+	 *
+	 * Adds an [invp_vehicle] form tag to Contact Form 7
+	 *
+	 * @return void
+	 */
 	public function add_form_tags()
 	{
 		wpcf7_add_form_tag(
@@ -22,14 +33,55 @@ class Inventory_Presser_Contact_Form_7
 			array( 'name-attr' => true )
 		);
 	}
+	
+	/**
+	 * add_link
+	 * 
+	 * Wraps strings like "2020 Toyota Sienna LE, 10329A" with a link in form
+	 * submission emails.
+	 *
+	 * @param  string $replaced
+	 * @param  string $submitted
+	 * @param  string $html
+	 * @param  WPCF7_MailTag $mail_tag
+	 * @return string
+	 */
+	public function add_link( $replaced, $submitted, $html, $mail_tag )
+	{
+		//Allow HTML in emails
+		add_filter( 'wp_mail_content_type', array( $this, 'html_mail_content_type' ) );
+
+		//submitted "2020 Toyota Sienna LE, 10329A"
+		$pieces = explode( ', ', $submitted );
+		if( 1 == sizeof( $pieces ) )
+		{
+			//delimiter not found
+			return $replaced;
+		}
+		$stock_number = $pieces[sizeof($pieces)-1];
+		$post_ids = get_posts( array(
+			'fields'         => 'ids',
+			'meta_key'       => apply_filters( 'invp_prefix_meta_key', 'stock_number' ),
+			'meta_value'     => $stock_number,
+			'post_status'    => 'publish',
+			'post_type'      => INVP::POST_TYPE,
+			'posts_per_page' => 1,
+		) );
+
+		if( empty( $post_ids ) )
+		{
+			return $replaced;
+		}
+
+		return sprintf( '<a href="%s">%s</a>', get_permalink( $post_ids[0] ), $replaced );
+	}
 
 	public function handler_vehicle( $tag )
 	{
 		$validation_error = wpcf7_get_validation_error( $tag->name );
 
 		$atts = array(
-			'id'         => '',
-			'value_type' => 'ymm',
+			'id' => '',
 		);
 
 		if( ! empty( $tag->options ) )
@@ -40,24 +92,13 @@ class Inventory_Presser_Contact_Form_7
 			} );
 		}
 
-		$value_types = array(
-			'post_id',
-			'stock_number',
-			'ymm',
-		);
-
-		if( ! in_array( $atts['value_type'], $value_types ) )
-		{
-			$atts['value_type'] = 'ymm';
-		}
-
 		//are we on a vdp? return a hidden field
 		if( is_singular( INVP::POST_TYPE ) )
 		{
 			$input_atts = array(
 				'type'  => 'hidden',
 				'name'  => $tag->name,
-				'value' => $this->prepare_value( $atts['value_type'] )
+				'value' => $this->prepare_value()
 			);
 			if( ! empty( $atts['id'] ) )
 			{
@@ -131,7 +172,7 @@ class Inventory_Presser_Contact_Form_7
 			//label is "2005 Subaru Baja Turbo, Blue, #12022"
 			$html .= sprintf(
 				'<option value="%s" %s>%s %s %s',
-				esc_attr( $this->prepare_value( $atts['value_type'], $post_ID ) ),
+				esc_attr( $this->prepare_value( $post_ID ) ),
 				isset( $_REQUEST['v'] ) ? selected( $post_ID, $_REQUEST['v'], false ) : '',
 				esc_html( $meta[apply_filters( 'invp_prefix_meta_key', 'year' )][0] ),
 				esc_html( $meta[apply_filters( 'invp_prefix_meta_key', 'make' )][0] ),
@@ -156,28 +197,34 @@ class Inventory_Presser_Contact_Form_7
 		return apply_filters( 'invp_cf7_field_vehicle_html', $html . '</select></span>' . $validation_error , $atts );
 	}
 
-	protected function prepare_value( $value, $post_ID = null )
+	/**
+	 * html_mail_content_type
+	 * 
+	 * Returns the string 'text/html'
+	 *
+	 * @param  string $type
+	 * @return string
+	 */
+	public static function html_mail_content_type( $type ) {
+		return 'text/html';
+	}
+
+	protected function prepare_value( $post_ID = null )
 	{
 		$post_ID = $post_ID ?? get_the_ID();
-		switch( $value )
+		$value = sprintf( '%s %s %s',
+			invp_get_the_year( $post_ID ),
+			invp_get_the_make( $post_ID ),
+			invp_get_the_model( $post_ID )
+		);
+		if( $trim = invp_get_the_trim( $post_ID ) )
 		{
-			case 'post_id':
-				return $post_ID;
-
-			case 'stock_number':
-				return invp_get_the_stock_number( $post_ID );
-
-			case 'ymm':
-				$value = sprintf( '%s %s %s',
-					invp_get_the_year( $post_ID ),
-					invp_get_the_make( $post_ID ),
-					invp_get_the_model( $post_ID )
-				);
-				if( $trim = invp_get_the_trim( $post_ID ) )
-				{
-					$value .= ' ' . $trim;
-				}
-				return $value;
+			$value .= ' ' . $trim;
 		}
+		if( $stock_number = invp_get_the_stock_number( $post_ID ) )
+		{
+			$value .= ', ' . $stock_number;
+		}
+		return $value;
 	}
 }
