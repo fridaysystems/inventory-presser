@@ -212,11 +212,11 @@ class Inventory_Presser_Contact_Form_7
 	protected function prepare_value( $post_ID = null )
 	{
 		$post_ID = $post_ID ?? get_the_ID();
-		$value = sprintf( '%s %s %s',
+		$value = trim( sprintf( '%s %s %s',
 			invp_get_the_year( $post_ID ),
 			invp_get_the_make( $post_ID ),
 			invp_get_the_model( $post_ID )
-		);
+		) );
 		if( $trim = invp_get_the_trim( $post_ID ) )
 		{
 			$value .= ' ' . $trim;
