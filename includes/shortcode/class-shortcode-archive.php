@@ -139,6 +139,22 @@ class Inventory_Presser_Shortcode_Archive
 				$output .= apply_shortcodes( $shortcode );
 			}
 		}
+		else
+		{
+			$count_posts = wp_count_posts( INVP::POST_TYPE );
+			if( isset( $count_posts->publish ) && 0 < $count_posts->publish )
+			{
+				$output .= apply_filters(
+					'invp_archive_shortcode_no_results', 
+					sprintf( 
+						'<p>%s</p><h2>%s</h2><p>%s</p>',
+						__( 'No vehicles found.', 'inventory-presser' ),
+						__( 'Search Inventory', 'inventory-presser' ),
+						apply_filters( 'invp_archive_shortcode_no_results_search', get_search_form() )
+					)
+				);
+			}
+		}
 
 		//Paged navigation
 		$output .= $this->paging_html();
