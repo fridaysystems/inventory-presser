@@ -944,6 +944,7 @@ class INVP
 			'skip_trash'                  => true,
 			'sort_vehicles_by'            => 'make',
 			'sort_vehicles_order'         => 'ASC',
+			'use_carfax'                  => false,
 			'use_carfax_provided_buttons' => true,
 		);
 		return wp_parse_args( get_option( self::OPTION_NAME ), $defaults );
