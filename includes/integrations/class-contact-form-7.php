@@ -14,6 +14,9 @@ class Inventory_Presser_Contact_Form_7
 		//Add an [invp_vehicle] form tag
 		add_action( 'wpcf7_init', array( $this, 'add_form_tags' ) );
 
+		//Add a special mail tag [invp_adf_timestamp]
+		add_filter( 'wpcf7_special_mail_tags', array( $this, 'add_mail_tags' ), 10, 4 );
+
 		//Add a link to the vehicle before emails are sent
 		add_filter( 'wpcf7_mail_tag_replaced_invp_vehicle', array( $this, 'add_link' ), 10, 4 );
 	}
@@ -32,6 +35,21 @@ class Inventory_Presser_Contact_Form_7
 			array( $this, 'handler_vehicle' ),
 			array( 'name-attr' => true )
 		);
+	}
+
+	public function add_mail_tags( $output, $name, $html, $mail_tag = null )
+	{
+		$name = preg_replace( '/^wpcf7\./', '_', $name ); // for back-compat
+		$submission = WPCF7_Submission::get_instance();
+		if ( ! $submission ) {
+			return $output;
+		}
+
+		if ( 'invp_adf_timestamp' == $name
+			&& $timestamp = $submission->get_meta( 'timestamp' ) ) {
+			return wp_date( 'c', $timestamp );
+		}
+		return $output;
 	}
 	
 	/**
