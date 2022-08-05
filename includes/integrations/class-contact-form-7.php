@@ -14,7 +14,7 @@ class Inventory_Presser_Contact_Form_7
 		//Add an [invp_vehicle] form tag
 		add_action( 'wpcf7_init', array( $this, 'add_form_tags' ) );
 
-		//Add a special mail tag [invp_adf_timestamp]
+		//Add special mail tags [invp_adf_timestamp] and [invp_adf_vehicle]
 		add_filter( 'wpcf7_special_mail_tags', array( $this, 'add_mail_tags' ), 10, 4 );
 
 		//Add a link to the vehicle before emails are sent
@@ -49,6 +49,39 @@ class Inventory_Presser_Contact_Form_7
 			&& $timestamp = $submission->get_meta( 'timestamp' ) ) {
 			return wp_date( 'c', $timestamp );
 		}
+
+		if ( 'invp_adf_vehicle' == $name )
+		{
+			//What name in posted_data is the vehicle field?
+			foreach( $submission->get_contact_form()->scan_form_tags() as $form_tag )
+			{
+				if( $form_tag->basetype != 'invp_vehicle' )
+				{
+					continue;
+				}
+
+				$post_id = $this->extract_post_id_from_value( $submission->get_posted_data()[$form_tag->name] );
+				/*
+				<vehicle>
+					<id>286535725</id>
+					<year>2017</year>
+					<make>NISSAN</make>
+					<model>ROGUE</model>
+					<vin>5N1AT2MV8HC876642</vin>
+					<stock>876642-A</stock>
+				</vehicle>
+				*/
+				return sprintf( 
+					'<vehicle><id>%s</id><year>%s</year><make>%s</make><model>%s</model><vin>%s</vin><stock>%s</stock></vehicle>',
+					INVP::get_meta( 'car_id', $post_id ),
+					invp_get_the_year( $post_id ),
+					invp_get_the_make( $post_id ),
+					invp_get_the_model( $post_id ),
+					invp_get_the_vin( $post_id ),
+					invp_get_the_stock_number( $post_id )
+				);
+			}
+		}
 		return $output;
 	}
 	
@@ -59,7 +92,7 @@ class Inventory_Presser_Contact_Form_7
 	 * submission emails.
 	 *
 	 * @param  string $replaced
-	 * @param  string $submitted
+	 * @param  string $submitted "2020 Toyota Sienna LE, 10329A"
 	 * @param  string $html
 	 * @param  WPCF7_MailTag $mail_tag
 	 * @return string
@@ -69,12 +102,23 @@ class Inventory_Presser_Contact_Form_7
 		//Allow HTML in emails
 		add_filter( 'wp_mail_content_type', array( $this, 'html_mail_content_type' ) );
 
+		$post_id = $this->extract_post_id_from_value( $submitted );
+		if( empty( $post_id ) )
+		{
+			return $replaced;
+		}
+
+		return sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), $replaced );
+	}
+
+	protected function extract_post_id_from_value( $value )
+	{
 		//submitted "2020 Toyota Sienna LE, 10329A"
-		$pieces = explode( ', ', $submitted );
+		$pieces = explode( ', ', $value );
 		if( 1 == sizeof( $pieces ) )
 		{
 			//delimiter not found
-			return $replaced;
+			return '';
 		}
 		$stock_number = $pieces[sizeof($pieces)-1];
 		$post_ids = get_posts( array(
@@ -86,12 +130,12 @@ class Inventory_Presser_Contact_Form_7
 			'posts_per_page' => 1,
 		) );
 
-		if( empty( $post_ids ) )
+		if( empty( $post_ids ) || ! is_array( $post_ids ) )
 		{
-			return $replaced;
+			return '';
 		}
 
-		return sprintf( '<a href="%s">%s</a>', get_permalink( $post_ids[0] ), $replaced );
+		return $post_ids[0];
 	}
 
 	public function handler_vehicle( $tag )
