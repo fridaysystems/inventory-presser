@@ -73,6 +73,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 14.1.0 =
 * [Added] Adds a Contact Form 7 mail tag [invp_adf_timestamp] to help insert ISO 8601 timestamps into ADF XML lead emails.
+* [Added] Adds a Contact Form 7 mail tag [invp_adf_vehicle] to help insert vehicles into ADF XML lead emails.
 * [Added] Adds a "No vehicles found." message to the [invp_archive] shortcode when there are no vehicle posts that satisfy the query.
 * [Added] Adds a default false value for the use_carfax setting so it shows up in REST at /wp-json/invp/v1/settings consistently.
 * [Added] Wraps the vehicle YMM string in a link in email sent using our Contact Form 7 form-tag [invp_vehicle].
@@ -138,7 +139,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Upgrade Notice ==
 
 = 14.1.0 =
-Adds a Contact Form 7 mail tag [invp_adf_timestamp] to help insert ISO 8601 timestamps into ADF XML lead emails. Adds a "No vehicles found." message to the [invp_archive] shortcode when there are no vehicle posts that satisfy the query. Adds a default false value for the use_carfax setting so it shows up in REST at /wp-json/invp/v1/settings consistently. Wraps the vehicle YMM string in a link in email sent using our Contact Form 7 form-tag [invp_vehicle].
+Adds a Contact Form 7 mail tag [invp_adf_timestamp] to help insert ISO 8601 timestamps into ADF XML lead emails. Adds a Contact Form 7 mail tag [invp_adf_vehicle] to help insert vehicles into ADF XML lead emails. Adds a "No vehicles found." message to the [invp_archive] shortcode when there are no vehicle posts that satisfy the query. Adds a default false value for the use_carfax setting so it shows up in REST at /wp-json/invp/v1/settings consistently. Wraps the vehicle YMM string in a link in email sent using our Contact Form 7 form-tag [invp_vehicle].
 
 = 14.0.0 =
 Integrates WP All Import to allow CSV feed imports. Integrates Contact Form 7 to add a [invp_vehicle] form tag. Improves [invp_single_vehicle] output and adds a filter `invp_single_sections` to allow customization. Removes all deprecated methods and constants, all of which have replacements. Removes the [iframe] shortcode that was replaced by [invp_iframe].
