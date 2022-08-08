@@ -126,7 +126,7 @@ class Inventory_Presser_Taxonomy_Overlapper
 		 */
 		add_action( 'updated_postmeta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 		add_action( 'added_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
-		//add_action( 'deleted_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
+		add_action( 'deleted_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 	}
 
 	function hooks_add_terms()
@@ -240,9 +240,9 @@ class Inventory_Presser_Taxonomy_Overlapper
 			$this->hooks_add();
 		}
 
-		//if $meta_value is empty, then remove a term & exit
-		//will this only happen for wholesale?
-		if( empty( $meta_value ) )
+		//if $meta_value is empty or we have deleted a meta value, remove a term
+		global $action;
+		if( empty( $meta_value ) || 'delete-meta' == $action )
 		{
 			//remove a term actually
 			$terms = array();
