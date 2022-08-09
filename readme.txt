@@ -77,6 +77,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Added] Adds a "No vehicles found." message to the [invp_archive] shortcode when there are no vehicle posts that satisfy the query.
 * [Added] Adds a default false value for the use_carfax setting so it shows up in REST at /wp-json/invp/v1/settings consistently.
 * [Added] Wraps the vehicle YMM string in a link in email sent using our Contact Form 7 form-tag [invp_vehicle].
+* [Fixed] Fixes a bug where if a vehicle attribute stored in meta was deleted, the change would not be mirrored in the corresponding taxonomy.
 * [Changed] Changes the tested up to version number to 6.0.1.
 
 = 14.0.0 =
