@@ -52,6 +52,8 @@ class Inventory_Presser_Contact_Form_7
 
 		if ( 'invp_adf_vehicle' == $name )
 		{
+			add_filter( 'wp_mail_content_type', array( $this, 'html_mail_content_type' ) );
+
 			//What name in posted_data is the vehicle field?
 			foreach( $submission->get_contact_form()->scan_form_tags() as $form_tag )
 			{
