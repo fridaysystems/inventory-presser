@@ -523,6 +523,44 @@ function invp_get_the_location_sentence( $post_ID = null )
 	return $sentence;
 }
 
+function invp_get_the_location_state( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	/**
+	 * We want the term description from the location taxonomy term
+	 * because the meta key/term name only contains street address line one.
+	 */
+	$location_terms = wp_get_post_terms( $post_ID, 'location' );
+	if( empty( $location_terms ) || is_wp_error( $location_terms ) )
+	{
+		return '';
+	}
+	return get_term_meta( $location_terms[0]->term_id, 'address_state', true );
+}
+
+function invp_get_the_location_zip( $post_ID = null )
+{
+	if( empty( $post_ID ) )
+	{
+		$post_ID = get_the_ID();
+	}
+
+	/**
+	 * We want the term description from the location taxonomy term
+	 * because the meta key/term name only contains street address line one.
+	 */
+	$location_terms = wp_get_post_terms( $post_ID, 'location' );
+	if( empty( $location_terms ) || is_wp_error( $location_terms ) )
+	{
+		return '';
+	}
+	return get_term_meta( $location_terms[0]->term_id, 'address_zip', true );
+}
+
 function invp_get_the_make( $post_ID = null )
 {
 	if( empty( $post_ID ) )
