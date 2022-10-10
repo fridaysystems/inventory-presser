@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 6.0.1
-Stable tag: 14.2.0
+Stable tag: 14.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,7 +71,10 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
-= 14.2.0 =
+= 14.2.1 =
+* [Fixed] Reverts to `json_decode()` from `wp_json_decode()`, a bug introduced in 14.2.1.
+
+= 14.2.1 =
 * [Added] Adds two template tags `invp_get_the_location_state()` and `invp_get_the_location_zip()`
 * [Added] Wraps vehicle prices in a <span> element in the [invp_inventory_grid] shortcode so they can be more easily styled
 * [Fixed] Bumps npm package terser from 5.13.1 to 5.14.2 
@@ -145,7 +148,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Upgrade Notice ==
 
-= 14.2.0 =
+= 14.2.1 =
 Adds two template tags `invp_get_the_location_state()` and `invp_get_the_location_zip()`. Wraps vehicle prices in a <span> element in the [invp_inventory_grid] shortcode so they can be more easily styled.
 
 = 14.1.0 =

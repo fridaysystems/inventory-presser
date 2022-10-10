@@ -629,7 +629,8 @@ jQuery(document).ready(function(){
 			}
 
 			// We need to turn the icons into an array, thanks to WP Core forcing these into an object at some point.
-			$cache['value'] = wp_json_decode( $cache['value'] );
+
+			$cache['value'] = json_decode( $cache['value'] );
 			if ( ! empty($cache['value']->icons ) ) {
 				$cache['value']->icons = (array) $cache['value']->icons;
 			}
