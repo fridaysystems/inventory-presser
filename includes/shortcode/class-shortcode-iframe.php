@@ -1,4 +1,10 @@
 <?php
+/**
+ * Shortcode Iframe
+ *
+ * @package Inventory_Presser_Plugin
+ */
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -11,37 +17,31 @@ defined( 'ABSPATH' ) || exit;
 class Inventory_Presser_Shortcode_Iframe {
 
 	/**
-	 * add
-	 *
 	 * Adds two shortcodes
 	 *
 	 * @return void
 	 */
-	function add() {
+	public function add() {
 		add_shortcode( 'invp-iframe', array( $this, 'content' ) );
 		add_shortcode( 'invp_iframe', array( $this, 'content' ) );
 	}
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks that power the shortcode
 	 *
 	 * @return void
 	 */
-	function hooks() {
+	public function hooks() {
 		add_action( 'init', array( $this, 'add' ) );
 	}
 
 	/**
-	 * content
-	 *
 	 * Creates the HTML content of the shortcode
 	 *
-	 * @param  array $atts
+	 * @param  array $atts An array of shortcode attributes.
 	 * @return string HTML that renders an iframe that expands to the height of its content
 	 */
-	function content( $atts ) {
+	public function content( $atts ) {
 		$script_handle = 'invp-iframe-resizer';
 		wp_enqueue_script( $script_handle );
 		wp_add_inline_script( $script_handle, 'iFrameResize({ log:false,sizeWidth:true });' );
@@ -59,28 +59,28 @@ class Inventory_Presser_Shortcode_Iframe {
 			$atts
 		);
 
-		// Stock number may arrive in a querystring variable with key 'stock'
+		// Stock number may arrive in a querystring variable with key 'stock'.
 		if ( isset( $_GET['stock'] ) ) {
-			$atts['src'] = esc_url( add_query_arg( 'stock', sanitize_text_field( $_GET['stock'] ), $atts['src'] ) );
+			$atts['src'] = esc_url( add_query_arg( 'stock', sanitize_text_field( wp_unslash( $_GET['stock'] ) ), $atts['src'] ) );
 		}
 
 		$html = '<iframe';
 		foreach ( $atts as $attr => $value ) {
 
-			// ignore some attributes
+			// ignore some attributes.
 			$ignored_atts = array(
 				'onclick',
 				'onload',
 				'onpageshow',
 				'same_height_as',
 			);
-			if ( in_array( strtolower( $attr ), $ignored_atts ) ) {
+			if ( in_array( strtolower( $attr ), $ignored_atts, true ) ) {
 				continue;
 			}
 
-			if ( $value != '' ) { // adding all attributes
+			if ( '' !== $value ) { // adding all attributes.
 				$html .= ' ' . esc_attr( $attr ) . '="' . esc_attr( $value ) . '"';
-			} else { // adding empty attributes
+			} else { // adding empty attributes.
 				$html .= ' ' . esc_attr( $attr );
 			}
 		}

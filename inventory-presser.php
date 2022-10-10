@@ -1,4 +1,10 @@
 <?php
+/**
+ * Inventory Presser
+ *
+ * @package Inventory_Presser_Plugin
+ */
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -61,10 +67,10 @@ class Inventory_Presser_Plugin {
 		$key = $this->settings['sort_vehicles_by'];
 
 		// Backwards compatibility for pre 13.7.1 when there was a bug.
-		if ( 'date_entered' == $key ) {
+		if ( 'date_entered' === $key ) {
 			$key = 'post_date';
 		}
-		if ( 'last_modified' == $key ) {
+		if ( 'last_modified' === $key ) {
 			$key = 'post_modified';
 		}
 
@@ -73,7 +79,7 @@ class Inventory_Presser_Plugin {
 		}
 
 		// post_date and post_modified are not meta keys.
-		if ( in_array( $key, array( 'post_date', 'post_modified' ) ) ) {
+		if ( in_array( $key, array( 'post_date', 'post_modified' ), true ) ) {
 			$query->set( 'orderby', $key );
 			$query->set( 'order', $direction );
 			return;
@@ -241,7 +247,7 @@ class Inventory_Presser_Plugin {
 		}
 
 		$meta_value_or_meta_value_num = 'meta_value';
-		$key_is_odometer              = apply_filters( 'invp_prefix_meta_key', 'odometer' ) == $key;
+		$key_is_odometer              = apply_filters( 'invp_prefix_meta_key', 'odometer' ) === $key;
 
 		if ( INVP::meta_value_is_number( $key ) || $key_is_odometer ) {
 			$meta_value_or_meta_value_num .= '_num';
@@ -325,8 +331,8 @@ class Inventory_Presser_Plugin {
 	 * Change links to terms in our taxonomies to include /inventory before
 	 * /tax/term.
 	 *
-	 * @param  string $termlink
-	 * @param  object $term     An instance of the WP_Term class
+	 * @param  string $termlink URL to modify.
+	 * @param  object $term     An instance of the WP_Term class.
 	 * @return string A modified term link that has our post type slug prepended.
 	 */
 	public function change_term_links( $termlink, $term ) {
@@ -483,9 +489,9 @@ class Inventory_Presser_Plugin {
 	 *
 	 * @see http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
 	 *
-	 * @param  string $post_type
-	 * @param  array  $query_vars
-	 * @return void
+	 * @param  string $post_type The name of a post type.
+	 * @param  array  $query_vars An array of query variables.
+	 * @return array
 	 */
 	protected function generate_rewrite_rules( $post_type, $query_vars = array() ) {
 		global $wp_rewrite;
@@ -664,7 +670,7 @@ class Inventory_Presser_Plugin {
 		// Change links to our taxonomy terms to insert /inventory/.
 		add_filter( 'pre_term_link', array( $this, 'change_term_links' ), 10, 2 );
 
-		// Change attachment URLs to prevent aggressive caching from showing users updated JPGs
+		// Change attachment URLs to prevent aggressive caching from showing users updated JPGs.
 		add_filter( 'wp_get_attachment_url', array( $this, 'change_attachment_urls' ) );
 
 		// Allow users to set the Inventory listing page as the home page.
@@ -753,7 +759,7 @@ class Inventory_Presser_Plugin {
 	}
 
 	/**
-	 * add_view_details_button
+	 * Outputs a View Details link that takes users to a single vehicle page.
 	 *
 	 * @return void
 	 */
@@ -769,12 +775,13 @@ class Inventory_Presser_Plugin {
 				'button',
 			)
 		);
-		?><a class="<?php echo esc_attr( implode( ' ', $css_classes ) ); ?>" href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php _e( 'View Details', 'inventory-presser' ); ?></a>
+		?><a class="<?php echo esc_attr( implode( ' ', $css_classes ) ); ?>" href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php esc_html_e( 'View Details', 'inventory-presser' ); ?></a>
 		<?php
 	}
 
 	/**
-	 * loaded
+	 * Fires on the plugins_loaded hook. Runs the invp_loaded action hook for
+	 * all add-ons.
 	 *
 	 * @return void
 	 */
@@ -979,7 +986,7 @@ class Inventory_Presser_Plugin {
 	 * Filter callback that changes a query's meta_query value if the meta_query
 	 * does not already contain the provided $key.
 	 *
-	 * @param  array  $meta_query The meta_query member of a WP_Query, retrieved with WP_Query->get('meta_query')
+	 * @param  array  $meta_query The meta_query member of a WP_Query, retrieved with WP_Query->get('meta_query').
 	 * @param  string $key
 	 * @param  string $value
 	 * @param  string $compare
@@ -1018,10 +1025,10 @@ class Inventory_Presser_Plugin {
 				&& isset( $meta_query['compare'] )
 				&& isset( $meta_query['type'] )
 			) {
-				return $meta_query['key'] == $key
-				&& $meta_query['value'] == $value
-				&& $meta_query['compare'] == $compare
-				&& $meta_query['type'] == $type;
+				return $meta_query['key'] === $key
+				&& $meta_query['value'] === $value
+				&& $meta_query['compare'] === $compare
+				&& $meta_query['type'] === $type;
 			}
 
 			foreach ( $meta_query as $another ) {
@@ -1071,7 +1078,7 @@ class Inventory_Presser_Plugin {
 	 * sort some meta values as numbers instead of strings while adding fields
 	 * to the ORDER BY clause to account for all of the JOINs to the postmeta.
 	 *
-	 * @param  array $pieces All of a queries syntax organized into an array
+	 * @param  array $pieces All of a queries syntax organized into an array.
 	 * @return array The changed array of database query fragments
 	 */
 	public function modify_query_orderby( $pieces ) {
@@ -1173,7 +1180,7 @@ class Inventory_Presser_Plugin {
 			)
 		);
 
-		// Add a couple fields that are used on media attachments
+		// Add a couple fields that are used on media attachments.
 		$attachment_keys   = array();
 		$attachment_keys[] = array(
 			'name' => 'hash',
