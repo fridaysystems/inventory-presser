@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 6.0.1
-Stable tag: 14.1.1
+Stable tag: 14.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,9 +71,11 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
-= 14.1.1 =
+= 14.2.0 =
 * [Added] Adds two template tags `invp_get_the_location_state()` and `invp_get_the_location_zip()`
+* [Added] Wraps vehicle prices in a <span> element in the [invp_inventory_grid] shortcode so they can be more easily styled
 * [Fixed] Bumps npm package terser from 5.13.1 to 5.14.2 
+* [Fixed] Applies the WordPress coding standard to all PHP files
 
 = 14.1.0 =
 * [Added] Adds a Contact Form 7 mail tag [invp_adf_timestamp] to help insert ISO 8601 timestamps into ADF XML lead emails.
