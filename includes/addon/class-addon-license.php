@@ -1,11 +1,11 @@
 <?php
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
-if( ! class_exists( 'Inventory_Presser_Addon_License' ) ) {
+if ( ! class_exists( 'Inventory_Presser_Addon_License' ) ) {
 
 	/**
 	 * Inventory_Presser_Addon_License
-	 * 
+	 *
 	 * Helps send a license key to inventorypresser.com for this core plugin or any
 	 * of its add-ons to verify an active site and allow updates to be downloaded.
 	 *
@@ -14,26 +14,27 @@ if( ! class_exists( 'Inventory_Presser_Addon_License' ) ) {
 	 * @subpackage Inventory_Presser/includes
 	 * @author     Corey Salzano <corey@friday.systems>
 	 */
-	class Inventory_Presser_Addon_License{
+	class Inventory_Presser_Addon_License {
+
 
 		const STORE_URL = 'https://inventorypresser.com/';
 		var $license_key;
 		var $product_id;
-		
+
 		/**
 		 * __construct
-		 * 
+		 *
 		 * Populates class members
 		 *
 		 * @param  string $license_key
-		 * @param  int $product_id
+		 * @param  int    $product_id
 		 * @return void
 		 */
 		function __construct( $license_key, $product_id ) {
 			$this->license_key = $license_key;
-			$this->product_id = $product_id;
+			$this->product_id  = $product_id;
 		}
-		
+
 		/**
 		 * is_active
 		 *
@@ -43,10 +44,10 @@ if( ! class_exists( 'Inventory_Presser_Addon_License' ) ) {
 			$response = $this->api_response( 'check_license', $this->license_key );
 			return isset( $response['license'] ) && 'valid' == $response['license'];
 		}
-		
+
 		/**
 		 * activate
-		 * 
+		 *
 		 * Activates the license with the plugin store
 		 *
 		 * @return bool
@@ -58,7 +59,7 @@ if( ! class_exists( 'Inventory_Presser_Addon_License' ) ) {
 
 		/**
 		 * api_response
-		 * 
+		 *
 		 * Retrieves the license activation response from the plugin store.
 		 *
 		 * @param  string $action
@@ -68,13 +69,13 @@ if( ! class_exists( 'Inventory_Presser_Addon_License' ) ) {
 			$response = wp_remote_get( esc_url_raw( $this->api_url( $action, $this->license_key, $this->product_id ) ) );
 			return json_decode( wp_remote_retrieve_body( $response ), true );
 		}
-		
+
 		/**
 		 * api_url
-		 * 
+		 *
 		 * Creates a URL to the plugin store where this license can be renewed.
 		 *
-		 * @param  string $action 
+		 * @param  string $action
 		 * @return string A URL
 		 */
 		private function api_url( $action ) {

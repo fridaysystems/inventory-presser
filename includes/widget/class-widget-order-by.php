@@ -1,9 +1,9 @@
 <?php
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Inventory_Presser_Order_By_Widget
- * 
+ *
  * Creates a widget that allows users to sort vehicles by a vehicle attribute.
  *
  * If a menu item of type "Custom Link" exists with "Email a Friend" set as the
@@ -18,7 +18,8 @@ defined( 'ABSPATH' ) or exit;
  */
 class Inventory_Presser_Order_By_Widget extends WP_Widget {
 
- 	const ID_BASE = '_invp_order_by';
+
+	const ID_BASE = '_invp_order_by';
 
 	/**
 	 * __construct
@@ -26,27 +27,27 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	 * Calls the parent class' contructor and adds a hook that will delete the
 	 * option that stores this widget's data when the plugin's delete all data
 	 * method is run.
-	 * 
+	 *
 	 * @return void
 	 */
- 	public function __construct() {
- 		parent::__construct(
- 			self::ID_BASE, // Base ID
- 			__( 'Sort by Vehicle Attributes', 'inventory-presser' ), // Name
- 			array( 'description' => __( 'A list of vehicle attributes by which users can sort listings.', 'inventory-presser' ), ) // Args
- 		);
+	public function __construct() {
+		parent::__construct(
+			self::ID_BASE, // Base ID
+			__( 'Sort by Vehicle Attributes', 'inventory-presser' ), // Name
+			array( 'description' => __( 'A list of vehicle attributes by which users can sort listings.', 'inventory-presser' ) ) // Args
+		);
 
-		//include scripts if widget is used
-		if( is_active_widget( false, false, self::ID_BASE ) ) {
- 			add_action( 'wp_enqueue_scripts', array( $this, 'load_javascript' ) );
- 		}
+		// include scripts if widget is used
+		if ( is_active_widget( false, false, self::ID_BASE ) ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'load_javascript' ) );
+		}
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	/**
 	 * delete_option
-	 * 
+	 *
 	 * Deletes the option that stores this widget's data.
 	 *
 	 * @return void
@@ -57,56 +58,56 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 
 	/**
 	 * form
-	 * 
+	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance The widget options
 	 * @return void
 	 */
 	public function form( $instance ) {
-		$title = ( isset( $instance[ 'title' ] ) ? $instance[ 'title' ] : '' );
-        ?>
-         <p>
-          <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
-          <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
-        </p>
-        <?php
-		$args = array(
+		$title = ( isset( $instance['title'] ) ? $instance['title'] : '' );
+		?>
+		 <p>
+		  <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
+		  <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
+		</p>
+		<?php
+		$args                   = array(
 			'public' => true,
 		);
 		$already_turned_on_keys = array();
-		if( isset( $instance['post-meta-keys'] ) ) {
+		if ( isset( $instance['post-meta-keys'] ) ) {
 			$already_turned_on_keys = explode( '|', $instance['post-meta-keys'] );
 		}
 
 		echo '<p>Which fields should users be allowed to use as sort fields?</p>'
-			. '<dl>';
+		. '<dl>';
 
-		foreach( $this->get_post_meta_keys_and_labels( $instance ) as $key => $label ) {
-			//output checkbox for each one
+		foreach ( $this->get_post_meta_keys_and_labels( $instance ) as $key => $label ) {
+			// output checkbox for each one
 			echo '<dt>';
-			$title = 'Allow users to order by ' . $key; //title attribute for checkbox and label
-			echo '<input type="checkbox" id="' . $this->get_field_id('obpm-key-' . $key)
-				. '" name="obpm-key-' . $key . '"';
-			if( in_array( $key, $already_turned_on_keys ) ) {
+			$title = 'Allow users to order by ' . $key; // title attribute for checkbox and label
+			echo '<input type="checkbox" id="' . $this->get_field_id( 'obpm-key-' . $key )
+			. '" name="obpm-key-' . $key . '"';
+			if ( in_array( $key, $already_turned_on_keys ) ) {
 				echo ' checked="checked"';
 			}
 			echo ' title="' . $title . '"/>'
-				. '<label for="' . $this->get_field_id('obpm-key-' . $key) . '" title="' . $title . '">' . $this->prettify_meta_key( $key ) . '</label>'
-				. '</dt>' //and a text box for a label
-				. '<dd>'
-				. '<label for="' . $this->get_field_id('obpm-label-' . $key) . '">Label</label> '
-				. '<input type="text" id="' . $this->get_field_id('obpm-label-' . $key) . '"'
-				. ' name="obpm-label-' . $key . '" '
-				. 'value="' . $label . '" title="Label for ' . $key . '" />'
-				. '</dd>';
+			. '<label for="' . $this->get_field_id( 'obpm-key-' . $key ) . '" title="' . $title . '">' . $this->prettify_meta_key( $key ) . '</label>'
+			. '</dt>' // and a text box for a label
+			. '<dd>'
+			. '<label for="' . $this->get_field_id( 'obpm-label-' . $key ) . '">Label</label> '
+			. '<input type="text" id="' . $this->get_field_id( 'obpm-label-' . $key ) . '"'
+			. ' name="obpm-label-' . $key . '" '
+			. 'value="' . $label . '" title="Label for ' . $key . '" />'
+			. '</dd>';
 		}
 		echo '</dl>';
 	}
 
 	/**
 	 * get_post_meta_keys_and_labels
-	 * 
+	 *
 	 * Produces an associative array where the post meta keys are the keys
 	 * and the values are human-readable labels.
 	 *
@@ -117,21 +118,20 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 		/**
 		 * Example output
 		 *
-		 *	array(
-		 *		'{meta-prefix}odometer' => 'Odometer',
-		 *		'{meta-prefix}price'    => 'Price',
-		 *	)
-		 *
+		 *    array(
+		 *        '{meta-prefix}odometer' => 'Odometer',
+		 *        '{meta-prefix}price'    => 'Price',
+		 *    )
 		 */
 		$arr = array();
-		foreach( INVP::keys() as $key ) {
+		foreach ( INVP::keys() as $key ) {
 			$key = apply_filters( 'invp_prefix_meta_key', $key );
-			//if we have a saved label, use that. otherwise, create a label
-			$arr[$key] = ( isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $this->prettify_meta_key( $key ) );
+			// if we have a saved label, use that. otherwise, create a label
+			$arr[ $key ] = ( isset( $instance[ 'label-' . $key ] ) ? $instance[ 'label-' . $key ] : $this->prettify_meta_key( $key ) );
 		}
 		/**
 		 * Some fields do not make sense to order by, such as interior color & VIN
-	 	 */
+		  */
 		$ignored_keys = array(
 			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
 			apply_filters( 'invp_prefix_meta_key', 'car_id' ),
@@ -147,30 +147,30 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 			apply_filters( 'invp_prefix_meta_key', 'trim' ),
 			apply_filters( 'invp_prefix_meta_key', 'vin' ),
 		);
-		foreach( apply_filters( 'invp_sort_by_widget_ignored_fields', $ignored_keys ) as $ignored_key ) {
-			unset( $arr[$ignored_key] );
+		foreach ( apply_filters( 'invp_sort_by_widget_ignored_fields', $ignored_keys ) as $ignored_key ) {
+			unset( $arr[ $ignored_key ] );
 		}
 		return $arr;
 	}
-	
+
 	/**
 	 * load_javascript
-	 * 
+	 *
 	 * Includes a JavaScript file that powers the widget
 	 *
 	 * @return void
 	 */
-	function load_javascript( ) {
+	function load_javascript() {
 		wp_register_script( 'order-by-widget-javascript', plugins_url( 'js/order-by-post-meta-widget.min.js', INVP_PLUGIN_FILE_PATH ) );
 		wp_enqueue_script( 'order-by-widget-javascript' );
 	}
-	
+
 	/**
 	 * prettify_meta_key
 	 *
-	 * Crudely takes a post meta key, removes underscores, and converts the 
+	 * Crudely takes a post meta key, removes underscores, and converts the
 	 * string to Title Case.
-	 * 
+	 *
 	 * @param  string $key
 	 * @return string
 	 */
@@ -182,24 +182,24 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	 * update
 	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
-	 * 
+	 *
 	 * @param  array $new_instance
 	 * @param  array $old_instance
 	 * @return array The updated array full of settings
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();
+		$instance          = array();
 		$instance['title'] = strip_tags( $new_instance['title'] );
-		$keys = array();
-		foreach( INVP::keys() as $key ) {
+		$keys              = array();
+		foreach ( INVP::keys() as $key ) {
 			$key = apply_filters( 'invp_prefix_meta_key', $key );
-			if( isset( $_REQUEST['obpm-key-' . $key] ) ) {
+			if ( isset( $_REQUEST[ 'obpm-key-' . $key ] ) ) {
 				array_push( $keys, $key );
-				if( isset( $_REQUEST['obpm-label-' . $key] ) ) {
-					$instance['label-' . $key] = strip_tags( $_REQUEST['obpm-label-' . $key] );
+				if ( isset( $_REQUEST[ 'obpm-label-' . $key ] ) ) {
+					$instance[ 'label-' . $key ] = strip_tags( $_REQUEST[ 'obpm-label-' . $key ] );
 				}
 			} else {
-				unset( $instance['label-' . $key] );
+				unset( $instance[ 'label-' . $key ] );
 			}
 		}
 		$instance['post-meta-keys'] = implode( '|', $keys );
@@ -208,32 +208,32 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 
 	/**
 	 * widget
-	 * 
+	 *
 	 * Outputs the widget front-end HTML
 	 *
 	 * @param  array $args
 	 * @param  array $instance
 	 * @return void
 	 */
- 	public function widget( $args, $instance ) {
+	public function widget( $args, $instance ) {
 
- 		extract( $args );
+		extract( $args );
 
- 		$title = apply_filters('widget_title', ( isset( $instance['title'] ) ? $instance['title'] : '' ));
+		$title = apply_filters( 'widget_title', ( isset( $instance['title'] ) ? $instance['title'] : '' ) );
 
- 		$keys_to_list = explode( '|', $instance['post-meta-keys'] );
- 		if( 0 < sizeof( $keys_to_list ) ) {
- 		 	echo $before_widget;
-	 		if ( $title ) {
-	        	echo $before_title . $title . $after_title;
+		$keys_to_list = explode( '|', $instance['post-meta-keys'] );
+		if ( 0 < sizeof( $keys_to_list ) ) {
+			echo $before_widget;
+			if ( $title ) {
+				 echo $before_title . $title . $after_title;
 			}
 			echo '<ul class="order-by-list list-nostyle">';
-			foreach( $keys_to_list as $key ) {
+			foreach ( $keys_to_list as $key ) {
 				echo '<li><a href="javascript:order_by_post_meta(\'' . $key . '\');">'
-					. ( isset( $instance['label-' . $key] ) ? $instance['label-' . $key] : $key )
-					. '</a></li>';
+				. ( isset( $instance[ 'label-' . $key ] ) ? $instance[ 'label-' . $key ] : $key )
+				. '</a></li>';
 			}
 			echo '</ul>' . $after_widget;
- 		}
- 	}
+		}
+	}
 }

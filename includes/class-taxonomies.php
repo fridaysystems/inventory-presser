@@ -1,165 +1,165 @@
 <?php
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Inventory_Presser_Taxonomies
- * 
+ *
  * Registers and manipulates our custom taxonomies and their terms.
- * 
+ *
  * @since      1.3.1
  * @package    Inventory_Presser
  * @subpackage Inventory_Presser/includes
  * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
  */
-class Inventory_Presser_Taxonomies
-{
+class Inventory_Presser_Taxonomies {
+
 	const CRON_HOOK_DELETE_TERMS = 'inventory_presser_delete_unused_terms';
 
 	/**
 	 * delete_term_data
-	 * 
+	 *
 	 * Removes all terms in all our taxonomies. Used when uninstalling the
 	 * plugin.
 	 *
 	 * @return void
 	 */
-	function delete_term_data()
-	{
-		//remove the terms in taxonomies
+	function delete_term_data() {
+		// remove the terms in taxonomies
 		$taxonomy_data = self::taxonomy_data();
-		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ )
-		{
-			$tax = $taxonomy_data[$i]['args']['label'];
-			$terms = get_terms( $tax, array(
-				'fields'     => 'ids',
-				'hide_empty' => false
-			) );
-			foreach ( $terms as $value )
-			{
-				wp_delete_term( $value, $tax );
+		for ( $i = 0; $i < sizeof( $taxonomy_data ); $i++ ) {
+			$tax   = $taxonomy_data[ $i ]['args']['label'];
+			$terms = get_terms(
+				$tax,
+				array(
+					'fields'     => 'ids',
+					'hide_empty' => false,
+				)
+			);
+			foreach ( $terms as $value ) {
+				   wp_delete_term( $value, $tax );
 			}
 		}
 	}
 
 	/**
 	 * delete_unused_terms
-	 * 
+	 *
 	 * The nature of inserting and deleting vehicles means terms in a few of our
 	 * taxonomies will be left behind and unused. This method deletes some of
 	 * them. Runs once daily in a WordPress cron job.
 	 *
 	 * @return void
 	 */
-	function delete_unused_terms()
-	{
-		$terms = get_terms( array(
-			'taxonomy'   => array( 'model_year', 'make', 'model', 'style' ),
-			'childless'  => true,
-			'count'      => true,
-			'hide_empty' => false,
-		) );
+	function delete_unused_terms() {
+		$terms = get_terms(
+			array(
+				'taxonomy'   => array( 'model_year', 'make', 'model', 'style' ),
+				'childless'  => true,
+				'count'      => true,
+				'hide_empty' => false,
+			)
+		);
 
-		foreach( $terms as $term )
-		{
-			if( 0 == $term->count )
-			{
+		foreach ( $terms as $term ) {
+			if ( 0 == $term->count ) {
 				wp_delete_term( $term->term_id, $term->taxonomy );
 			}
 		}
 	}
-	
+
 	/**
 	 * get_term_slug
-	 * 
+	 *
 	 * Given taxonomy and post ID, find the term with a relationship to the post
 	 * and return its slug.
 	 *
 	 * @param  string $taxonomy_name A taxonomy name
-	 * @param  int $post_id A Post ID
+	 * @param  int    $post_id       A Post ID
 	 * @return string A term slug
 	 */
-	static function get_term_slug( $taxonomy_name, $post_id )
-	{
-		$terms = wp_get_object_terms( $post_id, $taxonomy_name, array( 'orderby' => 'term_id', 'order' => 'ASC' ) );
-		if ( ! is_wp_error( $terms ) && isset( $terms[0] ) && isset( $terms[0]->name ) )
-		{
+	static function get_term_slug( $taxonomy_name, $post_id ) {
+		$terms = wp_get_object_terms(
+			$post_id,
+			$taxonomy_name,
+			array(
+				'orderby' => 'term_id',
+				'order'   => 'ASC',
+			)
+		);
+		if ( ! is_wp_error( $terms ) && isset( $terms[0] ) && isset( $terms[0]->name ) ) {
 			return $terms[0]->slug;
 		}
 		return '';
 	}
-	
+
 	/**
 	 * hooks
-	 * 
+	 *
 	 * Adds hooks to register and manage our taxonomies
 	 *
 	 * @return void
 	 */
-	function hooks()
-	{
-		//create custom taxonomies for vehicles
+	function hooks() {
+		// create custom taxonomies for vehicles
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 		add_action( 'init', array( $this, 'register_meta' ) );
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_term_data' ) );
 
-		//Sort some taxonomy terms as numbers
-		add_filter( 'get_terms_orderby', array( $this, 'sort_terms_as_numbers' ), 10,  3 );
+		// Sort some taxonomy terms as numbers
+		add_filter( 'get_terms_orderby', array( $this, 'sort_terms_as_numbers' ), 10, 3 );
 
-		//Do not include sold vehicles in listings unless an option is checked
+		// Do not include sold vehicles in listings unless an option is checked
 		add_action( 'pre_get_posts', array( $this, 'maybe_exclude_sold_vehicles' ) );
 
-		//Run a weekly cron job to delete empty terms.
+		// Run a weekly cron job to delete empty terms.
 		add_action( self::CRON_HOOK_DELETE_TERMS, array( $this, 'delete_unused_terms' ) );
 
-		//Put terms into our taxonomies when the plugin is activated
+		// Put terms into our taxonomies when the plugin is activated
 		register_activation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Taxonomies', 'populate_default_terms' ) );
-		//Schedule a weekly wp-cron job to delete empty terms in our taxonomies
+		// Schedule a weekly wp-cron job to delete empty terms in our taxonomies
 		register_activation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Taxonomies', 'schedule_terms_cron_job' ) );
-		//Remove the wp-cron job during deactivation
+		// Remove the wp-cron job during deactivation
 		register_deactivation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Taxonomies', 'remove_terms_cron_job' ) );
 	}
-	
+
 	/**
 	 * maybe_exclude_sold_vehicles
-	 * 
+	 *
 	 * Filter callback. Implements the "include sold vehicles" checkbox feature
 	 * in vehicle archives and search results.
 	 *
 	 * @param  WP_Query $query
 	 * @return void
 	 */
-	function maybe_exclude_sold_vehicles( $query )
-	{
-		if( is_admin() || ! $query->is_main_query()
-			|| ! ( is_search() || is_post_type_archive( INVP::POST_TYPE ) ) )
-		{
+	function maybe_exclude_sold_vehicles( $query ) {
+		if ( is_admin() || ! $query->is_main_query()
+			|| ! ( is_search() || is_post_type_archive( INVP::POST_TYPE ) )
+		) {
 			return;
 		}
 
-		//if the checkbox to include sold vehicles is checked, abort
+		// if the checkbox to include sold vehicles is checked, abort
 		$plugin_settings = INVP::settings();
-		if( isset( $plugin_settings['include_sold_vehicles'] ) && $plugin_settings['include_sold_vehicles'] )
-		{
+		if ( isset( $plugin_settings['include_sold_vehicles'] ) && $plugin_settings['include_sold_vehicles'] ) {
 			return;
 		}
 
 		$taxonomy = 'availability';
 
-		//if there is already a tax_query for taxonomy availability, abort
-		if( $query->is_tax( $taxonomy ) )
-		{
+		// if there is already a tax_query for taxonomy availability, abort
+		if ( $query->is_tax( $taxonomy ) ) {
 			return;
 		}
 
-		//do this
+		// do this
 		$tax_query = array(
 			array(
 				'taxonomy' => $taxonomy,
 				'field'    => 'slug',
 				'terms'    => 'sold',
 				'operator' => 'NOT IN',
-			)
+			),
 		);
 
 		$query->set( 'tax_query', $tax_query );
@@ -167,134 +167,124 @@ class Inventory_Presser_Taxonomies
 
 	/**
 	 * meta_box_html_colors
-	 * 
+	 *
 	 * Outputs HTML that renders a meta box for the colors taxonomy
 	 *
 	 * @param  mixed $post
 	 * @return void
 	 */
-	static function meta_box_html_colors( $post )
-	{
+	static function meta_box_html_colors( $post ) {
 		echo self::taxonomy_meta_box_html( 'colors', apply_filters( 'invp_prefix_meta_key', 'color_base' ), $post );
 	}
-	
+
 	/**
 	 * meta_box_html_condition
-	 * 
+	 *
 	 * Outputs HTML that renders a meta box for the condition taxonomy
 	 *
 	 * @param  mixed $post
 	 * @return void
 	 */
-	static function meta_box_html_condition( $post )
-	{
+	static function meta_box_html_condition( $post ) {
 		echo self::taxonomy_meta_box_html( 'condition', apply_filters( 'invp_prefix_meta_key', 'condition' ), $post );
 	}
-	
+
 	/**
 	 * meta_box_html_cylinders
-	 * 
+	 *
 	 * Outputs HTML that renders a meta box for the cylinders taxonomy
 	 *
 	 * @param  mixed $post
 	 * @return void
 	 */
-	static function meta_box_html_cylinders( $post )
-	{
+	static function meta_box_html_cylinders( $post ) {
 		echo self::taxonomy_meta_box_html( 'cylinders', apply_filters( 'invp_prefix_meta_key', 'cylinders' ), $post );
 	}
-	
+
 	/**
 	 * meta_box_html_availability
-	 * 
+	 *
 	 * Outputs HTML that renders a meta box for the availability taxonomy
 	 *
 	 * @param  mixed $post
 	 * @return void
 	 */
-	static function meta_box_html_availability( $post )
-	{
+	static function meta_box_html_availability( $post ) {
 		echo self::taxonomy_meta_box_html( 'availability', apply_filters( 'invp_prefix_meta_key', 'availability' ), $post );
 	}
-	
+
 	/**
 	 * meta_box_html_drive_type
-	 * 
+	 *
 	 * Outputs HTML that renders a meta box for the drive type taxonomy
 	 *
 	 * @param  mixed $post
 	 * @return void
 	 */
-	static function meta_box_html_drive_type( $post )
-	{
+	static function meta_box_html_drive_type( $post ) {
 		echo self::taxonomy_meta_box_html( 'drive_type', apply_filters( 'invp_prefix_meta_key', 'drive_type' ), $post );
 	}
-	
+
 	/**
 	 * meta_box_html_fuel
-	 * 
+	 *
 	 * Outputs HTML that renders a meta box for the fuel taxonomy
 	 *
 	 * @param  mixed $post
 	 * @return void
 	 */
-	static function meta_box_html_fuel( $post )
-	{
+	static function meta_box_html_fuel( $post ) {
 		echo self::taxonomy_meta_box_html( 'fuel', apply_filters( 'invp_prefix_meta_key', 'fuel' ), $post );
 	}
-	
+
 	/**
 	 * meta_box_html_propulsion_type
-	 * 
+	 *
 	 * Outputs HTML that renders a meta box for the propulsion type taxonomy
 	 *
 	 * @param  mixed $post
 	 * @return void
 	 */
-	static function meta_box_html_propulsion_type( $post )
-	{
+	static function meta_box_html_propulsion_type( $post ) {
 		echo self::taxonomy_meta_box_html( 'propulsion_type', apply_filters( 'invp_prefix_meta_key', 'propulsion_type' ), $post );
 	}
-	
+
 	/**
 	 * meta_box_html_transmission
-	 * 
+	 *
 	 * Outputs HTML that renders a meta box for the transmission taxonomy
 	 *
 	 * @param  mixed $post
 	 * @return void
 	 */
-	static function meta_box_html_transmission( $post )
-	{
+	static function meta_box_html_transmission( $post ) {
 		echo self::taxonomy_meta_box_html( 'transmission', apply_filters( 'invp_prefix_meta_key', 'transmission' ), $post );
 	}
-	
+
 	/**
 	 * meta_box_html_type
-	 * 
+	 *
 	 * Outputs HTML that renders a meta box for the type taxonomy
 	 *
 	 * @param  mixed $post
 	 * @return void
 	 */
-	static function meta_box_html_type( $post )
-	{
+	static function meta_box_html_type( $post ) {
 		$html = self::taxonomy_meta_box_html( 'type', apply_filters( 'invp_prefix_meta_key', 'type' ), $post );
-		//add an onchange attribute to the select
+		// add an onchange attribute to the select
 		$html = str_replace( '<select', '<select onchange="invp_vehicle_type_changed( this.value );" ', $html );
 		echo $html;
 	}
-	
+
 	/**
 	 * meta_box_html_locations
-	 * 
+	 *
 	 * Outputs HTML that renders a meta box for the location taxonomy
 	 *
 	 * @param  mixed $post
 	 * @return void
 	 */
-	static function meta_box_html_locations( $post )
-	{
+	static function meta_box_html_locations( $post ) {
 		printf(
 			'%s<p><a href="edit-tags.php?taxonomy=location&post_type=%s">Manage locations</a></p>',
 			self::taxonomy_meta_box_html( 'location', apply_filters( 'invp_prefix_meta_key', 'location' ), $post ),
@@ -304,30 +294,28 @@ class Inventory_Presser_Taxonomies
 
 	/**
 	 * populate_default_terms
-	 * 
-	 * Populate our taxonomies with terms if they do not already exist	
+	 *
+	 * Populate our taxonomies with terms if they do not already exist
 	 *
 	 * @return void
 	 */
-	static function populate_default_terms()
-	{
-		//create the taxonomies or else our wp_insert_term calls will fail
+	static function populate_default_terms() {
+		// create the taxonomies or else our wp_insert_term calls will fail
 		self::register_taxonomies();
 
 		$taxonomy_data = self::taxonomy_data();
-		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ )
-		{
-			if( ! isset( $taxonomy_data[$i]['term_data'] ) ) { continue; }
+		for ( $i = 0; $i < sizeof( $taxonomy_data ); $i++ ) {
+			if ( ! isset( $taxonomy_data[ $i ]['term_data'] ) ) {
+				continue;
+			}
 
-			foreach( $taxonomy_data[$i]['term_data'] as $abbr => $desc )
-			{
-				$taxonomy_name = str_replace( '-', '_', $taxonomy_data[$i]['args']['query_var'] );
-				if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) )
-				{
+			foreach ( $taxonomy_data[ $i ]['term_data'] as $abbr => $desc ) {
+				$taxonomy_name = str_replace( '-', '_', $taxonomy_data[ $i ]['args']['query_var'] );
+				if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) ) {
 					$term_exists = wp_insert_term(
 						$desc,
 						$taxonomy_name,
-						array (
+						array(
 							'description' => $desc,
 							'slug'        => $abbr,
 						)
@@ -339,18 +327,15 @@ class Inventory_Presser_Taxonomies
 
 	/**
 	 * query_vars_array
-	 * 
+	 *
 	 * An array of all our taxonomy query variables.
 	 *
 	 * @return void
 	 */
-	static function query_vars_array()
-	{
+	static function query_vars_array() {
 		$arr = array();
-		foreach( self::taxonomy_data() as $taxonomy_array )
-		{
-			if( ! isset( $taxonomy_array['args'] ) || ! isset( $taxonomy_array['args']['query_var'] ) )
-			{
+		foreach ( self::taxonomy_data() as $taxonomy_array ) {
+			if ( ! isset( $taxonomy_array['args'] ) || ! isset( $taxonomy_array['args']['query_var'] ) ) {
 				continue;
 			}
 			$slug = str_replace( ' ', '_', strtolower( $taxonomy_array['args']['query_var'] ) );
@@ -361,15 +346,14 @@ class Inventory_Presser_Taxonomies
 
 	/**
 	 * register_meta
-	 * 
+	 *
 	 * Registers term meta fields for our Location taxonomy to help store phone
 	 * numbers and hours of operation. Also allows the storage of the individual
 	 * pieces of the address that previously lived only in the term description.
 	 *
 	 * @return void
 	 */
-	function register_meta()
-	{
+	function register_meta() {
 		/**
 		 * Register some address fields so the pieces of the address can be
 		 * accessed individually. For all of 2015-2019, we left the whole
@@ -384,26 +368,33 @@ class Inventory_Presser_Taxonomies
 			'address_lat',
 			'address_lon',
 		);
-		foreach( $address_keys as $meta_key )
-		{
-			register_term_meta( 'location', $meta_key, array(
-				'sanitize_callback' => 'sanitize_text_field',
-				'show_in_rest'      => true,
-				'single'            => true,
-				'type'              => 'string',
-			) );
+		foreach ( $address_keys as $meta_key ) {
+			register_term_meta(
+				'location',
+				$meta_key,
+				array(
+					'sanitize_callback' => 'sanitize_text_field',
+					'show_in_rest'      => true,
+					'single'            => true,
+					'type'              => 'string',
+				)
+			);
 		}
 
 		/**
 		 * Register a dealer_id field on location terms to help when there are
 		 * many location terms.
 		 */
-		register_term_meta( 'location', 'dealer_id', array(
-			'sanitize_callback' => 'sanitize_text_field',
-			'show_in_rest'      => true,
-			'single'            => true,
-			'type'              => 'integer',
-		) );
+		register_term_meta(
+			'location',
+			'dealer_id',
+			array(
+				'sanitize_callback' => 'sanitize_text_field',
+				'show_in_rest'      => true,
+				'single'            => true,
+				'type'              => 'integer',
+			)
+		);
 
 		/**
 		 * Phone Numbers
@@ -414,20 +405,22 @@ class Inventory_Presser_Taxonomies
 			'number',
 		);
 
-		//How many phone numbers do we plan to store per address?
+		// How many phone numbers do we plan to store per address?
 		$loop_max = apply_filters( 'invp_max_phone_numbers_per_address', 10 );
 
-		for( $i=1; $i<=$loop_max; $i++ )
-		{
-			foreach( $phone_key_suffixes as $suffix )
-			{
+		for ( $i = 1; $i <= $loop_max; $i++ ) {
+			foreach ( $phone_key_suffixes as $suffix ) {
 				$meta_key = 'phone_' . $i . '_' . $suffix;
-				register_term_meta( 'location', $meta_key, array(
-					'sanitize_callback' => 'sanitize_text_field',
-					'show_in_rest'      => true,
-					'single'            => true,
-					'type'              => 'string',
-				) );
+				register_term_meta(
+					'location',
+					$meta_key,
+					array(
+						'sanitize_callback' => 'sanitize_text_field',
+						'show_in_rest'      => true,
+						'single'            => true,
+						'type'              => 'string',
+					)
+				);
 			}
 		}
 
@@ -460,63 +453,65 @@ class Inventory_Presser_Taxonomies
 			'monday_close',
 		);
 
-		//How many sets of hours do we plan to store per address?
+		// How many sets of hours do we plan to store per address?
 		$loop_max = apply_filters( 'invp_max_hours_sets_per_address', 5 );
 
-		for( $i=1; $i<=$loop_max; $i++ )
-		{
-			foreach( $hours_key_suffixes as $suffix )
-			{
+		for ( $i = 1; $i <= $loop_max; $i++ ) {
+			foreach ( $hours_key_suffixes as $suffix ) {
 				$meta_key = 'hours_' . $i . '_' . $suffix;
-				register_term_meta( 'location', $meta_key, array(
-					'sanitize_callback' => 'sanitize_text_field',
-					'show_in_rest'      => true,
-					'single'            => true,
-					'type'              => 'string',
-				) );
+				register_term_meta(
+					'location',
+					$meta_key,
+					array(
+						'sanitize_callback' => 'sanitize_text_field',
+						'show_in_rest'      => true,
+						'single'            => true,
+						'type'              => 'string',
+					)
+				);
 			}
 		}
 	}
-	
+
 	/**
 	 * register_taxonomies
-	 * 
+	 *
 	 * Registers all our custom taxonomies
 	 *
 	 * @return void
 	 */
-	static function register_taxonomies()
-	{
-		//loop over this data, register the taxonomies, and populate the terms if needed
+	static function register_taxonomies() {
+		// loop over this data, register the taxonomies, and populate the terms if needed
 		$taxonomy_data = self::taxonomy_data();
-		for( $i=0; $i<sizeof( $taxonomy_data ); $i++ )
-		{
-			//create the taxonomy, replace hyphens with underscores
-			$taxonomy_name = str_replace( '-', '_', $taxonomy_data[$i]['args']['query_var'] );
-			register_taxonomy( $taxonomy_name, INVP::POST_TYPE, $taxonomy_data[$i]['args'] );
+		for ( $i = 0; $i < sizeof( $taxonomy_data ); $i++ ) {
+			// create the taxonomy, replace hyphens with underscores
+			$taxonomy_name = str_replace( '-', '_', $taxonomy_data[ $i ]['args']['query_var'] );
+			register_taxonomy( $taxonomy_name, INVP::POST_TYPE, $taxonomy_data[ $i ]['args'] );
 		}
 	}
 
 	/**
 	 * remove_terms_cron_job
-	 * 
+	 *
 	 * Removes a WordPress cron job that we schedule daily to clean up empty
 	 * terms in a few of our taxonomies.
 	 *
 	 * @param  bool $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
 	 * @return void
 	 */
-	public static function remove_terms_cron_job( $network_wide )
-	{
-		if( ! is_multisite() || ! $network_wide )
-		{
+	public static function remove_terms_cron_job( $network_wide ) {
+		if ( ! is_multisite() || ! $network_wide ) {
 			wp_unschedule_event( wp_next_scheduled( self::CRON_HOOK_DELETE_TERMS ), self::CRON_HOOK_DELETE_TERMS );
 			return;
 		}
 
-		$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
-		foreach( $sites as $site )
-		{
+		$sites = get_sites(
+			array(
+				'network' => 1,
+				'limit'   => 1000,
+			)
+		);
+		foreach ( $sites as $site ) {
 			switch_to_blog( $site->blog_id );
 			wp_unschedule_event( wp_next_scheduled( self::CRON_HOOK_DELETE_TERMS ), self::CRON_HOOK_DELETE_TERMS );
 			restore_current_blog();
@@ -528,49 +523,47 @@ class Inventory_Presser_Taxonomies
 	 *
 	 * Schedules a daily WordPress cron job to clean up empty terms in a few of
 	 * our taxonomies and also correct counts.
-	 * 
+	 *
 	 * @param  bool $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin
 	 * @return void
 	 */
-	public static function schedule_terms_cron_job( $network_wide )
-	{
-		if ( ! wp_next_scheduled( self::CRON_HOOK_DELETE_TERMS ) )
-		{
-			if( ! is_multisite() || ! $network_wide )
-			{
+	public static function schedule_terms_cron_job( $network_wide ) {
+		if ( ! wp_next_scheduled( self::CRON_HOOK_DELETE_TERMS ) ) {
+			if ( ! is_multisite() || ! $network_wide ) {
 				wp_schedule_event( time(), 'daily', self::CRON_HOOK_DELETE_TERMS );
 				return;
 			}
 
-			$sites = get_sites( array( 'network' => 1, 'limit' => 1000 ) );
-			foreach( $sites as $site )
-			{
+			$sites = get_sites(
+				array(
+					'network' => 1,
+					'limit'   => 1000,
+				)
+			);
+			foreach ( $sites as $site ) {
 				switch_to_blog( $site->blog_id );
 				wp_schedule_event( time(), 'daily', self::CRON_HOOK_DELETE_TERMS );
 				restore_current_blog();
 			}
 		}
 	}
-	
+
 	/**
 	 * sort_terms_as_numbers
-	 * 
+	 *
 	 * Makes sure that taxonomy terms that are numbers are sorted as numbers.
 	 *
-	 * @param  string $order_by ORDERBY clause of the terms query.
-	 * @param  array $args An array of term query arguments.
+	 * @param  string   $order_by   ORDERBY clause of the terms query.
+	 * @param  array    $args       An array of term query arguments.
 	 * @param  string[] $taxonomies An array of taxonomy names.
 	 * @return string The changed ORDERBY clause of the terms query
 	 */
-	function sort_terms_as_numbers( $order_by, $args, $taxonomies )
-	{
-		if( '' == $order_by )
-		{
+	function sort_terms_as_numbers( $order_by, $args, $taxonomies ) {
+		if ( '' == $order_by ) {
 			return $order_by;
 		}
 
-		if( null === $taxonomies )
-		{
+		if ( null === $taxonomies ) {
 			return $order_by;
 		}
 
@@ -578,11 +571,9 @@ class Inventory_Presser_Taxonomies
 			'cylinders',
 			'model_year',
 		);
-		foreach( $taxonomies_to_sort as $taxonomy_to_sort )
-		{
-			if( in_array( $taxonomy_to_sort, $taxonomies ) )
-			{
-				$order_by .=  '+0';
+		foreach ( $taxonomies_to_sort as $taxonomy_to_sort ) {
+			if ( in_array( $taxonomy_to_sort, $taxonomies ) ) {
+				$order_by .= '+0';
 				break;
 			}
 		}
@@ -592,21 +583,20 @@ class Inventory_Presser_Taxonomies
 	/**
 	 * taxonomy_data
 	 *
-	 * An array of taxonomy data used during registration and default term 
+	 * An array of taxonomy data used during registration and default term
 	 * population
-	 * 
+	 *
 	 * @return array
 	 */
-	public static function taxonomy_data()
-	{
+	public static function taxonomy_data() {
 		return apply_filters(
 			'invp_taxonomy_data',
-			array (
-				array (
-					'args' => array (
+			array(
+				array(
+					'args' => array(
 						'hierarchical'   => true,
 						'label'          => 'Model years',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Model years',
 							'singular_name' => 'Model year',
 							'search_items'  => 'Search years',
@@ -621,11 +611,11 @@ class Inventory_Presser_Taxonomies
 						'show_ui'        => true,
 					),
 				),
-				array (
-					'args' => array (
+				array(
+					'args' => array(
 						'hierarchical'   => true,
 						'label'          => 'Makes',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Makes',
 							'singular_name' => 'Make',
 							'search_items'  => 'Search makes',
@@ -640,11 +630,11 @@ class Inventory_Presser_Taxonomies
 						'show_ui'        => true,
 					),
 				),
-				array (
-					'args' => array (
+				array(
+					'args' => array(
 						'hierarchical'   => true,
 						'label'          => 'Models',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Models',
 							'singular_name' => 'Model',
 							'search_items'  => 'Search models',
@@ -659,11 +649,11 @@ class Inventory_Presser_Taxonomies
 						'show_ui'        => true,
 					),
 				),
-				array (
-					'args' => array (
+				array(
+					'args'      => array(
 						'hierarchical'   => true,
 						'label'          => 'Conditions',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Conditions',
 							'singular_name' => 'Condition',
 							'search_items'  => 'Search new and used',
@@ -677,16 +667,16 @@ class Inventory_Presser_Taxonomies
 						'show_in_rest'   => true,
 						'show_ui'        => true,
 					),
-					'term_data' =>	array (
+					'term_data' => array(
 						'New'  => 'New',
 						'Used' => 'Used',
 					),
 				),
-				array (
-					'args' => array (
+				array(
+					'args'      => array(
 						'hierarchical'   => true,
 						'label'          => 'Types',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Types',
 							'singular_name' => 'Type',
 							'search_items'  => 'Search types',
@@ -701,26 +691,26 @@ class Inventory_Presser_Taxonomies
 						'show_in_rest'   => true,
 						'show_ui'        => true,
 					),
-					'term_data' =>	array (
-						'ATV' => 'All Terrain Vehicle',
-						'BOAT'=> 'Boat',
-						'BUS' => 'Bus',
-						'CAR' => 'Passenger Car',
-						'MOT' => 'Motorcycle',
-						'MOW' => 'Mower',
-						'OTH' => 'Other',
-						'RV'  => 'Recreational Vehicle',
-						'SUV' => 'Sport Utility Vehicle',
-						'TRLR'=> 'Trailer',
-						'TRU' => 'Truck',
-						'VAN' => 'Van',
+					'term_data' => array(
+						'ATV'  => 'All Terrain Vehicle',
+						'BOAT' => 'Boat',
+						'BUS'  => 'Bus',
+						'CAR'  => 'Passenger Car',
+						'MOT'  => 'Motorcycle',
+						'MOW'  => 'Mower',
+						'OTH'  => 'Other',
+						'RV'   => 'Recreational Vehicle',
+						'SUV'  => 'Sport Utility Vehicle',
+						'TRLR' => 'Trailer',
+						'TRU'  => 'Truck',
+						'VAN'  => 'Van',
 					),
 				),
-				array (
-					'args' => array (
+				array(
+					'args'      => array(
 						'hierarchical'   => true,
 						'label'          => 'Availabilities',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Availabilities',
 							'singular_name' => 'Availability',
 							'search_items'  => 'Search availabilities',
@@ -734,17 +724,17 @@ class Inventory_Presser_Taxonomies
 						'show_in_rest'   => true,
 						'show_ui'        => true,
 					),
-					'term_data' =>	array (
+					'term_data' => array(
 						'For sale'  => 'For sale',
 						'Sold'      => 'Sold',
 						'Wholesale' => 'Wholesale',
 					),
 				),
-				array (
-					'args' => array (
+				array(
+					'args'      => array(
 						'hierarchical'   => true,
 						'label'          => 'Drive types',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Drive types',
 							'singular_name' => 'Drive type',
 							'search_items'  => 'Search drive types',
@@ -758,7 +748,7 @@ class Inventory_Presser_Taxonomies
 						'show_in_rest'   => true,
 						'show_ui'        => true,
 					),
-					'term_data' =>	array (
+					'term_data' => array(
 						'4FD' => 'Front Wheel Drive w/4x4',
 						'4RD' => 'Rear Wheel Drive w/4x4',
 						'2WD' => 'Two Wheel Drive',
@@ -770,14 +760,14 @@ class Inventory_Presser_Taxonomies
 				),
 
 				/**
-				 * Propulsion type is essentially drive type for boats
-				 */
+				* Propulsion type is essentially drive type for boats
+				*/
 
-				array (
-					'args' => array (
+				array(
+					'args'      => array(
 						'hierarchical'   => true,
 						'label'          => 'Propulsion types',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Propulsion types',
 							'singular_name' => 'Propulsion type',
 							'search_items'  => 'Search propulsion types',
@@ -791,7 +781,7 @@ class Inventory_Presser_Taxonomies
 						'show_in_rest'   => true,
 						'show_ui'        => true,
 					),
-					'term_data' =>	array (
+					'term_data' => array(
 						'IN'  => 'Inboard',
 						'OUT' => 'Outboard',
 						'IO'  => 'Inboard/Outboard',
@@ -799,11 +789,11 @@ class Inventory_Presser_Taxonomies
 					),
 				),
 
-				array (
-					'args' => array (
+				array(
+					'args'      => array(
 						'hierarchical'   => true,
 						'label'          => 'Fuels',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Fuel types',
 							'singular_name' => 'Fuel type',
 							'search_items'  => 'Search fuel types',
@@ -817,7 +807,7 @@ class Inventory_Presser_Taxonomies
 						'show_in_rest'   => true,
 						'show_ui'        => true,
 					),
-					'term_data' =>	array (
+					'term_data' => array(
 						'B' => 'Electric and Gas Hybrid',
 						'C' => 'Convertible',
 						'D' => 'Diesel',
@@ -831,11 +821,11 @@ class Inventory_Presser_Taxonomies
 						'Y' => 'Electric and Diesel Hybrid',
 					),
 				),
-				array (
-					'args' => array (
+				array(
+					'args'      => array(
 						'hierarchical'   => true,
 						'label'          => 'Transmissions',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Transmissions',
 							'singular_name' => 'Transmission',
 							'search_items'  => 'Search transmissions',
@@ -849,18 +839,18 @@ class Inventory_Presser_Taxonomies
 						'show_in_rest'   => true,
 						'show_ui'        => true,
 					),
-					'term_data' =>	array (
+					'term_data' => array(
 						'A' => 'Automatic',
 						'E' => 'ECVT',
 						'M' => 'Manual',
 						'U' => 'Unknown',
 					),
 				),
-				array (
-					'args' => array (
+				array(
+					'args'      => array(
 						'hierarchical'   => true,
 						'label'          => 'Cylinders',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Cylinders',
 							'singular_name' => 'Cylinder count',
 							'search_items'  => 'Search cylinder counts',
@@ -874,7 +864,7 @@ class Inventory_Presser_Taxonomies
 						'show_in_rest'   => true,
 						'show_ui'        => true,
 					),
-					'term_data' => array (
+					'term_data' => array(
 						'1'  => '1',
 						'2'  => '2',
 						'3'  => '3',
@@ -886,11 +876,11 @@ class Inventory_Presser_Taxonomies
 						'12' => '12',
 					),
 				),
-				array (
-					'args' => array (
+				array(
+					'args' => array(
 						'hierarchical'   => true,
 						'label'          => 'Body styles',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Body styles',
 							'singular_name' => 'Body style',
 							'search_items'  => 'Search body styles',
@@ -905,11 +895,11 @@ class Inventory_Presser_Taxonomies
 						'show_ui'        => true,
 					),
 				),
-				array (
-					'args' => array (
+				array(
+					'args'      => array(
 						'hierarchical'   => true,
 						'label'          => 'Colors',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Color',
 							'singular_name' => 'Color',
 							'search_items'  => 'Search colors',
@@ -923,7 +913,7 @@ class Inventory_Presser_Taxonomies
 						'show_in_rest'   => true,
 						'show_ui'        => true,
 					),
-					'term_data' =>	array (
+					'term_data' => array(
 						'Beige'    => 'Beige',
 						'Black'    => 'Black',
 						'Blue'     => 'Blue',
@@ -941,11 +931,11 @@ class Inventory_Presser_Taxonomies
 						'Yellow'   => 'Yellow',
 					),
 				),
-				array (
-					'args' => array (
+				array(
+					'args' => array(
 						'hierarchical'   => false,
 						'label'          => 'Locations',
-						'labels'         => array (
+						'labels'         => array(
 							'name'          => 'Location',
 							'singular_name' => 'Location',
 							'search_items'  => __( 'Search locations', 'inventory-presser' ),
@@ -971,36 +961,34 @@ class Inventory_Presser_Taxonomies
 			)
 		);
 	}
-	
+
 	/**
 	 * taxonomy_meta_box_html
-	 * 
+	 *
 	 * Creates HTML output for a meta box that turns a taxonomy into
 	 * a select drop-down list instead of the typical checkboxes. Including
 	 * a blank option is the only way a user can remove the value.
 	 *
-	 * @param  string $taxonomy_name
-	 * @param  string $element_name
-	 * @param  WP_Post $post A post
-	 * @return string HTML that renders a editor meta box for a taxonomy 
+	 * @param  string  $taxonomy_name
+	 * @param  string  $element_name
+	 * @param  WP_Post $post          A post
+	 * @return string HTML that renders a editor meta box for a taxonomy
 	 */
-	static function taxonomy_meta_box_html( $taxonomy_name, $element_name, $post )
-	{
-		$HTML = sprintf( '<select name="%s" id="%s"><option></option>',
+	static function taxonomy_meta_box_html( $taxonomy_name, $element_name, $post ) {
+		$HTML = sprintf(
+			'<select name="%s" id="%s"><option></option>',
 			$element_name,
 			$element_name
 		);
 
-		//get all the term names and slugs for $taxonomy_name
-		$terms = get_terms( $taxonomy_name,  array( 'hide_empty' => false ) );
+		// get all the term names and slugs for $taxonomy_name
+		$terms = get_terms( $taxonomy_name, array( 'hide_empty' => false ) );
 
-		if ( ! empty( $terms ) && ! is_wp_error( $terms ) )
-		{
-			//get the saved term for this taxonomy
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+			// get the saved term for this taxonomy
 			$saved_term_slug = self::get_term_slug( $taxonomy_name, $post->ID );
 
-			foreach( $terms as $term )
-			{
+			foreach ( $terms as $term ) {
 				$HTML .= sprintf(
 					'<option value="%s"%s>%s</option>',
 					$term->slug,

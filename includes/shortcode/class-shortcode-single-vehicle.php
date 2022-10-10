@@ -1,50 +1,46 @@
 <?php
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Inventory_Presser_Shortcode_Single_Vehicle
- * 
+ *
  * A shortcode that creates a content-single template for the vehicle post type.
  */
-class Inventory_Presser_Shortcode_Single_Vehicle
-{
+class Inventory_Presser_Shortcode_Single_Vehicle {
+
 	/**
 	 * add
-	 * 
+	 *
 	 * Adds two shortcodes
 	 *
 	 * @return void
 	 */
-	function add()
-	{
+	function add() {
 		add_shortcode( 'invp-single-vehicle', array( $this, 'content' ) );
 		add_shortcode( 'invp_single_vehicle', array( $this, 'content' ) );
 	}
 
 	/**
 	 * hooks
-	 * 
+	 *
 	 * Adds hooks that power the shortcode
 	 *
 	 * @return void
 	 */
-	function hooks()
-	{
+	function hooks() {
 		add_action( 'init', array( $this, 'add' ) );
 	}
-	
+
 	/**
 	 * content
-	 * 
+	 *
 	 * Creates the HTML content of the shortcode
 	 *
 	 * @param  array $atts
 	 * @return string HTML that renders a vehicle single template
 	 */
-	function content( $atts )
-	{
-		if( ! is_singular( INVP::POST_TYPE ) )
-		{
+	function content( $atts ) {
+		if ( ! is_singular( INVP::POST_TYPE ) ) {
 			return '';
 		}
 
@@ -56,7 +52,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle
 		wp_enqueue_style( 'invp_single_vehicle' );
 		wp_enqueue_script( 'invp-flexslider', '', array(), false, true );
 
- 		ob_start();
+		ob_start();
 
 		?><div class="vehicle-info">
 
@@ -64,131 +60,145 @@ class Inventory_Presser_Shortcode_Single_Vehicle
 
 				<div class="post-thumbnail">
 					<div class="vehicle-content">
-						<h2 class="post-title vehicle-price"><?php
+						<h2 class="post-title vehicle-price">
+						<?php
 								echo invp_get_the_price();
-						?></h2>
+						?>
+						</h2>
 
 						<?php
 						// if dealership has multiple locations, display the location of this vehicle
 						$location_sentence = invp_get_the_location_sentence();
-						if( ! empty( $location_sentence ) )
-						{
+						if ( ! empty( $location_sentence ) ) {
 							printf(
 								'<div class="vehicle-location">%s</div>',
 								$location_sentence
 							);
 						}
 
-					?></div>
+						?>
+					</div>
 					<div class="vehicle-images">
 						<div id="slider-width"></div>
 						<div id="slider" class="flexslider">
-							<ul class="slides"><?php
+							<ul class="slides">
+							<?php
 
-								if ( isset( $image_url_lists['large'] ) )
-								{
-									for( $p=0; $p<sizeof( $image_url_lists['large'] ); $p++ )
-									{
-										//Inventory Presser versions 8.1.0 and above provide the 'urls'
-										if( isset( $image_url_lists['urls'][$p] ) )
-										{
-											printf(
-												'<li><a href="%s">%s</a></li>',
-												$image_url_lists['urls'][$p],
-												$image_url_lists['large'][$p]
-											);
-										}
-										else
-										{
-										 	printf(
-												'<li>%s</li>',
-												$image_url_lists['large'][$p]
-											);
-										}
+							if ( isset( $image_url_lists['large'] ) ) {
+								for ( $p = 0; $p < sizeof( $image_url_lists['large'] ); $p++ ) {
+									// Inventory Presser versions 8.1.0 and above provide the 'urls'
+									if ( isset( $image_url_lists['urls'][ $p ] ) ) {
+										printf(
+											'<li><a href="%s">%s</a></li>',
+											$image_url_lists['urls'][ $p ],
+											$image_url_lists['large'][ $p ]
+										);
+									} else {
+										printf(
+											'<li>%s</li>',
+											$image_url_lists['large'][ $p ]
+										);
 									}
 								}
-							?></ul>
-						</div><?php
+							}
+							?>
+							</ul>
+						</div>
+						<?php
 
-						if ( isset( $image_url_lists['thumb'] ) && count($image_url_lists['thumb']) > 1)
-						{
-							?><div id="carousel" class="flexslider no-preview">
-							<ul class="slides"><?php
+						if ( isset( $image_url_lists['thumb'] ) && count( $image_url_lists['thumb'] ) > 1 ) {
+							?>
+							<div id="carousel" class="flexslider no-preview">
+							<ul class="slides">
+							<?php
 
-								foreach( $image_url_lists['thumb'] as $image )
-								{
-									printf( '<li>%s</li>', $image );
-								}
+							foreach ( $image_url_lists['thumb'] as $image ) {
+								printf( '<li>%s</li>', $image );
+							}
 
-							?></ul>
-						</div><?php
+							?>
+							</ul>
+						</div>
+							<?php
 
 						}
-					?></div>
+						?>
+					</div>
 				</div><!--/.post-thumbnail-->
 
-				<div class="vehicle-columns"><?php
+				<div class="vehicle-columns">
+				<?php
 
 					$attribute_table = apply_shortcodes( '[invp_attribute_table]' );
-					if( ! empty( $attribute_table ) ) {
+				if ( ! empty( $attribute_table ) ) {
 
-						?><div class="vehicle-summary"><?php
+					?>
+						<div class="vehicle-summary">
+						<?php
 
 						echo $attribute_table;
 
-					?></div><?php
+						?>
+					</div>
+					<?php
 
-					}
+				}
 
-					?><div class="vehicle-buttons"><?php
-						
+				?>
+					<div class="vehicle-buttons">
+					<?php
+
 						do_action( 'invp_single_buttons' );
 
-					?></div>
+					?>
+					</div>
 				</div>
 
-				<div class="vehicle-content"><?php
+				<div class="vehicle-content">
+				<?php
 
-					$sections = [];
+					$sections = array();
 
 					$description = invp_get_the_description();
-					if( ! empty( $description ) )
-					{
-						$sections['description'] = sprintf(
-							'<h2 class="vehicle-content-wrap">%s</h2><div class="vehicle-content-wrap">%s</div>',
-							__( 'Description', 'inventory-presser' ),
-							wpautop( $description )
-						);
-					}
+				if ( ! empty( $description ) ) {
+					$sections['description'] = sprintf(
+						'<h2 class="vehicle-content-wrap">%s</h2><div class="vehicle-content-wrap">%s</div>',
+						__( 'Description', 'inventory-presser' ),
+						wpautop( $description )
+					);
+				}
 
 					// if there's a youtube video associated with this vehicle, embed it
-					if ( invp_get_the_youtube_url() )
-					{
-						$sections['youtube'] = wp_oembed_get( invp_get_the_youtube_url() );
+				if ( invp_get_the_youtube_url() ) {
+					$sections['youtube'] = wp_oembed_get( invp_get_the_youtube_url() );
+				}
+
+					$options_array = invp_get_the_options();
+				if ( ! empty( $options_array ) ) {
+					// loop through list of vehicle options
+					$options_html = '';
+					foreach ( invp_get_the_options() as $option ) {
+						$options_html .= sprintf( '<li>%s</li>', $option );
 					}
 
-					$options_array = invp_get_the_options(); 
-					if( ! empty( $options_array ) )
-					{
-						// loop through list of vehicle options
-						$options_html = '';
-						foreach( invp_get_the_options() as $option)
-						{
-							$options_html .= sprintf( '<li>%s</li>', $option );
-						}
-
-						$sections['options'] = sprintf( 
-							'<h2 class="vehicle-features">%s</h2><ul class="vehicle-features">%s</ul>',
-							__( 'Options', 'inventory-presser' ),
-							$options_html
-						);
-					}
+					$sections['options'] = sprintf(
+						'<h2 class="vehicle-features">%s</h2><ul class="vehicle-features">%s</ul>',
+						__( 'Options', 'inventory-presser' ),
+						$options_html
+					);
+				}
 
 					$sections = apply_filters( 'invp_single_sections', $sections );
 
-					array_walk( $sections, function( $value ) { echo $value; } );
+					array_walk(
+						$sections,
+						function( $value ) {
+							echo $value;
+						}
+					);
 
-				?></div>
+				?>
+				</div>
 			</div><!--/.post-inner-->
 		</div><script type="text/javascript"><!--
 	function adjustSlideHeight(wrapper)
@@ -229,7 +239,8 @@ class Inventory_Presser_Shortcode_Single_Vehicle
 			});
 		}
 	});
---></script><?php
+--></script>
+		<?php
 
 		return ob_get_clean();
 	}

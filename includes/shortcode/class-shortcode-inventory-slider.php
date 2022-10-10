@@ -1,41 +1,39 @@
 <?php
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Inventory_Presser_Shortcode_Slider
- * 
+ *
  * Creates a shortcode that produces vehicle photo sliders based on FlexSlider.
  */
-class Inventory_Presser_Shortcode_Slider
-{
+class Inventory_Presser_Shortcode_Slider {
+
 	/**
 	 * add
-	 * 
+	 *
 	 * Adds two shortcodes
 	 *
 	 * @return void
 	 */
-	function add()
-	{
-		add_shortcode( 'invp-inventory-slider', array( $this, 'content') );
-		add_shortcode( 'invp_inventory_slider', array( $this, 'content') );
+	function add() {
+		add_shortcode( 'invp-inventory-slider', array( $this, 'content' ) );
+		add_shortcode( 'invp_inventory_slider', array( $this, 'content' ) );
 	}
 
 	/**
 	 * hooks
-	 * 
+	 *
 	 * Adds hooks that power the shortcode
 	 *
 	 * @return void
 	 */
-	function hooks()
-	{
+	function hooks() {
 		add_action( 'init', array( $this, 'add' ) );
 	}
-	
+
 	/**
 	 * content
-	 * 
+	 *
 	 * Creates the HTML content of the shortcode
 	 *
 	 * @param  array $atts
@@ -43,31 +41,33 @@ class Inventory_Presser_Shortcode_Slider
 	 */
 	function content( $atts ) {
 
-		//Canvass shortcode attributes
-		$atts = shortcode_atts( array(
-			'per_page' => 10,
-			'captions' => 'true',
-			'orderby'  => 'rand',
-			'order'    => 'ASC',
-		), $atts, 'inventory_slider' ); //Use shortcode_atts_inventory_slider to filter the incoming attributes
+		// Canvass shortcode attributes
+		$atts             = shortcode_atts(
+			array(
+				'per_page' => 10,
+				'captions' => 'true',
+				'orderby'  => 'rand',
+				'order'    => 'ASC',
+			),
+			$atts,
+			'inventory_slider'
+		); // Use shortcode_atts_inventory_slider to filter the incoming attributes
 		$atts['captions'] = 'true' === $atts['captions'];
 
-		//Get the vehicle IDs and loop over them
+		// Get the vehicle IDs and loop over them
 		$inventory_ids = self::get_vehicle_IDs( $atts );
-		if( empty( $inventory_ids ) )
-		{
+		if ( empty( $inventory_ids ) ) {
 			return '';
 		}
 
-		//Need flexslider for this content
+		// Need flexslider for this content
 		wp_enqueue_script( 'invp-flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );
 
 		$flex_html = '<div class="flexslider flex-native">'
-			. '<ul class="slides">';
+		. '<ul class="slides">';
 
-		foreach( $inventory_ids as $inventory_id )
-		{
+		foreach ( $inventory_ids as $inventory_id ) {
 			$flex_html .= sprintf(
 				'<li><a class="flex-link" href="%s">'
 				. '<div class="grid-image" style="background-image: url(\'%s\');">'
@@ -76,7 +76,7 @@ class Inventory_Presser_Shortcode_Slider
 				invp_get_the_photo_url( 'large', $inventory_id )
 			);
 
-			if( $atts['captions'] ) {
+			if ( $atts['captions'] ) {
 				$flex_html .= sprintf(
 					'<p class="flex-caption">%s</p>',
 					get_the_title( $inventory_id )
@@ -89,12 +89,11 @@ class Inventory_Presser_Shortcode_Slider
 		return $flex_html . '</ul></div>';
 	}
 
-	public static function get_vehicle_IDs( $shortcode_atts )
-	{
+	public static function get_vehicle_IDs( $shortcode_atts ) {
 		$gpargs = array(
 			'posts_per_page' => 10,
-			'post_type'   => INVP::POST_TYPE,
-			'meta_query'  => array(
+			'post_type'      => INVP::POST_TYPE,
+			'meta_query'     => array(
 				'relation' => 'AND',
 				array(
 					'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
@@ -102,30 +101,30 @@ class Inventory_Presser_Shortcode_Slider
 					'compare' => '=',
 				),
 				array(
-					'key'	  => '_thumbnail_id',
+					'key'     => '_thumbnail_id',
 					'compare' => 'EXISTS',
-				)
+				),
 			),
-			'fields'  => 'ids',
-			'orderby' => $shortcode_atts['orderby'],
-			'order'   => $shortcode_atts['order'],
+			'fields'         => 'ids',
+			'orderby'        => $shortcode_atts['orderby'],
+			'order'          => $shortcode_atts['order'],
 		);
 
-		$inventory_ids = get_posts($gpargs);
+		$inventory_ids = get_posts( $gpargs );
 
-		if (count($inventory_ids) < 10) {
+		if ( count( $inventory_ids ) < 10 ) {
 
 			$gpargs = array(
-				'posts_per_page' => 10 - (count($inventory_ids)),
-				'post_type'   => INVP::POST_TYPE,
-				'meta_query'  => array(
+				'posts_per_page' => 10 - ( count( $inventory_ids ) ),
+				'post_type'      => INVP::POST_TYPE,
+				'meta_query'     => array(
 					'relation' => 'AND',
 					array(
 						'relation' => 'OR',
 						array(
 							'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
-							'value'   => array( '', '0'),
-							'compare' => 'IN'
+							'value'   => array( '', '0' ),
+							'compare' => 'IN',
 						),
 						array(
 							'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
@@ -133,20 +132,20 @@ class Inventory_Presser_Shortcode_Slider
 						),
 					),
 					array(
-						'key'	  => '_thumbnail_id',
-						'compare' => 'EXISTS'
-					)
+						'key'     => '_thumbnail_id',
+						'compare' => 'EXISTS',
+					),
 				),
-				'fields'  => 'ids',
-				'orderby' => $shortcode_atts['orderby'],
-				'order'   => $shortcode_atts['order'],
+				'fields'         => 'ids',
+				'orderby'        => $shortcode_atts['orderby'],
+				'order'          => $shortcode_atts['order'],
 			);
 
-			$inventory_ids += get_posts($gpargs);
+			$inventory_ids += get_posts( $gpargs );
 		}
 
-		if( ! $inventory_ids ) {
-			return [];
+		if ( ! $inventory_ids ) {
+			return array();
 		}
 
 		shuffle( $inventory_ids );

@@ -1,9 +1,9 @@
 <?php
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Inventory_Presser_Email_A_Friend
- * 
+ *
  * Implement a mailto: link in a specific menu item in a specific menu that
  * often exists in Inventory Presser websites.
  *
@@ -12,17 +12,17 @@ defined( 'ABSPATH' ) or exit;
  * containing vehicle information so the vehicle can be sent to a friend via
  * email.
  *
- *
  * @since      3.8.0
  * @package    Inventory_Presser
  * @subpackage Inventory_Presser/includes
  * @author     Corey Salzano <corey@friday.systems>
  */
-class Inventory_Presser_Email_A_Friend{
+class Inventory_Presser_Email_A_Friend {
+
 
 	/**
 	 * hooks
-	 * 
+	 *
 	 * Set up filter and action hooks
 	 *
 	 * @uses add_filter()
@@ -36,34 +36,34 @@ class Inventory_Presser_Email_A_Friend{
 	/**
 	 * maybe_change_link
 	 *
-	 * Fills out a mailto: link with vehicle information 
+	 * Fills out a mailto: link with vehicle information
 	 *
 	 * Target a specific button in a specific menu and modify the URL.
 	 *
 	 * @uses get_bloginfo(), get_permalink()
 	 *
-	 * @param  string $menu_item item HTML
-	 * @param  WP_Post $item post object for the menu item
-	 * @param  int $depth depth of the item for padding
-	 * @param  object $args nav menu arguments
+	 * @param  string  $menu_item item HTML
+	 * @param  WP_Post $item      post object for the menu item
+	 * @param  int     $depth     depth of the item for padding
+	 * @param  object  $args      nav menu arguments
 	 * @return string
 	 */
 	function maybe_change_link( $menu_item, $item, $depth, $args ) {
-		//looking for $menu_item = <a href="mailto:">Email a Friend</a>
+		// looking for $menu_item = <a href="mailto:">Email a Friend</a>
 
-		//is it the vehicle details menu?
-		if( empty( $args ) || empty( $args->menu ) || empty( $args->menu->name ) || __( 'Vehicle Details Buttons', 'inventory-presser' ) != $args->menu->name ) {
-			//no
+		// is it the vehicle details menu?
+		if ( empty( $args ) || empty( $args->menu ) || empty( $args->menu->name ) || __( 'Vehicle Details Buttons', 'inventory-presser' ) != $args->menu->name ) {
+			// no
 			return $menu_item;
 		}
 
-		//is it a custom link labeled email a friend?
-		if( 'Custom Link' != $item->type_label || strtolower( __( 'Email a Friend', 'inventory-presser' ) ) != strtolower( $item->title ) ) {
-			//no
+		// is it a custom link labeled email a friend?
+		if ( 'Custom Link' != $item->type_label || strtolower( __( 'Email a Friend', 'inventory-presser' ) ) != strtolower( $item->title ) ) {
+			// no
 			return $menu_item;
 		}
 
-		//change the link to contain vehicle information
+		// change the link to contain vehicle information
 		global $post;
 		$menu_item = str_replace(
 			'mailto:',
@@ -76,7 +76,7 @@ class Inventory_Presser_Email_A_Friend{
 
 	/**
 	 * url
-	 * 
+	 *
 	 * Creates a mailto: url to draft an email containing vehicle information.
 	 *
 	 * @uses get_bloginfo(), get_permalink()
@@ -86,17 +86,17 @@ class Inventory_Presser_Email_A_Friend{
 	 */
 	public function url( $post ) {
 
-		if( ! isset( $post->post_title ) ) {
+		if ( ! isset( $post->post_title ) ) {
 			return '';
 		}
 
 		$subject = 'Check out this ' . $post->post_title;
-		$body = sprintf(
+		$body    = sprintf(
 			'Please look at this %s for sale at %s:
 
 %s',
 			$post->post_title,
-			html_entity_decode( get_bloginfo(), ENT_QUOTES ), //WordPress encodes quotes in site names
+			html_entity_decode( get_bloginfo(), ENT_QUOTES ), // WordPress encodes quotes in site names
 			get_permalink( $post )
 		);
 		return sprintf(

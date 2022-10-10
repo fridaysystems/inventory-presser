@@ -1,15 +1,16 @@
 <?php
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Inventory_Presser_Google_Maps_Widget
- * 
+ *
  * Let's users choose an address in the locations taxonomy, and loads a Google
  * Map that points at that address.
- * 
+ *
  * This class creates the Google Map widget.
  */
 class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
+
 
 	const ID_BASE = '_invp_google_maps';
 
@@ -19,14 +20,14 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 	 * Calls the parent class' contructor and adds a hook that will delete the
 	 * option that stores this widget's data when the plugin's delete all data
 	 * method is run.
-	 * 
+	 *
 	 * @return void
 	 */
 	function __construct() {
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Google Map (legacy)', 'inventory-presser' ),
-			array( 'description' => __( 'Embeds a Google Map pointed at a dealership address.', 'inventory-presser' ), )
+			array( 'description' => __( 'Embeds a Google Map pointed at a dealership address.', 'inventory-presser' ) )
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
@@ -34,7 +35,7 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 
 	/**
 	 * delete_option
-	 * 
+	 *
 	 * Deletes the option that stores this widget's data.
 	 *
 	 * @return void
@@ -45,24 +46,21 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 
 	/**
 	 * widget
-	 * 
+	 *
 	 * Outputs the widget front-end HTML
 	 *
 	 * @param  array $args
 	 * @param  array $instance
 	 * @return void
 	 */
-	public function widget( $args, $instance )
-	{
-		//abort if we don't have an address to show
-		if( empty( $instance['location_slug'] ) )
-		{
+	public function widget( $args, $instance ) {
+		// abort if we don't have an address to show
+		if ( empty( $instance['location_slug'] ) ) {
 			return;
 		}
 
 		$location = get_term_by( 'slug', $instance['location_slug'], 'location' );
-		if( ! $location )
-		{
+		if ( ! $location ) {
 			return;
 		}
 
@@ -70,11 +68,11 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 		echo $args['before_widget'];
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
-		if( ! empty( $title ) ) {
+		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		//remove line breaks from the term description
+		// remove line breaks from the term description
 		$address_to_search = preg_replace( '#\R+#', ', ', $location->description );
 
 		printf(
@@ -89,7 +87,7 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 
 	/**
 	 * form
-	 * 
+	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance
@@ -102,36 +100,37 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-			<?php _e( 'Choose an Address', 'inventory-presser' ); ?>
-		</p><?php
+		<?php _e( 'Choose an Address', 'inventory-presser' ); ?>
+		</p>
+		<?php
 
 		// get all location terms
 		$location_terms = get_terms( 'location', array( 'hide_empty' => false ) );
 
 		$location_slug = isset( $instance['location_slug'] ) ? $instance['location_slug'] : '';
 
-	    // loop through each location, set up form
-	   	foreach( $location_terms as $index => $term_object ) {
-	   		printf(
-	   			'<p><input id="%s" name="%s" value="%s" type="radio"%s> <label for="%s">%s</label></p>',
-	   			$this->get_field_id( $term_object->slug ),
-	   			$this->get_field_name('location_slug'),
-	   			$term_object->slug,
-	   			checked( $term_object->slug, $location_slug, false ),
-	   			$this->get_field_id( $term_object->slug ),
-	   			nl2br( $term_object->description )
-	   		);
-	    }
+		// loop through each location, set up form
+		foreach ( $location_terms as $index => $term_object ) {
+			printf(
+				'<p><input id="%s" name="%s" value="%s" type="radio"%s> <label for="%s">%s</label></p>',
+				$this->get_field_id( $term_object->slug ),
+				$this->get_field_name( 'location_slug' ),
+				$term_object->slug,
+				checked( $term_object->slug, $location_slug, false ),
+				$this->get_field_id( $term_object->slug ),
+				nl2br( $term_object->description )
+			);
+		}
 	}
 
 	/**
 	 * update
 	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
-	 * 
+	 *
 	 * @param  array $new_instance
 	 * @param  array $old_instance
 	 * @return array The updated array full of settings
