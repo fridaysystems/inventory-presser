@@ -145,6 +145,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Upgrade Notice ==
 
+= 14.2.0 =
+Adds two template tags `invp_get_the_location_state()` and `invp_get_the_location_zip()`. Wraps vehicle prices in a <span> element in the [invp_inventory_grid] shortcode so they can be more easily styled.
+
 = 14.1.0 =
 Adds a Contact Form 7 mail tag [invp_adf_timestamp] to help insert ISO 8601 timestamps into ADF XML lead emails. Adds a Contact Form 7 mail tag [invp_adf_vehicle] to help insert vehicles into ADF XML lead emails. Adds a "No vehicles found." message to the [invp_archive] shortcode when there are no vehicle posts that satisfy the query. Adds a default false value for the use_carfax setting so it shows up in REST at /wp-json/invp/v1/settings consistently. Wraps the vehicle YMM string in a link in email sent using our Contact Form 7 form-tag [invp_vehicle].
 
