@@ -941,20 +941,14 @@ class Inventory_Presser_Plugin {
 		 * Inventory_Presser_Admin_Customize_Dashboard)
 		 */
 		if ( ! is_admin() ) {
-
-			?>
-					var invp = 
-			<?php
+			?><script> var invp = <?php
 			echo wp_json_encode(
 				array(
 					'meta_prefix' => INVP::meta_prefix(),
 					'is_singular' => is_singular( INVP::POST_TYPE ),
 				)
 			);
-			?>
-		;
-		</script>
-			<?php
+			?>; </script><?php
 		}
 	}
 
