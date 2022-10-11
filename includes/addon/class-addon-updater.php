@@ -299,7 +299,7 @@ jQuery(document).ready(function(){
 				// build a plugin list row, with update notification
 				printf(
 					'<tr class="plugin-update-tr active" id="%1$s-update" data-slug="%1$s" data-plugin="%2$s">'
-					. '<td colspan="3" class="plugin-update colspanchange">'
+					. '<td colspan="4" class="plugin-update colspanchange">'
 					. '<div class="update-message notice inline notice-warning notice-alt"><p>',
 					$this->slug,
 					$file
@@ -314,7 +314,7 @@ jQuery(document).ready(function(){
 				);
 
 				printf( 
-					'%s %s %s <a href="%s" class="thickbox" aria-label="%s %s %s %s %s">%s %s %s</a> %s <a href="%s" aria-label="%s %s %s">%s</a>',
+					'%s %s %s <a href="%s" class="thickbox open-plugin-details-modal" aria-label="%s %s %s %s %s">%s %s %s</a>',
 					__( 'There is a new version of', 'inventory-presser' ),
 					esc_html( $version_info->name ),
 					__( 'available.', 'inventory-presser' ),
@@ -327,16 +327,25 @@ jQuery(document).ready(function(){
 					__(' View version', 'inventory-presser' ),
 					esc_html( $version_info->new_version ),
 					__( 'details', 'inventory-presser' ),
-					__( 'or', 'inventory-presser' ),
-					esc_url(wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=') . $this->name, 'upgrade-plugin_' . $this->name ) ),
-					__( 'Update', 'inventory-presser' ),
-					esc_html( $version_info->name ),
-					__( 'now', 'inventory-presser' ),
-					__( 'update now', 'inventory-presser' )
 				);
 
+				// Do we have a license key? Include "update now" link if so.
+				if( ! empty( $this->api_data['license'] ) ) {
+					printf(
+						' %s <a href="%s" class="update-link" aria-label="%s %s %s">%s</a>.',
+						__( 'or', 'inventory-presser' ),
+						esc_url(wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=') . $this->name, 'upgrade-plugin_' . $this->name ) ),
+						__( 'Update', 'inventory-presser' ),
+						esc_html( $version_info->name ),
+						__( 'now', 'inventory-presser' ),
+						__( 'update now', 'inventory-presser' )
+					);
+				} else {
+					echo '.';
+				}
+
 				do_action( "in_plugin_update_message-{$file}", $plugin, $version_info );
-				echo '</p></div></td></tr>';
+				echo ' <em></em></p></div></td></tr>';
 			}
 		}
 

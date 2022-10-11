@@ -3,7 +3,7 @@ Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 6.0.1
-Stable tag: 14.2.1
+Stable tag: 14.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,11 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.2.2 = 
+* [Fixed] Fixes a bug in the add-on updater that prevented the update notices from looking like core update nags on the plugins list.
+* [Fixed] Fixes a bug in the add-on updater that prevented users from seeing our "License key is missing at Vehicles → Options" message.
+* [Fixed] Fixes a bug introduced in 14.2.1 that output some JavaScript to non-logged in users.
 
 = 14.2.1 =
 * [Fixed] Reverts to `json_decode()` from `wp_json_decode()`, a bug introduced in 14.2.1.
