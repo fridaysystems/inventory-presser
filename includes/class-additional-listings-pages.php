@@ -30,6 +30,35 @@ class Inventory_Presser_Additional_Listings_Pages {
 		add_filter( 'invp_rewrite_slugs', array( $this, 'add_rewrite_slugs' ) );
 		add_filter( 'invp_rewrite_rules', array( $this, 'add_rewrite_rules' ) );
 		add_action( 'pre_get_posts', array( $this, 'modify_query' ) );
+		add_filter( 'post_type_archive_title', array( $this, 'change_page_title' ), 10, 2 );
+	}
+
+	/**
+	 * change_page_title
+	 *
+	 * @param  mixed $post_type_name
+	 * @param  mixed $post_type
+	 * @return string
+	 */
+	public function change_page_title( $post_type_name, $post_type ) {
+		if ( ! class_exists( 'INVP' ) || INVP::POST_TYPE !== $post_type ) {
+			return $post_type_name;
+		}
+
+		global $wp;
+		foreach ( self::additional_listings_pages_array() as $additional_listing ) {
+			// is this rule valid?
+			if ( ! self::is_valid_rule( $additional_listing ) ) {
+				continue;
+			}
+
+			// our URL path will match the beginning of the rewrite rule.
+			if ( substr( $wp->matched_rule, 0, strlen( $additional_listing['url_path'] ) === $additional_listing['url_path'] )
+				&& ! empty( $additional_listing['title'] ) ) {
+				return $additional_listing['title'];
+			}
+		}
+		return $post_type_name;
 	}
 
 	/**

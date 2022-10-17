@@ -295,6 +295,7 @@ class Inventory_Presser_Admin_Options {
 			<table class="wp-list-table widefat striped additional_listings_pages">
 				<thead>
 					<tr>
+						<th><?php _e( 'Title', 'inventory-presser' ); ?></th>
 						<th><?php _e( 'URL path', 'inventory-presser' ); ?></th>
 						<th><?php _e( 'Field', 'inventory-presser' ); ?></th>
 						<th><?php _e( 'Operator', 'inventory-presser' ); ?></th>
@@ -325,6 +326,16 @@ class Inventory_Presser_Admin_Options {
 
 					?>
 					<tr id="row_<?php echo $a; ?>">
+						<td><?php
+							// text box for page title
+							printf(
+								'<input type="text" id="additional_listings_pages_titles_%s" name="%s[additional_listings_pages][%s][title]" value="%s" />',
+								$a,
+								INVP::OPTION_NAME,
+								$a,
+								$additional_listings[ $a ]['title']
+							);
+						?></td>
 						<td>
 						<?php
 
