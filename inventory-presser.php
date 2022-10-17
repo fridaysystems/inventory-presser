@@ -698,6 +698,8 @@ class Inventory_Presser_Plugin {
 		$shortcodes->hooks();
 		$shortcodes = new Inventory_Presser_Shortcode_Vin();
 		$shortcodes->hooks();
+		$shortcodes = new Inventory_Presser_Shortcode_Sort_By();
+		$shortcodes->hooks();
 
 		/**
 		 * When the active theme isn't prepared to display vehicles, insert
@@ -839,6 +841,7 @@ class Inventory_Presser_Plugin {
 			'shortcode/class-shortcode-archive-vehicle.php',
 			'shortcode/class-shortcode-attribute-table.php',
 			'shortcode/class-shortcode-single-vehicle.php',
+			'shortcode/class-shortcode-sort-by.php',
 			'shortcode/class-shortcode-vin.php',
 			'class-taxonomies.php',
 			'class-taxonomy-overlapper.php',
