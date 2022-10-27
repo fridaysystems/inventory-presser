@@ -73,6 +73,8 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 14.3.0 =
 * [Added] Adds a page title setting to additional listings pages so users can easily change "Vehicles" or "Vehicles Archive" to a title of their choosing.
+* [Added] Adds a shortcode [invp_sort_by] that creates a dropdown to let users reorder listings pages.
+* [Added] Adds a filter `invp_get_raw_price` to let developers change the output of the template tag `invp_get_raw_price()`.
 * [Changed] Changes the tested up to version number to 6.0.2.
 
 = 14.2.2 = 
