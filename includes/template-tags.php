@@ -838,7 +838,7 @@ function invp_get_raw_price( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
 		$post_ID = get_the_ID();
 	}
-	return INVP::get_meta( 'price', $post_ID );
+	return apply_filters( 'invp_get_raw_price', INVP::get_meta( 'price', $post_ID ), $post_ID );
 }
 
 /**
