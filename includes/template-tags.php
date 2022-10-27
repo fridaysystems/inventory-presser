@@ -681,7 +681,7 @@ function invp_get_the_payment( $post_ID = null ) {
  * invp_get_the_payment_frequency
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_payment_frequency( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -832,7 +832,7 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
  * invp_get_raw_price
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_raw_price( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {

@@ -330,7 +330,7 @@ class Inventory_Presser_Taxonomies {
 	 *
 	 * An array of all our taxonomy query variables.
 	 *
-	 * @return void
+	 * @return array
 	 */
 	static function query_vars_array() {
 		$arr = array();

@@ -334,7 +334,7 @@ class INVP {
 	 *
 	 * @param  string $unprefixed_meta_key
 	 * @param  int    $post_ID
-	 * @return string|int|double
+	 * @return string|int|double|array
 	 */
 	public static function get_meta( $unprefixed_meta_key, $post_ID = null ) {
 		if ( empty( $post_ID ) ) {
