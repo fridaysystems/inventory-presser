@@ -53,7 +53,7 @@ class Inventory_Presser_Additional_Listings_Pages {
 			}
 
 			// our URL path will match the beginning of the rewrite rule.
-			if ( substr( $wp->matched_rule, 0, strlen( $additional_listing['url_path'] ) === $additional_listing['url_path'] )
+			if ( substr( $wp->matched_rule, 0, strlen( $additional_listing['url_path'] ) ) === $additional_listing['url_path']
 				&& ! empty( $additional_listing['title'] ) ) {
 				return $additional_listing['title'];
 			}
