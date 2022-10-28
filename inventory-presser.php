@@ -308,14 +308,11 @@ class Inventory_Presser_Plugin {
 			return $url;
 		}
 
-		// This could be controversial.
-		switch ( substr( $url, -4 ) ) {
-			case 'jpeg':
-			case '.jpg':
-			case '.png':
-				break;
-			default:
-				return $url;
+		// Is the URL pointing to a file with an image mime type?
+		$file      = get_attached_file( $post_id );
+		$mime_type = wp_get_image_mime( $file );
+		if ( $mime_type && 'image' !== substr( $mime_type, 0, 5 ) ) {
+			return $url;
 		}
 
 		// Add a querystring that contains this photo's hash.
@@ -324,7 +321,8 @@ class Inventory_Presser_Plugin {
 			return $url;
 		}
 
-		return $url . '?' . $hash;
+		$parsed = wp_parse_url( $url );
+		return $url . ( empty( $parsed['query'] ) ? '?' : '&' ) . $hash;
 	}
 
 	/**
@@ -670,7 +668,7 @@ class Inventory_Presser_Plugin {
 		// Change links to our taxonomy terms to insert /inventory/.
 		add_filter( 'pre_term_link', array( $this, 'change_term_links' ), 10, 2 );
 
-		// Change attachment URLs to prevent aggressive caching from showing users updated JPGs.
+		// Change attachment URLs to prevent aggressive caching.
 		add_filter( 'wp_get_attachment_url', array( $this, 'change_attachment_urls' ) );
 
 		// Allow users to set the Inventory listing page as the home page.
