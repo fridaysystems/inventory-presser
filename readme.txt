@@ -2,8 +2,8 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 6.0.2
-Stable tag: 14.3.0
+Tested up to: 6.0.3
+Stable tag: 14.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,11 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.3.1 =
+* [Fixed] Cache-busting photo URLs are now compatible with any image file type rather than just JPG and PNG.
+* [Fixed] Fixes a bug when changing the title of additional listings pages.
+* [Changed] Changes the tested up to version number to 6.0.3.
 
 = 14.3.0 =
 * [Added] Adds a page title setting to additional listings pages so users can easily change "Vehicles" or "Vehicles Archive" to a title of their choosing.
