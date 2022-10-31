@@ -220,13 +220,15 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	 * @return array The updated array full of settings
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance                       = array();
-		$instance['title']              = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['prices']             = ( ! empty( $new_instance['prices'] ) ) ? array_map( 'intval', explode( ',', $new_instance['prices'] ) ) : $this->price_defaults;
-		$instance['display_type']       = ( ! empty( $new_instance['display_type'] ) ) ? strip_tags( $new_instance['display_type'] ) : '';
-		$instance['orientation']        = ( ! empty( $new_instance['orientation'] ) ) ? strip_tags( $new_instance['orientation'] ) : '';
+		$instance          = array();
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
+		if ( is_string( $new_instance['prices'] ) ) {
+			$new_instance['prices'] = explode( ',', $new_instance['prices'] );
+		}
+		$instance['prices']             = ( ! empty( $new_instance['prices'] ) ) ? array_map( 'intval', $new_instance['prices'] ) : $this->price_defaults;
+		$instance['display_type']       = ( ! empty( $new_instance['display_type'] ) ) ? wp_strip_all_tags( $new_instance['display_type'] ) : '';
+		$instance['orientation']        = ( ! empty( $new_instance['orientation'] ) ) ? wp_strip_all_tags( $new_instance['orientation'] ) : '';
 		$instance['cb_reset_link_only'] = ( ! empty( $new_instance['cb_reset_link_only'] ) ) ? $new_instance['cb_reset_link_only'] : '';
 		return $instance;
 	}
-
 }
