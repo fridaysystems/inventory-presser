@@ -16,7 +16,12 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 
 	const ID_BASE = '_invp_price_filters';
 
-	var $price_defaults = array( 5000, 10000, 15000, 20000 );
+	/**
+	 * Default price tier values
+	 *
+	 * @var array
+	 */
+	protected $price_defaults = array( 5000, 10000, 15000, 20000 );
 
 	/**
 	 * __construct
@@ -27,7 +32,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Maximum Price Filter', 'inventory-presser' ),
@@ -38,8 +43,6 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	}
 
 	/**
-	 * delete_option
-	 *
 	 * Deletes the option that stores this widget's data.
 	 *
 	 * @return void
@@ -54,7 +57,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	 * @return array An associative array of display type choices, including
 	 * buttons or text.
 	 */
-	function display_types() {
+	protected function display_types() {
 		return array(
 			'buttons' => __( 'Buttons', 'inventory-presser' ),
 			'text'    => __( 'Text', 'inventory-presser' ),
@@ -67,7 +70,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	 * @return array An associative array of display orientations, including
 	 * horizontal or vertical.
 	 */
-	function orientations() {
+	protected function orientations() {
 		return array(
 			'horizontal' => __( 'Horizontal', 'inventory-presser' ),
 			'vertical'   => __( 'Vertical', 'inventory-presser' ),
@@ -75,8 +78,6 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	}
 
 	/**
-	 * widget
-	 *
 	 * Outputs the widget front-end HTML
 	 *
 	 * @param  array $args
@@ -85,7 +86,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
-		// Need the stylesheet for this content
+		// Need the stylesheet for this content.
 		wp_enqueue_style( 'invp-maximum-price-filters' );
 
 		$reset_link_only = ( isset( $instance['cb_reset_link_only'] ) && $instance['cb_reset_link_only'] == 'true' );
@@ -98,7 +99,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
-		printf( '<div class="price-filter price-filter-%s">', $instance['orientation'] );
+		printf( '<div class="price-filter price-filter-%s">', esc_attr( $instance['orientation'] ) );
 		if ( ! empty( $title ) ) {
 			printf(
 				'<div class="price-title">%s%s%s</div>',
@@ -120,7 +121,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 				get_post_type_archive_link( INVP::POST_TYPE )
 			);
 
-			$class_string = ( $instance['display_type'] == 'buttons' ) ? ' class="_button _button-med"' : ' class="price-filter-text"';
+			$class_string = ( 'buttons' === $instance['display_type'] ) ? ' class="_button _button-med"' : ' class="price-filter-text"';
 
 			foreach ( $price_points as $price_point ) {
 				$this_link = add_query_arg( 'max_price', $price_point, $base_link );
@@ -136,10 +137,10 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 		if ( isset( $_GET['max_price'] ) ) {
 			printf(
 				'<div><a href="%s">%s $%s %s</a></div>',
-				remove_query_arg( 'max_price' ),
-				__( 'Remove', 'inventory-presser' ),
+				esc_attr( remove_query_arg( 'max_price' ) ),
+				esc_html__( 'Remove', 'inventory-presser' ),
 				number_format( (int) $_GET['max_price'], 0, '.', ',' ),
-				__( 'Price Filter', 'inventory-presser' )
+				esc_html__( 'Price Filter', 'inventory-presser' )
 			);
 		}
 
@@ -147,8 +148,6 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	}
 
 	/**
-	 * form
-	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance
@@ -163,56 +162,54 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 		$orientation_slugs  = array_keys( $this->orientations() );
 		$orientation        = isset( $instance['orientation'] ) ? $instance['orientation'] : $orientation_slugs[0];
 
-		// Widget admin form
+		// Widget admin form.
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
-		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'inventory-presser' ); ?></label>
+		<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'prices' ); ?>"><?php _e( 'Price Points (separated by commas)', 'inventory-presser' ); ?></label>
-		<textarea class="widefat" id="<?php echo $this->get_field_id( 'prices' ); ?>" name="<?php echo $this->get_field_name( 'prices' ); ?>"><?php echo esc_attr( $prices ); ?></textarea>
+		<label for="<?php echo esc_attr( $this->get_field_id( 'prices' ) ); ?>"><?php esc_html_e( 'Price Points (separated by commas)', 'inventory-presser' ); ?></label>
+		<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'prices' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'prices' ) ); ?>"><?php echo esc_html( $prices ); ?></textarea>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'display_type' ); ?>"><?php _e( 'Display Format:', 'inventory-presser' ); ?></label>
-			<select class="widefat" id="<?php echo $this->get_field_id( 'display_type' ); ?>" name="<?php echo $this->get_field_name( 'display_type' ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'display_type' ) ); ?>"><?php esc_html_e( 'Display Format:', 'inventory-presser' ); ?></label>
+			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'display_type' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'display_type' ) ); ?>">
 		<?php
 		foreach ( $this->display_types() as $key => $label ) {
 			printf(
 				'<option value="%s"%s>%s</option>',
-				$key,
-				selected( $display_type == $key, true, false ),
-				$label
+				esc_attr( $key ),
+				selected( $display_type === $key, true, false ),
+				esc_html( $label )
 			);
 		}
 		?>
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'orientation' ); ?>"><?php _e( 'Orientation:', 'inventory-presser' ); ?></label>
-			<select class="widefat" id="<?php echo $this->get_field_id( 'orientation' ); ?>" name="<?php echo $this->get_field_name( 'orientation' ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'orientation' ) ); ?>"><?php esc_html_e( 'Orientation:', 'inventory-presser' ); ?></label>
+			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'orientation' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'orientation' ) ); ?>">
 		<?php
 		foreach ( $this->orientations() as $key => $label ) {
 			printf(
 				'<option value="%s"%s>%s</option>',
-				$key,
+				esc_attr( $key ),
 				selected( $orientation == $key, true, false ),
-				$label
+				esc_html( $label )
 			);
 		}
 		?>
 			</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'cb_reset_link_only' ); ?>"><?php _e( 'Show Reset Link Only', 'inventory-presser' ); ?></label>
-		<input type="checkbox" id="<?php echo $this->get_field_id( 'cb_reset_link_only' ); ?>" name="<?php echo $this->get_field_name( 'cb_reset_link_only' ); ?>" value="true"<?php checked( 'true', ( isset( $instance['cb_reset_link_only'] ) ? $instance['cb_reset_link_only'] : '' ) ); ?>>
+		<label for="<?php echo esc_attr( $this->get_field_id( 'cb_reset_link_only' ) ); ?>"><?php esc_html_e( 'Show Reset Link Only', 'inventory-presser' ); ?></label>
+		<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_reset_link_only' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'cb_reset_link_only' ) ); ?>" value="true"<?php checked( 'true', ( isset( $instance['cb_reset_link_only'] ) ? $instance['cb_reset_link_only'] : '' ) ); ?>>
 		</p>
 		<?php
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
 	 * @param  array $new_instance
