@@ -99,11 +99,9 @@ button#delete-media-button span:before {
 
 /* Columns on edit.php */
 th.column-inventory_presser_photo_count{
-	width: 95px;
+	width: 85px;
 }
-th.column-inventory_presser_thumbnail{
-	width: 110px;
-}
+
 /* Thumbnail column */
 .wp-list-table.posts tr.type-inventory_vehicle td.inventory_presser_thumbnail{
 	text-align: center;
