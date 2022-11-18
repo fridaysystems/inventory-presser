@@ -218,7 +218,7 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 				case 'text/csv':
 				case 'text/plain':
 				case 'text/xml':
-					   $counts['text']++;
+					$counts['text']++;
 					break;
 				case 'application/pdf':
 					$counts['PDF']++;
