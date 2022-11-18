@@ -71,6 +71,10 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 14.3.2 =
+* [Fixed] Fixes a bug in the Maximum Price Filter widget to make it compatible with the new block widgets feature in the dashboard.
+* [Fixed] Fixes a bug that caused vehicle thumbnail photos to break out of the posts table at the Vehicles dashboard page.
+
 = 14.3.1 =
 * [Fixed] Cache-busting photo URLs are now compatible with any image file type rather than just JPG and PNG.
 * [Fixed] Fixes a bug when changing the title of additional listings pages.
