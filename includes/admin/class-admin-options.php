@@ -637,7 +637,7 @@ class Inventory_Presser_Admin_Options {
 
 		$attribute_string = '';
 		if ( ! empty( $attributes ) ) {
-			$attribute_string = ' ' . str_replace( '=', '="', http_build_query( $attributes, null, '" ', PHP_QUERY_RFC3986 ) ) . '"';
+			$attribute_string = ' ' . str_replace( '=', '="', http_build_query( $attributes, '', '" ', PHP_QUERY_RFC3986 ) ) . '"';
 		}
 
 		return sprintf(
@@ -679,7 +679,7 @@ class Inventory_Presser_Admin_Options {
 
 		$attribute_string = '';
 		if ( ! empty( $attributes ) ) {
-			$attribute_string = ' ' . str_replace( '=', '="', http_build_query( $attributes, null, '" ', PHP_QUERY_RFC3986 ) ) . '"';
+			$attribute_string = ' ' . str_replace( '=', '="', http_build_query( $attributes, '', '" ', PHP_QUERY_RFC3986 ) ) . '"';
 		}
 
 		return sprintf(
