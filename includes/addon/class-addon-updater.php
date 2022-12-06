@@ -326,7 +326,7 @@ jQuery(document).ready(function(){
 					__( 'details', 'inventory-presser' ),
 					__(' View version', 'inventory-presser' ),
 					esc_html( $version_info->new_version ),
-					__( 'details', 'inventory-presser' ),
+					__( 'details', 'inventory-presser' )
 				);
 
 				// Do we have a license key? Include "update now" link if so.
