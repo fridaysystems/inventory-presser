@@ -197,6 +197,19 @@ function invp_get_the_color( $post_ID = null ) {
 }
 
 /**
+ * invp_get_the_dealer_id
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return void
+ */
+function invp_get_the_dealer_id( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'dealer_id', $post_ID );
+}
+
+/**
  * invp_get_the_description
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
@@ -581,6 +594,19 @@ function invp_get_the_model( $post_ID = null ) {
 		$post_ID = get_the_ID();
 	}
 	return INVP::get_meta( 'model', $post_ID );
+}
+
+/**
+ * invp_get_raw_msrp
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return string
+ */
+function invp_get_raw_msrp( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return apply_filters( 'invp_get_raw_msrp', INVP::get_meta( 'msrp', $post_ID ), $post_ID );
 }
 
 /**
