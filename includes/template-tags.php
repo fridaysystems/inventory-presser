@@ -847,7 +847,7 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 	 * Backwards compatibility to versions before 5.4.0 where the
 	 * incoming argument was a string not an array.
 	 */
-	if ( 1 == sizeof( $sizes ) ) {
+	if ( 1 == sizeof( $sizes ) && 'large' !== $sizes[0] ) {
 		return $image_urls[ $sizes[0] ];
 	}
 
