@@ -43,7 +43,7 @@ function invp_get_the_beam( $post_ID = null ) {
  * invp_get_the_body_style
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_body_style( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
