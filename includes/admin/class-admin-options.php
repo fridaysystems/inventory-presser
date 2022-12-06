@@ -333,7 +333,7 @@ class Inventory_Presser_Admin_Options {
 								$a,
 								INVP::OPTION_NAME,
 								$a,
-								$additional_listings[ $a ]['title']
+								$additional_listings[ $a ]['title'] ?? ''
 							);
 						?></td>
 						<td>
