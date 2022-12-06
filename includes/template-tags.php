@@ -1178,6 +1178,20 @@ function invp_is_carfax_one_owner( $post_ID = null ) {
 }
 
 /**
+ * Answers the question, "is this vehicle certified pre-owned?"
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return bool True if this vehicle is certified pre-owned
+ */
+function invp_is_certified_preowned( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+
+	return ! empty( INVP::get_meta( 'certified_preowned', $post_ID ) );
+}
+
+/**
  * Is this vehicle featured in slideshows?
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.

@@ -466,6 +466,11 @@ class INVP {
 				'type'  => 'string',
 			),
 			array(
+				'label' => __( 'Certified Pre-owned', 'inventory-presser' ),
+				'name'  => 'certified_preowned',
+				'type'  => 'boolean',
+			),
+			array(
 				'label'  => __( 'Color', 'inventory_presser' ),
 				'name'   => 'color',
 				'sample' => 'Merlot Jewel Metallic',
