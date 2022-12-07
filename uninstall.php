@@ -6,5 +6,4 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 require_once 'includes/class-invp.php';
-INVP::add_hooks();
 INVP::delete_all_data();
