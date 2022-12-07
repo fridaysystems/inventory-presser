@@ -72,9 +72,16 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
-= 14.3.2 =
+= 14.4.0 =
+* [Added] Adds a minimum PHP version directive to this file of 7.0.0 to support the null coalescing operator.
+* [Added] Adds a template tag `invp_get_raw_msrp()` and filter `invp_get_raw_msrp`.
+* [Added] Adds a template tag `invp_get_the_dealer_id()`.
+* [Added] Adds a postmeta field `inventory_presser_certified_preowned` to the vehicle post type and a template tag `invp_is_certified_preowned()`.
 * [Fixed] Fixes a bug in the Maximum Price Filter widget to make it compatible with the new block widgets feature in the dashboard.
 * [Fixed] Fixes a bug that caused vehicle thumbnail photos to break out of the posts table at the Vehicles dashboard page.
+* [Fixed] Fixes a bug that prevented `invp_get_the_photos()` from including the urls array key when a single size of `large` was passed.
+* [Fixed] Fixes bugs when calling `http_build_query()` for compatibility with PHP 8.1.
+* [Fixed] Fixes a bug in the uninstaller that prevented the plugin from being deleted.
 
 = 14.3.1 =
 * [Fixed] Cache-busting photo URLs are now compatible with any image file type rather than just JPG and PNG.
