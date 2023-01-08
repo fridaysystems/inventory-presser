@@ -905,6 +905,7 @@ class INVP {
 			'skip_trash'                  => true,
 			'sort_vehicles_by'            => 'make',
 			'sort_vehicles_order'         => 'ASC',
+			'use_arranger_gallery'        => true,
 			'use_carfax'                  => false,
 			'use_carfax_provided_buttons' => true,
 		);

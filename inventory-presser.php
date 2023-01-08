@@ -759,6 +759,9 @@ class Inventory_Presser_Plugin {
 
 		$contact_form_7 = new Inventory_Presser_Contact_Form_7();
 		$contact_form_7->add_hooks();
+
+		$photo_arranger = new Inventory_Presser_Admin_Photo_Arranger();
+		$photo_arranger->add_hooks();
 	}
 
 	/**
@@ -817,6 +820,7 @@ class Inventory_Presser_Plugin {
 			'admin/class-admin-editor-sidebar.php',
 			'admin/class-admin-location-meta.php',
 			'admin/class-admin-options.php',
+			'admin/class-admin-photo-arranger.php',
 			'admin/class-admin-settings-suggester.php',
 			'class-additional-listings-pages.php',
 			'class-allow-inventory-as-home-page.php',

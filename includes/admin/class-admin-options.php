@@ -184,11 +184,11 @@ class Inventory_Presser_Admin_Options {
 		);
 
 		add_settings_field(
-			'mapbox_public_token', // id
-			__( 'MapBox Public Token', 'inventory-presser' ), // title
-			array( $this, 'callback_mapbox_public_token' ), // callback
-			INVP::option_page(), // page
-			'dealership_options_setting_section' // section
+			'use_arranger_gallery', // id.
+			__( 'Rearrange Photos Block', 'inventory-presser' ), // title.
+			array( $this, 'callback_use_arranger_gallery' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_setting_section' // section.
 		);
 
 		/**
@@ -558,8 +558,26 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * callback_use_carfax
+	 * Outputs a checkbox and label to enable the photo arranger Gallery Block
+	 * feature.
 	 *
+	 * @return void
+	 */
+	public function callback_use_arranger_gallery() {
+		$setting_name = 'use_arranger_gallery';
+		$options      = INVP::settings();
+		printf(
+			'<p><input type="checkbox" name="%s[%s]" id="%s" %s> <label for="%s">%s</label></p>',
+			esc_attr( INVP::OPTION_NAME ),
+			esc_attr( $setting_name ),
+			esc_attr( $setting_name ),
+			isset( $options[ $setting_name ] ) ? checked( $options[ $setting_name ], true, false ) : '',
+			esc_attr( $setting_name ),
+			esc_html__( 'Add a Gallery Block to new vehicle posts to manage photo uploads and their order', 'inventory-presser' )
+		);
+	}
+
+	/**
 	 * Output the controls that create the Display Carfax Buttons setting.
 	 *
 	 * @return void
@@ -706,6 +724,7 @@ class Inventory_Presser_Admin_Options {
 			'include_sold_vehicles',
 			'show_all_taxonomies',
 			'skip_trash',
+			'use_arranger_gallery',
 			'use_carfax',
 			'use_carfax_provided_buttons',
 		);
