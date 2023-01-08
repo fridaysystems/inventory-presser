@@ -95,17 +95,17 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 			return;
 		}
 
-		echo $args['before_widget'];
+		echo $args['before_widget'] ?? '';
 
-		$title = apply_filters( 'widget_title', $instance['title'] );
+		$title = apply_filters( 'widget_title', $instance['title'] ?? '' );
 
-		printf( '<div class="price-filter price-filter-%s">', esc_attr( $instance['orientation'] ) );
+		printf( '<div class="price-filter price-filter-%s">', esc_attr( $instance['orientation'] ?? '' ) );
 		if ( ! empty( $title ) ) {
 			printf(
 				'<div class="price-title">%s%s%s</div>',
-				$args['before_title'],
-				$title,
-				$args['after_title']
+				$args['before_title'] ?? '',
+				esc_html( $title ),
+				$args['after_title'] ?? ''
 			);
 		}
 
@@ -121,7 +121,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 				get_post_type_archive_link( INVP::POST_TYPE )
 			);
 
-			$class_string = ( 'buttons' === $instance['display_type'] ) ? ' class="_button _button-med"' : ' class="price-filter-text"';
+			$class_string = ( 'buttons' === $instance['display_type'] ?? '' ) ? ' class="_button _button-med"' : ' class="price-filter-text"';
 
 			foreach ( $price_points as $price_point ) {
 				$this_link = add_query_arg( 'max_price', $price_point, $base_link );
@@ -144,7 +144,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 			);
 		}
 
-		echo '</div>' . $args['after_widget'];
+		echo '</div>' . $args['after_widget'] ?? '';
 	}
 
 	/**
