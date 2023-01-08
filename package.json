@@ -1,6 +1,6 @@
 {
 	"name": "inventory-presser",
-	"version": "14.4.0",
+	"version": "14.5.0",
 	"description": "Manage and market a dealership inventory",
 	"main": "build/index.js",
 	"directories": {

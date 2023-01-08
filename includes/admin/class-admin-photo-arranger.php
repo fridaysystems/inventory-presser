@@ -3,7 +3,7 @@
  * Lets block editor users rearrange the order of vehicle photos using a gallery
  * block.
  *
- * @since      14.4.0
+ * @since      14.5.0
  * @package    Inventory_Presser
  * @subpackage Inventory_Presser/includes/admin
  * @author     Corey Salzano <corey@friday.systems>

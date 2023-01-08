@@ -4,7 +4,7 @@ Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, mo
 Requires at least: 5.0.0
 Tested up to: 6.1.1
 Requires PHP: 7.0.0
-Stable tag: 14.4.0
+Stable tag: 14.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,13 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.5.0 =
+* [Added] Adds a feature enabled by default: Adds a gallery block to new vehicle posts with a specific CSS class that allows users to upload and reorder photos on vehicle posts in the block editor. This is merging the invp-photo-arranger feature plugin into Inventory Presser core.
+* [Fixed] Makes more strings translateable. Escapes strings for output on the plugin settings page.
+* [Fixed] Bug fix when changing attachment URLs to have cache-busting hash querystrings. If the post ID does not point to an attachment, exit early.
+* [Fixed] Bug fixes in the maximum price filter widget. Avoid warnings when no widget settings are saved for the instance.
+* [Fixed] CSS tweak for thumbnails in the vehicle posts list in the dashboard.
 
 = 14.4.0 =
 * [Added] Adds a minimum PHP version directive to this file of 7.0.0 to support the null coalescing operator.
@@ -175,6 +182,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.5.0 =
+Adds a feature enabled by default: Adds a gallery block to new vehicle posts with a specific CSS class that allows users to upload and reorder photos on vehicle posts in the block editor. This is merging the invp-photo-arranger feature plugin into Inventory Presser core. Deactivate and delete invp-photo-arranger after upgrading to 14.5.0.
 
 = 14.2.1 =
 Adds two template tags `invp_get_the_location_state()` and `invp_get_the_location_zip()`. Wraps vehicle prices in a <span> element in the [invp_inventory_grid] shortcode so they can be more easily styled.
