@@ -14,12 +14,14 @@ defined( 'ABSPATH' ) || exit;
  */
 class Inventory_Presser_Admin_Options {
 
-	// This plugin's option that holds all the settings
+	/**
+	 * This plugin's option that holds all the settings.
+	 *
+	 * @var array
+	 */
 	private $option;
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks
 	 *
 	 * @return void
@@ -37,8 +39,6 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * maybe_flush_permalinks
-	 *
 	 * If the additional listing pages settings are changed, or the switch
 	 * is on and the array of pages is different, flush rewrite rules
 	 *
@@ -75,23 +75,21 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * register_javascript
-	 *
 	 * Registers a JavaScript file that powers the settings page.
 	 *
 	 * @return void
 	 */
-	function register_javascript() {
+	public function register_javascript() {
 		wp_register_script(
 			'invp_page_settings',
 			plugins_url( '/js/page-settings.min.js', INVP_PLUGIN_FILE_PATH ),
-			array( 'jquery' )
+			array( 'jquery' ),
+			false,
+			true
 		);
 	}
 
 	/**
-	 * add_options_page
-	 *
 	 * Adds an options page to the dashboard to hold all this plugin's settings.
 	 *
 	 * @return void
@@ -100,85 +98,91 @@ class Inventory_Presser_Admin_Options {
 		if ( post_type_exists( INVP::POST_TYPE ) ) {
 			add_submenu_page(
 				'edit.php?post_type=' . INVP::POST_TYPE,
-				__( 'Options', 'inventory-presser' ), // page_title
-				__( 'Options', 'inventory-presser' ), // menu_title
-				'manage_options', // capability
-				'dealership-options', // menu_slug
-				array( $this, 'options_page_content' ) // function
+				__( 'Options', 'inventory-presser' ), // page_title.
+				__( 'Options', 'inventory-presser' ), // menu_title.
+				'manage_options', // capability.
+				'dealership-options', // menu_slug.
+				array( $this, 'options_page_content' ) // function.
 			);
 			return;
 		}
 
 		add_options_page(
-			__( 'Inventory Presser', 'inventory-presser' ), // page_title
-			__( 'Inventory Presser', 'inventory-presser' ), // menu_title
-			'manage_options', // capability
-			'dealership-options', // menu_slug
-			array( $this, 'options_page_content' ) // function
+			__( 'Inventory Presser', 'inventory-presser' ), // page_title.
+			__( 'Inventory Presser', 'inventory-presser' ), // menu_title.
+			'manage_options', // capability.
+			'dealership-options', // menu_slug.
+			array( $this, 'options_page_content' ) // function.
 		);
 	}
 
 	/**
-	 * add_settings
-	 *
 	 * Registers sections and settings using the Settings API.
 	 *
 	 * @return void
 	 */
 	public function add_settings() {
 		register_setting(
-			INVP::option_group(), // option_group
-			INVP::OPTION_NAME, // option_name
-			array( $this, 'sanitize_options' ) // sanitize_callback
+			INVP::option_group(), // option_group.
+			INVP::OPTION_NAME, // option_name.
+			array( $this, 'sanitize_options' ) // sanitize_callback.
 		);
 
 		/**
 		 * SECTION Settings
 		 */
 		add_settings_section(
-			'dealership_options_setting_section', // id
-			__( 'General', 'inventory-presser' ), // title
-			'__return_empty_string', // callback
-			INVP::option_page() // page
+			'dealership_options_setting_section', // id.
+			__( 'General', 'inventory-presser' ), // title.
+			'__return_empty_string', // callback.
+			INVP::option_page() // page.
 		);
 
-		// Price Display
+		// Price Display.
 		add_settings_field(
-			'price_display', // id
-			__( 'Price Display', 'inventory-presser' ), // title
-			array( $this, 'callback_price_display' ), // callback
-			INVP::option_page(), // page
-			'dealership_options_setting_section' // section
+			'price_display', // id.
+			__( 'Price Display', 'inventory-presser' ), // title.
+			array( $this, 'callback_price_display' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_setting_section' // section.
 		);
 
 		// [x] Include sold vehicles
 		add_settings_field(
-			'include_sold_vehicles', // id
-			__( 'Sold Vehicles', 'inventory-presser' ), // title
-			array( $this, 'callback_include_sold_vehicles' ), // callback
-			INVP::option_page(), // page
-			'dealership_options_setting_section' // section
+			'include_sold_vehicles', // id.
+			__( 'Sold Vehicles', 'inventory-presser' ), // title.
+			array( $this, 'callback_include_sold_vehicles' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_setting_section' // section.
 		);
 
 		// [x] Show all taxonomies under Vehicles menu in Dashboard
 		add_settings_field(
-			'show_all_taxonomies', // id
-			__( 'Show All Taxonomies', 'inventory-presser' ), // title
-			array( $this, 'callback_show_all_taxonomies' ), // callback
-			INVP::option_page(), // page
-			'dealership_options_setting_section' // section
+			'show_all_taxonomies', // id.
+			__( 'Show All Taxonomies', 'inventory-presser' ), // title.
+			array( $this, 'callback_show_all_taxonomies' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_setting_section' // section.
 		);
 
 		// [x] Skip trash when deleting vehicles and delete permanently
 		add_settings_field(
-			'skip_trash', // id
-			__( 'Skip Trash', 'inventory-presser' ), // title
-			array( $this, 'callback_skip_trash' ), // callback
-			INVP::option_page(), // page
-			'dealership_options_setting_section' // section
+			'skip_trash', // id.
+			__( 'Skip Trash', 'inventory-presser' ), // title.
+			array( $this, 'callback_skip_trash' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_setting_section' // section.
 		);
 
-		// MapBox Public Token [____________]
+		// MapBox Public Token [____________].
+		add_settings_field(
+			'mapbox_public_token', // id.
+			__( 'MapBox Public Token', 'inventory-presser' ), // title.
+			array( $this, 'callback_mapbox_public_token' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_setting_section' // section.
+		);
+
 		add_settings_field(
 			'mapbox_public_token', // id
 			__( 'MapBox Public Token', 'inventory-presser' ), // title
@@ -191,19 +195,19 @@ class Inventory_Presser_Admin_Options {
 		 * SECTION Listings
 		 */
 		add_settings_section(
-			'dealership_options_section_listings', // id
-			__( 'Listings', 'inventory-presser' ), // title
-			'__return_empty_string', // callback
-			INVP::option_page() // page
+			'dealership_options_section_listings', // id.
+			__( 'Listings', 'inventory-presser' ), // title.
+			'__return_empty_string', // callback.
+			INVP::option_page() // page.
 		);
 
-		// Sort vehicles by [Field] in [Ascending] order
+		// Sort vehicles by [Field] in [Ascending] order.
 		add_settings_field(
-			'sort_vehicles_by', // id
-			__( 'Sort Vehicles By', 'inventory-presser' ), // title
-			array( $this, 'callback_sort_vehicles_by' ), // callback
-			INVP::option_page(), // page
-			'dealership_options_section_listings' // section
+			'sort_vehicles_by', // id.
+			__( 'Sort Vehicles By', 'inventory-presser' ), // title.
+			array( $this, 'callback_sort_vehicles_by' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_section_listings' // section.
 		);
 
 		/**
@@ -211,66 +215,60 @@ class Inventory_Presser_Admin_Options {
 		 * that contains vehicles that have a value for field [Down Payment]
 		 */
 		add_settings_field(
-			'additional_listings_page', // id
-			__( 'Additional Listings Page', 'inventory-presser' ), // title
-			array( $this, 'callback_additional_listings_page' ), // callback
-			INVP::option_page(), // page
-			'dealership_options_section_listings' // section
+			'additional_listings_page', // id.
+			__( 'Additional Listings Page', 'inventory-presser' ), // title.
+			array( $this, 'callback_additional_listings_page' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_section_listings' // section.
 		);
 
 		/**
 		 * SECTION Carfax
 		 */
 		add_settings_section(
-			'dealership_options_section_carfax', // id
-			__( 'Carfax', 'inventory-presser' ), // title
-			'__return_empty_string', // callback
-			INVP::option_page() // page
+			'dealership_options_section_carfax', // id.
+			__( 'Carfax', 'inventory-presser' ), // title.
+			'__return_empty_string', // callback.
+			INVP::option_page() // page.
 		);
 
 		// [x] Display Carfax buttons near vehicles that link to free Carfax reports
 		add_settings_field(
-			'use_carfax', // id
-			__( 'Enable Carfax', 'inventory-presser' ), // title
-			array( $this, 'callback_use_carfax' ), // callback
-			INVP::option_page(), // page
-			'dealership_options_section_carfax' // section
+			'use_carfax', // id.
+			__( 'Enable Carfax', 'inventory-presser' ), // title.
+			array( $this, 'callback_use_carfax' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_section_carfax' // section.
 		);
 
 		// [x] Use Carfax-provided, dynamic buttons that may also say things like "GOOD VALUE"
 		add_settings_field(
-			'use_carfax_provided_buttons', // id
-			__( 'Use Newest Buttons', 'inventory-presser' ), // title
-			array( $this, 'callback_use_carfax_provided_buttons' ), // callback
-			INVP::option_page(), // page
-			'dealership_options_section_carfax' // section
+			'use_carfax_provided_buttons', // id.
+			__( 'Use Newest Buttons', 'inventory-presser' ), // title.
+			array( $this, 'callback_use_carfax_provided_buttons' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_section_carfax' // section.
 		);
 	}
 
 	/**
-	 * boolean_checkbox_setting_callback
-	 *
 	 * Outputs HTML that renders checkboxes.
 	 *
 	 * @param  string $setting_name   The name of the setting and control
 	 * @param  string $checkbox_label The checkbox label that the user sees
 	 * @return void
 	 */
-	function boolean_checkbox_setting_callback( $setting_name, $checkbox_label ) {
+	protected function boolean_checkbox_setting_callback( $setting_name, $checkbox_label ) {
 		printf(
-			'<input type="checkbox" name="%s[%s]" id="%s" %s> <label for="%s">%s</label>',
-			INVP::OPTION_NAME,
-			$setting_name,
-			$setting_name,
+			'<input type="checkbox" name="%1$s[%2$s]" id="%2$s" %3$s> <label for="%2$s">%4$s</label>',
+			esc_attr( INVP::OPTION_NAME ),
+			esc_attr( $setting_name ),
 			isset( $this->option[ $setting_name ] ) ? checked( $this->option[ $setting_name ], true, false ) : '',
-			$setting_name,
-			$checkbox_label
+			esc_html( $checkbox_label )
 		);
 	}
 
 	/**
-	 * callback_additional_listings_page
-	 *
 	 * Outputs controls to manage additional inventory listing pages.
 	 *
 	 * Helps users create an additional inventory archive at
@@ -279,45 +277,42 @@ class Inventory_Presser_Admin_Options {
 	 *
 	 * @return void
 	 */
-	function callback_additional_listings_page() {
-		?><p>
-		<?php
-
-		echo $this->boolean_checkbox_setting_callback(
+	public function callback_additional_listings_page() {
+		echo '<p>' . $this->boolean_checkbox_setting_callback(
 			'additional_listings_page',
 			__( 'Create additional inventory archive(s)', 'inventory-presser' )
-		);
+		) . '</p>';
 
-		// output a table to hold the settings for additional sheets
+		// Output a table to hold the settings for additional sheets.
 		?>
-		</p>
 		<div id="additional_listings_pages_settings">
 			<table class="wp-list-table widefat striped additional_listings_pages">
 				<thead>
 					<tr>
-						<th><?php _e( 'Title', 'inventory-presser' ); ?></th>
-						<th><?php _e( 'URL path', 'inventory-presser' ); ?></th>
-						<th><?php _e( 'Field', 'inventory-presser' ); ?></th>
-						<th><?php _e( 'Operator', 'inventory-presser' ); ?></th>
-						<th><?php _e( 'Value', 'inventory-presser' ); ?></th>
+						<th><?php esc_html_e( 'Title', 'inventory-presser' ); ?></th>
+						<th><?php esc_html_e( 'URL path', 'inventory-presser' ); ?></th>
+						<th><?php esc_html_e( 'Field', 'inventory-presser' ); ?></th>
+						<th><?php esc_html_e( 'Operator', 'inventory-presser' ); ?></th>
+						<th><?php esc_html_e( 'Value', 'inventory-presser' ); ?></th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 				<?php
 
-				// output a row for each saved additional listing page + one blank
+				// output a row for each saved additional listing page + one blank.
 				$additional_listings = Inventory_Presser_Additional_Listings_Pages::additional_listings_pages_array();
 				if ( empty( $additional_listings ) ) {
 					$additional_listings = array( array() );
 				}
-				$keys = array(
+				$keys       = array(
 					'url_path',
 					'key',
 					'operator',
 					'value',
 				);
-				for ( $a = 0; $a < sizeof( $additional_listings ); $a++ ) {
+				$page_count = count( $additional_listings );
+				for ( $a = 0; $a < $page_count; $a++ ) {
 					foreach ( $keys as $key ) {
 						if ( ! isset( $additional_listings[ $a ][ $key ] ) ) {
 							$additional_listings[ $a ][ $key ] = '';
@@ -325,77 +320,68 @@ class Inventory_Presser_Admin_Options {
 					}
 
 					?>
-					<tr id="row_<?php echo $a; ?>">
-						<td><?php
-							// text box for page title
+					<tr id="row_<?php echo esc_attr( $a ); ?>">
+						<td>
+							<?php
+							// text box for page title.
 							printf(
-								'<input type="text" id="additional_listings_pages_titles_%s" name="%s[additional_listings_pages][%s][title]" value="%s" />',
-								$a,
-								INVP::OPTION_NAME,
-								$a,
-								$additional_listings[ $a ]['title'] ?? ''
+								'<input type="text" id="additional_listings_pages_titles_%1$s" name="%2$s[additional_listings_pages][%1$s][title]" value="%3$s" />',
+								esc_attr( $a ),
+								esc_attr( INVP::OPTION_NAME ),
+								esc_attr( $additional_listings[ $a ]['title'] ?? '' )
 							);
-						?></td>
-						<td>
-						<?php
-
-						// url path
-						printf(
-							'%s/<input type="text" id="additional_listings_pages_slug_%s" name="%s[additional_listings_pages][%s][url_path]" value="%s" />',
-							site_url(),
-							$a,
-							INVP::OPTION_NAME,
-							$a,
-							$additional_listings[ $a ]['url_path']
-						);
-
-						?>
+							?>
 							</td>
 						<td>
-						<?php
-
-						// select list of vehicle fields
-						echo $this->html_select_vehicle_keys(
-							array(
-								'id'   => 'additional_listings_pages_key_' . $a,
-								'name' => INVP::OPTION_NAME . '[additional_listings_pages][' . $a . '][key]',
-							),
-							$additional_listings[ $a ]['key']
-						);
-
-						?>
+							<?php
+							// url path.
+							printf(
+								'%1$s/<input type="text" id="additional_listings_pages_slug_%2$s" name="%3$s[additional_listings_pages][%2$s][url_path]" value="%4$s" />',
+								esc_url( site_url() ),
+								esc_attr( $a ),
+								esc_attr( INVP::OPTION_NAME ),
+								esc_attr( $additional_listings[ $a ]['url_path'] ?? '' )
+							);
+							?>
 							</td>
 						<td>
-						<?php
-
-						// select list of operators
-						echo $this->html_select_operator(
-							array(
-								'id'    => 'additional_listings_pages_operator_' . $a,
-								'name'  => INVP::OPTION_NAME . '[additional_listings_pages][' . $a . '][operator]',
-								'class' => 'operator',
-							),
-							$additional_listings[ $a ]['operator']
-						);
-
-						?>
+							<?php
+							// select list of vehicle fields.
+							echo $this->html_select_vehicle_keys(
+								array(
+									'id'   => 'additional_listings_pages_key_' . $a,
+									'name' => INVP::OPTION_NAME . '[additional_listings_pages][' . $a . '][key]',
+								),
+								$additional_listings[ $a ]['key'] ?? ''
+							);
+							?>
 							</td>
 						<td>
-						<?php
-
-						// text box for comparison value
-						printf(
-							'<input type="text" id="additional_listings_pages_value_%s" name="%s[additional_listings_pages][%s][value]" value="%s" />',
-							$a,
-							INVP::OPTION_NAME,
-							$a,
-							$additional_listings[ $a ]['value']
-						);
-
-						?>
+							<?php
+							// select list of operators.
+							echo $this->html_select_operator(
+								array(
+									'id'    => 'additional_listings_pages_operator_' . $a,
+									'name'  => INVP::OPTION_NAME . '[additional_listings_pages][' . $a . '][operator]',
+									'class' => 'operator',
+								),
+								$additional_listings[ $a ]['operator'] ?? ''
+							);
+							?>
 							</td>
 						<td>
-							<a href="<?php echo site_url( $additional_listings[ $a ]['url_path'] ); ?>" class="button action" title="View this page"><span class="dashicons dashicons-welcome-view-site"></span></a><button class="button action delete-button" id="delete_<?php echo $a; ?>" title="Delete this page"><span class="dashicons dashicons-trash"></span></button>
+							<?php
+							// text box for comparison value.
+							printf(
+								'<input type="text" id="additional_listings_pages_value_%1$s" name="%2$s[additional_listings_pages][%1$s][value]" value="%3$s" />',
+								esc_attr( $a ),
+								esc_attr( INVP::OPTION_NAME ),
+								esc_attr( $additional_listings[ $a ]['value'] ?? '' )
+							);
+							?>
+							</td>
+						<td>
+							<a href="<?php echo esc_url( site_url( $additional_listings[ $a ]['url_path'] ?? '' ) ); ?>" class="button action" title="<?php esc_attr__( 'View this page', 'inventory-presser' ); ?>"><span class="dashicons dashicons-welcome-view-site"></span></a><button class="button action delete-button" id="delete_<?php echo esc_attr( $a ); ?>" title="<?php esc_attr__( 'Delete this page', 'inventory-presser' ); ?>"><span class="dashicons dashicons-trash"></span></button>
 						</td>
 					</tr>
 					<?php
@@ -405,19 +391,17 @@ class Inventory_Presser_Admin_Options {
 				?>
 				</tbody>
 			</table>
-			<button class="button action" id="add_additional_listings_page">Add Additional Listings Page</button>
+			<button class="button action" id="add_additional_listings_page"><?php esc_html__( 'Add Additional Listings Page', 'inventory-presser' ); ?></button>
 		</div>
 		<?php
 	}
 
 	/**
-	 * callback_include_sold_vehicles
-	 *
 	 * Outputs a checkbox control for the Include Sold Vehicles setting.
 	 *
 	 * @return void
 	 */
-	function callback_include_sold_vehicles() {
+	public function callback_include_sold_vehicles() {
 		$this->boolean_checkbox_setting_callback(
 			'include_sold_vehicles',
 			__( 'Include sold vehicles in listings and search results', 'inventory-presser' )
@@ -425,33 +409,29 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * callback_mapbox_public_token
-	 *
 	 * Outputs a text box control for the MapBox Public Token setting
 	 *
 	 * @return void
 	 */
-	function callback_mapbox_public_token() {
+	public function callback_mapbox_public_token() {
 		printf(
 			'<p><input type="text" name="%1$s" class="regular-text code" id="%1$s" value="%2$s" /></p><p class="description">%3$s <a href="%4$s">%5$s</a> %6$s</p>',
 			'inventory_presser[mapbox_public_token]',
-			isset( $this->option['mapbox_public_token'] ) ? $this->option['mapbox_public_token'] : '',
-			__( 'Obtain a key at', 'inventory-presser' ),
+			esc_attr( isset( $this->option['mapbox_public_token'] ) ? $this->option['mapbox_public_token'] : '' ),
+			esc_html__( 'Obtain a key at', 'inventory-presser' ),
 			'https://mapbox.com/',
 			'mapbox.com',
-			__( 'to use the Map widget.', 'inventory-presser' )
+			esc_html__( 'to use the Map widget.', 'inventory-presser' )
 		);
 	}
 
 
 	/**
-	 * callback_price_display
-	 *
 	 * Outputs a dropdown select control for the Price Display setting
 	 *
 	 * @return void
 	 */
-	function callback_price_display() {
+	public function callback_price_display() {
 		$price_display_options = apply_filters(
 			'invp_price_display_options',
 			array(
@@ -473,32 +453,30 @@ class Inventory_Presser_Admin_Options {
 
 		printf(
 			'<select name="%s[price_display]" id="price_display">',
-			INVP::OPTION_NAME
+			esc_attr( INVP::OPTION_NAME )
 		);
 		foreach ( $price_display_options as $val => $name ) {
 			printf(
 				'<option value="%s"%s>%s</option>',
-				$val,
+				esc_attr( $val ),
 				selected( $val, $selected_val, false ),
-				$name
+				esc_html( $name )
 			);
 		}
 		printf(
 			'</select><p class="description" id="%s[price_display]-description">&quot;%s&quot; %s.</p>',
-			INVP::OPTION_NAME,
-			__( 'Call for Price', 'inventory-presser' ),
-			__( 'will display for any price that is zero', 'inventory-presser' )
+			esc_attr( INVP::OPTION_NAME ),
+			esc_html__( 'Call for Price', 'inventory-presser' ),
+			esc_html__( 'will display for any price that is zero', 'inventory-presser' )
 		);
 	}
 
 	/**
-	 * callback_show_all_taxonomies
-	 *
 	 * Output the controls that create the Show all Taxonomies setting.
 	 *
 	 * @return void
 	 */
-	function callback_show_all_taxonomies() {
+	public function callback_show_all_taxonomies() {
 		$this->boolean_checkbox_setting_callback(
 			'show_all_taxonomies',
 			__( 'Show all taxonomies under Vehicles menu in Dashboard', 'inventory-presser' )
@@ -506,37 +484,39 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * callback_skip_trash
-	 *
 	 * Output the controls that create the Skip Trash setting.
 	 *
 	 * @return void
 	 */
-	function callback_skip_trash() {
+	public function callback_skip_trash() {
 		$this->boolean_checkbox_setting_callback(
 			'skip_trash',
 			__( 'Skip trash when deleting vehicles and delete permanently', 'inventory-presser' )
 		);
 	}
 
+	/**
+	 * change_sort_by_option_values
+	 *
+	 * @param  mixed $value
+	 * @return void
+	 */
 	public function change_sort_by_option_values( $value ) {
-		if ( 'date_entered' == $value ) {
+		if ( 'date_entered' === $value ) {
 			return 'post_date';
 		}
-		if ( 'last_modified' == $value ) {
+		if ( 'last_modified' === $value ) {
 			return 'post_modified';
 		}
 		return $value;
 	}
 
 	/**
-	 * callback_sort_vehicles_by
-	 *
 	 * Output the controls that create the default vehicle sort setting.
 	 *
 	 * @return void
 	 */
-	function callback_sort_vehicles_by() {
+	public function callback_sort_vehicles_by() {
 		// use these default values if we have none
 		if ( ! isset( $this->option['sort_vehicles_by'] ) ) {
 			$this->option['sort_vehicles_by'] = 'make';
@@ -560,21 +540,21 @@ class Inventory_Presser_Admin_Options {
 		printf(
 			'%s %s <select name="%s[sort_vehicles_order]" id="sort_vehicles_order">',
 			$select,
-			__( 'in', 'inventory-presser' ),
-			INVP::OPTION_NAME
+			esc_html__( 'in', 'inventory-presser' ),
+			esc_attr( INVP::OPTION_NAME )
 		);
 
 		foreach ( array(
 			'ascending'  => 'ASC',
 			'descending' => 'DESC',
 		) as $direction => $abbr ) {
-			echo '<option value="' . $abbr . '"';
+			echo '<option value="' . esc_attr( $abbr ) . '"';
 			if ( isset( $this->option['sort_vehicles_order'] ) ) {
 				selected( $this->option['sort_vehicles_order'], $abbr );
 			}
-			echo '>' . $direction . '</option>';
+			echo '>' . esc_html( $direction ) . '</option>';
 		}
-		echo '</select> ' . __( 'order', 'inventory-presser' );
+		echo '</select> ' . esc_html__( 'order', 'inventory-presser' );
 	}
 
 	/**
@@ -584,7 +564,7 @@ class Inventory_Presser_Admin_Options {
 	 *
 	 * @return void
 	 */
-	function callback_use_carfax() {
+	public function callback_use_carfax() {
 		$this->boolean_checkbox_setting_callback(
 			'use_carfax',
 			__( 'Display Carfax buttons near vehicles that link to free Carfax reports', 'inventory-presser' )
@@ -592,13 +572,11 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * callback_use_carfax_provided_buttons
-	 *
 	 * Output the controls that create the Use Carfax-provided Buttons setting.
 	 *
 	 * @return void
 	 */
-	function callback_use_carfax_provided_buttons() {
+	public function callback_use_carfax_provided_buttons() {
 		$this->boolean_checkbox_setting_callback(
 			'use_carfax_provided_buttons',
 			__( 'Use Carfax-provided, dynamic buttons that may also say things like "GOOD VALUE"', 'inventory-presser' )
@@ -606,8 +584,6 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * html_select_operator
-	 *
 	 * Creates a dropdown select that contains logical operators.
 	 *
 	 * @param  array  $attributes
@@ -648,8 +624,6 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * html_select_vehicle_keys
-	 *
 	 * Get a list of all the post meta keys in our CPT. Let the user choose one
 	 * as a default sort.
 	 *
@@ -662,8 +636,8 @@ class Inventory_Presser_Admin_Options {
 		foreach ( INVP::keys( false ) as $key ) {
 			$meta_key = apply_filters( 'invp_prefix_meta_key', $key );
 
-			// Skip hidden post meta keys
-			if ( '_' == $meta_key[0] ) {
+			// Skip hidden post meta keys.
+			if ( '_' === $meta_key[0] ) {
 				continue;
 			}
 
@@ -690,8 +664,6 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * options_page_content
-	 *
 	 * Outputs the settings page HTML content
 	 *
 	 * @return void
@@ -703,7 +675,7 @@ class Inventory_Presser_Admin_Options {
 
 		?>
 		<div class="wrap">
-			<h2><?php _e( 'Inventory Presser Settings', 'inventory-presser' ); ?></h2>
+			<h2><?php esc_html_e( 'Inventory Presser Settings', 'inventory-presser' ); ?></h2>
 		<?php
 		settings_errors();
 
@@ -721,11 +693,9 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * sanitize_options
-	 *
 	 * Santitizes the user input into the options inputs before they are saved.
 	 *
-	 * @param  array $input
+	 * @param  array $input Array of submitted settings page values.
 	 * @return array
 	 */
 	public function sanitize_options( $input ) {
@@ -774,11 +744,11 @@ class Inventory_Presser_Admin_Options {
 			foreach ( $sanitary_values['additional_listings_pages'] as $additional_listing ) {
 				// Is this even a valid rule?
 				if ( ! Inventory_Presser_Additional_Listings_Pages::is_valid_rule( $additional_listing ) ) {
-					// No
+					// No.
 					continue;
 				}
 
-				if ( in_array( $additional_listing['url_path'], $url_paths ) ) {
+				if ( in_array( $additional_listing['url_path'], $url_paths, true ) ) {
 					// sorry!
 					continue;
 				}
