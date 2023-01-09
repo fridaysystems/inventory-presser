@@ -225,8 +225,8 @@ class Inventory_Presser_Admin_Photo_Arranger {
 	public function create_gallery( $post ) {
 		global $pagenow;
 		if ( ! is_admin()
-			&& get_post_type() !== INVP::POST_TYPE
-			&& 'post-new.php' !== $pagenow ) {
+			|| get_post_type() !== INVP::POST_TYPE
+			|| 'post-new.php' !== $pagenow ) {
 
 			return;
 		}
