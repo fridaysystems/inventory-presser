@@ -903,7 +903,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 
 	switch ( $settings['price_display'] ) {
 		case 'msrp':
-			return invp_get_the_msrp( $post_ID );
+			return apply_filters( 'invp_price_display', invp_get_the_msrp( $post_ID ), $settings['price_display'], $post_ID );
 
 		// ${Price} / ${Down Payment} Down.
 		case 'full_or_down':
@@ -918,24 +918,23 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 				$output .= sprintf( ' / %s Down', $down_payment );
 			}
 
-			if ( '' == $output ) {
-				return $zero_string;
+			if ( '' === $output ) {
+				return apply_filters( 'invp_price_display', $zero_string, $settings['price_display'], $post_ID );
 			}
-			return $output;
+			return apply_filters( 'invp_price_display', $output, $settings['price_display'], $post_ID );
 
 		// down payment only.
 		case 'down_only':
 			$down_payment = invp_get_the_down_payment();
 			if ( ! empty( $down_payment ) ) {
-				return sprintf( '%s Down', $down_payment );
+				return apply_filters( 'invp_price_display', sprintf( '%s %s', $down_payment, __( 'Down', 'inventory-presser' ) ), $settings['price_display'], $post_ID );
 			}
-			break;
+			return apply_filters( 'invp_price_display', $zero_string, $settings['price_display'], $post_ID );
 
 		// call_for_price.
 		case 'call_for_price':
 			// Not $zero_string, but explicity "Call for Price".
-			return __( 'Call For Price', 'inventory-presser' );
-		break;
+			return apply_filters( 'invp_price_display', __( 'Call For Price', 'inventory-presser' ), $settings['price_display'], $post_ID );
 
 		// was_now_discount - MSRP = was price, regular price = now price, discount = was - now.
 		case 'was_now_discount':
@@ -964,7 +963,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 			// Either no discount between the two prices or one is empty.
 			if ( ! empty( $price ) ) {
 				// We have a price, so fallback to "default" behavior and show it.
-				return '$' . number_format( $price, 0, '.', ',' );
+				return apply_filters( 'invp_price_display', '$' . number_format( $price, 0, '.', ',' ), $settings['price_display'], $post_ID );
 			}
 			break;
 
@@ -973,7 +972,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 			$payment           = invp_get_the_payment( $post_ID );
 			$payment_frequency = invp_get_the_payment_frequency( $post_ID );
 			if ( empty( $payment ) || empty( $payment_frequency ) ) {
-				return $zero_string;
+				return apply_filters( 'invp_price_display', $zero_string, $settings['price_display'], $post_ID );
 			}
 
 			switch ( $payment_frequency ) {
@@ -993,33 +992,47 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 					$payment_frequency = __( 'twice a month', 'inventory-presser' );
 					break;
 			}
-			return sprintf(
-				'%s %s',
-				$payment,
-				$payment_frequency
+			return apply_filters(
+				'invp_price_display',
+				sprintf(
+					'%s %s',
+					$payment,
+					$payment_frequency
+				),
+				$settings['price_display'],
+				$post_ID
 			);
-		break;
 
 		case 'default':
 			// Normally, show the price field as currency.
 			$price = invp_get_raw_price( $post_ID );
 			if ( empty( $price ) ) {
-				return $zero_string;
+				return apply_filters( 'invp_price_display', $zero_string, $settings['price_display'], $post_ID );
 			}
-			return '$' . number_format( $price, 0, '.', ',' );
+			return apply_filters( 'invp_price_display', '$' . number_format( $price, 0, '.', ',' ), $settings['price_display'], $post_ID );
 
 		case 'down_and_payment':
+			$string       = '';
 			$down_payment = invp_get_the_down_payment();
 			$payment      = invp_get_the_payment( $post_ID );
-			if ( ! empty( $down_payment ) && ! empty( $payment ) ) {
-				return sprintf(
-					'%s %s / %s %s',
+			if ( ! empty( $down_payment ) ) {
+				$string .= sprintf(
+					'%s %s',
 					$down_payment,
 					__( 'Down', 'inventory-presser' ),
+				);
+			}
+			if ( ! empty( $payment ) ) {
+				if ( ! empty( $string ) ) {
+					$string .= ' / ';
+				}
+				$string .= sprintf(
+					'%s %s',
 					$payment,
 					ucfirst( invp_get_the_payment_frequency() )
 				);
 			}
+			return apply_filters( 'invp_price_display', $string, $settings['price_display'], $post_ID );
 
 		default:
 			/**
