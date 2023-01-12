@@ -939,20 +939,25 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 
 		// was_now_discount - MSRP = was price, regular price = now price, discount = was - now.
 		case 'was_now_discount':
-			$msrp  = INVP::get_meta( 'msrp', $post_ID );
+			$msrp  = INVP::get_meta( 'msrp', $post_ID ); // raw!
 			$price = invp_get_raw_price( $post_ID );
 			if ( ! empty( $msrp )
-			&& ! empty( $price )
-			&& $msrp > $price
-			) {
-				return sprintf(
-					'<div class="price-was-discount">%s %s</div>%s $%s<div class="price-was-discount-save">%s $%s</div>',
-					__( 'Retail', 'inventory-presser' ),
-					invp_get_the_msrp( $post_ID ),
-					__( 'Now', 'inventory-presser' ),
-					number_format( $price, 0, '.', ',' ),
-					__( 'You Save', 'inventory-presser' ),
-					number_format( ( $msrp - $price ), 0, '.', ',' )
+				&& ! empty( $price )
+				&& $msrp > $price ) {
+
+				return apply_filters(
+					'invp_price_display',
+					sprintf(
+						'<div class="price-was-discount">%s %s</div>%s $%s<div class="price-was-discount-save">%s $%s</div>',
+						apply_filters( 'invp_price_was_now_discount_retail', __( 'Retail', 'inventory-presser' ) ),
+						invp_get_the_msrp( $post_ID ),
+						apply_filters( 'invp_price_was_now_discount_now', __( 'Now', 'inventory-presser' ) ),
+						number_format( $price, 0, '.', ',' ),
+						apply_filters( 'invp_price_was_now_discount_save', __( 'You Save', 'inventory-presser' ) ),
+						number_format( ( $msrp - $price ), 0, '.', ',' )
+					),
+					$settings['price_display'],
+					$post_ID
 				);
 			}
 

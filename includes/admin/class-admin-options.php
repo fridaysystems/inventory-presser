@@ -439,7 +439,12 @@ class Inventory_Presser_Admin_Options {
 				'msrp'             => '${MSRP}',
 				'full_or_down'     => '${Price} / ${Down Payment} Down',
 				'down_only'        => '${Down Payment} Down',
-				'was_now_discount' => 'Retail ${MSRP} Now ${Price} You Save ${MSRP}-{Price}',
+				'was_now_discount' => sprintf(
+					'%s ${MSRP} %s ${Price} %s ${MSRP}-{Price}',
+					apply_filters( 'invp_price_was_now_discount_retail', __( 'Retail', 'inventory-presser' ) ),
+					apply_filters( 'invp_price_was_now_discount_now', __( 'Now', 'inventory-presser' ) ),
+					apply_filters( 'invp_price_was_now_discount_save', __( 'You Save', 'inventory-presser' ) )
+				),
 				'payment_only'     => '${Payment} {Frequency}',
 				'down_and_payment' => '${Down payment} / ${Payment} {Frequency}',
 				'call_for_price'   => __( 'Call For Price', 'inventory-presser' ),
