@@ -4,7 +4,7 @@ Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, mo
 Requires at least: 5.0.0
 Tested up to: 6.1.1
 Requires PHP: 7.0.0
-Stable tag: 14.5.0
+Stable tag: 14.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,10 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.5.1 =
+* [Added] Wraps strings in filters in the was_now_discount pricing display option so "Retail", "Now", and "You Save" strings can be changed by other plugins using the `invp_price_was_now_discount_retail`, `invp_price_was_now_discount_now`, and `invp_price_was_now_discount_save` filters.
+* [Fixed] Applies the `invp_price_display` filter to all return paths of the invp_get_the_price() template tag.
 
 = 14.5.0 =
 * [Added] Adds a feature enabled by default: Adds a gallery block to new vehicle posts with a specific CSS class that allows users to upload and reorder photos on vehicle posts in the block editor. This is merging the invp-photo-arranger feature plugin into Inventory Presser core.
