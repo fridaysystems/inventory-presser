@@ -190,25 +190,32 @@ class Inventory_Presser_Admin_Photo_Arranger {
 			return;
 		}
 
-		// Set a post_parent value on every photo in the gallery block.
-		if ( ! empty( $block['innerBlocks'] ) ) {
-			foreach ( $block['innerBlocks'] as $index => $image_block ) {
-				if ( empty( $image_block['blockName'] ) || 'core/image' !== $image_block['blockName'] ) {
-					continue;
-				}
-				if ( empty( $image_block['attrs']['id'] ) ) {
-					continue;
-				}
-				$attachment = get_post( $image_block['attrs']['id'] );
-				if ( ! empty( $attachment ) ) {
-					// Update the photo's post_parent.
-					if ( empty( $attachment->post_parent ) || $attachment->post_parent !== $post_id ) {
-						$attachment->post_parent = $post_id;
-						$this->safe_update_post( $attachment );
-					}
+		if ( empty( $block['innerBlocks'] ) ) {
+			// There are no photos in the gallery.
+			return;
+		}
 
+		// Set a post_parent value on every photo in the gallery block.
+		foreach ( $block['innerBlocks'] as $index => $image_block ) {
+			if ( empty( $image_block['blockName'] ) || 'core/image' !== $image_block['blockName'] ) {
+				continue;
+			}
+			if ( empty( $image_block['attrs']['id'] ) ) {
+				continue;
+			}
+			$attachment = get_post( $image_block['attrs']['id'] );
+			if ( ! empty( $attachment ) ) {
+				// Update the photo's post_parent.
+				if ( empty( $attachment->post_parent ) || $attachment->post_parent !== $post_id ) {
+					$attachment->post_parent = $post_id;
+					$this->safe_update_post( $attachment );
+				}
+
+				// Does the number match?
+				if ( $index + 1 !== INVP::get_meta( 'photo_number', $attachment->ID ) ) {
+					// Save VIN and photo hash in photo meta.
 					Inventory_Presser_Photo_Numberer::maybe_number_photo( $attachment->ID );
-					// Make sure this photo has the right sequence number.
+					// Force save the sequence number.
 					Inventory_Presser_Photo_Numberer::save_meta_photo_number( $attachment->ID, $post_id, $index + 1 );
 				}
 			}
