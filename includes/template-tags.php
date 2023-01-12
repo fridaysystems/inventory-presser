@@ -99,7 +99,7 @@ function invp_get_the_carfax_icon_html( $post_ID = null ) {
 	}
 
 	// Does this vehicle have a Carfax-eligible VIN?
-	if ( strlen( invp_get_the_VIN( $post_ID ) ) != 17 || invp_get_the_year( $post_ID ) < 1980 ) {
+	if ( strlen( invp_get_the_VIN( $post_ID ) ) !== 17 || invp_get_the_year( $post_ID ) < 1980 ) {
 		return '';
 	}
 
@@ -147,7 +147,7 @@ function invp_get_the_carfax_url_svg( $post_ID = null ) {
 	 * plugin.
 	 */
 	if ( empty( $url ) || ! INVP::settings()['use_carfax_provided_buttons'] ) {
-		// fallback to the icon that ships with this plugin
+		// Fallback to the icon that ships with this plugin.
 		$url = plugin_dir_url( INVP_PLUGIN_FILE_PATH ) . '/images/show-me-carfax';
 		if ( invp_is_carfax_one_owner( $post_ID ) ) {
 			$url .= '-1-owner';
@@ -162,7 +162,7 @@ function invp_get_the_carfax_url_svg( $post_ID = null ) {
  * invp_get_the_carfax_url_report
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_carfax_url_report( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -200,7 +200,7 @@ function invp_get_the_color( $post_ID = null ) {
  * invp_get_the_dealer_id
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_dealer_id( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -213,7 +213,7 @@ function invp_get_the_dealer_id( $post_ID = null ) {
  * invp_get_the_description
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_description( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -226,21 +226,21 @@ function invp_get_the_description( $post_ID = null ) {
  * invp_get_the_doors
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_doors( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
 		$post_ID = get_the_ID();
 	}
 	$value = INVP::get_meta( 'doors', $post_ID );
-	return 0 == $value ? '' : $value;
+	return 0 === (int) $value ? '' : $value;
 }
 
 /**
  * invp_get_the_down_payment
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_down_payment( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -275,7 +275,7 @@ function invp_get_the_drive_type( $post_ID = null ) {
  * invp_get_the_edmunds_style_id
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_edmunds_style_id( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -288,7 +288,7 @@ function invp_get_the_edmunds_style_id( $post_ID = null ) {
  * invp_get_the_engine
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_engine( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -301,7 +301,7 @@ function invp_get_the_engine( $post_ID = null ) {
  * invp_get_the_fuel
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_fuel( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -315,7 +315,7 @@ function invp_get_the_fuel( $post_ID = null ) {
  *
  * Makes retrieving a fuel economy data point from metadata easier.
  *
- * @param  string $key       One of these fuel economy member suffixes: name, annual_consumption, annual_cost, annual_emissions, combined_mpg, city_mpg, highway_mpg
+ * @param  string $key       One of these fuel economy member suffixes: name, annual_consumption, annual_cost, annual_emissions, combined_mpg, city_mpg, highway_mpg.
  * @param  int    $fuel_type Specifies which of the two fuel types from which to retrieve the value.
  * @return string The meta value string corresponding to the provided $key or empty string.
  */
@@ -328,7 +328,7 @@ function invp_get_the_fuel_economy_value( $key, $fuel_type = 1, $post_ID = null 
 	 * The meta key fuel_economy_five_year_savings does not apply to either fuel
 	 * type, so ignore $fuel_type when this key is passed.
 	 */
-	if ( 'fuel_economy_five_year_savings' != $key ) {
+	if ( 'fuel_economy_five_year_savings' !== $key ) {
 		$key = 'fuel_economy_' . $fuel_type . '_' . $key;
 	}
 
@@ -354,7 +354,7 @@ function invp_get_the_hull_material( $post_ID = null ) {
  * invp_get_the_interior_color
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_interior_color( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -396,14 +396,14 @@ function invp_get_the_last_modified( $post_ID = null ) {
 	$date_format = get_option( 'date_format' );
 	$time_format = get_option( 'time_format' );
 
-	// Mon, 25 Apr 2022 01:45:46 -0400
+	// Mon, 25 Apr 2022 01:45:46 -0400.
 	$date = DateTime::createFromFormat( 'D, d M Y h:i:s O', invp_get_raw_last_modified() );
 
 	if ( ! $date ) {
 		return '';
 	}
 
-	return date( $date_format . ' ' . $time_format, $date->getTimestamp() );
+	return gmdate( $date_format . ' ' . $time_format, $date->getTimestamp() );
 }
 
 /**
@@ -466,7 +466,7 @@ function invp_get_the_location_sentence( $post_ID = null ) {
 	 * vehicle is, the dealership address is all over the website.
 	 */
 	$location_terms = get_terms( 'location', array( 'hide_empty' => true ) );
-	$location_count = ! is_wp_error( $location_terms ) ? sizeof( $location_terms ) : 0;
+	$location_count = ! is_wp_error( $location_terms ) ? count( $location_terms ) : 0;
 
 	if ( 1 >= $location_count ) {
 		return '';
@@ -498,7 +498,7 @@ function invp_get_the_location_sentence( $post_ID = null ) {
 
 	// Does this location have a phone number?
 	$phones = INVP::get_phones( $location_terms[0]->term_id );
-	if ( 0 < sizeof( $phones ) ) {
+	if ( 0 < count( $phones ) ) {
 		// Yes, at least one.
 		foreach ( $phones as $phone ) {
 			// Try to avoid fax numbers.
@@ -530,7 +530,7 @@ function invp_get_the_location_sentence( $post_ID = null ) {
  * invp_get_the_location_state
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_location_state( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -552,7 +552,7 @@ function invp_get_the_location_state( $post_ID = null ) {
  * invp_get_the_location_zip
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_location_zip( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -574,7 +574,7 @@ function invp_get_the_location_zip( $post_ID = null ) {
  * invp_get_the_make
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_make( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -587,7 +587,7 @@ function invp_get_the_make( $post_ID = null ) {
  * invp_get_the_model
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_model( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -613,7 +613,7 @@ function invp_get_raw_msrp( $post_ID = null ) {
  * invp_get_the_msrp
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_msrp( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -639,7 +639,7 @@ function invp_get_the_msrp( $post_ID = null ) {
  */
 function invp_get_the_odometer( $append = '', $post_ID = null ) {
 	$raw = INVP::get_meta( 'odometer', $post_ID );
-	if ( '0' == $raw ) {
+	if ( '0' === $raw ) {
 		return '';
 	}
 
@@ -684,7 +684,7 @@ function invp_get_the_options( $post_ID = null ) {
  * invp_get_the_payment
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_payment( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -778,7 +778,7 @@ function invp_get_the_photo_url( $size = 'medium', $post_ID = null ) {
  *
  * @param  mixed    $sizes
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return array
  */
 function invp_get_the_photos( $sizes, $post_ID = null ) {
 	/**
@@ -847,7 +847,7 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 	 * Backwards compatibility to versions before 5.4.0 where the
 	 * incoming argument was a string not an array.
 	 */
-	if ( 1 == sizeof( $sizes ) && 'large' !== $sizes[0] ) {
+	if ( 1 === count( $sizes ) && 'large' !== $sizes[0] ) {
 		return $image_urls[ $sizes[0] ];
 	}
 
@@ -1036,7 +1036,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
  * invp_get_the_stock_number
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_stock_number( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -1049,7 +1049,7 @@ function invp_get_the_stock_number( $post_ID = null ) {
  * invp_get_the_title_status
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_title_status( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -1062,7 +1062,7 @@ function invp_get_the_title_status( $post_ID = null ) {
  * invp_get_the_transmission
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_transmission( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -1097,7 +1097,7 @@ function invp_get_the_transmission( $post_ID = null ) {
  * invp_get_the_transmission_speeds
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_transmission_speeds( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -1110,7 +1110,7 @@ function invp_get_the_transmission_speeds( $post_ID = null ) {
  * invp_get_the_trim
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_trim( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -1123,7 +1123,7 @@ function invp_get_the_trim( $post_ID = null ) {
  * invp_get_the_type
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_type( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -1149,7 +1149,7 @@ function invp_get_the_VIN( $post_ID = null ) {
  * invp_get_the_year
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return string
  */
 function invp_get_the_year( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
@@ -1183,7 +1183,7 @@ function invp_get_the_youtube_url( $post_ID = null ) {
  * invp_have_carfax_report
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return void
+ * @return bool
  */
 function invp_have_carfax_report( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
