@@ -629,18 +629,16 @@ function invp_get_the_msrp( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_odometer
- *
  * Template tag. Returns the odometer formatted as a number with comma separators if it is numeric. Returns any other non-zero value without any formatting. Adds the $append value to any return value but an empty string.
  *
  * @param  string $append  A string to append after the odometer value. If the vehicle has no odometer value, then this parameter is ignored.
- * @param  int    $post_ID
+ * @param  int    $post_ID The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return string
  */
 function invp_get_the_odometer( $append = '', $post_ID = null ) {
 	$raw = INVP::get_meta( 'odometer', $post_ID );
 	if ( '0' === $raw ) {
-		return '';
+		return apply_filters( 'invp_get_the_odometer', '', $post_ID );
 	}
 
 	$odometer = '';
@@ -651,14 +649,14 @@ function invp_get_the_odometer( $append = '', $post_ID = null ) {
 	}
 
 	if ( empty( $odometer ) ) {
-		return '';
+		return apply_filters( 'invp_get_the_odometer', '', $post_ID );
 	}
 
 	// Did the user pass a string to append?
 	if ( $append ) {
 		$odometer .= $append;
 	}
-	return $odometer;
+	return apply_filters( 'invp_get_the_odometer', $odometer, $post_ID );
 }
 
 /**
