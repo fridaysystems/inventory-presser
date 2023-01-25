@@ -72,6 +72,10 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 14.5.2 =
+* [Added] Adds a filter `invp_get_the_odometer` to filter the value returned by the invp_get_the_odometer() template tag.
+* [Fixed] Fixes the way queries are edited during searches to avoid name collisions.
+
 = 14.5.1 =
 * [Added] Wraps strings in filters in the was_now_discount pricing display option so "Retail", "Now", and "You Save" strings can be changed by other plugins using the `invp_price_was_now_discount_retail`, `invp_price_was_now_discount_now`, and `invp_price_was_now_discount_save` filters.
 * [Fixed] Applies the `invp_price_display` filter to all return paths of the invp_get_the_price() template tag.
