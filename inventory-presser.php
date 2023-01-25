@@ -278,7 +278,8 @@ class Inventory_Presser_Plugin {
 		 * to
 		 * ORDER BY REPLACE( wp_postmeta.meta_value, ',', '' )+0
 		 */
-		return str_replace( 'wp_postmeta.meta_value+0', "REPLACE( wp_postmeta.meta_value, ',', '' )+0", $orderby );
+		global $wpdb;
+		return str_replace( "$wpdb->postmeta.meta_value+0", "REPLACE( $wpdb->postmeta.meta_value, ',', '' )+0", $orderby );
 	}
 
 	/**
@@ -581,7 +582,7 @@ class Inventory_Presser_Plugin {
 		// create a custom post type for the vehicles.
 		add_action( 'init', array( $this, 'create_post_type' ) );
 
-		// register all postmeta fields the CPT uses (mostly to expose them in the REST API).
+		// register all postmeta fields the CPT uses.
 		add_action( 'init', array( $this, 'register_meta_fields' ), 20 );
 
 		// Filter the attachment post type to make sure `parent` is exposed in the REST API.
@@ -1088,7 +1089,8 @@ class Inventory_Presser_Plugin {
 		 * Count the number of meta fields we have added to the query by parsing
 		 * the join piece of the query
 		 */
-		$meta_field_count = count( explode( 'INNER JOIN wp_postmeta AS', $pieces['join'] ) ) - 1;
+		global $wpdb;
+		$meta_field_count = count( explode( "INNER JOIN $wpdb->postmeta AS", $pieces['join'] ) ) - 1;
 
 		// Parse out the ASC or DESC sort direction from the end of the ORDER BY clause.
 		$direction             = $this->get_last_word( $pieces['orderby'] );

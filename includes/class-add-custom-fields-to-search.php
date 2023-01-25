@@ -43,29 +43,27 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 		}
 
 		/**
-		 * cf_search_join
-		 *
 		 * Join posts and postmeta tables
 		 *
 		 * @see http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_join
 		 *
-		 * @param  string $join
-		 * @return void
+		 * @param  string $join The JOIN clause of the query.
+		 * @return string
 		 */
-		function cf_search_join( $join ) {
+		public function cf_search_join( $join ) {
 			global $wpdb;
 
 			if ( ! is_search() || $this->is_media_library() ) {
 				return $join;
 			}
 
-			// join to search post meta values like year, make, model, trim, etc
-			$join .= ' LEFT JOIN ' . $wpdb->postmeta . ' ON ' . $wpdb->posts . '.ID = ' . $wpdb->postmeta . '.post_id ';
+			// join to search post meta values like year, make, model, trim, etc.
+			$join .= " LEFT JOIN $wpdb->postmeta searchmeta ON $wpdb->posts.ID = searchmeta.post_id ";
 
-			// these joins are so taxonomy terms like Sport Utility Vehicle => suv are included
-			$join .= 'LEFT JOIN ' . $wpdb->term_relationships . ' tr ON ' . $wpdb->posts . '.ID = tr.object_id '
-			. 'INNER JOIN ' . $wpdb->term_taxonomy . ' tt ON tt.term_taxonomy_id = tr.term_taxonomy_id '
-			. 'INNER JOIN ' . $wpdb->terms . ' t ON t.term_id = tt.term_id ';
+			// these joins are so taxonomy terms like Sport Utility Vehicle => suv are included.
+			$join .= "LEFT JOIN $wpdb->term_relationships tr ON $wpdb->posts.ID = tr.object_id "
+				. "INNER JOIN $wpdb->term_taxonomy tt ON tt.term_taxonomy_id = tr.term_taxonomy_id "
+				. "INNER JOIN $wpdb->terms t ON t.term_id = tt.term_id ";
 
 			return $join;
 		}
@@ -88,8 +86,8 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 
 			global $wpdb;
 			$where = preg_replace(
-				'/\(\s*' . $wpdb->posts . ".post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
-				'(' . $wpdb->posts . '.post_title LIKE $1) OR (' . $wpdb->postmeta . '.meta_value LIKE $1) OR (t.name LIKE $1) OR (t.slug LIKE $1)',
+				"/\(\s*$wpdb->posts.post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
+				"($wpdb->posts.post_title LIKE $1) OR ( searchmeta.meta_value LIKE $1) OR (t.name LIKE $1) OR (t.slug LIKE $1)",
 				$where
 			);
 
