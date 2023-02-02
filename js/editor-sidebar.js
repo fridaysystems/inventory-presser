@@ -146,6 +146,146 @@
 
 	registerPlugin( 'invp-plugin-sidebar', {
 		render: function() {
+			var fields = el(
+				wp.element.Fragment,
+				{},
+				el(
+					'h2',
+					{},
+					'Attributes'
+				),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_vin',
+					id:        'inventory_presser_vin'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_stock_number',
+					id:        'inventory_presser_stock_number'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_trim',
+					id:        'inventory_presser_trim',
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_engine',
+					id:        'inventory_presser_engine'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_doors',
+					id:        'inventory_presser_doors',
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_color',
+					id:        'inventory_presser_color'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_interior_color',
+					id:        'inventory_presser_interior_color'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_odometer',
+					id:        'inventory_presser_odometer'
+				} ),
+				el( MetaBlockFieldSelect, {
+					fieldName: 'inventory_presser_title_status',
+					id:        'inventory_presser_title_status',
+					optionArray: titleStatusOptions()
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_car_id',
+					id:        'inventory_presser_car_id'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_dealer_id',
+					id:        'inventory_presser_dealer_id'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_leads_id',
+					id:        'inventory_presser_leads_id'
+				} ),
+				el(
+					'h2',
+					{},
+					'Prices'
+				),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_price',
+					id:        'inventory_presser_price'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_msrp',
+					id:        'inventory_presser_msrp'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_down_payment',
+					id:        'inventory_presser_down_payment'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_payment',
+					id:        'inventory_presser_payment'
+				} ),
+				el( MetaBlockFieldSelect, {
+					fieldName: 'inventory_presser_payment_frequency',
+					id:        'inventory_presser_payment_frequency',
+					optionArray: paymentFrequencyOptions()
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_book_value_kbb',
+					id:        'inventory_presser_book_value_kbb'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_book_value_nada',
+					id:        'inventory_presser_book_value_nada'
+				} ),
+				el(
+					'h2',
+					{},
+					'Third Parties'
+				),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_edmunds_style_id',
+					id:        'inventory_presser_edmunds_style_id'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_nextgear_inspection_url',
+					id:        'inventory_presser_nextgear_inspection_url'
+				} ),
+				el( MetaBlockField, {
+					fieldName: 'inventory_presser_youtube',
+					id:        'inventory_presser_youtube'
+				} ),
+			);
+			// Is this a boat?
+			if ( 'boat' === wp.data.select('core/editor').getEditedPostAttribute('meta').inventory_presser_type.toLowerCase() ) {
+				// Yes, add the boat fields.
+				fields = el(
+					wp.element.Fragment,
+					{},
+					fields,
+					el(
+						wp.element.Fragment,
+						{},
+						el(
+							'h2',
+							{},
+							'Boat Attributes'
+						),
+						el( MetaBlockField, {
+							fieldName: 'inventory_presser_beam',
+							id:        'inventory_presser_beam'
+						} ),
+						el( MetaBlockField, {
+							fieldName: 'inventory_presser_length',
+							id:        'inventory_presser_length'
+						} ),
+						el( MetaBlockFieldSelect, {
+							fieldName: 'inventory_presser_hull_material',
+							id:        'inventory_presser_hull_material',
+							optionArray: hullMaterialOptions()
+						} ),
+					),
+				);
+			}
 			return el( PluginSidebar,
 				{
 					name: 'invp-plugin-sidebar',
@@ -154,129 +294,7 @@
 				},
 				el( 'div',
 					{ className: 'invp-editor-sidebar' },
-					el(
-						'h2',
-						{},
-						'Attributes'
-					),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_vin',
-						id:        'inventory_presser_vin'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_stock_number',
-						id:        'inventory_presser_stock_number'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_trim',
-						id:        'inventory_presser_trim',
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_engine',
-						id:        'inventory_presser_engine'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_doors',
-						id:        'inventory_presser_doors',
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_color',
-						id:        'inventory_presser_color'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_interior_color',
-						id:        'inventory_presser_interior_color'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_odometer',
-						id:        'inventory_presser_odometer'
-					} ),
-					el( MetaBlockFieldSelect, {
-						fieldName: 'inventory_presser_title_status',
-						id:        'inventory_presser_title_status',
-						optionArray: titleStatusOptions()
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_car_id',
-						id:        'inventory_presser_car_id'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_dealer_id',
-						id:        'inventory_presser_dealer_id'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_leads_id',
-						id:        'inventory_presser_leads_id'
-					} ),
-					el(
-						'h2',
-						{},
-						'Prices'
-					),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_price',
-						id:        'inventory_presser_price'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_msrp',
-						id:        'inventory_presser_msrp'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_down_payment',
-						id:        'inventory_presser_down_payment'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_payment',
-						id:        'inventory_presser_payment'
-					} ),
-					el( MetaBlockFieldSelect, {
-						fieldName: 'inventory_presser_payment_frequency',
-						id:        'inventory_presser_payment_frequency',
-						optionArray: paymentFrequencyOptions()
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_book_value_kbb',
-						id:        'inventory_presser_book_value_kbb'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_book_value_nada',
-						id:        'inventory_presser_book_value_nada'
-					} ),
-					el(
-						'h2',
-						{},
-						'Third Parties'
-					),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_edmunds_style_id',
-						id:        'inventory_presser_edmunds_style_id'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_nextgear_inspection_url',
-						id:        'inventory_presser_nextgear_inspection_url'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_youtube',
-						id:        'inventory_presser_youtube'
-					} ),
-					el(
-						'h2',
-						{},
-						'Boat Attributes'
-					),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_beam',
-						id:        'inventory_presser_beam'
-					} ),
-					el( MetaBlockField, {
-						fieldName: 'inventory_presser_length',
-						id:        'inventory_presser_length'
-					} ),
-					el( MetaBlockFieldSelect, {
-						fieldName: 'inventory_presser_hull_material',
-						id:        'inventory_presser_hull_material',
-						optionArray: hullMaterialOptions()
-					} ),
+					fields
 				),
 			);
 		}
