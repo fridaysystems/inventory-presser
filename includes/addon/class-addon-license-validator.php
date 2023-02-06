@@ -1,4 +1,10 @@
 <?php
+/**
+ * Add-on License Validator
+ *
+ * @package Inventory_Presser
+ */
+
 defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'Inventory_Presser_Addon_License_Validator' ) ) {
@@ -20,13 +26,11 @@ if ( ! class_exists( 'Inventory_Presser_Addon_License_Validator' ) ) {
 	 */
 	class Inventory_Presser_Addon_License_Validator {
 
-
-
 		/**
-		 * is_active
+		 * Checks if a license key is active.
 		 *
-		 * @param  string $product_id
-		 * @param  string $license_key
+		 * @param  string $product_id The post ID of the download on inventorypresser.com.
+		 * @param  string $license_key The license key sold to the user.
 		 * @return bool
 		 */
 		public static function is_active( $product_id, $license_key ) {
@@ -35,28 +39,24 @@ if ( ! class_exists( 'Inventory_Presser_Addon_License_Validator' ) ) {
 		}
 
 		/**
-		 * activate
+		 * Activates the license with the plugin store.
 		 *
-		 * Activates the license with the plugin store
-		 *
-		 * @param  string $product_id
-		 * @param  string $license_key
+		 * @param  string $product_id The post ID of the download on inventorypresser.com.
+		 * @param  string $license_key The license key sold to the user.
 		 * @return bool
 		 */
 		public static function activate( $product_id, $license_key ) {
 			$response = self::api_response( 'activate_license', $product_id, $license_key );
-			return isset( $response->license ) && 'valid' == $response->license;
+			return isset( $response->license ) && 'valid' === $response->license;
 		}
 
 		/**
-		 * api_response
-		 *
 		 * Retrieves the license activation response from the plugin store.
 		 *
-		 * @param  string $action
-		 * @param  string $product_id
-		 * @param  string $license_key
-		 * @return void
+		 * @param  string $action One of 'activate_license' or 'check_license'.
+		 * @param  string $product_id The post ID of the download on inventorypresser.com.
+		 * @param  string $license_key The license key sold to the user.
+		 * @return array
 		 */
 		private static function api_response( $action, $product_id, $license_key ) {
 			$response = wp_remote_get( esc_url_raw( self::api_url( $action, $license_key, $product_id ) ) );
@@ -64,13 +64,11 @@ if ( ! class_exists( 'Inventory_Presser_Addon_License_Validator' ) ) {
 		}
 
 		/**
-		 * api_url
-		 *
 		 * Creates a URL to the plugin store where this license can be renewed.
 		 *
-		 * @param  string $action
-		 * @param  string $product_id
-		 * @param  string $license_key
+		 * @param  string $action One of 'activate_license' or 'check_license'.
+		 * @param  string $product_id The post ID of the download on inventorypresser.com.
+		 * @param  string $license_key The license key sold to the user.
 		 * @return string A URL
 		 */
 		private static function api_url( $action, $product_id, $license_key ) {
@@ -79,7 +77,7 @@ if ( ! class_exists( 'Inventory_Presser_Addon_License_Validator' ) ) {
 				$action,
 				$product_id,
 				$license_key,
-				urlencode( home_url() )
+				rawurlencode( home_url() )
 			);
 		}
 	}
