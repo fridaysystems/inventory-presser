@@ -410,382 +410,410 @@ class INVP {
 	 * @return array An array of arrays, defining the meta fields that are registered and used by this class.
 	 */
 	public static function keys_and_types() {
-		return array(
-			array(
-				'label'  => __( 'Availability', 'inventory_presser' ),
-				'name'   => 'availability',
-				'sample' => 'For Sale',
-				'type'   => 'string',
-			),
-			array(
-				'label' => __( 'Beam', 'inventory_presser' ),
-				'name'  => 'beam', // for boats
-				'type'  => 'number',
-			),
-			array(
-				'label'  => __( 'Body Style', 'inventory_presser' ),
-				'name'   => 'body_style',
-				'sample' => 'EXTENDED CAB PICKUP',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'KBB Book Value', 'inventory_presser' ), // Kelley Blue Book
-				'name'   => 'book_value_kbb',
-				'sample' => 13500,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'NADA Book Value', 'inventory_presser' ), // NADA Guides
-				'name'   => 'book_value_nada',
-				'sample' => 13500,
-				'type'   => 'number',
-			),
-			array(
-				'label' => __( 'Car ID', 'inventory_presser' ),
-				'name'  => 'car_id', // unique identifier
-				'type'  => 'integer',
-			),
-			array(
-				'label' => __( 'Carfax Have Report', 'inventory_presser' ),
-				'name'  => 'carfax_have_report',
-				'type'  => 'boolean',
-			),
-			array(
-				'label' => __( 'Carfax One Owner', 'inventory_presser' ),
-				'name'  => 'carfax_one_owner',
-				'type'  => 'boolean',
-			),
-			array(
-				'label' => __( 'Carfax Icon URL', 'inventory_presser' ),
-				'name'  => 'carfax_url_icon',
-				'type'  => 'string',
-			),
-			array(
-				'label' => __( 'Carfax Report URL', 'inventory_presser' ),
-				'name'  => 'carfax_url_report',
-				'type'  => 'string',
-			),
-			array(
-				'label' => __( 'Certified Pre-owned', 'inventory-presser' ),
-				'name'  => 'certified_preowned',
-				'type'  => 'boolean',
-			),
-			array(
-				'label'  => __( 'Color', 'inventory_presser' ),
-				'name'   => 'color',
-				'sample' => 'Merlot Jewel Metallic',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Base Color', 'inventory_presser' ),
-				'name'   => 'color_base',
-				'sample' => 'Red',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Condition', 'inventory_presser' ),
-				'name'   => 'condition',
-				'sample' => 'Used',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Cylinders', 'inventory_presser' ),
-				'name'   => 'cylinders',
-				'sample' => 6,
-				'type'   => 'integer',
-			),
-			array(
-				'label'  => __( 'Date Entered', 'inventory_presser' ),
-				'name'   => 'date_entered',
-				'sample' => 'Mon, 24 Feb 2020 08:17:37 -0500',
-				'type'   => 'string',
-			),
-			array(
-				'label' => __( 'Dealer ID', 'inventory_presser' ),
-				'name'  => 'dealer_id', // friday systems dealer id
-				'type'  => 'integer',
-			),
-			array(
-				'label'  => __( 'Description', 'inventory_presser' ),
-				'name'   => 'description',
-				'sample' => 'Clean, non-smoker, must-see!',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Doors', 'inventory_presser' ),
-				'name'   => 'doors',
-				'sample' => 4,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'Down Payment', 'inventory_presser' ),
-				'name'   => 'down_payment',
-				'sample' => 2500,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'Drive Type', 'inventory_presser' ),
-				'name'   => 'drive_type',
-				'sample' => 'Rear Wheel Drive',
-				'type'   => 'string',
-			),
-			array(
-				'label' => __( 'Edmunds Style ID', 'inventory_presser' ),
-				'name'  => 'edmunds_style_id',
-				'type'  => 'integer',
-			),
-			array(
-				'label'  => __( 'Engine', 'inventory_presser' ),
-				'name'   => 'engine',
-				'sample' => '3.7L 5 cylinder',
-				'type'   => 'string',
-			),
-			array(
-				'label' => __( 'Featured', 'inventory_presser' ),
-				'name'  => 'featured',
-				'type'  => 'boolean',
-			),
-			array(
-				'label'  => __( 'Fuel', 'inventory_presser' ),
-				'name'   => 'fuel',
-				'sample' => 'Gas',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Name (fuel type 1)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_1_name',
-				'sample' => 'Regular Gasoline',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Annual Fuel Consumption (fuel type 1)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_1_annual_consumption',
-				'sample' => '13.18 barrels',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Annual Fuel Cost (fuel type 1)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_1_annual_cost',
-				'sample' => 1600,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 1)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_1_annual_emissions',
-				'sample' => '355 grams per mile',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Fuel Economy City (fuel type 1)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_1_city',
-				'sample' => 22,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Combined (fuel type 1)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_1_combined',
-				'sample' => 25,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Highway (fuel type 1)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_1_highway',
-				'sample' => 31,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Name (fuel type 2)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_2_name',
-				'sample' => 'Regular Gasoline',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Annual Fuel Consumption (fuel type 2)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_2_annual_consumption',
-				'sample' => '13.18 barrels',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Annual Fuel Cost (fuel type 2)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_2_annual_cost',
-				'sample' => 1600,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 2)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_2_annual_emissions',
-				'sample' => '355 grams per mile',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Fuel Economy City (fuel type 2)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_2_city',
-				'sample' => 22,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Combined (fuel type 2)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_2_combined',
-				'sample' => 25,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Highway (fuel type 2)', 'inventory_presser' ),
-				'name'   => 'fuel_economy_2_highway',
-				'sample' => 31,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'Fuel Economy Five Year Savings', 'inventory_presser' ),
-				'name'   => 'fuel_economy_five_year_savings',
-				'sample' => 2250,
-				'type'   => 'number',
-			),
-			array(
-				'label' => __( 'Hull Material', 'inventory_presser' ),
-				'name'  => 'hull_material', // for boats
-				'type'  => 'string',
-			),
-			array(
-				'label'  => __( 'Interior Color', 'inventory_presser' ),
-				'name'   => 'interior_color',
-				'sample' => 'Black',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Last Modified', 'inventory_presser' ),
-				'name'   => 'last_modified',
-				'sample' => 'Mon, 24 Feb 2020 08:17:37 -0500',
-				'type'   => 'string',
-			),
-			array(
-				'label' => __( 'Leads ID', 'inventory_presser' ),
-				'name'  => 'leads_id', // friday systems dealer id that receives leads
-				'type'  => 'integer',
-			),
-			array(
-				'label' => __( 'Length', 'inventory_presser' ),
-				'name'  => 'length', // for boats
-				'type'  => 'integer',
-			),
-			array(
-				'label'  => __( 'Location', 'inventory_presser' ),
-				'name'   => 'location',
-				'sample' => '120 Mall Blvd',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Make', 'inventory_presser' ),
-				'name'   => 'make',
-				'sample' => 'GMC',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Model', 'inventory_presser' ),
-				'name'   => 'model',
-				'sample' => 'Canyon',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'MSRP', 'inventory_presser' ),
-				'name'   => 'msrp',
-				'sample' => 23905,
-				'type'   => 'number',
-			),
-			array(
-				'label' => __( 'NextGear Inspection URL', 'inventory_presser' ),
-				'name'  => 'nextgear_inspection_url',
-				'type'  => 'string',
-			),
-			array(
-				'label'  => __( 'Odometer', 'inventory_presser' ),
-				'name'   => 'odometer',
-				'sample' => '102000',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Payment', 'inventory_presser' ),
-				'name'   => 'payment',
-				'sample' => 200,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'Payment Frequency', 'inventory_presser' ),
-				'name'   => 'payment_frequency',
-				'sample' => 'monthly',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Price', 'inventory_presser' ),
-				'name'   => 'price',
-				'sample' => 13499,
-				'type'   => 'number',
-			),
-			array(
-				'label'  => __( 'Propulsion Type', 'inventory_presser' ),
-				'name'   => 'propulsion_type',
-				'sample' => 'Outboard',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Stock Number', 'inventory_presser' ),
-				'name'   => 'stock_number',
-				'sample' => '147907',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Title Status', 'inventory_presser' ),
-				'name'   => 'title_status',
-				'sample' => 'Clean',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Transmission', 'inventory_presser' ),
-				'name'   => 'transmission',
-				'sample' => 'Automatic',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Transmission Speeds', 'inventory_presser' ),
-				'name'   => 'transmission_speeds',
-				'sample' => '4',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Trim Level', 'inventory_presser' ),
-				'name'   => 'trim',
-				'sample' => 'SLE-1 Ext. Cab 4WD',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'Type', 'inventory_presser' ),
-				'name'   => 'type',
-				'sample' => 'Passenger Car',
-				'type'   => 'string',
-			),
-			array(
-				'label'  => __( 'VIN', 'inventory_presser' ),
-				'name'   => 'vin',
-				'sample' => '1GTKTCDE1A8147907',
-				'type'   => 'string',
-			),
-			array(
-				'label' => __( 'Is Wholesale', 'inventory_presser' ),
-				'name'  => 'wholesale',
-				'type'  => 'boolean',
-			),
-			array(
-				'label'  => __( 'Year', 'inventory_presser' ),
-				'name'   => 'year',
-				'sample' => 2010,
-				'type'   => 'integer',
-			),
-			array(
-				'label'  => __( 'YouTube Video ID', 'inventory_presser' ),
-				'name'   => 'youtube',
-				'sample' => '9pBPgt4VOzM',
-				'type'   => 'string',
-			),
+		return apply_filters(
+			'invp_meta_fields',
+			array(
+				array(
+					'label'  => __( 'Availability', 'inventory_presser' ),
+					'name'   => 'availability',
+					'sample' => 'For Sale',
+					'type'   => 'string',
+				),
+				array(
+					'label' => __( 'Beam', 'inventory_presser' ),
+					'name'  => 'beam', // for boats.
+					'type'  => 'number',
+				),
+				array(
+					'label'  => __( 'Body Style', 'inventory_presser' ),
+					'name'   => 'body_style',
+					'sample' => 'EXTENDED CAB PICKUP',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'KBB Book Value', 'inventory_presser' ), // Kelley Blue Book.
+					'name'   => 'book_value_kbb',
+					'sample' => 13500,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'NADA Book Value', 'inventory_presser' ), // NADA Guides.
+					'name'   => 'book_value_nada',
+					'sample' => 13500,
+					'type'   => 'number',
+				),
+				array(
+					'label' => __( 'Car ID', 'inventory_presser' ),
+					'name'  => 'car_id', // unique identifier.
+					'type'  => 'integer',
+				),
+				array(
+					'label' => __( 'Carfax Accident Free', 'inventory_presser' ),
+					'name'  => 'carfax_accident_free',
+					'type'  => 'boolean',
+				),
+				array(
+					'label' => __( 'Carfax Have Report', 'inventory_presser' ),
+					'name'  => 'carfax_have_report',
+					'type'  => 'boolean',
+				),
+				array(
+					'label' => __( 'Carfax One Owner', 'inventory_presser' ),
+					'name'  => 'carfax_one_owner',
+					'type'  => 'boolean',
+				),
+				array(
+					'label' => __( 'Carfax Top Condition', 'inventory_presser' ),
+					'name'  => 'carfax_top_condition',
+					'type'  => 'boolean',
+				),
+				array(
+					'label' => __( 'Carfax Icon URL', 'inventory_presser' ),
+					'name'  => 'carfax_url_icon',
+					'type'  => 'string',
+				),
+				array(
+					'label' => __( 'Carfax Accident-Free Badge URL', 'inventory_presser' ),
+					'name'  => 'carfax_url_icon_accident_free',
+					'type'  => 'string',
+				),
+				array(
+					'label' => __( 'Carfax One-Owner Badge URL', 'inventory_presser' ),
+					'name'  => 'carfax_url_icon_one_owner',
+					'type'  => 'string',
+				),
+				array(
+					'label' => __( 'Carfax Top-Condition Badge URL', 'inventory_presser' ),
+					'name'  => 'carfax_url_icon_top_condition',
+					'type'  => 'string',
+				),
+				array(
+					'label' => __( 'Carfax Report URL', 'inventory_presser' ),
+					'name'  => 'carfax_url_report',
+					'type'  => 'string',
+				),
+				array(
+					'label' => __( 'Certified Pre-owned', 'inventory-presser' ),
+					'name'  => 'certified_preowned',
+					'type'  => 'boolean',
+				),
+				array(
+					'label'  => __( 'Color', 'inventory_presser' ),
+					'name'   => 'color',
+					'sample' => 'Merlot Jewel Metallic',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Base Color', 'inventory_presser' ),
+					'name'   => 'color_base',
+					'sample' => 'Red',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Condition', 'inventory_presser' ),
+					'name'   => 'condition',
+					'sample' => 'Used',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Cylinders', 'inventory_presser' ),
+					'name'   => 'cylinders',
+					'sample' => 6,
+					'type'   => 'integer',
+				),
+				array(
+					'label'  => __( 'Date Entered', 'inventory_presser' ),
+					'name'   => 'date_entered',
+					'sample' => 'Mon, 24 Feb 2020 08:17:37 -0500',
+					'type'   => 'string',
+				),
+				array(
+					'label' => __( 'Dealer ID', 'inventory_presser' ),
+					'name'  => 'dealer_id',
+					'type'  => 'integer',
+				),
+				array(
+					'label'  => __( 'Description', 'inventory_presser' ),
+					'name'   => 'description',
+					'sample' => 'Clean, non-smoker, must-see!',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Doors', 'inventory_presser' ),
+					'name'   => 'doors',
+					'sample' => 4,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Down Payment', 'inventory_presser' ),
+					'name'   => 'down_payment',
+					'sample' => 2500,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Drive Type', 'inventory_presser' ),
+					'name'   => 'drive_type',
+					'sample' => 'Rear Wheel Drive',
+					'type'   => 'string',
+				),
+				array(
+					'label' => __( 'Edmunds Style ID', 'inventory_presser' ),
+					'name'  => 'edmunds_style_id',
+					'type'  => 'integer',
+				),
+				array(
+					'label'  => __( 'Engine', 'inventory_presser' ),
+					'name'   => 'engine',
+					'sample' => '3.7L 5 cylinder',
+					'type'   => 'string',
+				),
+				array(
+					'label' => __( 'Featured', 'inventory_presser' ),
+					'name'  => 'featured',
+					'type'  => 'boolean',
+				),
+				array(
+					'label'  => __( 'Fuel', 'inventory_presser' ),
+					'name'   => 'fuel',
+					'sample' => 'Gas',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Name (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_name',
+					'sample' => 'Regular Gasoline',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Annual Fuel Consumption (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_annual_consumption',
+					'sample' => '13.18 barrels',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Annual Fuel Cost (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_annual_cost',
+					'sample' => 1600,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_annual_emissions',
+					'sample' => '355 grams per mile',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy City (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_city',
+					'sample' => 22,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Combined (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_combined',
+					'sample' => 25,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Highway (fuel type 1)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_1_highway',
+					'sample' => 31,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Name (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_name',
+					'sample' => 'Regular Gasoline',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Annual Fuel Consumption (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_annual_consumption',
+					'sample' => '13.18 barrels',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Annual Fuel Cost (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_annual_cost',
+					'sample' => 1600,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_annual_emissions',
+					'sample' => '355 grams per mile',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Fuel Economy City (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_city',
+					'sample' => 22,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Combined (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_combined',
+					'sample' => 25,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Highway (fuel type 2)', 'inventory_presser' ),
+					'name'   => 'fuel_economy_2_highway',
+					'sample' => 31,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Fuel Economy Five Year Savings', 'inventory_presser' ),
+					'name'   => 'fuel_economy_five_year_savings',
+					'sample' => 2250,
+					'type'   => 'number',
+				),
+				array(
+					'label' => __( 'Hull Material', 'inventory_presser' ),
+					'name'  => 'hull_material', // for boats.
+					'type'  => 'string',
+				),
+				array(
+					'label'  => __( 'Interior Color', 'inventory_presser' ),
+					'name'   => 'interior_color',
+					'sample' => 'Black',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Last Modified', 'inventory_presser' ),
+					'name'   => 'last_modified',
+					'sample' => 'Mon, 24 Feb 2020 08:17:37 -0500',
+					'type'   => 'string',
+				),
+				array(
+					'label' => __( 'Leads ID', 'inventory_presser' ),
+					'name'  => 'leads_id', // dealer id that receives leads.
+					'type'  => 'integer',
+				),
+				array(
+					'label' => __( 'Length', 'inventory_presser' ),
+					'name'  => 'length', // for boats.
+					'type'  => 'integer',
+				),
+				array(
+					'label'  => __( 'Location', 'inventory_presser' ),
+					'name'   => 'location',
+					'sample' => '120 Mall Blvd',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Make', 'inventory_presser' ),
+					'name'   => 'make',
+					'sample' => 'GMC',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Model', 'inventory_presser' ),
+					'name'   => 'model',
+					'sample' => 'Canyon',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'MSRP', 'inventory_presser' ),
+					'name'   => 'msrp',
+					'sample' => 23905,
+					'type'   => 'number',
+				),
+				array(
+					'label' => __( 'NextGear Inspection URL', 'inventory_presser' ),
+					'name'  => 'nextgear_inspection_url',
+					'type'  => 'string',
+				),
+				array(
+					'label'  => __( 'Odometer', 'inventory_presser' ),
+					'name'   => 'odometer',
+					'sample' => '102000',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Payment', 'inventory_presser' ),
+					'name'   => 'payment',
+					'sample' => 200,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Payment Frequency', 'inventory_presser' ),
+					'name'   => 'payment_frequency',
+					'sample' => 'monthly',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Price', 'inventory_presser' ),
+					'name'   => 'price',
+					'sample' => 13499,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Propulsion Type', 'inventory_presser' ),
+					'name'   => 'propulsion_type',
+					'sample' => 'Outboard',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Stock Number', 'inventory_presser' ),
+					'name'   => 'stock_number',
+					'sample' => '147907',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Title Status', 'inventory_presser' ),
+					'name'   => 'title_status',
+					'sample' => 'Clean',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Transmission', 'inventory_presser' ),
+					'name'   => 'transmission',
+					'sample' => 'Automatic',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Transmission Speeds', 'inventory_presser' ),
+					'name'   => 'transmission_speeds',
+					'sample' => '4',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Trim Level', 'inventory_presser' ),
+					'name'   => 'trim',
+					'sample' => 'SLE-1 Ext. Cab 4WD',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Type', 'inventory_presser' ),
+					'name'   => 'type',
+					'sample' => 'Passenger Car',
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'VIN', 'inventory_presser' ),
+					'name'   => 'vin',
+					'sample' => '1GTKTCDE1A8147907',
+					'type'   => 'string',
+				),
+				array(
+					'label' => __( 'Is Wholesale', 'inventory_presser' ),
+					'name'  => 'wholesale',
+					'type'  => 'boolean',
+				),
+				array(
+					'label'  => __( 'Year', 'inventory_presser' ),
+					'name'   => 'year',
+					'sample' => 2010,
+					'type'   => 'integer',
+				),
+				array(
+					'label'  => __( 'YouTube Video ID', 'inventory_presser' ),
+					'name'   => 'youtube',
+					'sample' => '9pBPgt4VOzM',
+					'type'   => 'string',
+				),
+			)
 		);
 	}
 
