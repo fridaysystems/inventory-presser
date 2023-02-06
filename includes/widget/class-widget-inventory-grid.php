@@ -8,7 +8,6 @@ defined( 'ABSPATH' ) || exit;
  */
 class Inventory_Presser_Grid extends WP_Widget {
 
-
 	const ID_BASE = '_invp_inventory_grid';
 
 	/**
@@ -20,7 +19,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
 			self::ID_BASE,
 			'Grid',
@@ -31,8 +30,6 @@ class Inventory_Presser_Grid extends WP_Widget {
 	}
 
 	/**
-	 * delete_option
-	 *
 	 * Deletes the option that stores this widget's data.
 	 *
 	 * @return void
@@ -42,9 +39,9 @@ class Inventory_Presser_Grid extends WP_Widget {
 	}
 
 	/**
-	 * get_column_options_html
+	 * Creates a string of <option> HTML elements based on a provided WP_Term.
 	 *
-	 * @param  string $selected_term The saved number of columns
+	 * @param  string $selected_term The saved number of columns.
 	 * @return string HTML That creates <option> HTML elements
 	 */
 	private function get_column_options_html( $selected_term ) {
@@ -60,16 +57,14 @@ class Inventory_Presser_Grid extends WP_Widget {
 	}
 
 	/**
-	 * content
-	 *
 	 * Creates HTML that renders the widget front-end.
 	 *
-	 * @param  array $args The widget's settings
+	 * @param  array $args The widget's settings.
 	 * @return string The HTML that creates the widget front-end
 	 */
-	function content( $args ) {
+	public function content( $args ) {
 
-		// Need the stylesheet for this content
+		// Need the stylesheet for this content.
 		wp_enqueue_style( 'invp-grid' );
 
 		/**
@@ -94,7 +89,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 		);
 		$args         = wp_parse_args( $args, $default_args );
 
-		// Make sure the limit is not zero or empty string
+		// Make sure the limit is not zero or empty string.
 		if ( empty( $args['limit'] ) ) {
 			$args['limit'] = -1;
 		}
@@ -153,7 +148,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 				);
 			}
 
-			 $grid_html .= '</a></li>';
+			$grid_html .= '</a></li>';
 		}
 		$grid_html .= '</ul></div>';
 
@@ -169,8 +164,6 @@ class Inventory_Presser_Grid extends WP_Widget {
 	}
 
 	/**
-	 * widget
-	 *
 	 * Outputs the widget front-end HTML
 	 *
 	 * @param  array $args
@@ -179,7 +172,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
-		// build $args array
+		// build $args array.
 		$content_args = array();
 		if ( isset( $instance['columns'] ) ) {
 			$content_args['columns'] = $instance['columns'];
@@ -188,16 +181,16 @@ class Inventory_Presser_Grid extends WP_Widget {
 			$content_args['limit'] = $instance['limit'];
 		}
 		if ( isset( $instance['cb_showcaptions'] ) ) {
-			$content_args['show_captions'] = ( $instance['cb_showcaptions'] == 'true' );
+			$content_args['show_captions'] = ( 'true' === $instance['cb_showcaptions'] );
 		}
 		if ( isset( $instance['cb_showbutton'] ) ) {
-			$content_args['show_button'] = ( $instance['cb_showbutton'] == 'true' );
+			$content_args['show_button'] = ( 'true' === $instance['cb_showbutton'] );
 		}
 		if ( isset( $instance['cb_showprices'] ) ) {
-			$content_args['show_prices'] = ( $instance['cb_showprices'] == 'true' );
+			$content_args['show_prices'] = ( 'true' === $instance['cb_showprices'] );
 		}
 
-		// before and after widget arguments are defined by themes
+		// before and after widget arguments are defined by themes.
 		echo $args['before_widget'];
 		$title = apply_filters( 'widget_title', $instance['title'] ?? '' );
 		if ( ! empty( $title ) ) {
@@ -208,11 +201,9 @@ class Inventory_Presser_Grid extends WP_Widget {
 	}
 
 	/**
-	 * form
-	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
-	 * @param  array $instance
+	 * @param  array $instance The widget settings.
 	 * @return void
 	 */
 	public function form( $instance ) {
@@ -221,63 +212,60 @@ class Inventory_Presser_Grid extends WP_Widget {
 		$columns = ( isset( $instance['columns'] ) ) ? $instance['columns'] : 5;
 		$limit   = ( isset( $instance['limit'] ) ) ? $instance['limit'] : $columns * 3;
 
-		// Widget admin form
+		// Widget admin form.
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
-		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'inventory-presser' ); ?></label>
+		<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'Column count:', 'inventory-presser' ); ?></label>
-		<select class="widefat" id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>">
-		<?php echo $this->get_column_options_html( $columns ); ?>
-		</select>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'columns' ) ); ?>"><?php esc_html_e( 'Column count:', 'inventory-presser' ); ?></label>
+			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'columns' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'columns' ) ); ?>">
+			<?php echo $this->get_column_options_html( $columns ); ?>
+			</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'limit' ); ?>"><?php _e( 'Maximum:', 'inventory-presser' ); ?></label>
-		<input class="widefat" id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="number" value="<?php echo esc_attr( $limit ); ?>" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'limit' ) ); ?>"><?php esc_html_e( 'Maximum:', 'inventory-presser' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'limit' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'limit' ) ); ?>" type="number" value="<?php echo esc_attr( $limit ); ?>" />
 		</p>
 		<p>
-			<input type="checkbox" id="<?php echo $this->get_field_id( 'cb_showcaptions' ); ?>" name="<?php echo $this->get_field_name( 'cb_showcaptions' ); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showcaptions'] ) ? $instance['cb_showcaptions'] : '', true ); ?>>
-			<label for="<?php echo $this->get_field_id( 'cb_showcaptions' ); ?>"><?php _e( 'Show captions', 'inventory-presser' ); ?></label>
+			<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_showcaptions' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'cb_showcaptions' ) ); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showcaptions'] ) ? $instance['cb_showcaptions'] : '', true ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'cb_showcaptions' ) ); ?>"><?php esc_html_e( 'Show captions', 'inventory-presser' ); ?></label>
 			<br />
-			<input type="checkbox" id="<?php echo $this->get_field_id( 'cb_showprices' ); ?>" name="<?php echo $this->get_field_name( 'cb_showprices' ); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showprices'] ) ? $instance['cb_showprices'] : '', true ); ?>>
-			<label for="<?php echo $this->get_field_id( 'cb_showprices' ); ?>"><?php _e( 'Show prices', 'inventory-presser' ); ?></label>
+			<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_showprices' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'cb_showprices' ) ); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showprices'] ) ? $instance['cb_showprices'] : '', true ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'cb_showprices' ) ); ?>"><?php esc_html_e( 'Show prices', 'inventory-presser' ); ?></label>
 			<br />
-			<input type="checkbox" id="<?php echo $this->get_field_id( 'cb_showbutton' ); ?>" name="<?php echo $this->get_field_name( 'cb_showbutton' ); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showbutton'] ) ? $instance['cb_showbutton'] : '', true ); ?>>
-			<label for="<?php echo $this->get_field_id( 'cb_showbutton' ); ?>"><?php _e( 'Show "Full Inventory" button', 'inventory-presser' ); ?></label>
+			<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_showbutton' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'cb_showbutton' ) ); ?>" value="true"<?php checked( 'true', isset( $instance['cb_showbutton'] ) ? $instance['cb_showbutton'] : '', true ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'cb_showbutton' ) ); ?>"><?php esc_html_e( 'Show "Full Inventory" button', 'inventory-presser' ); ?></label>
 			<br />
-			<input type="checkbox" id="<?php echo $this->get_field_id( 'cb_featured_only' ); ?>" name="<?php echo $this->get_field_name( 'cb_featured_only' ); ?>" value="true"<?php checked( 'true', isset( $instance['cb_featured_only'] ) ? $instance['cb_featured_only'] : '', true ); ?>>
-			<label for="<?php echo $this->get_field_id( 'cb_featured_only' ); ?>"><?php _e( 'Featured vehicles only', 'inventory-presser' ); ?></label>
+			<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_featured_only' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'cb_featured_only' ) ); ?>" value="true"<?php checked( 'true', isset( $instance['cb_featured_only'] ) ? $instance['cb_featured_only'] : '', true ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'cb_featured_only' ) ); ?>"><?php esc_html_e( 'Featured vehicles only', 'inventory-presser' ); ?></label>
 			<br />
-			<input type="checkbox" id="<?php echo $this->get_field_id( 'newest_first' ); ?>" name="<?php echo $this->get_field_name( 'newest_first' ); ?>" value="true"<?php checked( true, isset( $instance['newest_first'] ) ? $instance['newest_first'] : false, true ); ?>>
-			<label for="<?php echo $this->get_field_id( 'newest_first' ); ?>"><?php _e( 'Newest vehicles first', 'inventory-presser' ); ?></label>
+			<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'newest_first' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'newest_first' ) ); ?>" value="true"<?php checked( true, isset( $instance['newest_first'] ) ? $instance['newest_first'] : false, true ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'newest_first' ) ); ?>"><?php esc_html_e( 'Newest vehicles first', 'inventory-presser' ); ?></label>
 		</p>
-
 		<?php
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
-	 * @param  array $new_instance
-	 * @param  array $old_instance
+	 * @param  array $new_instance The new widget options sent from the form.
+	 * @param  array $old_instance The old, saved widget options.
 	 * @return array The updated array full of settings
 	 */
 	public function update( $new_instance, $old_instance ) {
 
 		$instance                     = array();
-		$instance['title']            = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['columns']          = ( ! empty( $new_instance['columns'] ) ) ? strip_tags( $new_instance['columns'] ) : 5;
-		$instance['limit']            = ( ! empty( $new_instance['limit'] ) ) ? strip_tags( $new_instance['limit'] ) : 15;
+		$instance['title']            = ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
+		$instance['columns']          = ( ! empty( $new_instance['columns'] ) ) ? wp_strip_all_tags( $new_instance['columns'] ) : 5;
+		$instance['limit']            = ( ! empty( $new_instance['limit'] ) ) ? wp_strip_all_tags( $new_instance['limit'] ) : 15;
 		$instance['cb_showcaptions']  = ( ! empty( $new_instance['cb_showcaptions'] ) ) ? $new_instance['cb_showcaptions'] : '';
 		$instance['cb_showprices']    = ( ! empty( $new_instance['cb_showprices'] ) ) ? $new_instance['cb_showprices'] : '';
 		$instance['cb_showbutton']    = ( ! empty( $new_instance['cb_showbutton'] ) ) ? $new_instance['cb_showbutton'] : '';
 		$instance['cb_featured_only'] = ( ! empty( $new_instance['cb_featured_only'] ) ) ? $new_instance['cb_featured_only'] : '';
-		$instance['newest_first']     = ( ! empty( $new_instance['newest_first'] ) ) ? $new_instance['newest_first'] == 'true' : false;
+		$instance['newest_first']     = ( ! empty( $new_instance['newest_first'] ) ) ? 'true' === $new_instance['newest_first'] : false;
 		return $instance;
 	}
 }

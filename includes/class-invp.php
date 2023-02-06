@@ -853,8 +853,8 @@ class INVP {
 	 */
 	public static function meta_value_is_number( $post_meta_key ) {
 		foreach ( self::keys_and_types() as $key_and_type ) {
-			if ( apply_filters( 'invp_prefix_meta_key', $key_and_type['name'] ) == $post_meta_key ) {
-				return 'number' == $key_and_type['type'] || 'integer' == $key_and_type['type'];
+			if ( apply_filters( 'invp_prefix_meta_key', $key_and_type['name'] ?? '' ) === $post_meta_key ) {
+				return 'number' === $key_and_type['type'] ?? '' || 'integer' === $key_and_type['type'] ?? '';
 			}
 		}
 		return false;

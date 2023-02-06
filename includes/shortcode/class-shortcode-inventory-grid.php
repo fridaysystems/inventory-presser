@@ -9,39 +9,32 @@ defined( 'ABSPATH' ) || exit;
  */
 class Inventory_Presser_Shortcode_Grid {
 
-
 	/**
-	 * add
-	 *
 	 * Adds two shortcodes
 	 *
 	 * @return void
 	 */
-	function add() {
+	public function add() {
 		add_shortcode( 'invp-inventory-grid', array( $this, 'content' ) );
 		add_shortcode( 'invp_inventory_grid', array( $this, 'content' ) );
 	}
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks that power the shortcode
 	 *
 	 * @return void
 	 */
-	function hooks() {
+	public function hooks() {
 		add_action( 'init', array( $this, 'add' ) );
 	}
 
 	/**
-	 * content
-	 *
 	 * Creates the HTML content of the shortcode
 	 *
-	 * @param  array $atts
+	 * @param  array $atts Shortcode attributes.
 	 * @return string HTML that renders a vehicle photo grid
 	 */
-	function content( $atts ) {
+	public function content( $atts ) {
 
 		/**
 		 * Shortcode attributes & default values. Some of these overlap to
@@ -50,26 +43,29 @@ class Inventory_Presser_Shortcode_Grid {
 		 */
 		$new_atts = shortcode_atts(
 			array(
-				/*
-				old attributes
-			  'per_page'     => 15,
-			  'captions'     => true,
-			  'button'       => true,
-			  'show_price'   => false,
-			  'size'         => 'one-third', */
 
-			  'columns'         => 3, // replaces 'size'
+				/*
+					Old attributes
+					----------
+					'per_page'   15
+					'captions'   true,
+					'button'     true,
+					'show_price' false,
+					'size'       'one-third',
+				*/
+
+				'columns'       => 3, // replaces 'size'.
 				'featured_only' => false,
-				'limit'         => 15, // replaces 'per_page'
+				'limit'         => 15, // replaces 'per_page'.
 				'newest_first'  => false,
-				'show_button'   => true, // replaces 'button'
-				'show_captions' => false, // replaces 'captions'
-				'show_prices'   => false, // replaces 'show_price'
+				'show_button'   => true, // replaces 'button'.
+				'show_captions' => false, // replaces 'captions'.
+				'show_prices'   => false, // replaces 'show_price'.
 			),
 			$atts
 		);
 
-		// Handle the old attribute names
+		// Handle the old attribute names.
 		if ( isset( $atts['per_page'] ) && ! isset( $atts['limit'] ) ) {
 			$atts['limit'] = $atts['per_page'];
 		}
