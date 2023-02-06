@@ -763,6 +763,9 @@ class Inventory_Presser_Plugin {
 
 		$photo_arranger = new Inventory_Presser_Admin_Photo_Arranger();
 		$photo_arranger->add_hooks();
+
+		// Change archive page titles.
+		add_filter( 'document_title_parts', array( $this, 'change_archive_title_tags' ) );
 	}
 
 	/**
@@ -784,6 +787,41 @@ class Inventory_Presser_Plugin {
 		);
 		?><a class="<?php echo esc_attr( implode( ' ', $css_classes ) ); ?>" href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php esc_html_e( 'View Details', 'inventory-presser' ); ?></a>
 		<?php
+	}
+
+	/**
+	 * Changes the <title> tag on inventory archives.
+	 *
+	 * @param  array $title_parts An array of strings.
+	 * @return array
+	 */
+	public function change_archive_title_tags( $title_parts ) {
+
+		if ( ! is_post_type_archive( INVP::POST_TYPE ) ) {
+			return $title_parts;
+		}
+
+		$title_parts['title'] = '';
+
+		// Is it a make search?
+		$query_var = get_query_var( 'make' );
+		if ( ! empty( $query_var ) ) {
+			$term                  = get_term_by( 'slug', $query_var[0], 'make' );
+			$title_parts['title'] .= $term->name . ' ';
+		}
+
+		// Is it a type search?
+		$query_var = get_query_var( 'type' );
+		if ( ! empty( $query_var ) ) {
+			$term                  = get_term_by( 'slug', $query_var[0], 'type' );
+			$title_parts['title'] .= $term->name . ' ';
+		} else {
+			$title_parts['title'] .= __( 'Vehicles', 'inventory-presser' ) . ' ';
+		}
+
+		$title_parts['title'] .= __( 'For Sale', 'inventory_presser' );
+
+		return $title_parts;
 	}
 
 	/**
