@@ -1161,6 +1161,10 @@ class Inventory_Presser_Plugin {
 	public function register_meta_fields() {
 		// Add meta fields to our post type.
 		foreach ( INVP::keys_and_types( true ) as $key_arr ) {
+
+			if ( empty( $key_arr['name'] ) ) {
+				continue;
+			}
 			$key = apply_filters( 'invp_prefix_meta_key', $key_arr['name'] );
 			register_post_meta(
 				INVP::POST_TYPE,
@@ -1168,7 +1172,7 @@ class Inventory_Presser_Plugin {
 				array(
 					'show_in_rest' => true,
 					'single'       => true,
-					'type'         => $key_arr['type'],
+					'type'         => $key_arr['type'] ?? 'string',
 				)
 			);
 		}
