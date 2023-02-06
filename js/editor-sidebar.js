@@ -256,7 +256,8 @@
 				} ),
 			);
 			// Is this a boat?
-			if ( 'boat' === wp.data.select('core/editor').getEditedPostAttribute('meta').inventory_presser_type.toLowerCase() ) {
+			const inventory_presser_type = wp.data.select('core/editor').getEditedPostAttribute('meta').inventory_presser_type;
+			if ( 'boat' === inventory_presser_type.toLowerCase() ) {
 				// Yes, add the boat fields.
 				fields = el(
 					wp.element.Fragment,
@@ -286,6 +287,8 @@
 					),
 				);
 			}
+			// Allow add-ons to change the sidebar fields.
+			fields = wp.hooks.applyFilters( 'invp_editor_sidebar_elements', fields, inventory_presser_type );
 			return el( PluginSidebar,
 				{
 					name: 'invp-plugin-sidebar',
