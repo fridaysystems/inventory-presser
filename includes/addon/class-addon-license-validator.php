@@ -34,8 +34,14 @@ if ( ! class_exists( 'Inventory_Presser_Addon_License_Validator' ) ) {
 		 * @return bool
 		 */
 		public static function is_active( $product_id, $license_key ) {
-			$response = self::api_response( 'check_license', $product_id, $license_key );
-			return isset( $response->license ) && 'valid' == $response->license;
+			$transient_key = 'invp_addon_' . $product_id;
+			$response      = get_transient( $transient_key );
+			if ( false === $response ) {
+				// Cached value is missing, hit inventorypresser.com.
+				$response = self::api_response( 'check_license', $product_id, $license_key );
+				set_transient( $transient_key, $response, 24 * HOUR_IN_SECONDS );
+			}
+			return isset( $response->license ) && 'valid' === $response->license;
 		}
 
 		/**
