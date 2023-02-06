@@ -4,7 +4,7 @@ Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, mo
 Requires at least: 5.0.0
 Tested up to: 6.1.1
 Requires PHP: 7.0.0
-Stable tag: 14.5.2
+Stable tag: 14.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,15 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.6.0 =
+* [Added] Adds a filter `invp_meta_fields` so other plugins can add meta fields to the vehicle post type.
+* [Added] Adds additional meta fields for Carfax "Accident Free" and "Top Condition" badges.
+* [Added] Adds a JavaScript filter `invp_editor_sidebar_elements` to let other plugins add to the Editor Sidebar where vehicle attributes are managed.
+* [Added] Adds a feature that changes the <title> tag on inventory archives.
+* [Fixed] Fixes a bug that showed the Boat Attributes field in the Editor Sidebar for non-boat vehicles.
+* [Fixed] Stops hitting inventorypresser.com as often to check for valid add-on licenses.
+* [Fixed] Stops showing sold vehicles in the [invp_inventory_grid] shortcode and Inventory Grid widget when the "Include sold vehicles" setting is off.
 
 = 14.5.2 =
 * [Added] Adds a filter `invp_get_the_odometer` to filter the value returned by the invp_get_the_odometer() template tag.
@@ -190,6 +199,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.6.0 =
+Stops showing sold vehicles in the [invp_inventory_grid] shortcode and Inventory Grid widget when the "Include sold vehicles" setting is off. Stops hitting inventorypresser.com as often to check for valid add-on licenses. Fixes a bug that showed the Boat Attributes field in the Editor Sidebar for non-boat vehicles. Adds a feature that changes the <title> tag on inventory archives. Adds a JavaScript filter `invp_editor_sidebar_elements` to let other plugins add to the Editor Sidebar where vehicle attributes are managed. Adds additional meta fields for Carfax "Accident Free" and "Top Condition" badges. Adds a filter `invp_meta_fields` so other plugins can add meta fields to the vehicle post type.
 
 = 14.5.0 =
 Adds a feature enabled by default: Adds a gallery block to new vehicle posts with a specific CSS class that allows users to upload and reorder photos on vehicle posts in the block editor. This is merging the invp-photo-arranger feature plugin into Inventory Presser core. Deactivate and delete invp-photo-arranger after upgrading to 14.5.0.
