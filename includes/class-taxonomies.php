@@ -124,45 +124,31 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	/**
-	 * maybe_exclude_sold_vehicles
-	 *
 	 * Filter callback. Implements the "include sold vehicles" checkbox feature
 	 * in vehicle archives and search results.
 	 *
-	 * @param  WP_Query $query
+	 * @param  WP_Query $query The posts query object.
 	 * @return void
 	 */
-	function maybe_exclude_sold_vehicles( $query ) {
+	public function maybe_exclude_sold_vehicles( $query ) {
 		if ( is_admin() || ! $query->is_main_query()
 			|| ! ( is_search() || is_post_type_archive( INVP::POST_TYPE ) )
 		) {
 			return;
 		}
 
-		// if the checkbox to include sold vehicles is checked, abort
+		// If the checkbox to include sold vehicles is checked, abort.
 		$plugin_settings = INVP::settings();
 		if ( isset( $plugin_settings['include_sold_vehicles'] ) && $plugin_settings['include_sold_vehicles'] ) {
 			return;
 		}
 
-		$taxonomy = 'availability';
-
-		// if there is already a tax_query for taxonomy availability, abort
-		if ( $query->is_tax( $taxonomy ) ) {
+		// If there is already a tax_query for taxonomy availability, abort.
+		if ( $query->is_tax( 'availability' ) ) {
 			return;
 		}
 
-		// do this
-		$tax_query = array(
-			array(
-				'taxonomy' => $taxonomy,
-				'field'    => 'slug',
-				'terms'    => 'sold',
-				'operator' => 'NOT IN',
-			),
-		);
-
-		$query->set( 'tax_query', $tax_query );
+		$query->set( 'tax_query', self::tax_query_exclude_sold() );
 	}
 
 	/**
@@ -578,6 +564,23 @@ class Inventory_Presser_Taxonomies {
 			}
 		}
 		return $order_by;
+	}
+
+	/**
+	 * Creates an array that can be set as a query's tax_query that will
+	 * exclude sold vehicles.
+	 *
+	 * @return array
+	 */
+	public static function tax_query_exclude_sold() {
+		return array(
+			array(
+				'taxonomy' => 'availability',
+				'field'    => 'slug',
+				'terms'    => 'sold',
+				'operator' => 'NOT IN',
+			),
+		);
 	}
 
 	/**

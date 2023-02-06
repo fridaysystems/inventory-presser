@@ -122,6 +122,12 @@ class Inventory_Presser_Grid extends WP_Widget {
 			);
 		}
 
+		// Should we exclude sold vehicles?
+		$plugin_settings = INVP::settings();
+		if ( isset( $plugin_settings['include_sold_vehicles'] ) && ! $plugin_settings['include_sold_vehicles'] ) {
+			$post_args['tax_query'] = Inventory_Presser_Taxonomies::tax_query_exclude_sold();
+		}
+
 		$inventory_ids = get_posts( $post_args );
 		if ( empty( $inventory_ids ) ) {
 			return;
