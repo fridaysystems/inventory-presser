@@ -807,14 +807,18 @@ class Inventory_Presser_Plugin {
 		$query_var = get_query_var( 'make' );
 		if ( ! empty( $query_var ) ) {
 			$term                  = get_term_by( 'slug', $query_var[0], 'make' );
-			$title_parts['title'] .= $term->name . ' ';
+			if ( is_object( $term ) && 'WP_Term' === get_class( $term ) ) {
+				$title_parts['title'] .= $term->name . ' ';
+			}
 		}
 
 		// Is it a type search?
 		$query_var = get_query_var( 'type' );
 		if ( ! empty( $query_var ) ) {
 			$term                  = get_term_by( 'slug', $query_var[0], 'type' );
-			$title_parts['title'] .= $term->name . ' ';
+			if ( is_object( $term ) && 'WP_Term' === get_class( $term ) ) {
+				$title_parts['title'] .= $term->name . ' ';
+			}
 		} else {
 			$title_parts['title'] .= __( 'Vehicles', 'inventory-presser' ) . ' ';
 		}
