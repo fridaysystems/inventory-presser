@@ -8,11 +8,11 @@ Stable tag: 14.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Turn WordPress into a dealership website. Provides vehicle listing templates and a custom post type for automobiles or powersports.
+Turn WordPress into a dealership website. Provides vehicle listings and photo sliders for automobiles or powersports.
 
 == Description ==
 
-Manage and market a dealership inventory
+Manage and market dealership inventory with listings and photo sliders built on a vehicle custom post type.
 
 * Supports automobiles, motorcycles, ATVs, RVs, and boats
 * [Manage multiple lot locations](https://inventorypresser.com/docs/vehicle-post-type/locations-taxonomy/) and maintain separate phone numbers & hours for each
