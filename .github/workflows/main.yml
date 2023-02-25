@@ -43,7 +43,7 @@ jobs:
       - name: Run phpdoc-parser to Build Documentation
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: wp parser create ../../sites/inventorypress/wp-content/plugins/inventory-presser/ --user=corey && wp option update wp_parser_root_import_dir /nas/content/live/inventorypress/wp-content/plugins/inventory-presser && wp option update wp_parser_root_import_dir /nas/content/live/inventorypress/wp-content/plugins/inventory-presser
+          command: wp parser create ../../sites/inventorypress/wp-content/plugins/inventory-presser/ --user=corey && wp option update wp_parser_root_import_dir /nas/content/live/inventorypress/wp-content/plugins/inventory-presser
           host: inventorypress.ssh.wpengine.net
           username: inventorypress
           privateKey: ${{ secrets.WPE_SSHG_KEY_PRIVATE }} 
