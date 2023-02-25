@@ -1017,7 +1017,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 				$string .= sprintf(
 					'%s %s',
 					$down_payment,
-					__( 'Down', 'inventory-presser' ),
+					__( 'Down', 'inventory-presser' )
 				);
 			}
 			if ( ! empty( $payment ) ) {

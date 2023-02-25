@@ -158,7 +158,7 @@ class Inventory_Presser_Contact_Form_7 {
 			}
 			$html = sprintf( 
 				'<input %s />',
-				wpcf7_format_atts( $input_atts ),
+				wpcf7_format_atts( $input_atts )
 			);
 			return apply_filters( 'invp_cf7_field_vehicle_html', $html . $validation_error, $atts) ;
 		}

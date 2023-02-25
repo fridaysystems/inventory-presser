@@ -98,7 +98,7 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 		// Enqueue JavaScript
 		wp_enqueue_script(
 			self::ID_BASE . '_goog',
-			'https://maps.googleapis.com/maps/api/js?key=' . $instance['api_key'],
+			'https://maps.googleapis.com/maps/api/js?key=' . $instance['api_key']
 		);
 		wp_enqueue_script(
 			self::ID_BASE,
