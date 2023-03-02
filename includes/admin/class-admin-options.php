@@ -391,7 +391,7 @@ class Inventory_Presser_Admin_Options {
 				?>
 				</tbody>
 			</table>
-			<button class="button action" id="add_additional_listings_page"><?php esc_html__( 'Add Additional Listings Page', 'inventory-presser' ); ?></button>
+			<button class="button action" id="add_additional_listings_page"><?php esc_html_e( 'Add Additional Listings Page', 'inventory-presser' ); ?></button>
 		</div>
 		<?php
 	}
