@@ -49,9 +49,8 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 			'photo_slider'
 		); // Use shortcode_atts_inventory_slider to filter the incoming attributes
 
-		if ( is_string( $atts['include_carousel'] ) ) {
-			$atts['include_carousel'] = 'true' === $atts['include_carousel'];
-		}
+		// Parse boolean values to make life easy on users.
+		$atts['include_carousel'] = filter_var( $atts['include_carousel'], FILTER_VALIDATE_BOOLEAN );
 
 		// Need flexslider for this content
 		wp_enqueue_style( 'flexslider' );

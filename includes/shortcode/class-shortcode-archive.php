@@ -70,6 +70,9 @@ class Inventory_Presser_Shortcode_Archive {
 			$atts
 		);
 
+		// Parse boolean values to make life easy on users.
+		$atts['show_titles'] = filter_var( $atts['show_titles'], FILTER_VALIDATE_BOOLEAN );
+
 		// Don't let input change the post type
 		$atts['post_type'] = INVP::POST_TYPE;
 

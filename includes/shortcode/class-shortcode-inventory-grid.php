@@ -92,6 +92,13 @@ class Inventory_Presser_Shortcode_Grid {
 			}
 		}
 
+		// Parse boolean values to make life easy on users.
+		$new_atts['featured_only'] = filter_var( $new_atts['featured_only'], FILTER_VALIDATE_BOOLEAN );
+		$new_atts['newest_first']  = filter_var( $new_atts['newest_first'], FILTER_VALIDATE_BOOLEAN );
+		$new_atts['show_button']   = filter_var( $new_atts['show_button'], FILTER_VALIDATE_BOOLEAN );
+		$new_atts['show_captions'] = filter_var( $new_atts['show_captions'], FILTER_VALIDATE_BOOLEAN );
+		$new_atts['show_prices']   = filter_var( $new_atts['show_prices'], FILTER_VALIDATE_BOOLEAN );
+
 		/**
 		 * We actually use the Grid widget to generate the output of this
 		 * shortcode since version 10.1.0. The output was very similiar but

@@ -52,7 +52,9 @@ class Inventory_Presser_Shortcode_Slider {
 			$atts,
 			'inventory_slider'
 		); // Use shortcode_atts_inventory_slider to filter the incoming attributes
-		$atts['captions'] = 'true' === $atts['captions'];
+
+		// Parse boolean values to make life easy on users.
+		$atts['captions'] = filter_var( $atts['captions'], FILTER_VALIDATE_BOOLEAN );
 
 		// Get the vehicle IDs and loop over them
 		$inventory_ids = self::get_vehicle_IDs( $atts );

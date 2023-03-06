@@ -57,10 +57,8 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 			$atts
 		);
 
-		// We want real booleans, please
-		if ( is_string( $atts['show_titles'] ) ) {
-			$atts['show_titles'] = filter_var( $atts['show_titles'], FILTER_VALIDATE_BOOLEAN );
-		}
+		// Parse boolean values to make life easy on users.
+		$atts['show_titles'] = filter_var( $atts['show_titles'], FILTER_VALIDATE_BOOLEAN );
 
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'invp_archive_vehicle' );
