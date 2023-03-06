@@ -79,13 +79,14 @@ class Inventory_Presser_Grid extends WP_Widget {
 		 * + show_prices
 		 */
 		$default_args = array(
-			'columns'       => 5,
-			'featured_only' => false,
-			'limit'         => 15,
-			'newest_first'  => false,
-			'show_button'   => false,
-			'show_captions' => false,
-			'show_prices'   => false,
+			'columns'                 => 5,
+			'featured_only'           => false,
+			'limit'                   => 15,
+			'newest_first'            => false,
+			'show_button'             => false,
+			'show_captions'           => false,
+			'show_prices'             => false,
+			'suppress_call_for_price' => false, // When the price setting is {$Price}, this prevents "Call for price" in the grid.
 		);
 		$args         = wp_parse_args( $args, $default_args );
 
@@ -150,7 +151,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 				$grid_html .= sprintf(
 					'<p class="grid-caption">%s&nbsp;%s</p>',
 					get_the_title( $inventory_id ),
-					$args['show_prices'] ? '<span class="grid-price">' . invp_get_the_price( ' ', $inventory_id ) . '</span>' : ''
+					$args['show_prices'] ? '<span class="grid-price">' . invp_get_the_price( $args['suppress_call_for_price'] ? ' ' : null, $inventory_id ) . '</span>' : ''
 				);
 			}
 

@@ -54,13 +54,14 @@ class Inventory_Presser_Shortcode_Grid {
 					'size'       'one-third',
 				*/
 
-				'columns'       => 3, // replaces 'size'.
-				'featured_only' => false,
-				'limit'         => 15, // replaces 'per_page'.
-				'newest_first'  => false,
-				'show_button'   => true, // replaces 'button'.
-				'show_captions' => false, // replaces 'captions'.
-				'show_prices'   => false, // replaces 'show_price'.
+				'columns'                 => 3, // replaces 'size'.
+				'featured_only'           => false,
+				'limit'                   => 15, // replaces 'per_page'.
+				'newest_first'            => false,
+				'show_button'             => true, // replaces 'button'.
+				'show_captions'           => false, // replaces 'captions'.
+				'show_prices'             => false, // replaces 'show_price'.
+				'suppress_call_for_price' => false, // When the price setting is {$Price}, this prevents "Call for price" in the grid.
 			),
 			$atts
 		);
@@ -93,11 +94,12 @@ class Inventory_Presser_Shortcode_Grid {
 		}
 
 		// Parse boolean values to make life easy on users.
-		$new_atts['featured_only'] = filter_var( $new_atts['featured_only'], FILTER_VALIDATE_BOOLEAN );
-		$new_atts['newest_first']  = filter_var( $new_atts['newest_first'], FILTER_VALIDATE_BOOLEAN );
-		$new_atts['show_button']   = filter_var( $new_atts['show_button'], FILTER_VALIDATE_BOOLEAN );
-		$new_atts['show_captions'] = filter_var( $new_atts['show_captions'], FILTER_VALIDATE_BOOLEAN );
-		$new_atts['show_prices']   = filter_var( $new_atts['show_prices'], FILTER_VALIDATE_BOOLEAN );
+		$new_atts['featured_only']           = filter_var( $new_atts['featured_only'], FILTER_VALIDATE_BOOLEAN );
+		$new_atts['newest_first']            = filter_var( $new_atts['newest_first'], FILTER_VALIDATE_BOOLEAN );
+		$new_atts['show_button']             = filter_var( $new_atts['show_button'], FILTER_VALIDATE_BOOLEAN );
+		$new_atts['show_captions']           = filter_var( $new_atts['show_captions'], FILTER_VALIDATE_BOOLEAN );
+		$new_atts['show_prices']             = filter_var( $new_atts['show_prices'], FILTER_VALIDATE_BOOLEAN );
+		$new_atts['suppress_call_for_price'] = filter_var( $new_atts['suppress_call_for_price'], FILTER_VALIDATE_BOOLEAN );
 
 		/**
 		 * We actually use the Grid widget to generate the output of this
