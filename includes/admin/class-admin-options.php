@@ -53,24 +53,7 @@ class Inventory_Presser_Admin_Options {
 			|| ( isset( $old_value['additional_listings_pages'] ) && ! isset( $value['additional_listings_pages'] ) )
 			|| ( isset( $old_value['additional_listings_pages'] ) && isset( $value['additional_listings_pages'] ) && $old_value['additional_listings_pages'] !== $value['additional_listings_pages'] )
 		) {
-			if ( ! is_multisite() ) {
-				flush_rewrite_rules();
-				return;
-			}
-
-			$sites = get_sites(
-				array(
-					'network' => 1,
-					'limit'   => 1000,
-				)
-			);
-			foreach ( $sites as $site ) {
-				switch_to_blog( $site->blog_id );
-				global $wp_rewrite;
-				$wp_rewrite->init(); // important...
-				$wp_rewrite->flush_rules();
-				restore_current_blog();
-			}
+			Inventory_Presser_Plugin::flush_rewrite( false );
 		}
 	}
 
@@ -216,7 +199,7 @@ class Inventory_Presser_Admin_Options {
 		 */
 		add_settings_field(
 			'additional_listings_page', // id.
-			__( 'Additional Listings Page', 'inventory-presser' ), // title.
+			__( 'Listings Pages', 'inventory-presser' ), // title.
 			array( $this, 'callback_additional_listings_page' ), // callback.
 			INVP::option_page(), // page.
 			'dealership_options_section_listings' // section.
@@ -269,7 +252,7 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * Outputs controls to manage additional inventory listing pages.
+	 * Outputs a table to manage additional inventory listing pages.
 	 *
 	 * Helps users create an additional inventory archive at
 	 * example.com/[cash-deals] that contains vehicles that have a value for
@@ -278,20 +261,15 @@ class Inventory_Presser_Admin_Options {
 	 * @return void
 	 */
 	public function callback_additional_listings_page() {
-		echo '<p>' . $this->boolean_checkbox_setting_callback(
-			'additional_listings_page',
-			__( 'Create additional inventory archive(s)', 'inventory-presser' )
-		) . '</p>';
-
-		// Output a table to hold the settings for additional sheets.
 		?>
 		<div id="additional_listings_pages_settings">
 			<table class="wp-list-table widefat striped additional_listings_pages">
 				<thead>
 					<tr>
+						<th><?php esc_html_e( 'Active', 'inventory-presser' ); ?></th>
 						<th><?php esc_html_e( 'Title', 'inventory-presser' ); ?></th>
 						<th><?php esc_html_e( 'URL path', 'inventory-presser' ); ?></th>
-						<th><?php esc_html_e( 'Field', 'inventory-presser' ); ?></th>
+						<th><?php esc_html_e( 'Filter field', 'inventory-presser' ); ?></th>
 						<th><?php esc_html_e( 'Operator', 'inventory-presser' ); ?></th>
 						<th><?php esc_html_e( 'Value', 'inventory-presser' ); ?></th>
 						<th></th>
@@ -302,16 +280,13 @@ class Inventory_Presser_Admin_Options {
 
 				// output a row for each saved additional listing page + one blank.
 				$additional_listings = Inventory_Presser_Additional_Listings_Pages::additional_listings_pages_array();
-				if ( empty( $additional_listings ) ) {
-					$additional_listings = array( array() );
-				}
-				$keys       = array(
+				$keys                = array(
 					'url_path',
 					'key',
 					'operator',
 					'value',
 				);
-				$page_count = count( $additional_listings );
+				$page_count          = count( $additional_listings );
 				for ( $a = 0; $a < $page_count; $a++ ) {
 					foreach ( $keys as $key ) {
 						if ( ! isset( $additional_listings[ $a ][ $key ] ) ) {
@@ -321,11 +296,21 @@ class Inventory_Presser_Admin_Options {
 
 					?>
 					<tr id="row_<?php echo esc_attr( $a ); ?>">
+						<td class="active">
+							<?php
+							printf(
+								'<input type="checkbox" id="additional_listings_pages_active_%1$s" name="%2$s[additional_listings_pages][%1$s][active]" %3$s />',
+								esc_attr( $a ),
+								esc_attr( INVP::OPTION_NAME ),
+								checked( true, $additional_listings[ $a ]['active'] ?? true, false )
+							);
+							?>
+						</td>
 						<td>
 							<?php
 							// text box for page title.
 							printf(
-								'<input type="text" id="additional_listings_pages_titles_%1$s" name="%2$s[additional_listings_pages][%1$s][title]" value="%3$s" />',
+								'<input type="text" id="additional_listings_pages_title_%1$s" name="%2$s[additional_listings_pages][%1$s][title]" value="%3$s" />',
 								esc_attr( $a ),
 								esc_attr( INVP::OPTION_NAME ),
 								esc_attr( $additional_listings[ $a ]['title'] ?? '' )
@@ -349,8 +334,9 @@ class Inventory_Presser_Admin_Options {
 							// select list of vehicle fields.
 							echo $this->html_select_vehicle_keys(
 								array(
-									'id'   => 'additional_listings_pages_key_' . $a,
-									'name' => INVP::OPTION_NAME . '[additional_listings_pages][' . $a . '][key]',
+									'id'    => 'additional_listings_pages_key_' . $a,
+									'name'  => INVP::OPTION_NAME . '[additional_listings_pages][' . $a . '][key]',
+									'class' => 'filter-key',
 								),
 								$additional_listings[ $a ]['key'] ?? ''
 							);
@@ -391,7 +377,7 @@ class Inventory_Presser_Admin_Options {
 				?>
 				</tbody>
 			</table>
-			<button class="button action" id="add_additional_listings_page"><?php esc_html_e( 'Add Additional Listings Page', 'inventory-presser' ); ?></button>
+			<button class="button action" id="add_additional_listings_page"><?php esc_html_e( 'Add Listings Page', 'inventory-presser' ); ?></button>
 		</div>
 		<?php
 	}
@@ -615,12 +601,13 @@ class Inventory_Presser_Admin_Options {
 	 */
 	private function html_select_operator( $attributes = null, $selected_value = null ) {
 		$keys = array(
-			'exists',
-			'does not exist',
-			'greater than',
-			'less than',
-			'equal to',
-			'not equal to',
+			__( 'exists', 'inventory-presser' ),
+			__( 'does not exist', 'inventory-presser' ),
+			__( 'greater than', 'inventory-presser' ),
+			__( 'less than', 'inventory-presser' ),
+			__( 'equal to', 'inventory-presser' ),
+			__( 'not equal to', 'inventory-presser' ),
+			__( 'contains', 'inventory-presser' ),
 		);
 
 		$options = '';
@@ -655,7 +642,7 @@ class Inventory_Presser_Admin_Options {
 	 * @return string
 	 */
 	private function html_select_vehicle_keys( $attributes = null, $selected_value = null ) {
-		$options = '';
+		$options = '<option value="">' . esc_html__( 'No filter', 'inventory-presser' ) . '</option>';
 		foreach ( INVP::keys( false ) as $key ) {
 			$meta_key = apply_filters( 'invp_prefix_meta_key', $key );
 
@@ -725,7 +712,6 @@ class Inventory_Presser_Admin_Options {
 		$sanitary_values = array();
 
 		$boolean_settings = array(
-			'additional_listings_page',
 			'include_sold_vehicles',
 			'show_all_taxonomies',
 			'skip_trash',
@@ -735,6 +721,14 @@ class Inventory_Presser_Admin_Options {
 		);
 		foreach ( $boolean_settings as $b ) {
 			$sanitary_values[ $b ] = isset( $input[ $b ] );
+		}
+
+		/**
+		 * Backwards compatibility. No s. Will arrive when 14.6.0 and
+		 * older-saved settings are saved on newer versions.
+		 */
+		if ( isset( $input['additional_listings_page'] ) ) {
+			$sanitary_values['additional_listings_page'] = filter_var( $input['additional_listings_page'], FILTER_VALIDATE_BOOLEAN );
 		}
 
 		if ( isset( $input['price_display'] ) ) {
@@ -753,7 +747,8 @@ class Inventory_Presser_Admin_Options {
 			$sanitary_values['sort_vehicles_order'] = $input['sort_vehicles_order'];
 		}
 
-		if ( is_array( $input['additional_listings_pages'] ) ) {
+		if ( ! empty( $input['additional_listings_pages'] )
+			&& is_array( $input['additional_listings_pages'] ) ) {
 			/**
 			 * array_values() re-indexes the array starting at zero in case the
 			 * first rule was deleted and index 0 doesn't exist.
@@ -771,6 +766,20 @@ class Inventory_Presser_Admin_Options {
 					// No.
 					continue;
 				}
+
+				// Ignore the operator and comparison value if there is no key.
+				if ( '' === $additional_listing['key'] ) {
+					$additional_listing['operator'] = '';
+					$additional_listing['value']    = '';
+				}
+
+				/**
+				 * Convert the active toggle to a real boolean. If a pre-14.6.0
+				 * setting value is still set, this is where we convert all
+				 * additional listings pages to active.
+				 */
+				$additional_listing['active'] = isset( $additional_listing['active'] )
+					|| isset( $sanitary_values['additional_listings_page'] ); // No s.
 
 				if ( in_array( $additional_listing['url_path'], $url_paths, true ) ) {
 					// sorry!

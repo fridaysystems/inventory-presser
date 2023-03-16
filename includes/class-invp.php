@@ -731,6 +731,12 @@ class INVP {
 					'type'   => 'string',
 				),
 				array(
+					'label'  => __( 'Options', 'inventory_presser' ),
+					'name'   => 'options_array',
+					'sample' => 'Heated Seats',
+					'type'   => 'string',
+				),
+				array(
 					'label'  => __( 'Payment', 'inventory_presser' ),
 					'name'   => 'payment',
 					'sample' => 200,

@@ -1213,22 +1213,11 @@ class Inventory_Presser_Plugin {
 				$key,
 				array(
 					'show_in_rest' => true,
-					'single'       => true,
+					'single'       => 'options_array' !== $key_arr['name'],
 					'type'         => $key_arr['type'] ?? 'string',
 				)
 			);
 		}
-
-		// Register a meta field for a multi-value options array.
-		register_post_meta(
-			INVP::POST_TYPE,
-			apply_filters( 'invp_prefix_meta_key', 'options_array' ),
-			array(
-				'show_in_rest' => true,
-				'single'       => false,
-				'type'         => 'string',
-			)
-		);
 
 		// Add a couple fields that are used on media attachments.
 		$attachment_keys   = array();

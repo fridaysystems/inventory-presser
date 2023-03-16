@@ -140,3 +140,6 @@ table.additional_listings_pages .dashicons{
 .wp-core-ui table.additional_listings_pages a.action{
 	margin-right: .5em;
 }
+table.additional_listings_pages td.active{
+	text-align: center;
+}

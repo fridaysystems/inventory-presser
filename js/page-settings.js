@@ -5,6 +5,9 @@
 		//toggle the textboxes right now when the page is ready
 		$('select.operator').each(toggle_value_input);
 
+		// Add a handler when the filter field is changed. We might have to enable or disable other inputs.
+		$('select.filter-key').on('change', toggle_filter_inputs ).each( toggle_filter_inputs );
+
 		//bind this button to add a new row to the table of additional listings pages
 		$('button#add_additional_listings_page').on('click', function(){
 			var row_html = $('table.additional_listings_pages tbody tr:last')[0].outerHTML;
@@ -17,16 +20,7 @@
 
 		//bind the delete buttons
 		$('button.delete-button').on('click', delete_listings_page);
-
-		//bind a checkbox to the visibility of a div to show and hide settings
-		$('#additional_listings_page').on('change', toggle_listings_pages_settings );
-		toggle_listings_pages_settings();
 	});
-
-	function toggle_listings_pages_settings()
-	{
-		$('#additional_listings_pages_settings').toggle( $('#additional_listings_page').prop('checked') );
-	}
 
 	function delete_listings_page()
 	{
@@ -76,5 +70,14 @@
 			el.val('');
 		}
 		el.attr('disabled', is_disabled );
+	}
+
+	function toggle_filter_inputs() {
+		var key = $(this).val();
+		// Maybe disable operator and value.
+		var id = $(this).attr('id'); //looks like additional_listings_pages_key_2
+		//additional_listings_pages_operator_2
+		//additional_listings_pages_value_2
+		$('#' + id.replace( '_key_', '_operator_' ) + ',#' + id.replace( '_key_', '_value_' )).attr('disabled', '' === key );
 	}
 })( jQuery );
