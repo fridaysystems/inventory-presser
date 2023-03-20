@@ -1,3 +1,93 @@
+= 14.3.1 =
+* [Fixed] Cache-busting photo URLs are now compatible with any image file type rather than just JPG and PNG.
+* [Fixed] Fixes a bug when changing the title of additional listings pages.
+* [Changed] Changes the tested up to version number to 6.0.3.
+
+= 14.3.0 =
+* [Added] Adds a page title setting to additional listings pages so users can easily change "Vehicles" or "Vehicles Archive" to a title of their choosing.
+* [Added] Adds a shortcode [invp_sort_by] that creates a dropdown to let users reorder listings pages.
+* [Added] Adds a filter `invp_get_raw_price` to let developers change the output of the template tag `invp_get_raw_price()`.
+* [Changed] Changes the tested up to version number to 6.0.2.
+
+= 14.2.2 =
+* [Fixed] Fixes a bug in the add-on updater that prevented the update notices from looking like core update nags on the plugins list.
+* [Fixed] Fixes a bug in the add-on updater that prevented users from seeing our "License key is missing at Vehicles → Options" message.
+* [Fixed] Fixes a bug introduced in 14.2.1 that output some JavaScript to non-logged in users.
+
+= 14.2.1 =
+* [Fixed] Reverts to `json_decode()` from `wp_json_decode()`, a bug introduced in 14.2.1.
+
+= 14.2.1 =
+* [Added] Adds two template tags `invp_get_the_location_state()` and `invp_get_the_location_zip()`
+* [Added] Wraps vehicle prices in a <span> element in the [invp_inventory_grid] shortcode so they can be more easily styled
+* [Fixed] Bumps npm package terser from 5.13.1 to 5.14.2
+* [Fixed] Applies the WordPress coding standard to all PHP files
+
+= 14.1.0 =
+* [Added] Adds a Contact Form 7 mail tag [invp_adf_timestamp] to help insert ISO 8601 timestamps into ADF XML lead emails.
+* [Added] Adds a Contact Form 7 mail tag [invp_adf_vehicle] to help insert vehicles into ADF XML lead emails.
+* [Added] Adds a "No vehicles found." message to the [invp_archive] shortcode when there are no vehicle posts that satisfy the query.
+* [Added] Adds a default false value for the use_carfax setting so it shows up in REST at /wp-json/invp/v1/settings consistently.
+* [Added] Wraps the vehicle YMM string in a link in email sent using our Contact Form 7 form-tag [invp_vehicle].
+* [Fixed] Fixes a bug where if a vehicle attribute stored in meta was deleted, the change would not be mirrored in the corresponding taxonomy.
+* [Changed] Changes the tested up to version number to 6.0.1.
+
+= 14.0.0 =
+* [Added] Integrates WP All Import. Detects and saves piped options in the `inventory_presser_options_array` meta field. Marks all imported vehicles for sale in the availabilities taxonomy if they do not already have a relationship in the taxonomy.
+* [Added] Integrates Contact Form 7. Adds a form tag [invp_vehicle] to help users put vehicle drop downs or hidden elements in forms.
+* [Added] Adds a shortcode [invp_attribute_table] to make the feature more accessible to templates. Re-orders some attributes in the table to better suit a two-column layout.
+* [Added] Adds a filter `invp_single_sections` to let users edit or add to the Description and Features sections of [invp_single_vehicle]
+* [Fixed] No longer changes thumbnail photo sizes in the dashboard's list of vehicles at `wp-admin/edit.php?post_type=inventory_vehicle`
+* [Changed] Improves the way [invp_single_vehicle] organizes content sections with CSS and HTML changes.
+* [Removed] Removes AutoCheck integration in [invp_single_vehicle] and [invp_archive_vehicle]. The AutoCheck add-on now adds the button to the `invp_single_buttons` and `invp_archive_buttons` hooks.
+* [Removed] Removes the [iframe] shortcode. This was replaced with [invp_iframe].
+* [Removed] Removes all deprecated methods and constants including the entire vehicle class. All items have had replacements for many months.
+
+= 13.8.2 =
+* [Fixed] Bug fix. invp_get_the_location_sentence() assumed the site had at least one location term before this fix.
+* [Fixed] Allows invp_get_the_photos() to find attachments to the post even if they do not have our sequencing meta value. Relies on the post_date for sequence instead.
+* [Fixed] No longer attempts to change a query order by in get_terms() if there are no taxonomy names provided to the filter callback.
+* [Changed] Changes the slider widget to show only 2 vehicles at a time on smaller devices.
+* [Changed] Changes tested up to version number to 6.0.0.
+
+= 13.8.1 =
+* [Added] Adds a minimized version of the leaflet.js CSS file. This file is used by the Map widget.
+* [Fixed] Bug fix when resizing flexslider images to avoid stretching images wider than their full size dimensions.
+
+= 13.8.0 =
+* [Added] Adds template tags `invp_get_the_last_modified()` and `invp_get_raw_last_modified()`
+* [Added] Registers all scripts and styles on the `enqueue_block_editor_assets` hook so blocks can use them 
+* [Fixed] Adds & implements iFrameResizer.js in the [invp_iframe] shortcode instead of relying on the themes like _dealer to provide the library and resize iframes
+* [Fixed] Bug fix when looking for an SVG file path in the Carfax Widget
+* [Fixed] Bug fix in the `invp_get_the_transmission_speeds()` template tag. The single `$post_id` argument is now optional, matching all other template tags.
+
+= 13.7.1 =
+* [Added] Adds Carfax settings to the inv_blocks JavaScript object so that upcoming blocks can make use of the values.
+* [Fixed] Bug fix in the template tag invp_get_the_fuel_economy_value(), specify fuel 1 or 2 when retrieving the value.
+* [Fixed] Adds CSS classes to the NextGear inspection report button so it matches the View Details button in archives.
+* [Fixed] Fixes the Sort Vehicles By setting when "Date entered" or "Last modified" is chosen. These keys did not previously work.
+* [Fixed] Fixes the registration of the new REST route at /wp-json/invp/v1/settings to specify a missing permission_callback.
+* [Fixed] Bug fix in block category creation. Instead of all blocks ending up in "Widgets", they now correctly group under "Inventory Presser". This was intended for 13.7.0 but didn't get shipped somehow.
+* [Fixed] Avoid throwing warnings in the Map, Inventory Grid, and Inventory Slider widgets when widget settings and attributes are not provided or are unavailable.
+* [Fixed] Allows our template provider class to help vehicle details pages work on more themes out of the box. No longer limits our hook on the_content to only run once for themes that fetch post content and apply the filter multiple times.
+* [Fixed] Fixes the plugin update nag HTML for add-ons to better match the core plugin update nags. Removes a condition clause that was preventing the nag from showing on network admin plugin pages.
+* [Changed] Changes tested up to version number to 5.9.2.
+
+= 13.7.0 =
+* [Added] Adds a shortcode [invp_vin] that outputs the value of the template tag invp_get_the_vin()
+* [Added] Adds a REST API route at /wp-json/invp/v1/settings to expose the core "Show Carfax buttons" switch
+* [Fixed] Bug fix in block category creation. Instead of all blocks ending up in "Widgets", they now correctly group under "Inventory Presser"
+* [Fixed] Prevents non-numeric characters from being entered in the Odometer field in the editor sidebar
+* [Fixed] Prevent the Delete all Vehicles feature from deleting vehicles more than once if the user reloads the page after using the feature
+* [Fixed] Starts populating the inventory_presser_date_entered meta value when vehicles are saved
+
+= 13.6.0 = 
+* [Added] Adds a template tag invp_is_featured()
+* [Fixed] Allows taxonomy filters to work when using the [invp_archive] shortcode at /inventory
+* [Fixed] Adds support for querystring filters `min_price`, `max_price`, and `max_odometer` to the [invp_archive] shortcode
+* [Fixed] Adds support for the Sort By setting and querystring parameters `orderby` and `order` to the [invp_archive] shortcode
+* [Changed] Changes the "was now discount" price display to fallback to showing the price when the MSRP is empty or the difference is not a positive discount. Previously, the setting would fallback to "Call for Price" even if a price value was available.
+
 = 13.5.2 = 
 * [Fixed] Fixes a bug when checking if a photo already has a sequence number
 * [Fixed] Fixes a bug introduced in 13.5.1 when checking plugin update responses
