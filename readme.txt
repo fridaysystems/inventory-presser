@@ -4,7 +4,7 @@ Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, mo
 Requires at least: 5.0.0
 Tested up to: 6.1.1
 Requires PHP: 7.0.0
-Stable tag: 14.6.0
+Stable tag: 14.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,17 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 14.7.0 =
+* [Added] Adds postmeta fields `inventory_presser_rate` and `inventory_presser_term` to the vehicle post type for dealers outside the USA where displaying financing terms without a disclosure may be legal.
+* [Added] Adds a "No filter" option to the Additional Listings Pages feature to allow the creation of full, unfiltered archive pages at any URL.
+* [Added] Adds a toggle switch to Additional Listings Pages so rules can be saved in an inactive state.
+* [Added] Adds a "contains" comparison operator and "Options" to the list of comparison fields in Additional Listings Pages filter rules.
+* [Added] Adds a parameter to the [invp_inventory_grid] shortcode to suppress "Call for price" if the sitewide price display setting is ${Price}. This restores behavior produced by a bug described below.
+* [Fixed] Fixes a bug in the [invp_inventory_grid] shortcode that prevented "Call for price" from displaying if show_captions and show_prices were both true and the price display setting sitewide is ${Price}.
+* [Fixed] Fixes syntax errors that impact old versions of PHP including 7.2.
+* [Fixed] Fixes bugs in multiple shortcodes that prevented true/false parameter values from working the way users expect. "true", "1", and 1 are all now working. Likewise with false values "false", "0", and 0.
+* [Changed] Renames the Additional Listings Pages feature to Listings Pages.
+
 = 14.6.0 =
 * [Added] Adds a filter `invp_meta_fields` so other plugins can add meta fields to the vehicle post type.
 * [Added] Adds additional meta fields for Carfax "Accident Free" and "Top Condition" badges.
@@ -109,6 +120,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.7.0 =
+Adds postmeta fields `inventory_presser_rate` and `inventory_presser_term` to the vehicle post type for dealers outside the USA where displaying financing terms without a disclosure may be legal. Adds a "No filter" option to the Additional Listings Pages feature to allow the creation of full, unfiltered archive pages at any URL. Adds a toggle switch to Additional Listings Pages so rules can be saved in an inactive state. Adds a "contains" comparison operator and "Options" to the list of comparison fields in Additional Listings Pages filter rules. Adds a parameter to the [invp_inventory_grid] shortcode to suppress "Call for price" if the sitewide price display setting is ${Price}. This restores behavior produced by a bug described below. Fixes a bug in the [invp_inventory_grid] shortcode that prevented "Call for price" from displaying if show_captions and show_prices were both true and the price display setting sitewide is ${Price}. Fixes syntax errors that impact old versions of PHP including 7.2. Fixes bugs in multiple shortcodes that prevented true/false parameter values from working the way users expect. "true", "1", and 1 are all now working. Likewise with false values "false", "0", and 0. Renames the Additional Listings Pages feature to Listings Pages.
 
 = 14.6.0 =
 Stops showing sold vehicles in the [invp_inventory_grid] shortcode and Inventory Grid widget when the "Include sold vehicles" setting is off. Stops hitting inventorypresser.com as often to check for valid add-on licenses. Fixes a bug that showed the Boat Attributes field in the Editor Sidebar for non-boat vehicles. Adds a feature that changes the <title> tag on inventory archives. Adds a JavaScript filter `invp_editor_sidebar_elements` to let other plugins add to the Editor Sidebar where vehicle attributes are managed. Adds additional meta fields for Carfax "Accident Free" and "Top Condition" badges. Adds a filter `invp_meta_fields` so other plugins can add meta fields to the vehicle post type.
