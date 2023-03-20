@@ -761,10 +761,22 @@ class INVP {
 					'type'   => 'string',
 				),
 				array(
+					'label'  => __( 'Rate', 'inventory_presser' ),
+					'name'   => 'rate',
+					'sample' => 6.99,
+					'type'   => 'number',
+				),
+				array(
 					'label'  => __( 'Stock Number', 'inventory_presser' ),
 					'name'   => 'stock_number',
 					'sample' => '147907',
 					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Term', 'inventory_presser' ),
+					'name'   => 'term',
+					'sample' => 72,
+					'type'   => 'number',
 				),
 				array(
 					'label'  => __( 'Title Status', 'inventory_presser' ),
