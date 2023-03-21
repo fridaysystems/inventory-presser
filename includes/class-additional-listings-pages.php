@@ -106,7 +106,7 @@ class Inventory_Presser_Additional_Listings_Pages {
 	 */
 	public static function additional_listings_pages_array() {
 		// Are there additional listings pages configured?
-		$saved = INVP::settings()['additional_listings_pages'];
+		$saved = INVP::settings()['additional_listings_pages'] ?? array( array() );
 		if ( null === $saved || array() === $saved ) {
 			return array( array() );
 		}
