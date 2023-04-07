@@ -743,9 +743,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$overlapper = new Inventory_Presser_Taxonomy_Overlapper();
 			$overlapper->hooks();
 
-			$uninstaller = new Inventory_Presser_Uninstaller();
-			$uninstaller->hooks();
-
 			$schema_generator = new Inventory_Presser_Schema_Org_Generator();
 			$schema_generator->hooks();
 
@@ -895,7 +892,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-taxonomies.php',
 				'class-taxonomy-overlapper.php',
 				'class-template-provider.php',
-				'class-uninstaller.php',
 				'class-vehicle-urls-by-vin.php',
 				'widget/class-widget-address.php',
 				'widget/class-widget-carfax.php',

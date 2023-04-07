@@ -20,6 +20,7 @@ class Inventory_Presser_Admin_Options {
 	 * @var array
 	 */
 	private $option;
+	const QUERY_VAR_DELETE_VEHICLES = 'invp_delete_all_vehicles';
 
 	/**
 	 * Adds hooks
@@ -31,11 +32,34 @@ class Inventory_Presser_Admin_Options {
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 
+		// Look for a query variable that triggers Delete All Vehicles.
+		add_action( 'admin_init', array( $this, 'detect_delete_all_vehicles_query_var' ) );
+
 		/**
 		 * When the option is updated, check if the additional listings pages
 		 * settings changed. If they have, flush permalinks.
 		 */
 		add_action( 'update_option_' . INVP::OPTION_NAME, array( $this, 'maybe_flush_permalinks' ), 10, 2 );
+	}
+
+	public function detect_delete_all_vehicles_query_var() {
+		if ( 'GET' != $_SERVER['REQUEST_METHOD'] ) {
+			return;
+		}
+
+		if ( empty( $_GET['_wpnonce'] ) || empty( $_GET[ self::QUERY_VAR_DELETE_VEHICLES ] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'], self::QUERY_VAR_DELETE_VEHICLES ) ) {
+			return;
+		}
+
+		INVP::delete_all_inventory();
+
+		// Redirect to prevent more deletes on reloads.
+		wp_redirect( admin_url( 'edit.php?post_type=' . INVP::POST_TYPE . '&page=dealership-options' ) );
+		exit;
 	}
 
 	/**
@@ -114,12 +138,24 @@ class Inventory_Presser_Admin_Options {
 		/**
 		 * SECTION Settings
 		 */
+		$section = 'dealership_options_setting_section';
 		add_settings_section(
 			'dealership_options_setting_section', // id.
 			__( 'General', 'inventory-presser' ), // title.
 			'__return_empty_string', // callback.
 			INVP::option_page() // page.
 		);
+
+		// Manage.
+		if ( current_user_can( 'delete_posts' ) ) {
+			add_settings_field(
+				'manage', // id.
+				__( 'Manage Inventory', 'inventory-presser' ), // title.
+				array( $this, 'callback_manage' ), // callback.
+				INVP::option_page(), // page.
+				$section // section.
+			);
+		}
 
 		// Price Display.
 		add_settings_field(
@@ -391,6 +427,21 @@ class Inventory_Presser_Admin_Options {
 		$this->boolean_checkbox_setting_callback(
 			'include_sold_vehicles',
 			__( 'Include sold vehicles in listings and search results', 'inventory-presser' )
+		);
+	}
+
+	public function callback_manage() {
+		$url = add_query_arg(
+			array(
+				self::QUERY_VAR_DELETE_VEHICLES => 1,
+				'_wpnonce'                      => wp_create_nonce( self::QUERY_VAR_DELETE_VEHICLES ),
+			),
+			admin_url( 'plugins.php' )
+		);
+		printf(
+			'<a class="button action" id="delete_all_vehicles" href="%s">%s</a>',
+			esc_url( $url ),
+			esc_html__( 'Delete All Vehicles', 'inventory-presser' )
 		);
 	}
 

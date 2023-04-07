@@ -107,8 +107,8 @@ jQuery(document).ready( function(){
 		});
 	}
 
-	//Confirm before deleting all vehicles
-	jQuery('.row-actions .delete-all-vehicles.delete a').on('click',function(){
+	//Confirm Delete All Vehicles button presses
+	jQuery('a#delete_all_vehicles').on('click',function(){
 		return confirm('Are you sure you want to delete all vehicles and vehicle photos?');
 	});
 	//Confirm before uninstalling the plugin
