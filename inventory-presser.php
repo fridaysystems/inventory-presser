@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: Inventory listings and photo sliders for automobile and powersports dealerships.
- * Version: 14.7.1
+ * Version: 14.8.0
  * Author: Friday Systems
  * Author URI: https://inventorypresser.com
  * Text Domain: inventory-presser
