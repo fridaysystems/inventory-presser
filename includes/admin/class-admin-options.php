@@ -136,11 +136,11 @@ class Inventory_Presser_Admin_Options {
 		);
 
 		/**
-		 * SECTION Settings
+		 * SECTION General
 		 */
 		$section = 'dealership_options_setting_section';
 		add_settings_section(
-			'dealership_options_setting_section', // id.
+			$section, // id.
 			__( 'General', 'inventory-presser' ), // title.
 			'__return_empty_string', // callback.
 			INVP::option_page() // page.
@@ -163,7 +163,7 @@ class Inventory_Presser_Admin_Options {
 			__( 'Price Display', 'inventory-presser' ), // title.
 			array( $this, 'callback_price_display' ), // callback.
 			INVP::option_page(), // page.
-			'dealership_options_setting_section' // section.
+			$section // section.
 		);
 
 		// [x] Include sold vehicles
@@ -172,7 +172,7 @@ class Inventory_Presser_Admin_Options {
 			__( 'Sold Vehicles', 'inventory-presser' ), // title.
 			array( $this, 'callback_include_sold_vehicles' ), // callback.
 			INVP::option_page(), // page.
-			'dealership_options_setting_section' // section.
+			$section // section.
 		);
 
 		// [x] Show all taxonomies under Vehicles menu in Dashboard
@@ -181,7 +181,7 @@ class Inventory_Presser_Admin_Options {
 			__( 'Show All Taxonomies', 'inventory-presser' ), // title.
 			array( $this, 'callback_show_all_taxonomies' ), // callback.
 			INVP::option_page(), // page.
-			'dealership_options_setting_section' // section.
+			$section // section.
 		);
 
 		// [x] Skip trash when deleting vehicles and delete permanently
@@ -190,7 +190,7 @@ class Inventory_Presser_Admin_Options {
 			__( 'Skip Trash', 'inventory-presser' ), // title.
 			array( $this, 'callback_skip_trash' ), // callback.
 			INVP::option_page(), // page.
-			'dealership_options_setting_section' // section.
+			$section // section.
 		);
 
 		// MapBox Public Token [____________].
@@ -199,7 +199,7 @@ class Inventory_Presser_Admin_Options {
 			__( 'MapBox Public Token', 'inventory-presser' ), // title.
 			array( $this, 'callback_mapbox_public_token' ), // callback.
 			INVP::option_page(), // page.
-			'dealership_options_setting_section' // section.
+			$section // section.
 		);
 
 		add_settings_field(
@@ -207,7 +207,7 @@ class Inventory_Presser_Admin_Options {
 			__( 'Rearrange Photos Block', 'inventory-presser' ), // title.
 			array( $this, 'callback_use_arranger_gallery' ), // callback.
 			INVP::option_page(), // page.
-			'dealership_options_setting_section' // section.
+			$section // section.
 		);
 
 		/**
