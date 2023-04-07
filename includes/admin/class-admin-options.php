@@ -157,20 +157,11 @@ class Inventory_Presser_Admin_Options {
 			);
 		}
 
-		// Price Display.
+		// [x] Skip trash when deleting vehicles and delete permanently
 		add_settings_field(
-			'price_display', // id.
-			__( 'Price Display', 'inventory-presser' ), // title.
-			array( $this, 'callback_price_display' ), // callback.
-			INVP::option_page(), // page.
-			$section // section.
-		);
-
-		// [x] Include sold vehicles
-		add_settings_field(
-			'include_sold_vehicles', // id.
-			__( 'Sold Vehicles', 'inventory-presser' ), // title.
-			array( $this, 'callback_include_sold_vehicles' ), // callback.
+			'skip_trash', // id.
+			__( 'Skip Trash', 'inventory-presser' ), // title.
+			array( $this, 'callback_skip_trash' ), // callback.
 			INVP::option_page(), // page.
 			$section // section.
 		);
@@ -180,15 +171,6 @@ class Inventory_Presser_Admin_Options {
 			'show_all_taxonomies', // id.
 			__( 'Show All Taxonomies', 'inventory-presser' ), // title.
 			array( $this, 'callback_show_all_taxonomies' ), // callback.
-			INVP::option_page(), // page.
-			$section // section.
-		);
-
-		// [x] Skip trash when deleting vehicles and delete permanently
-		add_settings_field(
-			'skip_trash', // id.
-			__( 'Skip Trash', 'inventory-presser' ), // title.
-			array( $this, 'callback_skip_trash' ), // callback.
 			INVP::option_page(), // page.
 			$section // section.
 		);
@@ -225,6 +207,24 @@ class Inventory_Presser_Admin_Options {
 			'sort_vehicles_by', // id.
 			__( 'Sort Vehicles By', 'inventory-presser' ), // title.
 			array( $this, 'callback_sort_vehicles_by' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_section_listings' // section.
+		);
+
+		// Price Display.
+		add_settings_field(
+			'price_display', // id.
+			__( 'Price Display', 'inventory-presser' ), // title.
+			array( $this, 'callback_price_display' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_section_listings' // section.
+		);
+
+		// [x] Include sold vehicles
+		add_settings_field(
+			'include_sold_vehicles', // id.
+			__( 'Sold Vehicles', 'inventory-presser' ), // title.
+			array( $this, 'callback_include_sold_vehicles' ), // callback.
 			INVP::option_page(), // page.
 			'dealership_options_section_listings' // section.
 		);
