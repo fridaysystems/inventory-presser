@@ -836,6 +836,121 @@ class INVP {
 	}
 
 	/**
+	 * Populates the site with vehicles.
+	 *
+	 * @return void
+	 */
+	public static function load_sample_vehicles() {
+		$response = wp_remote_get( 'https://fridaydemo.wpengine.com/wp-json/wp/v2/inventory' );
+		if ( is_wp_error( $response ) ) {
+			return;
+		}
+		$vehicles = json_decode( wp_remote_retrieve_body( $response ) );
+		shuffle( $vehicles );
+		$current_user_id = wp_get_current_user()->ID;
+
+		foreach ( $vehicles as $vehicle ) {
+			$options = $vehicle->meta->inventory_presser_options_array;
+			unset( $vehicle->meta->inventory_presser_options_array );
+			// Remove dealer-specific data.
+			unset( $vehicle->meta->inventory_presser_carfax_url_icon );
+			unset( $vehicle->meta->inventory_presser_carfax_url_icon_accident_free );
+			unset( $vehicle->meta->inventory_presser_carfax_url_icon_one_owner );
+			unset( $vehicle->meta->inventory_presser_carfax_url_icon_top_condition );
+			unset( $vehicle->meta->inventory_presser_carfax_url_report );
+			unset( $vehicle->meta->inventory_presser_dealer_id);
+			unset( $vehicle->meta->inventory_presser_leads_id );
+			unset( $vehicle->meta->inventory_presser_location );
+			unset( $vehicle->meta->inventory_presser_nextgear_inspection_url );
+			// Obscure the VIN.
+			$vin = '';
+			if ( 17 === strlen( $vehicle->meta->inventory_presser_vin ) ) {
+				$vin                                  = $vehicle->meta->inventory_presser_vin;
+				$vehicle->meta->inventory_presser_vin = substr( $vehicle->meta->inventory_presser_vin, 0, 10 ) . 'EXAMPLE';
+			}
+			$post = array(
+				'post_author'       => $current_user_id,
+				'post_date'         => $vehicle->date,
+				'post_date_gmt'     => $vehicle->date_gmt,
+				'post_content'      => $vehicle->content->rendered,
+				'post_title'        => $vehicle->title->rendered,
+				'post_status'       => 'publish',
+				'comment_status'    => 'closed',
+				'ping_status'       => 'closed',
+				'post_name'         => $vehicle->slug,
+				'post_modified'     => $vehicle->modified,
+				'post_modified_gmt' => $vehicle->modified_gmt,
+				'post_parent'       => 0,
+				'post_type'         => $vehicle->type,
+				'meta_input'        => (array) $vehicle->meta,
+			);
+			$id   = wp_insert_post( $post );
+			foreach ( $options as $option ) {
+				add_post_meta( $id, apply_filters( 'invp_prefix_meta_key', 'options_array' ), $option );
+			}
+
+			$endpoint_media = add_query_arg(
+				array(
+					'orderby' => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
+					'order'   => 'asc',
+				),
+				$vehicle->_links->{'wp:attachment'}[0]->href
+			);
+			$response       = wp_remote_get( $endpoint_media );
+			if ( is_wp_error( $response ) ) {
+				continue;
+			}
+
+			$media = json_decode( wp_remote_retrieve_body( $response ) );
+			if ( ! is_array( $media ) ) {
+				continue;
+			}
+			$media_count = count( $media );
+			for ( $m = 0; $m < $media_count; $m++ ) {
+				// Download a copy of the image.
+				$media_url = strtok( $media[ $m ]->source_url, '?' );
+				$tmp_file = download_url( $media_url );
+				if ( is_wp_error( $tmp_file ) ) {
+					continue;
+				}
+				// Is the VIN also in the file name?
+				$file_name  = str_ireplace( $vin, $vehicle->meta->inventory_presser_vin, basename( $media_url ) );
+				$upload_dir = wp_upload_dir();
+				$file_name  = wp_unique_filename( $upload_dir['path'], $file_name );
+				// Move the photo from a temp file to the uploads directory.
+				$path = $upload_dir['path'] . DIRECTORY_SEPARATOR . $file_name;
+				rename( $tmp_file, $path );
+				$media_id = wp_insert_attachment(
+					array(
+						'post_author'       => $current_user_id,
+						'post_date'         => $media[ $m ]->date,
+						'post_date_gmt'     => $media[ $m ]->date_gmt,
+						'post_title'        => str_ireplace( $vin, $vehicle->meta->inventory_presser_vin, $media[ $m ]->title->rendered ),
+						'post_status'       => $media[ $m ]->status,
+						'comment_status'    => 'closed',
+						'ping_status'       => 'closed',
+						'post_name'         => str_replace( $vin, $vehicle->meta->inventory_presser_vin, $media[ $m ]->slug ),
+						'post_modified'     => $media[ $m ]->modified,
+						'post_modified_gmt' => $media[ $m ]->modified_gmt,
+						'post_type'         => $media[ $m ]->type,
+						'meta_input'        => (array) $media[ $m ]->meta,
+						'post_mime_type'    => $media[ $m ]->mime_type,
+					),
+					$path,
+					$id
+				);
+				wp_update_attachment_metadata( $media_id, wp_generate_attachment_metadata( $media_id, $path ) );
+
+				// Is this the first image?
+				if ( 0 === $m ) {
+					set_post_thumbnail( $id, $media_id );
+				}
+			}
+		}
+	}
+
+
+	/**
 	 * meta_array_value_single
 	 *
 	 * Given a $meta array collection of a post's entire meta data, retrieves

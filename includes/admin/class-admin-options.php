@@ -20,7 +20,7 @@ class Inventory_Presser_Admin_Options {
 	 * @var array
 	 */
 	private $option;
-	const QUERY_VAR_DELETE_VEHICLES = 'invp_delete_all_vehicles';
+	const QUERY_VAR_MANAGE_VEHICLES = 'invp_manage_vehicles';
 
 	/**
 	 * Adds hooks
@@ -33,7 +33,7 @@ class Inventory_Presser_Admin_Options {
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 
 		// Look for a query variable that triggers Delete All Vehicles.
-		add_action( 'admin_init', array( $this, 'detect_delete_all_vehicles_query_var' ) );
+		add_action( 'admin_init', array( $this, 'detect_manage_vehicles_query_var' ) );
 
 		/**
 		 * When the option is updated, check if the additional listings pages
@@ -42,22 +42,30 @@ class Inventory_Presser_Admin_Options {
 		add_action( 'update_option_' . INVP::OPTION_NAME, array( $this, 'maybe_flush_permalinks' ), 10, 2 );
 	}
 
-	public function detect_delete_all_vehicles_query_var() {
+	public function detect_manage_vehicles_query_var() {
 		if ( 'GET' != $_SERVER['REQUEST_METHOD'] ) {
 			return;
 		}
 
-		if ( empty( $_GET['_wpnonce'] ) || empty( $_GET[ self::QUERY_VAR_DELETE_VEHICLES ] ) ) {
+		if ( empty( $_GET['_wpnonce'] ) || empty( $_GET[ self::QUERY_VAR_MANAGE_VEHICLES ] ) ) {
 			return;
 		}
 
-		if ( ! wp_verify_nonce( $_GET['_wpnonce'], self::QUERY_VAR_DELETE_VEHICLES ) ) {
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'], self::QUERY_VAR_MANAGE_VEHICLES ) ) {
 			return;
 		}
 
-		INVP::delete_all_inventory();
+		$action = sanitize_text_field( $_GET[ self::QUERY_VAR_MANAGE_VEHICLES ] );
+		switch( $action ) {
+			case 'delete_all_vehicles':
+				INVP::delete_all_inventory();
+				break;
+			case 'load_sample_vehicles':
+				INVP::load_sample_vehicles();
+				break;
+		}
 
-		// Redirect to prevent more deletes on reloads.
+		// Redirect to prevent duplicate actions on reloads.
 		wp_redirect( admin_url( 'edit.php?post_type=' . INVP::POST_TYPE . '&page=dealership-options' ) );
 		exit;
 	}
@@ -431,18 +439,44 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	public function callback_manage() {
-		$url = add_query_arg(
-			array(
-				self::QUERY_VAR_DELETE_VEHICLES => 1,
-				'_wpnonce'                      => wp_create_nonce( self::QUERY_VAR_DELETE_VEHICLES ),
-			),
-			admin_url( 'plugins.php' )
-		);
-		printf(
-			'<a class="button action" id="delete_all_vehicles" href="%s">%s</a>',
-			esc_url( $url ),
-			esc_html__( 'Delete All Vehicles', 'inventory-presser' )
-		);
+		// Load Sample Vehicles button.
+		if ( current_user_can( 'edit_posts' ) ) {
+			$url = add_query_arg(
+				array(
+					self::QUERY_VAR_MANAGE_VEHICLES => 'load_sample_vehicles',
+					'_wpnonce'                      => wp_create_nonce( self::QUERY_VAR_MANAGE_VEHICLES ),
+				),
+				admin_url( 'edit.php?post_type=inventory_vehicle&page=dealership-options' )
+			);
+			printf(
+				'<a class="button action" id="load_sample_vehicles" href="%s">%s</a> ',
+				esc_url( $url ),
+				esc_html__( 'Load Sample Vehicles', 'inventory-presser' )
+			);
+		}
+
+		// Delete All Vehicles button.
+		if ( current_user_can( 'delete_posts' ) ) {
+			$url = add_query_arg(
+				array(
+					self::QUERY_VAR_MANAGE_VEHICLES => 'delete_all_vehicles',
+					'_wpnonce'                      => wp_create_nonce( self::QUERY_VAR_MANAGE_VEHICLES ),
+				),
+				admin_url( 'edit.php?post_type=inventory_vehicle&page=dealership-options' )
+			);
+			printf(
+				'<a class="button action" id="delete_all_vehicles" href="%s">%s</a>',
+				esc_url( $url ),
+				esc_html__( 'Delete All Vehicles', 'inventory-presser' )
+			);
+		}
+
+		if ( current_user_can( 'edit_posts' ) || current_user_can( 'delete_posts' ) ) {
+			printf(
+				'<p class="description">%s</p>',
+				esc_html__( 'These features may be impacted by time and memory limits set by your webhost.', 'inventory-presser' )
+			);
+		}
 	}
 
 	/**
