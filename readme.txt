@@ -2,7 +2,7 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 6.1.1
+Tested up to: 6.2.0
 Requires PHP: 7.0.0
 Stable tag: 14.8.0
 License: GPLv2 or later
@@ -71,6 +71,14 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.8.0 =
+* [Added] Adds a button at Vehicles → Options that loads sample vehicles and photos from our [demo site](https://fridaydemo.wpengine.com/).
+* [Added] Allows the meta key `inventory_presser_photo_number` as the `orderby` parameter in REST API requests for attachments. Enables photos to be requested in sequence.
+* [Changed] Moves the Delete All Vehicles feature from the plugins list to the Vehicles → Options page.
+* [Changed] Changes the tested up to version number 6.2.0.
+* [Fixed] Prevent errors when multiple copies of this plugin are active on a site.
+* [Fixed] Disables the JavaScript filter `invp_editor_sidebar_elements` because it breaks the Editor Sidebar when adding new vehicles in WordPress 6.2.0.
 
 = 14.7.1 =
 * [Fixed] Fixes a bug when checking for saved listings pages.
