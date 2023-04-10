@@ -287,8 +287,9 @@
 					),
 				);
 			}
+			// This filter is disabled because it breaks the sidebar on WordPress 6.2.0!
 			// Allow add-ons to change the sidebar fields.
-			fields = wp.hooks.applyFilters( 'invp_editor_sidebar_elements', fields, inventory_presser_type );
+			//fields = wp.hooks.applyFilters( 'invp_editor_sidebar_elements', fields, inventory_presser_type );
 			return el( PluginSidebar,
 				{
 					name: 'invp-plugin-sidebar',
