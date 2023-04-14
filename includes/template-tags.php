@@ -364,6 +364,98 @@ function invp_get_the_interior_color( $post_ID = null ) {
 }
 
 /**
+ * Creates an HTML sentence like "Browse Car, SUV, Truck, or all
+ * 10 vehicles for sale." containing links to those inventory
+ * flavors. Designed for empty search results pages.
+ *
+ * @return string
+ */
+function invp_get_the_inventory_sentence() {
+	// Are we showing sold vehicles?
+	$plugin_settings = INVP::settings();
+	$showing_sold    = isset( $plugin_settings['include_sold_vehicles'] ) && $plugin_settings['include_sold_vehicles'];
+	$vehicle_count   = 0;
+	if ( $showing_sold ) {
+		$vehicle_counts = wp_count_posts( INVP::POST_TYPE );
+		if ( empty( $vehicle_counts->publish ) ) {
+			return;
+		}
+		$vehicle_count = $vehicle_counts->publish;
+	} else {
+		// Exclude sold vehicles from our count.
+		$for_sale_term = get_term_by( 'slug', 'for-sale', 'availability' );
+		if ( empty( $for_sale_term->count ) ) {
+			return;
+		}
+		$vehicle_count = $for_sale_term->count;
+	}
+
+	// Get list of terms in Types taxonomy that have count > 0.
+	$types      = get_terms(
+		array(
+			'taxonomy' => 'type',
+		)
+	);
+	$type_links = array();
+	foreach ( $types as $type ) {
+		if ( empty( $type->count ) ) {
+			continue;
+		}
+
+		if ( ! $showing_sold ) {
+			// Make sure there are some vehicles of this type that are not sold.
+			$for_sale = get_posts(
+				array(
+					'post_type' => INVP::POST_TYPE,
+					'tax_query' => array(
+						'relation' => 'AND',
+						array(
+							'taxonomy' => 'type',
+							'field'    => 'slug',
+							'terms'    => $type->slug,
+						),
+						array(
+							'taxonomy' => 'availability',
+							'field'    => 'slug',
+							'terms'    => 'for-sale',
+						),
+					),
+				)
+			);
+			if ( empty( $for_sale ) ) {
+				continue;
+			}
+		}
+
+		// Change a few type names.
+		switch ( $type->name ) {
+			case 'Sport Utility Vehicle':
+				$type->name = __( 'SUV', 'inventory-presser' );
+				break;
+			case 'Passenger Car':
+				$type->name = __( 'Car', 'inventory-presser' );
+				break;
+		}
+		$type_links[] = sprintf(
+			'<a href="%s">%s</a>',
+			esc_url( site_url( 'inventory/type/' . $type->slug . '/' ) ),
+			esc_html( $type->name )
+		);
+	}
+
+	printf(
+		'%s %s, %s <a href="%s">%s %s %s</a>.',
+		esc_html__( 'Browse', 'inventory-presser' ),
+		implode( ', ', $type_links ),
+		esc_html__( 'or', 'inventory-presser' ),
+		esc_url( site_url( 'inventory/' ) ),
+		esc_html__( 'all', 'inventory-presser' ),
+		esc_html( $vehicle_count ),
+		esc_html__( 'vehicles for sale', 'inventory-presser' )
+	);
+}
+
+/**
  * invp_get_raw_last_modified
  *
  * Template tag. Returns the timestamp the vehicle was last modified
