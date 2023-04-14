@@ -474,7 +474,7 @@ class Inventory_Presser_Admin_Options {
 		if ( current_user_can( 'edit_posts' ) || current_user_can( 'delete_posts' ) ) {
 			printf(
 				'<p class="description">%s</p>',
-				esc_html__( 'These features may be impacted by time and memory limits set by your webhost.', 'inventory-presser' )
+				esc_html__( 'These features may be impacted by time and memory limits set by your web host.', 'inventory-presser' )
 			);
 		}
 	}
