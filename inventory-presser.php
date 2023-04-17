@@ -316,7 +316,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				return $url;
 			}
 			$mime_type = wp_get_image_mime( $file );
-			if ( $mime_type && 'image' !== substr( $mime_type, 0, 5 ) ) {
+			if ( false === $mime_type || ( 5 <= strlen( $mime_type ) && 'image' !== substr( $mime_type, 0, 5 ) ) ) {
 				return $url;
 			}
 
