@@ -503,12 +503,13 @@ class Inventory_Presser_Admin_Options {
 	 * @return void
 	 */
 	public function callback_price_display() {
+		$separator             = apply_filters( 'invp_price_display_separator', ' / ', $settings['price_display'], 0 );
 		$price_display_options = apply_filters(
 			'invp_price_display_options',
 			array(
 				'default'          => '${Price}',
 				'msrp'             => '${MSRP}',
-				'full_or_down'     => '${Price} / ${Down Payment} Down',
+				'full_or_down'     => '${Price}' . $separator . '${Down Payment} Down',
 				'down_only'        => '${Down Payment} Down',
 				'was_now_discount' => sprintf(
 					'%s ${MSRP} %s ${Price} %s ${MSRP}-{Price}',
@@ -517,7 +518,7 @@ class Inventory_Presser_Admin_Options {
 					apply_filters( 'invp_price_was_now_discount_save', __( 'You Save', 'inventory-presser' ) )
 				),
 				'payment_only'     => '${Payment} {Frequency}',
-				'down_and_payment' => '${Down payment} / ${Payment} {Frequency}',
+				'down_and_payment' => '${Down payment}' . $separator . '${Payment} {Frequency}',
 				'call_for_price'   => __( 'Call For Price', 'inventory-presser' ),
 			)
 		);

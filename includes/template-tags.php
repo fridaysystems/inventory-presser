@@ -1005,7 +1005,10 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 
 			$down_payment = invp_get_the_down_payment();
 			if ( ! empty( $down_payment ) ) {
-				$output .= sprintf( ' / %s Down', $down_payment );
+				if ( ! empty( $output ) ) {
+					$output .= apply_filters( 'invp_price_display_separator', ' / ', $settings['price_display'], $post_ID );
+				}
+				$output .= sprintf( '%s Down', $down_payment );
 			}
 
 			if ( '' === $output ) {
@@ -1114,7 +1117,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 			}
 			if ( ! empty( $payment ) ) {
 				if ( ! empty( $string ) ) {
-					$string .= ' / ';
+					$string .= apply_filters( 'invp_price_display_separator', ' / ', $settings['price_display'], $post_ID );
 				}
 				$string .= sprintf(
 					'%s %s',
