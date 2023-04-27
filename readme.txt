@@ -4,7 +4,7 @@ Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, mo
 Requires at least: 5.0.0
 Tested up to: 6.2.0
 Requires PHP: 7.0.0
-Stable tag: 14.8.0
+Stable tag: 14.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,13 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 14.9.0 =
+* [Added] Adds a function invp_get_the_inventory_sentence() that returns an HTML string containing links like, "Browse Car, SUV, Truck, or all 10 vehicles for sale."
+* [Added] Wraps the "/" that separates prices and down payments with a filter `invp_price_display_separator` so it can be changed by other developers.
+* [Added] Adds a parameter to the [invp_sort_by label=""] shortcode `label` to let users customize or remove the label text next to the dropdown.
+* [Fixed] Enables the JavaScript filter `invp_editor_sidebar_elements` that was disabled in 14.8.0. The filter was not the problem.
+* [Fixed] Fixes a bug in the [invp_sort_by] shortcode that prevented any sort from happening when a choice was made in the dropdown. JavaScript was missing from this plugin that powers the feature.
+
 = 14.8.0 =
 * [Added] Adds a button at Vehicles → Options that loads sample vehicles and photos from our [demo site](https://fridaydemo.wpengine.com/).
 * [Added] Allows the meta key `inventory_presser_photo_number` as the `orderby` parameter in REST API requests for attachments. Enables photos to be requested in sequence.
@@ -131,6 +138,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.9.0 =
+Adds a function invp_get_the_inventory_sentence() that returns an HTML string containing links like, "Browse Car, SUV, Truck, or all 10 vehicles for sale." Wraps the "/" that separates prices and down payments with a filter `invp_price_display_separator` so it can be changed by other developers. Adds a parameter to the [invp_sort_by label=""] shortcode `label` to let users customize or remove the label text next to the dropdown. Enables the JavaScript filter `invp_editor_sidebar_elements` that was disabled in 14.8.0. The filter was not the problem. Fixes a bug in the [invp_sort_by] shortcode that prevented any sort from happening when a choice was made in the dropdown. JavaScript was missing from this plugin that powers the feature.
 
 = 14.7.1 =
 Adds postmeta fields `inventory_presser_rate` and `inventory_presser_term` to the vehicle post type for dealers outside the USA where displaying financing terms without a disclosure may be legal. Adds a "No filter" option to the Additional Listings Pages feature to allow the creation of full, unfiltered archive pages at any URL. Adds a toggle switch to Additional Listings Pages so rules can be saved in an inactive state. Adds a "contains" comparison operator and "Options" to the list of comparison fields in Additional Listings Pages filter rules. Adds a parameter to the [invp_inventory_grid] shortcode to suppress "Call for price" if the sitewide price display setting is ${Price}. This restores behavior produced by a bug described below. Fixes a bug in the [invp_inventory_grid] shortcode that prevented "Call for price" from displaying if show_captions and show_prices were both true and the price display setting sitewide is ${Price}. Fixes syntax errors that impact old versions of PHP including 7.2. Fixes bugs in multiple shortcodes that prevented true/false parameter values from working the way users expect. "true", "1", and 1 are all now working. Likewise with false values "false", "0", and 0. Renames the Additional Listings Pages feature to Listings Pages.
