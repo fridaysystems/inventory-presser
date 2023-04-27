@@ -25,8 +25,8 @@ class Inventory_Presser_Shortcode_Sort_By {
 	public function hooks() {
 		add_action( 'init', array( $this, 'add' ) );
 		add_action( 'init', array( $this, 'change_sorter_based_on_price_display' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_script' ) );
 	}
-
 
 	/**
 	 * If a user wants to order vehicles by price, and the site is showing MSRP
@@ -57,9 +57,17 @@ class Inventory_Presser_Shortcode_Sort_By {
 	/**
 	 * Creates the HTML output that replaces the shortcode.
 	 *
+	 * @param  array $atts Shortcode attributes.
 	 * @return string
 	 */
-	public function content() {
+	public function content( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'label' => __( 'SORT', 'inventory_presser' ),
+			),
+			$atts,
+			'invp_sort_by'
+		);
 		if ( ! is_post_type_archive( INVP::POST_TYPE ) ) {
 			return '';
 		}
@@ -70,8 +78,13 @@ class Inventory_Presser_Shortcode_Sort_By {
 			return '';
 		}
 
-		$html = sprintf( '<label for="sort_by">%s</label>', __( 'SORT', '_dealer' ) )
-			. '<select class="inventory_sort" id="sort_by">';
+		wp_enqueue_script( 'invp_sort_by' );
+
+		$html = '';
+		if ( ! empty( $atts['label'] ) ) {
+			$html .= sprintf( '<label for="sort_by">%s</label> ', esc_html( $atts['label'] ) );
+		}
+		$html .= '<select class="inventory_sort" id="sort_by">';
 
 		$options_data = apply_filters(
 			'invp_sort_dropdown_options',
@@ -174,6 +187,22 @@ class Inventory_Presser_Shortcode_Sort_By {
 				add_filter( 'invp_sort_dropdown_options', array( $this, 'remove_price_from_sort_dropdown' ) );
 				break;
 		}
+	}
+
+	/**
+	 * Registers a JavaScript file required for the dropdown to operate.
+	 *
+	 * @return void
+	 */
+	public function register_script() {
+		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		wp_register_script(
+			'invp_sort_by',
+			plugins_url( "/js/shortcode-sort-by$min.js", INVP_PLUGIN_FILE_PATH ),
+			array(),
+			null,
+			true
+		);
 	}
 
 	/**
