@@ -626,6 +626,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$this->settings = INVP::settings();
 			if ( ! is_admin() ) {
 				add_action( 'pre_get_posts', array( $this, 'add_orderby_to_query' ) );
+				add_action( 'pre_get_posts', array( $this, 'modify_query_for_max_price' ), 99, 1 );
 			}
 
 			// Allow custom fields to be searched.
@@ -1089,7 +1090,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 */
 		public function modify_query_for_max_price( $query ) {
 			// Do not mess with the query if it's not the main one and our CPT.
-			if ( ! $query->is_main_query()
+			if ( ! isset( $_GET['max_price'] )
+				|| ! $query->is_main_query()
 				|| empty( $query->query_vars['post_type'] )
 				|| INVP::POST_TYPE !== $query->query_vars['post_type']
 			) {
@@ -1102,17 +1104,15 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$meta_query = array();
 			}
 
-			if ( isset( $_GET['max_price'] ) ) {
-				$meta_query['relation'] = 'AND';
-				$meta_query             = self::maybe_add_meta_query(
-					$meta_query,
-					apply_filters( 'invp_prefix_meta_key', 'price' ),
-					(int) $_GET['max_price'],
-					'<=',
-					'numeric'
-				);
-				$query->set( 'meta_query', $meta_query );
-			}
+			$meta_query['relation'] = 'AND';
+			$meta_query             = self::maybe_add_meta_query(
+				$meta_query,
+				apply_filters( 'invp_prefix_meta_key', 'price' ),
+				(int) $_GET['max_price'],
+				'<=',
+				'numeric'
+			);
+			$query->set( 'meta_query', $meta_query );
 		}
 
 		/**
@@ -1280,12 +1280,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			register_widget( 'Inventory_Presser_Location_Phones' );
 			register_widget( 'Inventory_Presser_Slider' );
 			register_widget( 'Inventory_Presser_Maximum_Price_Filter' );
-			/**
-			 * The query needs to be altered for the Maximum Price Filters widget.
-			 */
-			if ( ! is_admin() && isset( $_GET['max_price'] ) ) {
-				add_action( 'pre_get_posts', array( $this, 'modify_query_for_max_price' ), 99, 1 );
-			}
 		}
 	}
 
