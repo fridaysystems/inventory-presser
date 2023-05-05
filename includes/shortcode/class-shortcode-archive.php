@@ -158,33 +158,36 @@ class Inventory_Presser_Shortcode_Archive {
 	}
 
 	private function paging_html() {
-		global $wp_query;
-		$pagination_html = '<ul class="group">';
+		$pagination_html = '';
 
 		// previous page link
 		$previous_link = get_previous_posts_link();
-		if ( '' != $previous_link ) {
+		if ( ! empty( $previous_link ) ) {
 			$pagination_html .= '<li class="prev left">' . $previous_link . '</li>';
 		}
 
 		// clickable page numbers
-		$pagination_html .= sprintf(
-			'<li>%s</li>',
-			get_the_posts_pagination(
-				array(
-					'mid_size'  => 2,
-					'prev_next' => false,
-				)
+		$navigation = get_the_posts_pagination(
+			array(
+				'mid_size'  => 2,
+				'prev_next' => false,
 			)
 		);
+		if ( ! empty( $navigation ) ) {
+			$pagination_html .= sprintf(
+				'<li>%s</li>',
+				$navigation
+			);
+		}
 
 		// next page link
 		$next_link = get_next_posts_link();
-		if ( '' != $next_link ) {
+		if ( ! empty( $next_link ) ) {
 			$pagination_html .= '<li class="next right">' . $next_link . '</li>';
 		}
 
 		// sentence "Showing 1 to 10 of 99 posts"
+		global $wp_query;
 		$posts_per_page = $wp_query->query_vars['posts_per_page'];
 		$page_number    = null == $wp_query->query_vars['paged'] ? 1 : $wp_query->query_vars['paged'];
 		$start_index    = $page_number * $posts_per_page - ( $posts_per_page - 1 );
@@ -197,7 +200,11 @@ class Inventory_Presser_Shortcode_Archive {
 			$object_name = strtolower( $post_type->labels->name );
 		}
 
-		$pagination_html .= '</ul><p>'
+		if ( ! empty( $pagination_html ) ) {
+			$pagination_html = '<ul class="group">' . $pagination_html . '</ul>';
+		}
+
+		$pagination_html .= '<p>'
 		. apply_filters( 'invp_pagination_sentence', sprintf( 'Showing %d to %d of %d %s', $start_index, $end_index, $wp_query->found_posts, $object_name ) )
 		. '</p>';
 
