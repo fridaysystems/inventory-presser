@@ -558,6 +558,28 @@ class Inventory_Presser_Admin_Options {
 			'show_all_taxonomies',
 			__( 'Show all taxonomies under Vehicles menu in Dashboard', 'inventory-presser' )
 		);
+
+		$links = array();
+		$taxonomy_data = Inventory_Presser_Taxonomies::taxonomy_data();
+		for ( $i = 0; $i < sizeof( $taxonomy_data ); $i++ ) {
+			if ( empty( $taxonomy_data[ $i ]['args']['query_var'] )
+				|| empty( $taxonomy_data[ $i ]['args']['label'] ) ) {
+				continue;
+			}
+			$links[] = '<a href="' . admin_url(
+				sprintf(
+					'edit-tags.php?taxonomy=%s&post_type=%s',
+					str_replace( '-', '_', $taxonomy_data[ $i ]['args']['query_var'] ),
+					INVP::POST_TYPE
+				)
+			) . '">' . $taxonomy_data[ $i ]['args']['label'] . '</a>';
+		}
+
+		printf(
+			'<p class="description">%s %s</p>',
+			__( 'Show or hide these menu items:', 'inventory-presser' ),
+			implode( ', ', $links )
+		);
 	}
 
 	/**
