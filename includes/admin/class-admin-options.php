@@ -503,7 +503,7 @@ class Inventory_Presser_Admin_Options {
 	 * @return void
 	 */
 	public function callback_price_display() {
-		$separator             = apply_filters( 'invp_price_display_separator', ' / ', $settings['price_display'], 0 );
+		$separator             = apply_filters( 'invp_price_display_separator', ' / ', $this->option['price_display'] ?? '', 0 );
 		$price_display_options = apply_filters(
 			'invp_price_display_options',
 			array(
