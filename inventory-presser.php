@@ -765,6 +765,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			// Change archive page titles.
 			add_filter( 'document_title_parts', array( $this, 'change_archive_title_tags' ) );
+
+			// Add a link to the Settings page on the plugin management page
+			add_filter( 'plugin_action_links_' . INVP_PLUGIN_BASE, array( $this, 'insert_settings_link' ), 2, 2 );
 		}
 
 		/**
@@ -999,6 +1002,28 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				);
 				?>; </script><?php
 			}
+		}
+
+		/**
+		 * Adds a link to the settings page near the Activate | Delete links on the
+		 * list of plugins on the Plugins page.
+		 *
+		 * @param  array $links
+		 * @return array
+		 */
+		public function insert_settings_link( $links ) {
+			$url     = admin_url(
+				sprintf(
+					'edit.php?post_type=%s&page=dealership-options',
+					INVP::POST_TYPE
+				)
+			);
+			$links[] = sprintf(
+				'<a href="%s">%s</a>',
+				$url,
+				__( 'Settings', 'inventory-presser' )
+			);
+			return $links;
 		}
 
 		/**

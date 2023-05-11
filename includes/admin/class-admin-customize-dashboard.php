@@ -368,38 +368,11 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 		// Make our Add Media button annotation available from an AJAX call
 		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
 
-		// Add a link to the Settings page on the plugin management page
-		add_filter( 'plugin_action_links_' . INVP_PLUGIN_BASE, array( $this, 'insert_settings_link' ), 2, 2 );
-
 		// Add a link to the main menu of the Admin bar
 		add_action( 'admin_bar_menu', array( $this, 'add_vehicles_to_admin_bar' ), 100 );
 
 		// Change some messages in the dashboard the user sees when updating vehicles
 		add_filter( 'post_updated_messages', array( $this, 'change_post_updated_messages' ) );
-	}
-
-	/**
-	 * insert_settings_link
-	 *
-	 * Adds a link to the settings page near the Activate | Delete links on the
-	 * list of plugins on the Plugins page.
-	 *
-	 * @param  array $links
-	 * @return array
-	 */
-	function insert_settings_link( $links ) {
-		$url     = admin_url(
-			sprintf(
-				'edit.php?post_type=%s&page=dealership-options',
-				INVP::POST_TYPE
-			)
-		);
-		$links[] = sprintf(
-			'<a href="%s">%s</a>',
-			$url,
-			__( 'Settings', 'inventory-presser' )
-		);
-		return $links;
 	}
 
 	/**
