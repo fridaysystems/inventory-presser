@@ -59,7 +59,7 @@ class Inventory_Presser_Taxonomies {
 				)
 			);
 			foreach ( $terms as $value ) {
-				   wp_delete_term( $value, $tax );
+				wp_delete_term( $value, $tax );
 			}
 		}
 	}
