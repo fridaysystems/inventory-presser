@@ -664,6 +664,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * exclude them without a relationship to a term in that taxonomy.
 			 */
 			add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'mark_vehicles_for_sale_during_insertion' ), 10, 3 );
+			// Save custom post meta and term relationships when posts are saved.
+			add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_post_meta' ), 10, 3 );
+			add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
 
 			// Maybe skip the trash bin and permanently delete vehicles & photos.
 			add_action( 'trashed_post', array( $this, 'maybe_force_delete' ) );
@@ -1305,6 +1308,135 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			register_widget( 'Inventory_Presser_Location_Phones' );
 			register_widget( 'Inventory_Presser_Slider' );
 			register_widget( 'Inventory_Presser_Maximum_Price_Filter' );
+		}
+
+		/**
+		 * Sanitizes every member of an array at every level with
+		 * sanitize_text_field()
+		 *
+		 * @param  array $arr
+		 * @return array
+		 */
+		protected function sanitize_array( $arr ) {
+			foreach ( $arr as $key => $value ) {
+				if ( is_array( $value ) ) {
+					$arr[ $key ] = $this->sanitize_array( $value );
+				} else {
+					$arr[ $key ] = sanitize_text_field( $value );
+				}
+			}
+			return $arr;
+		}
+
+		/**
+		 * Saves vehicle attributes into their corresponding post meta fields when
+		 * the Save or Update button is clicked in the editor.
+		 *
+		 * @param  int     $post_id
+		 * @param  WP_Post $post
+		 * @param  bool    $is_update
+		 * @return void
+		 */
+		public function save_vehicle_post_meta( $post_id, $post, $is_update ) {
+			/**
+			 * Do not continue if the post is being moved to the trash or if this is
+			 * an auto-draft.
+			 */
+			if ( in_array( $post->post_status, array( 'trash', 'auto-draft' ) ) ) {
+				return;
+			}
+
+			// Abort if autosave or AJAX/quick edit
+			if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+				|| ( defined( 'DOING_AJAX' ) && DOING_AJAX )
+			) {
+				return;
+			}
+
+			// is this a vehicle?
+			if ( ! empty( $_POST['post_type'] ) && INVP::POST_TYPE != $_POST['post_type'] ) {
+				// no, don't create any meta data for vehicles
+				return;
+			}
+
+			if ( empty( $_POST ) ) {
+				return;
+			}
+
+			/**
+			 * Tick the last modified date of this vehicle since we're saving changes.
+			 * It looks like this: Tue, 06 Sep 2016 09:26:12 -0400
+			 */
+			$offset           = sprintf( '%+03d00', intval( get_option( 'gmt_offset' ) ) );
+			$timestamp_format = 'D, d M Y h:i:s';
+			// use post_modified to set last_modified
+			$post_modified = DateTime::createFromFormat( 'Y-m-d H:i:s', $post->post_modified );
+			$timestamp     = $post_modified->format( $timestamp_format ) . ' ' . $offset;
+			update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'last_modified' ), $timestamp );
+
+			/**
+			 * If this is not an update or there is no date entered post meta value,
+			 * set the date_entered meta value using the post_date
+			 */
+			if ( ! $is_update || empty( INVP::get_meta( 'date_entered', $post_id ) ) ) {
+				// use post_date to set date_entered
+				$post_date = DateTime::createFromFormat( 'Y-m-d H:i:s', $post->post_date );
+				$timestamp = $post_date->format( $timestamp_format ) . ' ' . $offset;
+				update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'date_entered' ), $timestamp );
+			}
+
+			// Clear this value that is defined by a checkbox
+			update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'featured' ), '0' );
+
+			/**
+			 * Loop over the post meta keys we manage and save their values
+			 * if we find them coming over as part of the post to save.
+			 */
+			$keys   = INVP::keys();
+			$keys[] = 'options_array';
+
+			foreach ( $keys as $key ) {
+				$key = apply_filters( 'invp_prefix_meta_key', $key );
+				if ( isset( $_POST[ $key ] ) ) {
+					if ( is_array( $_POST[ $key ] ) ) {
+						// delete all meta, this is essentially for the options
+						delete_post_meta( $post->ID, $key );
+						$options = array(); // collect the options to maintain a CSV field for backwards compatibility
+
+						foreach ( $this->sanitize_array( $_POST[ $key ] ) as $value ) {
+							add_post_meta( $post->ID, $key, $value );
+							if ( 'inventory_presser_options_array' == $key ) {
+								$options[] = $value;
+							}
+						}
+					} else {
+						// string data
+						update_post_meta( $post->ID, $key, sanitize_text_field( $_POST[ $key ] ) );
+					}
+				}
+			}
+		}
+
+		/**
+		 * Saves custom taxonomy terms when vehicles are saved
+		 *
+		 * @param  int  $post_id
+		 * @param  bool $is_update
+		 * @return void
+		 */
+		public function save_vehicle_taxonomy_terms( $post_id, $is_update ) {
+			foreach ( Inventory_Presser_Taxonomies::slugs_array() as $slug ) {
+				$taxonomy_name = $slug;
+				switch ( $slug ) {
+					case 'style':
+						$slug = 'body_style';
+						break;
+					case 'model_year':
+						$slug = 'year';
+						break;
+				}
+				Inventory_Presser_Taxonomies::save_taxonomy_term( $post_id, $taxonomy_name, apply_filters( 'invp_prefix_meta_key', $slug ) );
+			}
 		}
 	}
 

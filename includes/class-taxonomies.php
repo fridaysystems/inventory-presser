@@ -531,6 +531,45 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	/**
+	 * Used by the save_post_{post_type} hook. Create a term relationship 
+	 * between a post and a term. Inserts the term first if it does not exist.
+	 *
+	 * @param  int    $post_id
+	 * @param  string $taxonomy_name
+	 * @param  string $element_name
+	 * @return void
+	 */
+	public static function save_taxonomy_term( $post_id, $taxonomy_name, $element_name ) {
+		if ( ! isset( $_POST[ $element_name ] ) ) {
+			return;
+		}
+
+		$term_slug = sanitize_text_field( $_POST[ $element_name ] );
+		if ( '' == $term_slug ) {
+			// the user is setting the vehicle type to empty string
+			wp_remove_object_terms( $post_id, self::get_term_slug( $taxonomy_name, $post_id ), $taxonomy_name );
+			return;
+		}
+		$term = get_term_by( 'slug', $term_slug, $taxonomy_name );
+		if ( empty( $term ) || is_wp_error( $term ) ) {
+			// the term does not exist. create it
+			$term_arr = array(
+				'slug'        => sanitize_title( $term_slug ),
+				'description' => $term_slug,
+				'name'        => $term_slug,
+			);
+			$id_arr   = wp_insert_term( $term_slug, $taxonomy_name, $term_arr );
+			if ( ! is_wp_error( $id_arr ) ) {
+				$term->term_id = $id_arr['term_id'];
+			}
+		}
+		$set = wp_set_object_terms( $post_id, $term->term_id, $taxonomy_name, false );
+		if ( is_wp_error( $set ) ) {
+			// There was an error setting the term
+		}
+	}
+
+	/**
 	 * schedule_terms_cron_job
 	 *
 	 * Schedules a daily WordPress cron job to clean up empty terms in a few of
@@ -559,6 +598,20 @@ class Inventory_Presser_Taxonomies {
 			}
 		}
 	}
+
+	/**
+	 * Returns an array of all our taxonomy slugs
+	 *
+	 * @return array An array of taxonomy slugs
+	 */
+	public static function slugs_array() {
+		$arr = array();
+		foreach ( self::query_vars_array() as $query_var ) {
+			array_push( $arr, str_replace( '-', '_', $query_var ) );
+		}
+		return $arr;
+	}
+
 
 	/**
 	 * sort_terms_as_numbers
