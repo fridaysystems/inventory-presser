@@ -1173,4 +1173,18 @@ class INVP {
 		// Return the array
 		return $days;
 	}
+
+	/**
+	 * This is a wrapper for wp_count_posts() and counts all posts in the
+	 * inventory_vehicle post type.
+	 *
+	 * @return int
+	 */
+	public static function vehicle_count() {
+		$vehicle_counts = wp_count_posts( INVP::POST_TYPE );
+		if ( empty( $vehicle_counts->publish ) ) {
+			return 0;
+		}
+		return $vehicle_counts->publish;
+	}
 }

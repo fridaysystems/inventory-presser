@@ -134,8 +134,13 @@ class Inventory_Presser_Shortcode_Archive {
 				$output   .= apply_shortcodes( $shortcode );
 			}
 		} else {
-			$count_posts = wp_count_posts( INVP::POST_TYPE );
-			if ( isset( $count_posts->publish ) && 0 < $count_posts->publish ) {
+			/**
+			 * Do not encourage the user to search if there are zero vehicles.
+			 * This query could be a filtered result that's empty, so check
+			 * explicitly.
+			 */
+			$vehicle_count = INVP::vehicle_count();
+			if ( 0 < $vehicle_count ) {
 				$output .= apply_filters(
 					'invp_archive_shortcode_no_results',
 					sprintf(

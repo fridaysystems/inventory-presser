@@ -371,27 +371,25 @@ function invp_get_the_interior_color( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_inventory_sentence() {
+	$vehicle_count = INVP::vehicle_count();
+	if ( 0 === $vehicle_count ) {
+		return;
+	}
+
 	// Are we showing sold vehicles?
 	$plugin_settings = INVP::settings();
 	$showing_sold    = isset( $plugin_settings['include_sold_vehicles'] ) && $plugin_settings['include_sold_vehicles'];
-	$vehicle_count   = 0;
-	if ( $showing_sold ) {
-		$vehicle_counts = wp_count_posts( INVP::POST_TYPE );
-		if ( empty( $vehicle_counts->publish ) ) {
-			return;
-		}
-		$vehicle_count = $vehicle_counts->publish;
-	} else {
+	if ( ! $showing_sold ) {
 		// Exclude sold vehicles from our count.
-		$for_sale_term = get_term_by( 'slug', 'for-sale', 'availability' );
-		if ( empty( $for_sale_term->count ) ) {
+		$for_sale_term = get_term_by( 'slug', 'for-sale', 'availability' ); // How many vehicles have a For Sale term in the availability tax?
+		if ( 0 === $for_sale_term->count ) {
 			return;
 		}
 		$vehicle_count = $for_sale_term->count;
 	}
 
 	// Get list of terms in Types taxonomy that have count > 0.
-	$types      = get_terms(
+	$types = get_terms(
 		array(
 			'taxonomy' => 'type',
 		)
