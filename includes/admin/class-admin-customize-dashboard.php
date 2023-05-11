@@ -147,27 +147,6 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	}
 
 	/**
-	 * change_taxonomy_show_ui_attributes
-	 *
-	 * When the user flips the "Show All Taxonomies" setting switch, this
-	 * method changes the taxonomy registration so they are shown.
-	 *
-	 * @param  array $taxonomy_data
-	 * @return array
-	 */
-	function change_taxonomy_show_ui_attributes( $taxonomy_data ) {
-		for ( $i = 0; $i < sizeof( $taxonomy_data ); $i++ ) {
-			if ( ! isset( $taxonomy_data[ $i ]['args']['show_in_menu'] ) ) {
-				continue;
-			}
-
-			$taxonomy_data[ $i ]['args']['show_in_menu'] = true;
-			$taxonomy_data[ $i ]['args']['show_ui']      = true;
-		}
-		return $taxonomy_data;
-	}
-
-	/**
 	 * create_add_media_button_annotation
 	 *
 	 * Computes the number of attachments on vehicles so the number can be
@@ -394,13 +373,6 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 
 		// Add a link to the main menu of the Admin bar
 		add_action( 'admin_bar_menu', array( $this, 'add_vehicles_to_admin_bar' ), 100 );
-
-		$options = INVP::settings();
-
-		// If the Show All Taxonomies setting is checked, change the way we register taxonomies
-		if ( isset( $options['show_all_taxonomies'] ) && $options['show_all_taxonomies'] ) {
-			add_filter( 'invp_taxonomy_data', array( $this, 'change_taxonomy_show_ui_attributes' ) );
-		}
 
 		// Change some messages in the dashboard the user sees when updating vehicles
 		add_filter( 'post_updated_messages', array( $this, 'change_post_updated_messages' ) );

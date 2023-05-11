@@ -16,6 +16,29 @@ class Inventory_Presser_Taxonomies {
 	const CRON_HOOK_DELETE_TERMS = 'inventory_presser_delete_unused_terms';
 
 	/**
+	 * When the user flips the "Show All Taxonomies" setting switch, this
+	 * method changes the taxonomy registration so they are shown.
+	 *
+	 * @param  array $taxonomy_data
+	 * @return array
+	 */
+	public function change_taxonomy_show_ui_attributes( $taxonomy_data ) {
+		$options = INVP::settings();
+		if ( empty( $options['show_all_taxonomies'] ) ) {
+			return $taxonomy_data;
+		}
+		for ( $i = 0; $i < sizeof( $taxonomy_data ); $i++ ) {
+			if ( ! isset( $taxonomy_data[ $i ]['args']['show_in_menu'] ) ) {
+				continue;
+			}
+
+			$taxonomy_data[ $i ]['args']['show_in_menu'] = true;
+			$taxonomy_data[ $i ]['args']['show_ui']      = true;
+		}
+		return $taxonomy_data;
+	}
+
+	/**
 	 * delete_term_data
 	 *
 	 * Removes all terms in all our taxonomies. Used when uninstalling the
@@ -121,6 +144,9 @@ class Inventory_Presser_Taxonomies {
 		register_activation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Taxonomies', 'schedule_terms_cron_job' ) );
 		// Remove the wp-cron job during deactivation
 		register_deactivation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Taxonomies', 'remove_terms_cron_job' ) );
+
+		// If the Show All Taxonomies setting is checked, change the way we register taxonomies
+		add_filter( 'invp_taxonomy_data', array( $this, 'change_taxonomy_show_ui_attributes' ) );
 	}
 
 	/**
