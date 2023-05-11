@@ -277,7 +277,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 					)
 				);
 				if ( ! empty( $term_id_array['term_id'] ) ) {
-					   $term = get_term( $term_id_array['term_id'], $taxonomy );
+					$term = get_term( $term_id_array['term_id'], $taxonomy );
 				}
 			}
 		}
