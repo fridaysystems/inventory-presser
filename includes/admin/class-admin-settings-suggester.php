@@ -107,13 +107,18 @@ class Inventory_Presser_Admin_Settings_Suggester {
 			add_action( 'admin_notices', array( $this, 'output_upload_folder_error_html' ) );
 		}
 
-		// Are thumbnail sizes not 4:3 aspect ratios?
-		if ( ( ( 4 / 3 ) != ( get_option( 'thumbnail_size_w' ) / get_option( 'thumbnail_size_h' ) ) )
-			|| ( ( 4 / 3 ) != ( get_option( 'medium_size_w' ) / get_option( 'medium_size_h' ) ) )
-			|| ( ( 4 / 3 ) != ( get_option( 'large_size_w' ) / get_option( 'large_size_h' ) ) )
-		) {
-			// At least one thumbnail size is not 4:3.
-			add_action( 'admin_notices', array( $this, 'output_thumbnail_size_error_html' ) );
+		// Are thumbnail sizes not 4:3 or 16:9 aspect ratios?
+		$ratios = array(
+			( get_option( 'thumbnail_size_w' ) / get_option( 'thumbnail_size_h' ) ),
+			( get_option( 'medium_size_w' ) / get_option( 'medium_size_h' ) ),
+			( get_option( 'large_size_w' ) / get_option( 'large_size_h' ) ),
+		);
+		foreach ( $ratios as $ratio ) {
+			if ( ( 4/3 ) !== $ratio && ( 16/9 ) !== $ratio ) {
+				// At least one thumbnail size is not 4:3 or 16:9.
+				add_action( 'admin_notices', array( $this, 'output_thumbnail_size_error_html' ) );
+				break;
+			}
 		}
 	}
 }
