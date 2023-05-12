@@ -360,7 +360,7 @@ class Inventory_Presser_Admin_Location_Meta {
 			);
 			wp_enqueue_style(
 				'invp-location-term',
-				plugins_url( "/css/location-term${min}.css", INVP_PLUGIN_FILE_PATH ),
+				plugins_url( "/css/location-term{$min}.css", INVP_PLUGIN_FILE_PATH ),
 				array(),
 				INVP_PLUGIN_VERSION
 			);
