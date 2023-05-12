@@ -9,8 +9,6 @@ defined( 'ABSPATH' ) || exit;
  */
 class Inventory_Presser_Admin_Editor_Sidebar {
 
-
-
 	/**
 	 * sidebar_plugin_register
 	 *
