@@ -100,9 +100,10 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 			self::ID_BASE . '_goog',
 			'https://maps.googleapis.com/maps/api/js?key=' . $instance['api_key']
 		);
+		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_script(
 			self::ID_BASE,
-			plugins_url( 'js/widget-google-maps-v3.min.js', INVP_PLUGIN_FILE_PATH ),
+			plugins_url( "js/widget-google-maps-v3{$min}.js", INVP_PLUGIN_FILE_PATH ),
 			array( self::ID_BASE . '_goog' )
 		);
 		wp_add_inline_script(

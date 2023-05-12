@@ -139,7 +139,8 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		 */
 		if ( ! wp_script_is( $handle ) ) {
 			// First instance of this widget on the page
-			wp_enqueue_script( $handle, plugins_url( 'js/widget-map.min.js', INVP_PLUGIN_FILE_PATH ) );
+			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+			wp_enqueue_script( $handle, plugins_url( "js/widget-map{$min}.js", INVP_PLUGIN_FILE_PATH ) );
 			// Localize an API key and the popups array we built data for JavaScript
 			wp_add_inline_script(
 				$handle,
