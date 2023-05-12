@@ -26,6 +26,9 @@ if ( ! defined( 'INVP_PLUGIN_BASE' ) ) {
 if ( ! defined( 'INVP_PLUGIN_FILE_PATH' ) ) {
 	define( 'INVP_PLUGIN_FILE_PATH', __FILE__ );
 }
+if ( ! defined( 'INVP_PLUGIN_VERSION' ) ) {
+	define( 'INVP_PLUGIN_VERSION', '14.9.0' );
+}
 
 if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	/**
