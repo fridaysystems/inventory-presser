@@ -9,8 +9,8 @@ class Inventory_Presser_Admin_Location_Meta {
 		add_action( 'created_location', array( $this, 'save_location_meta' ), 10, 2 );
 		add_action( 'edited_location', array( $this, 'save_location_meta' ), 10, 2 );
 
-		// Load JavaScript for timepickers, draggable and repeating fields
-		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
+		// Load JavaScript for timepickers, draggable and repeating fields.
+		add_action( 'admin_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 	}
 
 	/**
@@ -340,14 +340,12 @@ class Inventory_Presser_Admin_Location_Meta {
 	}
 
 	/**
-	 * load_scripts
-	 *
 	 * Loads stylesheets and JavaScript files on pages that edit terms.
 	 *
 	 * @param  string $hook The file name of the current page
 	 * @return void
 	 */
-	function load_scripts( $hook ) {
+	function scripts_and_styles( $hook ) {
 		global $current_screen;
 		if ( ( $hook == 'edit-tags.php' || $hook == 'term.php' )
 			&& $current_screen->post_type == INVP::POST_TYPE

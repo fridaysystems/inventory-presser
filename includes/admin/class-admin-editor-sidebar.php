@@ -50,7 +50,7 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	function hooks() {
 		add_action( 'enqueue_block_editor_assets', array( $this, 'sidebar_plugin_script_enqueue' ) );
 		add_action( 'init', array( $this, 'sidebar_plugin_register' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'include_javascript_backbone' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	 *
 	 * @return void
 	 */
-	function include_javascript_backbone() {
+	public function scripts_and_styles() {
 		wp_enqueue_script( 'wp-api' );
 	}
 }

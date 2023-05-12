@@ -28,7 +28,7 @@ class Inventory_Presser_Admin_Options {
 	 * @return void
 	 */
 	public function hooks() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_javascript' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 
@@ -90,11 +90,13 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * Registers a JavaScript file that powers the settings page.
+	 * Registers JavaScript and CSS file that power the settings page.
 	 *
 	 * @return void
 	 */
-	public function register_javascript() {
+	public function scripts_and_styles() {
+		$handle = 'invp_page_settings';
+		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_script(
 			'invp_page_settings',
 			plugins_url( '/js/page-settings.min.js', INVP_PLUGIN_FILE_PATH ),
