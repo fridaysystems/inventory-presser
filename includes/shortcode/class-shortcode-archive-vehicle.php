@@ -32,7 +32,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 	 *
 	 * @return void
 	 */
-	function hooks() {
+	public function add_hooks() {
 		add_action( 'init', array( $this, 'add' ) );
 	}
 

@@ -21,7 +21,7 @@ class Inventory_Presser_Photo_Numberer {
 	 *
 	 * @return void
 	 */
-	public function hooks() {
+	public function add_hooks() {
 		add_action( 'add_attachment', array( __CLASS__, 'maybe_number_photo' ), 10, 1 );
 
 		/**

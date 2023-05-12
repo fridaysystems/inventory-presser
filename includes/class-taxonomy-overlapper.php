@@ -171,7 +171,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 *
 	 * @return void
 	 */
-	function hooks() {
+	public function add_hooks() {
 		$this->hooks_add();
 	}
 

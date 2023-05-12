@@ -17,7 +17,7 @@ class Inventory_Presser_Additional_Listings_Pages {
 	 *
 	 * @return void
 	 */
-	public function hooks() {
+	public function add_hooks() {
 		add_filter( 'invp_rewrite_slugs', array( $this, 'add_rewrite_slugs' ) );
 		add_filter( 'invp_rewrite_rules', array( $this, 'add_rewrite_rules' ) );
 		add_action( 'pre_get_posts', array( $this, 'modify_query' ) );

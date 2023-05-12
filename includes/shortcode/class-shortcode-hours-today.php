@@ -32,7 +32,7 @@ class Inventory_Presser_Shortcode_Hours_Today {
 	 *
 	 * @return void
 	 */
-	function hooks() {
+	public function add_hooks() {
 		add_action( 'init', array( $this, 'add' ) );
 
 		// add hours today near the "this vehicle is located at" sentence

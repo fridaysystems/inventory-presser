@@ -22,7 +22,7 @@ class Inventory_Presser_Shortcode_Sort_By {
 	 *
 	 * @return void
 	 */
-	public function hooks() {
+	public function add_hooks() {
 		add_action( 'init', array( $this, 'add' ) );
 		add_action( 'init', array( $this, 'change_sorter_based_on_price_display' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_script' ) );

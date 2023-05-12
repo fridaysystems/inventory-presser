@@ -122,7 +122,7 @@ class Inventory_Presser_Taxonomies {
 	 *
 	 * @return void
 	 */
-	function hooks() {
+	public function add_hooks() {
 		// create custom taxonomies for vehicles
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 		add_action( 'init', array( $this, 'register_meta' ) );

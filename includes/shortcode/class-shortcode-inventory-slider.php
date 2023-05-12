@@ -27,7 +27,7 @@ class Inventory_Presser_Shortcode_Slider {
 	 *
 	 * @return void
 	 */
-	function hooks() {
+	public function add_hooks() {
 		add_action( 'init', array( $this, 'add' ) );
 	}
 

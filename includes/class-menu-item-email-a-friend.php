@@ -29,7 +29,7 @@ class Inventory_Presser_Email_A_Friend {
 	 *
 	 * @return void
 	 */
-	function hooks() {
+	public function add_hooks() {
 		add_filter( 'walker_nav_menu_start_el', array( $this, 'maybe_change_link' ), 11, 4 );
 	}
 

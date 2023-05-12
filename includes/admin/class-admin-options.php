@@ -27,7 +27,7 @@ class Inventory_Presser_Admin_Options {
 	 *
 	 * @return void
 	 */
-	public function hooks() {
+	public function add_hooks() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );

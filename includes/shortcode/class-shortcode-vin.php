@@ -29,7 +29,7 @@ class Inventory_Presser_Shortcode_Vin {
 	 *
 	 * @return void
 	 */
-	public function hooks() {
+	public function add_hooks() {
 		add_action( 'init', array( $this, 'add' ) );
 	}
 }

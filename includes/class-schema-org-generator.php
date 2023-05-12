@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Inventory_Presser_Schema_Org_Generator {
 
-	public function hooks() {
+	public function add_hooks() {
 		add_action( 'wp_body_open', array( $this, 'include_json_ld' ) );
 	}
 

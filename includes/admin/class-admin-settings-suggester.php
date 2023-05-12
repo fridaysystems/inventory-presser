@@ -43,7 +43,7 @@ class Inventory_Presser_Admin_Settings_Suggester {
 	 *
 	 * @return void
 	 */
-	public function hooks() {
+	public function add_hooks() {
 		/**
 		 * If we are looking at our Options page, run the settings suggester. It
 		 * will create admin notices for the user to tweak WordPress settings.

@@ -174,7 +174,7 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 	 *
 	 * @return void
 	 */
-	function hooks() {
+	public function add_hooks() {
 		add_action( 'init', array( $this, 'add' ) );
 	}
 }

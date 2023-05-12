@@ -21,7 +21,7 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) ) {
 		 *
 		 * @return void
 		 */
-		function hooks() {
+		public function add_hooks() {
 			add_filter( 'single_template', array( $this, 'maybe_provide_template' ) );
 			add_filter( 'archive_template', array( $this, 'maybe_provide_template' ) );
 		}

@@ -61,7 +61,7 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 		 *
 		 * @return void
 		 */
-		function hooks() {
+		public function add_hooks() {
 			add_action( 'wp', array( $this, 'maybe_redirect' ) );
 		}
 

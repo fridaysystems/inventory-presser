@@ -50,7 +50,7 @@ class Inventory_Presser_Badges {
 		}
 	}
 
-	public function hooks() {
+	public function add_hooks() {
 		// If Carfax is enabled, add the badge to pages
 		$settings = INVP::settings();
 		if ( isset( $settings['use_carfax'] ) && $settings['use_carfax'] ) {

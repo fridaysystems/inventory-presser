@@ -25,7 +25,7 @@ class Inventory_Presser_Menu_Item_Print {
 	 *
 	 * @return void
 	 */
-	function hooks() {
+	public function add_hooks() {
 		add_filter( 'walker_nav_menu_start_el', array( $this, 'maybe_insert_print_button_javascript' ), 11, 4 );
 	}
 

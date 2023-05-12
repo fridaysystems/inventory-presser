@@ -144,7 +144,7 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page {
 	 *
 	 * @return void
 	 */
-	function hooks() {
+	public function add_hooks() {
 		register_activation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'create_pages' ) );
 
 		add_filter( 'parse_query', array( $this, 'hide_page_from_edit_list' ) );
