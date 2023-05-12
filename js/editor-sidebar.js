@@ -87,6 +87,7 @@
 		return (str + '').split(' ').map( x => x.charAt(0).toUpperCase() + x.substr(1) ).join(' ');
 	}
 
+	// Most text fields.
 	var MetaBlockField = compose(
 		withDispatch( function( dispatch, props ) {
 			return {
@@ -111,6 +112,35 @@
 			id: props.id,
 			onChange: function( content ) {
 				props.setMetaFieldValue( content );
+			},
+		} );
+	} );
+
+	// Text field that allows only digits.
+	var MetaBlockDigitsField = compose(
+		withDispatch( function( dispatch, props ) {
+			return {
+				setMetaFieldValue: function( value ) {
+					dispatch( 'core/editor' ).editPost(
+						{ meta: { [ props.fieldName ]: value } }
+					);
+				}
+			}
+		} ),
+		withSelect( function( select, props ) {
+			return {
+				metaFieldValue: select( 'core/editor' )
+					.getEditedPostAttribute( 'meta' )
+					[ props.fieldName ],
+			}
+		} )
+	)( function( props ) {
+		return el( Text, {
+			label: getLabel( props.fieldName ),
+			value: props.metaFieldValue,
+			id: props.id,
+			onChange: function( content ) {
+				props.setMetaFieldValue( content.replace( /[^0-9]+/g, '' ) );
 			},
 		} );
 	} );
@@ -182,7 +212,7 @@
 					fieldName: 'inventory_presser_interior_color',
 					id:        'inventory_presser_interior_color'
 				} ),
-				el( MetaBlockField, {
+				el( MetaBlockDigitsField, {
 					fieldName: 'inventory_presser_odometer',
 					id:        'inventory_presser_odometer'
 				} ),

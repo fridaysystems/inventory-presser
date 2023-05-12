@@ -98,11 +98,17 @@ class Inventory_Presser_Admin_Options {
 		$handle = 'invp_page_settings';
 		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_script(
-			'invp_page_settings',
-			plugins_url( '/js/page-settings.min.js', INVP_PLUGIN_FILE_PATH ),
+			$handle,
+			plugins_url( "/js/page-settings${min}.js", INVP_PLUGIN_FILE_PATH ),
 			array( 'jquery' ),
-			false,
+			INVP_PLUGIN_VERSION,
 			true
+		);
+		wp_register_style(
+			$handle,
+			plugins_url( "/css/page-settings${min}.css", INVP_PLUGIN_FILE_PATH ),
+			array(),
+			INVP_PLUGIN_VERSION
 		);
 	}
 
@@ -367,7 +373,7 @@ class Inventory_Presser_Admin_Options {
 							<?php
 							// url path.
 							printf(
-								'%1$s/<input type="text" id="additional_listings_pages_slug_%2$s" name="%3$s[additional_listings_pages][%2$s][url_path]" value="%4$s" />',
+								'%1$s/<input type="text" id="additional_listings_pages_slug_%2$s" name="%3$s[additional_listings_pages][%2$s][url_path]" class="additional_listings_pages_slug" value="%4$s" />',
 								esc_url( site_url() ),
 								esc_attr( $a ),
 								esc_attr( INVP::OPTION_NAME ),
@@ -790,6 +796,7 @@ class Inventory_Presser_Admin_Options {
 	 */
 	public function options_page_content() {
 		wp_enqueue_script( 'invp_page_settings' );
+		wp_enqueue_style( 'invp_page_settings' );
 
 		$this->option = INVP::settings();
 

@@ -6,7 +6,7 @@ function delete_all_data() {
 function delete_all_post_attachments( ) {
 	if( confirm('Are you sure you want to delete all attachments?') ) {
 		var data = {
-			'_ajax_nonce': invp.delete_all_media_nonce,
+			'_ajax_nonce': invp_classic_editor.delete_all_media_nonce,
 			'action': 'delete_all_post_attachments',
 			'post_ID': document.getElementById('post_ID').value
 		};
@@ -110,14 +110,5 @@ jQuery(document).ready( function(){
 	//Confirm Delete All Vehicles button presses
 	jQuery('a#delete_all_vehicles').on('click',function(){
 		return confirm('Are you sure you want to delete all vehicles and vehicle photos?');
-	});
-	//Confirm before uninstalling the plugin
-	jQuery('.row-actions .uninstall.delete a').on('click',function(){
-		return confirm('Are you sure you want to delete all vehicle data, delete all plugin data, and deactivate?');
-	});
-
-	//Only allow digits in the odometer text box in the editor sidebar
-	jQuery('.components-base-control #inventory_presser_odometer').on( 'input', function() {
-		jQuery(this).val(jQuery(this).val().replace( /[^0-9]+/g, '' ));
 	});
 });

@@ -1,0 +1,10 @@
+/* Columns on edit.php */
+th.column-inventory_presser_photo_count{
+	width: 85px;
+}
+
+/* Thumbnail column */
+.wp-list-table.posts tr.type-inventory_vehicle td.inventory_presser_thumbnail img{
+	max-width: 100%;
+	height: auto;
+}

@@ -61,6 +61,57 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	 * @return void
 	 */
 	public function scripts_and_styles() {
+		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_script( 'wp-api' );
+		wp_enqueue_style( 'invp-editor-sidebar', plugins_url( '/css/editor-sidebar.min.css', INVP_PLUGIN_FILE_PATH ) );
+
+		// Provide data to JavaScript for the editor.
+		wp_add_inline_script(
+			'wp-api',
+			'const invp = ' . json_encode(
+				array(
+					'hull_materials'         => apply_filters(
+						'invp_default_hull_materials',
+						array(
+							'Aluminum',
+							'Carbon Fiber',
+							'Composite',
+							'Ferro-Cement',
+							'Fiberglass',
+							'Hypalon',
+							'Other',
+							'PVC',
+							'Steel',
+							'Wood',
+						)
+					),
+					'miles_word'             => apply_filters( 'invp_odometer_word', 'miles' ),
+					'meta_prefix'            => INVP::meta_prefix(),
+					'payment_frequencies'    => apply_filters(
+						'invp_default_payment_frequencies',
+						array(
+							'Monthly'      => 'monthly',
+							'Weekly'       => 'weekly',
+							'Bi-weekly'    => 'biweekly',
+							'Semi-monthly' => 'semimonthly',
+						)
+					),
+					'title_statuses'         => apply_filters(
+						'invp_default_title_statuses',
+						array(
+							'Unspecified',
+							'Clear',
+							'Clean',
+							'Flood, Water Damage',
+							'Lemon and Manufacturers Buyback',
+							'Rebuild, Rebuildable, and Reconstructed',
+							'Salvage',
+							'Other',
+						)
+					),
+				)
+			),
+			'before'
+		);
 	}
 }

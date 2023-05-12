@@ -1,52 +1,75 @@
 <?php
+/**
+ * Classic Editor
+ *
+ * @package inventory-presser
+ */
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Inventory_Presser_Admin_Customize_Dashboard
+ * Inventory_Presser_Admin_Classic_Editor
  *
- * An object that customizes the administrator dashboard to make managing an
- * inventory of vehicles easy.
+ * Adds features to the Classic Editor.
  *
- * @since      1.3.1
+ * @since      14.10.0
  * @package    Inventory_Presser
  * @subpackage Inventory_Presser/includes/admin
- * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
+ * @author     Corey Salzano <corey@friday.systems>
  */
-class Inventory_Presser_Admin_Customize_Dashboard {
+class Inventory_Presser_Admin_Classic_Editor {
 
 	const NONCE_DELETE_ALL_MEDIA = 'invp_delete_all_media';
 
 	/**
-	 * add_columns_to_vehicles_table
+	 * Adds hooks
 	 *
-	 * Adds slugs to the post table columns array so the dashboard list of
-	 * vehicles is more informative than the vanilla list for posts.
-	 *
-	 * @param  array $column
-	 * @return array
+	 * @return void
 	 */
-	function add_columns_to_vehicles_table( $column ) {
-		// add our columns
-		$column[ apply_filters( 'invp_prefix_meta_key', 'stock_number' ) ] = __( 'Stock #', 'inventory-presser' );
-		$column[ apply_filters( 'invp_prefix_meta_key', 'color' ) ]        = __( 'Color', 'inventory-presser' );
-		$column[ apply_filters( 'invp_prefix_meta_key', 'odometer' ) ]     = __( 'Odometer', 'inventory-presser' );
-		$column[ apply_filters( 'invp_prefix_meta_key', 'price' ) ]        = __( 'Price', 'inventory-presser' );
-		$column[ apply_filters( 'invp_prefix_meta_key', 'photo_count' ) ]  = __( 'Photos', 'inventory-presser' );
-		$column[ apply_filters( 'invp_prefix_meta_key', 'thumbnail' ) ]    = __( 'Thumbnail', 'inventory-presser' );
-		// remove the date and tags columns
-		unset( $column['date'] );
-		unset( $column['tags'] );
-		return $column;
+	public function add_hooks() {
+		add_action( 'current_screen', array( $this, 'add_hooks_current_screen' ) );
+	}
+
+	public function add_hooks_current_screen() {
+		// Are we editing a vehicle in the Classic Editor?
+		if ( ! is_plugin_active( 'classic-editor/classic-editor.php' ) ) {
+			// No. Classic Editor plugin is not active.
+			return;
+		}
+		global $pagenow, $current_screen;
+		if ( ( $pagenow !== 'post.php' || INVP::POST_TYPE !== $current_screen->post_type ) ) {
+			// No. Not editing a vehicle.
+			return;
+		}
+
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes_to_cpt' ) );
+
+		// Move all "advanced" meta boxes above the default editor
+		// http://wordpress.stackexchange.com/a/88103
+		add_action( 'edit_form_after_title', array( $this, 'move_advanced_meta_boxes' ) );
+
+		// Move the "Tags" metabox below the meta boxes for vehicle custom taxonomies
+		add_action( 'add_meta_boxes', array( $this, 'move_tags_meta_box' ), 0 );
+
+		// Load our scripts
+		add_action( 'admin_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
+
+		// Add some content next to the "Add Media" button
+		add_action( 'media_buttons', array( $this, 'annotate_add_media_button' ) );
+
+		// Define an AJAX handler for the 'Delete All Media' button
+		add_filter( 'wp_ajax_delete_all_post_attachments', array( $this, 'delete_all_post_attachments' ) );
+
+		// Make our Add Media button annotation available from an AJAX call
+		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
 	}
 
 	/**
-	 * add_meta_boxes_to_cpt
-	 *
 	 * Adds meta boxes to the editor when editing vehicles.
 	 *
 	 * @return void
 	 */
-	function add_meta_boxes_to_cpt() {
+	public function add_meta_boxes_to_cpt() {
 		// Add a meta box to the New/Edit post page
 		// add_meta_box('vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), INVP::POST_TYPE, 'normal', 'high' );
 
@@ -61,38 +84,12 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	}
 
 	/**
-	 * add_vehicles_to_admin_bar
-	 *
-	 * Adds a Vehicle button to the Admin Bar
-	 *
-	 * @return void
-	 */
-	function add_vehicles_to_admin_bar() {
-		// do not do this if we are already looking at the dashboard
-		if ( is_admin() ) {
-			return;
-		}
-
-		global $wp_admin_bar;
-		$wp_admin_bar->add_node(
-			array(
-				'id'     => 'wp-admin-bar-vehicles',
-				'title'  => __( 'Vehicles', 'inventory-presser' ),
-				'href'   => admin_url( 'edit.php?post_type=' . INVP::POST_TYPE ),
-				'parent' => 'site-name',
-			)
-		);
-	}
-
-	/**
-	 * annotate_add_media_button
-	 *
 	 * Adds HTML near the Add Media button on the classic editor.
 	 *
 	 * @param  mixed $editor_id
 	 * @return void
 	 */
-	function annotate_add_media_button( $editor_id ) {
+	public function annotate_add_media_button( $editor_id ) {
 		if ( 'content' != $editor_id ) {
 			return;
 		}
@@ -105,48 +102,6 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	}
 
 	/**
-	 * change_post_updated_messages
-	 *
-	 * Changes the messages shown to users in the editor when changes are made
-	 * to the post object.
-	 *
-	 * @param  array $msgs
-	 * @return array
-	 */
-	function change_post_updated_messages( $msgs ) {
-		global $post;
-
-		$view_link = sprintf(
-			'<a href="%1$s">%2$s</a>',
-			esc_url( get_permalink( $post->ID ) ),
-			__( 'View vehicle', 'inventory-presser' )
-		);
-
-		$preview_link = sprintf(
-			'<a target="_blank" href="%1$s">%2$s</a>',
-			esc_url( get_preview_post_link( $post->ID ) ),
-			__( 'Preview vehicle', 'inventory-presser' )
-		);
-
-		$scheduled_date = date_i18n( __( 'M j, Y @ H:i', 'inventory-presser' ), strtotime( $post->post_date ) );
-
-		$msgs[ INVP::POST_TYPE ] = array(
-			0  => '',
-			1  => __( 'Vehicle updated. ', 'inventory-presser' ) . $view_link,
-			2  => __( 'Custom field updated.', 'inventory-presser' ),
-			3  => __( 'Custom field updated.', 'inventory-presser' ),
-			4  => __( 'Vehicle updated.', 'inventory-presser' ),
-			5  => isset( $_GET['revision'] ) ? sprintf( __( 'Vehicle restored to revision from %s.', 'inventory-presser' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6  => __( 'Vehicle published. ', 'inventory-presser' ) . $view_link,
-			7  => __( 'Vehicle saved.', 'inventory-presser' ),
-			8  => __( 'Vehicle submitted. ', 'inventory-presser' ) . $preview_link,
-			9  => sprintf( __( 'Vehicle scheduled to list on <strong>%s</strong>. ', 'inventory-presser' ), $scheduled_date ) . $preview_link,
-			10 => __( 'Vehicle draft updated. ', 'inventory-presser' ) . $preview_link,
-		);
-		return $msgs;
-	}
-
-	/**
 	 * create_add_media_button_annotation
 	 *
 	 * Computes the number of attachments on vehicles so the number can be
@@ -154,7 +109,7 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	 *
 	 * @return string
 	 */
-	function create_add_media_button_annotation() {
+	protected function create_add_media_button_annotation() {
 		global $post;
 		if ( ! is_object( $post ) && isset( $_POST['post_ID'] ) ) {
 			/**
@@ -223,14 +178,12 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	}
 
 	/**
-	 * create_delete_all_post_attachments_button
-	 *
 	 * Creates HTML that renders a button that says "Delete All Media" that will
 	 * be placed near the Add Media button.
 	 *
 	 * @return string
 	 */
-	function create_delete_all_post_attachments_button() {
+	protected function create_delete_all_post_attachments_button() {
 		global $post;
 		if ( ! is_object( $post ) || ! isset( $post->ID ) ) {
 			return '';
@@ -265,7 +218,7 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	 *
 	 * @return void
 	 */
-	function delete_all_post_attachments() {
+	public function delete_all_post_attachments() {
 		if ( empty( $_POST['_ajax_nonce'] ) || ! wp_verify_nonce( $_POST['_ajax_nonce'], self::NONCE_DELETE_ALL_MEDIA ) ) {
 			return;
 		}
@@ -284,151 +237,34 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	}
 
 	/**
-	 * enable_order_by_attachment_count
-	 *
-	 * Handle the ORDER BY on the vehicle list (edit.php) when sorting by photo
-	 * count.
-	 *
-	 * @param  array    $pieces
-	 * @param  WP_Query $query
-	 * @return array
-	 */
-	function enable_order_by_attachment_count( $pieces, $query ) {
-		if ( ! is_admin() ) {
-			return $pieces;
-		}
-
-		/**
-		 * We only want our code to run in the main WP query
-		 * AND if an orderby query variable is designated.
-		 */
-		if ( $query->is_main_query() && ( $orderby = $query->get( 'orderby' ) ) ) {
-			// Get the order query variable - ASC or DESC
-			$order = strtoupper( $query->get( 'order' ) );
-
-			// Make sure the order setting qualifies. If not, set default as ASC
-			if ( ! in_array( $order, array( 'ASC', 'DESC' ) ) ) {
-				$order = 'ASC';
-			}
-
-			if ( apply_filters( 'invp_prefix_meta_key', 'photo_count' ) == $orderby
-				|| apply_filters( 'invp_prefix_meta_key', 'thumbnail' ) == $orderby
-			) {
-				global $wpdb;
-				$pieces['orderby'] = "( SELECT COUNT( ID ) FROM {$wpdb->posts} forget WHERE post_parent = {$wpdb->posts}.ID ) $order, " . $pieces['orderby'];
-			}
-		}
-		return $pieces;
-	}
-
-	/**
-	 * hooks
-	 *
-	 * Adds hooks
-	 *
-	 * @return void
-	 */
-	function hooks() {
-		add_filter( 'posts_clauses', array( $this, 'enable_order_by_attachment_count' ), 1, 2 );
-
-		// Add columns to the table that lists all the Vehicles on edit.php
-		add_filter( 'manage_' . INVP::POST_TYPE . '_posts_columns', array( $this, 'add_columns_to_vehicles_table' ) );
-
-		// Populate the columns we added to the Vehicles table
-		add_action( 'manage_' . INVP::POST_TYPE . '_posts_custom_column', array( $this, 'populate_columns_we_added_to_vehicles_table' ), 10, 2 );
-
-		// Make our added columns to the Vehicles table sortable
-		add_filter( 'manage_edit-' . INVP::POST_TYPE . '_sortable_columns', array( $this, 'make_vehicles_table_columns_sortable' ) );
-
-		// Implement the orderby for each of these added columns
-		add_filter( 'pre_get_posts', array( $this, 'vehicles_table_columns_orderbys' ) );
-
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes_to_cpt' ) );
-
-		// Move all "advanced" meta boxes above the default editor
-		// http://wordpress.stackexchange.com/a/88103
-		add_action( 'edit_form_after_title', array( $this, 'move_advanced_meta_boxes' ) );
-
-		// Move the "Tags" metabox below the meta boxes for vehicle custom taxonomies
-		add_action( 'add_meta_boxes', array( $this, 'move_tags_meta_box' ), 0 );
-
-		// Load our scripts
-		add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
-
-		// Add some content next to the "Add Media" button
-		add_action( 'media_buttons', array( $this, 'annotate_add_media_button' ) );
-
-		// Define an AJAX handler for the 'Delete All Media' button
-		add_filter( 'wp_ajax_delete_all_post_attachments', array( $this, 'delete_all_post_attachments' ) );
-
-		// Make our Add Media button annotation available from an AJAX call
-		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
-
-		// Add a link to the main menu of the Admin bar
-		add_action( 'admin_bar_menu', array( $this, 'add_vehicles_to_admin_bar' ), 100 );
-
-		// Change some messages in the dashboard the user sees when updating vehicles
-		add_filter( 'post_updated_messages', array( $this, 'change_post_updated_messages' ) );
-	}
-
-	/**
-	 * load_scripts
-	 *
 	 * Includes JavaScripts and stylesheets that power our changes to the
 	 * dashboard.
 	 *
 	 * @param  string $hook
 	 * @return void
 	 */
-	function load_scripts( $hook ) {
-		wp_enqueue_style( 'my-admin-theme', plugins_url( '/css/wp-admin.min.css', INVP_PLUGIN_FILE_PATH ) );
-		wp_register_script( 'invp-js', plugins_url( '/js/admin.min.js', INVP_PLUGIN_FILE_PATH ) );
-		wp_enqueue_script( 'invp-js' );
+	public function scripts_and_styles( $hook ) {
+		$handle = 'invp-classic-editor';
+		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		wp_enqueue_style(
+			$handle,
+			plugins_url( "/css/classic-editor{$min}.css", INVP_PLUGIN_FILE_PATH ),
+			array(),
+			INVP_PLUGIN_VERSION
+		);
+		wp_enqueue_script(
+			$handle,
+			plugins_url( "/js/classic-editor{$min}.js", INVP_PLUGIN_FILE_PATH ),
+			array(),
+			INVP_PLUGIN_VERSION,
+			true
+		);
 
 		// Provide data to JavaScript for the editor
 		wp_add_inline_script(
-			'invp-js',
-			'const invp = ' . json_encode(
+			$handle,
+			'const invp_classic_editor = ' . json_encode(
 				array(
-					'hull_materials'         => apply_filters(
-						'invp_default_hull_materials',
-						array(
-							'Aluminum',
-							'Carbon Fiber',
-							'Composite',
-							'Ferro-Cement',
-							'Fiberglass',
-							'Hypalon',
-							'Other',
-							'PVC',
-							'Steel',
-							'Wood',
-						)
-					),
-					'miles_word'             => apply_filters( 'invp_odometer_word', 'miles' ),
-					'meta_prefix'            => INVP::meta_prefix(),
-					'payment_frequencies'    => apply_filters(
-						'invp_default_payment_frequencies',
-						array(
-							'Monthly'      => 'monthly',
-							'Weekly'       => 'weekly',
-							'Bi-weekly'    => 'biweekly',
-							'Semi-monthly' => 'semimonthly',
-						)
-					),
-					'title_statuses'         => apply_filters(
-						'invp_default_title_statuses',
-						array(
-							'Unspecified',
-							'Clear',
-							'Clean',
-							'Flood, Water Damage',
-							'Lemon and Manufacturers Buyback',
-							'Rebuild, Rebuildable, and Reconstructed',
-							'Salvage',
-							'Other',
-						)
-					),
 					'delete_all_media_nonce' => wp_create_nonce( self::NONCE_DELETE_ALL_MEDIA ),
 				)
 			),
@@ -437,35 +273,12 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	}
 
 	/**
-	 * make_vehicles_table_columns_sortable
-	 *
-	 * Declares which of our custom columns on the list of posts are sortable.
-	 *
-	 * @param  array $columns
-	 * @return array
-	 */
-	function make_vehicles_table_columns_sortable( $columns ) {
-		$custom = array(
-			// meta column id => sortby value used in query
-			apply_filters( 'invp_prefix_meta_key', 'color' ) => apply_filters( 'invp_prefix_meta_key', 'color' ),
-			apply_filters( 'invp_prefix_meta_key', 'odometer' ) => apply_filters( 'invp_prefix_meta_key', 'odometer' ),
-			apply_filters( 'invp_prefix_meta_key', 'price' ) => apply_filters( 'invp_prefix_meta_key', 'price' ),
-			apply_filters( 'invp_prefix_meta_key', 'stock_number' ) => apply_filters( 'invp_prefix_meta_key', 'stock_number' ),
-			apply_filters( 'invp_prefix_meta_key', 'photo_count' ) => apply_filters( 'invp_prefix_meta_key', 'photo_count' ),
-			apply_filters( 'invp_prefix_meta_key', 'thumbnail' ) => apply_filters( 'invp_prefix_meta_key', 'thumbnail' ),
-		);
-		return wp_parse_args( $custom, $columns );
-	}
-
-	/**
-	 * meta_box_html_featured
-	 *
 	 * Creates an editor meta box to help users mark vehicles as featured.
 	 *
 	 * @param  WP_Post $post
 	 * @return void
 	 */
-	function meta_box_html_featured( $post ) {
+	public function meta_box_html_featured( $post ) {
 		$meta_key = apply_filters( 'invp_prefix_meta_key', 'featured' );
 		printf(
 			'<input type="checkbox" id="%s" name="%s" value="1"%s><label for="%s">%s</label>',
@@ -478,15 +291,13 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	}
 
 	/**
-	 * meta_box_html_options
-	 *
 	 * Creates a meta box to help the user see and manage vehicle options while
 	 * editing a vehicle post.
 	 *
 	 * @param  WP_Post $post
 	 * @return void
 	 */
-	function meta_box_html_options( $post ) {
+	public function meta_box_html_options( $post ) {
 		$options = apply_filters(
 			'invp_default_options',
 			array(
@@ -601,15 +412,13 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	}
 
 	/**
-	 * meta_box_html_prices
-	 *
 	 * Creates a meta box to help users manage a vehicles prices in the editor.
 	 *
 	 * @param  WP_Post $post
 	 * @param  mixed   $meta_box
 	 * @return void
 	 */
-	function meta_box_html_prices( $post, $meta_box ) {
+	public function meta_box_html_prices( $post, $meta_box ) {
 		$prices = array(
 			'price'        => 'Price',
 			'msrp'         => 'MSRP',
@@ -661,8 +470,6 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	}
 
 	/**
-	 * meta_box_html_vehicle
-	 *
 	 * Creates a meta box to help the user manage the bulk of the meta fields
 	 * that define a vehicle.
 	 *
@@ -670,7 +477,7 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	 * @param  mixed   $meta_box
 	 * @return void
 	 */
-	function meta_box_html_vehicle( $post, $meta_box ) {
+	public function meta_box_html_vehicle( $post, $meta_box ) {
 		// HTML output for vehicle data meta box
 		$custom = get_post_custom( $post->ID );
 
@@ -890,13 +697,11 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	}
 
 	/**
-	 * move_advanced_meta_boxes
-	 *
 	 * Rearranges meta boxes on the editor when editing vehicles
 	 *
 	 * @return void
 	 */
-	function move_advanced_meta_boxes() {
+	public function move_advanced_meta_boxes() {
 		global $post, $wp_meta_boxes;
 		$post_type = get_post_type( $post );
 
@@ -909,13 +714,11 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	}
 
 	/**
-	 * move_tags_meta_box
-	 *
 	 * Remove and re-add the "Tags" meta box so it ends up at the bottom for our CPT
 	 *
 	 * @return void
 	 */
-	function move_tags_meta_box() {
+	public function move_tags_meta_box() {
 		global $wp_meta_boxes;
 		unset( $wp_meta_boxes[ INVP::POST_TYPE ]['side']['core']['tagsdiv-post_tag'] );
 		add_meta_box(
@@ -930,82 +733,14 @@ class Inventory_Presser_Admin_Customize_Dashboard {
 	}
 
 	/**
-	 * output_add_media_button_annotation
-	 *
 	 * AJAX callback to output the content we put near the Add Media button in
 	 * the classic editor.
 	 *
 	 * @return void
 	 */
-	function output_add_media_button_annotation() {
-		// because AJAX
+	public function output_add_media_button_annotation() {
+		// because AJAX.
 		echo $this->create_add_media_button_annotation();
 		wp_die();
-	}
-
-	/**
-	 * populate_columns_we_added_to_vehicles_table
-	 *
-	 * Populates the custom columns we added to the posts table in the
-	 * dashboard.
-	 *
-	 * @param  string $column_name
-	 * @param  int    $post_id
-	 * @return void
-	 */
-	function populate_columns_we_added_to_vehicles_table( $column_name, $post_id ) {
-		$custom_fields = get_post_custom( $post_id );
-		$val           = ( isset( $custom_fields[ $column_name ] ) ? $custom_fields[ $column_name ][0] : '' );
-		switch ( true ) {
-			case $column_name == apply_filters( 'invp_prefix_meta_key', 'thumbnail' ):
-				echo edit_post_link( get_the_post_thumbnail( $post_id, 'thumbnail' ) );
-				break;
-
-			case $column_name == apply_filters( 'invp_prefix_meta_key', 'odometer' ):
-				echo invp_get_the_odometer( '', $post_id );
-				break;
-
-			case $column_name == apply_filters( 'invp_prefix_meta_key', 'photo_count' ):
-				echo invp_get_the_photo_count( $post_id );
-				break;
-
-			case $column_name == apply_filters( 'invp_prefix_meta_key', 'price' ):
-				echo invp_get_the_price( '-', $post_id );
-				break;
-
-			default:
-				echo $val;
-		}
-	}
-
-	/**
-	 * vehicles_table_columns_orderbys
-	 *
-	 * Change the dashboard post query to sort based on a custom column we
-	 * added.
-	 *
-	 * @param  WP_Query $query
-	 * @return void
-	 */
-	function vehicles_table_columns_orderbys( $query ) {
-		if ( ! is_admin() || ! $query->is_main_query() ) {
-			return;
-		}
-
-		$columns = array(
-			'color',
-			'odometer',
-			'price',
-			'stock_number',
-		);
-		$orderby = $query->get( 'orderby' );
-		foreach ( $columns as $column ) {
-			$meta_key = apply_filters( 'invp_prefix_meta_key', $column );
-			if ( $orderby == $meta_key ) {
-				$query->set( 'meta_key', $meta_key );
-				$query->set( 'orderby', 'meta_value' . ( INVP::meta_value_is_number( $meta_key ) ? '_num' : '' ) );
-				return;
-			}
-		}
 	}
 }

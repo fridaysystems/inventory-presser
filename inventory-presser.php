@@ -575,10 +575,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_filter( 'invp_prefix_meta_key', array( 'INVP', 'translate_custom_field_names' ) );
 			add_filter( 'invp_unprefix_meta_key', array( 'INVP', 'untranslate_custom_field_names' ) );
 
-			// Modify the administrator dashboard.
-			$customize_dashboard = new Inventory_Presser_Admin_Customize_Dashboard();
-			$customize_dashboard->hooks();
-
 			/**
 			 * Create our post type and taxonomies
 			 */
@@ -736,10 +732,18 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$additional_archives = new Inventory_Presser_Additional_Listings_Pages();
 			$additional_archives->add_hooks();
 
+			// Add columns to the vehicle posts list
+			$bar = new Inventory_Presser_Admin_Bar();
+			$bar->add_hooks();
+
 			if ( is_admin() ) {
 				// Initialize our Settings page in the Dashboard.
 				$options = new Inventory_Presser_Admin_Options();
 				$options->add_hooks();
+
+				// Add columns to the vehicle posts list
+				$posts_list = new Inventory_Presser_Admin_Posts_List();
+				$posts_list->add_hooks();
 
 				// If the user is looking at our options page, suggest settings tweaks.
 				$settings_suggester = new Inventory_Presser_Admin_Settings_Suggester();
@@ -771,6 +775,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			$photo_arranger = new Inventory_Presser_Admin_Photo_Arranger();
 			$photo_arranger->add_hooks();
+
+			$classic_editor = new Inventory_Presser_Admin_Classic_Editor();
+			$classic_editor->add_hooks();
 
 			// Change archive page titles.
 			add_filter( 'document_title_parts', array( $this, 'change_archive_title_tags' ) );
@@ -910,11 +917,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'addon/class-addon-license.php',
 				'addon/class-addon-updater.php',
 				'addon/class-addon.php',
-				'admin/class-admin-customize-dashboard.php',
+				'admin/class-admin-bar.php',
+				'admin/class-admin-classic-editor.php',
 				'admin/class-admin-editor-sidebar.php',
 				'admin/class-admin-location-meta.php',
 				'admin/class-admin-options.php',
 				'admin/class-admin-photo-arranger.php',
+				'admin/class-admin-posts-list.php',
 				'admin/class-admin-settings-suggester.php',
 				'class-additional-listings-pages.php',
 				'class-allow-inventory-as-home-page.php',
