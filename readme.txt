@@ -4,7 +4,7 @@ Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, mo
 Requires at least: 5.0.0
 Tested up to: 6.2.0
 Requires PHP: 7.0.0
-Stable tag: 14.9.0
+Stable tag: 14.10.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ Manage and market dealership inventory with listings and photo sliders built on 
 * [Manage multiple lot locations](https://inventorypresser.com/docs/vehicle-post-type/locations-taxonomy/) and maintain separate phone numbers & hours for each
 * [VIN-decoding add-on](https://inventorypresser.com/products/plugins/add-vins-to-vehicle-urls/) available
 * Categorizes inventory by type, body style, fuel, transmission, drive type, availability, new or used, location, and more
-* Includes blocks, shortcodes, and [widgets](https://inventorypresser.com/docs/feature-list/widgets/) including vehicle sliders and inventory grids
+* Includes blocks, [shortcodes](https://inventorypresser.com/docs/shortcodes/), and [widgets](https://inventorypresser.com/docs/feature-list/widgets/) including vehicle sliders and inventory grids
 
 Integrates with other plugins
 
@@ -71,6 +71,14 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.10.0 =
+* [Added] Adds the list of taxonomy links to the settings page near the checkbox to toggle them in the menu.
+* [Fixed] Stop warning users about thumbnail size aspect ratios if they are not 4:3. 16:9 is the new mainstream ratio, so check for either.
+* [Fixed] Fixes CSS in the Listings Pages table of the settings page.
+* [Fixed] Stops loading Classic Editor features when the Classic Editor plugin is not active and other dashboard performance improvements.
+* [Fixed] Adds support for SCRIPT_DEBUG in all script and style registrations.
+* [Fixed] Adds plugin version number to script and style registrations so they can be cached appropriately.
 
 = 14.9.0 =
 * [Added] Adds a function invp_get_the_inventory_sentence() that returns an HTML string containing links like, "Browse Car, SUV, Truck, or all 10 vehicles for sale."
