@@ -677,6 +677,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// When vehicles are deleted, delete their attachments, too.
 			add_action( 'before_delete_post', array( 'INVP', 'delete_attachments' ), 10, 1 );
 
+			// Change messages in the dashboard when updating vehicles.
+			add_filter( 'post_updated_messages', array( $this, 'change_post_updated_messages' ) );
+
 			// Change links to our taxonomy terms to insert /inventory/.
 			add_filter( 'pre_term_link', array( $this, 'change_term_links' ), 10, 2 );
 
@@ -834,6 +837,46 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$title_parts['title'] .= __( 'For Sale', 'inventory_presser' );
 
 			return $title_parts;
+		}
+
+		/**
+		 * Changes the messages shown to users in the editor when changes are made
+		 * to the post object.
+		 *
+		 * @param  array $msgs
+		 * @return array
+		 */
+		public function change_post_updated_messages( $msgs ) {
+			global $post;
+
+			$view_link = sprintf(
+				'<a href="%1$s">%2$s</a>',
+				esc_url( get_permalink( $post->ID ) ),
+				__( 'View vehicle', 'inventory-presser' )
+			);
+
+			$preview_link = sprintf(
+				'<a target="_blank" href="%1$s">%2$s</a>',
+				esc_url( get_preview_post_link( $post->ID ) ),
+				__( 'Preview vehicle', 'inventory-presser' )
+			);
+
+			$scheduled_date = date_i18n( __( 'M j, Y @ H:i', 'inventory-presser' ), strtotime( $post->post_date ) );
+
+			$msgs[ INVP::POST_TYPE ] = array(
+				0  => '',
+				1  => __( 'Vehicle updated. ', 'inventory-presser' ) . $view_link,
+				2  => __( 'Custom field updated.', 'inventory-presser' ),
+				3  => __( 'Custom field updated.', 'inventory-presser' ),
+				4  => __( 'Vehicle updated.', 'inventory-presser' ),
+				5  => isset( $_GET['revision'] ) ? sprintf( __( 'Vehicle restored to revision from %s.', 'inventory-presser' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+				6  => __( 'Vehicle published. ', 'inventory-presser' ) . $view_link,
+				7  => __( 'Vehicle saved.', 'inventory-presser' ),
+				8  => __( 'Vehicle submitted. ', 'inventory-presser' ) . $preview_link,
+				9  => sprintf( __( 'Vehicle scheduled to list on <strong>%s</strong>. ', 'inventory-presser' ), $scheduled_date ) . $preview_link,
+				10 => __( 'Vehicle draft updated. ', 'inventory-presser' ) . $preview_link,
+			);
+			return $msgs;
 		}
 
 		/**
