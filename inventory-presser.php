@@ -767,23 +767,16 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$rest = new Inventory_Presser_REST();
 			$rest->add_hooks();
 
-			$wp_all_import = new Inventory_Presser_WP_All_Import();
-			$wp_all_import->add_hooks();
-
-			$contact_form_7 = new Inventory_Presser_Contact_Form_7();
-			$contact_form_7->add_hooks();
-
 			$photo_arranger = new Inventory_Presser_Admin_Photo_Arranger();
 			$photo_arranger->add_hooks();
-
-			$classic_editor = new Inventory_Presser_Admin_Classic_Editor();
-			$classic_editor->add_hooks();
 
 			// Change archive page titles.
 			add_filter( 'document_title_parts', array( $this, 'change_archive_title_tags' ) );
 
 			// Add a link to the Settings page on the plugin management page
 			add_filter( 'plugin_action_links_' . INVP_PLUGIN_BASE, array( $this, 'insert_settings_link' ), 2, 2 );
+
+			add_action( 'plugins_loaded', array( $this, 'load_integrations' ) );
 		}
 
 		/**
@@ -901,6 +894,37 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		/**
+		 * Add hooks that power our integrations with other plugins.
+		 *
+		 * @return void
+		 */
+		public function load_integrations() {
+			$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+			// WP All Import
+			if ( in_array( 'wp-all-import-pro/wp-all-import-pro.php', $active_plugins, true ) ) {
+				$wp_all_import = new Inventory_Presser_WP_All_Import();
+				$wp_all_import->add_hooks();
+			}
+
+			// Contact Form 7
+			if ( in_array( 'contact-form-7/wp-contact-form-7.php', $active_plugins, true ) ) {
+				$contact_form_7 = new Inventory_Presser_Contact_Form_7();
+				$contact_form_7->add_hooks();
+			}
+
+			// WPForms Lite
+			if ( in_array( 'wpforms-lite/wpforms.php', $active_plugins, true ) ) {
+				include plugin_dir_path( __FILE__ ) . 'includes/integrations/class-wpforms-field-vehicle.php';
+			}
+
+			// Classic Editor
+			if ( in_array( 'classic-editor/classic-editor.php', $active_plugins, true ) ) {
+				$classic_editor = new Inventory_Presser_Admin_Classic_Editor();
+				$classic_editor->add_hooks();
+			}
+		}
+
+		/**
 		 * Includes all the includes! This function loads all the other PHP files
 		 * that contain this plugin's code.
 		 *
@@ -938,8 +962,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-redirect-404-vehicles.php',
 				'class-rest.php',
 				'class-schema-org-generator.php',
-				'integrations/class-wp-all-import.php',
 				'integrations/class-contact-form-7.php',
+				'integrations/class-wp-all-import.php',
 				'shortcode/class-shortcode-hours-today.php',
 				'shortcode/class-shortcode-iframe.php',
 				'shortcode/class-shortcode-inventory-grid.php',

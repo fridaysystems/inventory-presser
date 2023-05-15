@@ -172,9 +172,9 @@ class Inventory_Presser_Admin_Classic_Editor {
 					$note .= $count . ' ' . $key . ( 1 != $count ? 's' : '' );
 				}
 			}
-			return $note;
+			return $note . ' ';
 		}
-		return '0 photos';
+		return '0 ' . __( 'photos', 'inventory-presser' ) . ' ';
 	}
 
 	/**
