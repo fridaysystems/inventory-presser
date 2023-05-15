@@ -919,7 +919,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			// Classic Editor
 			if ( in_array( 'classic-editor/classic-editor.php', $active_plugins, true ) ) {
-				$classic_editor = new Inventory_Presser_Admin_Classic_Editor();
+				$classic_editor = new Inventory_Presser_Classic_Editor();
 				$classic_editor->add_hooks();
 			}
 		}
@@ -942,7 +942,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'addon/class-addon-updater.php',
 				'addon/class-addon.php',
 				'admin/class-admin-bar.php',
-				'admin/class-admin-classic-editor.php',
 				'admin/class-admin-editor-sidebar.php',
 				'admin/class-admin-location-meta.php',
 				'admin/class-admin-options.php',
@@ -962,6 +961,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-redirect-404-vehicles.php',
 				'class-rest.php',
 				'class-schema-org-generator.php',
+				'integrations/class-classic-editor.php',
 				'integrations/class-contact-form-7.php',
 				'integrations/class-wp-all-import.php',
 				'shortcode/class-shortcode-hours-today.php',

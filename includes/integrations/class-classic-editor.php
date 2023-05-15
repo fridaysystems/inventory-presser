@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Inventory_Presser_Admin_Classic_Editor
+ * Inventory_Presser_Classic_Editor
  *
  * Adds features to the Classic Editor.
  *
@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  * @subpackage Inventory_Presser/includes/admin
  * @author     Corey Salzano <corey@friday.systems>
  */
-class Inventory_Presser_Admin_Classic_Editor {
+class Inventory_Presser_Classic_Editor {
 
 	const NONCE_DELETE_ALL_MEDIA = 'invp_delete_all_media';
 
