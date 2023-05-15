@@ -67,25 +67,15 @@ class Inventory_Presser_Grid extends WP_Widget {
 		// Need the stylesheet for this content.
 		wp_enqueue_style( 'invp-grid' );
 
-		/**
-		 * $args array keys
-		 * ----------------
-		 * + columns
-		 * + featured_only
-		 * + limit
-		 * + newest_first
-		 * + show_button
-		 * + show_captions
-		 * + show_prices
-		 */
 		$default_args = array(
-			'columns'                 => 5,
-			'featured_only'           => false,
-			'limit'                   => 15,
-			'newest_first'            => false,
-			'show_button'             => false,
-			'show_captions'           => false,
-			'show_prices'             => false,
+			'columns'                 => 5,     // In how many columns should the tiles be arranged?
+			'featured_only'           => false, // Include only featured vehicles?
+			'limit'                   => 15,    // How many vehicles in the grid maximum?
+			'newest_first'            => false, // Sort the most recently modified vehicles first?
+			'priced_first'            => false, // Sort the vehicles with prices first?
+			'show_button'             => false, // Display a "Full Inventory" button below the grid?
+			'show_captions'           => false, // Show text captions near each photo?
+			'show_prices'             => false, // Show prices in the captions?
 			'suppress_call_for_price' => false, // When the price setting is {$Price}, this prevents "Call for price" in the grid.
 		);
 		$args         = wp_parse_args( $args, $default_args );
@@ -105,17 +95,18 @@ class Inventory_Presser_Grid extends WP_Widget {
 				),
 			),
 			'fields'         => 'ids',
-			'orderby'        => 'rand',
+			'orderby'        => 'rand', // Defaults to random order.
 			'order'          => 'ASC',
 		);
 
 		if ( $args['newest_first'] ) {
+			// Change the order to last_modified date.
 			$post_args['meta_key'] = apply_filters( 'invp_prefix_meta_key', 'last_modified' );
 			$post_args['orderby']  = 'STR_TO_DATE( meta1.meta_value, \'%a, %d %b %Y %T\' )';
 			$post_args['order']    = 'DESC';
 		}
 
-		// Does the user want featured vehicles only?
+		// Do we want featured vehicles only?
 		if ( $args['featured_only'] ) {
 			$post_args['meta_query'][] = array(
 				'key'   => apply_filters( 'invp_prefix_meta_key', 'featured' ),
@@ -132,6 +123,21 @@ class Inventory_Presser_Grid extends WP_Widget {
 		$inventory_ids = get_posts( $post_args );
 		if ( empty( $inventory_ids ) ) {
 			return;
+		}
+
+		// Do we want priced vehicles first?
+		if ( $args['priced_first'] ) {
+			// Yes. Scan the results for vehicles without prices.
+			$ids_without_prices = array();
+			foreach ( $inventory_ids as $inventory_id ) {
+				if ( empty( get_post_meta( $inventory_id, apply_filters( 'invp_prefix_meta_key', 'price' ) ) ) ) {
+					$ids_without_prices[] = $inventory_id;
+				}
+			}
+			if ( ! empty( $ids_without_prices ) ) {
+				// Remove IDs and then add them to the end of the array.
+				$inventory_ids = array_merge( array_diff( $inventory_ids, $ids_without_prices ), $ids_without_prices );
+			}
 		}
 
 		$grid_html = sprintf(

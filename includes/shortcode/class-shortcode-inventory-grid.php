@@ -58,6 +58,7 @@ class Inventory_Presser_Shortcode_Grid {
 				'featured_only'           => false,
 				'limit'                   => 15, // replaces 'per_page'.
 				'newest_first'            => false,
+				'priced_first'            => false,
 				'show_button'             => true, // replaces 'button'.
 				'show_captions'           => false, // replaces 'captions'.
 				'show_prices'             => false, // replaces 'show_price'.
@@ -96,6 +97,7 @@ class Inventory_Presser_Shortcode_Grid {
 		// Parse boolean values to make life easy on users.
 		$new_atts['featured_only']           = filter_var( $new_atts['featured_only'], FILTER_VALIDATE_BOOLEAN );
 		$new_atts['newest_first']            = filter_var( $new_atts['newest_first'], FILTER_VALIDATE_BOOLEAN );
+		$new_atts['priced_first']            = filter_var( $new_atts['priced_first'], FILTER_VALIDATE_BOOLEAN );
 		$new_atts['show_button']             = filter_var( $new_atts['show_button'], FILTER_VALIDATE_BOOLEAN );
 		$new_atts['show_captions']           = filter_var( $new_atts['show_captions'], FILTER_VALIDATE_BOOLEAN );
 		$new_atts['show_prices']             = filter_var( $new_atts['show_prices'], FILTER_VALIDATE_BOOLEAN );
