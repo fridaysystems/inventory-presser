@@ -73,12 +73,15 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Changelog ==
 
 = 14.10.0 =
+* [Added] Adds a WPForms integration in the form of a Vehicle field type. This field will produce a dropdown on forms not embedded on vehicle singles. On vehicle singles, a hidden input will identify the vehicle the user is looking at.
+* [Added] Adds a parameter to the [invp_inventory_grid] shortcode `priced_first` to put vehicles with prices first.
 * [Added] Adds the list of taxonomy links to the settings page near the checkbox to toggle them in the menu.
 * [Fixed] Stop warning users about thumbnail size aspect ratios if they are not 4:3. 16:9 is the new mainstream ratio, so check for either.
 * [Fixed] Fixes CSS in the Listings Pages table of the settings page.
 * [Fixed] Stops loading Classic Editor features when the Classic Editor plugin is not active and other dashboard performance improvements.
 * [Fixed] Adds support for SCRIPT_DEBUG in all script and style registrations.
 * [Fixed] Adds plugin version number to script and style registrations so they can be cached appropriately.
+* [Changed] Changes link labels in the dashboard when editing taxonomy terms for specificity like "model years" instead of "tags".
 
 = 14.9.0 =
 * [Added] Adds a function invp_get_the_inventory_sentence() that returns an HTML string containing links like, "Browse Car, SUV, Truck, or all 10 vehicles for sale."
