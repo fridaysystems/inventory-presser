@@ -108,7 +108,7 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) ) {
 		 * @return string The output of the [invp-archive-vehicle] shortcode.
 		 */
 		function replace_content_with_shortcode_archive( $content ) {
-			return do_shortcode( '[invp-archive-vehicle]' );
+			return do_shortcode( '[invp_archive_vehicle]' );
 		}
 
 		/**
@@ -130,7 +130,7 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) ) {
 				// Remove the filter we're in to avoid nested calls.
 				remove_filter( 'the_content', array( $this, 'replace_content_with_shortcode_single' ) );
 			}
-			return do_shortcode( '[invp-single-vehicle]' );
+			return do_shortcode( '[invp_single_vehicle]' );
 		}
 	}
 }
