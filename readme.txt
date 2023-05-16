@@ -22,9 +22,10 @@ Manage and market dealership inventory with listings and photo sliders built on 
 
 Integrates with other plugins
 
-* Import any CSV file with WP All Import
-* Contact Form 7 form tag adds vehicles to lead emails
+* Easily add vehicles to lead forms built in [Contact Form 7](https://inventorypresser.com/docs/contact-form-7-integration/contact-form-7-vehicle-form-tag/) & [WPForms](https://inventorypresser.com/docs/capturing-vehicle-leads-with-wpforms/)
 * Elementor Dynamic Tags add-on available
+* Supports Classic Editor
+* Import any CSV file with WP All Import
 
 Built the right way and developer-friendly
 
