@@ -211,9 +211,6 @@ class WPForms_Field_Vehicle extends WPForms_Field {
 		// Label.
 		$this->field_option( 'label', $field );
 
-		// Choices.
-		//$this->field_option( 'choices', $field );
-
 		// Description.
 		$this->field_option( 'description', $field );
 
@@ -314,15 +311,6 @@ class WPForms_Field_Vehicle extends WPForms_Field {
 
 		// Size.
 		$this->field_option( 'size', $field );
-
-		// Placeholder.
-		//$this->field_option( 'placeholder', $field );
-
-		// Dynamic choice auto-populating toggle.
-		//$this->field_option( 'dynamic_choices', $field );
-
-		// Dynamic choice source.
-		//$this->field_option( 'dynamic_choices_source', $field );
 
 		// Custom CSS classes.
 		$this->field_option( 'css', $field );
@@ -425,10 +413,6 @@ class WPForms_Field_Vehicle extends WPForms_Field {
 		$is_multiple       = ! empty( $field['multiple'] );
 		$is_modern         = ! empty( $field['style'] ) && self::STYLE_MODERN === $field['style'];
 		$choices           = $field['properties']['inputs'];
-
-		// if ( ! $choices ) {
-		// 	return;
-		// }
 
 		if ( ! empty( $field['required'] ) ) {
 			$container['attr']['required'] = 'required';
