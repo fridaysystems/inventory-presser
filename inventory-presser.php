@@ -1036,7 +1036,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			if ( empty( $min ) ) {
 				wp_register_style( 'flexslider', plugins_url( "/css/woocommerce-flexslider.min.css", __FILE__ ), null, INVP_PLUGIN_VERSION );
 			} else {
-				wp_register_style( 'flexslider', plugins_url( '/vendor/woocommerce/FlexSlider/css/flexslider.css', __FILE__ ), null, INVP_PLUGIN_VERSION );
+				wp_register_style( 'flexslider', plugins_url( '/vendor/woocommerce/FlexSlider/flexslider.css', __FILE__ ), null, INVP_PLUGIN_VERSION );
 			}
 			// Our overrides.
 			wp_register_style( 'invp-flexslider', plugins_url( "/css/flexslider{$min}.css", __FILE__ ), array( 'flexslider' ), INVP_PLUGIN_VERSION );
