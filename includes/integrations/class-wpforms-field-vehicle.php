@@ -91,9 +91,11 @@ class WPForms_Field_Vehicle extends WPForms_Field {
 		// Remove primary input.
 		unset( $properties['inputs']['primary'] );
 
-		// Define data.
 		$form_id  = absint( $form_data['id'] );
 		$field_id = absint( $field['id'] );
+
+		// Use the selected choice value as the submitted value, not the labels.
+		$field['show_values'] = true;
 		$choices = array(
 			array(
 				'label' => __( 'Please choose a vehicle...', 'inventory-presser' ),
@@ -105,34 +107,7 @@ class WPForms_Field_Vehicle extends WPForms_Field {
 			$properties['label']['disabled']    = true;
 			$properties['container']['class'][] = 'wpforms-field-hidden';
 		} else {
-			// Get the post IDs of vehicles sorted by year, then make, then model.
-			global $wpdb;
-			$post_ids = $wpdb->get_col(
-				$wpdb->prepare(
-					"
-					SELECT 		ID
-
-					FROM		$wpdb->posts
-								LEFT JOIN $wpdb->postmeta meta1 ON wp_posts.ID = meta1.post_id
-								LEFT JOIN $wpdb->postmeta meta2 ON wp_posts.ID = meta2.post_id
-								LEFT JOIN $wpdb->postmeta meta3 ON wp_posts.ID = meta3.post_id
-
-					WHERE 		post_type = '%s'
-								AND post_status = 'publish'
-								AND meta1.meta_key = '%s'
-								AND meta2.meta_key = '%s'
-								AND meta3.meta_key = '%s'
-
-					ORDER BY	meta1.meta_value DESC,
-								meta2.meta_value ASC,
-								meta3.meta_value ASC;
-				",
-					INVP::POST_TYPE,
-					apply_filters( 'invp_prefix_meta_key', 'year' ),
-					apply_filters( 'invp_prefix_meta_key', 'make' ),
-					apply_filters( 'invp_prefix_meta_key', 'model' ),
-				) 
-			);
+			$post_ids = $this->get_vehicle_post_ids();
 			foreach ( $post_ids as $post_id ) {
 				$year         = invp_get_the_year( $post_id );
 				$make         = invp_get_the_make( $post_id );
@@ -140,26 +115,8 @@ class WPForms_Field_Vehicle extends WPForms_Field {
 				$trim         = invp_get_the_trim( $post_id );
 				$stock_number = invp_get_the_stock_number( $post_id );
 				$choices[]    = array(
-					//2016 BMW 428 I, Black Sapphire Metallic, #GW228071
-					'label' => sprintf(
-						'%s %s %s %s, %s, #%s',
-						$year,
-						$make,
-						$model,
-						$trim,
-						invp_get_the_color( $post_id ),
-						$stock_number
-						
-					),
-					//2016 Toyota Corolla L, P03013
-					'value' => sprintf(
-						'%s %s %s %s, %s',
-						$year,
-						$make,
-						$model,
-						$trim,
-						$stock_number
-					),
+					'label' => $this->create_option_label( $post_id ),
+					'value' => $this->create_option_value( $post_id ),
 				);
 			}
 		}
@@ -198,7 +155,7 @@ class WPForms_Field_Vehicle extends WPForms_Field {
 				],
 				'attr'      => [
 					'name'  => "wpforms[fields][{$field_id}]",
-					'value' => $choice['value'] ?: $choice['label'],
+					'value' => isset( $field['show_values'] ) ? $choice['value'] : $choice['label'],
 				],
 				'class'     => [],
 				'data'      => [],
@@ -284,30 +241,6 @@ class WPForms_Field_Vehicle extends WPForms_Field {
 				'markup' => 'open',
 			]
 		);
-
-		// Show Values toggle option. This option will only show if already used
-		// or if manually enabled by a filter.
-		// if ( ! empty( $field['show_values'] ) || wpforms_show_fields_options_setting() ) {
-		// 	$show_values = $this->field_element(
-		// 		'toggle',
-		// 		$field,
-		// 		[
-		// 			'slug'    => 'show_values',
-		// 			'value'   => isset( $field['show_values'] ) ? $field['show_values'] : '0',
-		// 			'desc'    => esc_html__( 'Show Values', 'inventory-presser' ),
-		// 			'tooltip' => esc_html__( 'Check this option to manually set form field values.', 'inventory-presser' ),
-		// 		],
-		// 		false
-		// 	);
-		// 	$this->field_element(
-		// 		'row',
-		// 		$field,
-		// 		[
-		// 			'slug'    => 'show_values',
-		// 			'content' => $show_values,
-		// 		]
-		// 	);
-		// }
 
 		// Multiple options selection.
 		$fld = $this->field_element(
@@ -434,6 +367,41 @@ class WPForms_Field_Vehicle extends WPForms_Field {
 		}
 
 		// Choices.
+		/**
+		 * Populate choices explicitly here because the setting is disabled in
+		 * the form editor. WPForms previews of <select>s in the form editor are
+		 * not interactive and only show one option.
+		 */
+		$transient_name = 'invp_wpforms_preview_post_ids';
+		$post_ids = get_transient( $transient_name );
+		if ( ! is_array( $post_ids ) ) {
+			$post_ids = $this->get_vehicle_post_ids();
+			set_transient( $transient_name, $post_ids, 24 * HOUR_IN_SECONDS );
+		}
+		if ( ! empty( $post_ids ) ) {
+			$field['choices'] = array(
+				array(
+					'label'      => $this->create_option_label( $post_ids[0] ),
+					'value'      => $this->create_option_value( $post_ids[0] ),
+					'image'      => '',
+					'icon'       => 'face-smile',
+					'icon_style' => 'regular',
+				),
+			);
+		} else {
+			// The field preview in the form editor should work even if we have no vehicles.
+			$field['choices'] = array(
+				array(
+					'label'      => '2016 BMW 428i, Black Sapphire Metallic, #GW228041',
+					'value'      => '2016 BMW 428i, GW228041',
+					'image'      => '',
+					'icon'       => 'face-smile',
+					'icon_style' => 'regular',
+				),
+			);
+		}
+		// Change our field type to select so the preview works
+		$field['type'] = 'select';
 		$this->field_preview_option( 'choices', $field, $args );
 
 		// Description.
@@ -614,6 +582,74 @@ class WPForms_Field_Vehicle extends WPForms_Field {
 
 		// Push field details to be saved.
 		wpforms()->process->fields[ $field_id ] = $data;
+	}
+
+	/**
+	 * Takes a vehicle post ID, returns a string like "2016 BMW 428 I, Black
+	 * Sapphire Metallic, #GW228071"
+	 *
+	 * @param  int $post_id
+	 * @return string
+	 */
+	protected function create_option_label( $post_id ) {
+		return sprintf(
+			'%s %s %s %s, %s, #%s',
+			invp_get_the_year( $post_id ),
+			invp_get_the_make( $post_id ),
+			invp_get_the_model( $post_id ),
+			invp_get_the_trim( $post_id ),
+			invp_get_the_color( $post_id ),
+			invp_get_the_stock_number( $post_id )
+		);
+	}
+
+	/**
+	 * Takes a vehicle post ID, returns a string like "2016 Toyota Corolla L,
+	 * P03013"
+	 *
+	 * @param  int $post_id
+	 * @return string
+	 */
+	protected function create_option_value( $post_id ) {
+		return sprintf(
+			'%s %s %s %s, %s',
+			invp_get_the_year( $post_id ),
+			invp_get_the_make( $post_id ),
+			invp_get_the_model( $post_id ),
+			invp_get_the_trim( $post_id ),
+			invp_get_the_stock_number( $post_id )
+		);
+	}
+
+	protected function get_vehicle_post_ids() {
+		// Get the post IDs of vehicles sorted by year, then make, then model.
+		global $wpdb;
+		return $wpdb->get_col(
+			$wpdb->prepare(
+				"
+				SELECT 		ID
+
+				FROM		$wpdb->posts
+							LEFT JOIN $wpdb->postmeta meta1 ON wp_posts.ID = meta1.post_id
+							LEFT JOIN $wpdb->postmeta meta2 ON wp_posts.ID = meta2.post_id
+							LEFT JOIN $wpdb->postmeta meta3 ON wp_posts.ID = meta3.post_id
+
+				WHERE 		post_type = '%s'
+							AND post_status = 'publish'
+							AND meta1.meta_key = '%s'
+							AND meta2.meta_key = '%s'
+							AND meta3.meta_key = '%s'
+
+				ORDER BY	meta1.meta_value DESC,
+							meta2.meta_value ASC,
+							meta3.meta_value ASC;
+			",
+				INVP::POST_TYPE,
+				apply_filters( 'invp_prefix_meta_key', 'year' ),
+				apply_filters( 'invp_prefix_meta_key', 'make' ),
+				apply_filters( 'invp_prefix_meta_key', 'model' ),
+			)
+		);
 	}
 
 	/**
