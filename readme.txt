@@ -74,7 +74,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Changelog ==
 
 = 14.10.0 =
-* [Added] Adds a WPForms integration in the form of a Vehicle field type. This field will produce a dropdown on forms not embedded on vehicle singles. On vehicle singles, a hidden input will identify the vehicle the user is looking at.
+* [Added] Adds a WPForms integration. Adds a Vehicle field type. This field will produce a dropdown on forms not embedded on vehicle singles. On vehicle singles, a hidden input will identify the vehicle the user is looking at. Adds two Smart Tags {invp_adf_vehicle} and {invp_site_url} to make creating ADF XML lead emails easy when following [these instructions](https://inventorypresser.com/docs/capturing-vehicle-leads-with-wpforms/).
 * [Added] Adds a parameter to the [invp_inventory_grid] shortcode `priced_first` to put vehicles with prices first.
 * [Added] Adds the list of taxonomy links to the settings page near the checkbox to toggle them in the menu.
 * [Fixed] Stop warning users about thumbnail size aspect ratios if they are not 4:3. 16:9 is the new mainstream ratio, so check for either.
