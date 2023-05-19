@@ -901,25 +901,33 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		public function load_integrations() {
 			$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
 			// WP All Import
-			if ( in_array( 'wp-all-import-pro/wp-all-import-pro.php', $active_plugins, true ) ) {
+			$plugin_path = 'wp-all-import-pro/wp-all-import-pro.php';
+			if ( in_array( $plugin_path, $active_plugins, true )
+				|| is_plugin_active_for_network( $plugin_path ) ) {
 				$wp_all_import = new Inventory_Presser_WP_All_Import();
 				$wp_all_import->add_hooks();
 			}
 
-			// Contact Form 7
-			if ( in_array( 'contact-form-7/wp-contact-form-7.php', $active_plugins, true ) ) {
+			// Contact Form 7.
+			$plugin_path = 'contact-form-7/wp-contact-form-7.php';
+			if ( in_array( $plugin_path, $active_plugins, true )
+				|| is_plugin_active_for_network( $plugin_path ) ) {
 				$contact_form_7 = new Inventory_Presser_Contact_Form_7();
 				$contact_form_7->add_hooks();
 			}
 
-			// WPForms Lite
-			if ( in_array( 'wpforms-lite/wpforms.php', $active_plugins, true ) ) {
+			// WPForms Lite.
+			$plugin_path = 'wpforms-lite/wpforms.php';
+			if ( in_array( $plugin_path, $active_plugins, true )
+				|| is_plugin_active_for_network( $plugin_path ) ) {
 				$forms = new Inventory_Presser_WPForms();
 				$forms->add_hooks();
 			}
 
-			// Classic Editor
-			if ( in_array( 'classic-editor/classic-editor.php', $active_plugins, true ) ) {
+			// Classic Editor.
+			$plugin_path = 'classic-editor/classic-editor.php';
+			if ( in_array( $plugin_path, $active_plugins, true )
+				|| is_plugin_active_for_network( $plugin_path ) ) {
 				$classic_editor = new Inventory_Presser_Classic_Editor();
 				$classic_editor->add_hooks();
 			}
