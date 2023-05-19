@@ -609,10 +609,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 
 			// Flush rewrite rules when the plugin is activated.
-			register_activation_hook( __FILE__, array( 'Inventory_Presser_Plugin', 'flush_rewrite' ) );
+			register_activation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Plugin', 'flush_rewrite' ) );
 
 			// Delete an option during deactivation.
-			register_deactivation_hook( __FILE__, array( 'Inventory_Presser_Plugin', 'delete_rewrite_rules_option' ) );
+			register_deactivation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Plugin', 'delete_rewrite_rules_option' ) );
 
 			// Register some widgets included with this plugin.
 			add_action( 'widgets_init', array( $this, 'register_widgets' ) );
@@ -997,7 +997,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'template-tags.php',
 			);
 			foreach ( $file_names as $file_name ) {
-				$path = plugin_dir_path( __FILE__ ) . 'includes/' . $file_name;
+				$path = plugin_dir_path( INVP_PLUGIN_FILE_PATH ) . 'includes/' . $file_name;
 				if ( file_exists( $path ) ) {
 					include $path;
 				}
@@ -1020,31 +1020,31 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * widgets or shortcodes are used.
 			 */
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-			wp_register_style( 'invp-grid', plugins_url( "css/widget-grid{$min}.css", __FILE__ ), array(), INVP_PLUGIN_VERSION );
-			wp_register_style( 'invp-maximum-price-filters', plugins_url( "css/widget-maximum-price-filters{$min}.css", __FILE__ ), array(), INVP_PLUGIN_VERSION );
-			wp_register_style( 'invp-epa-fuel-economy', plugins_url( "css/widget-epa-fuel-economy{$min}.css", __FILE__ ), array(), INVP_PLUGIN_VERSION );
-			wp_register_style( 'invp-slider', plugins_url( "css/widget-slider{$min}.css", __FILE__ ), array(), INVP_PLUGIN_VERSION );
+			wp_register_style( 'invp-grid', plugins_url( "css/widget-grid{$min}.css", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION );
+			wp_register_style( 'invp-maximum-price-filters', plugins_url( "css/widget-maximum-price-filters{$min}.css", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION );
+			wp_register_style( 'invp-epa-fuel-economy', plugins_url( "css/widget-epa-fuel-economy{$min}.css", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION );
+			wp_register_style( 'invp-slider', plugins_url( "css/widget-slider{$min}.css", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION );
 
 			/**
 			 * Register flexslider and provide overrides for scripts and styles
 			 */
 			$min_dash = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '-min'; // Dash not dot!
-			wp_register_script( 'flexslider', plugins_url( "/vendor/woocommerce/FlexSlider/jquery.flexslider{$min_dash}.js", __FILE__ ), array( 'jquery' ), INVP_PLUGIN_VERSION );
+			wp_register_script( 'flexslider', plugins_url( "/vendor/woocommerce/FlexSlider/jquery.flexslider{$min_dash}.js", INVP_PLUGIN_FILE_PATH ), array( 'jquery' ), INVP_PLUGIN_VERSION );
 			// Our overrides.
-			wp_register_script( 'invp-flexslider', plugins_url( "/js/flexslider{$min}.js", __FILE__ ), array( 'flexslider' ), INVP_PLUGIN_VERSION );
+			wp_register_script( 'invp-flexslider', plugins_url( "/js/flexslider{$min}.js", INVP_PLUGIN_FILE_PATH ), array( 'flexslider' ), INVP_PLUGIN_VERSION );
 			// Another flexslider spin-up script for the Vehicle Slider widget.
-			wp_register_script( 'invp-slider', plugins_url( "/js/widget-slider{$min}.js", __FILE__ ), array( 'flexslider' ), INVP_PLUGIN_VERSION );
+			wp_register_script( 'invp-slider', plugins_url( "/js/widget-slider{$min}.js", INVP_PLUGIN_FILE_PATH ), array( 'flexslider' ), INVP_PLUGIN_VERSION );
 
 			if ( ! empty( $min ) ) {
-				wp_register_style( 'flexslider', plugins_url( "/css/woocommerce-flexslider.min.css", __FILE__ ), null, INVP_PLUGIN_VERSION );
+				wp_register_style( 'flexslider', plugins_url( "/css/woocommerce-flexslider{$min}.css", INVP_PLUGIN_FILE_PATH ), null, INVP_PLUGIN_VERSION );
 			} else {
-				wp_register_style( 'flexslider', plugins_url( '/vendor/woocommerce/FlexSlider/flexslider.css', __FILE__ ), null, INVP_PLUGIN_VERSION );
+				wp_register_style( 'flexslider', plugins_url( '/vendor/woocommerce/FlexSlider/flexslider.css', INVP_PLUGIN_FILE_PATH ), null, INVP_PLUGIN_VERSION );
 			}
 			// Our overrides.
-			wp_register_style( 'invp-flexslider', plugins_url( "/css/flexslider{$min}.css", __FILE__ ), array( 'flexslider' ), INVP_PLUGIN_VERSION );
+			wp_register_style( 'invp-flexslider', plugins_url( "/css/flexslider{$min}.css", INVP_PLUGIN_FILE_PATH ), array( 'flexslider' ), INVP_PLUGIN_VERSION );
 
 			// Register the iFrameResizer.js script for use by our [invp_iframe] shortcode and Iframe block.
-			wp_register_script( 'invp-iframe-resizer', plugins_url( "/js/iframe-resizer/iframeResizer{$min}.js", __FILE__ ), array(), INVP_PLUGIN_VERSION );
+			wp_register_script( 'invp-iframe-resizer', plugins_url( "/js/iframe-resizer/iframeResizer{$min}.js", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION );
 
 			/**
 			 * Register a stylesheet that will be used by two shortcodes,
@@ -1052,7 +1052,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 			wp_register_style(
 				'invp-attribute-table',
-				plugins_url( "/css/vehicle-attribute-table{$min}.css", __FILE__ ),
+				plugins_url( "/css/vehicle-attribute-table{$min}.css", INVP_PLUGIN_FILE_PATH ),
 				null,
 				INVP_PLUGIN_VERSION
 			);
@@ -1060,7 +1060,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// Register a stylesheet for the archive vehicle shortcode.
 			wp_register_style(
 				'invp_archive_vehicle',
-				plugins_url( "/css/shortcode-archive-vehicle{$min}.css", __FILE__ ),
+				plugins_url( "/css/shortcode-archive-vehicle{$min}.css", INVP_PLUGIN_FILE_PATH ),
 				null,
 				INVP_PLUGIN_VERSION
 			);
@@ -1068,7 +1068,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// Register a stylesheet for the single vehicle shortcode.
 			wp_register_style(
 				'invp_single_vehicle',
-				plugins_url( "/css/shortcode-single-vehicle{$min}.css", __FILE__ ),
+				plugins_url( "/css/shortcode-single-vehicle{$min}.css", INVP_PLUGIN_FILE_PATH ),
 				null,
 				INVP_PLUGIN_VERSION
 			);
