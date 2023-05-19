@@ -914,7 +914,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			// WPForms Lite
 			if ( in_array( 'wpforms-lite/wpforms.php', $active_plugins, true ) ) {
-				include plugin_dir_path( __FILE__ ) . 'includes/integrations/class-wpforms-field-vehicle.php';
+				$forms = new Inventory_Presser_WPForms();
+				$forms->add_hooks();
 			}
 
 			// Classic Editor
@@ -964,6 +965,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'integrations/class-classic-editor.php',
 				'integrations/class-contact-form-7.php',
 				'integrations/class-wp-all-import.php',
+				'integrations/class-wpforms.php',
 				'shortcode/class-shortcode-hours-today.php',
 				'shortcode/class-shortcode-iframe.php',
 				'shortcode/class-shortcode-inventory-grid.php',
