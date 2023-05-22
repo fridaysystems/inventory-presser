@@ -163,14 +163,14 @@ class Inventory_Presser_Taxonomies {
 			return;
 		}
 
-		// If the checkbox to include sold vehicles is checked, abort.
-		$plugin_settings = INVP::settings();
-		if ( isset( $plugin_settings['include_sold_vehicles'] ) && $plugin_settings['include_sold_vehicles'] ) {
+		// If there is already a tax_query for taxonomy availability, abort.
+		if ( $query->is_tax( 'availability' ) ) {
 			return;
 		}
 
-		// If there is already a tax_query for taxonomy availability, abort.
-		if ( $query->is_tax( 'availability' ) ) {
+		// If the checkbox to include sold vehicles is checked, abort.
+		$plugin_settings = INVP::settings();
+		if ( isset( $plugin_settings['include_sold_vehicles'] ) && $plugin_settings['include_sold_vehicles'] ) {
 			return;
 		}
 
