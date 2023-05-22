@@ -165,7 +165,12 @@ class Inventory_Presser_Shortcode_Sort_By {
 	 * @return void
 	 */
 	public function change_sorter_based_on_price_display() {
-		if ( is_admin() || ! isset( INVP::settings()['price_display'] ) ) {
+		if ( is_admin() ) {
+			return;
+		}
+
+		$settings = INVP::settings();
+		if ( ! isset( $settings['price_display'] ) ) {
 			return;
 		}
 
@@ -173,7 +178,7 @@ class Inventory_Presser_Shortcode_Sort_By {
 			add_action( 'pre_get_posts', array( $this, 'change_price_field_when_sorting' ) );
 		}
 
-		switch ( INVP::settings()['price_display'] ) {
+		switch ( $settings['price_display'] ) {
 
 			case 'down_only':
 				// add down payment to the sort drop down.
