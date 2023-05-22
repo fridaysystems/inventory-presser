@@ -105,7 +105,7 @@ class Inventory_Presser_WPForms {
 	 */
 	public function smart_tags_register( $tags ) {
 		// Key is the tag, item is the tag name.
-		foreach ( $this->tags as $tag => $name ) {
+		foreach ( $this->tags() as $tag => $name ) {
 			$tags[ $tag ] = $name;
 		}
 		return $tags;
