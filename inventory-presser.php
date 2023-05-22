@@ -825,7 +825,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// Is it a make search?
 			$query_var = get_query_var( 'make' );
 			if ( ! empty( $query_var ) ) {
-				$term                  = get_term_by( 'slug', $query_var[0], 'make' );
+				$term = get_term_by( 'slug', $query_var[0], 'make' );
 				if ( is_object( $term ) && 'WP_Term' === get_class( $term ) ) {
 					$title_parts['title'] .= $term->name . ' ';
 				}
@@ -834,7 +834,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// Is it a type search?
 			$query_var = get_query_var( 'type' );
 			if ( ! empty( $query_var ) ) {
-				$term                  = get_term_by( 'slug', $query_var[0], 'type' );
+				$term = get_term_by( 'slug', $query_var[0], 'type' );
 				if ( is_object( $term ) && 'WP_Term' === get_class( $term ) ) {
 					$title_parts['title'] .= $term->name . ' ';
 				}
@@ -1100,14 +1100,18 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * Inventory_Presser_Admin_Customize_Dashboard)
 			 */
 			if ( ! is_admin() ) {
-				?><script> var invp = <?php
+				?>
+				<script> var invp = 
+				<?php
 				echo wp_json_encode(
 					array(
 						'meta_prefix' => INVP::meta_prefix(),
 						'is_singular' => is_singular( INVP::POST_TYPE ),
 					)
 				);
-				?>; </script><?php
+				?>
+				; </script>
+				<?php
 			}
 		}
 

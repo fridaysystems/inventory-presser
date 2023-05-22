@@ -71,7 +71,7 @@ class Inventory_Presser_Shortcode_Archive {
 
 		// Parse boolean values to make life easy on users.
 		$atts['show_titles'] = filter_var( $atts['show_titles'], FILTER_VALIDATE_BOOLEAN );
-		$atts['post_type'] = INVP::POST_TYPE;
+		$atts['post_type']   = INVP::POST_TYPE;
 
 		// Add all taxonomy query vars to $atts so filters work
 		$taxonomies = get_object_taxonomies( $atts['post_type'], 'objects' );

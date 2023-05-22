@@ -42,7 +42,7 @@ class Inventory_Presser_Shortcode_Slider {
 	function content( $atts ) {
 
 		// Canvass shortcode attributes
-		$atts             = shortcode_atts(
+		$atts = shortcode_atts(
 			array(
 				'per_page' => 10,
 				'captions' => 'true',

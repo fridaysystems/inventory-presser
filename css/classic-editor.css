@@ -3,11 +3,11 @@
 }
 
 button#delete-media-button span:before {
-    font: 400 18px/1 dashicons;
-    speak: none;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    content: "\f182";
+	font: 400 18px/1 dashicons;
+	speak: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	content: "\f182";
 }
 
 /* Options checkboxes meta box */

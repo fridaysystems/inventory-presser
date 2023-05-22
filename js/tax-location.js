@@ -1,74 +1,93 @@
 (function($) {
 
 	function add_block(group){
-		var original = $(group).find('.repeat-this');
-		var newgroup = original.clone(true).removeClass('repeat-this').addClass('repeated');
-		var container = $(group).find('.repeat-container');
-		$(container).append(newgroup);
+		var original  = $( group ).find( '.repeat-this' );
+		var newgroup  = original.clone( true ).removeClass( 'repeat-this' ).addClass( 'repeated' );
+		var container = $( group ).find( '.repeat-container' );
+		$( container ).append( newgroup );
 	}
 
-	//on page load
-	$(document).ready(function() {
+	// on page load
+	$( document ).ready(
+		function() {
 
-		// hijack the built in taxonomy description for the location address.
-		$('.term-description-wrap label').text('Address');
-		$('.term-description-wrap p').text('Use the fields below to edit the address.');
-		$('#description').attr('readonly',true);
- 
-		$('.repeat-group').each(function(index,group){
+			// hijack the built in taxonomy description for the location address.
+			$( '.term-description-wrap label' ).text( 'Address' );
+			$( '.term-description-wrap p' ).text( 'Use the fields below to edit the address.' );
+			$( '#description' ).attr( 'readonly',true );
 
-			var group = $(this);
+			$( '.repeat-group' ).each(
+				function(index,group){
 
-			// make sortable
-			$(group).find('.repeat-container').sortable({
-				handle: '.repeat-move',
-				containment: 'parent'
-			});
+					var group = $( this );
 
-			// initial setup - add a repeat group
-			if ($(group).find('.repeat-container').children().length == 0) {
-				add_block(group);
-			}
+					// make sortable
+					$( group ).find( '.repeat-container' ).sortable(
+						{
+							handle: '.repeat-move',
+							containment: 'parent'
+						}
+					);
 
-			// add buttons click event
-			$(group).find('.repeat-add').on('click', function(e) {
-				add_block(group);
-			});
+					// initial setup - add a repeat group
+					if ($( group ).find( '.repeat-container' ).children().length == 0) {
+						add_block( group );
+					}
 
-			// bind event - delete button
-			$(group).find('.repeat-delete').on('click', function(e) {
-				var group = $(this).closest('.repeat-group');
-				var container = $(this).closest('.repeat-container');
-				$(this).closest('.repeated').remove();
-				// if there are no repeat groups, add a fresh one
-				if ($(container).children().length == 0) {
-					add_block(group);
+					// add buttons click event
+					$( group ).find( '.repeat-add' ).on(
+						'click',
+						function(e) {
+							add_block( group );
+						}
+					);
+
+					// bind event - delete button
+					$( group ).find( '.repeat-delete' ).on(
+						'click',
+						function(e) {
+							var group     = $( this ).closest( '.repeat-group' );
+							var container = $( this ).closest( '.repeat-container' );
+							$( this ).closest( '.repeated' ).remove();
+							// if there are no repeat groups, add a fresh one
+							if ($( container ).children().length == 0) {
+								add_block( group );
+							}
+							$( container ).sortable( 'refresh' );
+						}
+					);
+
 				}
-				$(container).sortable('refresh');
-			});
+			);
 
-		});
+			$( 'table.tags tbody' ).sortable();
 
-		$('table.tags tbody').sortable();
+			$( '.timepick' ).timepicker( { 'timeFormat': 'g:i A', 'scrollDefault': 'now' } );
 
-		$('.timepick').timepicker({ 'timeFormat': 'g:i A', 'scrollDefault': 'now' });
-
-		//Populate the slug as the name is typed into the Add New Location form
-		$('#tag-name').on('input', function(){
-			$('#tag-slug').val( $(this).val().replace(' ', '-').replace(/[^a-z\-0-9]/gi,'').toLowerCase());
-		});
-	});
+			// Populate the slug as the name is typed into the Add New Location form
+			$( '#tag-name' ).on(
+				'input',
+				function(){
+					$( '#tag-slug' ).val( $( this ).val().replace( ' ', '-' ).replace( /[^a-z\-0-9]/gi,'' ).toLowerCase() );
+				}
+			);
+		}
+	);
 
 	// listen for WP ajax call to add location tag, reset the term meta forms when it happens
-	$(document).ajaxComplete(function( event, xhr, settings ) {
-		if ((settings.data.indexOf('action=add-tag') >= 0) && (settings.data.indexOf('taxonomy=location') >= 0) && (settings.data.indexOf('post_type=inventory_vehicle') >= 0)) {
+	$( document ).ajaxComplete(
+		function( event, xhr, settings ) {
+			if ((settings.data.indexOf( 'action=add-tag' ) >= 0) && (settings.data.indexOf( 'taxonomy=location' ) >= 0) && (settings.data.indexOf( 'post_type=inventory_vehicle' ) >= 0)) {
 
-			$('.repeat-group').each(function(index,group){
-				var group = $(this);
-				$(group).find('.repeat-container').empty();
-				add_block(group);
-			});
+				$( '.repeat-group' ).each(
+					function(index,group){
+						var group = $( this );
+						$( group ).find( '.repeat-container' ).empty();
+						add_block( group );
+					}
+				);
+			}
 		}
-	});
+	);
 
-})(jQuery);
+})( jQuery );

@@ -70,7 +70,7 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 			'wp-api',
 			'const invp = ' . json_encode(
 				array(
-					'hull_materials'         => apply_filters(
+					'hull_materials'      => apply_filters(
 						'invp_default_hull_materials',
 						array(
 							'Aluminum',
@@ -85,9 +85,9 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 							'Wood',
 						)
 					),
-					'miles_word'             => apply_filters( 'invp_odometer_word', 'miles' ),
-					'meta_prefix'            => INVP::meta_prefix(),
-					'payment_frequencies'    => apply_filters(
+					'miles_word'          => apply_filters( 'invp_odometer_word', 'miles' ),
+					'meta_prefix'         => INVP::meta_prefix(),
+					'payment_frequencies' => apply_filters(
 						'invp_default_payment_frequencies',
 						array(
 							'Monthly'      => 'monthly',
@@ -96,7 +96,7 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 							'Semi-monthly' => 'semimonthly',
 						)
 					),
-					'title_statuses'         => apply_filters(
+					'title_statuses'      => apply_filters(
 						'invp_default_title_statuses',
 						array(
 							'Unspecified',

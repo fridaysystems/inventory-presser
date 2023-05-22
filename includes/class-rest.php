@@ -3,10 +3,10 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Inventory_Presser_REST
- * 
+ *
  * Adds routes to the REST API at /wp-json/invp/
  */
-class Inventory_Presser_REST {    
+class Inventory_Presser_REST {
 	/**
 	 * add_hooks
 	 *
@@ -14,7 +14,7 @@ class Inventory_Presser_REST {
 	 */
 	public function add_hooks() {
 		// Adds a /invp/v1/settings route.
-		add_action('rest_api_init', array( $this, 'add_route' ));
+		add_action( 'rest_api_init', array( $this, 'add_route' ) );
 
 		// Allow attachments to be ordered by the inventory_presser_photo_number meta value.
 		add_filter( 'rest_attachment_collection_params', array( $this, 'allow_orderby_photo_number' ) );
@@ -36,7 +36,7 @@ class Inventory_Presser_REST {
 	 * Changes the query args for requests to order attachments by the
 	 * photo_number meta key.
 	 *
-	 * @param  array $args Array of arguments for WP_Query.
+	 * @param  array           $args Array of arguments for WP_Query.
 	 * @param  WP_REST_Request $request The REST API request.
 	 * @return array
 	 */
@@ -83,9 +83,11 @@ class Inventory_Presser_REST {
 		);
 
 		return array_filter(
-			INVP::settings(), function ( $k ) use ( $public_keys ) {
+			INVP::settings(),
+			function ( $k ) use ( $public_keys ) {
 				return in_array( $k, $public_keys );
-			}, ARRAY_FILTER_USE_KEY
+			},
+			ARRAY_FILTER_USE_KEY
 		);
 	}
 }

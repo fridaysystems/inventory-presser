@@ -25,10 +25,11 @@ class Inventory_Presser_Additional_Listings_Pages {
 	}
 
 	/**
-	 * change_page_title
+	 * Callback on post_type_archive_title. Changes page titles for listings
+	 * pages.
 	 *
-	 * @param  mixed $post_type_name
-	 * @param  mixed $post_type
+	 * @param  mixed $post_type_name Post type 'name' label.
+	 * @param  mixed $post_type Post type.
 	 * @return string
 	 */
 	public function change_page_title( $post_type_name, $post_type ) {
@@ -54,15 +55,13 @@ class Inventory_Presser_Additional_Listings_Pages {
 	}
 
 	/**
-	 * add_rewrite_rules
-	 *
 	 * Adds rewrite rules so WordPress recognizes the places where users want
 	 * the additional listing pages to live.
 	 *
 	 * @param  array $rules
 	 * @return array
 	 */
-	function add_rewrite_rules( $rules ) {
+	public function add_rewrite_rules( $rules ) {
 		foreach ( self::additional_listings_pages_array() as $additional_listing ) {
 			// is this rule valid and active?
 			if ( ! self::is_valid_rule( $additional_listing )
@@ -80,14 +79,12 @@ class Inventory_Presser_Additional_Listings_Pages {
 	}
 
 	/**
-	 * add_rewrite_slugs
-	 *
 	 * Adds rewrite slugs
 	 *
 	 * @param  array $slugs
 	 * @return array
 	 */
-	function add_rewrite_slugs( $slugs ) {
+	public function add_rewrite_slugs( $slugs ) {
 		foreach ( self::additional_listings_pages_array() as $additional_listing ) {
 			// is this rule valid and active?
 			if ( ! self::is_valid_rule( $additional_listing )
@@ -288,7 +285,7 @@ class Inventory_Presser_Additional_Listings_Pages {
 	 * @param  WP_Query $query
 	 * @return WP_Query
 	 */
-	function modify_query( $query ) {
+	public function modify_query( $query ) {
 		$additional_listing = self::get_current_matched_rule( $query );
 		if ( ! $additional_listing ) {
 			return;

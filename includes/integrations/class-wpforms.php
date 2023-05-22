@@ -1,15 +1,18 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-//List of all built-in smart tags? https://formviewswp.com/docs/how-to-use-wpforms-smart-tags-in-custom-html-field/
-
 /**
  * Inventory_Presser_WPForms
- * 
+ *
  * Adds a smart tag that creates ADF XML for email bodies sent to CRMs.
  */
 class Inventory_Presser_WPForms {
 
+	/**
+	 * Adds hooks and registers a field type that power our WPForms integration.
+	 *
+	 * @return void
+	 */
 	public function add_hooks() {
 		add_filter( 'wpforms_smart_tags', array( $this, 'smart_tags_register' ), 10, 1 );
 		add_filter( 'wpforms_smart_tag_process', array( $this, 'smart_tags_process' ), 10, 2 );
@@ -25,22 +28,29 @@ class Inventory_Presser_WPForms {
 		add_filter( 'wpforms_get_form_fields_allowed', array( $this, 'add_field_types' ) );
 	}
 
+	/**
+	 * Adds our field type to the list of field types WPForms recognizes as
+	 * valid.
+	 *
+	 * @param  array $allowed_form_fields
+	 * @return array
+	 */
 	public function add_field_types( $allowed_form_fields ) {
 		$allowed_form_fields[] = 'vehicle';
 		return $allowed_form_fields;
 	}
-	
+
 	/**
-	 * adf_xml
+	 * Creates the vehicle piece of an ADF XML lead.
 	 *
 	 * @return string
 	 */
-	protected function adf_xml() {
+	protected function adf_vehicle_xml() {
 		$form_post_id = intval( $_POST['wpforms']['id'] );
-		$fields = wpforms_get_form_fields( $form_post_id );
+		$fields       = wpforms_get_form_fields( $form_post_id );
 
 		$field_id = 0;
-		foreach( $fields as $field ) {
+		foreach ( $fields as $field ) {
 			if ( 'vehicle' !== $field['type'] ) {
 				continue;
 			}
@@ -52,13 +62,13 @@ class Inventory_Presser_WPForms {
 			return '';
 		}
 
-		$value = sanitize_text_field( $_POST['wpforms']['fields'][ $field_id ] );
+		$value   = sanitize_text_field( $_POST['wpforms']['fields'][ $field_id ] );
 		$post_id = $this->extract_post_id_from_value( $value );
 
 		if ( empty( $post_id ) ) {
 			return '';
 		}
-		return sprintf( 
+		return sprintf(
 			'<vehicle><id>%s</id><year>%s</year><make>%s</make><model>%s</model><vin>%s</vin><stock>%s</stock></vehicle>',
 			INVP::get_meta( 'car_id', $post_id ),
 			invp_get_the_year( $post_id ),
@@ -69,15 +79,22 @@ class Inventory_Presser_WPForms {
 		);
 	}
 
+	/**
+	 * Given a submitted form value like "2020 Toyota Sienna LE, 10329A",
+	 * find and return the vehicle's post ID.
+	 *
+	 * @param  string $value An <option> value of a drop down containing vehicles in lead form.
+	 * @return int
+	 */
 	protected function extract_post_id_from_value( $value ) {
-		//submitted "2020 Toyota Sienna LE, 10329A"
+		// submitted "2020 Toyota Sienna LE, 10329A".
 		$pieces = explode( ', ', $value );
-		if ( 1 == sizeof( $pieces ) ) {
-			//delimiter not found
+		if ( 1 === count( $pieces ) ) {
+			// delimiter not found.
 			return '';
 		}
-		$stock_number = $pieces[sizeof( $pieces )-1];
-		$post_ids = get_posts(
+		$stock_number = $pieces[ count( $pieces ) - 1 ];
+		$post_ids     = get_posts(
 			array(
 				'fields'         => 'ids',
 				'meta_key'       => apply_filters( 'invp_prefix_meta_key', 'stock_number' ),
@@ -85,7 +102,7 @@ class Inventory_Presser_WPForms {
 				'post_status'    => 'publish',
 				'post_type'      => INVP::POST_TYPE,
 				'posts_per_page' => 1,
-			) 
+			)
 		);
 
 		if ( empty( $post_ids ) || ! is_array( $post_ids ) ) {
@@ -121,9 +138,9 @@ class Inventory_Presser_WPForms {
 		if ( ! in_array( $tag, $our_tags, true ) ) {
 			return $content;
 		}
-		switch( $tag ) {
+		switch ( $tag ) {
 			case 'invp_adf_vehicle':
-				$content = str_replace( '{invp_adf_vehicle}', $this->adf_xml(), $content );
+				$content = str_replace( '{invp_adf_vehicle}', $this->adf_vehicle_xml(), $content );
 				break;
 			case 'invp_site_url':
 				$content = str_replace( '{invp_site_url}', site_url(), $content );

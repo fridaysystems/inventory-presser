@@ -4,8 +4,8 @@ defined( 'ABSPATH' ) || exit;
 if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 	/**
 	 * Allows plugins to use their own update API.
-	 * 
-	 * This class is provided by Easy Digital Downloads and is originally 
+	 *
+	 * This class is provided by Easy Digital Downloads and is originally
 	 * named EDD_SL_Plugin_Updater.
 	 *
 	 * @author  Easy Digital Downloads
@@ -98,9 +98,9 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 		 */
 		public function check_update( $_transient_data ) {
 
-			global $pagenow;    
+			global $pagenow;
 			if ( ! is_object( $_transient_data ) ) {
-				$_transient_data = new stdClass;
+				$_transient_data = new stdClass();
 			}
 
 			if ( 'plugins.php' == $pagenow && is_multisite() ) {
@@ -170,32 +170,31 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 		 * @return object
 		 */
 		public function show_missing_license_notice( $value, $transient ) {
-			//Store a list of strings to avoid outputting JavaScript for the same plugin more than once.
+			// Store a list of strings to avoid outputting JavaScript for the same plugin more than once.
 			static $handled_plugin_slugs = array();
 
 			if ( empty( $value->response ) ) {
 				return $value;
 			}
 
-			//Is there a response from inventorypresser.com in this transient?
-			foreach ( $value->response as $plugin_path => $update_response )
-			{
+			// Is there a response from inventorypresser.com in this transient?
+			foreach ( $value->response as $plugin_path => $update_response ) {
 				if ( ! is_object( $update_response ) || empty( $update_response->slug ) ) {
 					continue;
 				}
 
-				if( strlen( $update_response->url ) < strlen( Inventory_Presser_Addon_License::STORE_URL )
-					|| Inventory_Presser_Addon_License::STORE_URL != substr( $update_response->url, 0, strlen( Inventory_Presser_Addon_License::STORE_URL ) ) 
+				if ( strlen( $update_response->url ) < strlen( Inventory_Presser_Addon_License::STORE_URL )
+					|| Inventory_Presser_Addon_License::STORE_URL != substr( $update_response->url, 0, strlen( Inventory_Presser_Addon_License::STORE_URL ) )
 				) {
 					continue;
 				}
 
-				//This is a plugin from inventorypresser.com.
-				//Is the problem a missing license key?
+				// This is a plugin from inventorypresser.com.
+				// Is the problem a missing license key?
 				if ( ! empty( $update_response->msg )
 					&& 'No license key has been provided.' == $update_response->msg
-					&& ! in_array( $update_response->slug, $handled_plugin_slugs ) 
-					&& ( ! is_multisite() || is_blog_admin() ) 
+					&& ! in_array( $update_response->slug, $handled_plugin_slugs )
+					&& ( ! is_multisite() || is_blog_admin() )
 				) {
 					/**
 					 * Yes, output JavaScript that will change
@@ -203,13 +202,15 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 					 * "License key is missing at Vehicles → Options"
 					 */
 					add_action(
-						'admin_print_footer_scripts', function () use ( $update_response ) {
+						'admin_print_footer_scripts',
+						function () use ( $update_response ) {
 							?><script type="text/javascript"><!--
 jQuery(document).ready(function(){
 	jQuery('#<?php echo $update_response->slug; ?>-update .update-message p em').html( 'License key is missing at Vehicles → Options');
 });
---></script><?php
-						} 
+--></script>
+							<?php
+						}
 					);
 
 					$handled_plugin_slugs[] = $update_response->slug;
@@ -250,7 +251,13 @@ jQuery(document).ready(function(){
 				$version_info = $this->get_repo_api_data();
 
 				if ( false === $version_info ) {
-					$version_info = $this->api_request( 'plugin_latest_version', array( 'slug' => $this->slug, 'beta' => $this->beta ) );
+					$version_info = $this->api_request(
+						'plugin_latest_version',
+						array(
+							'slug' => $this->slug,
+							'beta' => $this->beta,
+						)
+					);
 
 					// Since we disabled our filter for the transient, we aren't running our object conversion on banners, sections, or icons. Do this now:
 					if ( isset( $version_info->banners ) && ! is_array( $version_info->banners ) ) {
@@ -293,7 +300,7 @@ jQuery(document).ready(function(){
 			// Restore our filter
 			add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
 
-			if ( ! empty( $update_cache->response[$this->name] ) 
+			if ( ! empty( $update_cache->response[ $this->name ] )
 				&& version_compare( $this->version, $version_info->new_version, '<' )
 			) {
 				// build a plugin list row, with update notification
@@ -306,14 +313,14 @@ jQuery(document).ready(function(){
 				);
 
 				$changelog_link = self_admin_url(
-					sprintf( 
+					sprintf(
 						'index.php?edd_sl_action=view_plugin_changelog&plugin=%s&slug=%s&TB_iframe=true&width=772&height=911',
 						$this->name,
 						$this->slug
-					) 
+					)
 				);
 
-				printf( 
+				printf(
 					'%s %s %s <a href="%s" class="thickbox open-plugin-details-modal" aria-label="%s %s %s %s %s">%s %s %s</a>',
 					__( 'There is a new version of', 'inventory-presser' ),
 					esc_html( $version_info->name ),
@@ -324,17 +331,17 @@ jQuery(document).ready(function(){
 					__( 'version', 'inventory-presser' ),
 					esc_html( $version_info->new_version ),
 					__( 'details', 'inventory-presser' ),
-					__(' View version', 'inventory-presser' ),
+					__( ' View version', 'inventory-presser' ),
 					esc_html( $version_info->new_version ),
 					__( 'details', 'inventory-presser' )
 				);
 
 				// Do we have a license key? Include "update now" link if so.
-				if( ! empty( $this->api_data['license'] ) ) {
+				if ( ! empty( $this->api_data['license'] ) ) {
 					printf(
 						' %s <a href="%s" class="update-link" aria-label="%s %s %s">%s</a>.',
 						__( 'or', 'inventory-presser' ),
-						esc_url(wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=') . $this->name, 'upgrade-plugin_' . $this->name ) ),
+						esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $this->name, 'upgrade-plugin_' . $this->name ) ),
 						__( 'Update', 'inventory-presser' ),
 						esc_html( $version_info->name ),
 						__( 'now', 'inventory-presser' ),
@@ -359,8 +366,7 @@ jQuery(document).ready(function(){
 		 * @param  object $_args
 		 * @return object $_data
 		 */
-		public function plugins_api_filter( $_data, $_action = '', $_args = null )
-		{
+		public function plugins_api_filter( $_data, $_action = '', $_args = null ) {
 			if ( $_action != 'plugin_information' ) {
 				return $_data;
 			}
@@ -382,7 +388,7 @@ jQuery(document).ready(function(){
 			// Get the transient where we store the api request for this plugin for 24 hours
 			$edd_api_request_transient = $this->get_cached_version_info();
 
-			//If we have no transient-saved value, run the API, set a fresh transient with the API value, and return that value too right now.
+			// If we have no transient-saved value, run the API, set a fresh transient with the API value, and return that value too right now.
 			if ( empty( $edd_api_request_transient ) ) {
 
 				$api_response = $this->api_request( 'plugin_information', $to_send );
@@ -393,7 +399,6 @@ jQuery(document).ready(function(){
 				if ( false !== $api_response ) {
 					$_data = $api_response;
 				}
-
 			} else {
 				$_data = $edd_api_request_transient;
 			}
@@ -478,18 +483,24 @@ jQuery(document).ready(function(){
 
 			// Do a quick status check on this domain if we haven't already checked it.
 			$store_hash = md5( $this->api_url );
-			if ( ! is_array($edd_plugin_url_available ) || ! isset( $edd_plugin_url_available[ $store_hash ] ) ) {
+			if ( ! is_array( $edd_plugin_url_available ) || ! isset( $edd_plugin_url_available[ $store_hash ] ) ) {
 				$test_url_parts = parse_url( $this->api_url );
 
-				$scheme = ! empty( $test_url_parts['scheme'] ) ? $test_url_parts['scheme']     : 'http';
-				$host   = ! empty( $test_url_parts['host'] )   ? $test_url_parts['host']       : '';
-				$port   = ! empty( $test_url_parts['port'] )   ? ':' . $test_url_parts['port'] : '';
+				$scheme = ! empty( $test_url_parts['scheme'] ) ? $test_url_parts['scheme'] : 'http';
+				$host   = ! empty( $test_url_parts['host'] ) ? $test_url_parts['host'] : '';
+				$port   = ! empty( $test_url_parts['port'] ) ? ':' . $test_url_parts['port'] : '';
 
 				if ( empty( $host ) ) {
 					$edd_plugin_url_available[ $store_hash ] = false;
 				} else {
-					$test_url = $scheme . '://' . $host . $port;
-					$response = wp_remote_get( $test_url, array( 'timeout' => $this->health_check_timeout, 'sslverify' => $verify_ssl ) );
+					$test_url                                = $scheme . '://' . $host . $port;
+					$response                                = wp_remote_get(
+						$test_url,
+						array(
+							'timeout'   => $this->health_check_timeout,
+							'sslverify' => $verify_ssl,
+						)
+					);
 					$edd_plugin_url_available[ $store_hash ] = is_wp_error( $response ) ? false : true;
 				}
 			}
@@ -520,7 +531,14 @@ jQuery(document).ready(function(){
 				'beta'       => ! empty( $data['beta'] ),
 			);
 
-			$request    = wp_remote_post( $this->api_url, array( 'timeout' => 15, 'sslverify' => $verify_ssl, 'body' => $api_params ) );
+			$request = wp_remote_post(
+				$this->api_url,
+				array(
+					'timeout'   => 15,
+					'sslverify' => $verify_ssl,
+					'body'      => $api_params,
+				)
+			);
 
 			if ( ! is_wp_error( $request ) ) {
 				$request = json_decode( wp_remote_retrieve_body( $request ) );
@@ -541,7 +559,7 @@ jQuery(document).ready(function(){
 			}
 
 			if ( ! empty( $request->sections ) ) {
-				foreach( $request->sections as $key => $section ) {
+				foreach ( $request->sections as $key => $section ) {
 					$request->$key = (array) $section;
 				}
 			}
@@ -555,15 +573,15 @@ jQuery(document).ready(function(){
 		public function show_changelog() {
 			global $edd_plugin_data;
 
-			if(empty($_REQUEST['edd_sl_action']) || 'view_plugin_changelog' != $_REQUEST['edd_sl_action'] ) {
+			if ( empty( $_REQUEST['edd_sl_action'] ) || 'view_plugin_changelog' != $_REQUEST['edd_sl_action'] ) {
 				return;
 			}
 
-			if(empty($_REQUEST['plugin']) ) {
+			if ( empty( $_REQUEST['plugin'] ) ) {
 				return;
 			}
 
-			if(empty($_REQUEST['slug']) ) {
+			if ( empty( $_REQUEST['slug'] ) ) {
 				return;
 			}
 
@@ -582,11 +600,18 @@ jQuery(document).ready(function(){
 					'slug'       => $_REQUEST['slug'],
 					'author'     => $data['author'],
 					'url'        => home_url(),
-					'beta'       => ! empty( $data['beta'] )
+					'beta'       => ! empty( $data['beta'] ),
 				);
 
 				$verify_ssl = $this->verify_ssl();
-				$request    = wp_remote_post( $this->api_url, array( 'timeout' => 15, 'sslverify' => $verify_ssl, 'body' => $api_params ) );
+				$request    = wp_remote_post(
+					$this->api_url,
+					array(
+						'timeout'   => 15,
+						'sslverify' => $verify_ssl,
+						'body'      => $api_params,
+					)
+				);
 
 				if ( ! is_wp_error( $request ) ) {
 					$version_info = json_decode( wp_remote_retrieve_body( $request ) );
@@ -599,7 +624,7 @@ jQuery(document).ready(function(){
 				}
 
 				if ( ! empty( $version_info ) ) {
-					foreach( $version_info->sections as $key => $section ) {
+					foreach ( $version_info->sections as $key => $section ) {
 						$version_info->$key = (array) $section;
 					}
 				}
@@ -633,14 +658,14 @@ jQuery(document).ready(function(){
 
 			$cache = get_option( $cache_key );
 
-			if( empty( $cache['timeout'] ) || time() > $cache['timeout'] ) {
+			if ( empty( $cache['timeout'] ) || time() > $cache['timeout'] ) {
 				return false; // Cache is expired
 			}
 
 			// We need to turn the icons into an array, thanks to WP Core forcing these into an object at some point.
 
 			$cache['value'] = json_decode( $cache['value'] );
-			if ( ! empty($cache['value']->icons ) ) {
+			if ( ! empty( $cache['value']->icons ) ) {
 				$cache['value']->icons = (array) $cache['value']->icons;
 			}
 
@@ -655,13 +680,13 @@ jQuery(document).ready(function(){
 		 */
 		public function set_version_info_cache( $value = '', $cache_key = '' ) {
 
-			if( empty( $cache_key ) ) {
+			if ( empty( $cache_key ) ) {
 				$cache_key = $this->cache_key;
 			}
 
 			$data = array(
 				'timeout' => strtotime( '+3 hours', time() ),
-				'value'   => json_encode( $value )
+				'value'   => json_encode( $value ),
 			);
 
 			update_option( $cache_key, $data, 'no' );
@@ -676,9 +701,8 @@ jQuery(document).ready(function(){
 		 * @since  1.6.13
 		 * @return bool
 		 */
-		private function verify_ssl()
-		{
-			return (bool) apply_filters( 'edd_sl_api_request_verify_ssl', true, $this );
+		private function verify_ssl() {
+			 return (bool) apply_filters( 'edd_sl_api_request_verify_ssl', true, $this );
 		}
 	}
 }

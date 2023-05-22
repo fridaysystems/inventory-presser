@@ -858,7 +858,7 @@ class INVP {
 			unset( $vehicle->meta->inventory_presser_carfax_url_icon_one_owner );
 			unset( $vehicle->meta->inventory_presser_carfax_url_icon_top_condition );
 			unset( $vehicle->meta->inventory_presser_carfax_url_report );
-			unset( $vehicle->meta->inventory_presser_dealer_id);
+			unset( $vehicle->meta->inventory_presser_dealer_id );
 			unset( $vehicle->meta->inventory_presser_leads_id );
 			unset( $vehicle->meta->inventory_presser_location );
 			unset( $vehicle->meta->inventory_presser_nextgear_inspection_url );
@@ -909,7 +909,7 @@ class INVP {
 			for ( $m = 0; $m < $media_count; $m++ ) {
 				// Download a copy of the image.
 				$media_url = strtok( $media[ $m ]->source_url, '?' );
-				$tmp_file = download_url( $media_url );
+				$tmp_file  = download_url( $media_url );
 				if ( is_wp_error( $tmp_file ) ) {
 					continue;
 				}
@@ -1181,7 +1181,7 @@ class INVP {
 	 * @return int
 	 */
 	public static function vehicle_count() {
-		$vehicle_counts = wp_count_posts( INVP::POST_TYPE );
+		$vehicle_counts = wp_count_posts( self::POST_TYPE );
 		if ( empty( $vehicle_counts->publish ) ) {
 			return 0;
 		}

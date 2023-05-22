@@ -114,7 +114,7 @@ class Inventory_Presser_Admin_Settings_Suggester {
 			( get_option( 'large_size_w' ) / get_option( 'large_size_h' ) ),
 		);
 		foreach ( $ratios as $ratio ) {
-			if ( ( 4/3 ) !== $ratio && ( 16/9 ) !== $ratio ) {
+			if ( ( 4 / 3 ) !== $ratio && ( 16 / 9 ) !== $ratio ) {
 				// At least one thumbnail size is not 4:3 or 16:9.
 				add_action( 'admin_notices', array( $this, 'output_thumbnail_size_error_html' ) );
 				break;

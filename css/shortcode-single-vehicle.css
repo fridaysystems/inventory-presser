@@ -2,7 +2,7 @@
 	background: none;
 	border: none;
 }
-#carousel{ 
+#carousel{
 	margin-top: 1em;
 }
 .vehicle-price{
@@ -17,8 +17,8 @@ ul.vehicle-features {
 	max-width: 48%;
 	flex-grow: 1;
 }
-.vehicle-buttons div{ 
-	min-width: 180px; 
+.vehicle-buttons div{
+	min-width: 180px;
 }
 .vehicle-columns{
 	display: flex;

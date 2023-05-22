@@ -40,7 +40,7 @@ ul.flex-direction-nav li{
 	padding-left: .5em;
 }
 .flexslider .slides img{
-    cursor: pointer;
+	cursor: pointer;
 }
 /* speed up animation when the next and previous buttons move */
 .flex-viewport{

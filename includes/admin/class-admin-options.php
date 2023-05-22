@@ -56,7 +56,7 @@ class Inventory_Presser_Admin_Options {
 		}
 
 		$action = sanitize_text_field( $_GET[ self::QUERY_VAR_MANAGE_VEHICLES ] );
-		switch( $action ) {
+		switch ( $action ) {
 			case 'delete_all_vehicles':
 				INVP::delete_all_inventory();
 				break;
@@ -96,7 +96,7 @@ class Inventory_Presser_Admin_Options {
 	 */
 	public function scripts_and_styles() {
 		$handle = 'invp_page_settings';
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$min    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_script(
 			$handle,
 			plugins_url( "/js/page-settings${min}.js", INVP_PLUGIN_FILE_PATH ),
@@ -567,7 +567,7 @@ class Inventory_Presser_Admin_Options {
 			__( 'Show all taxonomies under Vehicles menu in Dashboard', 'inventory-presser' )
 		);
 
-		$links = array();
+		$links         = array();
 		$taxonomy_data = Inventory_Presser_Taxonomies::taxonomy_data();
 		for ( $i = 0; $i < sizeof( $taxonomy_data ); $i++ ) {
 			if ( empty( $taxonomy_data[ $i ]['args']['query_var'] )

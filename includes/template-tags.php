@@ -389,7 +389,7 @@ function invp_get_the_inventory_sentence() {
 	}
 
 	// Get list of terms in Types taxonomy that have count > 0.
-	$types = get_terms(
+	$types      = get_terms(
 		array(
 			'taxonomy' => 'type',
 		)

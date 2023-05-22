@@ -5,8 +5,7 @@ jQuery(document).ready(function(){
 	 * stamps on smaller devices.
 	 */
 	if( document.documentElement.clientWidth <= 480 
-		&& widget_slider.showcount > 2 )
-	{
+		&& widget_slider.showcount > 2 ) {
 		widget_slider.showcount = 2;
 	}
 	var flexslider = jQuery('.widget__invp_slick .flexslider');
@@ -31,8 +30,8 @@ jQuery(document).ready(function(){
 	//resize the slider when the browser is resized
 	jQuery(window).bind('resize', function () {
 		setTimeout(function () {
-		   var slider = jQuery(flexslider).data('flexslider');
-		   slider.resize();
+			var slider = jQuery(flexslider).data('flexslider');
+			slider.resize();
 		}, 1000);
 	});
 });

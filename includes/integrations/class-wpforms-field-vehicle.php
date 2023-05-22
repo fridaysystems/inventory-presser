@@ -46,34 +46,34 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			$this->type     = 'vehicle';
 			$this->icon     = 'fa-caret-square-o-down';
 			$this->order    = 200;
-			$this->defaults = [
-				1 => [
+			$this->defaults = array(
+				1 => array(
 					'label'   => esc_html__( 'First Choice', 'inventory-presser' ),
 					'value'   => '',
 					'default' => '',
-				],
-				2 => [
+				),
+				2 => array(
 					'label'   => esc_html__( 'Second Choice', 'inventory-presser' ),
 					'value'   => '',
 					'default' => '',
-				],
-				3 => [
+				),
+				3 => array(
 					'label'   => esc_html__( 'Third Choice', 'inventory-presser' ),
 					'value'   => '',
 					'default' => '',
-				],
-			];
+				),
+			);
 
 			// Define additional field properties.
-			add_filter( 'wpforms_field_properties_' . $this->type, [ $this, 'field_properties' ], 5, 3 );
+			add_filter( 'wpforms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
 
 			// Form frontend CSS enqueues.
-			add_action( 'wpforms_frontend_css', [ $this, 'enqueue_frontend_css' ] );
+			add_action( 'wpforms_frontend_css', array( $this, 'enqueue_frontend_css' ) );
 
 			// Form frontend JS enqueues.
-			add_action( 'wpforms_frontend_js', [ $this, 'enqueue_frontend_js' ] );
+			add_action( 'wpforms_frontend_js', array( $this, 'enqueue_frontend_js' ) );
 
-			add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_block_editor_assets' ] );
+			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
 		}
 
 		/**
@@ -97,7 +97,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 
 			// Use the selected choice value as the submitted value, not the labels.
 			$field['show_values'] = true;
-			$choices = array(
+			$choices              = array(
 				array(
 					'label' => __( 'Please choose a vehicle...', 'inventory-presser' ),
 					'value' => '',
@@ -123,14 +123,14 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			}
 
 			// Set options container (<select>) properties.
-			$properties['input_container'] = [
-				'class' => [],
-				'data'  => [],
+			$properties['input_container'] = array(
+				'class' => array(),
+				'data'  => array(),
 				'id'    => "wpforms-{$form_id}-field_{$field_id}",
-				'attr'  => [
+				'attr'  => array(
 					'name' => "wpforms[fields][{$field_id}]",
-				],
-			];
+				),
+			);
 
 			// Set properties.
 			foreach ( $choices as $key => $choice ) {
@@ -138,32 +138,32 @@ if ( class_exists( 'WPForms_Field' ) ) {
 				// Used for dynamic choices.
 				$depth = 1;
 
-				$properties['inputs'][ $key ] = [
-					'container' => [
-						'attr'  => [],
-						'class' => [ "choice-{$key}", "depth-{$depth}" ],
-						'data'  => [],
+				$properties['inputs'][ $key ] = array(
+					'container' => array(
+						'attr'  => array(),
+						'class' => array( "choice-{$key}", "depth-{$depth}" ),
+						'data'  => array(),
 						'id'    => '',
-					],
-					'label'     => [
-						'attr'  => [
+					),
+					'label'     => array(
+						'attr'  => array(
 							'for' => "wpforms-{$form_id}-field_{$field_id}_{$key}",
-						],
-						'class' => [ 'wpforms-field-label-inline' ],
-						'data'  => [],
+						),
+						'class' => array( 'wpforms-field-label-inline' ),
+						'data'  => array(),
 						'id'    => '',
 						'text'  => $choice['label'],
-					],
-					'attr'      => [
+					),
+					'attr'      => array(
 						'name'  => "wpforms[fields][{$field_id}]",
 						'value' => isset( $field['show_values'] ) ? $choice['value'] : $choice['label'],
-					],
-					'class'     => [],
-					'data'      => [],
+					),
+					'class'     => array(),
+					'data'      => array(),
 					'id'        => "wpforms-{$form_id}-field_{$field_id}_{$key}",
 					'required'  => ! empty( $field['required'] ) ? 'required' : '',
 					'default'   => isset( $choice['default'] ),
-				];
+				);
 			}
 
 			// Add class that changes the field size.
@@ -179,7 +179,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			// Add additional class for container.
 			if (
 				! empty( $field['style'] ) &&
-				in_array( $field['style'], [ self::STYLE_CLASSIC, self::STYLE_MODERN ], true )
+				in_array( $field['style'], array( self::STYLE_CLASSIC, self::STYLE_MODERN ), true )
 			) {
 				$properties['container']['class'][] = "wpforms-field-vehicle-style-{$field['style']}";
 			}
@@ -204,9 +204,9 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			$this->field_option(
 				'basic-options',
 				$field,
-				[
+				array(
 					'markup' => 'open',
-				]
+				)
 			);
 
 			// Label.
@@ -222,9 +222,9 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			$this->field_option(
 				'basic-options',
 				$field,
-				[
+				array(
 					'markup' => 'close',
-				]
+				)
 			);
 
 			/*
@@ -235,16 +235,16 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			$this->field_option(
 				'advanced-options',
 				$field,
-				[
+				array(
 					'markup' => 'open',
-				]
+				)
 			);
 
 			// Multiple options selection.
 			$fld = $this->field_element(
 				'toggle',
 				$field,
-				[
+				array(
 					'slug'    => 'multiple',
 					'value'   => ! empty( $field['multiple'] ),
 					'desc'    => esc_html__( 'Multiple Options Selection', 'inventory-presser' ),
@@ -252,62 +252,62 @@ if ( class_exists( 'WPForms_Field' ) ) {
 								sprintf(
 									wp_kses( /* translators: %s - URL to WPForms.com doc article. */
 										esc_html__( 'For details, including how this looks and works for your site\'s visitors, please check out <a href="%s" target="_blank" rel="noopener noreferrer">our doc</a>.', 'inventory-presser' ),
-										[
-											'a' => [
-												'href'   => [],
-												'target' => [],
-												'rel'    => [],
-											],
-										]
+										array(
+											'a' => array(
+												'href'   => array(),
+												'target' => array(),
+												'rel'    => array(),
+											),
+										)
 									),
 									esc_url( wpforms_utm_link( 'https://wpforms.com/docs/how-to-allow-multiple-selections-to-a-dropdown-field-in-wpforms/', 'Field Options', 'Multiple Options Selection Documentation' ) )
 								),
-				],
+				),
 				false
 			);
 
 			$this->field_element(
 				'row',
 				$field,
-				[
+				array(
 					'slug'    => 'multiple',
 					'content' => $fld,
-				]
+				)
 			);
 
 			// Style.
 			$lbl = $this->field_element(
 				'label',
 				$field,
-				[
+				array(
 					'slug'    => 'style',
 					'value'   => esc_html__( 'Style', 'inventory-presser' ),
 					'tooltip' => esc_html__( 'Classic style is the default one generated by your browser. Modern has a fresh look and displays all selected options in a single row.', 'inventory-presser' ),
-				],
+				),
 				false
 			);
 
 			$fld = $this->field_element(
 				'select',
 				$field,
-				[
+				array(
 					'slug'    => 'style',
 					'value'   => ! empty( $field['style'] ) ? $field['style'] : self::STYLE_CLASSIC,
-					'options' => [
+					'options' => array(
 						self::STYLE_CLASSIC => esc_html__( 'Classic', 'inventory-presser' ),
 						self::STYLE_MODERN  => esc_html__( 'Modern', 'inventory-presser' ),
-					],
-				],
+					),
+				),
 				false
 			);
 
 			$this->field_element(
 				'row',
 				$field,
-				[
+				array(
 					'slug'    => 'style',
 					'content' => $lbl . $fld,
-				]
+				)
 			);
 
 			// Size.
@@ -323,9 +323,9 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			$this->field_option(
 				'advanced-options',
 				$field,
-				[
+				array(
 					'markup' => 'close',
-				]
+				)
 			);
 		}
 
@@ -339,7 +339,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 		 */
 		public function field_preview( $field ) {
 
-			$args = [];
+			$args = array();
 
 			// Label.
 			$this->field_preview_option( 'label', $field );
@@ -362,7 +362,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			 * not interactive and only show one option.
 			 */
 			$transient_name = 'invp_wpforms_preview_post_ids';
-			$post_ids = get_transient( $transient_name );
+			$post_ids       = get_transient( $transient_name );
 			if ( ! is_array( $post_ids ) ) {
 				$post_ids = $this->get_vehicle_post_ids();
 				set_transient( $transient_name, $post_ids, 24 * HOUR_IN_SECONDS );
@@ -459,7 +459,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 
 			// Is this a vehicle details page?
 			if ( is_singular( INVP::POST_TYPE ) ) {
-				$value = sprintf( 
+				$value = sprintf(
 					'%s %s %s %s, %s',
 					invp_get_the_year(),
 					invp_get_the_make(),
@@ -469,7 +469,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 				);
 				// Yes. Add a hidden input to the form instead of a select.
 				printf(
-					//<input type="hidden" name="vehicle" value="2016 Toyota Corolla L, P03013">
+					// <input type="hidden" name="vehicle" value="2016 Toyota Corolla L, P03013">
 					'<input type="hidden" %s value="%s" />',
 					wpforms_html_attributes( $container['id'], $container['class'], $container['data'], $container['attr'] ),
 					esc_attr( $value )
@@ -521,22 +521,22 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			$dynamic  = false;
 			$multiple = ! empty( $field['multiple'] );
 			$name     = sanitize_text_field( $field['label'] );
-			$value    = [];
+			$value    = array();
 
 			// Convert submitted field value to array.
 			if ( ! is_array( $field_submit ) ) {
-				$field_submit = [ $field_submit ];
+				$field_submit = array( $field_submit );
 			}
 
 			$value_raw = wpforms_sanitize_array_combine( $field_submit );
 
-			$data = [
+			$data = array(
 				'name'      => $name,
 				'value'     => '',
 				'value_raw' => $value_raw,
 				'id'        => absint( $field_id ),
 				'type'      => $this->type,
-			];
+			);
 
 			// Normal processing, dynamic population is off.
 
@@ -662,7 +662,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 				wp_enqueue_style(
 					'wpforms-choicesjs',
 					WPFORMS_PLUGIN_URL . "assets/css/choices{$min}.css",
-					[],
+					array(),
 					self::CHOICES_VERSION
 				);
 			}
@@ -704,11 +704,11 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			wp_enqueue_style(
 				'wpforms-choicesjs',
 				WPFORMS_PLUGIN_URL . "assets/css/choices{$min}.css",
-				[],
+				array(),
 				self::CHOICES_VERSION
 			);
 
-			$this->enqueue_choicesjs_once( [] );
+			$this->enqueue_choicesjs_once( array() );
 		}
 
 		/**
@@ -764,7 +764,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 				return $name;
 			}
 			if ( ! empty( $field['multiple'] ) ) {
-				$input = isset( $props['inputs'] ) ? end( $props['inputs'] ) : [];
+				$input = isset( $props['inputs'] ) ? end( $props['inputs'] ) : array();
 
 				return isset( $input['attr']['name'] ) ? $input['attr']['name'] . '[]' : '';
 			}
