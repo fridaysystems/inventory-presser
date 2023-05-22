@@ -152,19 +152,23 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page {
 	}
 
 	/**
-	 * redirect_the_page
-	 *
 	 * Performs the redirect from our special page to the inventory archive
 	 *
 	 * @param  WP_Query $wp_query
 	 * @return void
 	 */
-	function redirect_the_page( $wp_query ) {
+	public function redirect_the_page( $wp_query ) {
 		if ( is_admin() ) {
 			return;
 		}
 
-		if ( $wp_query->get( 'page_id' ) == get_option( 'page_on_front' ) && $wp_query->get( 'page_id' ) == self::find_page_id() ) {
+		$page_id = intval( $wp_query->get( 'page_id' ) );
+		if ( 0 === $page_id ) {
+			// This isn't even a request for a page.
+			return;
+		}
+
+		if ( $page_id == get_option( 'page_on_front' ) && $page_id == self::find_page_id() ) {
 			wp_redirect( get_post_type_archive_link( INVP::POST_TYPE ) );
 			exit;
 		}
