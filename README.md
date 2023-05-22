@@ -1,6 +1,6 @@
 # Inventory Presser
 
-Car dealer plugin. Simple Inventory Listings on WordPress. [Runs on any theme](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/) & provides shortcodes for the stubborn ones.
+Car dealer plugin. Turn WordPress into a dealership website. Provides vehicle listings and photo sliders for automobiles or powersports. [Runs on any theme](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/) & provides shortcodes for the stubborn ones. 
 
 __Visit this plugin's page in the WordPress Plugin Repository__
 https://wordpress.org/plugins/inventory-presser/
@@ -10,22 +10,20 @@ https://wordpress.org/plugins/inventory-presser/
 
 * Supports automobiles, motorcycles, ATVs, RVs, and boats
 * Manage multiple lot locations and separate phone numbers & hours for each
-* VIN-decoding add-on available
-* Custom post type `inventory_vehicle` makes importing data easy
+* [VIN-decoding add-on](https://inventorypresser.com/products/plugins/) available
+* Custom post type `inventory_vehicle` & 13 taxonomies make importing data easy
 * Categorizes inventory by type, body style, fuel, transmission, drive type, availability, and new or used
-* Includes many widgets including vehicle sliders and inventory grids
+* Provides [blocks](https://inventorypresser.com/blocks-preview-plugin-available/), [widgets](https://inventorypresser.com/docs/feature-list/widgets/), [shortcodes](https://inventorypresser.com/docs/shortcodes/), [template tags](https://inventorypresser.com/docs/template-tags/), and [hooks](https://inventorypresser.com/docs/hooks/)
+* [Full feature list →](https://inventorypresser.com/docs/feature-list/)
 
-### Developer-friendly
+## Integration Guides
 
-* Creates a custom post type & 13 taxonomies to store and group vehicles
-* Provides blocks, widgets, shortcodes, template tags, and hooks
-* Editor sidebar integrates custom fields into the block editor
-* Adds columns to the posts list for vehicles for stock number, color, odometer, price, photo count, and thumbnail
-* Hooks in all the right places & powerful [shortcodes](https://inventorypresser.com/docs/shortcodes/)
-* [Template tags](https://inventorypresser.com/docs/template-tags/) make front-end development easy
+* [Setup a Dealership Website](https://inventorypresser.com/docs/setup-a-dealership-website/)
+* [Adding or importing inventory](https://inventorypresser.com/docs/adding-or-importing-inventory/)
+* [Uploading & arranging photos](https://inventorypresser.com/docs/uploading-arranging-photos/)
+* [Theme compatibility guide](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/)
+* Capture leads with [Contact Form 7](https://inventorypresser.com/docs/contact-form-7-integration/) or [WPForms](https://inventorypresser.com/docs/capturing-vehicle-leads-with-wpforms/)
+* [Documentation homepage →](https://inventorypresser.com/docs/)
 
-## Learn more
+## Getting Started
 
-* [Full feature list](https://inventorypresser.com/docs/feature-list/)
-* [Documentation](https://inventorypresser.com/docs/)
-* [Add-ons available](https://inventorypresser.com/products/plugins/)

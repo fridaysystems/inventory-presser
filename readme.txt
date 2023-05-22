@@ -38,6 +38,11 @@ Built the right way and developer-friendly
 * [Runs on any theme](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/) & provides shortcodes for the stubborn ones.
 * [Full feature list](https://inventorypresser.com/docs/feature-list/) & more documentation [inventorypresser.com](https://inventorypresser.com/)
 
+Integration Guides
+
+* [Setup a Dealership Website](https://inventorypresser.com/docs/setup-a-dealership-website/)
+* [Theme Compatibility Guide](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/)
+* [Adding or Importing Inventory](https://inventorypresser.com/docs/adding-or-importing-inventory/)
 
 == Installation ==
 
@@ -55,7 +60,7 @@ This plugin is free and open source. Free and paid add-ons & services are availa
 Not for free. A VIN decoder add-on is available at https://inventorypresser.com/products/plugins/vin-decoder/.
 
 = Can I import my inventory into this system? =
-Yes. We use the [WordPress REST API](https://developer.wordpress.org/rest-api/) to deliver inventory updates. [Read how we do it](https://inventorypresser.com/docs/using-the-rest-api-to-update-vehicle-listings-in-wordpress/). Vehicles in Inventory Presser are stored in a custom post type using meta fields, taxonomy terms, and photo attachments, and many CSV/spreadsheet importer plugins like WP All Import work with custom post types. If imports sound challenging, Friday Systems (that's us) feeds hundreds of sites running this plugin. It may be easier to let Friday Systems handle the last leg for a monthly fee.
+Yes. Visit [Adding or Importing Inventory](https://inventorypresser.com/docs/adding-or-importing-inventory/) to determine what is best for your client. We use the [WordPress REST API](https://developer.wordpress.org/rest-api/) to deliver inventory updates. [Read how we do it](https://inventorypresser.com/docs/using-the-rest-api-to-update-vehicle-listings-in-wordpress/). Vehicles in Inventory Presser are stored in a custom post type using meta fields, taxonomy terms, and photo attachments, and many CSV/spreadsheet importer plugins like WP All Import work with custom post types. If imports sound challenging, Friday Systems (that's us) feeds hundreds of sites running this plugin. It may be easier to let Friday Systems handle the last leg for a monthly fee.
 
 = Will Inventory Presser work with my theme? =
 Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/). If your theme does not include templates to display listing pages and vehicle detail pages, the plugin will provide the markup for those pages automatically. There are shortcodes like `[invp_archive]` and `[invp_single_vehicle]` as a last resort. A number of [Template Tags](https://inventorypresser.com/docs/template-tags/) make designing custom templates easy.
