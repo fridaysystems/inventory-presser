@@ -904,7 +904,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * @return void
 		 */
 		public function load_integrations() {
-			$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+			static $active_plugins = array();
+			if ( empty( $active_plugins ) ) {
+				$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+			}
+
 			if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 				include_once ABSPATH . '/wp-admin/includes/plugin.php';
 			}
