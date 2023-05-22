@@ -900,6 +900,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 */
 		public function load_integrations() {
 			$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+			if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+				include_once ABSPATH . '/wp-admin/includes/plugin.php';
+			}
+
 			// WP All Import
 			$plugin_path = 'wp-all-import-pro/wp-all-import-pro.php';
 			if ( in_array( $plugin_path, $active_plugins, true )
