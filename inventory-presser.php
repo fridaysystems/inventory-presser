@@ -894,9 +894,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * @return void
 		 */
 		public function loaded() {
-			// Allow translations.
-			load_plugin_textdomain( 'inventory-presser', false, __DIR__ );
-
 			// Fire an action hook after Inventory Presser is finished loading.
 			do_action( 'invp_loaded' );
 		}
