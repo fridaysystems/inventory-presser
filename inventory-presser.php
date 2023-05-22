@@ -598,13 +598,23 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// Filter the attachment post type to make sure `parent` is exposed in the REST API.
 			add_filter( 'register_post_type_args', array( $this, 'edit_attachment_post_type' ), 10, 2 );
 
+			/**
+			 * Make sure our own classes exist before creating instances in case
+			 * a page load happens during a plugin update when some of these
+			 * files might actually not exist.
+			 */
+
 			// Create custom taxonomies.
-			$taxonomies = new Inventory_Presser_Taxonomies();
-			$taxonomies->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Taxonomies' ) ) {
+				$taxonomies = new Inventory_Presser_Taxonomies();
+				$taxonomies->add_hooks();
+			}
 
 			// Modify edit-tags.php for our location taxonomy to manage term meta.
-			$location_meta = new Inventory_Presser_Admin_Location_Meta();
-			$location_meta->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Admin_Location_Meta' ) ) {
+				$location_meta = new Inventory_Presser_Admin_Location_Meta();
+				$location_meta->add_hooks();
+			}
 
 			/**
 			 * Some custom rewrite rules are created and destroyed
@@ -637,32 +647,44 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 
 			// Allow custom fields to be searched.
-			$add_custom_fields_to_search = new Add_Custom_Fields_To_Search();
-			$add_custom_fields_to_search->add_hooks();
+			if ( class_exists( 'Add_Custom_Fields_To_Search' ) ) {
+				$add_custom_fields_to_search = new Add_Custom_Fields_To_Search();
+				$add_custom_fields_to_search->add_hooks();
+			}
 
 			// Redirect URLs by VINs to proper vehicle permalinks.
-			$allow_urls_by_vin = new Vehicle_URLs_By_VIN();
-			$allow_urls_by_vin->add_hooks();
+			if ( class_exists( 'Vehicle_URLs_By_VIN' ) ) {
+				$allow_urls_by_vin = new Vehicle_URLs_By_VIN();
+				$allow_urls_by_vin->add_hooks();
+			}
 
 			// Add buttons near vehicles for Carfax reports or NextGear inspections.
-			$badges = new Inventory_Presser_Badges();
-			$badges->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Badges' ) ) {
+				$badges = new Inventory_Presser_Badges();
+				$badges->add_hooks();
+			}
 
 			// Redirect 404 vehicles to make archives.
-			$redirect_404_vehicles = new Redirect_404_Vehicles();
-			$redirect_404_vehicles->add_hooks();
+			if ( class_exists( 'Redirect_404_Vehicles' ) ) {
+				$redirect_404_vehicles = new Redirect_404_Vehicles();
+				$redirect_404_vehicles->add_hooks();
+			}
 
 			// Register scripts and styles on the frontend and in the block editor.
 			add_action( 'wp_enqueue_scripts', array( $this, 'include_scripts_and_styles' ), 11 );
 			add_action( 'enqueue_block_editor_assets', array( $this, 'include_scripts_and_styles' ), 11 );
 
 			// Modify the URL of an "Email a Friend" menu item on the "Vehicle Details Buttons" menu.
-			$email_a_friend = new Inventory_Presser_Email_A_Friend();
-			$email_a_friend->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Email_A_Friend' ) ) {
+				$email_a_friend = new Inventory_Presser_Email_A_Friend();
+				$email_a_friend->add_hooks();
+			}
 
 			// Make it possible for a menu item to print the page.
-			$print_button = new Inventory_Presser_Menu_Item_Print();
-			$print_button->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Menu_Item_Print' ) ) {
+				$print_button = new Inventory_Presser_Menu_Item_Print();
+				$print_button->add_hooks();
+			}
 
 			/**
 			 * When vehicle posts are inserted, make sure they create a relationship
@@ -691,92 +713,142 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_filter( 'wp_get_attachment_url', array( $this, 'change_attachment_urls' ) );
 
 			// Allow users to set the Inventory listing page as the home page.
-			$page = new Inventory_Presser_Allow_Inventory_As_Home_Page();
-			$page->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Allow_Inventory_As_Home_Page' ) ) {
+				$page = new Inventory_Presser_Allow_Inventory_As_Home_Page();
+				$page->add_hooks();
+			}
 
 			// Add all our shortcodes.
-			$shortcodes = new Inventory_Presser_Shortcode_Grid();
-			$shortcodes->add_hooks();
-			$shortcodes = new Inventory_Presser_Shortcode_Iframe();
-			$shortcodes->add_hooks();
-			$shortcodes = new Inventory_Presser_Shortcode_Slider();
-			$shortcodes->add_hooks();
-			$shortcodes = new Inventory_Presser_Shortcode_Single_Vehicle();
-			$shortcodes->add_hooks();
-			$shortcodes = new Inventory_Presser_Shortcode_Archive();
-			$shortcodes->add_hooks();
-			$shortcodes = new Inventory_Presser_Shortcode_Archive_Vehicle();
-			$shortcodes->add_hooks();
-			$shortcodes = new Inventory_Presser_Shortcode_Attribute_Table();
-			$shortcodes->add_hooks();
-			$shortcodes = new Inventory_Presser_Shortcode_Hours_Today();
-			$shortcodes->add_hooks();
-			$shortcodes = new Inventory_Presser_Shortcode_Photo_Slider();
-			$shortcodes->add_hooks();
-			$shortcodes = new Inventory_Presser_Shortcode_Vin();
-			$shortcodes->add_hooks();
-			$shortcodes = new Inventory_Presser_Shortcode_Sort_By();
-			$shortcodes->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Shortcode_Grid' ) ) {
+				$shortcodes = new Inventory_Presser_Shortcode_Grid();
+				$shortcodes->add_hooks();
+			}
+			if ( class_exists( 'Inventory_Presser_Shortcode_Iframe' ) ) {
+				$shortcodes = new Inventory_Presser_Shortcode_Iframe();
+				$shortcodes->add_hooks();
+			}
+			if ( class_exists( 'Inventory_Presser_Shortcode_Slider' ) ) {
+				$shortcodes = new Inventory_Presser_Shortcode_Slider();
+				$shortcodes->add_hooks();
+			}
+			if ( class_exists( 'Inventory_Presser_Shortcode_Single_Vehicle' ) ) {
+				$shortcodes = new Inventory_Presser_Shortcode_Single_Vehicle();
+				$shortcodes->add_hooks();
+			}
+			if ( class_exists( 'Inventory_Presser_Shortcode_Archive' ) ) {
+				$shortcodes = new Inventory_Presser_Shortcode_Archive();
+				$shortcodes->add_hooks();
+			}
+			if ( class_exists( 'Inventory_Presser_Shortcode_Archive_Vehicle' ) ) {
+				$shortcodes = new Inventory_Presser_Shortcode_Archive_Vehicle();
+				$shortcodes->add_hooks();
+			}
+			if ( class_exists( 'Inventory_Presser_Shortcode_Attribute_Table' ) ) {
+				$shortcodes = new Inventory_Presser_Shortcode_Attribute_Table();
+				$shortcodes->add_hooks();
+			}
+			if ( class_exists( 'Inventory_Presser_Shortcode_Hours_Today' ) ) {
+				$shortcodes = new Inventory_Presser_Shortcode_Hours_Today();
+				$shortcodes->add_hooks();
+			}
+			if ( class_exists( 'Inventory_Presser_Shortcode_Photo_Slider' ) ) {
+				$shortcodes = new Inventory_Presser_Shortcode_Photo_Slider();
+				$shortcodes->add_hooks();
+			}
+			if ( class_exists( 'Inventory_Presser_Shortcode_Vin' ) ) {
+				$shortcodes = new Inventory_Presser_Shortcode_Vin();
+				$shortcodes->add_hooks();
+			}
+			if ( class_exists( 'Inventory_Presser_Shortcode_Sort_By' ) ) {
+				$shortcodes = new Inventory_Presser_Shortcode_Sort_By();
+				$shortcodes->add_hooks();
+			}
 
 			/**
 			 * When the active theme isn't prepared to display vehicles, insert
 			 * our archive and single vehicle shortcodes.
 			 */
-			$template_provider = new Inventory_Presser_Template_Provider();
-			$template_provider->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Template_Provider' ) ) {
+				$template_provider = new Inventory_Presser_Template_Provider();
+				$template_provider->add_hooks();
+			}
 
 			// Add blocks.
-			$blocks = new Inventory_Presser_Blocks();
-			$blocks->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Blocks' ) ) {
+				$blocks = new Inventory_Presser_Blocks();
+				$blocks->add_hooks();
+			}
 
 			/**
 			 * Add photo number meta values to vehicle photos uploaded in the
 			 * dashboard
 			 */
-			$photo_numberer = new Inventory_Presser_Photo_Numberer();
-			$photo_numberer->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Photo_Numberer' ) ) {
+				$photo_numberer = new Inventory_Presser_Photo_Numberer();
+				$photo_numberer->add_hooks();
+			}
 
 			// Allow additional vehicle archives to be created.
-			$additional_archives = new Inventory_Presser_Additional_Listings_Pages();
-			$additional_archives->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Additional_Listings_Pages' ) ) {
+				$additional_archives = new Inventory_Presser_Additional_Listings_Pages();
+				$additional_archives->add_hooks();
+			}
 
-			// Add columns to the vehicle posts list
-			$bar = new Inventory_Presser_Admin_Bar();
-			$bar->add_hooks();
+			// Add columns to the vehicle posts list.
+			if ( class_exists( 'Inventory_Presser_Admin_Bar' ) ) {
+				$bar = new Inventory_Presser_Admin_Bar();
+				$bar->add_hooks();
+			}
 
 			if ( is_admin() ) {
 				// Initialize our Settings page in the Dashboard.
-				$options = new Inventory_Presser_Admin_Options();
-				$options->add_hooks();
+				if ( class_exists( 'Inventory_Presser_Admin_Options' ) ) {
+					$options = new Inventory_Presser_Admin_Options();
+					$options->add_hooks();
+				}
 
-				// Add columns to the vehicle posts list
-				$posts_list = new Inventory_Presser_Admin_Posts_List();
-				$posts_list->add_hooks();
+				// Add columns to the vehicle posts list.
+				if ( class_exists( 'Inventory_Presser_Admin_Posts_List' ) ) {
+					$posts_list = new Inventory_Presser_Admin_Posts_List();
+					$posts_list->add_hooks();
+				}
 
 				// If the user is looking at our options page, suggest settings tweaks.
-				$settings_suggester = new Inventory_Presser_Admin_Settings_Suggester();
-				$settings_suggester->add_hooks();
+				if ( class_exists( 'Inventory_Presser_Admin_Settings_Suggester' ) ) {
+					$settings_suggester = new Inventory_Presser_Admin_Settings_Suggester();
+					$settings_suggester->add_hooks();
+				}
 
 				// Add a sidebar to the editor when editing vehicles.
-				$sidebar = new Inventory_Presser_Admin_Editor_Sidebar();
-				$sidebar->add_hooks();
+				if ( class_exists( 'Inventory_Presser_Admin_Editor_Sidebar' ) ) {
+					$sidebar = new Inventory_Presser_Admin_Editor_Sidebar();
+					$sidebar->add_hooks();
+				}
 			}
 
-			$overlapper = new Inventory_Presser_Taxonomy_Overlapper();
-			$overlapper->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Taxonomy_Overlapper' ) ) {
+				$overlapper = new Inventory_Presser_Taxonomy_Overlapper();
+				$overlapper->add_hooks();
+			}
 
-			$schema_generator = new Inventory_Presser_Schema_Org_Generator();
-			$schema_generator->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Schema_Org_Generator' ) ) {
+				$schema_generator = new Inventory_Presser_Schema_Org_Generator();
+				$schema_generator->add_hooks();
+			}
 
 			add_action( 'invp_archive_buttons', array( $this, 'add_view_details_button' ) );
 
 			add_action( 'plugins_loaded', array( $this, 'loaded' ) );
 
-			$rest = new Inventory_Presser_REST();
-			$rest->add_hooks();
+			if ( class_exists( 'Inventory_Presser_REST' ) ) {
+				$rest = new Inventory_Presser_REST();
+				$rest->add_hooks();
+			}
 
-			$photo_arranger = new Inventory_Presser_Admin_Photo_Arranger();
-			$photo_arranger->add_hooks();
+			if ( class_exists( 'Inventory_Presser_Admin_Photo_Arranger' ) ) {
+				$photo_arranger = new Inventory_Presser_Admin_Photo_Arranger();
+				$photo_arranger->add_hooks();
+			}
 
 			// Change archive page titles.
 			add_filter( 'document_title_parts', array( $this, 'change_archive_title_tags' ) );
