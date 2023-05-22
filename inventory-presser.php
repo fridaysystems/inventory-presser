@@ -629,10 +629,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 
 			// Flush rewrite rules when the plugin is activated.
-			register_activation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Plugin', 'flush_rewrite' ) );
+			register_activation_hook( INVP_PLUGIN_FILE_PATH, array( __CLASS__, 'flush_rewrite' ) );
 
 			// Delete an option during deactivation.
-			register_deactivation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Plugin', 'delete_rewrite_rules_option' ) );
+			register_deactivation_hook( INVP_PLUGIN_FILE_PATH, array( __CLASS__, 'delete_rewrite_rules_option' ) );
 
 			// Register some widgets included with this plugin.
 			add_action( 'widgets_init', array( $this, 'register_widgets' ) );
