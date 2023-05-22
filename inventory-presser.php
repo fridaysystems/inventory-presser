@@ -853,7 +853,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// Change archive page titles.
 			add_filter( 'document_title_parts', array( $this, 'change_archive_title_tags' ) );
 
-			// Add a link to the Settings page on the plugin management page
+			// Add a link to the Settings page on the plugin management page.
 			add_filter( 'plugin_action_links_' . INVP_PLUGIN_BASE, array( $this, 'insert_settings_link' ), 2, 2 );
 
 			add_action( 'plugins_loaded', array( $this, 'load_integrations' ) );
