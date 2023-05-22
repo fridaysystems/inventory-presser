@@ -77,9 +77,10 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Added] Adds a WPForms integration. Adds a Vehicle field type. This field will produce a dropdown on forms not embedded on vehicle singles. On vehicle singles, a hidden input will identify the vehicle the user is looking at. Adds two Smart Tags {invp_adf_vehicle} and {invp_site_url} to make creating ADF XML lead emails easy when following [these instructions](https://inventorypresser.com/docs/capturing-vehicle-leads-with-wpforms/).
 * [Added] Adds a parameter to the [invp_inventory_grid] shortcode `priced_first` to put vehicles with prices first.
 * [Added] Adds the list of taxonomy links to the settings page near the checkbox to toggle them in the menu.
+* [Fixed] Performance improvements by avoiding several get_option() calls until they are necesary. Removes a call to load_plugin_textdomain() because it is obsolete.
 * [Fixed] Stop warning users about thumbnail size aspect ratios if they are not 4:3. 16:9 is the new mainstream ratio, so check for either.
 * [Fixed] Fixes CSS in the Listings Pages table of the settings page.
-* [Fixed] Stops loading Classic Editor features when the Classic Editor plugin is not active and other dashboard performance improvements.
+* [Fixed] Stops loading Classic Editor features when the Classic Editor plugin is not active and other dashboard performance improvements around not loading features until they are necessary.
 * [Fixed] Adds support for SCRIPT_DEBUG in all script and style registrations.
 * [Fixed] Adds plugin version number to script and style registrations so they can be cached appropriately.
 * [Changed] Changes link labels in the dashboard when editing taxonomy terms for specificity like "model years" instead of "tags".
