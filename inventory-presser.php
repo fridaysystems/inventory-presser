@@ -48,14 +48,24 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 */
 		public function add_orderby_to_query( $query ) {
 			// Do not mess with the query if it's not the main one and our CPT.
-			if ( ( apply_filters( 'invp_apply_orderby_to_main_query_only', true ) && ! $query->is_main_query() )
-				|| ! is_post_type_archive( INVP::POST_TYPE )
-				|| ( empty( $_GET['orderby'] ) && empty( $this->settings['sort_vehicles_by'] ) )
-			) {
+			if ( apply_filters( 'invp_apply_orderby_to_main_query_only', true ) && ! $query->is_main_query() ) {
+				return;
+			}
+
+			if ( ! is_post_type_archive( INVP::POST_TYPE ) ) {
+				return;
+			}
+
+			if ( empty( $_GET['orderby'] ) ) {
 				return;
 			}
 
 			add_filter( 'posts_clauses', array( $this, 'modify_query_orderby' ) );
+			$settings = INVP::settings();
+
+			if ( empty( $settings['sort_vehicles_by'] ) ) {
+				return;
+			}
 
 			/**
 			 * The field we want to order by is either in $_GET['orderby'] when
@@ -63,12 +73,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * settings 'default-sort-key.' The sort direction is in
 			 * $_GET['order'] or 'sort_vehicles_order.'
 			 */
-			$direction = $this->settings['sort_vehicles_order'];
+			$direction = $settings['sort_vehicles_order'];
 			if ( isset( $_GET['order'] ) ) {
 				$direction = sanitize_text_field( wp_unslash( $_GET['order'] ) );
 			}
 
-			$key = $this->settings['sort_vehicles_by'];
+			$key = $settings['sort_vehicles_by'];
 
 			// Backwards compatibility for pre 13.7.1 when there was a bug.
 			if ( 'date_entered' === $key ) {
@@ -621,8 +631,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * Deliver our promise to order posts, change the ORDER BY clause of
 			 * the query that's fetching post objects.
 			 */
-
-			$this->settings = INVP::settings();
 			if ( ! is_admin() ) {
 				add_action( 'pre_get_posts', array( $this, 'add_orderby_to_query' ) );
 				add_action( 'pre_get_posts', array( $this, 'modify_query_for_max_price' ), 99, 1 );
