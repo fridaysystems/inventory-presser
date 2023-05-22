@@ -56,14 +56,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				return;
 			}
 
-			if ( empty( $_GET['orderby'] ) ) {
-				return;
-			}
-
 			add_filter( 'posts_clauses', array( $this, 'modify_query_orderby' ) );
 			$settings = INVP::settings();
 
-			if ( empty( $settings['sort_vehicles_by'] ) ) {
+			if ( empty( $_GET['orderby'] ) && empty( $settings['sort_vehicles_by'] ) ) {
 				return;
 			}
 
