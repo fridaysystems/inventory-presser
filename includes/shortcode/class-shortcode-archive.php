@@ -58,7 +58,6 @@ class Inventory_Presser_Shortcode_Archive {
 	function content( $atts ) {
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'invp_archive_vehicle' );
-		$plugin_settings = INVP::settings();
 
 		$atts = shortcode_atts(
 			array(
