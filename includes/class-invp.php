@@ -402,8 +402,6 @@ class INVP {
 	}
 
 	/**
-	 * keys_and_types
-	 *
 	 * Produces an array of arrays that define all the meta fields that
 	 * define our vehicle post type.
 	 *
