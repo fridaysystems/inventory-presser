@@ -4,17 +4,18 @@
 	var el             = wp.element.createElement;
 	var Text           = wp.components.TextControl;
 	var Select         = wp.components.SelectControl;
+	var Checkbox       = wp.components.CheckboxControl;
 	var withSelect     = wp.data.withSelect;
 	var withDispatch   = wp.data.withDispatch;
 	var compose        = wp.compose.compose;
+	var metaPrefix     = 'inventory_presser_'; // TODO localize this so it's dynamic.
 
-	function getLabel( meta_key )
-	{
-		if ( 19 > meta_key.length ) {
+	function getLabel( meta_key ) {
+		if ( metaPrefix !== meta_key.substr(0, metaPrefix.length ) ) {
 			return meta_key;
 		}
 
-		var key = meta_key.substring( 18 );
+		var key = meta_key.substring( metaPrefix.length );
 		switch ( key ) {
 			case 'msrp':
 			case 'vin':
@@ -53,6 +54,42 @@
 			);
 		}
 		return options;
+	}
+
+	function numericMetaKeys() {
+		return [
+			// Number
+			'beam',
+			'book_value_kbb',
+			'book_value_nada',
+			'doors',
+			'fuel_economy_1_annual_cost',
+			'fuel_economy_1_city',
+			'fuel_economy_1_combined',
+			'fuel_economy_1_highway',
+			'fuel_economy_2_annual_cost',
+			'fuel_economy_2_city',
+			'fuel_economy_2_combined',
+			'fuel_economy_2_highway',
+			'fuel_economy_five_year_savings',
+			'msrp',
+			'payment',
+			'price',
+			'rate',
+			'term',
+
+			// Integer.
+			'car_id',
+			'cylinders',
+			'dealer_id',
+			'down_payment',
+			'edmunds_style_id',
+			'leads_id',
+			'length',
+			'year',
+		].map( function(k) {
+			return metaPrefix + k;
+		});
 	}
 
 	function paymentFrequencyOptions()
@@ -94,6 +131,10 @@
 			function( dispatch, props ) {
 				return {
 					setMetaFieldValue: function( value ) {
+						// Is this a numeric meta field? Can't save an empty string in those.
+						if ( -1 !== numericMetaKeys().indexOf( props.fieldName ) && '' === value ) {
+							value = '0';
+						}
 						dispatch( 'core/editor' ).editPost(
 							{ meta: { [ props.fieldName ]: value } }
 						);
@@ -202,6 +243,43 @@
 		}
 	);
 
+	// Boolean fields are checkboxes.
+	var MetaBlockCheckboxField = compose(
+		withDispatch(
+			function( dispatch, props ) {
+				return {
+					setMetaFieldValue: function( value ) {
+						dispatch( 'core/editor' ).editPost(
+							{ meta: { [ props.fieldName ]: value } }
+						);
+					}
+				}
+			}
+		),
+		withSelect(
+			function( select, props ) {
+				return {
+					metaFieldValue: select( 'core/editor' )
+					 .getEditedPostAttribute( 'meta' )
+					 [ props.fieldName ],
+				}
+			}
+		)
+	)(
+		function( props ) {
+			return el(
+				Checkbox,
+				{
+					label: getLabel( props.fieldName ),
+					checked: props.metaFieldValue,
+					onChange: function( value ) {
+						props.setMetaFieldValue( value );
+					},
+				}
+			);
+		}
+	);
+
 	registerPlugin(
 		'invp-plugin-sidebar',
 		{
@@ -297,6 +375,13 @@
 						{
 							fieldName: 'inventory_presser_leads_id',
 							id:        'inventory_presser_leads_id'
+						}
+					),
+					el(
+						MetaBlockCheckboxField,
+						{
+							fieldName: 'inventory_presser_wholesale',
+							id:        'inventory_presser_wholesale'
 						}
 					),
 					el(
