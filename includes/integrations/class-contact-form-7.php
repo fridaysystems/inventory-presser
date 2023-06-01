@@ -48,18 +48,18 @@ class Inventory_Presser_Contact_Form_7 {
 			return $output;
 		}
 
-		if ( 'invp_adf_timestamp' == $name
+		if ( 'invp_adf_timestamp' === $name
 			&& $timestamp = $submission->get_meta( 'timestamp' )
 		) {
 			return wp_date( 'c', $timestamp );
 		}
 
-		if ( 'invp_adf_vehicle' == $name ) {
+		if ( 'invp_adf_vehicle' === $name ) {
 			add_filter( 'wp_mail_content_type', array( $this, 'html_mail_content_type' ) );
 
 			// What name in posted_data is the vehicle field?
 			foreach ( $submission->get_contact_form()->scan_form_tags() as $form_tag ) {
-				if ( $form_tag->basetype != 'invp_vehicle' ) {
+				if ( 'invp_vehicle' !== $form_tag->basetype ) {
 					continue;
 				}
 
@@ -176,7 +176,7 @@ class Inventory_Presser_Contact_Form_7 {
 		 * is because we want to sort by 3 post meta values
 		 */
 		global $wpdb;
-		$post_IDs = $wpdb->get_col(
+		$post_ids = $wpdb->get_col(
 			$wpdb->prepare(
 				"
 			SELECT 		DISTINCT ID
@@ -184,11 +184,11 @@ class Inventory_Presser_Contact_Form_7 {
 						LEFT JOIN $wpdb->postmeta meta1 ON $wpdb->posts.ID = meta1.post_id
 						LEFT JOIN $wpdb->postmeta meta2 ON $wpdb->posts.ID = meta2.post_id
 						LEFT JOIN $wpdb->postmeta meta3 ON $wpdb->posts.ID = meta3.post_id
-			WHERE 		post_type = '%s'
+			WHERE 		post_type = %s
 						AND post_status = 'publish'
-						AND meta1.meta_key = '%s'
-						AND meta2.meta_key = '%s'
-						AND meta3.meta_key = '%s'
+						AND meta1.meta_key = %s
+						AND meta2.meta_key = %s
+						AND meta3.meta_key = %s
 			ORDER BY	meta1.meta_value DESC,
 						meta2.meta_value ASC,
 						meta3.meta_value ASC
@@ -200,12 +200,12 @@ class Inventory_Presser_Contact_Form_7 {
 			)
 		);
 
-		// no results? no HTML
-		if ( empty( $post_IDs ) ) {
+		// no results? no HTML.
+		if ( empty( $post_ids ) ) {
 			return apply_filters( 'invp_cf7_field_vehicle_html', '' . $validation_error, $atts );
 		}
 
-		// build a drop down select
+		// build a drop down select.
 		$select_atts = array(
 			'name'  => $tag->name,
 			'class' => wpcf7_form_controls_class( 'select' ),
@@ -219,18 +219,18 @@ class Inventory_Presser_Contact_Form_7 {
 			wpcf7_format_atts( $select_atts ),
 			__( 'Please choose a vehicle...', 'inventory-presser' )
 		);
-		foreach ( $post_IDs as $post_ID ) {
+		foreach ( $post_ids as $post_id ) {
 			// is this vehicle sold?
-			if ( has_term( 'sold', 'availability', $post_ID ) ) {
+			if ( has_term( 'sold', 'availability', $post_id ) ) {
 				continue;
 			}
-			$meta = get_metadata( 'post', $post_ID );
+			$meta = get_metadata( 'post', $post_id );
 
 			// label is "2005 Subaru Baja Turbo, Blue, #12022".
 			$html .= sprintf(
 				'<option value="%s" %s>%s %s %s',
-				esc_attr( $this->prepare_value( $post_ID ) ),
-				isset( $_REQUEST['v'] ) ? selected( $post_ID, $_REQUEST['v'], false ) : '',
+				esc_attr( $this->prepare_value( $post_id ) ),
+				isset( $_REQUEST['v'] ) ? selected( $post_id, $_REQUEST['v'], false ) : '',
 				esc_html( $meta[ apply_filters( 'invp_prefix_meta_key', 'year' ) ][0] ),
 				esc_html( $meta[ apply_filters( 'invp_prefix_meta_key', 'make' ) ][0] ),
 				esc_html( $meta[ apply_filters( 'invp_prefix_meta_key', 'model' ) ][0] )
@@ -262,20 +262,28 @@ class Inventory_Presser_Contact_Form_7 {
 		return 'text/html';
 	}
 
-	protected function prepare_value( $post_ID = null ) {
-		$post_ID = $post_ID ?? get_the_ID();
+	/**
+	 * prepare_value
+	 *
+	 * @param  int $post_id
+	 * @return string
+	 */
+	protected function prepare_value( $post_id = null ) {
+		$post_id = $post_id ?? get_the_ID();
 		$value   = trim(
 			sprintf(
 				'%s %s %s',
-				invp_get_the_year( $post_ID ),
-				invp_get_the_make( $post_ID ),
-				invp_get_the_model( $post_ID )
+				invp_get_the_year( $post_id ),
+				invp_get_the_make( $post_id ),
+				invp_get_the_model( $post_id )
 			)
 		);
-		if ( $trim = invp_get_the_trim( $post_ID ) ) {
+		$trim    = invp_get_the_trim( $post_id );
+		if ( ! empty( $trim ) ) {
 			$value .= ' ' . $trim;
 		}
-		if ( $stock_number = invp_get_the_stock_number( $post_ID ) ) {
+		$stock_number = invp_get_the_stock_number( $post_id );
+		if ( ! empty( $stock_number ) ) {
 			$value .= ', ' . $stock_number;
 		}
 		return $value;

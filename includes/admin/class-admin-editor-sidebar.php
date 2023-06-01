@@ -14,7 +14,7 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	 *
 	 * @return void
 	 */
-	function sidebar_plugin_register() {
+	public function sidebar_plugin_register() {
 		wp_register_script(
 			'invp-plugin-sidebar',
 			plugins_url( '/js/editor-sidebar.min.js', INVP_PLUGIN_FILE_PATH ),
@@ -27,10 +27,10 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	 *
 	 * @return void
 	 */
-	function sidebar_plugin_script_enqueue() {
+	public function sidebar_plugin_script_enqueue() {
 		// Are we editing a vehicle?
 		global $post;
-		if ( empty( $post->post_type ) || INVP::POST_TYPE != $post->post_type ) {
+		if ( empty( $post->post_type ) || INVP::POST_TYPE !== $post->post_type ) {
 			return;
 		}
 		wp_enqueue_script( 'invp-plugin-sidebar' );
@@ -55,12 +55,17 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	public function scripts_and_styles() {
 		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_script( 'wp-api' );
-		wp_enqueue_style( 'invp-editor-sidebar', plugins_url( '/css/editor-sidebar.min.css', INVP_PLUGIN_FILE_PATH ) );
+		wp_enqueue_style(
+			'invp-editor-sidebar',
+			plugins_url( '/css/editor-sidebar.min.css', INVP_PLUGIN_FILE_PATH ),
+			array(),
+			INVP_PLUGIN_VERSION
+		);
 
 		// Provide data to JavaScript for the editor.
 		wp_add_inline_script(
 			'wp-api',
-			'const invp = ' . json_encode(
+			'const invp = ' . wp_json_encode(
 				array(
 					'hull_materials'      => apply_filters(
 						'invp_default_hull_materials',
