@@ -1052,6 +1052,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-rest.php',
 				'class-schema-org-generator.php',
 				'integrations/class-classic-editor.php',
+				'integrations/class-forms-integration.php',
 				'integrations/class-contact-form-7.php',
 				'integrations/class-wp-all-import.php',
 				'integrations/class-wpforms.php',

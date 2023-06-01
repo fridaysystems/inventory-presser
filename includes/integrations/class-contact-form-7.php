@@ -7,7 +7,12 @@ defined( 'ABSPATH' ) || exit;
  * Adds a form tag that creates a vehicle selector or hidden vehicle input on
  * vehicle singles.
  */
-class Inventory_Presser_Contact_Form_7 {
+class Inventory_Presser_Contact_Form_7 extends Inventory_Presser_Forms_Integration {
+	/**
+	 * Adds hooks that power the feature.
+	 *
+	 * @return void
+	 */
 	public function add_hooks() {
 		// Add an [invp_vehicle] form tag.
 		add_action( 'wpcf7_init', array( $this, 'add_form_tags' ) );
@@ -111,32 +116,12 @@ class Inventory_Presser_Contact_Form_7 {
 		return sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), $replaced );
 	}
 
-	protected function extract_post_id_from_value( $value ) {
-		// submitted "2020 Toyota Sienna LE, 10329A"
-		$pieces = explode( ', ', $value );
-		if ( 1 == sizeof( $pieces ) ) {
-			// delimiter not found
-			return '';
-		}
-		$stock_number = $pieces[ sizeof( $pieces ) - 1 ];
-		$post_ids     = get_posts(
-			array(
-				'fields'         => 'ids',
-				'meta_key'       => apply_filters( 'invp_prefix_meta_key', 'stock_number' ),
-				'meta_value'     => $stock_number,
-				'post_status'    => 'publish',
-				'post_type'      => INVP::POST_TYPE,
-				'posts_per_page' => 1,
-			)
-		);
-
-		if ( empty( $post_ids ) || ! is_array( $post_ids ) ) {
-			return '';
-		}
-
-		return $post_ids[0];
-	}
-
+	/**
+	 * handler_vehicle
+	 *
+	 * @param  object $tag
+	 * @return void
+	 */
 	public function handler_vehicle( $tag ) {
 		$validation_error = wpcf7_get_validation_error( $tag->name );
 		$atts             = array(
