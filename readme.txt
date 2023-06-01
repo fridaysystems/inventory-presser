@@ -2,9 +2,9 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 6.2.0
+Tested up to: 6.2.2
 Requires PHP: 7.0.0
-Stable tag: 14.10.1
+Stable tag: 14.10.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.10.2 =
+* [Fixed] Fixes a bug in the Block Editor sidebar. Stops attempting to save empty strings in numeric meta fields when their text boxes are emptied.
 
 = 14.10.1 =
 * [Fixed] Fixes a bug introduced in 14.10.0 that prevented inventory archives from being sorted according to the saved setting.
