@@ -10,8 +10,6 @@ defined( 'ABSPATH' ) || exit;
 class Inventory_Presser_Admin_Editor_Sidebar {
 
 	/**
-	 * sidebar_plugin_register
-	 *
 	 * Registers a JavaScript file
 	 *
 	 * @return void
@@ -25,8 +23,6 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	}
 
 	/**
-	 * sidebar_plugin_script_enqueue
-	 *
 	 * Includes the JavaScript file when editing a vehicle in the dashboard.
 	 *
 	 * @return void
@@ -41,8 +37,6 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	}
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks
 	 *
 	 * @return void
@@ -54,8 +48,6 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	}
 
 	/**
-	 * include_javascript_backbone
-	 *
 	 * Includes the wp-api JavaScript
 	 *
 	 * @return void

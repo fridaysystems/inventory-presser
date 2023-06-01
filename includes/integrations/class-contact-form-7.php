@@ -9,19 +9,17 @@ defined( 'ABSPATH' ) || exit;
  */
 class Inventory_Presser_Contact_Form_7 {
 	public function add_hooks() {
-		// Add an [invp_vehicle] form tag
+		// Add an [invp_vehicle] form tag.
 		add_action( 'wpcf7_init', array( $this, 'add_form_tags' ) );
 
-		// Add special mail tags [invp_adf_timestamp] and [invp_adf_vehicle]
+		// Add special mail tags [invp_adf_timestamp] and [invp_adf_vehicle].
 		add_filter( 'wpcf7_special_mail_tags', array( $this, 'add_mail_tags' ), 10, 4 );
 
-		// Add a link to the vehicle before emails are sent
+		// Add a link to the vehicle before emails are sent.
 		add_filter( 'wpcf7_mail_tag_replaced_invp_vehicle', array( $this, 'add_link' ), 10, 4 );
 	}
 
 	/**
-	 * add_form_tags
-	 *
 	 * Adds an [invp_vehicle] form tag to Contact Form 7
 	 *
 	 * @return void
@@ -34,8 +32,17 @@ class Inventory_Presser_Contact_Form_7 {
 		);
 	}
 
+	/**
+	 * Replaces mail tags with the data we promised.
+	 *
+	 * @param  string $output
+	 * @param  string $name
+	 * @param  mixed $html
+	 * @param  mixed $mail_tag
+	 * @return string
+	 */
 	public function add_mail_tags( $output, $name, $html, $mail_tag = null ) {
-		$name       = preg_replace( '/^wpcf7\./', '_', $name ); // for back-compat
+		$name       = preg_replace( '/^wpcf7\./', '_', $name ); // for back-compat.
 		$submission = WPCF7_Submission::get_instance();
 		if ( ! $submission ) {
 			return $output;
@@ -57,6 +64,7 @@ class Inventory_Presser_Contact_Form_7 {
 				}
 
 				$post_id = $this->extract_post_id_from_value( $submission->get_posted_data()[ $form_tag->name ] );
+
 				/*
 				<vehicle>
 					<id>286535725</id>
@@ -82,8 +90,6 @@ class Inventory_Presser_Contact_Form_7 {
 	}
 
 	/**
-	 * add_link
-	 *
 	 * Wraps strings like "2020 Toyota Sienna LE, 10329A" with a link in form
 	 * submission emails.
 	 *
@@ -94,7 +100,7 @@ class Inventory_Presser_Contact_Form_7 {
 	 * @return string
 	 */
 	public function add_link( $replaced, $submitted, $html, $mail_tag ) {
-		// Allow HTML in emails
+		// Allow HTML in emails.
 		add_filter( 'wp_mail_content_type', array( $this, 'html_mail_content_type' ) );
 
 		$post_id = $this->extract_post_id_from_value( $submitted );
@@ -147,7 +153,7 @@ class Inventory_Presser_Contact_Form_7 {
 			);
 		}
 
-		// are we on a vdp? return a hidden field
+		// Are we on a vdp? return a hidden field.
 		if ( is_singular( INVP::POST_TYPE ) ) {
 			$input_atts = array(
 				'type'  => 'hidden',
@@ -220,7 +226,7 @@ class Inventory_Presser_Contact_Form_7 {
 			}
 			$meta = get_metadata( 'post', $post_ID );
 
-			// label is "2005 Subaru Baja Turbo, Blue, #12022"
+			// label is "2005 Subaru Baja Turbo, Blue, #12022".
 			$html .= sprintf(
 				'<option value="%s" %s>%s %s %s',
 				esc_attr( $this->prepare_value( $post_ID ) ),
@@ -247,8 +253,6 @@ class Inventory_Presser_Contact_Form_7 {
 	}
 
 	/**
-	 * html_mail_content_type
-	 *
 	 * Returns the string 'text/html'
 	 *
 	 * @param  string $type
