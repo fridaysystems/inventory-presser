@@ -8,24 +8,24 @@
 	var withSelect     = wp.data.withSelect;
 	var withDispatch   = wp.data.withDispatch;
 	var compose        = wp.compose.compose;
-	var metaPrefix     = 'inventory_presser_'; // TODO localize this so it's dynamic.
+	const { __ } = wp.i18n;
 
 	function getLabel( meta_key ) {
-		if ( metaPrefix !== meta_key.substr(0, metaPrefix.length ) ) {
+		if ( invp.meta_prefix !== meta_key.substr(0, invp.meta_prefix.length ) ) {
 			return meta_key;
 		}
 
-		var key = meta_key.substring( metaPrefix.length );
+		var key = meta_key.substring( invp.meta_prefix.length );
 		switch ( key ) {
 			case 'msrp':
 			case 'vin':
 				return key.toUpperCase();
 
 			case 'odometer':
-				return 'Odometer (' + invp.miles_word + ')';
+				return __( 'Odometer', 'inventory-presser' ) + ' (' + invp.miles_word + ')';
 
 			case 'youtube':
-				return 'YouTube Video ID';
+				return __( 'YouTube Video ID', 'inventory-presser' );
 
 			default:
 				/**
@@ -259,71 +259,71 @@
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_vin',
-							id:        'inventory_presser_vin',
+							fieldName: invp.meta_prefix + 'vin',
+							id:        invp.meta_prefix + 'vin',
 							isNumeric: false,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_stock_number',
-							id:        'inventory_presser_stock_number',
+							fieldName: invp.meta_prefix + 'stock_number',
+							id:        invp.meta_prefix + 'stock_number',
 							isNumeric: false,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_trim',
-							id:        'inventory_presser_trim',
+							fieldName: invp.meta_prefix + 'trim',
+							id:        invp.meta_prefix + 'trim',
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_engine',
-							id:        'inventory_presser_engine',
+							fieldName: invp.meta_prefix + 'engine',
+							id:        invp.meta_prefix + 'engine',
 							isNumeric: false,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_doors',
-							id:        'inventory_presser_doors',
+							fieldName: invp.meta_prefix + 'doors',
+							id:        invp.meta_prefix + 'doors',
 							isNumeric: true,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_color',
-							id:        'inventory_presser_color',
+							fieldName: invp.meta_prefix + 'color',
+							id:        invp.meta_prefix + 'color',
 							isNumeric: false,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_interior_color',
-							id:        'inventory_presser_interior_color',
+							fieldName: invp.meta_prefix + 'interior_color',
+							id:        invp.meta_prefix + 'interior_color',
 							isNumeric: false,
 						}
 					),
 					el(
 						MetaBlockDigitsField,
 						{
-							fieldName: 'inventory_presser_odometer',
-							id:        'inventory_presser_odometer',
+							fieldName: invp.meta_prefix + 'odometer',
+							id:        invp.meta_prefix + 'odometer',
 							isNumeric: false,
 						}
 					),
 					el(
 						MetaBlockFieldSelect,
 						{
-							fieldName: 'inventory_presser_title_status',
-							id:        'inventory_presser_title_status',
+							fieldName: invp.meta_prefix + 'title_status',
+							id:        invp.meta_prefix + 'title_status',
 							isNumeric: false,
 							optionArray: titleStatusOptions(),
 						}
@@ -331,32 +331,32 @@
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_car_id',
-							id:        'inventory_presser_car_id',
+							fieldName: invp.meta_prefix + 'car_id',
+							id:        invp.meta_prefix + 'car_id',
 							isNumeric: true,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_dealer_id',
-							id:        'inventory_presser_dealer_id',
+							fieldName: invp.meta_prefix + 'dealer_id',
+							id:        invp.meta_prefix + 'dealer_id',
 							isNumeric: true,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_leads_id',
-							id:        'inventory_presser_leads_id',
+							fieldName: invp.meta_prefix + 'leads_id',
+							id:        invp.meta_prefix + 'leads_id',
 							isNumeric: true,
 						}
 					),
 					el(
 						MetaBlockCheckboxField,
 						{
-							fieldName: 'inventory_presser_wholesale',
-							id:        'inventory_presser_wholesale',
+							fieldName: invp.meta_prefix + 'wholesale',
+							id:        invp.meta_prefix + 'wholesale',
 							isNumeric: false,
 						}
 					),
@@ -368,40 +368,40 @@
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_price',
-							id:        'inventory_presser_price',
+							fieldName: invp.meta_prefix + 'price',
+							id:        invp.meta_prefix + 'price',
 							isNumeric: true,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_msrp',
-							id:        'inventory_presser_msrp',
+							fieldName: invp.meta_prefix + 'msrp',
+							id:        invp.meta_prefix + 'msrp',
 							isNumeric: true,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_down_payment',
-							id:        'inventory_presser_down_payment',
+							fieldName: invp.meta_prefix + 'down_payment',
+							id:        invp.meta_prefix + 'down_payment',
 							isNumeric: true,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_payment',
-							id:        'inventory_presser_payment',
+							fieldName: invp.meta_prefix + 'payment',
+							id:        invp.meta_prefix + 'payment',
 							isNumeric: true,
 						}
 					),
 					el(
 						MetaBlockFieldSelect,
 						{
-							fieldName: 'inventory_presser_payment_frequency',
-							id:        'inventory_presser_payment_frequency',
+							fieldName: invp.meta_prefix + 'payment_frequency',
+							id:        invp.meta_prefix + 'payment_frequency',
 							isNumeric: false,
 							optionArray: paymentFrequencyOptions(),
 						}
@@ -409,16 +409,16 @@
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_book_value_kbb',
-							id:        'inventory_presser_book_value_kbb',
+							fieldName: invp.meta_prefix + 'book_value_kbb',
+							id:        invp.meta_prefix + 'book_value_kbb',
 							isNumeric: true,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_book_value_nada',
-							id:        'inventory_presser_book_value_nada',
+							fieldName: invp.meta_prefix + 'book_value_nada',
+							id:        invp.meta_prefix + 'book_value_nada',
 							isNumeric: true,
 						}
 					),
@@ -430,24 +430,24 @@
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_edmunds_style_id',
-							id:        'inventory_presser_edmunds_style_id',
+							fieldName: invp.meta_prefix + 'edmunds_style_id',
+							id:        invp.meta_prefix + 'edmunds_style_id',
 							isNumeric: true,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_nextgear_inspection_url',
-							id:        'inventory_presser_nextgear_inspection_url',
+							fieldName: invp.meta_prefix + 'nextgear_inspection_url',
+							id:        invp.meta_prefix + 'nextgear_inspection_url',
 							isNumeric: false,
 						}
 					),
 					el(
 						MetaBlockField,
 						{
-							fieldName: 'inventory_presser_youtube',
-							id:        'inventory_presser_youtube',
+							fieldName: invp.meta_prefix + 'youtube',
+							id:        invp.meta_prefix + 'youtube',
 							isNumeric: false,
 						}
 					),
@@ -471,24 +471,24 @@
 							el(
 								MetaBlockField,
 								{
-									fieldName: 'inventory_presser_beam',
-									id:        'inventory_presser_beam',
+									fieldName: invp.meta_prefix + 'beam',
+									id:        invp.meta_prefix + 'beam',
 									isNumeric: true,
 								}
 							),
 							el(
 								MetaBlockField,
 								{
-									fieldName: 'inventory_presser_length',
-									id:        'inventory_presser_length',
+									fieldName: invp.meta_prefix + 'length',
+									id:        invp.meta_prefix + 'length',
 									isNumeric: true,
 								}
 							),
 							el(
 								MetaBlockFieldSelect,
 								{
-									fieldName: 'inventory_presser_hull_material',
-									id:        'inventory_presser_hull_material',
+									fieldName: invp.meta_prefix + 'hull_material',
+									id:        invp.meta_prefix + 'hull_material',
 									isNumeric: false,
 									optionArray: hullMaterialOptions(),
 								}

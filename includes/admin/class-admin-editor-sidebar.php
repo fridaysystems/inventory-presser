@@ -18,7 +18,9 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 		wp_register_script(
 			'invp-plugin-sidebar',
 			plugins_url( '/js/editor-sidebar.min.js', INVP_PLUGIN_FILE_PATH ),
-			array( 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-data', 'wp-hooks' )
+			array( 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-data', 'wp-hooks', 'wp-i18n' ),
+			INVP_PLUGIN_VERSION,
+			true
 		);
 	}
 
@@ -70,16 +72,16 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 					'hull_materials'      => apply_filters(
 						'invp_default_hull_materials',
 						array(
-							'Aluminum',
-							'Carbon Fiber',
-							'Composite',
-							'Ferro-Cement',
-							'Fiberglass',
-							'Hypalon',
-							'Other',
-							'PVC',
-							'Steel',
-							'Wood',
+							__( 'Aluminum', 'inventory-presser' ),
+							__( 'Carbon Fiber', 'inventory-presser' ),
+							__( 'Composite', 'inventory-presser' ),
+							__( 'Ferro-Cement', 'inventory-presser' ),
+							__( 'Fiberglass', 'inventory-presser' ),
+							__( 'Hypalon', 'inventory-presser' ),
+							__( 'Other', 'inventory-presser' ),
+							__( 'PVC', 'inventory-presser' ),
+							__( 'Steel', 'inventory-presser' ),
+							__( 'Wood', 'inventory-presser' ),
 						)
 					),
 					'miles_word'          => apply_filters( 'invp_odometer_word', 'miles' ),
