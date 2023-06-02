@@ -81,7 +81,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 14.10.2 =
 * [Added] Adds a template tag `invp_get_the_condition()` that returns "Used", "New", or empty string.
-* [Fixed] Fixes a bug in the Block Editor sidebar. Stops attempting to save empty strings in numeric meta fields when their text boxes are emptied.
+* [Fixed] Fixes a bug in the Block Editor sidebar. Stops attempting to save empty strings in numeric meta fields when their text boxes are emptied. Makes more strings translateable.
 
 = 14.10.1 =
 * [Fixed] Fixes a bug introduced in 14.10.0 that prevented inventory archives from being sorted according to the saved setting.
