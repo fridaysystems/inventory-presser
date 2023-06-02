@@ -1016,6 +1016,80 @@ class INVP {
 	}
 
 	/**
+	 * Creates HTML to help navigate listings pages. "Older" and "Newer" don't
+	 * make sense. Returns HTML that contains a string like "Showing 11 to 20 of
+	 * 64 vehicles".
+	 *
+	 * @return string
+	 */
+	public static function get_paging_html() {
+		$pagination_html = '';
+
+		// previous page link.
+		$previous_link = get_previous_posts_link();
+		if ( ! empty( $previous_link ) ) {
+			$pagination_html .= '<li class="prev left">' . $previous_link . '</li>';
+		}
+
+		// clickable page numbers.
+		$navigation = get_the_posts_pagination(
+			array(
+				'mid_size'  => 2,
+				'prev_next' => false,
+			)
+		);
+		if ( ! empty( $navigation ) ) {
+			$pagination_html .= sprintf(
+				'<li>%s</li>',
+				$navigation
+			);
+		}
+
+		// next page link.
+		$next_link = get_next_posts_link();
+		if ( ! empty( $next_link ) ) {
+			$pagination_html .= '<li class="next right">' . $next_link . '</li>';
+		}
+
+		// sentence "Showing 1 to 10 of 99 posts".
+		global $wp_query;
+		$posts_per_page = $wp_query->query_vars['posts_per_page'];
+		$page_number    = null === $wp_query->query_vars['paged'] ? 1 : $wp_query->query_vars['paged'];
+		$start_index    = $page_number * $posts_per_page - ( $posts_per_page - 1 );
+		$end_index      = min( array( $start_index + $posts_per_page - 1, $wp_query->found_posts ) );
+
+		$object_name    = 'posts';
+		$post_type_name = isset( $wp_query->query_vars['post_type'] ) ? $wp_query->query_vars['post_type'] : '';
+		if ( '' !== $post_type_name ) {
+			$post_type   = get_post_type_object( $post_type_name );
+			$object_name = strtolower( $post_type->labels->name );
+		}
+
+		if ( ! empty( $pagination_html ) ) {
+			$pagination_html = '<ul class="group">' . $pagination_html . '</ul>';
+		}
+
+		$pagination_html .= '<p>' . apply_filters(
+			'invp_pagination_sentence',
+			sprintf(
+				'%s %d %s %d %s %d %s',
+				__( 'Showing', 'inventory-presser' ),
+				$start_index,
+				__( 'to', 'inventory-presser' ),
+				$end_index,
+				__( 'of', 'inventory-presser' ),
+				$wp_query->found_posts,
+				$object_name
+			)
+		)
+		. '</p>';
+
+		return '<nav class="invp-pagination pagination group">'
+		. apply_filters( 'invp_pagination_html', $pagination_html )
+		. '</nav>';
+	}
+
+	/**
 	 * prepare_phone_number_for_link
 	 *
 	 * Takes a phone number and prepares it for the href attribute of a link.
