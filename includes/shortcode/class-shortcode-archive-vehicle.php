@@ -63,6 +63,9 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'invp_archive_vehicle' );
 
+		// Lie to themes using has_post_thumbnail() statically.
+		add_filter( 'has_post_thumbnail', array( 'Inventory_Presser_Template_Provider', 'lie_about_post_thumbnails' ), 10, 3 );
+
 		ob_start();
 		?>
 
@@ -147,6 +150,9 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 			</div>
 		</article><!--/.post-->
 		<?php
+
+		// Stop lying about whether vehicles have thumbnails or not.
+		remove_filter( 'has_post_thumbnail', array( 'Inventory_Presser_Template_Provider', 'lie_about_post_thumbnails' ), 10, 3 );
 
 		return ob_get_clean();
 	}

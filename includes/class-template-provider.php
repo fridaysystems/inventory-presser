@@ -81,9 +81,6 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) ) {
 				return $template;
 			}
 
-			// lie to themes using has_post_thumbnail() statically.
-			add_filter( 'has_post_thumbnail', array( __CLASS__, 'lie_about_post_thumbnails' ), 10, 3 );
-
 			// filter the post content to use a shortcode instead.
 			add_filter( 'the_content', array( $this, 'replace_content_with_shortcode_' . $single_or_archive ) );
 
