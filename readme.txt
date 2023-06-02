@@ -80,6 +80,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Changelog ==
 
 = 14.10.2 =
+* [Added] Adds a template tag `invp_get_the_condition()` that returns "Used", "New", or empty string.
 * [Fixed] Fixes a bug in the Block Editor sidebar. Stops attempting to save empty strings in numeric meta fields when their text boxes are emptied.
 
 = 14.10.1 =

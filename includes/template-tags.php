@@ -197,6 +197,19 @@ function invp_get_the_color( $post_ID = null ) {
 }
 
 /**
+ * Template tag. Returns the condition of the vehicle, usually "Used" or "New".
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return string
+ */
+function invp_get_the_condition( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'condition', $post_ID );
+}
+
+/**
  * invp_get_the_dealer_id
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
