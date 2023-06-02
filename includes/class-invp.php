@@ -1055,8 +1055,12 @@ class INVP {
 		global $wp_query;
 		$posts_per_page = $wp_query->query_vars['posts_per_page'];
 		$page_number    = null === $wp_query->query_vars['paged'] ? 1 : $wp_query->query_vars['paged'];
-		$start_index    = $page_number * $posts_per_page - ( $posts_per_page - 1 );
-		$end_index      = min( array( $start_index + $posts_per_page - 1, $wp_query->found_posts ) );
+		if ( 0 === $page_number ) {
+			// Added this condition for Divi Blog Module because I guess it sets paged = 0.
+			$page_number = 1;
+		}
+		$start_index = $page_number * $posts_per_page - ( $posts_per_page - 1 );
+		$end_index   = min( array( $start_index + $posts_per_page - 1, $wp_query->found_posts ) );
 
 		$object_name    = 'posts';
 		$post_type_name = isset( $wp_query->query_vars['post_type'] ) ? $wp_query->query_vars['post_type'] : '';
