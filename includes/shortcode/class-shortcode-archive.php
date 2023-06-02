@@ -11,20 +11,16 @@ class Inventory_Presser_Shortcode_Archive {
 
 
 	/**
-	 * add
-	 *
 	 * Adds two shortcodes
 	 *
 	 * @return void
 	 */
-	function add() {
+	public function add() {
 		add_shortcode( 'invp-archive', array( $this, 'content' ) );
 		add_shortcode( 'invp_archive', array( $this, 'content' ) );
 	}
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks that power the shortcode
 	 *
 	 * @return void
@@ -34,8 +30,6 @@ class Inventory_Presser_Shortcode_Archive {
 	}
 
 	/**
-	 * clean_attributes_for_query
-	 *
 	 * Removes shortcode attributes from the attributes array that are not also
 	 * query parameters for a posts query.
 	 *
@@ -48,14 +42,12 @@ class Inventory_Presser_Shortcode_Archive {
 	}
 
 	/**
-	 * content
-	 *
 	 * Creates the HTML content of the shortcode
 	 *
 	 * @param  array $atts
 	 * @return string HTML that renders an archive-vehicle template
 	 */
-	function content( $atts ) {
+	public function content( $atts ) {
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'invp_archive_vehicle' );
 
@@ -73,7 +65,7 @@ class Inventory_Presser_Shortcode_Archive {
 		$atts['show_titles'] = filter_var( $atts['show_titles'], FILTER_VALIDATE_BOOLEAN );
 		$atts['post_type']   = INVP::POST_TYPE;
 
-		// Add all taxonomy query vars to $atts so filters work
+		// Add all taxonomy query vars to $atts so filters work.
 		$taxonomies = get_object_taxonomies( $atts['post_type'], 'objects' );
 		foreach ( $taxonomies as $taxonomy ) {
 			$atts[ $taxonomy->query_var ] = get_query_var( $taxonomy->query_var );
@@ -86,9 +78,9 @@ class Inventory_Presser_Shortcode_Archive {
 		 */
 		$querystring_filters = array(
 			array(
-				'param'    => 'min_price', // querystring parameter name
-				'field'    => 'price', // meta field suffix
-				'operator' => '>=', // comparison operator
+				'param'    => 'min_price', // querystring parameter name.
+				'field'    => 'price', // meta field suffix.
+				'operator' => '>=', // comparison operator.
 			),
 			array(
 				'param'    => 'max_price',
@@ -120,7 +112,7 @@ class Inventory_Presser_Shortcode_Archive {
 			}
 		}
 
-		// Allow our order by mods to affect this query_posts() call
+		// Allow our order by mods to affect this query_posts() call.
 		add_filter( 'invp_apply_orderby_to_main_query_only', '__return_false' );
 		query_posts( $this->clean_attributes_for_query( $atts ) );
 		remove_filter( 'invp_apply_orderby_to_main_query_only', '__return_false' );
@@ -152,7 +144,7 @@ class Inventory_Presser_Shortcode_Archive {
 			}
 		}
 
-		// Paged navigation
+		// Paged navigation.
 		$output .= $this->paging_html();
 
 		wp_reset_query();
@@ -162,13 +154,13 @@ class Inventory_Presser_Shortcode_Archive {
 	private function paging_html() {
 		$pagination_html = '';
 
-		// previous page link
+		// previous page link.
 		$previous_link = get_previous_posts_link();
 		if ( ! empty( $previous_link ) ) {
 			$pagination_html .= '<li class="prev left">' . $previous_link . '</li>';
 		}
 
-		// clickable page numbers
+		// clickable page numbers.
 		$navigation = get_the_posts_pagination(
 			array(
 				'mid_size'  => 2,
@@ -182,22 +174,22 @@ class Inventory_Presser_Shortcode_Archive {
 			);
 		}
 
-		// next page link
+		// next page link.
 		$next_link = get_next_posts_link();
 		if ( ! empty( $next_link ) ) {
 			$pagination_html .= '<li class="next right">' . $next_link . '</li>';
 		}
 
-		// sentence "Showing 1 to 10 of 99 posts"
+		// sentence "Showing 1 to 10 of 99 posts".
 		global $wp_query;
 		$posts_per_page = $wp_query->query_vars['posts_per_page'];
-		$page_number    = null == $wp_query->query_vars['paged'] ? 1 : $wp_query->query_vars['paged'];
+		$page_number    = null === $wp_query->query_vars['paged'] ? 1 : $wp_query->query_vars['paged'];
 		$start_index    = $page_number * $posts_per_page - ( $posts_per_page - 1 );
 		$end_index      = min( array( $start_index + $posts_per_page - 1, $wp_query->found_posts ) );
 
 		$object_name    = 'posts';
 		$post_type_name = isset( $wp_query->query_vars['post_type'] ) ? $wp_query->query_vars['post_type'] : '';
-		if ( '' != $post_type_name ) {
+		if ( '' !== $post_type_name ) {
 			$post_type   = get_post_type_object( $post_type_name );
 			$object_name = strtolower( $post_type->labels->name );
 		}

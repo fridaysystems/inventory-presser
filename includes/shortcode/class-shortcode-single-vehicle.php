@@ -9,20 +9,16 @@ defined( 'ABSPATH' ) || exit;
 class Inventory_Presser_Shortcode_Single_Vehicle {
 
 	/**
-	 * add
-	 *
 	 * Adds two shortcodes
 	 *
 	 * @return void
 	 */
-	function add() {
+	public function add() {
 		add_shortcode( 'invp-single-vehicle', array( $this, 'content' ) );
 		add_shortcode( 'invp_single_vehicle', array( $this, 'content' ) );
 	}
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks that power the shortcode
 	 *
 	 * @return void
@@ -32,14 +28,12 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 	}
 
 	/**
-	 * content
-	 *
 	 * Creates the HTML content of the shortcode
 	 *
 	 * @param  array $atts
 	 * @return string HTML that renders a vehicle single template
 	 */
-	function content( $atts ) {
+	public function content( $atts ) {
 		if ( ! is_singular( INVP::POST_TYPE ) ) {
 			return '';
 		}
@@ -50,7 +44,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );
 		wp_enqueue_style( 'invp_single_vehicle' );
-		wp_enqueue_script( 'invp-flexslider', '', array(), false, true );
+		wp_enqueue_script( 'invp-flexslider', '', array(), INVP_PLUGIN_VERSION, true );
 
 		ob_start();
 
@@ -67,7 +61,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 						</h2>
 
 						<?php
-						// if dealership has multiple locations, display the location of this vehicle
+						// if dealership has multiple locations, display the location of this vehicle.
 						$location_sentence = invp_get_the_location_sentence();
 						if ( ! empty( $location_sentence ) ) {
 							printf(
@@ -85,12 +79,12 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 							<?php
 
 							if ( isset( $image_url_lists['large'] ) ) {
-								for ( $p = 0; $p < sizeof( $image_url_lists['large'] ); $p++ ) {
-									// Inventory Presser versions 8.1.0 and above provide the 'urls'
+								for ( $p = 0; $p < count( $image_url_lists['large'] ); $p++ ) {
+									// Inventory Presser versions 8.1.0 and above provide the 'urls'.
 									if ( isset( $image_url_lists['urls'][ $p ] ) ) {
 										printf(
 											'<li><a href="%s">%s</a></li>',
-											$image_url_lists['urls'][ $p ],
+											esc_attr( $image_url_lists['urls'][ $p ] ),
 											$image_url_lists['large'][ $p ]
 										);
 									} else {
@@ -168,14 +162,14 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 					);
 				}
 
-					// if there's a youtube video associated with this vehicle, embed it
+					// if there's a youtube video associated with this vehicle, embed it.
 				if ( invp_get_the_youtube_url() ) {
 					$sections['youtube'] = wp_oembed_get( invp_get_the_youtube_url() );
 				}
 
 					$options_array = invp_get_the_options();
 				if ( ! empty( $options_array ) ) {
-					// loop through list of vehicle options
+					// loop through list of vehicle options.
 					$options_html = '';
 					foreach ( invp_get_the_options() as $option ) {
 						$options_html .= sprintf( '<li>%s</li>', $option );
