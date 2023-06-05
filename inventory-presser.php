@@ -1134,7 +1134,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			wp_register_style( 'invp-flexslider', plugins_url( "/css/flexslider{$min}.css", INVP_PLUGIN_FILE_PATH ), array( 'flexslider' ), INVP_PLUGIN_VERSION );
 
 			// Register the iFrameResizer.js script for use by our [invp_iframe] shortcode and Iframe block.
-			wp_register_script( 'invp-iframe-resizer', plugins_url( "/js/iframe-resizer/iframeResizer{$min}.js", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION );
+			wp_register_script( 'invp-iframe-resizer', plugins_url( "/js/iframe-resizer/iframeResizer{$min}.js", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION, true );
 
 			/**
 			 * Register a stylesheet that will be used by two shortcodes,
