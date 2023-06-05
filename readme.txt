@@ -167,6 +167,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Upgrade Notice ==
 
+= 14.10.2 =
+Adds a template tag `invp_get_the_condition()` that returns "Used", "New", or empty string. Adds an API method `INVP::get_paging_html()` that previously lived inside the [invp_archive] shortcode class. Creates better pagination HTML for listings archives. Fixes a bug in the Block Editor sidebar. Stops attempting to save empty strings in numeric meta fields when their text boxes are emptied. Makes more strings translateable. Stops lying about whether vehicle posts have thumbnails unless our archive shortcodes are run or the Divi Blog Module is detected. The lie helps us work on most themes by avoiding the theme and our shortcode from both outputing a thumbnail. There's no reason to do this unless the shortcode is used.
+
 = 14.10.1 =
 Fixes a bug introduced in 14.10.0 that prevented inventory archives from being sorted according to the saved setting.
 
