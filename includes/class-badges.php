@@ -18,7 +18,7 @@ class Inventory_Presser_Badges {
 	 */
 	public function add_carfax() {
 		$carfax_html = invp_get_the_carfax_icon_html();
-		if ( '' != $carfax_html ) {
+		if ( '' !== $carfax_html ) {
 			?><div class="carfax-wrapper">
 			<?php
 				echo $carfax_html;
@@ -41,7 +41,7 @@ class Inventory_Presser_Badges {
 
 			?>
 			<div class="nextgear-wrapper">
-				<a class="<?php echo $classes; ?>" href="<?php echo $url; ?>">
+				<a class="<?php echo esc_attr( $classes ); ?>" href="<?php echo esc_url( $url ); ?>">
 									<?php
 
 										echo apply_filters( 'invp_button_text_nextgear_inspection_url', __( 'Mechanic\'s Report', 'inventory-presser' ) );
@@ -59,7 +59,10 @@ class Inventory_Presser_Badges {
 	 * @return void
 	 */
 	public function add_hooks() {
-		// If Carfax is enabled, add the badge to pages
+		if ( ! class_exists( 'INVP' ) ) {
+			return;
+		}
+		// If Carfax is enabled, add the badge to pages.
 		$settings = INVP::settings();
 		if ( isset( $settings['use_carfax'] ) && $settings['use_carfax'] ) {
 			add_action( 'invp_archive_buttons', array( $this, 'add_carfax' ) );

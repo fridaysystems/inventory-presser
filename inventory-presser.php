@@ -688,10 +688,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * that honor the "Include Sold Vehicles" setting in this plugin will
 			 * exclude them without a relationship to a term in that taxonomy.
 			 */
-			add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'mark_vehicles_for_sale_during_insertion' ), 10, 3 );
-			// Save custom post meta and term relationships when posts are saved.
-			add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_post_meta' ), 10, 3 );
-			add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
+			if ( class_exists( 'INVP' ) ) {
+				add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'mark_vehicles_for_sale_during_insertion' ), 10, 3 );
+				// Save custom post meta and term relationships when posts are saved.
+				add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_post_meta' ), 10, 3 );
+				add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
+			}
 
 			// Maybe skip the trash bin and permanently delete vehicles & photos.
 			add_action( 'trashed_post', array( $this, 'maybe_force_delete' ) );
