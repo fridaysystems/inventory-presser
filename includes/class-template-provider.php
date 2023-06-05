@@ -112,18 +112,18 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) ) {
 		 * Returns the output of the [invp_archive_vehicle] shortcode.
 		 *
 		 * @param  string $content The post content as provided by the the_content filter.
-		 * @return string The output of the [invp-archive-vehicle] shortcode
+		 * @return string The output of the [invp_archive_vehicle] shortcode
 		 */
 		public function replace_content_with_shortcode_archive( $content ) {
 			return do_shortcode( '[invp_archive_vehicle]' );
 		}
 
 		/**
-		 * Filter callback. Returns the output of the [invp-single-vehicle]
+		 * Filter callback. Returns the output of the [invp_single_vehicle]
 		 * shortcode regardless of what is passed in.
 		 *
 		 * @param  string $content The post content as provided by the the_content filter.
-		 * @return string The output of the [invp-single-vehicle] shortcode
+		 * @return string The output of the [invp_single_vehicle] shortcode
 		 */
 		public function replace_content_with_shortcode_single( $content ) {
 			/**

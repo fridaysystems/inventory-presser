@@ -1138,7 +1138,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			/**
 			 * Register a stylesheet that will be used by two shortcodes,
-			 * [invp-archive-vehicle] and [invp-single-vehicle]
+			 * [invp_archive_vehicle] and [invp_single_vehicle]
 			 */
 			wp_register_style(
 				'invp-attribute-table',
