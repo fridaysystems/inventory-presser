@@ -11,8 +11,6 @@ defined( 'ABSPATH' ) || exit;
 class Inventory_Presser_Badges {
 
 	/**
-	 * add_carfax
-	 *
 	 * Filter callback that outputs HTML markup that creates a Carfax badge if
 	 * $vehicle contains Carfax report data.
 	 *
@@ -30,10 +28,15 @@ class Inventory_Presser_Badges {
 		}
 	}
 
+	/**
+	 * Outputs an HTML button to open NextGear Mechanic's Reports.
+	 *
+	 * @return void
+	 */
 	public function add_nextgear() {
 		$url = INVP::get_meta( 'nextgear_inspection_url' );
 		if ( ! empty( $url ) ) {
-			// CSS classes on the <a>
+			// CSS classes on the <a>.
 			$classes = apply_filters( 'invp_button_classes_nextgear_inspection_url', 'wp-block-button__link button _button _button-small' );
 
 			?>
@@ -50,6 +53,11 @@ class Inventory_Presser_Badges {
 		}
 	}
 
+	/**
+	 * Adds hooks that power the feature.
+	 *
+	 * @return void
+	 */
 	public function add_hooks() {
 		// If Carfax is enabled, add the badge to pages
 		$settings = INVP::settings();
@@ -58,7 +66,7 @@ class Inventory_Presser_Badges {
 			add_action( 'invp_single_buttons', array( $this, 'add_carfax' ) );
 		}
 
-		// NextGear vehicle inspections
+		// NextGear vehicle inspections.
 		add_action( 'invp_archive_buttons', array( $this, 'add_nextgear' ) );
 		add_action( 'invp_single_buttons', array( $this, 'add_nextgear' ) );
 	}
