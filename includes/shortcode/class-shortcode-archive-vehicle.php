@@ -151,9 +151,6 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 		</article><!--/.post-->
 		<?php
 
-		// Stop lying about whether vehicles have thumbnails or not.
-		remove_filter( 'has_post_thumbnail', array( 'Inventory_Presser_Template_Provider', 'lie_about_post_thumbnails' ), 10, 3 );
-
 		return ob_get_clean();
 	}
 }

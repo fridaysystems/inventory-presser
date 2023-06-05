@@ -84,12 +84,32 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) ) {
 			// filter the post content to use a shortcode instead.
 			add_filter( 'the_content', array( $this, 'replace_content_with_shortcode_' . $single_or_archive ) );
 
+			// Lie to themes using has_post_thumbnail() statically.
+			add_filter( 'has_post_thumbnail', array( __CLASS__, 'lie_about_post_thumbnails' ), 10, 3 );
+			// Except when posts are being output by the Divi Blog Module.
+			add_filter( 'et_builder_blog_query', array( $this, 'dont_lie_to_divi_blog_module' ) );
+
 			// Still return the template.
 			return $template;
 		}
 
 		/**
-		 * Returns the output of the [invp-archive-vehicle] shortcode.
+		 * Divi Blog Module never runs our shortcodes, so do not lie about
+		 * thumbnails or the module won't show any. Callback on
+		 * et_builder_blog_query, but does not modify the query. This filter is
+		 * used to detect the Divi Blog Module.
+		 *
+		 * @param WP_Query $wp_query The query object created by Divi Blog Module.
+		 * @return WP_Query The unchanged query object.
+		 */
+		public function dont_lie_to_divi_blog_module( $wp_query ) {
+			// Stop lying about whether vehicles have thumbnails or not.
+			remove_filter( 'has_post_thumbnail', array( __CLASS__, 'lie_about_post_thumbnails' ), 10, 3 );
+			return $wp_query;
+		}
+
+		/**
+		 * Returns the output of the [invp_archive_vehicle] shortcode.
 		 *
 		 * @param  string $content The post content as provided by the the_content filter.
 		 * @return string The output of the [invp-archive-vehicle] shortcode
