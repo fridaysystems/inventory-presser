@@ -4,7 +4,7 @@ Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, mo
 Requires at least: 5.0.0
 Tested up to: 6.2.2
 Requires PHP: 7.0.0
-Stable tag: 14.10.2
+Stable tag: 14.11.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.11.0 =
+* [Fixed] Adds a Contact Form 7 mail tag [invp_adf_vendor] to integrate the location taxonomy into ADF XML leads. More details at https://inventorypresser.com/docs/contact-form-7-integration/how-to-send-adf-xml-leads-using-contact-form-7/
 
 = 14.10.2 =
 * [Added] Adds a template tag `invp_get_the_condition()` that returns "Used", "New", or empty string.
