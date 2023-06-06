@@ -53,41 +53,106 @@ class Inventory_Presser_Contact_Form_7 extends Inventory_Presser_Forms_Integrati
 			return $output;
 		}
 
+		// [invp_adf_timestamp] handler
 		if ( 'invp_adf_timestamp' === $name
 			&& $timestamp = $submission->get_meta( 'timestamp' )
 		) {
 			return wp_date( 'c', $timestamp );
 		}
 
+		// [invp_adf_vehicle] handler
 		if ( 'invp_adf_vehicle' === $name ) {
-			add_filter( 'wp_mail_content_type', array( $this, 'html_mail_content_type' ) );
+			if ( ! has_filter( 'wp_mail_content_type', array( $this, 'html_mail_content_type' ) ) ) {
+				add_filter( 'wp_mail_content_type', array( $this, 'html_mail_content_type' ) );
+			}
 
 			// What name in posted_data is the vehicle field?
-			foreach ( $submission->get_contact_form()->scan_form_tags() as $form_tag ) {
-				if ( 'invp_vehicle' !== $form_tag->basetype ) {
-					continue;
-				}
+			$post_id = $this->get_submission_vehicle_post_id();
+			if ( false === $post_id ) {
+				return '';
+			}
 
-				$post_id = $this->extract_post_id_from_value( $submission->get_posted_data()[ $form_tag->name ] );
+			/*
+			<vehicle>
+				<id>286535725</id>
+				<year>2017</year>
+				<make>NISSAN</make>
+				<model>ROGUE</model>
+				<vin>5N1AT2MV8HC876642</vin>
+				<stock>876642-A</stock>
+			</vehicle>
+			*/
+			return sprintf(
+				'<vehicle><id>%s</id><year>%s</year><make>%s</make><model>%s</model><vin>%s</vin><stock>%s</stock></vehicle>',
+				INVP::get_meta( 'car_id', $post_id ),
+				invp_get_the_year( $post_id ),
+				invp_get_the_make( $post_id ),
+				invp_get_the_model( $post_id ),
+				invp_get_the_vin( $post_id ),
+				invp_get_the_stock_number( $post_id )
+			);
+		}
+
+		// [invp_adf_vendor] handler
+		if ( 'invp_adf_vendor' === $name ) {
+			if ( ! has_filter( 'wp_mail_content_type', array( $this, 'html_mail_content_type' ) ) ) {
+				add_filter( 'wp_mail_content_type', array( $this, 'html_mail_content_type' ) );
+			}
+			// Contact Form 7 default mail tag equivalents.
+			$_site_title = wp_specialchars_decode( get_bloginfo( 'name', true ), ENT_QUOTES );
+			$_site_url   = get_bloginfo( 'url', true );
+
+			// Get the vehicle.
+			$post_id     = $this->get_submission_vehicle_post_id();
+			$vendor_name = $_site_title;
+
+			// Does the vehicle have a term in the locations taxonomy?
+			$location_terms = get_the_terms( $post_id, 'location' );
+			if ( ! empty( $location_terms ) ) {
+				$vendor_name             = $location_terms[0]->name;
+				$term_id                 = $location_terms[0]->term_id;
+				$address_street          = get_term_meta( $term_id, 'address_street', true );
+				$address_street_line_two = get_term_meta( $term_id, 'address_street_line_two', true );
+				$address_city            = get_term_meta( $term_id, 'address_city', true );
+				$address_state           = get_term_meta( $term_id, 'address_state', true );
+				$address_zip             = get_term_meta( $term_id, 'address_zip', true );
+				$phone                   = get_term_meta( $term_id, 'phone_1_number', true );
+
+				return sprintf(
+					'<vendor><vendorname>%1$s</vendorname><contact><name part="full" type="business">%1$s</name><phone type="voice">%2$s</phone><address><street line="1">%3$s</street><street line="2">%4$s</street><city>%5$s</city><regioncode>%6$s</regioncode><postalcode>%7$s</postalcode><url>%8$s</url></address></contact></vendor>',
+					$vendor_name,
+					$phone,
+					$address_street,
+					$address_street_line_two,
+					$address_city,
+					$address_state,
+					$address_zip,
+					$_site_url
+				);
 
 				/*
-				<vehicle>
-					<id>286535725</id>
-					<year>2017</year>
-					<make>NISSAN</make>
-					<model>ROGUE</model>
-					<vin>5N1AT2MV8HC876642</vin>
-					<stock>876642-A</stock>
-				</vehicle>
+				<vendor>
+					<vendorname>Friday Demo</vendorname>
+					<contact>
+						<name part="full" type="business">Friday Demo</name>
+						<phone type="voice">800-677-7160</phone>
+						<address>
+							<street line="1">1185 Division Hwy</street>
+							<street line="2">Suite B</street>
+							<city>Ephrata</city>
+							<regioncode>PA</regioncode>
+							<postalcode>17522</postalcode>
+							<url>https://fridaydemo.wpengine.com</url>
+						</address>
+					</contact>
+				</vendor>
 				*/
+			} else {
+				// This vehicle does not have a term in the location taxonomy.
 				return sprintf(
-					'<vehicle><id>%s</id><year>%s</year><make>%s</make><model>%s</model><vin>%s</vin><stock>%s</stock></vehicle>',
-					INVP::get_meta( 'car_id', $post_id ),
-					invp_get_the_year( $post_id ),
-					invp_get_the_make( $post_id ),
-					invp_get_the_model( $post_id ),
-					invp_get_the_vin( $post_id ),
-					invp_get_the_stock_number( $post_id )
+					'<vendor><vendorname>%1$s</vendorname><contact><name part="full" type="business">%1$s</name><url>%2$s</url></contact>',
+					$_site_title,
+					$_site_url
 				);
 			}
 		}
@@ -108,12 +173,34 @@ class Inventory_Presser_Contact_Form_7 extends Inventory_Presser_Forms_Integrati
 		// Allow HTML in emails.
 		add_filter( 'wp_mail_content_type', array( $this, 'html_mail_content_type' ) );
 
-		$post_id = $this->extract_post_id_from_value( $submitted );
+		$post_id = $this->get_submission_vehicle_post_id( $submitted );
 		if ( empty( $post_id ) ) {
 			return $replaced;
 		}
 
 		return sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), $replaced );
+	}
+
+	/**
+	 * Find the post ID of the vehicle that was submitted in the first
+	 * [invp_vehicle] field on this form. Returns false if not found.
+	 *
+	 * @param string $vehicle_field_value The submitted value in the form's [invp_vehicle] field.
+	 * @return int|false
+	 */
+	public function get_submission_vehicle_post_id( $vehicle_field_value = '' ) {
+		if ( '' === $vehicle_field_value ) {
+			$submission = WPCF7_Submission::get_instance();
+			// What name in posted_data is the vehicle field?
+			foreach ( $submission->get_contact_form()->scan_form_tags() as $form_tag ) {
+				if ( 'invp_vehicle' !== $form_tag->basetype ) {
+					continue;
+				}
+				$vehicle_field_value = $submission->get_posted_data()[ $form_tag->name ];
+				break;
+			}
+		}
+		return $this->extract_post_id_from_value( $vehicle_field_value );
 	}
 
 	/**

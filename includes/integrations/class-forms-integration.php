@@ -10,14 +10,14 @@ abstract class Inventory_Presser_Forms_Integration {
 	 * find and return the vehicle's post ID.
 	 *
 	 * @param  string $value An <option> value of a drop down containing vehicles in lead form.
-	 * @return int
+	 * @return int|false
 	 */
 	protected function extract_post_id_from_value( $value ) {
 		// submitted "2020 Toyota Sienna LE, 10329A".
 		$pieces = explode( ', ', $value );
 		if ( 1 === count( $pieces ) ) {
 			// delimiter not found.
-			return '';
+			return false;
 		}
 		$stock_number = $pieces[ count( $pieces ) - 1 ];
 		$post_ids     = get_posts(
@@ -32,7 +32,7 @@ abstract class Inventory_Presser_Forms_Integration {
 		);
 
 		if ( empty( $post_ids ) || ! is_array( $post_ids ) ) {
-			return '';
+			return false;
 		}
 
 		return $post_ids[0];
