@@ -3,7 +3,8 @@
 	border: 0;
 	background: none;
 }
-#slider .flex-direction-nav a{
+#slider .flex-direction-nav a,
+#carousel .flex-direction-nav a{
 	width: 15%;
 	top: 0;
 	bottom: 0;
@@ -25,6 +26,10 @@
 }
 ul.flex-direction-nav li{
 	line-height: 1;
+}
+#slider ul.flex-direction-nav li::marker,
+#carousel ul.flex-direction-nav li::marker{
+	content: none;
 }
 .flex-direction-nav a:focus{
 	outline: none;
