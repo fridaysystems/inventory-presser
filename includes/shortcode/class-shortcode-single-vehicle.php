@@ -195,19 +195,6 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 				</div>
 			</div><!--/.post-inner-->
 		</div><script type="text/javascript"><!--
-	function adjustSlideHeight(wrapper)
-	{
-		var ratios = [];
-		jQuery(wrapper + ' .slides li img').each(function() {
-			ratios.push( jQuery(this).attr('height') / jQuery(this).attr('width'));
-		});
-		height = Math.ceil( jQuery('#slider-width').width() * Math.min.apply(Math,ratios));
-		jQuery(wrapper + ' .slides li img').each(function() {
-			jQuery(this).css('height', height + 'px');
-			jQuery(this).css('width', 'auto');
-		});
-	}
-
 	jQuery(window).load(function()
 	{
 		if (jQuery('body').hasClass('single-inventory_vehicle'))
