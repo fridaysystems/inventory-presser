@@ -5,7 +5,7 @@
 .fuel-economy-fuel {
 	display: grid;
 	grid-template-columns: 5.5em 4em 25% 25%;
-	grid-template-rows: 99% 2em;
+	/* grid-template-rows: 99% 2em;  causes overlap in Chrome */
 	min-width: 280px;
 	max-width: 45%;
 	float: left;
