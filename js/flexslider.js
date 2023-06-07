@@ -1,12 +1,13 @@
-jQuery(window).on('load', function() {
-	jQuery(window).resize(function() {
-		setTimeout(function() {
-			adjustSlideHeight('#slider');
-		}, 120);
-	});
+window.addEventListener( 'resize', function() {
+	setTimeout(function() {
+		adjustSlideHeight('#slider');
+		// Copied this line here to fix Divi not showing first photo/slider during page loads in Chrome.
+		flexsliderMaybeResizeCurrentImage();
+		flexsliderStylePreviousNext();
+	}, 120);
 });
 
-jQuery(document).ready(function() {
+window.addEventListener( 'load', function() {
 	jQuery('.flexslider').not('#carousel').flexslider({
 		animation: 'slide',
 		animationSpeed: invp.is_singular ? 200 : 300,
@@ -16,11 +17,13 @@ jQuery(document).ready(function() {
 		nextText: '',
 		slideshow: ! invp.is_singular,
 		smoothHeight: true,
-		after: function( slider ) { flexslider_maybe_resize_current_image(); },
+		after: function( slider ) { flexsliderMaybeResizeCurrentImage(); },
 		start: function( slider ) {
-			adjustSlideHeight('#slider');
-			jQuery(window).trigger('resize');
-			flexslider_maybe_resize_current_image();
+			setTimeout(function() {
+				adjustSlideHeight('#slider');
+				window.dispatchEvent(new Event('resize'));
+				flexsliderMaybeResizeCurrentImage();
+			}, 120);
 		}
 	});
 
@@ -32,80 +35,92 @@ jQuery(document).ready(function() {
 		itemWidth: 150,
 		asNavFor: '#slider',
 		prevText: '',
-		nextText: ''
+		nextText: '',
+		start: function( slider ) {
+			flexsliderStylePreviousNext();
+		}
 	});
 
-	jQuery('.flexslider:not(#carousel) .slides li:first-child img').each( function() {
-		observer.observe(jQuery(this)[0], { attributes : true, attributeFilter : ['style'] });
-	});
+	var imgs = document.querySelectorAll('.flexslider:not(#carousel) .slides li:first-child img');
+	if ( imgs.length ) {
+		imgs.forEach( i => observer.observe(i, { attributes : true, attributeFilter : ['style'] }) );
+	}
 });
 
 var observer = new MutationObserver(function(mutations) {
 	mutations.forEach(function(mutationRecord) {
-		flexslider_maybe_resize_current_image();
-		jQuery('.flexslider:not(#carousel) .flex-direction-nav a').css('line-height', function() {
-			return jQuery(this).parent().parent().parent().find('.slides li:first-child img').css('height');
-		});
+		flexsliderMaybeResizeCurrentImage();
+		flexsliderStylePreviousNext();
 	});
 });
 
-function adjustSlideHeight(wrapper)
-{
+function adjustSlideHeight(wrapper) {
 	var ratios = [];
-	jQuery(wrapper + ' .slides li img').each(function() {
-		ratios.push(jQuery(this).attr('height')/jQuery(this).attr('width'));
+	document.querySelectorAll( wrapper + ' .slides li img' ).forEach( i => {
+		ratios.push(i.height/i.width);
 	});
-	var width = Math.min(getLargestWidthFromSrcset(jQuery('.flexslider .flex-active-slide img')[0]), jQuery('#slider-width').width());
-	height = Math.ceil(width * Math.min.apply(Math,ratios));
-	jQuery(wrapper + ' .slides li img').each(function() {
-		jQuery(this).css('height', height);
-		jQuery(this).css('width', 'auto');
+	var sliderWidth = document.querySelector(wrapper).parentNode.querySelector('#slider-width').clientWidth;
+	var width = Math.min(getLargestWidthFromSrcset(document.querySelector(wrapper + '.flexslider .flex-active-slide img')), sliderWidth );
+	var height = Math.ceil(width * Math.min.apply(Math,ratios));
+	document.querySelectorAll(wrapper + ' .slides li img').forEach( i => {
+		i.height = height;
+		i.width = 'auto';
 	});
 }
 
-function flexslider_maybe_resize_current_image()
-{
-	var el = jQuery('.flexslider .flex-active-slide img')[0];
-
-	if( typeof el === 'undefined' )
-	{
+function flexsliderMaybeResizeCurrentImage() {
+	var el = document.querySelector('.flexslider .flex-active-slide img');
+	if( typeof el === 'undefined' ) {
 		return;
 	}
 
-	var el_slider = jQuery('.flexslider');
-	var slider_width = el_slider.css('width').replace(/[^0-9]/g, '')
-		- parseInt( el_slider.css( 'border-left-width' ).replace(/[^0-9]/g, '') )
-		- parseInt( el_slider.css( 'border-right-width' ).replace(/[^0-9]/g, '') );
-
-	//if the photo isn't taking up the whole width of the slider, remove inline height so it does
-	if( slider_width > el.width && jQuery(el).attr('srcset') )
-	{
-		jQuery(el).css('height','' );
-		//set the inline width of the photo to be the real largest width or 100%
-		var srcset = jQuery(el).attr('srcset');
-		var pieces = srcset.split( ' ' );
-		if( 1 < pieces.length )
-		{
-			var full_width = pieces[1].substring( 0, pieces[1].length-2 );
-			if( full_width > el.width )
-			{
-				jQuery(el).removeAttr('height');
-				jQuery(el).css( 'width', full_width ).css('max-width','100%' );
+	var slider = document.querySelector('#slider.flexslider');
+	if( slider.clientWidth > el.width && el.srcset ) {
+		el.style.height = '';
+		// Set the inline width of the photo to the real largest width or 100%.
+		var pieces = el.srcset.split( ' ' );
+		if( 1 < pieces.length ) {
+			var fullWidth = pieces[1].substring( 0, pieces[1].length-2 );
+			if( fullWidth > el.width ) {
+				el.style.width = fullWidth;
+				el.style.maxWidth = '100%';
+				el.removeAttribute('height');
 			}
 		}
 	}
 
-	var current_image_height = el.height;
-	//when the slide changes, reset the next/prev text line-height
-	jQuery('.flexslider:not(#carousel) .flex-direction-nav a').css('line-height', current_image_height + 'px' );
-	//and resize the whole slider based on the height of the current image
-	jQuery('.flexslider:not(#carousel) .flex-viewport').css('height', current_image_height + 'px' );
+	// If the photo is slow to load, it will have no height.
+	if ( 0 === el.height ) {
+		return;
+	}
+
+	// When the slide changes, reset the next/prev text line-height.
+	document.querySelectorAll('.flexslider:not(#carousel) .flex-direction-nav a').forEach( a => a.style.lineHeight = el.height + 'px' );
+	// Resize the whole slider based on the height of the current image.
+	document.querySelector('.flexslider:not(#carousel) .flex-viewport').height = el.height + 'px';
+}
+
+function flexsliderStylePreviousNext() {
+	var navLinks = document.querySelectorAll( '.flexslider .flex-direction-nav a' );
+	if ( navLinks.length ) {
+		navLinks.forEach( l => {
+			var firstImage = l.parentNode.parentNode.parentNode.querySelector('.slides li:first-child img');
+			if ( firstImage ) {
+				var h = firstImage.style.height;
+				if ( '' === h ) {
+					h = firstImage.clientHeight + 'px';
+				}
+				if ( '0px' !== h ) {
+					l.style.lineHeight = '' !== h ? h : '112.5px';
+				}
+			}
+		});
+	}
 }
 
 //https://stackoverflow.com/a/60487971/338432
 function getLargestWidthFromSrcset(element) {
-	if(!element)
-	{
+	if( ! element ) {
 		return 2048;
 	}
 	if (element.getAttribute("srcset")) {
