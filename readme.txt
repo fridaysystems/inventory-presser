@@ -81,6 +81,8 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 14.11.0 =
 * [Fixed] Adds a Contact Form 7 mail tag [invp_adf_vendor] to integrate the location taxonomy into ADF XML leads. More details at https://inventorypresser.com/docs/contact-form-7-integration/how-to-send-adf-xml-leads-using-contact-form-7/
+* [Fixed] Changes Flexslider JavaScript to use much less jQuery and make sure the photo slider loads even if the photos are slow to load.
+* [Fixed] Fixes a CSS issue that caused the Annual fuel consumption line to overlap the combined, city, and highway figures in the Fuel Economy widget.
 
 = 14.10.2 =
 * [Added] Adds a template tag `invp_get_the_condition()` that returns "Used", "New", or empty string.
