@@ -1,8 +1,9 @@
 # Inventory Presser
 
-Car dealer plugin. Turn WordPress into a dealership website. Provides vehicle listings and photo sliders for automobiles or powersports. [Runs on any theme](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/) & provides shortcodes for the stubborn ones. 
+Car dealer plugin. Provides vehicle listings and photo sliders for automobiles or powersports dealerships. [Runs on any theme](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/) & provides templates for the stubborn ones.
 
-__Visit this plugin's page in the WordPress Plugin Repository__
+__Visit this plugin in the WordPress Plugin Repository__
+
 https://wordpress.org/plugins/inventory-presser/
 
 
@@ -19,11 +20,8 @@ https://wordpress.org/plugins/inventory-presser/
 ## Integration Guides
 
 * [Setup a Dealership Website](https://inventorypresser.com/docs/setup-a-dealership-website/)
-* [Adding or importing inventory](https://inventorypresser.com/docs/adding-or-importing-inventory/)
-* [Uploading & arranging photos](https://inventorypresser.com/docs/uploading-arranging-photos/)
-* [Theme compatibility guide](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/)
+* [Adding or Importing Inventory](https://inventorypresser.com/docs/adding-or-importing-inventory/)
+* [Uploading & Arranging Photos](https://inventorypresser.com/docs/uploading-arranging-photos/)
+* [Theme Compatibility Guide](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/)
 * Capture leads with [Contact Form 7](https://inventorypresser.com/docs/contact-form-7-integration/) or [WPForms](https://inventorypresser.com/docs/capturing-vehicle-leads-with-wpforms/)
 * [Documentation homepage →](https://inventorypresser.com/docs/)
-
-## Getting Started
-
