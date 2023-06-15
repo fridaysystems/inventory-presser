@@ -424,6 +424,21 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		/**
+		 * Filter callback that sets the number of meta keys in the Custom
+		 * Fields panel in the editor. Typcially, this value is 30. We register
+		 * more than 30 fields!
+		 *
+		 * @param  int $limit
+		 * @return int
+		 */
+		public function custom_fields_key_limit( $limit ) {
+			if ( INVP::POST_TYPE !== get_post_type() ) {
+				return $limit;
+			}
+			return 9999;
+		}
+
+		/**
 		 * Deletes the rewrite_rules option so the rewrite rules are generated
 		 * on the next page load without ours. Called during deactivation.
 		 *
@@ -822,6 +837,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					$sidebar = new Inventory_Presser_Admin_Editor_Sidebar();
 					$sidebar->add_hooks();
 				}
+
+				// Allow more than 30 meta keys in the Custom Fields editor panel.
+				add_filter( 'postmeta_form_limit', array( $this, 'custom_fields_key_limit' ) );
 			}
 
 			if ( class_exists( 'Inventory_Presser_Taxonomy_Overlapper' ) ) {
