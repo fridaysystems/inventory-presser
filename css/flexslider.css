@@ -9,6 +9,9 @@
 	top: 0;
 	bottom: 0;
 }
+#carousel .flex-direction-nav a{
+	width: 10%;
+}
 .flex-direction-nav a {
 	height: 100%;
 	transition: none;
