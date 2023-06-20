@@ -194,33 +194,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 				?>
 				</div>
 			</div><!--/.post-inner-->
-		</div><script type="text/javascript"><!--
-	jQuery(window).load(function()
-	{
-		if (jQuery('body').hasClass('single-inventory_vehicle'))
-		{
-			adjustSlideHeight('#slider');
-
-			jQuery(window).resize(function() {
-				setTimeout(function() {
-					adjustSlideHeight('#slider');
-				}, 120);
-			});
-
-			// The slider being synched must be initialized first
-			jQuery('#carousel').flexslider({
-				animation: "slide",
-				controlNav: false,
-				slideshow: false,
-				smoothHeight: true,
-				itemWidth: 150,
-				asNavFor: '#slider',
-				prevText: '',
-				nextText: ''
-			});
-		}
-	});
---></script>
+		</div>
 		<?php
 
 		return ob_get_clean();
