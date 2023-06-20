@@ -1,6 +1,5 @@
 window.addEventListener( 'resize', function() {
 	setTimeout(function() {
-		adjustSlideHeight('#slider');
 		// Copied this line here to fix Divi not showing first photo/slider during page loads in Chrome.
 		flexsliderMaybeResizeCurrentImage();
 		flexsliderStylePreviousNext();
@@ -20,7 +19,6 @@ window.addEventListener( 'load', function() {
 		after: function( slider ) { flexsliderMaybeResizeCurrentImage(); },
 		start: function( slider ) {
 			setTimeout(function() {
-				adjustSlideHeight('#slider');
 				window.dispatchEvent(new Event('resize'));
 				flexsliderMaybeResizeCurrentImage();
 			}, 120);
@@ -53,20 +51,6 @@ var observer = new MutationObserver(function(mutations) {
 		flexsliderStylePreviousNext();
 	});
 });
-
-function adjustSlideHeight(wrapper) {
-	var ratios = [];
-	document.querySelectorAll( wrapper + ' .slides li img' ).forEach( i => {
-		ratios.push(i.height/i.width);
-	});
-	var sliderWidth = document.querySelector(wrapper).parentNode.querySelector('#slider-width').clientWidth;
-	var width = Math.min(getLargestWidthFromSrcset(document.querySelector(wrapper + '.flexslider .flex-active-slide img')), sliderWidth );
-	var height = Math.ceil(width * Math.min.apply(Math,ratios));
-	document.querySelectorAll(wrapper + ' .slides li img').forEach( i => {
-		i.height = height;
-		i.width = 'auto';
-	});
-}
 
 function flexsliderMaybeResizeCurrentImage() {
 	var el = document.querySelector('.flexslider .flex-active-slide img');
