@@ -129,7 +129,7 @@ class Inventory_Presser_Taxonomies {
 		// Do not include sold vehicles in listings unless an option is checked.
 		add_action( 'pre_get_posts', array( $this, 'maybe_exclude_sold_vehicles' ) );
 
-		// Run a weekly cron job to delete empty terms.
+		// Run a cron job to delete empty terms.
 		add_action( self::CRON_HOOK_DELETE_TERMS, array( $this, 'delete_unused_terms' ) );
 
 		// Put terms into our taxonomies when the plugin is activated.

@@ -866,20 +866,12 @@ function invp_get_the_photo_url( $size = 'medium', $post_ID = null ) {
 }
 
 /**
- * invp_get_the_photos
- *
  * Fill arrays of thumb and large <img> elements and URLs to simplify the use of
  * of vehicle photos.
  *
- * @param  array $sizes
- * @return array An array of thumbnail and full size HTML <img> elements plus URLs
- */
-/**
- * invp_get_the_photos
- *
  * @param  mixed    $sizes
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
- * @return array
+ * @return array An array of thumbnail and full size HTML <img> elements plus URLs
  */
 function invp_get_the_photos( $sizes, $post_ID = null ) {
 	/**

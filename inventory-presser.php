@@ -428,7 +428,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * Fields panel in the editor. Typcially, this value is 30. We register
 		 * more than 30 fields!
 		 *
-		 * @param  int $limit
+		 * @param  int $limit The number of meta keys in the Custom Fields panel in the editor.
 		 * @return int
 		 */
 		public function custom_fields_key_limit( $limit ) {

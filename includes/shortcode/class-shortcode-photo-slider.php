@@ -68,7 +68,7 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 
 			if ( isset( $image_url_lists['large'] ) ) {
 				for ( $p = 0; $p < sizeof( $image_url_lists['large'] ); $p++ ) {
-					// Inventory Presser versions 8.1.0 and above provide the 'urls'
+					// Inventory Presser versions 8.1.0 and above provide the 'urls'.
 					if ( isset( $image_url_lists['urls'][ $p ] ) ) {
 						printf(
 							'<li><a href="%s">%s</a></li>',

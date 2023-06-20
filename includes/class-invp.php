@@ -210,12 +210,10 @@ class INVP {
 	}
 
 	/**
-	 * extract_image_element_src
-	 *
 	 * Given a string containing HTML <img> element markup, extract the
 	 * value of the src attribute and return it.
 	 *
-	 * @param  string $img_element An HTML <img> element
+	 * @param  string $img_element An HTML <img> element.
 	 * @return string The value of the src attribute
 	 */
 	public static function extract_image_element_src( $img_element ) {
