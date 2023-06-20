@@ -53,7 +53,7 @@ var observer = new MutationObserver(function(mutations) {
 });
 
 function flexsliderMaybeResizeCurrentImage() {
-	var el = document.querySelector('.flexslider .flex-active-slide img');
+	var el = document.querySelector('#slider.flexslider .flex-active-slide img');
 	if( typeof el === 'undefined' ) {
 		return;
 	}
