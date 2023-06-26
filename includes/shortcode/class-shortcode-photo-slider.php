@@ -57,7 +57,7 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 		wp_enqueue_style( 'invp-flexslider' );
 		wp_enqueue_script( 'invp-flexslider', '', array(), false, true );
 
-		$image_url_lists = invp_get_the_photos( array( 'large', 'thumb' ) );
+		$image_url_lists = invp_get_the_photos( array( 'full', 'large', 'thumb' ) );
 
 		ob_start();
 		?>
@@ -67,11 +67,12 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 			<?php
 
 			if ( isset( $image_url_lists['large'] ) ) {
-				for ( $p = 0; $p < sizeof( $image_url_lists['large'] ); $p++ ) {
+				$image_count = count( $image_url_lists['large'] );
+				for ( $p = 0; $p < $image_count; $p++ ) {
 					// Inventory Presser versions 8.1.0 and above provide the 'urls'.
 					if ( isset( $image_url_lists['urls'][ $p ] ) ) {
 						printf(
-							'<li><a href="%s">%s</a></li>',
+							'<li><a data-href="%s">%s</a></li>',
 							$image_url_lists['urls'][ $p ],
 							$image_url_lists['large'][ $p ]
 						);
@@ -95,7 +96,7 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 				<?php
 
 				foreach ( $image_url_lists['thumb'] as $image ) {
-						  printf( '<li>%s</li>', $image );
+					printf( '<li>%s</li>', $image );
 				}
 
 				?>

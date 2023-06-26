@@ -930,7 +930,7 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 
 			$image_urls[ $size ][] = $img_element;
 
-			if ( 'large' === $size ) {
+			if ( 'full' === $size ) {
 				$image_urls['urls'][] = INVP::extract_image_element_src( $img_element );
 			}
 		}

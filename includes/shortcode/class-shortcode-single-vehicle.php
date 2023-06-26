@@ -38,7 +38,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 			return '';
 		}
 
-		$image_url_lists = invp_get_the_photos( array( 'large', 'thumb' ) );
+		$image_url_lists = invp_get_the_photos( array( 'full', 'large', 'thumb' ) );
 
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'flexslider' );
@@ -79,11 +79,12 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 							<?php
 
 							if ( isset( $image_url_lists['large'] ) ) {
-								for ( $p = 0; $p < count( $image_url_lists['large'] ); $p++ ) {
+								$photo_count = count( $image_url_lists['large'] );
+								for ( $p = 0; $p < $photo_count; $p++ ) {
 									// Inventory Presser versions 8.1.0 and above provide the 'urls'.
 									if ( isset( $image_url_lists['urls'][ $p ] ) ) {
 										printf(
-											'<li><a href="%s">%s</a></li>',
+											'<li><a data-href="%s">%s</a></li>',
 											esc_attr( $image_url_lists['urls'][ $p ] ),
 											$image_url_lists['large'][ $p ]
 										);
