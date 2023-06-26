@@ -80,8 +80,11 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Changelog ==
 
 = 14.11.0 =
+* [Added] Adds a fullscreen mode to flexsliders so large vehicle photos can bust out of their containers when tapped by users.
+* [Fixed] Cleans up flexslider JavaScript to use much less jQuery and wait for slow images to load before attempting resizes.
+* [Fixed] Makes more strings translateable, adds more taxonomy term labels so the Block Editor stops showing "category" instead of "make", "model", etc.
+* [Fixed] Allows more than 30 meta keys in the Custom Fields editor panel when editing vehicles.
 * [Fixed] Adds a Contact Form 7 mail tag [invp_adf_vendor] to integrate the location taxonomy into ADF XML leads. More details at https://inventorypresser.com/docs/contact-form-7-integration/how-to-send-adf-xml-leads-using-contact-form-7/
-* [Fixed] Changes Flexslider JavaScript to use much less jQuery and make sure the photo slider loads even if the photos are slow to load.
 * [Fixed] Fixes a CSS issue that caused the Annual fuel consumption line to overlap the combined, city, and highway figures in the Fuel Economy widget.
 
 = 14.10.2 =
