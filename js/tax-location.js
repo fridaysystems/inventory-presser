@@ -1,93 +1,66 @@
-(function($) {
-
-	function add_block(group){
-		var original  = $( group ).find( '.repeat-this' );
-		var newgroup  = original.clone( true ).removeClass( 'repeat-this' ).addClass( 'repeated' );
-		var container = $( group ).find( '.repeat-container' );
-		$( container ).append( newgroup );
+window.addEventListener( 'load', function() {
+	// Populate the slug as the name is typed into the Add New Location form.
+	var tagName = this.document.querySelector( '#tag-name' );
+	if ( tagName ) {
+		tagName.addEventListener( 'input', function(){
+			var tagSlug = document.querySelector('#tag-slug');
+			if ( tagSlug ) {
+				tagSlug.value = tagName.value.replaceAll( ' ', '-' ).replace( /[^-a-z0-9]/gi,'' ).toLowerCase();
+			}
+		});
 	}
 
-	// on page load
-	$( document ).ready(
-		function() {
+	// Hijack the built in taxonomy description for the location address.
+	this.document.querySelector( '.term-description-wrap label' ).innerHTML = 'Address';
+	this.document.querySelector( '.term-description-wrap p' ).innerHTML = 'Use the fields below to edit the address.';
+	this.document.querySelector( '#tag-description,#description' ).setAttribute( 'readonly', true );
 
-			// hijack the built in taxonomy description for the location address.
-			$( '.term-description-wrap label' ).text( 'Address' );
-			$( '.term-description-wrap p' ).text( 'Use the fields below to edit the address.' );
-			$( '#description' ).attr( 'readonly',true );
-
-			$( '.repeat-group' ).each(
-				function(index,group){
-
-					var group = $( this );
-
-					// make sortable
-					$( group ).find( '.repeat-container' ).sortable(
-						{
-							handle: '.repeat-move',
-							containment: 'parent'
-						}
-					);
-
-					// initial setup - add a repeat group
-					if ($( group ).find( '.repeat-container' ).children().length == 0) {
-						add_block( group );
-					}
-
-					// add buttons click event
-					$( group ).find( '.repeat-add' ).on(
-						'click',
-						function(e) {
-							add_block( group );
-						}
-					);
-
-					// bind event - delete button
-					$( group ).find( '.repeat-delete' ).on(
-						'click',
-						function(e) {
-							var group     = $( this ).closest( '.repeat-group' );
-							var container = $( this ).closest( '.repeat-container' );
-							$( this ).closest( '.repeated' ).remove();
-							// if there are no repeat groups, add a fresh one
-							if ($( container ).children().length == 0) {
-								add_block( group );
-							}
-							$( container ).sortable( 'refresh' );
-						}
-					);
-
-				}
-			);
-
-			$( 'table.tags tbody' ).sortable();
-
-			$( '.timepick' ).timepicker( { 'timeFormat': 'g:i A', 'scrollDefault': 'now' } );
-
-			// Populate the slug as the name is typed into the Add New Location form
-			$( '#tag-name' ).on(
-				'input',
-				function(){
-					$( '#tag-slug' ).val( $( this ).val().replace( ' ', '-' ).replace( /[^a-z\-0-9]/gi,'' ).toLowerCase() );
-				}
-			);
-		}
-	);
-
-	// listen for WP ajax call to add location tag, reset the term meta forms when it happens
-	$( document ).ajaxComplete(
-		function( event, xhr, settings ) {
-			if ((settings.data.indexOf( 'action=add-tag' ) >= 0) && (settings.data.indexOf( 'taxonomy=location' ) >= 0) && (settings.data.indexOf( 'post_type=inventory_vehicle' ) >= 0)) {
-
-				$( '.repeat-group' ).each(
-					function(index,group){
-						var group = $( this );
-						$( group ).find( '.repeat-container' ).empty();
-						add_block( group );
-					}
-				);
+	this.document.querySelectorAll( '.repeat-group' ).forEach( (group) => {
+		// make sortable
+		jQuery( group.querySelector( '.repeat-container' ) ).sortable(
+			{
+				handle: '.repeat-move',
+				containment: 'parent'
 			}
-		}
-	);
+		);
 
-})( jQuery );
+		// initial setup - add a repeat group
+		if ( 0 === group.querySelector( '.repeat-container' ).children.length ) {
+			locationsDuplicateInputs( group );
+		}
+
+		// add buttons click event
+		group.querySelector( '.repeat-add' ).addEventListener( 'click', function(e) {
+			locationsDuplicateInputs( group );
+		});
+	});
+
+	locationsBindDeleteButtons();
+
+	jQuery( this.document.querySelectorAll( '.timepick' )).timepicker( { 'timeFormat': 'g:i A', 'scrollDefault': 'now' } );
+});
+function locationsBindDeleteButtons() {
+	document.querySelectorAll( '.repeat-group .repeat-delete' ).forEach( ( el ) => {
+		el.removeEventListener( 'click', locationsDeleteHandler );
+		el.addEventListener( 'click', locationsDeleteHandler );
+	});
+}
+function locationsDeleteHandler(evt) {
+	var group     = evt.target.closest( '.repeat-group' );
+	var container = evt.target.closest( '.repeat-container' );
+	evt.target.closest( '.repeated' ).remove();
+	// if there are no repeat groups, add a fresh one
+	if ( 0 === container.children.length ) {
+		locationsDuplicateInputs( group );
+	}
+	jQuery( container ).sortable( 'refresh' );
+}
+function locationsDuplicateInputs( group ) {
+	var original = group.querySelector('.repeat-this');
+	var newGroup = original.cloneNode( true );
+	newGroup.classList.remove( 'repeat-this' );
+	newGroup.classList.add( 'repeated' );
+	var container = group.querySelector( '.repeat-container' );
+	container.append( newGroup );
+	locationsBindDeleteButtons();
+}
