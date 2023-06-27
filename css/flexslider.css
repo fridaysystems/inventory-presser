@@ -3,6 +3,10 @@
 	border: 0;
 	background: none;
 }
+#slider.flexslider,
+#carousel.flexslider{
+	box-sizing: content-box;
+}
 #slider .flex-direction-nav a,
 #carousel .flex-direction-nav a{
 	width: 15%;
@@ -49,6 +53,7 @@ ul.flex-direction-nav li{
 }
 .flexslider .slides img{
 	cursor: pointer;
+	width: auto;
 }
 /* speed up animation when the next and previous buttons move */
 .flex-viewport{

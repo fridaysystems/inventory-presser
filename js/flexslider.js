@@ -3,6 +3,7 @@ window.addEventListener( 'resize', function() {
 		// Copied this line here to fix Divi not showing first photo/slider during page loads in Chrome.
 		flexsliderMaybeResizeCurrentImage();
 		flexsliderStylePreviousNext();
+		window.dispatchEvent( new Event('afterDelayedResize' ) );
 	}, 120);
 });
 
@@ -21,7 +22,7 @@ window.addEventListener( 'load', function() {
 			// Wait for the first image to load and call flexsliderLoaded().
 			var img = document.querySelector('.flex-active-slide img');
 			if (img.complete) {
-				flexsliderLoaded()
+				flexsliderLoaded();
 			} else {
 				img.addEventListener( 'load', flexsliderLoaded );
 			}
@@ -47,42 +48,48 @@ window.addEventListener( 'load', function() {
 	});
 	window.invp.resizeObserver.observe(document.querySelector('.flex-active-slide img'));
 });
+function flexsliderMaybeShrinkFrame() {
+	// Is the slider wider than the width of the first image?
+	if ( document.querySelector( '#slider' ).clientWidth > document.querySelector('#slider.flexslider .flex-active-slide img').clientWidth ) {
+		document.querySelector( '#slider.flexslider' ).style.width =
+		document.querySelector( '#carousel.flexslider' ).style.width = document.querySelector('#slider.flexslider .flex-active-slide img').clientWidth + 'px';
+	}
+	window.removeEventListener( 'afterDelayedResize', flexsliderMaybeShrinkFrame );
+}
 function flexsliderLoaded() {
+	flexsliderMaybeShrinkFrame();
 	window.dispatchEvent(new Event('resize'));
 	flexsliderMaybeResizeCurrentImage();
 	// When a full size photo is clicked, go "full screen".
 	document.querySelectorAll( '#slider .invp-image' ).forEach( i => i.addEventListener( 'click', flexsliderPopOut ) );
 }
 function flexsliderMaybeResizeCurrentImage() {
-	var el = document.querySelector('#slider.flexslider .flex-active-slide img');
-	if( typeof el === 'undefined' ) {
+	var activeSlide = document.querySelector('#slider.flexslider .flex-active-slide img');
+	if( typeof activeSlide === 'undefined' ) {
 		return;
 	}
 
 	var slider = document.querySelector('#slider.flexslider');
-	if( slider.clientWidth > el.width && el.srcset ) {
-		el.style.height = '';
+	if( slider.clientWidth > activeSlide.width && activeSlide.srcset ) {
+		activeSlide.style.height = '';
 		// Set the inline width of the photo to the real largest width or 100%.
-		var pieces = el.srcset.split( ' ' );
-		if( 1 < pieces.length ) {
-			var fullWidth = pieces[1].substring( 0, pieces[1].length-2 );
-			if( fullWidth > el.width ) {
-				el.style.width = fullWidth;
-				el.style.maxWidth = '100%';
-				el.removeAttribute('height');
-			}
+		var largestWidth = getLargestWidthFromSrcset(activeSlide);
+		if( largestWidth > activeSlide.width ) {
+			activeSlide.style.width = largestWidth;
+			activeSlide.style.maxWidth = '100%';
+			activeSlide.removeAttribute('height');
 		}
 	}
 
 	// If the photo is slow to load, it will have no height.
-	if ( 0 === el.height ) {
+	if ( 0 === activeSlide.height ) {
 		return;
 	}
 
 	// When the slide changes, reset the next/prev text line-height.
-	document.querySelectorAll('.flexslider:not(#carousel) .flex-direction-nav a').forEach( a => a.style.lineHeight = el.height + 'px' );
+	document.querySelectorAll('.flexslider:not(#carousel) .flex-direction-nav a').forEach( a => a.style.lineHeight = activeSlide.height + 'px' );
 	// Resize the whole slider based on the height of the current image.
-	document.querySelector('.flexslider:not(#carousel) .flex-viewport').height = el.height + 'px';
+	document.querySelector('.flexslider:not(#carousel) .flex-viewport').height = activeSlide.height + 'px';
 }
 
 function flexsliderNavigateToImage( evt ) {
@@ -95,7 +102,7 @@ function flexsliderPopOut() {
 	var largestWidth = getLargestWidthFromSrcset( activeSlide );
 	// If the current photo is already being shown at full width, abort.
 	// If the photo is already 85% of the viewport, we can't get much bigger.
-	if ( activeSlide.clientWidth === largestWidth
+	if ( activeSlide.clientWidth >= largestWidth
 		|| .85 < activeSlide.clientWidth / document.documentElement.clientWidth ) {
 		// Open the photo directly, this was the behavior before we added the pop out gallery.
 		location.href = document.querySelector('#slider .flex-active-slide a').dataset.href;
@@ -108,24 +115,39 @@ function flexsliderPopOut() {
 		window.invp.flexsliderPreviousProps = {};
 	}
 	window.invp.flexsliderPreviousProps.position = container.style.position;
+	window.invp.flexsliderPreviousProps.paddingLeft = container.style.paddingLeft;
 	window.invp.flexsliderPreviousProps.zIndex = container.style.zIndex;
 	window.invp.flexsliderPreviousProps.width = container.style.width;
 	window.invp.flexsliderPreviousProps.top = container.style.top;
 	window.invp.flexsliderPreviousProps.left = container.style.left;
-	window.invp.flexsliderPreviousProps.paddingLeft = container.style.paddingLeft;
+	window.invp.flexsliderPreviousProps.sizes = activeSlide.sizes;
 
 	// Change properties to make the slider go fullscreen.
 	container.style.position = 'fixed';
 	container.style.paddingLeft = '0';
 	container.style.zIndex = '100000'; // Admin bar is 99999.
 	container.style.width = largestWidth.toString() + 'px';
-	document.querySelectorAll( '#slider,#slider-width,#slider .slides li,#slider .flex-active-slide' ).forEach( l => l.style.width = largestWidth.toString() + 'px' );
+	document.querySelectorAll( '#slider,#slider-width,#slider .slides li,#slider .flex-active-slide, #carousel' ).forEach( l => {
+		l.style.width = largestWidth.toString() + 'px';
+	});
 	container.style.left = ( ( document.documentElement.clientWidth - container.clientWidth ) / 2 ).toString() + 'px';
 	// Watch for the changing height of #slider to reposition current image.
 	window.invp.resizeObserver = new ResizeObserver(entries => {
 		document.querySelector( '.vehicle-images' ).style.top = ( ( document.documentElement.clientHeight - entries[0].target.clientHeight ) / 2 ).toString() + 'px';
 	});
 	window.invp.resizeObserver.observe(document.getElementById('slider'));
+
+	window.addEventListener( 'afterDelayedResize', flexsliderInflateSizes );
+	function flexsliderInflateSizes( evt ) {
+		document.querySelectorAll( '#slider .slides li img' ).forEach( l => {
+			if ( 'undefined' !== typeof l.sizes ) {
+				var sizeToReplace = l.sizes.split( /[ px]/ )[2];
+				// Replace sizes attribute in slide.
+				l.setAttribute( 'sizes', l.sizes.replaceAll( sizeToReplace, largestWidth ) );
+			}
+		});
+		window.removeEventListener( 'afterDelayedResize', flexsliderInflateSizes );
+	}
 	window.dispatchEvent(new Event('resize'));
 
 	// Create an overlay to dim the rest of the page behind the slider.
@@ -161,8 +183,15 @@ function flexsliderPopIn() {
 		container.style.top = window.invp.flexsliderPreviousProps.top;
 		container.style.left = window.invp.flexsliderPreviousProps.left;
 		container.style.paddingLeft = window.invp.flexsliderPreviousProps.paddingLeft;
+		document.querySelectorAll( '#slider .slides li img' ).forEach( l => {
+			if ( 'undefined' !== typeof l.sizes ) {
+				// Replace sizes attribute in slide.
+				l.setAttribute( 'sizes', window.invp.flexsliderPreviousProps.sizes );
+			}
+		});
 	}
 	document.querySelectorAll( '#slider,#slider-width,#slider .slides li,#slider .flex-active-slide' ).forEach( l => l.style.width = null );
+	window.addEventListener( 'afterDelayedResize', flexsliderMaybeShrinkFrame );
 	window.dispatchEvent(new Event('resize'));
 	// Remove the overlay element.
 	document.querySelectorAll( '.flexsliderPopOut' ).forEach( el => el.remove() );
