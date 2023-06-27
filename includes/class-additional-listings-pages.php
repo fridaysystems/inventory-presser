@@ -69,11 +69,11 @@ class Inventory_Presser_Additional_Listings_Pages {
 				continue;
 			}
 
-			/**
-			 * Create a base rule for this slug because this isn't a
-			 * post type that will just work.
-			 */
+			// Base rule for this slug, this is not a post type.
 			$rules[ $additional_listing['url_path'] . '/?$' ] = 'index.php?post_type=' . INVP::POST_TYPE;
+			// Another rule to enable paging.
+			$rules[ $additional_listing['url_path'] . '/page/([0-9]{1,})/?$' ] = 'index.php?post_type=' . INVP::POST_TYPE . '&paged=$matches[1]';
+
 		}
 		return $rules;
 	}
