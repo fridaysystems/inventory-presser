@@ -82,6 +82,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 = 14.11.0 =
 * [Added] Adds a fullscreen mode to flexsliders so large vehicle photos can bust out of their containers when tapped by users.
 * [Fixed] Cleans up flexslider JavaScript to use much less jQuery and wait for slow images to load before attempting resizes.
+* [Fixed] Fixes a bug where paging was broken for Listings Pages defined at Vehicles → Options.
 * [Fixed] Makes more strings translateable, adds more taxonomy term labels so the Block Editor stops showing "category" instead of "make", "model", etc.
 * [Fixed] Allows more than 30 meta keys in the Custom Fields editor panel when editing vehicles.
 * [Fixed] Adds a Contact Form 7 mail tag [invp_adf_vendor] to integrate the location taxonomy into ADF XML leads. More details at https://inventorypresser.com/docs/contact-form-7-integration/how-to-send-adf-xml-leads-using-contact-form-7/
@@ -174,6 +175,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.11.0 =
+Adds a fullscreen mode to flexsliders so large vehicle photos can bust out of their containers when tapped by users. Cleans up flexslider JavaScript to use much less jQuery and wait for slow images to load before attempting resizes. Fixes a bug where paging was broken for Listings Pages defined at Vehicles → Options. Makes more strings translateable, adds more taxonomy term labels so the Block Editor stops showing "category" instead of "make", "model", etc. Allows more than 30 meta keys in the Custom Fields editor panel when editing vehicles. Adds a Contact Form 7 mail tag [invp_adf_vendor] to integrate the location taxonomy into ADF XML leads. More details at https://inventorypresser.com/docs/contact-form-7-integration/how-to-send-adf-xml-leads-using-contact-form-7/. Fixes a CSS issue that caused the Annual fuel consumption line to overlap the combined, city, and highway figures in the Fuel Economy widget.
 
 = 14.10.2 =
 Adds a template tag `invp_get_the_condition()` that returns "Used", "New", or empty string. Adds an API method `INVP::get_paging_html()` that previously lived inside the [invp_archive] shortcode class. Creates better pagination HTML for listings archives. Fixes a bug in the Block Editor sidebar. Stops attempting to save empty strings in numeric meta fields when their text boxes are emptied. Makes more strings translateable. Stops lying about whether vehicle posts have thumbnails unless our archive shortcodes are run or the Divi Blog Module is detected. The lie helps us work on most themes by avoiding the theme and our shortcode from both outputing a thumbnail. There's no reason to do this unless the shortcode is used.
