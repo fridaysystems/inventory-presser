@@ -1001,7 +1001,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				include_once ABSPATH . '/wp-admin/includes/plugin.php';
 			}
 
-			// WP All Import
+			// WP All Import.
 			$plugin_path = 'wp-all-import-pro/wp-all-import-pro.php';
 			if ( in_array( $plugin_path, $active_plugins, true )
 				|| is_plugin_active_for_network( $plugin_path ) ) {
@@ -1011,8 +1011,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			// Contact Form 7.
 			$plugin_path = 'contact-form-7/wp-contact-form-7.php';
-			if ( in_array( $plugin_path, $active_plugins, true )
-				|| is_plugin_active_for_network( $plugin_path ) ) {
+			if ( class_exists( 'Inventory_Presser_Contact_Form_7' )
+				&& ( in_array( $plugin_path, $active_plugins, true )
+				|| is_plugin_active_for_network( $plugin_path ) ) ) {
 				$contact_form_7 = new Inventory_Presser_Contact_Form_7();
 				$contact_form_7->add_hooks();
 			}
