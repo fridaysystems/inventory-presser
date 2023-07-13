@@ -886,18 +886,22 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 		$post_ID = get_the_ID();
 	}
 
-	$images = get_posts(
-		array(
-			'meta_key'       => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
-			'posts_per_page' => -1,
-			'order'          => 'ASC',
-			'orderby'        => 'meta_value_num',
-			'post_mime_type' => 'image',
-			'post_parent'    => $post_ID,
-			'post_status'    => 'inherit',
-			'post_type'      => 'attachment',
-		)
-	);
+	$cache_key_images = 'invp_get_the_photos_images_' . $post_ID;
+	$images           = get_transient( $cache_key_images );
+	if ( empty( $images ) ) {
+		$images = get_posts(
+			array(
+				'meta_key'       => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
+				'posts_per_page' => -1,
+				'order'          => 'ASC',
+				'orderby'        => 'meta_value_num',
+				'post_mime_type' => 'image',
+				'post_parent'    => $post_ID,
+				'post_status'    => 'inherit',
+				'post_type'      => 'attachment',
+			)
+		);
+	}
 
 	// Did we find any photos?
 	if ( empty( $images ) ) {
@@ -918,22 +922,40 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 		);
 	}
 
-	$image_urls = array();
-	foreach ( $images as $image ) {
-		foreach ( $sizes as $size ) {
-			$img_element = wp_get_attachment_image(
-				$image->ID,
-				$size,
-				false,
-				array( 'class' => "attachment-$size size-$size invp-image" )
-			);
+	if ( ! empty( $images ) ) {
+		set_transient( $cache_key_images, $images, MINUTE_IN_SECONDS * 5 );
+	}
 
-			$image_urls[ $size ][] = $img_element;
+	$cache_key_image_urls = 'invp_get_the_photos_image_urls' . implode( '_', $sizes ) . '_' . $post_ID;
+	$image_urls           = get_transient( $cache_key_image_urls );
+	if ( empty( $image_urls ) ) {
+		$image_urls = array();
+		foreach ( $images as $image ) {
+			foreach ( $sizes as $size ) {
+				$img_element = wp_get_attachment_image(
+					$image->ID,
+					$size,
+					false,
+					array( 'class' => "attachment-$size size-$size invp-image" )
+				);
 
-			if ( 'full' === $size ) {
+				$image_urls[ $size ][] = $img_element;
+
+				if ( 'full' === $size ) {
+					$image_urls['urls'][] = INVP::extract_image_element_src( $img_element );
+				}
+			}
+			if ( empty( $image_urls['urls'] ) ) {
+				$img_element          = wp_get_attachment_image(
+					$image->ID,
+					'full',
+					false,
+					array( 'class' => "attachment-$size size-$size invp-image" )
+				);
 				$image_urls['urls'][] = INVP::extract_image_element_src( $img_element );
 			}
 		}
+		set_transient( $cache_key_image_urls, $image_urls, MINUTE_IN_SECONDS * 5 );
 	}
 
 	/**
