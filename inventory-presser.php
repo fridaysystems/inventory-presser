@@ -306,19 +306,18 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		/**
 		 * Adds a querystring to vehicle attachment photo URLs to fight caching.
 		 *
-		 * @param  string $url
-		 * @param  int    $post_id
+		 * @param  string $url URL for the given attachment.
+		 * @param  int    $post_id Attachment post ID.
 		 * @return string The changed URL
 		 */
-		public function change_attachment_urls( $url, $post_id = null ) {
-			if ( empty( $post_id ) ) {
-				$post_id = attachment_url_to_postid( $url );
+		public function change_attachment_urls( $url, $post_id ) {
+			if ( 'cropped-favico.png' === basename( $url ) || empty( $post_id ) ) {
+				return $url;
 			}
 
 			if ( INVP::POST_TYPE !== get_post_type( wp_get_post_parent_id( $post_id ) ) ) {
 				return $url;
 			}
-
 			// Is the URL pointing to a file with an image mime type?
 			$file = get_attached_file( $post_id );
 			if ( false === $file ) {
@@ -723,7 +722,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_filter( 'pre_term_link', array( $this, 'change_term_links' ), 10, 2 );
 
 			// Change attachment URLs to prevent aggressive caching.
-			add_filter( 'wp_get_attachment_url', array( $this, 'change_attachment_urls' ) );
+			add_filter( 'wp_get_attachment_url', array( $this, 'change_attachment_urls' ), 10, 2 );
 
 			// Allow users to set the Inventory listing page as the home page.
 			if ( class_exists( 'Inventory_Presser_Allow_Inventory_As_Home_Page' ) ) {
