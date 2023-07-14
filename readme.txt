@@ -83,6 +83,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Fixed] Reduces the number of database queries required when adding cache-busting querystrings to photo URLs.
 * [Fixed] Adds caching in invp_get_the_photos() for 5 minutes to reduce database queries. Makes sure invp_get_the_photos() always populates URLs regardless of what sizes are requested.
 * [Fixed] Bug fix in INVP::sluggify(). Do not allow a string that starts with a symbol to create a slug that starts with a hyphen.
+* [Fixed] Updates screenshot #3 so the admin menu shown matches what users will see.
 
 = 14.11.0 =
 * [Added] Adds a fullscreen mode to flexsliders so large vehicle photos can bust out of their containers when tapped by users.
