@@ -79,6 +79,11 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 14.11.1 =
+* [Fixed] Reduces the number of database queries required when adding cache-busting querystrings to photo URLs.
+* [Fixed] Adds caching in invp_get_the_photos() for 5 minutes to reduce database queries. Makes sure invp_get_the_photos() always populates URLs regardless of what sizes are requested.
+* [Fixed] Bug fix in INVP::sluggify(). Do not allow a string that starts with a symbol to create a slug that starts with a hyphen.
+
 = 14.11.0 =
 * [Added] Adds a fullscreen mode to flexsliders so large vehicle photos can bust out of their containers when tapped by users.
 * [Fixed] Cleans up flexslider JavaScript to use much less jQuery and wait for slow images to load before attempting resizes.
@@ -175,6 +180,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.11.1 =
+Reduces the number of database queries required when adding cache-busting querystrings to photo URLs. Adds caching in invp_get_the_photos() for 5 minutes to reduce database queries. Makes sure invp_get_the_photos() always populates URLs regardless of what sizes are requested. Bug fix in INVP::sluggify(). Do not allow a string that starts with a symbol to create a slug that starts with a hyphen.
 
 = 14.11.0 =
 Adds a fullscreen mode to flexsliders so large vehicle photos can bust out of their containers when tapped by users. Cleans up flexslider JavaScript to use much less jQuery and wait for slow images to load before attempting resizes. Fixes a bug where paging was broken for Listings Pages defined at Vehicles → Options. Makes more strings translateable, adds more taxonomy term labels so the Block Editor stops showing "category" instead of "make", "model", etc. Allows more than 30 meta keys in the Custom Fields editor panel when editing vehicles. Adds a Contact Form 7 mail tag [invp_adf_vendor] to integrate the location taxonomy into ADF XML leads. More details at https://inventorypresser.com/docs/contact-form-7-integration/how-to-send-adf-xml-leads-using-contact-form-7/. Fixes a CSS issue that caused the Annual fuel consumption line to overlap the combined, city, and highway figures in the Fuel Economy widget.
