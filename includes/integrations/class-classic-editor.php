@@ -127,7 +127,7 @@ class Inventory_Presser_Classic_Editor {
 			array(
 				'post_parent'    => $post->ID,
 				'post_type'      => 'attachment',
-				'posts_per_page' => -1,
+				'posts_per_page' => 1000,
 			)
 		);
 		$counts      = array(

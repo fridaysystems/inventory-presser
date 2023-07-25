@@ -812,7 +812,7 @@ function invp_get_the_photo_count( $post_ID = null ) {
 				'post_mime_type' => 'image',
 				'post_parent'    => $post_ID,
 				'post_type'      => 'attachment',
-				'posts_per_page' => -1,
+				'posts_per_page' => 1000,
 			)
 		)
 	);
@@ -869,7 +869,7 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 		$images = get_posts(
 			array(
 				'meta_key'       => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
-				'posts_per_page' => -1,
+				'posts_per_page' => 1000,
 				'order'          => 'ASC',
 				'orderby'        => 'meta_value_num',
 				'post_mime_type' => 'image',
@@ -888,7 +888,7 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 		 */
 		$images = get_posts(
 			array(
-				'posts_per_page' => -1,
+				'posts_per_page' => 1000,
 				'order'          => 'ASC',
 				'orderby'        => 'post_date',
 				'post_mime_type' => 'image',

@@ -82,7 +82,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 
 		// Make sure the limit is not zero or empty string.
 		if ( empty( $args['limit'] ) ) {
-			$args['limit'] = -1;
+			$args['limit'] = 1000;
 		}
 
 		$post_args = array(
