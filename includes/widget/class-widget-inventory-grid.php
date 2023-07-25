@@ -203,6 +203,9 @@ class Inventory_Presser_Grid extends WP_Widget {
 		if ( isset( $instance['cb_showprices'] ) ) {
 			$content_args['show_prices'] = ( 'true' === $instance['cb_showprices'] );
 		}
+		if ( isset( $instance['newest_first'] ) ) {
+			$content_args['newest_first'] = filter_var( $instance['newest_first'], FILTER_VALIDATE_BOOLEAN );
+		}
 
 		// before and after widget arguments are defined by themes.
 		echo $args['before_widget'];
