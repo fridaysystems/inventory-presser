@@ -103,8 +103,8 @@ class Inventory_Presser_Grid extends WP_Widget {
 			// Change the order to last_modified date.
 			$post_args['meta_key'] = apply_filters( 'invp_prefix_meta_key', 'last_modified' );
 			global $wpdb;
-			$post_args['orderby']  = "STR_TO_DATE( {$wpdb->postmeta}.meta_value, '%a, %d %b %Y %T' )";
-			$post_args['order']    = 'DESC';
+			$post_args['orderby'] = "STR_TO_DATE( {$wpdb->postmeta}.meta_value, '%a, %d %b %Y %T' )";
+			$post_args['order']   = 'DESC';
 		}
 
 		// Do we want featured vehicles only?
