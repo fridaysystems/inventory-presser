@@ -1140,11 +1140,29 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * Register flexslider and provide overrides for scripts and styles
 			 */
 			$min_dash = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '-min'; // Dash not dot!
-			wp_register_script( 'flexslider', plugins_url( "/vendor/woocommerce/FlexSlider/jquery.flexslider{$min_dash}.js", INVP_PLUGIN_FILE_PATH ), array( 'jquery' ), INVP_PLUGIN_VERSION );
+			wp_register_script(
+				'flexslider',
+				plugins_url( "/vendor/woocommerce/FlexSlider/jquery.flexslider{$min_dash}.js", INVP_PLUGIN_FILE_PATH ),
+				array( 'jquery' ),
+				INVP_PLUGIN_VERSION,
+				true
+			);
 			// Our overrides.
-			wp_register_script( 'invp-flexslider', plugins_url( "/js/flexslider{$min}.js", INVP_PLUGIN_FILE_PATH ), array( 'flexslider' ), INVP_PLUGIN_VERSION );
+			wp_register_script(
+				'invp-flexslider',
+				plugins_url( "/js/flexslider{$min}.js", INVP_PLUGIN_FILE_PATH ),
+				array( 'flexslider' ),
+				INVP_PLUGIN_VERSION,
+				true
+			);
 			// Another flexslider spin-up script for the Vehicle Slider widget.
-			wp_register_script( 'invp-slider', plugins_url( "/js/widget-slider{$min}.js", INVP_PLUGIN_FILE_PATH ), array( 'flexslider' ), INVP_PLUGIN_VERSION );
+			wp_register_script(
+				'invp-slider',
+				plugins_url( "/js/widget-slider{$min}.js", INVP_PLUGIN_FILE_PATH ),
+				array( 'flexslider' ),
+				INVP_PLUGIN_VERSION,
+				true
+			);
 
 			if ( ! empty( $min ) ) {
 				wp_register_style( 'flexslider', plugins_url( "/css/woocommerce-flexslider{$min}.css", INVP_PLUGIN_FILE_PATH ), null, INVP_PLUGIN_VERSION );
@@ -1540,7 +1558,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * Do not continue if the post is being moved to the trash or if this is
 			 * an auto-draft.
 			 */
-			if ( in_array( $post->post_status, array( 'trash', 'auto-draft' ) ) ) {
+			if ( in_array( $post->post_status, array( 'trash', 'auto-draft' ), true ) ) {
 				return;
 			}
 
@@ -1552,8 +1570,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 
 			// is this a vehicle?
-			if ( ! empty( $_POST['post_type'] ) && INVP::POST_TYPE != $_POST['post_type'] ) {
-				// no, don't create any meta data for vehicles
+			if ( ! empty( $_POST['post_type'] ) && INVP::POST_TYPE !== $_POST['post_type'] ) {
+				// no, don't create any meta data for vehicles.
 				return;
 			}
 
@@ -1603,7 +1621,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 						foreach ( $this->sanitize_array( $_POST[ $key ] ) as $value ) {
 							add_post_meta( $post->ID, $key, $value );
-							if ( 'inventory_presser_options_array' == $key ) {
+							if ( 'inventory_presser_options_array' === $key ) {
 								$options[] = $value;
 							}
 						}

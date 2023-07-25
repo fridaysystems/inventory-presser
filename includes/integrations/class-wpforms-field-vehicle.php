@@ -541,7 +541,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 
 			// If show_values is true, that means values posted are the raw values
 			// and not the labels. So we need to get the label values.
-			if ( ! empty( $field['show_values'] ) && (int) $field['show_values'] === 1 ) {
+			if ( ! empty( $field['show_values'] ) && 1 === (int) $field['show_values'] ) {
 
 				foreach ( $field_submit as $item ) {
 					foreach ( $field['choices'] as $choice ) {
