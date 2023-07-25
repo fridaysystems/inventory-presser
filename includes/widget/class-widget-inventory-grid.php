@@ -102,7 +102,8 @@ class Inventory_Presser_Grid extends WP_Widget {
 		if ( $args['newest_first'] ) {
 			// Change the order to last_modified date.
 			$post_args['meta_key'] = apply_filters( 'invp_prefix_meta_key', 'last_modified' );
-			$post_args['orderby']  = 'STR_TO_DATE( meta1.meta_value, \'%a, %d %b %Y %T\' )';
+			global $wpdb;
+			$post_args['orderby']  = "STR_TO_DATE( {$wpdb->postmeta}.meta_value, '%a, %d %b %Y %T' )";
 			$post_args['order']    = 'DESC';
 		}
 

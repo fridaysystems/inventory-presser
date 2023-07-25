@@ -289,7 +289,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * ORDER BY REPLACE( {$wpdb->postmeta}.meta_value, ',', '' )+0
 			 */
 			global $wpdb;
-			return str_replace( "$wpdb->postmeta.meta_value+0", "REPLACE( $wpdb->postmeta.meta_value, ',', '' )+0", $orderby );
+			return str_replace( "{$wpdb->postmeta}.meta_value+0", "REPLACE( {$wpdb->postmeta}.meta_value, ',', '' )+0", $orderby );
 		}
 
 		/**

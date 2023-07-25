@@ -618,15 +618,15 @@ if ( class_exists( 'WPForms_Field' ) ) {
 					SELECT 		ID
 
 					FROM		$wpdb->posts
-								LEFT JOIN $wpdb->postmeta meta1 ON wp_posts.ID = meta1.post_id
-								LEFT JOIN $wpdb->postmeta meta2 ON wp_posts.ID = meta2.post_id
-								LEFT JOIN $wpdb->postmeta meta3 ON wp_posts.ID = meta3.post_id
+								LEFT JOIN $wpdb->postmeta meta1 ON $wpdb->posts.ID = meta1.post_id
+								LEFT JOIN $wpdb->postmeta meta2 ON $wpdb->posts.ID = meta2.post_id
+								LEFT JOIN $wpdb->postmeta meta3 ON $wpdb->posts.ID = meta3.post_id
 
-					WHERE 		post_type = '%s'
+					WHERE 		post_type = %s
 								AND post_status = 'publish'
-								AND meta1.meta_key = '%s'
-								AND meta2.meta_key = '%s'
-								AND meta3.meta_key = '%s'
+								AND meta1.meta_key = %s
+								AND meta2.meta_key = %s
+								AND meta3.meta_key = %s
 
 					ORDER BY	meta1.meta_value DESC,
 								meta2.meta_value ASC,
