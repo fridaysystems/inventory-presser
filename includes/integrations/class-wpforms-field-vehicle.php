@@ -195,10 +195,9 @@ if ( class_exists( 'WPForms_Field' ) ) {
 		 * @param array $field Field settings.
 		 */
 		public function field_options( $field ) {
-
 			/*
-			* Basic field options.
-			*/
+			 * Basic field options.
+			 */
 
 			// Options open markup.
 			$this->field_option(
@@ -389,7 +388,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 					),
 				);
 			}
-			// Change our field type to select so the preview works
+			// Change our field type to select so the preview works.
 			$field['type'] = 'select';
 			$this->field_preview_option( 'choices', $field, $args );
 
@@ -573,7 +572,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 		 * Takes a vehicle post ID, returns a string like "2016 BMW 428 I, Black
 		 * Sapphire Metallic, #GW228071"
 		 *
-		 * @param  int $post_id
+		 * @param  int $post_id Vehicle post ID.
 		 * @return string
 		 */
 		protected function create_option_label( $post_id ) {
@@ -592,7 +591,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 		 * Takes a vehicle post ID, returns a string like "2016 Toyota Corolla L,
 		 * P03013"
 		 *
-		 * @param  int $post_id
+		 * @param  int $post_id Vehicle post ID.
 		 * @return string
 		 */
 		protected function create_option_value( $post_id ) {
@@ -606,8 +605,12 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			);
 		}
 
+		/**
+		 * Get the post IDs of vehicles sorted by year, then make, then model.
+		 *
+		 * @return array
+		 */
 		protected function get_vehicle_post_ids() {
-			// Get the post IDs of vehicles sorted by year, then make, then model.
 			global $wpdb;
 			return $wpdb->get_col(
 				$wpdb->prepare(

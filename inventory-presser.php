@@ -284,9 +284,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		public function change_order_by_for_odometer( $orderby, $query ) {
 			/**
 			 * Changes
-			 * ORDER BY wp_postmeta.meta_value+0
+			 * ORDER BY {$wpdb->postmeta}.meta_value+0
 			 * to
-			 * ORDER BY REPLACE( wp_postmeta.meta_value, ',', '' )+0
+			 * ORDER BY REPLACE( {$wpdb->postmeta}.meta_value, ',', '' )+0
 			 */
 			global $wpdb;
 			return str_replace( "$wpdb->postmeta.meta_value+0", "REPLACE( $wpdb->postmeta.meta_value, ',', '' )+0", $orderby );
@@ -968,6 +968,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				6  => __( 'Vehicle published. ', 'inventory-presser' ) . $view_link,
 				7  => __( 'Vehicle saved.', 'inventory-presser' ),
 				8  => __( 'Vehicle submitted. ', 'inventory-presser' ) . $preview_link,
+				/* translators: 1. A date. */
 				9  => sprintf( __( 'Vehicle scheduled to list on <strong>%s</strong>. ', 'inventory-presser' ), $scheduled_date ) . $preview_link,
 				10 => __( 'Vehicle draft updated. ', 'inventory-presser' ) . $preview_link,
 			);
@@ -1363,7 +1364,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			/**
 			 * Build a string to replace the existing ORDER BY field name
-			 * Essentially, we are going to turn 'wp_postmeta.meta_value' into
+			 * Essentially, we are going to turn '{$wpdb->postmeta}.meta_value' into
 			 * 'mt1.meta_value ASC, mt2.meta_value ASC, mt3.meta_value ASC'
 			 * where the number of meta values is what we calculated in $meta_field_count
 			 */
@@ -1543,7 +1544,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				return;
 			}
 
-			// Abort if autosave or AJAX/quick edit
+			// Abort if autosave or AJAX/quick edit.
 			if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 				|| ( defined( 'DOING_AJAX' ) && DOING_AJAX )
 			) {
@@ -1566,7 +1567,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 			$offset           = sprintf( '%+03d00', intval( get_option( 'gmt_offset' ) ) );
 			$timestamp_format = 'D, d M Y h:i:s';
-			// use post_modified to set last_modified
+			// use post_modified to set last_modified.
 			$post_modified = DateTime::createFromFormat( 'Y-m-d H:i:s', $post->post_modified );
 			$timestamp     = $post_modified->format( $timestamp_format ) . ' ' . $offset;
 			update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'last_modified' ), $timestamp );
@@ -1576,13 +1577,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * set the date_entered meta value using the post_date
 			 */
 			if ( ! $is_update || empty( INVP::get_meta( 'date_entered', $post_id ) ) ) {
-				// use post_date to set date_entered
+				// use post_date to set date_entered.
 				$post_date = DateTime::createFromFormat( 'Y-m-d H:i:s', $post->post_date );
 				$timestamp = $post_date->format( $timestamp_format ) . ' ' . $offset;
 				update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'date_entered' ), $timestamp );
 			}
 
-			// Clear this value that is defined by a checkbox
+			// Clear this value that is defined by a checkbox.
 			update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'featured' ), '0' );
 
 			/**
@@ -1596,9 +1597,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$key = apply_filters( 'invp_prefix_meta_key', $key );
 				if ( isset( $_POST[ $key ] ) ) {
 					if ( is_array( $_POST[ $key ] ) ) {
-						// delete all meta, this is essentially for the options
+						// delete all meta, this is essentially for the options.
 						delete_post_meta( $post->ID, $key );
-						$options = array(); // collect the options to maintain a CSV field for backwards compatibility
+						$options = array(); // collect the options to maintain a CSV field for backwards compatibility.
 
 						foreach ( $this->sanitize_array( $_POST[ $key ] ) as $value ) {
 							add_post_meta( $post->ID, $key, $value );
@@ -1607,7 +1608,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							}
 						}
 					} else {
-						// string data
+						// string data.
 						update_post_meta( $post->ID, $key, sanitize_text_field( $_POST[ $key ] ) );
 					}
 				}
@@ -1617,8 +1618,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		/**
 		 * Saves custom taxonomy terms when vehicles are saved
 		 *
-		 * @param  int  $post_id
-		 * @param  bool $is_update
+		 * @param  int  $post_id   A post ID.
+		 * @param  bool $is_update True if this is a post update rather than an insert.
 		 * @return void
 		 */
 		public function save_vehicle_taxonomy_terms( $post_id, $is_update ) {

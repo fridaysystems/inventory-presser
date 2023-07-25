@@ -48,10 +48,10 @@ class Inventory_Presser_Shortcode_Grid {
 					Old attributes
 					----------
 					'per_page'   15
-					'captions'   true,
-					'button'     true,
-					'show_price' false,
-					'size'       'one-third',
+					'captions'   true
+					'button'     true
+					'show_price' false
+					'size'       'one-third'
 				*/
 
 				'columns'                 => 3, // replaces 'size'.

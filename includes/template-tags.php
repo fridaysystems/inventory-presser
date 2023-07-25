@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  */
 
 /**
- * invp_get_the_availability
+ * Template tag. Returns a string like "For Sale" or "Sold."
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return string
@@ -25,8 +25,6 @@ function invp_get_the_availability( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_beam
- *
  * Template tag. Boat field. A boat's width at its widest point.
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
@@ -40,7 +38,7 @@ function invp_get_the_beam( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_body_style
+ * Template tag. Returns a string like "Sedan" or "Sport Utility Vehicle."
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return string
@@ -53,8 +51,6 @@ function invp_get_the_body_style( $post_ID = null ) {
 }
 
 /**
- * invp_get_raw_book_value
- *
  * Template tag. Returns the raw book value price as a number and therefore no
  * string formatting or dollar sign.
  *
@@ -71,11 +67,10 @@ function invp_get_raw_book_value( $post_ID = null ) {
 }
 
 /**
- * get_book_value
- *
  * Returns the higher of the two book value prices among NADA Guides and
  * Kelley Blue Book.
  *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return string
  */
 function invp_get_the_book_value( $post_ID = null ) {
@@ -86,11 +81,10 @@ function invp_get_the_book_value( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_carfax_icon_html
- *
  * Outputs Carfax button HTML or empty string if the vehicle is not
  * eligible or does not have a free report.
  *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return string HTML that renders a Carfax button or empty string
  */
 function invp_get_the_carfax_icon_html( $post_ID = null ) {
@@ -125,8 +119,6 @@ function invp_get_the_carfax_icon_html( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_carfax_url_svg
- *
  * Returns a URL to an SVG image button that users click to view Carfax reports
  * or empty string. Sometimes the URL points to an SVG hosted on carfax.com,
  * sometimes it's an SVG bundled with this plugin.
@@ -159,7 +151,7 @@ function invp_get_the_carfax_url_svg( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_carfax_url_report
+ * Template tag. Returns a URL to a CARFAX vehicle history report.
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return string
@@ -182,8 +174,6 @@ function invp_get_the_carfax_url_report( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_color
- *
  * Template tag. Returns the exterior color of the vehicle.
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
@@ -269,8 +259,6 @@ function invp_get_the_down_payment( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_drive_type
- *
  * Template tag. Returns the drive type, or a description of how many driven
  * wheels are on the vehicle.
  *
@@ -324,12 +312,11 @@ function invp_get_the_fuel( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_fuel_economy_value
- *
  * Makes retrieving a fuel economy data point from metadata easier.
  *
- * @param  string $key       One of these fuel economy member suffixes: name, annual_consumption, annual_cost, annual_emissions, combined_mpg, city_mpg, highway_mpg.
- * @param  int    $fuel_type Specifies which of the two fuel types from which to retrieve the value.
+ * @param  string   $key       One of these fuel economy member suffixes: name, annual_consumption, annual_cost, annual_emissions, combined_mpg, city_mpg, highway_mpg.
+ * @param  int      $fuel_type Specifies which of the two fuel types from which to retrieve the value.
+ * @param  int|null $post_ID   The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return string The meta value string corresponding to the provided $key or empty string.
  */
 function invp_get_the_fuel_economy_value( $key, $fuel_type = 1, $post_ID = null ) {
@@ -349,8 +336,6 @@ function invp_get_the_fuel_economy_value( $key, $fuel_type = 1, $post_ID = null 
 }
 
 /**
- * invp_get_the_hull_material
- *
  * Template tag. Boat field.
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
@@ -467,8 +452,6 @@ function invp_get_the_inventory_sentence() {
 }
 
 /**
- * invp_get_raw_last_modified
- *
  * Template tag. Returns the timestamp the vehicle was last modified
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
@@ -482,8 +465,6 @@ function invp_get_raw_last_modified( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_last_modified
- *
  * Template tag. Returns the timestamp the vehicle was last modified formatted
  * as a string according to WordPress' date and time format as set at Settings →
  * General.
@@ -510,8 +491,6 @@ function invp_get_the_last_modified( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_length
- *
  * Template tag. Boat field. Returns the length of the boat.
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
@@ -525,8 +504,6 @@ function invp_get_the_length( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_location
- *
  * Template tag. Returns the address where this vehicle is located. Address may
  * contain line break characters.
  *
@@ -550,12 +527,11 @@ function invp_get_the_location( $post_ID = null ) {
 }
 
 /**
- * location_sentence
- *
  * Creates a short sentence identifying the dealership address where
  * this vehicle is located. If there is only one term in the locations
  * taxonomy containing vehicles, this method returns an empty string.
  *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return string An HTML <div> element containing a sentence that identifies the lot where this vehicle is located.
  */
 function invp_get_the_location_sentence( $post_ID = null ) {
@@ -845,7 +821,8 @@ function invp_get_the_photo_count( $post_ID = null ) {
 /**
  * invp_get_the_photo_url
  *
- * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @param  string   $size    A thumbnail size name.
+ * @param  int|null $post_ID The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return string A URL that points to a photo
  */
 function invp_get_the_photo_url( $size = 'medium', $post_ID = null ) {
@@ -983,15 +960,13 @@ function invp_get_raw_price( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_price
- *
  * Template tag. Returns the vehicle's price.
  *
  * Returns the price as a dollar amount with a dollar sign except when it is
  * zero or the vehicle is sold. Returns the $zero_string when the price is zero.
  * Returns "SOLD!" when the vehicle is sold.
  *
- * @param  string   $zero_string The text to display when the price is zero
+ * @param  string   $zero_string The text to display when the price is zero.
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return string
  */
@@ -1290,8 +1265,6 @@ function invp_get_the_year( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_youtube_url
- *
  * Returns this vehicle's YouTube video URL or empty string.
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
