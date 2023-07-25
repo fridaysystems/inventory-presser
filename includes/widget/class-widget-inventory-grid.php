@@ -279,7 +279,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 		$instance['cb_showprices']    = ( ! empty( $new_instance['cb_showprices'] ) ) ? $new_instance['cb_showprices'] : '';
 		$instance['cb_showbutton']    = ( ! empty( $new_instance['cb_showbutton'] ) ) ? $new_instance['cb_showbutton'] : '';
 		$instance['cb_featured_only'] = ( ! empty( $new_instance['cb_featured_only'] ) ) ? $new_instance['cb_featured_only'] : '';
-		$instance['newest_first']     = ( ! empty( $new_instance['newest_first'] ) ) ? 'true' === $new_instance['newest_first'] : false;
+		$instance['newest_first']     = ! empty( $new_instance['newest_first'] );
 		return $instance;
 	}
 }
