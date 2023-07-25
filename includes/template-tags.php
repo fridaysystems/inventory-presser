@@ -1003,7 +1003,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 				$output .= sprintf( '$%s', number_format( $price, 0, '.', ',' ) );
 			}
 
-			$down_payment = invp_get_the_down_payment();
+			$down_payment = invp_get_the_down_payment( $post_ID );
 			if ( ! empty( $down_payment ) ) {
 				if ( ! empty( $output ) ) {
 					$output .= apply_filters( 'invp_price_display_separator', ' / ', $settings['price_display'], $post_ID );
@@ -1018,7 +1018,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 
 		// down payment only.
 		case 'down_only':
-			$down_payment = invp_get_the_down_payment();
+			$down_payment = invp_get_the_down_payment( $post_ID );
 			if ( ! empty( $down_payment ) ) {
 				return apply_filters( 'invp_price_display', sprintf( '%s %s', $down_payment, __( 'Down', 'inventory-presser' ) ), $settings['price_display'], $post_ID );
 			}
@@ -1106,7 +1106,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 
 		case 'down_and_payment':
 			$string       = '';
-			$down_payment = invp_get_the_down_payment();
+			$down_payment = invp_get_the_down_payment( $post_ID );
 			$payment      = invp_get_the_payment( $post_ID );
 			if ( ! empty( $down_payment ) ) {
 				$string .= sprintf(
@@ -1122,7 +1122,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 				$string .= sprintf(
 					'%s %s',
 					$payment,
-					ucfirst( invp_get_the_payment_frequency() )
+					ucfirst( invp_get_the_payment_frequency( $post_ID ) )
 				);
 			}
 			return apply_filters( 'invp_price_display', $string, $settings['price_display'], $post_ID );
