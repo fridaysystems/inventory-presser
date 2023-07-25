@@ -686,7 +686,7 @@ jQuery(document).ready(function(){
 
 			$data = array(
 				'timeout' => strtotime( '+3 hours', time() ),
-				'value'   => json_encode( $value ),
+				'value'   => wp_json_encode( $value ),
 			);
 
 			update_option( $cache_key, $data, 'no' );

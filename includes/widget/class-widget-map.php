@@ -144,7 +144,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			// Localize an API key and the popups array we built data for JavaScript
 			wp_add_inline_script(
 				$handle,
-				'const invp_maps = ' . json_encode(
+				'const invp_maps = ' . wp_json_encode(
 					array(
 						'mapbox_public_token' => $settings['mapbox_public_token'],
 						'popups'              => $popups,
@@ -155,7 +155,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		} else {
 			// There is another Map widget on this page already
 			foreach ( $popups as $popup ) {
-				wp_add_inline_script( $handle, 'invp_maps.popups.push( ' . json_encode( $popup ) . ' );', 'before' );
+				wp_add_inline_script( $handle, 'invp_maps.popups.push( ' . wp_json_encode( $popup ) . ' );', 'before' );
 			}
 		}
 

@@ -263,7 +263,7 @@ class Inventory_Presser_Classic_Editor {
 		// Provide data to JavaScript for the editor
 		wp_add_inline_script(
 			$handle,
-			'const invp_classic_editor = ' . json_encode(
+			'const invp_classic_editor = ' . wp_json_encode(
 				array(
 					'delete_all_media_nonce' => wp_create_nonce( self::NONCE_DELETE_ALL_MEDIA ),
 				)

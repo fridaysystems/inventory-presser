@@ -108,7 +108,7 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 		);
 		wp_add_inline_script(
 			self::ID_BASE,
-			'const ' . self::ID_BASE . ' = ' . json_encode(
+			'const ' . self::ID_BASE . ' = ' . wp_json_encode(
 				array(
 					'locations' => $popups,
 				)

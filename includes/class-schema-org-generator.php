@@ -141,6 +141,6 @@ class Inventory_Presser_Schema_Org_Generator {
 			$obj['vehicleTransmission'] = invp_get_the_transmission( $post_ID );
 		}
 
-		return '<script type="application/ld+json">' . json_encode( $obj ) . '</script>';
+		return '<script type="application/ld+json">' . wp_json_encode( $obj ) . '</script>';
 	}
 }
