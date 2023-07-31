@@ -320,7 +320,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 			// Is the URL pointing to a file with an image mime type?
 			$file = get_attached_file( $post_id );
-			if ( false === $file ) {
+			if ( false === $file || ! is_string( $file ) ) {
 				return $url;
 			}
 			$mime_type = wp_get_image_mime( $file );
