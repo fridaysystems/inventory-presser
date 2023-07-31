@@ -1395,11 +1395,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					 * 1. Parse out the meta key name from $pieces['where']
 					 * 2. Run it through INVP::meta_value_is_number
 					 */
-					$field_start = strpos( $pieces['where'], 'mt' . ( $m + 1 ) . '.meta_key = \'' ) + 16;
-					$field_end   = strpos( $pieces['where'], "'", $field_start ) - $field_start;
-					$field_name  = substr( $pieces['where'], $field_start, $field_end );
-					if ( INVP::meta_value_is_number( $field_name ) ) {
-						$replacement .= '+0';
+					$field_start = strpos( $pieces['where'] ?? '', 'mt' . ( $m + 1 ) . '.meta_key = \'' ) + 16;
+					$field_end   = strpos( $pieces['where'] ?? '', "'", $field_start ) - $field_start;
+					if ( is_integer( $field_start ) && is_integer( $field_end ) ) {
+						$field_name  = substr( $pieces['where'], $field_start, $field_end );
+						if ( INVP::meta_value_is_number( $field_name ) ) {
+							$replacement .= '+0';
+						}
 					}
 
 					$replacement .= $direction;

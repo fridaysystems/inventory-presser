@@ -351,7 +351,7 @@ class INVP {
 			if ( empty( $meta_value ) ) {
 				return 0;
 			}
-			if ( false === strpos( $meta_value, '.' ) ) {
+			if ( false === strpos( $meta_value ?? '', '.' ) ) {
 				return (int) $meta_value;
 			}
 			return (float) $meta_value;

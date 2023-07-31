@@ -39,7 +39,7 @@ class Inventory_Presser_WP_All_Import {
 		}
 
 		// Are there even pipes in the value?
-		if ( false === strpos( $meta_value, '|' ) ) {
+		if ( false === strpos( $meta_value ?? '', '|' ) ) {
 			return;
 		}
 

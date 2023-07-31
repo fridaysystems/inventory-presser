@@ -1187,7 +1187,7 @@ function invp_get_the_transmission( $post_ID = null ) {
 			__( 'Speed', 'inventory-presser' )
 		);
 
-		if ( false === strpos( $raw, $prefix ) ) {
+		if ( false === strpos( $raw ?? '', $prefix ) ) {
 			$raw = sprintf(
 				'%s %s',
 				$prefix,
@@ -1349,7 +1349,7 @@ function invp_is_sold( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
 		$post_ID = get_the_ID();
 	}
-	return false !== strpos( strtolower( INVP::get_meta( 'availability', $post_ID ) ), 'sold' );
+	return false !== strpos( strtolower( INVP::get_meta( 'availability', $post_ID ) ) ?? '', 'sold' );
 }
 
 /**
@@ -1375,5 +1375,5 @@ function invp_is_wholesale( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
 		$post_ID = get_the_ID();
 	}
-	return false !== strpos( strtolower( INVP::get_meta( 'availability', $post_ID ) ), 'wholesale' );
+	return false !== strpos( strtolower( INVP::get_meta( 'availability', $post_ID ) ) ?? '', 'wholesale' );
 }

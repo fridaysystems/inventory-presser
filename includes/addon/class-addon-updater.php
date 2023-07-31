@@ -459,7 +459,7 @@ jQuery(document).ready(function(){
 		 */
 		public function http_request_args( $args, $url ) {
 			$verify_ssl = $this->verify_ssl();
-			if ( strpos( $url, 'https://' ) !== false && strpos( $url, 'edd_action=package_download' ) ) {
+			if ( strpos( $url ?? '', 'https://' ) !== false && strpos( $url ?? '', 'edd_action=package_download' ) ) {
 				$args['sslverify'] = $verify_ssl;
 			}
 			return $args;

@@ -55,7 +55,7 @@ class Inventory_Presser_Menu_Item_Print {
 		}
 
 		// is the link target a #?
-		if ( false !== strpos( $menu_item, 'href="#"' ) ) {
+		if ( false !== strpos( $menu_item ?? '', 'href="#"' ) ) {
 			// yes, change it to JavaScript that prints the page
 			$menu_item = str_replace( 'href="#"', 'href="javascript:window.print();"', $menu_item );
 		}

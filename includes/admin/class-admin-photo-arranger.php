@@ -128,7 +128,7 @@ class Inventory_Presser_Admin_Photo_Arranger {
 				$block['innerContent'][0],
 				1
 			);
-			if ( false === strpos( $block['attrs']['className'], 'columns-' ) ) {
+			if ( false === strpos( $block['attrs']['className'] ?? '', 'columns-' ) ) {
 				$block['attrs']['className'] = sprintf(
 					'columns-%s %s',
 					$photo_count ?? 1,
