@@ -119,27 +119,27 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page {
 	}
 
 	/**
-	 * hide_page_from_edit_list
-	 *
 	 * Prevents the page this plugin creates from showing up in the list of
 	 * pages while editing in the dashboard. We need a page to exist in order to
 	 * allow users to choose it as their home page, but we don't want them to
 	 * see an actual page in the list, because the Inventory listing is not a
 	 * page, it's a custom post type archive.
 	 *
-	 * @param  WP_Query $query An instance of the WP_Query class
+	 * @param  WP_Query $query An instance of the WP_Query class.
 	 * @return void
 	 */
-	function hide_page_from_edit_list( $query ) {
+	public function hide_page_from_edit_list( $query ) {
+		$page_id = self::find_page_id();
+		if ( -1 === $page_id ) {
+			return;
+		}
 		global $pagenow, $post_type;
-		if ( is_admin() && 'edit.php' == $pagenow && 'page' == $post_type ) {
-			$query->query_vars['post__not_in'] = array( self::find_page_id() );
+		if ( is_admin() && is_main_query() && 'edit.php' === $pagenow && 'page' === $post_type ) {
+			$query->query_vars['post__not_in'] = array( $page_id );
 		}
 	}
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks
 	 *
 	 * @return void
@@ -147,7 +147,8 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page {
 	public function add_hooks() {
 		register_activation_hook( INVP_PLUGIN_FILE_PATH, array( 'Inventory_Presser_Allow_Inventory_As_Home_Page', 'create_pages' ) );
 
-		add_filter( 'parse_query', array( $this, 'hide_page_from_edit_list' ) );
+		// Disabled this feature because it breaks dashboard pages in 6.3.
+		// add_action( 'parse_query', array( $this, 'hide_page_from_edit_list' ) );
 		add_action( 'pre_get_posts', array( $this, 'redirect_the_page' ) );
 	}
 
