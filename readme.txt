@@ -79,6 +79,14 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 14.11.2 =
+* [Fixed] Compatibility fixes for WordPress 6.3. Stops using the `enqueue_block_editor_assets` hook in favor of the new `enqueue_block_assets`. Stops using the `post__not_in` query variable on the `parse_query` hook.
+* [Fixed] Compatibility fixes for PHP 8.1. Stop sending null to the first parameter of strpos(). Stop sending a non-string file name to wp_get_image_mime().
+* [Fixed] Prevent queries from returning an unlimited number of posts. Caps queries for vehicle photos to 1000.
+* [Fixed] Fixes the Grid Widget to obey the "Newest vehicles first" setting.
+* [Fixed] Fixes in the "down & payment" price display option that prevented down payments and payment frequencies from displaying.
+* [Fixed] Fixes in database queries to always use the proper table prefix.
+
 = 14.11.1 =
 * [Fixed] Reduces the number of database queries required when adding cache-busting querystrings to photo URLs.
 * [Fixed] Adds caching in invp_get_the_photos() for 5 minutes to reduce database queries. Makes sure invp_get_the_photos() always populates URLs regardless of what sizes are requested.
@@ -181,6 +189,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.11.2 =
+Compatibility fixes for WordPress 6.3. Stops using the `enqueue_block_editor_assets` hook in favor of the new `enqueue_block_assets`. Stops using the `post__not_in` query variable on the `parse_query` hook. Compatibility fixes for PHP 8.1. Stop sending null to the first parameter of strpos(). Stop sending a non-string file name to wp_get_image_mime(). Prevent queries from returning an unlimited number of posts. Caps queries for vehicle photos to 1000. Fixes the Grid Widget to obey the "Newest vehicles first" setting. Fixes in the "down & payment" price display option that prevented down payments and payment frequencies from displaying. Fixes in database queries to always use the proper table prefix.
 
 = 14.11.1 =
 Reduces the number of database queries required when adding cache-busting querystrings to photo URLs. Adds caching in invp_get_the_photos() for 5 minutes to reduce database queries. Makes sure invp_get_the_photos() always populates URLs regardless of what sizes are requested. Bug fix in INVP::sluggify(). Do not allow a string that starts with a symbol to create a slug that starts with a hyphen.
