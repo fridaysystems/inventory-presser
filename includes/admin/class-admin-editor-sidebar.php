@@ -44,7 +44,7 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	 * @return void
 	 */
 	public function add_hooks() {
-		add_action( 'enqueue_block_editor_assets', array( $this, 'sidebar_plugin_script_enqueue' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'sidebar_plugin_script_enqueue' ) );
 		add_action( 'init', array( $this, 'sidebar_plugin_register' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 	}

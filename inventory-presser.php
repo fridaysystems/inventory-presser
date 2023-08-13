@@ -682,7 +682,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			// Register scripts and styles on the frontend and in the block editor.
 			add_action( 'wp_enqueue_scripts', array( $this, 'include_scripts_and_styles' ), 11 );
-			add_action( 'enqueue_block_editor_assets', array( $this, 'include_scripts_and_styles' ), 11 );
+			add_action( 'enqueue_block_assets', array( $this, 'include_scripts_and_styles' ), 11 );
 
 			// Modify the URL of an "Email a Friend" menu item on the "Vehicle Details Buttons" menu.
 			if ( class_exists( 'Inventory_Presser_Email_A_Friend' ) ) {

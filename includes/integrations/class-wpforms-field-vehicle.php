@@ -73,7 +73,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			// Form frontend JS enqueues.
 			add_action( 'wpforms_frontend_js', array( $this, 'enqueue_frontend_js' ) );
 
-			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
+			add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
 		}
 
 		/**
@@ -700,7 +700,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 		 *
 		 * @since 1.8.1
 		 */
-		public function enqueue_block_editor_assets() {
+		public function enqueue_block_assets() {
 
 			$min = wpforms_get_min_suffix();
 
