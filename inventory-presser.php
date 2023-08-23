@@ -1123,6 +1123,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * @return void
 		 */
 		public function include_scripts_and_styles() {
+
+			// This method might have run already.
+			if ( wp_script_is( 'invp-slider', 'registered' ) ) {
+				// Abort.
+				return;
+			}
+
 			// Allow dashicons use on frontend.
 			wp_enqueue_style( 'dashicons' );
 
