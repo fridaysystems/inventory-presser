@@ -64,3 +64,8 @@ ul.flex-direction-nav li{
 	-o-transition: all .2s ease;
 	transition: all .2s ease; commented out because youtube embeds interfering problem https://stackoverflow.com/a/12077650/338432 */
 }
+/* chrome fix */
+.flexslider .slides > li {
+    display: list-item;
+    -webkit-backface-visibility: hidden;
+}
