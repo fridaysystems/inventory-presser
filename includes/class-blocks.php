@@ -8,32 +8,21 @@ defined( 'ABSPATH' ) || exit;
  */
 class Inventory_Presser_Blocks {
 
-
-
 	/**
-	 * add_category
-	 *
 	 * Adds a block category to hold all our blocks
 	 *
 	 * @param  array                   $block_categories
 	 * @param  WP_Block_Editor_Context $block_editor_context
 	 * @return array
 	 */
-	function add_category( $block_categories, $block_editor_context ) {
-		// is the post a vehicle?
-		if ( empty( $block_editor_context->post->post_type )
-			|| $block_editor_context->post->post_type != INVP::POST_TYPE
-		) {
-			return $block_categories;
-		}
-
+	public function add_category( $block_categories, $block_editor_context ) {
 		return array_merge(
 			$block_categories,
 			array(
 				array(
 					'slug'  => 'inventory-presser',
 					'title' => __( 'Inventory Presser', 'inventory-presser' ),
-					'icon'  => 'dashicons-admin-network', // it's a key
+					'icon'  => 'dashicons-admin-network', // it's a key.
 				),
 			)
 		);
