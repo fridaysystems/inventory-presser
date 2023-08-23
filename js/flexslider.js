@@ -21,7 +21,8 @@ window.addEventListener( 'load', function() {
 		start: function( slider ) {
 			// Wait for the first image to load and call flexsliderLoaded().
 			var img = document.querySelector('#slider .flex-active-slide img');
-			if (img.complete) {
+			var thumb = document.querySelector('#carousel .flex-active-slide img');
+			if (img.complete && thumb.complete) {
 				flexsliderLoaded();
 			} else {
 				img.addEventListener( 'load', flexsliderLoaded );
