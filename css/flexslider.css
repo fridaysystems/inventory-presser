@@ -9,12 +9,12 @@
 }
 #slider .flex-direction-nav a,
 #carousel .flex-direction-nav a{
-	width: 15%;
 	top: 0;
 	bottom: 0;
 }
 #carousel .flex-direction-nav a{
 	width: 10%;
+	max-width: 60px;
 }
 .flex-direction-nav a {
 	height: 100%;
