@@ -90,6 +90,8 @@ function flexsliderMaybeResizeCurrentImage() {
 	document.querySelectorAll('.flexslider:not(#carousel) .flex-direction-nav a').forEach( a => a.style.lineHeight = activeSlide.height + 'px' );
 	// Resize the whole slider based on the height of the current image.
 	document.querySelector('.flexslider:not(#carousel) .flex-viewport').height = activeSlide.height + 'px';
+	// Added this line to fix thumbnails carousel height of 0 sometimes in Chrome.
+	document.querySelector('#carousel.flexslider .flex-viewport').style.height = 'auto';
 }
 
 function flexsliderNavigateToImage( evt ) {
