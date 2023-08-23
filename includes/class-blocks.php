@@ -29,14 +29,12 @@ class Inventory_Presser_Blocks {
 	}
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks
 	 *
 	 * @return void
 	 */
 	public function add_hooks() {
-		add_action( 'enqueue_block_assets', array( $this, 'register_block_types' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'register_block_types' ) );
 		add_filter( 'block_categories_all', array( $this, 'add_category' ), 10, 2 );
 	}
 
