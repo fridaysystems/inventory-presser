@@ -20,7 +20,7 @@ window.addEventListener( 'load', function() {
 		after: function( slider ) { flexsliderMaybeResizeCurrentImage(); },
 		start: function( slider ) {
 			// Wait for the first image to load and call flexsliderLoaded().
-			var img = document.querySelector('.flex-active-slide img');
+			var img = document.querySelector('#slider .flex-active-slide img');
 			if (img.complete) {
 				flexsliderLoaded();
 			} else {
