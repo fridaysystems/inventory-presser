@@ -4,7 +4,7 @@ Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, mo
 Requires at least: 5.0.0
 Tested up to: 6.3.0
 Requires PHP: 7.0.0
-Stable tag: 14.11.2
+Stable tag: 14.11.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,11 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.11.3 =
+* [Added] Adds a REST endpoint `/wp-json/invp/v1/feed-complete` to help inventory clients run an action hook `invp_feed_complete` after an inventory update has completed.
+* [Fixed] Prevent prev and next buttons in flexslider carousels from covering the width of an entire thumbnail.
+* [Fixed] Prevent YouTube embeds from interfering with photo sliders.
 
 = 14.11.2 =
 * [Fixed] Compatibility fixes for WordPress 6.3. Stops using the `enqueue_block_editor_assets` hook in favor of the new `enqueue_block_assets`. Stops using the `post__not_in` query variable on the `parse_query` hook.
