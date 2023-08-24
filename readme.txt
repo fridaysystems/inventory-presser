@@ -83,6 +83,8 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Added] Adds a REST endpoint `/wp-json/invp/v1/feed-complete` to help inventory clients run an action hook `invp_feed_complete` after an inventory update has completed.
 * [Fixed] Prevent prev and next buttons in flexslider carousels from covering the width of an entire thumbnail.
 * [Fixed] Prevent YouTube embeds from interfering with photo sliders.
+* [Fixed] Reverses a change in 14.11.2 and uses the `enqueue_block_editor_assets` again to avoid front-end JavaScript errors.
+* [Fixed] Prevent scripts and styles from being registered more than once.
 
 = 14.11.2 =
 * [Fixed] Compatibility fixes for WordPress 6.3. Stops using the `enqueue_block_editor_assets` hook in favor of the new `enqueue_block_assets`. Stops using the `post__not_in` query variable on the `parse_query` hook.
@@ -194,6 +196,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.11.3 =
+Adds a REST endpoint `/wp-json/invp/v1/feed-complete` to help inventory clients run an action hook `invp_feed_complete` after an inventory update has completed. Prevent prev and next buttons in flexslider carousels from covering the width of an entire thumbnail. Prevent YouTube embeds from interfering with photo sliders. Reverses a change in 14.11.2 and uses the `enqueue_block_editor_assets` again to avoid front-end JavaScript errors. Prevent scripts and styles from being registered more than once.
 
 = 14.11.2 =
 Compatibility fixes for WordPress 6.3. Stops using the `enqueue_block_editor_assets` hook in favor of the new `enqueue_block_assets`. Stops using the `post__not_in` query variable on the `parse_query` hook. Compatibility fixes for PHP 8.1. Stop sending null to the first parameter of strpos(). Stop sending a non-string file name to wp_get_image_mime(). Prevent queries from returning an unlimited number of posts. Caps queries for vehicle photos to 1000. Fixes the Grid Widget to obey the "Newest vehicles first" setting. Fixes in the "down & payment" price display option that prevented down payments and payment frequencies from displaying. Fixes in database queries to always use the proper table prefix.
