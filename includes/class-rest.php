@@ -13,8 +13,12 @@ class Inventory_Presser_REST {
 	 * @return void
 	 */
 	public function add_hooks() {
-		// Adds a /invp/v1/settings route.
-		add_action( 'rest_api_init', array( $this, 'add_route' ) );
+		/*
+			Adds
+				/invp/v1/settings
+				/invp/v1/feed-complete routes.
+		*/
+		add_action( 'rest_api_init', array( $this, 'add_routes' ) );
 
 		// Allow attachments to be ordered by the inventory_presser_photo_number meta value.
 		add_filter( 'rest_attachment_collection_params', array( $this, 'allow_orderby_photo_number' ) );
@@ -56,28 +60,59 @@ class Inventory_Presser_REST {
 	}
 
 	/**
-	 * Adds a /invp/v1/settings route.
+	 * Adds /invp/v1/settings & /invp/v1/feed-complete routes.
 	 *
 	 * @return void
 	 */
-	public function add_route() {
+	public function add_routes() {
 		register_rest_route(
 			'invp/v1',
 			'/settings/',
 			array(
 				'methods'             => 'GET',
-				'callback'            => array( $this, 'response' ),
+				'callback'            => array( $this, 'response_settings' ),
 				'permission_callback' => '__return_true',
+			)
+		);
+		register_rest_route(
+			'invp/v1',
+			'/feed-complete/',
+			array(
+				'methods'             => 'PUT',
+				'callback'            => array( $this, 'response_feed_complete' ),
+				'permission_callback' => function () {
+					return current_user_can( 'edit_posts' );
+				},
 			)
 		);
 	}
 
 	/**
-	 * response
+	 * Creates the response data for the /feed-complete/ route.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function response() {
+	public function response_feed_complete() {
+		/**
+		 * A successful PUT request to /wp-json/invp/v1/feed-complete has
+		 * occurred. Assume a client has just updated the entire list of
+		 * inventory posts and attachments.
+		 */
+		do_action( 'invp_feed_complete' );
+
+		// Tell the user what just happened.
+		return array(
+			'action'        => 'invp_feed_complete',
+			'documentation' => 'https://inventorypresser.com/docs/reference/hooks/invp_feed_complete/',
+		);
+	}
+
+	/**
+	 * Creates the response data for the /settings/ route.
+	 *
+	 * @return array
+	 */
+	public function response_settings() {
 		$public_keys = array(
 			'use_carfax',
 		);
@@ -85,7 +120,7 @@ class Inventory_Presser_REST {
 		return array_filter(
 			INVP::settings(),
 			function ( $k ) use ( $public_keys ) {
-				return in_array( $k, $public_keys );
+				return in_array( $k, $public_keys, true );
 			},
 			ARRAY_FILTER_USE_KEY
 		);
