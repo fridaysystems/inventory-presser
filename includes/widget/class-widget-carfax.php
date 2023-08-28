@@ -91,6 +91,11 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 			$image = $instance['image'];
 		}
 
+		$path = dirname( INVP_PLUGIN_FILE_PATH ) . '/images/' . $this->images()[ $image ]['img'];
+		if ( ! file_exists( $path ) ) {
+			return;
+		}
+
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		// before and after widget arguments are defined by themes
 		echo $args['before_widget'];
@@ -101,7 +106,7 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 		echo wpautop( $instance['before_image'] );
 		if ( 'svg' == strtolower( pathinfo( $this->images()[ $image ]['img'], PATHINFO_EXTENSION ) ) ) {
 			// Include the SVG inline instead of using an <img> element
-			$svg = file_get_contents( dirname( INVP_PLUGIN_FILE_PATH ) . '/images/' . $this->images()[ $image ]['img'] );
+			$svg = file_get_contents( $path );
 			printf(
 				'<a href="%s">%s</a>',
 				get_post_type_archive_link( INVP::POST_TYPE ),
