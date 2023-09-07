@@ -33,8 +33,8 @@ class Inventory_Presser_Admin_Settings_Suggester {
 		}
 		return sprintf(
 			'<div class="%s notice"><p><strong>%s</strong></p></div>',
-			$type,
-			$message
+			esc_attr( $type ),
+			esc_html( $message )
 		);
 	}
 
@@ -78,8 +78,8 @@ class Inventory_Presser_Admin_Settings_Suggester {
 		echo $this->get_admin_notice_html(
 			sprintf(
 				'%s <a href="options-media.php">%s</a>.',
-				__( 'Your media settings are configured to organize uploads into month- and year-based folders. This is not optimal for Inventory Presser, and you can turn this setting off ', 'inventory-presser' ),
-				__( 'here', 'inventory-presser' )
+				esc_html__( 'Your media settings are configured to organize uploads into month- and year-based folders. This is not optimal for Inventory Presser, and you can turn this setting off ', 'inventory-presser' ),
+				esc_html__( 'here', 'inventory-presser' )
 			),
 			'yellow'
 		);
