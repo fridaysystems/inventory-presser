@@ -84,7 +84,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Fixed] Prevent prev and next buttons in flexslider carousels from covering the width of an entire thumbnail.
 * [Fixed] Prevent YouTube embeds from interfering with photo sliders.
 * [Fixed] Reverses a change in 14.11.2 and uses the `enqueue_block_editor_assets` again to avoid front-end JavaScript errors.
-* [Fixed] Prevent scripts and styles from being registered more than once.
+* [Fixed] Prevents scripts and styles from being registered more than once.
+* [Fixed] Prevents the Load Sample Vehicles button from inserting duplicate VINs. Enables the Load Sample Vehicles button to insert more than 10 vehicles.
+* [Fixed] Stops telling dashboard users when the aspect ratio of thumbnails is not that of a common smartphone camera.
 
 = 14.11.2 =
 * [Fixed] Compatibility fixes for WordPress 6.3. Stops using the `enqueue_block_editor_assets` hook in favor of the new `enqueue_block_assets`. Stops using the `post__not_in` query variable on the `parse_query` hook.
