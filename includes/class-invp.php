@@ -837,7 +837,7 @@ class INVP {
 	 * @return void
 	 */
 	public static function load_sample_vehicles() {
-		$response = wp_remote_get( 'https://fridaydemo.wpengine.com/wp-json/wp/v2/inventory' );
+		$response = wp_remote_get( 'https://fridaydemo.wpengine.com/wp-json/wp/v2/inventory?orderby=rand' );
 		if ( is_wp_error( $response ) ) {
 			return;
 		}
@@ -845,7 +845,32 @@ class INVP {
 		shuffle( $vehicles );
 		$current_user_id = wp_get_current_user()->ID;
 
+		// Do not insert duplicates.
+		global $wpdb;
+		/**
+		 * Each photo has a VIN meta key, so this might return hundreds of
+		 * duplicate VINs on just a few vehicles with double digit photos each.
+		 */
+		$current_vins = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key = %s",
+				apply_filters( 'invp_prefix_meta_key', 'vin' )
+			)
+		);
+
 		foreach ( $vehicles as $vehicle ) {
+			// Obscure 17 digit VINs.
+			$vin = '';
+			if ( 17 === strlen( $vehicle->meta->inventory_presser_vin ) ) {
+				$vin                                  = $vehicle->meta->inventory_presser_vin;
+				$vehicle->meta->inventory_presser_vin = substr( $vehicle->meta->inventory_presser_vin, 0, 10 ) . 'EXAMPLE';
+			}
+
+			// Is this VIN already in inventory?
+			if ( in_array( $vehicle->meta->inventory_presser_vin, $current_vins, true ) ) {
+				continue;
+			}
+
 			$options = $vehicle->meta->inventory_presser_options_array;
 			unset( $vehicle->meta->inventory_presser_options_array );
 			// Remove dealer-specific data.
@@ -858,12 +883,7 @@ class INVP {
 			unset( $vehicle->meta->inventory_presser_leads_id );
 			unset( $vehicle->meta->inventory_presser_location );
 			unset( $vehicle->meta->inventory_presser_nextgear_inspection_url );
-			// Obscure the VIN.
-			$vin = '';
-			if ( 17 === strlen( $vehicle->meta->inventory_presser_vin ) ) {
-				$vin                                  = $vehicle->meta->inventory_presser_vin;
-				$vehicle->meta->inventory_presser_vin = substr( $vehicle->meta->inventory_presser_vin, 0, 10 ) . 'EXAMPLE';
-			}
+
 			$post = array(
 				'post_author'       => $current_user_id,
 				'post_date'         => $vehicle->date,

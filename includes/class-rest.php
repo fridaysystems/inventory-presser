@@ -23,6 +23,9 @@ class Inventory_Presser_REST {
 		// Allow attachments to be ordered by the inventory_presser_photo_number meta value.
 		add_filter( 'rest_attachment_collection_params', array( $this, 'allow_orderby_photo_number' ) );
 		add_filter( 'rest_attachment_query', array( $this, 'orderby_photo_number' ), 10, 2 );
+
+		// Allow vehicles to be returned in a random order.
+		add_filter( 'rest_' . INVP::POST_TYPE . '_collection_params', array( $this, 'allow_orderby_rand' ) );
 	}
 
 	/**
@@ -34,6 +37,18 @@ class Inventory_Presser_REST {
 	public function allow_orderby_photo_number( $params ) {
 		$params['orderby']['enum'][] = apply_filters( 'invp_prefix_meta_key', 'photo_number' );
 		return $params;
+	}
+
+	/**
+	 * Allow vehicles to be returned in a random order.
+	 *
+	 * @param  array $query_params
+	 * @param  WP_Post_Type $post_type
+	 * @return array
+	 */
+	public function allow_orderby_rand( $query_params ) {
+		$query_params['orderby']['enum'][] = 'rand';
+		return $query_params;
 	}
 
 	/**
