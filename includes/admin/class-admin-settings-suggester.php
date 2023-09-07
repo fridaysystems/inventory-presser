@@ -52,23 +52,6 @@ class Inventory_Presser_Admin_Settings_Suggester {
 	}
 
 	/**
-	 * Outputs an admin notice to warn a user that they have attachment multiple
-	 * aspect ratios of vehicle photos to a single vehicle.
-	 *
-	 * @return void
-	 */
-	public function output_thumbnail_size_error_html() {
-		echo $this->get_admin_notice_html(
-			sprintf(
-				'%s <a href="options-media.php">%s</a>.',
-				__( 'At least one of your thumbnail sizes does not have an aspect ratio of 4:3, which is the most common smartphone and digital camera aspect ratio. You can change thumbnail sizes ', 'inventory-presser' ),
-				__( 'here', 'inventory-presser' )
-			),
-			'yellow'
-		);
-	}
-
-	/**
 	 * Outputs an admin notice to warn the user if uploads are saved in month-
 	 * and year-based folders.
 	 *
@@ -105,20 +88,6 @@ class Inventory_Presser_Admin_Settings_Suggester {
 		if ( '1' === get_option( 'uploads_use_yearmonth_folders' ) ) {
 			// Organize uploads into yearly and monthly folders is turned on. Recommend otherwise.
 			add_action( 'admin_notices', array( $this, 'output_upload_folder_error_html' ) );
-		}
-
-		// Are thumbnail sizes not 4:3 or 16:9 aspect ratios?
-		$ratios = array(
-			( get_option( 'thumbnail_size_w' ) / get_option( 'thumbnail_size_h' ) ),
-			( get_option( 'medium_size_w' ) / get_option( 'medium_size_h' ) ),
-			( get_option( 'large_size_w' ) / get_option( 'large_size_h' ) ),
-		);
-		foreach ( $ratios as $ratio ) {
-			if ( ( 4 / 3 ) !== $ratio && ( 16 / 9 ) !== $ratio ) {
-				// At least one thumbnail size is not 4:3 or 16:9.
-				add_action( 'admin_notices', array( $this, 'output_thumbnail_size_error_html' ) );
-				break;
-			}
 		}
 	}
 }
