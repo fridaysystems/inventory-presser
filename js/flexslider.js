@@ -21,11 +21,16 @@ window.addEventListener( 'load', function() {
 		start: function( slider ) {
 			// Wait for the first image to load and call flexsliderLoaded().
 			var img = document.querySelector('#slider .flex-active-slide img');
-			var thumb = document.querySelector('#carousel .flex-active-slide img');
-			if (img.complete && thumb.complete) {
+			if (img.complete) {
 				flexsliderLoaded();
 			} else {
 				img.addEventListener( 'load', flexsliderLoaded );
+			}
+			var thumb = document.querySelector('#carousel .flex-active-slide img');
+			if (thumb.complete) {
+				flexsliderCarouselLoaded();
+			} else {
+				thumb.addEventListener( 'load', flexsliderCarouselLoaded );
 			}
 		}
 	});
@@ -63,6 +68,10 @@ function flexsliderLoaded() {
 	flexsliderMaybeResizeCurrentImage();
 	// When a full size photo is clicked, go "full screen".
 	document.querySelectorAll( '#slider .invp-image' ).forEach( i => i.addEventListener( 'click', flexsliderPopOut ) );
+}
+function flexsliderCarouselLoaded() {
+	// Set minimum height on thumbnail carousels.
+	document.querySelector('#carousel.flexslider .flex-viewport').style.minHeight = '100px';
 }
 function flexsliderMaybeResizeCurrentImage() {
 	var activeSlide = document.querySelector('#slider.flexslider .flex-active-slide img');
