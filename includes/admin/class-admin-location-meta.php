@@ -39,6 +39,26 @@ class Inventory_Presser_Admin_Location_Meta {
 	public function add_location_fields() {
 		?><div class="form-field term-group location-tax">
 			<div class="form-wrap form-field">
+				<label><?php esc_html_e( 'Street Address', 'inventory-presser' ); ?></label>
+				<input type="text" name="address_street" />
+			</div>
+			<div class="form-wrap form-field">
+				<label><?php esc_html_e( 'Street Address line two', 'inventory-presser' ); ?></label>
+				<input type="text" name="address_street_line_two" />
+			</div>
+			<div class="form-wrap form-field">
+				<label><?php esc_html_e( 'City', 'inventory-presser' ); ?></label>
+				<input type="text" name="address_city" />
+			</div>
+			<div class="form-wrap form-field">
+				<label><?php esc_html_e( 'State', 'inventory-presser' ); ?></label>
+				<input type="text" name="address_state"  />
+			</div>
+			<div class="form-wrap form-field">
+				<label><?php esc_html_e( 'Zip', 'inventory-presser' ); ?></label>
+				<input type="text" name="address_zip" />
+			</div>
+			<div class="form-wrap form-field">
 				<label><?php esc_html_e( 'Phone Numbers', 'inventory-presser' ); ?></label>
 				<div class="repeat-group">
 					<div class="repeat-container"></div>
@@ -401,7 +421,7 @@ class Inventory_Presser_Admin_Location_Meta {
 	 */
 	public function save_location_meta( $term_id ) {
 
-		// What is current hook name?
+		// Verify the nonce. What is the current hook name?
 		switch ( current_action() ) {
 			case 'created_location':
 				if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce_add-tag'] ?? '' ) ), 'add-tag' ) ) {
