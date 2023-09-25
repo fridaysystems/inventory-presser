@@ -21,16 +21,10 @@ window.addEventListener( 'load', function() {
 		start: function( slider ) {
 			// Wait for the first image to load and call flexsliderLoaded().
 			var img = document.querySelector('#slider .flex-active-slide img');
-			if (img.complete) {
+			if ( null !== img && img.complete) {
 				flexsliderLoaded();
 			} else {
 				img.addEventListener( 'load', flexsliderLoaded );
-			}
-			var thumb = document.querySelector('#carousel .flex-active-slide img');
-			if (thumb.complete) {
-				flexsliderCarouselLoaded();
-			} else {
-				thumb.addEventListener( 'load', flexsliderCarouselLoaded );
 			}
 		}
 	});
@@ -46,6 +40,12 @@ window.addEventListener( 'load', function() {
 		nextText: '',
 		start: function( slider ) {
 			flexsliderStylePreviousNext();
+			var thumb = document.querySelector('#carousel .flex-active-slide img');
+			if (null !== thumb && thumb.complete) {
+				flexsliderCarouselLoaded();
+			} else {
+				thumb.addEventListener( 'load', flexsliderCarouselLoaded );
+			}
 		}
 	});
 
@@ -75,7 +75,7 @@ function flexsliderCarouselLoaded() {
 }
 function flexsliderMaybeResizeCurrentImage() {
 	var activeSlide = document.querySelector('#slider.flexslider .flex-active-slide img');
-	if( typeof activeSlide === 'undefined' ) {
+	if( typeof activeSlide === 'undefined' || null === activeSlide ) {
 		return;
 	}
 
