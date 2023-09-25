@@ -11,8 +11,7 @@ window.addEventListener( 'load', function() {
 	}
 
 	// Hijack the built in taxonomy description for the location address.
-	this.document.querySelector( '.term-description-wrap label' ).innerHTML = 'Address';
-	this.document.querySelector( '.term-description-wrap p' ).innerHTML = 'Use the fields below to edit the address.';
+	this.document.querySelector( '.term-description-wrap' ).style.display = 'none';
 	this.document.querySelector( '#tag-description,#description' ).setAttribute( 'readonly', true );
 
 	this.document.querySelectorAll( '.repeat-group' ).forEach( (group) => {
