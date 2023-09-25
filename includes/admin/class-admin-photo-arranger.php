@@ -318,6 +318,9 @@ class Inventory_Presser_Admin_Photo_Arranger {
 	 * @return bool
 	 */
 	public static function is_enabled() {
+		if ( ! class_exists( 'INVP' ) ) {
+			return false;
+		}
 		return INVP::settings()['use_arranger_gallery'] ?? false;
 	}
 
