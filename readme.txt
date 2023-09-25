@@ -82,6 +82,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 = 14.11.3 =
 * [Added] Adds a REST endpoint `/wp-json/invp/v1/feed-complete` to help inventory clients run an action hook `invp_feed_complete` after an inventory update has completed.
 * [Fixed] Prevent prev and next buttons in flexslider carousels from covering the width of an entire thumbnail.
+* [Fixed] Fixes in flexslider spin up script for slow-loading pages.
 * [Fixed] Prevent YouTube embeds from interfering with photo sliders.
 * [Fixed] Reverses a change in 14.11.2 and uses the `enqueue_block_editor_assets` again to avoid front-end JavaScript errors.
 * [Fixed] Prevents scripts and styles from being registered more than once.
