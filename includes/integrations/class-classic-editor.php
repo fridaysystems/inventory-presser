@@ -127,7 +127,7 @@ class Inventory_Presser_Classic_Editor {
 			array(
 				'post_parent'    => $post->ID,
 				'post_type'      => 'attachment',
-				'posts_per_page' => 1000,
+				'posts_per_page' => apply_filters( 'invp_query_limit', 1000, __METHOD__ ),
 			)
 		);
 		$counts      = array(

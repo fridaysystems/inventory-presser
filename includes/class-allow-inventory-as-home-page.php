@@ -57,7 +57,7 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page {
 		$sites = get_sites(
 			array(
 				'network' => 1,
-				'limit'   => 1000,
+				'limit'   => apply_filters( 'invp_query_limit', 1000, __METHOD__ ),
 			)
 		);
 		foreach ( $sites as $site ) {
@@ -85,7 +85,7 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page {
 		$sites = get_sites(
 			array(
 				'network' => 1,
-				'limit'   => 1000,
+				'limit'   => apply_filters( 'invp_query_limit', 1000, __METHOD__ ),
 			)
 		);
 		foreach ( $sites as $site ) {
