@@ -363,9 +363,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		/**
-		 * Registers the inventory_vehicle post type that holds vehicles. The post
-		 * type name is available in the API class constant INVP::POST_TYPE. The
-		 * arguments array can be altered using the invp_post_type_args filter hook.
+		 * Registers the post type that holds vehicles.
 		 *
 		 * @return void
 		 */

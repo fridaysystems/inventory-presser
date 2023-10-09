@@ -1269,8 +1269,7 @@ class INVP {
 	}
 
 	/**
-	 * This is a wrapper for wp_count_posts() and counts all posts in the
-	 * inventory_vehicle post type.
+	 * This is a wrapper for wp_count_posts() and counts all vehicle posts.
 	 *
 	 * @return int
 	 */

@@ -454,7 +454,7 @@ class Inventory_Presser_Admin_Options {
 					self::QUERY_VAR_MANAGE_VEHICLES => 'load_sample_vehicles',
 					'_wpnonce'                      => wp_create_nonce( self::QUERY_VAR_MANAGE_VEHICLES ),
 				),
-				admin_url( 'edit.php?post_type=inventory_vehicle&page=dealership-options' )
+				admin_url( 'edit.php?post_type=' . INVP::POST_TYPE . '&page=' . INVP::OPTION_PAGE )
 			);
 			printf(
 				'<a class="button action" id="load_sample_vehicles" href="%s">%s</a> ',
@@ -470,7 +470,7 @@ class Inventory_Presser_Admin_Options {
 					self::QUERY_VAR_MANAGE_VEHICLES => 'delete_all_vehicles',
 					'_wpnonce'                      => wp_create_nonce( self::QUERY_VAR_MANAGE_VEHICLES ),
 				),
-				admin_url( 'edit.php?post_type=inventory_vehicle&page=dealership-options' )
+				admin_url( 'edit.php?post_type=' . INVP::POST_TYPE . '&page=' . INVP::OPTION_PAGE )
 			);
 			printf(
 				'<a class="button action" id="delete_all_vehicles" href="%s">%s</a>',

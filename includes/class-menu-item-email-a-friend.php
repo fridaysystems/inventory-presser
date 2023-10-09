@@ -75,13 +75,11 @@ class Inventory_Presser_Email_A_Friend {
 	}
 
 	/**
-	 * url
-	 *
 	 * Creates a mailto: url to draft an email containing vehicle information.
 	 *
 	 * @uses get_bloginfo(), get_permalink()
 	 *
-	 * @param  WP_Post $post a post object of type inventory_vehicle
+	 * @param  WP_Post $post A vehicle post object.
 	 * @return string
 	 */
 	public function url( $post ) {
