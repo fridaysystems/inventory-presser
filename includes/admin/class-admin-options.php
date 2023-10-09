@@ -66,7 +66,7 @@ class Inventory_Presser_Admin_Options {
 		}
 
 		// Redirect to prevent duplicate actions on reloads.
-		wp_redirect( admin_url( 'edit.php?post_type=' . INVP::POST_TYPE . '&page=dealership-options' ) );
+		wp_safe_redirect( admin_url( 'edit.php?post_type=' . INVP::POST_TYPE . '&page=' . INVP::OPTION_PAGE ) );
 		exit;
 	}
 
