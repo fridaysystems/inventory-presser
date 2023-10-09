@@ -81,6 +81,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 = 14.11.3 =
 * [Added] Adds a REST endpoint `/wp-json/invp/v1/feed-complete` to help inventory clients run an action hook `invp_feed_complete` after an inventory update has completed.
+* [Added] Adds a filter `invp_query_limit` around the number 1000 where it is used as the maximum posts_per_page argument in post queries.
 * [Fixed] Prevent prev and next buttons in flexslider carousels from covering the width of an entire thumbnail.
 * [Fixed] Fixes in flexslider spin up script for slow-loading pages.
 * [Fixed] Prevent YouTube embeds from interfering with photo sliders.
@@ -88,6 +89,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Fixed] Prevents scripts and styles from being registered more than once.
 * [Fixed] Prevents the Load Sample Vehicles button from inserting duplicate VINs. Enables the Load Sample Vehicles button to insert more than 10 vehicles.
 * [Fixed] Stops telling dashboard users when the aspect ratio of thumbnails is not that of a common smartphone camera.
+* [Fixed] Allows a location term street address to be entered on the add term form instead of requiring users to save a location term first.
 
 = 14.11.2 =
 * [Fixed] Compatibility fixes for WordPress 6.3. Stops using the `enqueue_block_editor_assets` hook in favor of the new `enqueue_block_assets`. Stops using the `post__not_in` query variable on the `parse_query` hook.
@@ -201,7 +203,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Upgrade Notice ==
 
 = 14.11.3 =
-Adds a REST endpoint `/wp-json/invp/v1/feed-complete` to help inventory clients run an action hook `invp_feed_complete` after an inventory update has completed. Prevent prev and next buttons in flexslider carousels from covering the width of an entire thumbnail. Prevent YouTube embeds from interfering with photo sliders. Reverses a change in 14.11.2 and uses the `enqueue_block_editor_assets` again to avoid front-end JavaScript errors. Prevent scripts and styles from being registered more than once.
+Adds a REST endpoint `/wp-json/invp/v1/feed-complete` to help inventory clients run an action hook `invp_feed_complete` after an inventory update has completed. Adds a filter `invp_query_limit` around the number 1000 where it is used as the maximum posts_per_page argument in post queries. Prevent prev and next buttons in flexslider carousels from covering the width of an entire thumbnail. Fixes in flexslider spin up script for slow-loading pages. Prevent YouTube embeds from interfering with photo sliders. Reverses a change in 14.11.2 and uses the `enqueue_block_editor_assets` again to avoid front-end JavaScript errors. Prevents scripts and styles from being registered more than once. Prevents the Load Sample Vehicles button from inserting duplicate VINs. Enables the Load Sample Vehicles button to insert more than 10 vehicles. Stops telling dashboard users when the aspect ratio of thumbnails is not that of a common smartphone camera. Allows a location term street address to be entered on the add term form instead of requiring users to save a location term first.
 
 = 14.11.2 =
 Compatibility fixes for WordPress 6.3. Stops using the `enqueue_block_editor_assets` hook in favor of the new `enqueue_block_assets`. Stops using the `post__not_in` query variable on the `parse_query` hook. Compatibility fixes for PHP 8.1. Stop sending null to the first parameter of strpos(). Stop sending a non-string file name to wp_get_image_mime(). Prevent queries from returning an unlimited number of posts. Caps queries for vehicle photos to 1000. Fixes the Grid Widget to obey the "Newest vehicles first" setting. Fixes in the "down & payment" price display option that prevented down payments and payment frequencies from displaying. Fixes in database queries to always use the proper table prefix.
