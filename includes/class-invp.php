@@ -13,6 +13,7 @@ class INVP {
 	const LOCATION_MAX_HOURS  = 5; // the maximum number of sets of hours a single address holds
 	const POST_TYPE           = 'inventory_vehicle';
 	const OPTION_NAME         = 'inventory_presser';
+	const OPTION_PAGE         = 'dealership-options';
 
 	/**
 	 * delete_all_data
@@ -1030,7 +1031,7 @@ class INVP {
 	 * @return string
 	 */
 	public static function option_page() {
-		return apply_filters( 'invp_option_page', 'dealership-options-admin' );
+		return apply_filters( 'invp_option_page', self::OPTION_PAGE . '-admin' );
 	}
 
 	/**

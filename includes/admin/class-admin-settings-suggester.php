@@ -81,7 +81,7 @@ class Inventory_Presser_Admin_Settings_Suggester {
 		}
 
 		// Is this our options page?
-		if ( empty( $_GET['page'] ) || 'dealership-options' != $_GET['page'] ) {
+		if ( empty( $_GET['page'] ) || INVP::OPTION_PAGE !== $_GET['page'] ) {
 			return;
 		}
 

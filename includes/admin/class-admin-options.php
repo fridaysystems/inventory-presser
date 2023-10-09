@@ -124,7 +124,7 @@ class Inventory_Presser_Admin_Options {
 				__( 'Options', 'inventory-presser' ), // page_title.
 				__( 'Options', 'inventory-presser' ), // menu_title.
 				'manage_options', // capability.
-				'dealership-options', // menu_slug.
+				INVP::OPTION_PAGE, // menu_slug.
 				array( $this, 'options_page_content' ) // function.
 			);
 			return;
@@ -134,7 +134,7 @@ class Inventory_Presser_Admin_Options {
 			__( 'Inventory Presser', 'inventory-presser' ), // page_title.
 			__( 'Inventory Presser', 'inventory-presser' ), // menu_title.
 			'manage_options', // capability.
-			'dealership-options', // menu_slug.
+			INVP::OPTION_PAGE, // menu_slug.
 			array( $this, 'options_page_content' ) // function.
 		);
 	}

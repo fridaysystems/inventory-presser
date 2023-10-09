@@ -1240,8 +1240,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		public function insert_settings_link( $links ) {
 			$url     = admin_url(
 				sprintf(
-					'edit.php?post_type=%s&page=dealership-options',
-					INVP::POST_TYPE
+					'edit.php?post_type=%s&page=%s',
+					INVP::POST_TYPE,
+					INVP::OPTION_PAGE
 				)
 			);
 			$links[] = sprintf(
