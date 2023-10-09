@@ -1,4 +1,4 @@
-=== Inventory Presser ===
+=== Inventory Presser - Car Dealer Listings ===
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
@@ -8,7 +8,7 @@ Stable tag: 14.11.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Turn WordPress into a dealership website. Provides vehicle listings and photo sliders for automobiles or powersports.
+Stores vehicles. Supports multiple lot locations & separate hours for each. Listing templates & photo sliders run on any theme. Multisite compatible.
 
 == Description ==
 
