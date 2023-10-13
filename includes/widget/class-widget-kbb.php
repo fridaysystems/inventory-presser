@@ -40,7 +40,10 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Kelley Blue Book Logo', 'inventory-presser' ),
-			array( 'description' => __( 'KBB logo image linked to kbb.com', 'inventory-presser' ) )
+			array(
+				'description'           => __( 'KBB logo image linked to kbb.com', 'inventory-presser' ),
+				'show_instance_in_rest' => true,
+			)
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );

@@ -28,7 +28,10 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Map', 'inventory-presser' ),
-			array( 'description' => __( 'Embeds a map pointed at a dealership address.', 'inventory-presser' ) )
+			array(
+				'description'           => __( 'Embeds a map pointed at a dealership address.', 'inventory-presser' ),
+				'show_instance_in_rest' => true,
+			)
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );

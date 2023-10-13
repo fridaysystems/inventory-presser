@@ -23,7 +23,10 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget {
 		parent::__construct(
 			self::ID_BASE, // Base ID
 			__( 'EPA Fuel Economy', 'inventory-presser' ), // Name
-			array( 'description' => __( 'MPG ratings for the current vehicle.', 'inventory-presser' ) ) // Args
+			array(
+				'description'           => __( 'MPG ratings for the current vehicle.', 'inventory-presser' ),
+				'show_instance_in_rest' => true,
+			)
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );

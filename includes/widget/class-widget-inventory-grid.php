@@ -23,7 +23,10 @@ class Inventory_Presser_Grid extends WP_Widget {
 		parent::__construct(
 			self::ID_BASE,
 			'Grid',
-			array( 'description' => 'Display a grid of vehicles.' )
+			array(
+				'description'           => __( 'Display a grid of vehicles.', 'inventory-presser' ),
+				'show_instance_in_rest' => true,
+			)
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );

@@ -27,7 +27,10 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Google Map (legacy)', 'inventory-presser' ),
-			array( 'description' => __( 'Embeds a Google Map pointed at a dealership address.', 'inventory-presser' ) )
+			array(
+				'description'           => __( 'Embeds a Google Map pointed at a dealership address.', 'inventory-presser' ),
+				'show_instance_in_rest' => true,
+			)
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );

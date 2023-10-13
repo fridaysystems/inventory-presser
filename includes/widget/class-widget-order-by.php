@@ -34,7 +34,10 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 		parent::__construct(
 			self::ID_BASE, // Base ID
 			__( 'Sort by Vehicle Attributes', 'inventory-presser' ), // Name
-			array( 'description' => __( 'A list of vehicle attributes by which users can sort listings.', 'inventory-presser' ) ) // Args
+			array(
+				'description'           => __( 'A list of vehicle attributes by which users can sort listings.', 'inventory-presser' ),
+				'show_instance_in_rest' => true,
+			) // Args
 		);
 
 		// include scripts if widget is used

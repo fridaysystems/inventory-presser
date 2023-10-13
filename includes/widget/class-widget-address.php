@@ -24,7 +24,10 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Address', 'inventory-presser' ),
-			array( 'description' => __( 'Display one or more mailing addresses.', 'inventory-presser' ) )
+			array(
+				'description'           => __( 'Display one or more mailing addresses.', 'inventory-presser' ),
+				'show_instance_in_rest' => true,
+			)
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );

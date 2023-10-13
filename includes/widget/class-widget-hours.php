@@ -24,7 +24,8 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 			self::ID_BASE,
 			'Hours',
 			array(
-				'description' => __( 'Display hours of operation.', 'inventory-presser' ),
+				'description'           => __( 'Display hours of operation.', 'inventory-presser' ),
+				'show_instance_in_rest' => true,
 			)
 		);
 

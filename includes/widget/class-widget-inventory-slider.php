@@ -30,7 +30,10 @@ class Inventory_Presser_Slider extends WP_Widget {
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Vehicle Slider', 'inventory-presser' ),
-			array( 'description' => __( 'A slideshow for all vehicles with at least one photo.', 'inventory-presser' ) )
+			array(
+				'description'           => __( 'A slideshow for all vehicles with at least one photo.', 'inventory-presser' ),
+				'show_instance_in_rest' => true,
+			)
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );

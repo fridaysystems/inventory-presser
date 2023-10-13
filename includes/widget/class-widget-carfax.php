@@ -60,7 +60,10 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 		parent::__construct(
 			self::ID_BASE,
 			'Carfax Badge',
-			array( 'description' => 'Choose a Carfax badge that links to your inventory.' )
+			array(
+				'description'           => __( 'Choose a Carfax badge that links to your inventory.', 'inventory-presser' ),
+				'show_instance_in_rest' => true,
+			)
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );

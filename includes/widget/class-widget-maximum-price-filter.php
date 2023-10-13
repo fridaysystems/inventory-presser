@@ -36,7 +36,10 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Maximum Price Filter', 'inventory-presser' ),
-			array( 'description' => __( 'Filter vehicles by a maximum price.', 'inventory-presser' ) )
+			array(
+				'description'           => __( 'Filter vehicles by a maximum price.', 'inventory-presser' ),
+				'show_instance_in_rest' => true,
+			)
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
