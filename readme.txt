@@ -2,9 +2,9 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 6.3.0
+Tested up to: 6.3.2
 Requires PHP: 7.0.0
-Stable tag: 14.11.3
+Stable tag: 14.11.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,12 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.11.4 =
+* [Fixed] Updates demo site URL to https://demo.inventorypresser.com/.
+* [Fixed] Fixes bugs in flexslider spin-up script when used outside single vehicle context.
+* [Fixed] Makes more strings translateable.
+* [Changed] Changes the tested up to version number 6.3.2.
 
 = 14.11.3 =
 * [Added] Adds a REST endpoint `/wp-json/invp/v1/feed-complete` to help inventory clients run an action hook `invp_feed_complete` after an inventory update has completed.
@@ -201,6 +207,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.11.4 =
+Updates demo site URL to https://demo.inventorypresser.com/. Fixes bugs in flexslider spin-up script when used outside single vehicle context. Makes more strings translateable. Changes the tested up to version number 6.3.2.
 
 = 14.11.3 =
 Adds a REST endpoint `/wp-json/invp/v1/feed-complete` to help inventory clients run an action hook `invp_feed_complete` after an inventory update has completed. Adds a filter `invp_query_limit` around the number 1000 where it is used as the maximum posts_per_page argument in post queries. Prevent prev and next buttons in flexslider carousels from covering the width of an entire thumbnail. Fixes in flexslider spin up script for slow-loading pages. Prevent YouTube embeds from interfering with photo sliders. Reverses a change in 14.11.2 and uses the `enqueue_block_editor_assets` again to avoid front-end JavaScript errors. Prevents scripts and styles from being registered more than once. Prevents the Load Sample Vehicles button from inserting duplicate VINs. Enables the Load Sample Vehicles button to insert more than 10 vehicles. Stops telling dashboard users when the aspect ratio of thumbnails is not that of a common smartphone camera. Allows a location term street address to be entered on the add term form instead of requiring users to save a location term first.
