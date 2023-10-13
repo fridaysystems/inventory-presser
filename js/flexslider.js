@@ -21,10 +21,12 @@ window.addEventListener( 'load', function() {
 		start: function( slider ) {
 			// Wait for the first image to load and call flexsliderLoaded().
 			var img = document.querySelector('#slider .flex-active-slide img');
-			if ( null !== img && img.complete) {
-				flexsliderLoaded();
-			} else {
-				img.addEventListener( 'load', flexsliderLoaded );
+			if ( null !== img ) {
+				if ( img.complete) {
+					flexsliderLoaded();
+				} else {
+					img.addEventListener( 'load', flexsliderLoaded );
+				}
 			}
 		}
 	});
@@ -41,10 +43,12 @@ window.addEventListener( 'load', function() {
 		start: function( slider ) {
 			flexsliderStylePreviousNext();
 			var thumb = document.querySelector('#carousel .flex-active-slide img');
-			if (null !== thumb && thumb.complete) {
-				flexsliderCarouselLoaded();
-			} else {
-				thumb.addEventListener( 'load', flexsliderCarouselLoaded );
+			if ( null !== thumb ){
+				if ( thumb.complete ) {
+					flexsliderCarouselLoaded();
+				} else {
+					thumb.addEventListener( 'load', flexsliderCarouselLoaded );
+				}
 			}
 		}
 	});
