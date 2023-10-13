@@ -143,7 +143,7 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 * [Fixed] Fixes a bug in the [invp_sort_by] shortcode that prevented any sort from happening when a choice was made in the dropdown. JavaScript was missing from this plugin that powers the feature.
 
 = 14.8.0 =
-* [Added] Adds a button at Vehicles → Options that loads sample vehicles and photos from our [demo site](https://fridaydemo.wpengine.com/).
+* [Added] Adds a button at Vehicles → Options that loads sample vehicles and photos from our [demo site](https://demo.inventorypresser.com/).
 * [Added] Allows the meta key `inventory_presser_photo_number` as the `orderby` parameter in REST API requests for attachments. Enables photos to be requested in sequence.
 * [Changed] Moves the Delete All Vehicles feature from the plugins list to the Vehicles → Options page.
 * [Changed] Changes the tested up to version number 6.2.0.

@@ -143,7 +143,7 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 								<city>Ephrata</city>
 								<regioncode>PA</regioncode>
 								<postalcode>17522</postalcode>
-								<url>https://fridaydemo.wpengine.com</url>
+								<url>https://demo.inventorypresser.com/</url>
 							</address>
 						</contact>
 					</vendor>

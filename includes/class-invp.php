@@ -838,7 +838,7 @@ class INVP {
 	 * @return void
 	 */
 	public static function load_sample_vehicles() {
-		$response = wp_remote_get( 'https://fridaydemo.wpengine.com/wp-json/wp/v2/inventory?orderby=rand' );
+		$response = wp_remote_get( 'https://demo.inventorypresser.com/wp-json/wp/v2/inventory?orderby=rand' );
 		if ( is_wp_error( $response ) ) {
 			return;
 		}
