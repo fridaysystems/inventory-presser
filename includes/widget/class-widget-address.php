@@ -112,7 +112,9 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		}
 
 		$address_table = '<table><tbody>'
-			. '<tr><td colspan="2">Select Addresses to Display</td></tr>';
+			. '<tr><td colspan="2">'
+			. esc_html__( 'Select Addresses to Display', 'inventory-presser' )
+			. '</td></tr>';
 
 		// loop through each location, set up form
 		foreach ( $location_terms as $index => $term_object ) {

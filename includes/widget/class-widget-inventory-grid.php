@@ -51,9 +51,11 @@ class Inventory_Presser_Grid extends WP_Widget {
 		$html = '';
 		foreach ( array( 3, 4, 5 ) as $columns ) {
 			$html .= sprintf(
-				'<option value="%1$d"%2$s>%1$d columns</option>',
-				$columns,
-				selected( $selected_term == $columns, true, false )
+				'<option value="%1$d"%2$s>%3$d %4$s</option>',
+				esc_attr( $columns ),
+				selected( $selected_term === $columns, true, false ),
+				esc_html( $columns ),
+				esc_html__( 'columns', 'inventory-presser' )
 			);
 		}
 		return $html;

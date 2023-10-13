@@ -134,7 +134,7 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 		}
 		/**
 		 * Some fields do not make sense to order by, such as interior color & VIN
-		  */
+		 */
 		$ignored_keys = array(
 			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
 			apply_filters( 'invp_prefix_meta_key', 'car_id' ),
@@ -157,8 +157,6 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	}
 
 	/**
-	 * load_javascript
-	 *
 	 * Includes a JavaScript file that powers the widget
 	 *
 	 * @return void
@@ -169,8 +167,6 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	}
 
 	/**
-	 * prettify_meta_key
-	 *
 	 * Crudely takes a post meta key, removes underscores, and converts the
 	 * string to Title Case.
 	 *
@@ -228,7 +224,7 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 		if ( 0 < sizeof( $keys_to_list ) ) {
 			echo $before_widget;
 			if ( $title ) {
-				 echo $before_title . $title . $after_title;
+				echo $before_title . $title . $after_title;
 			}
 			echo '<ul class="order-by-list list-nostyle">';
 			foreach ( $keys_to_list as $key ) {
