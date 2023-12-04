@@ -20,11 +20,18 @@ Manage and market dealership inventory with listings and photo sliders built on 
 * Categorizes inventory by type, body style, fuel, transmission, drive type, availability, new or used, location, and more
 * Includes blocks, [shortcodes](https://inventorypresser.com/docs/shortcodes/), and [widgets](https://inventorypresser.com/docs/feature-list/widgets/) including vehicle sliders and inventory grids
 
+### Get Started in minutes
+
+* Install the plugin and [load the sample vehicles](https://inventorypresser.com/docs/settings/load-sample-vehicles/)
+* Visit yoursite.com/inventory to see the built-in templates
+* Design your own pages using [post meta fields](https://inventorypresser.com/docs/vehicle-post-type/) or [Elementor Dynamic Tags](https://inventorypresser.com/products/plugins/elementor-add-on/)
+* Decide how to [manage inventory updates](https://inventorypresser.com/docs/adding-or-importing-inventory/)
+
 ### Works Well with Plugins & Themes
 
 * Add vehicles to lead forms in [Contact Form 7](https://inventorypresser.com/docs/contact-form-7-integration/contact-form-7-vehicle-form-tag/) & [WPForms](https://inventorypresser.com/docs/capturing-vehicle-leads-with-wpforms/)
 * Supports Classic Editor
-* Elementor Dynamic Tags add-on available
+* [Elementor Dynamic Tags](https://inventorypresser.com/products/plugins/elementor-add-on/) add-on available
 * Works in Divi Builder
 
 ### Integration Guides
