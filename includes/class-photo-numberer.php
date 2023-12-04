@@ -31,7 +31,7 @@ class Inventory_Presser_Photo_Numberer {
 		add_filter( 'the_title', array( $this, 'add_sequence_number_to_titles' ), 10, 2 );
 	}
 
-	public function add_sequence_number_to_titles( $title, $id ) {
+	public function add_sequence_number_to_titles( $title, $id = null ) {
 		if ( ! is_admin() ) {
 			return $title;
 		}
@@ -47,7 +47,12 @@ class Inventory_Presser_Photo_Numberer {
 		}
 
 		// Is this post ID a vehicle photo?
-		if ( 'attachment' != get_post_type( $id ) ) {
+		if ( empty( $id ) ) {
+			return $title;
+		}
+
+		if ( 'attachment' !== get_post_type( $id ) ) {
+			// No.
 			return $title;
 		}
 
@@ -66,7 +71,6 @@ class Inventory_Presser_Photo_Numberer {
 			__( 'of', 'inventory-presser' ),
 			invp_get_the_photo_count( $parent->ID )
 		);
-
 	}
 
 	/**
