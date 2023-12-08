@@ -2,9 +2,9 @@
 Contributors: salzano
 Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 6.3.2
+Tested up to: 6.4.2
 Requires PHP: 7.0.0
-Stable tag: 14.11.4
+Stable tag: 14.11.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,12 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.11.5 =
+* [Fixed] Fixes a bug in the photo numberer class. Makes the post id parameter optional in a callback on the the_title hook.
+* [Changed] Updates icon and banner art.
+* [Changed] Changes the tested up to version number 6.4.2.
+
 
 = 14.11.4 =
 * [Fixed] Updates demo site URL to https://demo.inventorypresser.com/.
