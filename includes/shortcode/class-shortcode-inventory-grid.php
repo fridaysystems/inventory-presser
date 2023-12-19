@@ -61,6 +61,7 @@ class Inventory_Presser_Shortcode_Grid {
 				'priced_first'            => false,
 				'show_button'             => true, // replaces 'button'.
 				'show_captions'           => false, // replaces 'captions'.
+				'show_odometers'          => false,
 				'show_prices'             => false, // replaces 'show_price'.
 				'suppress_call_for_price' => false, // When the price setting is {$Price}, this prevents "Call for price" in the grid.
 			),
@@ -100,6 +101,7 @@ class Inventory_Presser_Shortcode_Grid {
 		$new_atts['priced_first']            = filter_var( $new_atts['priced_first'], FILTER_VALIDATE_BOOLEAN );
 		$new_atts['show_button']             = filter_var( $new_atts['show_button'], FILTER_VALIDATE_BOOLEAN );
 		$new_atts['show_captions']           = filter_var( $new_atts['show_captions'], FILTER_VALIDATE_BOOLEAN );
+		$new_atts['show_odometers']          = filter_var( $new_atts['show_odometers'], FILTER_VALIDATE_BOOLEAN );
 		$new_atts['show_prices']             = filter_var( $new_atts['show_prices'], FILTER_VALIDATE_BOOLEAN );
 		$new_atts['suppress_call_for_price'] = filter_var( $new_atts['suppress_call_for_price'], FILTER_VALIDATE_BOOLEAN );
 

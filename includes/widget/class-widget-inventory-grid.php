@@ -80,6 +80,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 			'priced_first'            => false, // Sort the vehicles with prices first?
 			'show_button'             => false, // Display a "Full Inventory" button below the grid?
 			'show_captions'           => false, // Show text captions near each photo?
+			'show_odometers'          => false, // Show odometers in the captions?
 			'show_prices'             => false, // Show prices in the captions?
 			'suppress_call_for_price' => false, // When the price setting is {$Price}, this prevents "Call for price" in the grid.
 		);
@@ -160,11 +161,23 @@ class Inventory_Presser_Grid extends WP_Widget {
 			);
 
 			if ( $args['show_captions'] ) {
-				$grid_html .= sprintf(
-					'<p class="grid-caption">%s&nbsp;%s</p>',
-					get_the_title( $inventory_id ),
-					$args['show_prices'] ? '<span class="grid-price">' . invp_get_the_price( $args['suppress_call_for_price'] ? ' ' : null, $inventory_id ) . '</span>' : ''
-				);
+				$grid_html = '<p class="grid-caption">' . get_the_title( $inventory_id );
+
+				if ( $args['show_odometers'] ) {
+					$grid_html .= sprintf(
+						'<span class="grid-odometer">%s</span>',
+						invp_get_the_odometer( ' ' . apply_filters( 'invp_odometer_word', 'mi' ), $inventory_id )
+					);
+				}
+
+				if ( $args['show_prices'] ) {
+					$grid_html .= sprintf(
+						'<span class="grid-price">%s</span>',
+						invp_get_the_price( $args['suppress_call_for_price'] ? ' ' : null, $inventory_id )
+					);
+				}
+
+				$grid_html .= '</p>';
 			}
 
 			$grid_html .= '</a></li>';
