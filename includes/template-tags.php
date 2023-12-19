@@ -77,7 +77,7 @@ function invp_get_the_book_value( $post_ID = null ) {
 	if ( empty( $post_ID ) ) {
 		$post_ID = get_the_ID();
 	}
-	return '$' . number_format( invp_get_raw_book_value( $post_ID ), 0, '.', ',' );
+	return INVP::currency_symbol() . number_format( invp_get_raw_book_value( $post_ID ), 0, '.', ',' );
 }
 
 /**
@@ -255,7 +255,7 @@ function invp_get_the_down_payment( $post_ID = null ) {
 		return '';
 	}
 
-	return '$' . number_format( $down_payment, 0, '.', ',' );
+	return INVP::currency_symbol() . number_format( $down_payment, 0, '.', ',' );
 }
 
 /**
@@ -779,7 +779,7 @@ function invp_get_the_payment( $post_ID = null ) {
 		return '';
 	}
 
-	return '$' . number_format( $payment, 0, '.', ',' );
+	return INVP::currency_symbol() . number_format( $payment, 0, '.', ',' );
 }
 
 /**
@@ -1002,7 +1002,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 			$output = '';
 			$price  = invp_get_raw_price( $post_ID );
 			if ( ! empty( $price ) ) {
-				$output .= sprintf( '$%s', number_format( $price, 0, '.', ',' ) );
+				$output .= INVP::currency_symbol() . number_format( $price, 0, '.', ',' );
 			}
 
 			$down_payment = invp_get_the_down_payment( $post_ID );
@@ -1058,7 +1058,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 			// Either no discount between the two prices or one is empty.
 			if ( ! empty( $price ) ) {
 				// We have a price, so fallback to "default" behavior and show it.
-				return apply_filters( 'invp_price_display', '$' . number_format( $price, 0, '.', ',' ), $settings['price_display'], $post_ID );
+				return apply_filters( 'invp_price_display', INVP::currency_symbol() . number_format( $price, 0, '.', ',' ), $settings['price_display'], $post_ID );
 			}
 			break;
 
@@ -1104,7 +1104,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 			if ( empty( $price ) ) {
 				return apply_filters( 'invp_price_display', $zero_string, $settings['price_display'], $post_ID );
 			}
-			return apply_filters( 'invp_price_display', '$' . number_format( $price, 0, '.', ',' ), $settings['price_display'], $post_ID );
+			return apply_filters( 'invp_price_display', INVP::currency_symbol() . number_format( $price, 0, '.', ',' ), $settings['price_display'], $post_ID );
 
 		case 'down_and_payment':
 			$string       = '';

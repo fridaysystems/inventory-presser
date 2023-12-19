@@ -19,8 +19,15 @@ class INVP {
 	const OPTION_PAGE         = 'dealership-options';
 
 	/**
-	 * delete_all_data
+	 * Returns the currency symbol. Default is a United States dollar sign.
 	 *
+	 * @return string
+	 */
+	public static function currency_symbol() {
+		return apply_filters( 'invp_currency_symbol', '$' );
+	}
+
+	/**
 	 * This function will operate as an uninstall utility. Removes all the
 	 * data we have added to the database including vehicle posts, their
 	 * attachments, the option that holds settings, and terms in custom

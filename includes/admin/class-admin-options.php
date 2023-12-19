@@ -515,18 +515,19 @@ class Inventory_Presser_Admin_Options {
 		$price_display_options = apply_filters(
 			'invp_price_display_options',
 			array(
-				'default'          => '${Price}',
-				'msrp'             => '${MSRP}',
-				'full_or_down'     => '${Price}' . $separator . '${Down Payment} Down',
-				'down_only'        => '${Down Payment} Down',
+				'default'          => INVP::currency_symbol() . '{Price}',
+				'msrp'             => INVP::currency_symbol() . '{MSRP}',
+				'full_or_down'     => INVP::currency_symbol() . '{Price}' . $separator . INVP::currency_symbol() . '{Down Payment} Down',
+				'down_only'        => INVP::currency_symbol() . '{Down Payment} Down',
 				'was_now_discount' => sprintf(
-					'%s ${MSRP} %s ${Price} %s ${MSRP}-{Price}',
+					'%1$s %2$s{MSRP} %3$s %2$s{Price} %4$s %2$s{MSRP}-{Price}',
 					apply_filters( 'invp_price_was_now_discount_retail', __( 'Retail', 'inventory-presser' ) ),
+					INVP::currency_symbol(),
 					apply_filters( 'invp_price_was_now_discount_now', __( 'Now', 'inventory-presser' ) ),
 					apply_filters( 'invp_price_was_now_discount_save', __( 'You Save', 'inventory-presser' ) )
 				),
-				'payment_only'     => '${Payment} {Frequency}',
-				'down_and_payment' => '${Down payment}' . $separator . '${Payment} {Frequency}',
+				'payment_only'     => INVP::currency_symbol() . '{Payment} {Frequency}',
+				'down_and_payment' => INVP::currency_symbol() . '{Down payment}' . $separator . INVP::currency_symbol() . '{Payment} {Frequency}',
 				'call_for_price'   => __( 'Call For Price', 'inventory-presser' ),
 			)
 		);
