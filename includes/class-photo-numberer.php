@@ -15,8 +15,6 @@ class Inventory_Presser_Photo_Numberer {
 
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks
 	 *
 	 * @return void

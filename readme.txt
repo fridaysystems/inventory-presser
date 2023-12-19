@@ -4,7 +4,7 @@ Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, mo
 Requires at least: 5.0.0
 Tested up to: 6.4.2
 Requires PHP: 7.0.0
-Stable tag: 14.11.5
+Stable tag: 14.12.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Stores vehicles. Supports multiple lot locations & separate hours for each. List
 
 Manage and market dealership inventory with listings and photo sliders built on a vehicle custom post type.
 
-* Supports automobiles, motorcycles, ATVs, RVs, and boats
+* Store & display automobiles, motorcycles, ATVs, RVs, and boats
 * [Manage multiple lot locations](https://inventorypresser.com/docs/vehicle-post-type/locations-taxonomy/) and maintain separate phone numbers & hours for each
 * [VIN-decoding add-on](https://inventorypresser.com/products/plugins/add-vins-to-vehicle-urls/) available
 * Categorizes inventory by type, body style, fuel, transmission, drive type, availability, new or used, location, and more
@@ -86,11 +86,14 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 == Changelog ==
 
+= 14.12.0 =
+* [Added] Adds an API method INVP::currency_symbol() and a filter `invp_currency_symbol` to allow the default US dollar sign to be changed.
+* [Added] Adds a `show_odometers` parameter to the Grid shortcode and widget.
+
 = 14.11.5 =
 * [Fixed] Fixes a bug in the photo numberer class. Makes the post id parameter optional in a callback on the the_title hook.
 * [Changed] Updates icon and banner art.
 * [Changed] Changes the tested up to version number 6.4.2.
-
 
 = 14.11.4 =
 * [Fixed] Updates demo site URL to https://demo.inventorypresser.com/.
@@ -220,6 +223,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.12.0 =
+Adds an API method INVP::currency_symbol() and a filter `invp_currency_symbol` to allow the default US dollar sign to be changed. Adds a `show_odometers` parameter to the Grid shortcode and widget.
 
 = 14.11.4 =
 Updates demo site URL to https://demo.inventorypresser.com/. Fixes bugs in flexslider spin-up script when used outside single vehicle context. Makes more strings translateable. Changes the tested up to version number 6.3.2.
