@@ -12,8 +12,8 @@ defined( 'ABSPATH' ) || exit;
  * email.
  *
  * @since      3.8.0
- * @package    Inventory_Presser
- * @subpackage Inventory_Presser/includes
+ * @package inventory-presser
+ * @subpackage inventory-presser/includes
  * @author     Corey Salzano <corey@friday.systems>
  */
 class Inventory_Presser_Order_By_Widget extends WP_Widget {

@@ -12,8 +12,8 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 	 * archive page containing all Subarus.
 	 *
 	 * @since      3.2.0
-	 * @package    Inventory_Presser
-	 * @subpackage Inventory_Presser/includes
+	 * @package inventory-presser
+	 * @subpackage inventory-presser/includes
 	 * @author     Corey Salzano <corey@friday.systems>
 	 */
 	class Redirect_404_Vehicles {

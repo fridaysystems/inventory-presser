@@ -10,8 +10,8 @@ if ( ! class_exists( 'Inventory_Presser_Addon_License' ) ) {
 	 * of its add-ons to verify an active site and allow updates to be downloaded.
 	 *
 	 * @since      5.4.0
-	 * @package    Inventory_Presser
-	 * @subpackage Inventory_Presser/includes
+	 * @package    inventory-presser
+	 * @subpackage inventory-presser/includes
 	 * @author     Corey Salzano <corey@friday.systems>
 	 */
 	class Inventory_Presser_Addon_License {

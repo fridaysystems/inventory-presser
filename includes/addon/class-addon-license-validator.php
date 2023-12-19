@@ -2,7 +2,7 @@
 /**
  * Add-on License Validator
  *
- * @package Inventory_Presser
+ * @package inventory-presser
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -20,8 +20,8 @@ if ( ! class_exists( 'Inventory_Presser_Addon_License_Validator' ) ) {
 	 * later. See readme.txt for more information about this plugin.
 	 *
 	 * @since      12.1.0
-	 * @package    Inventory_Presser
-	 * @subpackage Inventory_Presser/includes
+	 * @package    inventory-presser
+	 * @subpackage inventory-presser/includes
 	 * @author     Corey Salzano <corey@friday.systems>
 	 */
 	class Inventory_Presser_Addon_License_Validator {

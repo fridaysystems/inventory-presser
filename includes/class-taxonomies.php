@@ -7,8 +7,8 @@ defined( 'ABSPATH' ) || exit;
  * Registers and manipulates our custom taxonomies and their terms.
  *
  * @since      1.3.1
- * @package    Inventory_Presser
- * @subpackage Inventory_Presser/includes
+ * @package inventory-presser
+ * @subpackage inventory-presser/includes
  * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
  */
 class Inventory_Presser_Taxonomies {

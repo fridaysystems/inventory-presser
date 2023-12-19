@@ -3,8 +3,8 @@
  * Lets users edit the term meta data containing street addresses, phone
  * numbers, and hours of operation by adding fields to wp-admin/edit-tags.php.
  *
- * @package    Inventory_Presser
- * @subpackage Inventory_Presser/includes/admin
+ * @package    inventory-presser
+ * @subpackage inventory-presser/includes/admin
  * @author     Corey Salzano <corey@friday.systems>
  */
 

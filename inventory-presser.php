@@ -2,7 +2,8 @@
 /**
  * Inventory Presser
  *
- * @package Inventory_Presser_Plugin
+ * @package inventory-presser
+ * @author  Corey Salzano <corey@friday.systems>
  */
 
 defined( 'ABSPATH' ) || exit;

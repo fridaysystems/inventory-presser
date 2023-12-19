@@ -4,8 +4,8 @@
  * block.
  *
  * @since      14.5.0
- * @package    Inventory_Presser
- * @subpackage Inventory_Presser/includes/admin
+ * @package    inventory-presser
+ * @subpackage inventory-presser/includes/admin
  * @author     Corey Salzano <corey@friday.systems>
  */
 

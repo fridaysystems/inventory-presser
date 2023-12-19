@@ -1,6 +1,9 @@
 <?php
-defined( 'ABSPATH' ) || exit;
+/**
+ * @package inventory-presser
+ */
 
+defined( 'ABSPATH' ) || exit;
 /**
  * INVP
  *
@@ -9,8 +12,8 @@ defined( 'ABSPATH' ) || exit;
  */
 class INVP {
 
-	const LOCATION_MAX_PHONES = 10; // the maximum number of phones a single address holds
-	const LOCATION_MAX_HOURS  = 5; // the maximum number of sets of hours a single address holds
+	const LOCATION_MAX_PHONES = 10; // The maximum number of phones a single address holds.
+	const LOCATION_MAX_HOURS  = 5; // The maximum number of sets of hours a single address holds.
 	const POST_TYPE           = 'inventory_vehicle';
 	const OPTION_NAME         = 'inventory_presser';
 	const OPTION_PAGE         = 'dealership-options';
@@ -222,8 +225,6 @@ class INVP {
 	}
 
 	/**
-	 * fetch_latitude_and_longitude
-	 *
 	 * Given the ID of a term in the locations taxonomy, this method returns an
 	 * object with members `lat` and `lon` that contain latitude and longitude
 	 * coordinates of the address. If the coordinates are saved in meta keys
@@ -293,8 +294,6 @@ class INVP {
 	}
 
 	/**
-	 * get_hours
-	 *
 	 * Loads sets of hours from post meta into an array.
 	 *
 	 * @param  int $term_id The location term ID from which to extract hours
@@ -307,7 +306,7 @@ class INVP {
 		for ( $h = 1; $h <= self::LOCATION_MAX_HOURS; $h++ ) {
 			// Are there hours in this slot?
 			if ( empty( $term_meta[ 'hours_' . $h . '_uid' ][0] ) ) {
-				// No, we're done with this location
+				// No, we're done with this location.
 				break;
 			}
 
@@ -361,8 +360,6 @@ class INVP {
 	}
 
 	/**
-	 * get_phones
-	 *
 	 * Loads phone numbers from post meta into an array.
 	 *
 	 * @param  int $term_id The location term ID from which to extract phones
@@ -389,8 +386,6 @@ class INVP {
 	}
 
 	/**
-	 * keys
-	 *
 	 * This is an array of the post meta keys this object uses. These keys
 	 * must be prefixed by an apply_filters() call before use.
 	 *

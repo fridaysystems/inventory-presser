@@ -13,8 +13,8 @@ defined( 'ABSPATH' ) || exit;
  * Adds features to the Classic Editor.
  *
  * @since      14.10.0
- * @package    Inventory_Presser
- * @subpackage Inventory_Presser/includes/admin
+ * @package    inventory-presser
+ * @subpackage inventory-presser/includes/admin
  * @author     Corey Salzano <corey@friday.systems>
  */
 class Inventory_Presser_Classic_Editor {

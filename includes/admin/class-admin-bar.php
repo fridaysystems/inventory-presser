@@ -7,8 +7,8 @@ defined( 'ABSPATH' ) || exit;
  * Adds vehicles to the Admin Bar.
  *
  * @since      14.10.0
- * @package    Inventory_Presser
- * @subpackage Inventory_Presser/includes/admin
+ * @package    inventory-presser
+ * @subpackage inventory-presser/includes/admin
  * @author     Corey Salzano <corey@friday.systems>
  */
 class Inventory_Presser_Admin_Bar {

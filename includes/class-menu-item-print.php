@@ -11,8 +11,8 @@ defined( 'ABSPATH' ) || exit;
  * visitor taps the button.
  *
  * @since      9.0.0
- * @package    Inventory_Presser
- * @subpackage Inventory_Presser/includes
+ * @package    inventory-presser
+ * @subpackage inventory-presser/includes
  * @author     Corey Salzano <corey@friday.systems>
  */
 class Inventory_Presser_Menu_Item_Print {

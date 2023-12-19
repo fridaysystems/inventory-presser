@@ -6,8 +6,8 @@ defined( 'ABSPATH' ) || exit;
  * about the current vehicle.
  *
  * @since      4.1.0
- * @package    Inventory_Presser
- * @subpackage Inventory_Presser/includes
+ * @package inventory-presser
+ * @subpackage inventory-presser/includes
  * @author     Corey Salzano <corey@friday.systems>
  */
 
@@ -704,11 +704,13 @@ function invp_get_the_msrp( $post_ID = null ) {
 		return '';
 	}
 
-	return '$' . number_format( $msrp, 0, '.', ',' );
+	return INVP::currency_symbol() . number_format( $msrp, 0, '.', ',' );
 }
 
 /**
- * Template tag. Returns the odometer formatted as a number with comma separators if it is numeric. Returns any other non-zero value without any formatting. Adds the $append value to any return value but an empty string.
+ * Template tag. Returns the odometer formatted as a number with comma
+ * separators if it is numeric. Returns any other non-zero value without any
+ * formatting. Adds the $append value to any return value but an empty string.
  *
  * @param  string $append  A string to append after the odometer value. If the vehicle has no odometer value, then this parameter is ignored.
  * @param  int    $post_ID The post ID of a vehicle. Must be passed when using this method outside the loop.

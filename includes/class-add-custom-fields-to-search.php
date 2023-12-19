@@ -11,8 +11,8 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 	 * @see http://adambalee.com/search-wordpress-by-custom-fields-without-a-plugin/
 	 *
 	 * @since      1.2.1
-	 * @package    Inventory_Presser
-	 * @subpackage Inventory_Presser/includes
+	 * @package    inventory-presser
+	 * @subpackage inventory-presser/includes
 	 * @author     Corey Salzano <corey@friday.systems>, Adam Balee
 	 */
 	class Add_Custom_Fields_To_Search {

@@ -8,8 +8,8 @@ defined( 'ABSPATH' ) || exit;
  * settings.
  *
  * @since      0.5
- * @package    Inventory_Presser
- * @subpackage Inventory_Presser/includes
+ * @package    inventory-presser
+ * @subpackage inventory-presser/includes
  * @author     Corey Salzano <corey@friday.systems>
  */
 class Inventory_Presser_Admin_Options {

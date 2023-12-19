@@ -13,8 +13,8 @@ if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) ) {
 	 * http://localhost/inventory/2004-mazda-speed-miata/
 	 *
 	 * @since      1.2.1
-	 * @package    Inventory_Presser
-	 * @subpackage Inventory_Presser/includes
+	 * @package inventory-presser
+	 * @subpackage inventory-presser/includes
 	 * @author     Corey Salzano <corey@friday.systems>, John Norton <norton@fridaynet.com>
 	 */
 	class Vehicle_URLs_By_VIN {

@@ -2,7 +2,7 @@
 /**
  * Shortcode Vin
  *
- * @package Inventory_Presser_Plugin
+ * @package inventory-presser
  */
 
 defined( 'ABSPATH' ) || exit;

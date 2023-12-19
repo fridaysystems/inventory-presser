@@ -2,7 +2,7 @@
 /**
  * Shortcode Iframe
  *
- * @package Inventory_Presser_Plugin
+ * @package inventory-presser
  */
 
 defined( 'ABSPATH' ) || exit;
