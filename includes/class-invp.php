@@ -335,25 +335,30 @@ class INVP {
 	}
 
 	/**
-	 * get_meta
+	 * Retrieves post meta values.
 	 *
-	 * @param  string $unprefixed_meta_key
-	 * @param  int    $post_ID
+	 * @param  string $unprefixed_meta_key A meta key suffix like 'vin' or 'date_entered'.
+	 * @param  int    $post_id A vehicle post ID.
 	 * @return string|int|double|array
 	 */
-	public static function get_meta( $unprefixed_meta_key, $post_ID = null ) {
-		if ( empty( $post_ID ) ) {
-			$post_ID = get_the_ID();
+	public static function get_meta( $unprefixed_meta_key, $post_id = null ) {
+		if ( empty( $post_id ) ) {
+			$post_id = get_the_ID();
 		}
 
 		$meta_key = apply_filters( 'invp_prefix_meta_key', $unprefixed_meta_key );
 
-		// Options are stored as a multi-valued meta field
-		$single = $unprefixed_meta_key != 'options_array';
+		// Options are stored as a multi-valued meta field.
+		$single = 'options_array' !== $unprefixed_meta_key;
 
-		$meta_value = get_post_meta( $post_ID, $meta_key, $single );
+		$meta_value = get_post_meta( $post_id, $meta_key, $single );
+		// Kill dupes for singles. Added after finding duplicate date_entered and last_modified dates.
+		if ( $single && get_post_meta( $post_id, $meta_key ) !== $meta_value ) {
+			delete_post_meta( $post_id, $meta_key );
+			update_post_meta( $post_id, $meta_key, $meta_value );
+		}
 
-		// If the meta key is a number, return a number, and zero instead of empty string
+		// If key is a number, return a number/zero instead of empty string.
 		if ( self::meta_value_is_number( $meta_key ) ) {
 			if ( empty( $meta_value ) ) {
 				return 0;

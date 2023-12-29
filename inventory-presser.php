@@ -1584,10 +1584,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				return;
 			}
 
-			if ( empty( $_POST ) ) {
-				return;
-			}
-
 			/**
 			 * Tick the last modified date of this vehicle since we're saving changes.
 			 * It looks like this: Tue, 06 Sep 2016 09:26:12 -0400
@@ -1597,7 +1593,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// use post_modified to set last_modified.
 			$post_modified = DateTime::createFromFormat( 'Y-m-d H:i:s', $post->post_modified );
 			$timestamp     = $post_modified->format( $timestamp_format ) . ' ' . $offset;
-			update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'last_modified' ), $timestamp );
+			$key           = apply_filters( 'invp_prefix_meta_key', 'last_modified' );
+			delete_post_meta( $post_id, $key );
+			update_post_meta( $post_id, $key, $timestamp );
 
 			/**
 			 * If this is not an update or there is no date entered post meta value,
@@ -1607,7 +1605,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				// use post_date to set date_entered.
 				$post_date = DateTime::createFromFormat( 'Y-m-d H:i:s', $post->post_date );
 				$timestamp = $post_date->format( $timestamp_format ) . ' ' . $offset;
-				update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'date_entered' ), $timestamp );
+				$key       = apply_filters( 'invp_prefix_meta_key', 'date_entered' );
+				delete_post_meta( $post_id, $key );
+				update_post_meta( $post_id, $key, $timestamp );
+			}
+
+			if ( empty( $_POST ) ) {
+				return;
 			}
 
 			// Clear this value that is defined by a checkbox.
