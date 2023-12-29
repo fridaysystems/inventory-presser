@@ -161,7 +161,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 			);
 
 			if ( $args['show_captions'] ) {
-				$grid_html = '<p class="grid-caption">' . get_the_title( $inventory_id );
+				$grid_html .= '<p class="grid-caption">' . get_the_title( $inventory_id );
 
 				if ( $args['show_odometers'] ) {
 					$grid_html .= sprintf(
