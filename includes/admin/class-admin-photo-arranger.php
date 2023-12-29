@@ -212,11 +212,11 @@ class Inventory_Presser_Admin_Photo_Arranger {
 				}
 
 				// Does the number match?
-				if ( $index + 1 !== INVP::get_meta( 'photo_number', $attachment->ID ) ) {
+				if ( strval( $index + 1 ) !== INVP::get_meta( 'photo_number', $attachment->ID ) ) {
 					// Save VIN and photo hash in photo meta.
 					Inventory_Presser_Photo_Numberer::maybe_number_photo( $attachment->ID );
 					// Force save the sequence number.
-					Inventory_Presser_Photo_Numberer::save_meta_photo_number( $attachment->ID, $post_id, $index + 1 );
+					Inventory_Presser_Photo_Numberer::save_meta_photo_number( $attachment->ID, $post_id, strval( $index + 1 ) );
 				}
 			}
 		}
@@ -254,7 +254,7 @@ class Inventory_Presser_Admin_Photo_Arranger {
 			'innerBlocks'  => array(),
 			'innerHTML'    => '',
 			'innerContent' => array(
-				0 => '<figure class="wp-block-gallery has-nested-images columns-default is-cropped columns-0 invp-rearrange"></figure>',
+				0 => '<figure class="wp-block-gallery has-nested-images columns-default is-cropped columns-0 ' . self::CSS_CLASS . '"></figure>',
 			),
 		);
 		$post->post_content = serialize_blocks( $blocks );
