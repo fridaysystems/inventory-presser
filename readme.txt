@@ -4,7 +4,7 @@ Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, mo
 Requires at least: 5.0.0
 Tested up to: 6.4.2
 Requires PHP: 7.0.0
-Stable tag: 14.12.1
+Stable tag: 14.12.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,10 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.12.2 =
+* [Fixed] Fixes a bug in the photo rearranger Gallery Block when comparing photo numbers.
+* [Fixed] Fixes a bug when saving vehicles to prevent duplicate meta values for meta registered as singles.
 
 = 14.12.1 =
 * [Fixed] Fixes a bug introduced in 14.12.0 in the Grid widget when Show Captions is enabled.
@@ -226,6 +230,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.12.2 =
+Fixes a bug in the photo rearranger Gallery Block when comparing photo numbers. Fixes a bug when saving vehicles to prevent duplicate meta values for meta registered as singles.
 
 = 14.12.1 =
 Fixes a bug introduced in 14.12.0 in the Grid widget when Show Captions is enabled.
