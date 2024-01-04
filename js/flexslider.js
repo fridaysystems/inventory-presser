@@ -61,8 +61,12 @@ window.addEventListener( 'load', function() {
 function flexsliderMaybeShrinkFrame() {
 	// Is the slider wider than the width of the first image?
 	if ( document.querySelector( '#slider' ).clientWidth > document.querySelector('#slider.flexslider .flex-active-slide img').clientWidth ) {
-		document.querySelector( '#slider.flexslider' ).style.width =
-		document.querySelector( '#carousel.flexslider' ).style.width = document.querySelector('#slider.flexslider .flex-active-slide img').clientWidth + 'px';
+		var width = document.querySelector('#slider.flexslider .flex-active-slide img').clientWidth + 'px';
+		document.querySelector( '#slider.flexslider' ).style.width = width;
+		var carousel = document.querySelector( '#carousel.flexslider' );
+		if ( carousel ) {
+			carousel.style.width = width;
+		}
 	}
 	window.removeEventListener( 'afterDelayedResize', flexsliderMaybeShrinkFrame );
 }
