@@ -89,6 +89,8 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 = 14.12.2 =
 * [Fixed] Fixes a bug in the photo rearranger Gallery Block when comparing photo numbers.
 * [Fixed] Fixes a bug when saving vehicles to prevent duplicate meta values for meta registered as singles.
+* [Fixed] Fixes a bug where all search queries sitewide were joined to the taxonomy term tables. Vehicle data in terms is mirrored in post meta, so this was no longer necessary.
+* [Fixed] Fixes a JavaScript bug when loading photo sliders on vehicle singles where the vehicle only has one photo and a carousel is not displayed.
 
 = 14.12.1 =
 * [Fixed] Fixes a bug introduced in 14.12.0 in the Grid widget when Show Captions is enabled.
@@ -232,7 +234,8 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 == Upgrade Notice ==
 
 = 14.12.2 =
-Fixes a bug in the photo rearranger Gallery Block when comparing photo numbers. Fixes a bug when saving vehicles to prevent duplicate meta values for meta registered as singles.
+Fixes a bug in the photo rearranger Gallery Block when comparing photo numbers. Fixes a bug when saving vehicles to prevent duplicate meta values for meta registered as singles. Fixes a bug where all search queries sitewide were joined to the taxonomy term tables. Vehicle data in terms is mirrored in post meta, so this was no longer necessary. Fixes a JavaScript bug when loading photo sliders on vehicle singles where the vehicle only has one photo and a carousel is not displayed.
+
 
 = 14.12.1 =
 Fixes a bug introduced in 14.12.0 in the Grid widget when Show Captions is enabled.
