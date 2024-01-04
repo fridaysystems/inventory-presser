@@ -36,24 +36,24 @@ class INVP {
 	 * @return void
 	 */
 	public static function delete_all_data() {
-		// delete all the vehicles
+		// delete all the vehicles.
 		self::delete_all_inventory();
 
-		// delete unattached photos with meta keys that identify them as vehicle photos
+		// delete unattached photos with meta keys that identify them as vehicle photos.
 		self::delete_attachment_orphans();
 
-		// delete pages created during activation
-		// uninstall.php doesn't load the whole plugin but calls this method
+		// delete pages created during activation.
+		// uninstall.php doesn't load the whole plugin but calls this method.
 		if ( ! class_exists( 'Inventory_Presser_Allow_Inventory_As_Home_Page' ) ) {
 			include_once 'class-allow-inventory-as-home-page.php';
 		}
 		Inventory_Presser_Allow_Inventory_As_Home_Page::delete_pages();
 
-		// delete all terms
+		// delete all terms.
 		if ( ! is_multisite() ) {
 			self::delete_all_terms_on_blog();
 
-			// delete the option where all this plugin's settings are stored
+			// delete the option where all this plugin's settings are stored.
 			delete_option( self::OPTION_NAME );
 		} else {
 			$sites = get_sites(
@@ -67,7 +67,7 @@ class INVP {
 
 				self::delete_all_terms_on_blog();
 
-				// delete the option where all this plugin's settings are stored
+				// delete the option where all this plugin's settings are stored.
 				delete_option( self::OPTION_NAME );
 
 				restore_current_blog();
@@ -78,8 +78,6 @@ class INVP {
 	}
 
 	/**
-	 * delete_all_inventory
-	 *
 	 * This function deletes all posts that exist of our custom post type
 	 * and their associated meta data. Returns the number of vehicles
 	 * deleted.
@@ -111,6 +109,11 @@ class INVP {
 		}
 	}
 
+	/**
+	 * Deletes all posts in the vehicle post type.
+	 *
+	 * @return int
+	 */
 	private static function delete_all_inventory_on_blog() {
 		$args          = array(
 			'post_status'    => get_post_stati(),
@@ -123,7 +126,7 @@ class INVP {
 
 		if ( $posts ) {
 			foreach ( $posts as $post ) {
-				// delete the parent post or vehicle
+				// delete the parent post or vehicle.
 				if ( $settings['skip_trash'] ) {
 					wp_delete_post( $post->ID, $settings['skip_trash'] );
 				} else {
@@ -138,6 +141,11 @@ class INVP {
 		return $deleted_count;
 	}
 
+	/**
+	 * Deletes all terms in the taxonomies created by this plugin.
+	 *
+	 * @return void
+	 */
 	private static function delete_all_terms_on_blog() {
 		if ( ! class_exists( 'Inventory_Presser_Taxonomies' ) ) {
 			include_once 'class-taxonomies.php';
@@ -153,7 +161,7 @@ class INVP {
 				)
 			);
 
-			// delete terms
+			// delete terms.
 			if ( $terms ) {
 				foreach ( $terms as $term ) {
 					$wpdb->delete( $wpdb->term_taxonomy, array( 'term_taxonomy_id' => $term->term_taxonomy_id ) );
@@ -161,14 +169,12 @@ class INVP {
 				}
 			}
 
-			// delete taxonomy
+			// delete taxonomy.
 			$wpdb->delete( $wpdb->term_taxonomy, array( 'taxonomy' => $taxonomy_name ), array( '%s' ) );
 		}
 	}
 
 	/**
-	 * delete_attachments
-	 *
 	 * Action hook callback. Deletes all a vehicle's attachments when the
 	 * vehicle is deleted.
 	 *
@@ -177,7 +183,7 @@ class INVP {
 	 */
 	public static function delete_attachments( $post_id ) {
 		// Is $post_id a vehicle?
-		if ( self::POST_TYPE != get_post_type( $post_id ) ) {
+		if ( self::POST_TYPE !== get_post_type( $post_id ) ) {
 			// No, abort.
 			return;
 		}
@@ -196,11 +202,12 @@ class INVP {
 		}
 	}
 
+	/**
+	 * Deletes media that is managed by this plugin but not attached to a post.
+	 *
+	 * @return void
+	 */
 	public static function delete_attachment_orphans() {
-		/**
-		 * Delete media that is managed by this plugin but may not be attached
-		 * to a vehicle at this time.
-		 */
 		$orphan_media = get_posts(
 			array(
 				'posts_per_page' => -1,
@@ -240,15 +247,15 @@ class INVP {
 	 * service knows where the address is located. If coordinates cannot be
 	 * found, false is returned.
 	 *
-	 * @param  int $location_term_id The ID of a term in the locations taxonomy
+	 * @param  int $location_term_id The ID of a term in the locations taxonomy.
 	 * @return object|false An object with members "lat" and "lon" or false
 	 */
 	public static function fetch_latitude_and_longitude( $location_term_id ) {
-		// Get all term meta for this location
+		// Get all term meta for this location.
 		$meta = get_term_meta( $location_term_id );
 		// Do we already have a saved latitude and longitude pair?
 		if ( ! empty( $meta['address_lat'][0] ) && ! empty( $meta['address_lon'][0] ) ) {
-			// Yes
+			// Yes.
 			return (object) array(
 				'lat' => $meta['address_lat'][0],
 				'lon' => $meta['address_lon'][0],
@@ -296,14 +303,14 @@ class INVP {
 			);
 		}
 
-		// The address probably doesn't exist on OpenStreetMap.org. (Go add it!)
+		// The address probably doesn't exist on OpenStreetMap.org.
 		return false;
 	}
 
 	/**
 	 * Loads sets of hours from post meta into an array.
 	 *
-	 * @param  int $term_id The location term ID from which to extract hours
+	 * @param  int $term_id The location term ID from which to extract hours.
 	 * @return array An array of hours arrays
 	 */
 	public static function get_hours( $term_id ) {
@@ -374,7 +381,7 @@ class INVP {
 	/**
 	 * Loads phone numbers from post meta into an array.
 	 *
-	 * @param  int $term_id The location term ID from which to extract phones
+	 * @param  int $term_id The location term ID from which to extract phones.
 	 * @return array An array of arrays describing phone numbers
 	 */
 	public static function get_phones( $term_id ) {
@@ -384,7 +391,7 @@ class INVP {
 		for ( $p = 1; $p <= self::LOCATION_MAX_PHONES; $p++ ) {
 			// Is there a phone number in this slot?
 			if ( empty( $term_meta[ 'phone_' . $p . '_uid' ][0] ) ) {
-				// No, we're done with this location
+				// No, we're done with this location.
 				break;
 			}
 
@@ -975,13 +982,11 @@ class INVP {
 
 
 	/**
-	 * meta_array_value_single
-	 *
 	 * Given a $meta array collection of a post's entire meta data, retrieves
 	 * the single or first value stored in $key.
 	 *
 	 * @param  array  $meta
-	 * @param  string $key  A meta key
+	 * @param  string $key  A meta key.
 	 * @return string|bool A single meta value or false if the value does not exist
 	 */
 	protected static function meta_array_value_single( $meta, $key ) {
@@ -989,8 +994,6 @@ class INVP {
 	}
 
 	/**
-	 * meta_prefix
-	 *
 	 * Returns the prefix added to all vehicle post meta keys.
 	 *
 	 * @return string The prefix added to all vehicle post meta keys
@@ -1000,8 +1003,6 @@ class INVP {
 	}
 
 	/**
-	 * meta_value_is_number
-	 *
 	 * Indicates whether or not a provided $post_meta_key is a number data
 	 * type.
 	 *
@@ -1018,8 +1019,6 @@ class INVP {
 	}
 
 	/**
-	 * option_group
-	 *
 	 * Provides the option group string that is needed for register_setting()
 	 * calls.
 	 *
@@ -1030,8 +1029,6 @@ class INVP {
 	}
 
 	/**
-	 * option_page
-	 *
 	 * Provides the option page string that determines where the settings
 	 * sections are rendered.
 	 *
@@ -1120,8 +1117,6 @@ class INVP {
 	}
 
 	/**
-	 * prepare_phone_number_for_link
-	 *
 	 * Takes a phone number and prepares it for the href attribute of a link.
 	 *
 	 * Removes all non-alphanumeric characters, converts letters to dial pad
@@ -1132,10 +1127,10 @@ class INVP {
 	 * @return string A version of the phone number provided with letters converted to dial pad digits, non-numeric characters removed, and a country code prepended if the length of the provided number was 10 or less.
 	 */
 	public static function prepare_phone_number_for_link( $number ) {
-		// get rid of anything that isn't a digit or a letter
+		// get rid of anything that isn't a digit or a letter.
 		$number = preg_replace( '/[^0-9A-Za-z]+/', '', $number );
 
-		// convert letters to digits
+		// convert letters to digits.
 		$number = preg_replace( '/a|b|c/', '2', strtolower( $number ) );
 		$number = preg_replace( '/d|e|f/', '3', strtolower( $number ) );
 		$number = preg_replace( '/g|h|i/', '4', strtolower( $number ) );
@@ -1147,18 +1142,16 @@ class INVP {
 
 		// does it have a country code already?
 		if ( 10 < strlen( $number ) ) {
-			// yes
+			// yes.
 			return $number;
 		}
 
-		// no, default to USA
+		// no, default to USA.
 		$country_code = apply_filters( 'invp_country_calling_code', '1' );
 		return $country_code . $number;
 	}
 
 	/**
-	 * settings
-	 *
 	 * Get this plugin's option mingled with default values.
 	 *
 	 * @return array An associative array containing this plugin's settings
@@ -1184,14 +1177,15 @@ class INVP {
 	 * @return string An alteration of $name that WordPress will accept as a term slug
 	 */
 	public static function sluggify( $name ) {
+		if ( null === $name ) {
+			return '';
+		}
 		$name = trim( preg_replace( '/[^a-zA-Z0-9\\- ]/', '', $name ) );
 		$name = str_replace( '/', '-', str_replace( ' ', '-', $name ) );
 		return strtolower( str_replace( '--', '-', str_replace( '---', '-', $name ) ) );
 	}
 
 	/**
-	 * translate_custom_field_names
-	 *
 	 * Prefixes our post meta field keys so 'make' becomes
 	 * 'inventory_presser_make'. Careful to not prefix a key that has
 	 * already been prefixed.
@@ -1203,15 +1197,13 @@ class INVP {
 		$nice_name = strtolower( $nice_name );
 		$prefix    = self::meta_prefix();
 
-		if ( $prefix == substr( $nice_name, 0, strlen( $prefix ) ) ) {
+		if ( substr( $nice_name, 0, strlen( $prefix ) ) === $prefix ) {
 			return $nice_name;
 		}
 		return $prefix . $nice_name;
 	}
 
 	/**
-	 * untranslate_custom_field_names
-	 *
 	 * Removes the prefix from our post meta field keys so
 	 * 'inventory_presser_make' becomes 'make'. Careful to not damage any
 	 * provided key that does not start with our prefix.
@@ -1224,12 +1216,12 @@ class INVP {
 			return '';
 		}
 		$meta_key = strtolower( $meta_key );
-		// prefix may start with an underscore because previous versions hid some meta keys
-		$prefix = ( '_' == $meta_key[0] ? '_' : '' ) . self::meta_prefix();
+		// prefix may start with an underscore because previous versions hid some meta keys.
+		$prefix = ( '_' === $meta_key[0] ? '_' : '' ) . self::meta_prefix();
 
 		// does $meta_key actually start with the $prefix?
-		if ( $prefix == substr( $meta_key, 0, strlen( $prefix ) ) ) {
-			// remove the prefix
+		if ( substr( $meta_key, 0, strlen( $prefix ) ) === $prefix ) {
+			// remove the prefix.
 			return substr( $meta_key, strlen( $prefix ) );
 		}
 
@@ -1237,8 +1229,6 @@ class INVP {
 	}
 
 	/**
-	 * weekdays
-	 *
 	 * If no parameter is provided, returns an array containing lowercase
 	 * weekdays as keys and title case, three-letter abbreviations as values.
 	 * If a valid parameter is provided, returns the lowercase day name
@@ -1266,12 +1256,11 @@ class INVP {
 			if ( 0 <= $zero_through_six && 6 >= $zero_through_six ) {
 				return array_keys( $days )[ $zero_through_six ];
 			} else {
-				// If an invalid parameter is provided, return false
+				// If an invalid parameter is provided, return false.
 				return false;
 			}
 		}
 
-		// Return the array
 		return $days;
 	}
 
