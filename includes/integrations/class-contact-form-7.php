@@ -317,10 +317,14 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 					$html .= ', ' . $meta[ apply_filters( 'invp_prefix_meta_key', 'color' ) ][0];
 				}
 
-				$html .= sprintf(
-					', &#35;%s</option>',
-					$meta[ apply_filters( 'invp_prefix_meta_key', 'stock_number' ) ][0]
-				);
+				if ( isset( $meta[ apply_filters( 'invp_prefix_meta_key', 'stock_number' ) ][0] ) ) {
+					$html .= sprintf(
+						', &#35;%s',
+						$meta[ apply_filters( 'invp_prefix_meta_key', 'stock_number' ) ][0]
+					);
+				}
+
+				$html .= '</option>';
 			}
 			return apply_filters( 'invp_cf7_field_vehicle_html', $html . '</select></span>' . $validation_error, $atts );
 		}
