@@ -360,7 +360,7 @@ class INVP {
 
 		$meta_value = get_post_meta( $post_id, $meta_key, $single );
 		// Kill dupes for singles. Added after finding duplicate date_entered and last_modified dates.
-		if ( $single && get_post_meta( $post_id, $meta_key ) !== $meta_value ) {
+		if ( $single && 1 < count( get_post_meta( $post_id, $meta_key ) ) ) {
 			delete_post_meta( $post_id, $meta_key );
 			update_post_meta( $post_id, $meta_key, $meta_value );
 		}
