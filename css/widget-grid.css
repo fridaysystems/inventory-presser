@@ -37,6 +37,10 @@
 .grid-slides li a:active {
 	outline: none;
 }
+.grid-odometer,
+.grid-price{
+	margin-left: .3em;
+}
 
 .invp-grid ul.columns-2{
 	grid-template-columns: 1fr 1fr;
