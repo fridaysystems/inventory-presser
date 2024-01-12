@@ -103,7 +103,7 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 				$_transient_data = new stdClass();
 			}
 
-			if ( 'plugins.php' == $pagenow && is_multisite() ) {
+			if ( 'plugins.php' === $pagenow && is_multisite() ) {
 				return $_transient_data;
 			}
 
@@ -297,13 +297,13 @@ jQuery(document).ready(function(){
 				$version_info = $update_cache->response[ $this->name ];
 			}
 
-			// Restore our filter
+			// Restore our filter.
 			add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
 
 			if ( ! empty( $update_cache->response[ $this->name ] )
 				&& version_compare( $this->version, $version_info->new_version, '<' )
 			) {
-				// build a plugin list row, with update notification
+				// build a plugin list row, with update notification.
 				printf(
 					'<tr class="plugin-update-tr active" id="%1$s-update" data-slug="%1$s" data-plugin="%2$s">'
 					. '<td colspan="4" class="plugin-update colspanchange">'
@@ -340,12 +340,12 @@ jQuery(document).ready(function(){
 				if ( ! empty( $this->api_data['license'] ) ) {
 					printf(
 						' %s <a href="%s" class="update-link" aria-label="%s %s %s">%s</a>.',
-						__( 'or', 'inventory-presser' ),
+						esc_html__( 'or', 'inventory-presser' ),
 						esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $this->name, 'upgrade-plugin_' . $this->name ) ),
-						__( 'Update', 'inventory-presser' ),
+						esc_attr__( 'Update', 'inventory-presser' ),
 						esc_html( $version_info->name ),
-						__( 'now', 'inventory-presser' ),
-						__( 'update now', 'inventory-presser' )
+						esc_attr__( 'now', 'inventory-presser' ),
+						esc_html__( 'update now', 'inventory-presser' )
 					);
 				} else {
 					echo '.';
@@ -367,7 +367,7 @@ jQuery(document).ready(function(){
 		 * @return object $_data
 		 */
 		public function plugins_api_filter( $_data, $_action = '', $_args = null ) {
-			if ( $_action != 'plugin_information' ) {
+			if ( $_action !== 'plugin_information' ) {
 				return $_data;
 			}
 
@@ -385,7 +385,7 @@ jQuery(document).ready(function(){
 				),
 			);
 
-			// Get the transient where we store the api request for this plugin for 24 hours
+			// Get the transient where we store the api request for this plugin for 24 hours.
 			$edd_api_request_transient = $this->get_cached_version_info();
 
 			// If we have no transient-saved value, run the API, set a fresh transient with the API value, and return that value too right now.
@@ -393,7 +393,7 @@ jQuery(document).ready(function(){
 
 				$api_response = $this->api_request( 'plugin_information', $to_send );
 
-				// Expires in 3 hours
+				// Expires in 3 hours.
 				$this->set_version_info_cache( $api_response );
 
 				if ( false !== $api_response ) {
@@ -484,7 +484,7 @@ jQuery(document).ready(function(){
 			// Do a quick status check on this domain if we haven't already checked it.
 			$store_hash = md5( $this->api_url );
 			if ( ! is_array( $edd_plugin_url_available ) || ! isset( $edd_plugin_url_available[ $store_hash ] ) ) {
-				$test_url_parts = parse_url( $this->api_url );
+				$test_url_parts = wp_parse_url( $this->api_url );
 
 				$scheme = ! empty( $test_url_parts['scheme'] ) ? $test_url_parts['scheme'] : 'http';
 				$host   = ! empty( $test_url_parts['host'] ) ? $test_url_parts['host'] : '';
@@ -511,12 +511,12 @@ jQuery(document).ready(function(){
 
 			$data = array_merge( $this->api_data, $_data );
 
-			if ( $data['slug'] != $this->slug ) {
+			if ( $data['slug'] !== $this->slug ) {
 				return false;
 			}
 
-			if ( $this->api_url == trailingslashit( home_url() ) ) {
-				return false; // Don't allow a plugin to ping itself
+			if ( $this->api_url === trailingslashit( home_url() ) ) {
+				return false; // Don't allow a plugin to ping itself.
 			}
 
 			$api_params = array(
@@ -631,7 +631,7 @@ jQuery(document).ready(function(){
 
 				$this->set_version_info_cache( $version_info );
 
-				// Delete the unneeded option
+				// Delete the unneeded option.
 				delete_option( md5( 'edd_plugin_' . sanitize_key( $_REQUEST['plugin'] ) . '_' . $this->beta . '_version_info' ) );
 			}
 
@@ -659,7 +659,7 @@ jQuery(document).ready(function(){
 			$cache = get_option( $cache_key );
 
 			if ( empty( $cache['timeout'] ) || time() > $cache['timeout'] ) {
-				return false; // Cache is expired
+				return false; // Cache is expired.
 			}
 
 			// We need to turn the icons into an array, thanks to WP Core forcing these into an object at some point.
@@ -689,9 +689,9 @@ jQuery(document).ready(function(){
 				'value'   => wp_json_encode( $value ),
 			);
 
-			update_option( $cache_key, $data, 'no' );
+			update_option( $cache_key, $data, false );
 
-			// Delete the duplicate option
+			// Delete the duplicate option.
 			delete_option( 'edd_api_request_' . md5( serialize( $this->slug . $this->api_data['license'] . $this->beta ) ) );
 		}
 
@@ -702,7 +702,7 @@ jQuery(document).ready(function(){
 		 * @return bool
 		 */
 		private function verify_ssl() {
-			 return (bool) apply_filters( 'edd_sl_api_request_verify_ssl', true, $this );
+			return (bool) apply_filters( 'edd_sl_api_request_verify_ssl', true, $this );
 		}
 	}
 }
