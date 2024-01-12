@@ -24,6 +24,7 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 		 * @return void
 		 */
 		public function add_hooks() {
+			add_filter( 'posts_distinct', array( $this, 'cf_search_distinct' ) );
 			add_filter( 'posts_join', array( $this, 'cf_search_join' ) );
 			add_filter( 'posts_where', array( $this, 'cf_search_where' ) );
 		}
@@ -35,6 +36,23 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 		 */
 		protected function is_media_library() {
 			return 'upload.php' === basename( $_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING'] );
+		}
+
+		/**
+		 * Prevent duplicate posts from showing up in search results.
+		 *
+		 * @link https://developer.wordpress.org/reference/hooks/posts_distinct/
+		 *
+		 * @param  string $distinct The part of the query that contains the word
+		 * DISTINCT.
+		 * @return string
+		 */
+		public function cf_search_distinct( $distinct ) {
+			if ( is_search() ) {
+				return 'DISTINCT';
+			}
+
+			return $distinct;
 		}
 
 		/**
