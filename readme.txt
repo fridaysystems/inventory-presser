@@ -4,7 +4,7 @@ Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, mo
 Requires at least: 5.0.0
 Tested up to: 6.4.2
 Requires PHP: 7.0.0
-Stable tag: 14.12.2
+Stable tag: 14.12.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,10 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.12.3 =
+* [Fixed] Fixes a CSS bug in the inventory grid shortcode and widget.
+* [Fixed] Fixes a bug causing duplicate search results since 14.12.2.
 
 = 14.12.2 =
 * [Fixed] Fixes a bug in the photo rearranger Gallery Block when comparing photo numbers.
@@ -233,6 +237,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.12.3 =
+Fixes a CSS bug in the inventory grid shortcode and widget. Fixes a bug causing duplicate search results in some themes since 14.12.2.
 
 = 14.12.2 =
 Fixes a bug in the photo rearranger Gallery Block when comparing photo numbers. Fixes a bug when saving vehicles to prevent duplicate meta values for meta registered as singles. Fixes a bug where all search queries sitewide were joined to the taxonomy term tables. Vehicle data in terms is mirrored in post meta, so this was no longer necessary. Fixes a JavaScript bug when loading photo sliders on vehicle singles where the vehicle only has one photo and a carousel is not displayed. Stops adding a querystring containing the photo has to photo link URLs.
