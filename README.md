@@ -1,3 +1,5 @@
+![Simple inventory listings & everything else](assets/banner-1544x500.jpg)
+
 # Inventory Presser
 
 Car dealer plugin. Provides vehicle listings and photo sliders for automobiles or powersports dealerships. [Runs on any theme](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/) & provides templates for the stubborn ones.
