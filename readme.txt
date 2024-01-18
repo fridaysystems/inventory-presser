@@ -56,8 +56,10 @@ Manage and market dealership inventory with listings and photo sliders built on 
 
 1. Upload the `inventory-presser` directory to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Read this plugin's Frequently Asked Question called "Will Inventory Presser work with my theme?" to learn how vehicles can best be displayed
-
+1. [Load the sample vehicles](https://inventorypresser.com/docs/settings/load-sample-vehicles/)
+1. Visit yoursite.com/inventory to see the built-in templates
+1. Design your own pages using [post meta fields](https://inventorypresser.com/docs/vehicle-post-type/) or [Elementor Dynamic Tags](https://inventorypresser.com/products/plugins/elementor-add-on/)
+1. Decide how to [manage inventory updates](https://inventorypresser.com/docs/adding-or-importing-inventory/)
 
 == Frequently Asked Questions ==
 
