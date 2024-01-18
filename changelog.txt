@@ -1,3 +1,123 @@
+= 14.11.3 =
+* [Added] Adds a REST endpoint `/wp-json/invp/v1/feed-complete` to help inventory clients run an action hook `invp_feed_complete` after an inventory update has completed.
+* [Added] Adds a filter `invp_query_limit` around the number 1000 where it is used as the maximum posts_per_page argument in post queries.
+* [Fixed] Prevent prev and next buttons in flexslider carousels from covering the width of an entire thumbnail.
+* [Fixed] Fixes in flexslider spin up script for slow-loading pages.
+* [Fixed] Prevent YouTube embeds from interfering with photo sliders.
+* [Fixed] Reverses a change in 14.11.2 and uses the `enqueue_block_editor_assets` again to avoid front-end JavaScript errors.
+* [Fixed] Prevents scripts and styles from being registered more than once.
+* [Fixed] Prevents the Load Sample Vehicles button from inserting duplicate VINs. Enables the Load Sample Vehicles button to insert more than 10 vehicles.
+* [Fixed] Stops telling dashboard users when the aspect ratio of thumbnails is not that of a common smartphone camera.
+* [Fixed] Allows a location term street address to be entered on the add term form instead of requiring users to save a location term first.
+
+= 14.11.2 =
+* [Fixed] Compatibility fixes for WordPress 6.3. Stops using the `enqueue_block_editor_assets` hook in favor of the new `enqueue_block_assets`. Stops using the `post__not_in` query variable on the `parse_query` hook.
+* [Fixed] Compatibility fixes for PHP 8.1. Stop sending null to the first parameter of strpos(). Stop sending a non-string file name to wp_get_image_mime().
+* [Fixed] Prevent queries from returning an unlimited number of posts. Caps queries for vehicle photos to 1000.
+* [Fixed] Fixes the Grid Widget to obey the "Newest vehicles first" setting.
+* [Fixed] Fixes in the "down & payment" price display option that prevented down payments and payment frequencies from displaying.
+* [Fixed] Fixes in database queries to always use the proper table prefix.
+
+= 14.11.1 =
+* [Fixed] Reduces the number of database queries required when adding cache-busting querystrings to photo URLs.
+* [Fixed] Adds caching in invp_get_the_photos() for 5 minutes to reduce database queries. Makes sure invp_get_the_photos() always populates URLs regardless of what sizes are requested.
+* [Fixed] Bug fix in INVP::sluggify(). Do not allow a string that starts with a symbol to create a slug that starts with a hyphen.
+* [Fixed] Updates screenshot #3 so the admin menu shown matches what users will see.
+
+= 14.11.0 =
+* [Added] Adds a fullscreen mode to flexsliders so large vehicle photos can bust out of their containers when tapped by users.
+* [Fixed] Cleans up flexslider JavaScript to use much less jQuery and wait for slow images to load before attempting resizes.
+* [Fixed] Fixes a bug where paging was broken for Listings Pages defined at Vehicles → Options.
+* [Fixed] Makes more strings translateable, adds more taxonomy term labels so the Block Editor stops showing "category" instead of "make", "model", etc.
+* [Fixed] Allows more than 30 meta keys in the Custom Fields editor panel when editing vehicles.
+* [Fixed] Adds a Contact Form 7 mail tag [invp_adf_vendor] to integrate the location taxonomy into ADF XML leads. More details at https://inventorypresser.com/docs/contact-form-7-integration/how-to-send-adf-xml-leads-using-contact-form-7/
+* [Fixed] Fixes a CSS issue that caused the Annual fuel consumption line to overlap the combined, city, and highway figures in the Fuel Economy widget.
+
+= 14.10.2 =
+* [Added] Adds a template tag `invp_get_the_condition()` that returns "Used", "New", or empty string.
+* [Added] Adds an API method `INVP::get_paging_html()` that previously lived inside the [invp_archive] shortcode class. Creates better pagination HTML for listings archives.
+* [Fixed] Fixes a bug in the Block Editor sidebar. Stops attempting to save empty strings in numeric meta fields when their text boxes are emptied. Makes more strings translateable.
+* [Fixed] Stops lying about whether vehicle posts have thumbnails unless our archive shortcodes are run or the Divi Blog Module is detected. The lie helps us work on most themes by avoiding the theme and our shortcode from both outputing a thumbnail. There's no reason to do this unless the shortcode is used.
+
+= 14.10.1 =
+* [Fixed] Fixes a bug introduced in 14.10.0 that prevented inventory archives from being sorted according to the saved setting.
+
+= 14.10.0 =
+* [Added] Adds a WPForms integration. Adds a Vehicle field type. This field will produce a dropdown on forms not embedded on vehicle singles. On vehicle singles, a hidden input will identify the vehicle the user is looking at. Adds two Smart Tags {invp_adf_vehicle} and {invp_site_url} to make creating ADF XML lead emails easy when following [these instructions](https://inventorypresser.com/docs/capturing-vehicle-leads-with-wpforms/).
+* [Added] Adds a parameter to the [invp_inventory_grid] shortcode `priced_first` to put vehicles with prices first.
+* [Added] Adds the list of taxonomy links to the settings page near the checkbox to toggle them in the menu.
+* [Fixed] Performance improvements by avoiding several get_option() calls until they are necesary. Removes a call to load_plugin_textdomain() because it is obsolete.
+* [Fixed] Stop warning users about thumbnail size aspect ratios if they are not 4:3. 16:9 is the new mainstream ratio, so check for either.
+* [Fixed] Fixes CSS in the Listings Pages table of the settings page.
+* [Fixed] Stops loading Classic Editor features when the Classic Editor plugin is not active and other dashboard performance improvements around not loading features until they are necessary.
+* [Fixed] Adds support for SCRIPT_DEBUG in all script and style registrations.
+* [Fixed] Adds plugin version number to script and style registrations so they can be cached appropriately.
+* [Changed] Changes link labels in the dashboard when editing taxonomy terms for specificity like "model years" instead of "tags".
+
+= 14.9.0 =
+* [Added] Adds a function invp_get_the_inventory_sentence() that returns an HTML string containing links like, "Browse Car, SUV, Truck, or all 10 vehicles for sale."
+* [Added] Wraps the "/" that separates prices and down payments with a filter `invp_price_display_separator` so it can be changed by other developers.
+* [Added] Adds a parameter to the [invp_sort_by label=""] shortcode `label` to let users customize or remove the label text next to the dropdown.
+* [Fixed] Enables the JavaScript filter `invp_editor_sidebar_elements` that was disabled in 14.8.0. The filter was not the problem.
+* [Fixed] Fixes a bug in the [invp_sort_by] shortcode that prevented any sort from happening when a choice was made in the dropdown. JavaScript was missing from this plugin that powers the feature.
+
+= 14.8.0 =
+* [Added] Adds a button at Vehicles → Options that loads sample vehicles and photos from our [demo site](https://demo.inventorypresser.com/).
+* [Added] Allows the meta key `inventory_presser_photo_number` as the `orderby` parameter in REST API requests for attachments. Enables photos to be requested in sequence.
+* [Changed] Moves the Delete All Vehicles feature from the plugins list to the Vehicles → Options page.
+* [Changed] Changes the tested up to version number 6.2.0.
+* [Fixed] Prevent errors when multiple copies of this plugin are active on a site.
+* [Fixed] Disables the JavaScript filter `invp_editor_sidebar_elements` because it breaks the Editor Sidebar when adding new vehicles in WordPress 6.2.0.
+
+= 14.7.1 =
+* [Fixed] Fixes a bug when checking for saved listings pages.
+
+= 14.7.0 =
+* [Added] Adds postmeta fields `inventory_presser_rate` and `inventory_presser_term` to the vehicle post type for dealers outside the USA where displaying financing terms without a disclosure may be legal.
+* [Added] Adds a "No filter" option to the Additional Listings Pages feature to allow the creation of full, unfiltered archive pages at any URL.
+* [Added] Adds a toggle switch to Additional Listings Pages so rules can be saved in an inactive state.
+* [Added] Adds a "contains" comparison operator and "Options" to the list of comparison fields in Additional Listings Pages filter rules.
+* [Added] Adds a parameter to the [invp_inventory_grid] shortcode to suppress "Call for price" if the sitewide price display setting is ${Price}. This restores behavior produced by a bug described below.
+* [Fixed] Fixes a bug in the [invp_inventory_grid] shortcode that prevented "Call for price" from displaying if show_captions and show_prices were both true and the price display setting sitewide is ${Price}.
+* [Fixed] Fixes syntax errors that impact old versions of PHP including 7.2.
+* [Fixed] Fixes bugs in multiple shortcodes that prevented true/false parameter values from working the way users expect. "true", "1", and 1 are all now working. Likewise with false values "false", "0", and 0.
+* [Changed] Renames the Additional Listings Pages feature to Listings Pages.
+
+= 14.6.0 =
+* [Added] Adds a filter `invp_meta_fields` so other plugins can add meta fields to the vehicle post type.
+* [Added] Adds additional meta fields for Carfax "Accident Free" and "Top Condition" badges.
+* [Added] Adds a JavaScript filter `invp_editor_sidebar_elements` to let other plugins add to the Editor Sidebar where vehicle attributes are managed.
+* [Added] Adds a feature that changes the <title> tag on inventory archives.
+* [Fixed] Fixes a bug that showed the Boat Attributes field in the Editor Sidebar for non-boat vehicles.
+* [Fixed] Stops hitting inventorypresser.com as often to check for valid add-on licenses.
+* [Fixed] Stops showing sold vehicles in the [invp_inventory_grid] shortcode and Inventory Grid widget when the "Include sold vehicles" setting is off.
+
+= 14.5.2 =
+* [Added] Adds a filter `invp_get_the_odometer` to filter the value returned by the invp_get_the_odometer() template tag.
+* [Fixed] Fixes the way queries are edited during searches to avoid name collisions.
+
+= 14.5.1 =
+* [Added] Wraps strings in filters in the was_now_discount pricing display option so "Retail", "Now", and "You Save" strings can be changed by other plugins using the `invp_price_was_now_discount_retail`, `invp_price_was_now_discount_now`, and `invp_price_was_now_discount_save` filters.
+* [Fixed] Applies the `invp_price_display` filter to all return paths of the invp_get_the_price() template tag.
+
+= 14.5.0 =
+* [Added] Adds a feature enabled by default: Adds a gallery block to new vehicle posts with a specific CSS class that allows users to upload and reorder photos on vehicle posts in the block editor. This is merging the invp-photo-arranger feature plugin into Inventory Presser core.
+* [Fixed] Makes more strings translateable. Escapes strings for output on the plugin settings page.
+* [Fixed] Bug fix when changing attachment URLs to have cache-busting hash querystrings. If the post ID does not point to an attachment, exit early.
+* [Fixed] Bug fixes in the maximum price filter widget. Avoid warnings when no widget settings are saved for the instance.
+* [Fixed] CSS tweak for thumbnails in the vehicle posts list in the dashboard.
+
+= 14.4.0 =
+* [Added] Adds a minimum PHP version directive to this file of 7.0.0 to support the null coalescing operator.
+* [Added] Adds a template tag `invp_get_raw_msrp()` and filter `invp_get_raw_msrp`.
+* [Added] Adds a template tag `invp_get_the_dealer_id()`.
+* [Added] Adds a postmeta field `inventory_presser_certified_preowned` to the vehicle post type and a template tag `invp_is_certified_preowned()`.
+* [Fixed] Fixes a bug in the Maximum Price Filter widget to make it compatible with the new block widgets feature in the dashboard.
+* [Fixed] Fixes a bug that caused vehicle thumbnail photos to break out of the posts table at the Vehicles dashboard page.
+* [Fixed] Fixes a bug that prevented `invp_get_the_photos()` from including the urls array key when a single size of `large` was passed.
+* [Fixed] Fixes bugs when calling `http_build_query()` for compatibility with PHP 8.1.
+* [Fixed] Fixes a bug in the uninstaller that prevented the plugin from being deleted.
+
 = 14.3.1 =
 * [Fixed] Cache-busting photo URLs are now compatible with any image file type rather than just JPG and PNG.
 * [Fixed] Fixes a bug when changing the title of additional listings pages.
