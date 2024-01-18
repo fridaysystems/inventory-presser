@@ -4,7 +4,7 @@ Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, mo
 Requires at least: 5.0.0
 Tested up to: 6.4.2
 Requires PHP: 7.0.0
-Stable tag: 14.12.3
+Stable tag: 14.12.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,11 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Changelog ==
+
+= 14.12.4 =
+* [Fixed] Optimizes the way sliders are resized when the browser window is resized.
+* [Fixed] Fixes a bug when prefixing taxonomy term URLs with /inventory to avoid extraneous database queries. This was breaking the menu administration page.
+* [Fixed] Updates the install instructions in readme.txt.
 
 = 14.12.3 =
 * [Fixed] Fixes a CSS bug in the inventory grid shortcode and widget.
@@ -239,6 +244,9 @@ Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs
 
 
 == Upgrade Notice ==
+
+= 14.12.4 =
+Optimizes the way sliders are resized when the browser window is resized. Fixes a bug when prefixing taxonomy term URLs with /inventory to avoid extraneous database queries. This was breaking the menu administration page. Updates the install instructions in readme.txt.
 
 = 14.12.3 =
 Fixes a CSS bug in the inventory grid shortcode and widget. Fixes a bug causing duplicate search results in some themes since 14.12.2.
