@@ -313,9 +313,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * @return string A modified term link that has our post type slug prepended.
 		 */
 		public function change_term_links( $termlink, $term ) {
-			$taxonomy = get_taxonomy( $term->taxonomy );
-
-			if ( ! in_array( INVP::POST_TYPE, $taxonomy->object_type, true ) ) {
+			// Exit early, this method runs often in the dashboard.
+			if ( false !== $termlink && '/category' === substr( $termlink, 0, 9 ) ) {
+				return $termlink;
+			}
+			$taxonomy = get_taxonomy( strtolower( $term->taxonomy ) );
+			if ( ! empty( $taxonomy->object_type ) && ! in_array( INVP::POST_TYPE, $taxonomy->object_type, true ) ) {
 				return $termlink;
 			}
 
