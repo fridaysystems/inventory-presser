@@ -26,12 +26,4 @@ jQuery(document).ready(function(){
 			jQuery('.widget__invp_slick .flexslider .flex-direction-nav a,.widget__invp_slick .flexslider .flex-direction-nav li').css('line-height', current_image_height + 'px' );
 		}
 	});
-
-	//resize the slider when the browser is resized
-	jQuery(window).bind('resize', function () {
-		setTimeout(function () {
-			var slider = jQuery(flexslider).data('flexslider');
-			slider.resize();
-		}, 1000);
-	});
 });

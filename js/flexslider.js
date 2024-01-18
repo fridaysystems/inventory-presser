@@ -1,11 +1,13 @@
+// If the window is resized, adjust slider once when resize events stop firing.
+var invpFlexsliderResizeId;
 window.addEventListener( 'resize', function() {
-	setTimeout(function() {
-		// Copied this line here to fix Divi not showing first photo/slider during page loads in Chrome.
-		flexsliderMaybeResizeCurrentImage();
-		flexsliderStylePreviousNext();
-		window.dispatchEvent( new Event('afterDelayedResize' ) );
-	}, 120);
+	this.clearTimeout( invpFlexsliderResizeId );
+	invpFlexsliderResizeId = setTimeout( invpFlexsliderDoneResizing, 200 );
 });
+function invpFlexsliderDoneResizing() {
+	flexsliderMaybeResizeCurrentImage();
+	flexsliderStylePreviousNext();
+}
 
 window.addEventListener( 'load', function() {
 	jQuery('.flexslider').not('#carousel').flexslider({
