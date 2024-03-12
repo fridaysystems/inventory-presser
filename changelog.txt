@@ -87,7 +87,7 @@
 * [Added] Adds a filter `invp_meta_fields` so other plugins can add meta fields to the vehicle post type.
 * [Added] Adds additional meta fields for Carfax "Accident Free" and "Top Condition" badges.
 * [Added] Adds a JavaScript filter `invp_editor_sidebar_elements` to let other plugins add to the Editor Sidebar where vehicle attributes are managed.
-* [Added] Adds a feature that changes the <title> tag on inventory archives.
+* [Added] Adds a feature that changes the &lt;title&gt; tag on inventory archives.
 * [Fixed] Fixes a bug that showed the Boat Attributes field in the Editor Sidebar for non-boat vehicles.
 * [Fixed] Stops hitting inventorypresser.com as often to check for valid add-on licenses.
 * [Fixed] Stops showing sold vehicles in the [invp_inventory_grid] shortcode and Inventory Grid widget when the "Include sold vehicles" setting is off.
