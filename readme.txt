@@ -1,6 +1,6 @@
 === Inventory Presser - Car Dealer Listings ===
 Contributors: salzano
-Tags: car dealer, inventory management, vehicle, automobile, dealership, lot, motorcycle, rv
+Tags: car dealer, car dealership, car listings, auto dealer, car sales, car lot, motorcycle, rv
 Requires at least: 5.0.0
 Tested up to: 6.4.2
 Requires PHP: 7.0.0
@@ -14,7 +14,7 @@ Stores vehicles. Supports multiple lot locations & separate hours for each. List
 
 Manage and market dealership inventory with listings and photo sliders built on a vehicle custom post type.
 
-* Store & display automobiles, motorcycles, ATVs, RVs, and boats
+* Store & display cars, trucks, vans, SUVs, motorcycles, ATVs, RVs, and boats
 * [Manage multiple lot locations](https://inventorypresser.com/docs/vehicle-post-type/locations-taxonomy/) and maintain separate phone numbers & hours for each
 * [VIN-decoding add-on](https://inventorypresser.com/products/plugins/add-vins-to-vehicle-urls/) available
 * Categorizes inventory by type, body style, fuel, transmission, drive type, availability, new or used, location, and more
@@ -69,12 +69,14 @@ This plugin is free and open source. Free and paid add-ons & services are availa
 = Does it decode VINs? =
 Not for free. A VIN decoder add-on is available at https://inventorypresser.com/products/plugins/vin-decoder/.
 
-= Can I import my inventory into this system? =
-Yes. Visit [Adding or Importing Inventory](https://inventorypresser.com/docs/adding-or-importing-inventory/) to determine what is best for your client. We use the [WordPress REST API](https://developer.wordpress.org/rest-api/) to deliver inventory updates. [Read how we do it](https://inventorypresser.com/docs/using-the-rest-api-to-update-vehicle-listings-in-wordpress/). Vehicles in Inventory Presser are stored in a custom post type using meta fields, taxonomy terms, and photo attachments, and many CSV/spreadsheet importer plugins like WP All Import work with custom post types. If imports sound challenging, Friday Systems (that's us) feeds hundreds of sites running this plugin. It may be easier to let Friday Systems handle the last leg for a monthly fee.
+= Can I import my inventory? =
+Yes. Visit [Adding or Importing Inventory](https://inventorypresser.com/docs/adding-or-importing-inventory/) to determine what is best for your client.
 
 = Will Inventory Presser work with my theme? =
-Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/). If your theme does not include templates to display listing pages and vehicle detail pages, the plugin will provide the markup for those pages automatically. There are shortcodes like `[invp_archive]` and `[invp_single_vehicle]` as a last resort. A number of [Template Tags](https://inventorypresser.com/docs/template-tags/) make designing custom templates easy.
+Yes. Check out our [Theme Compatibility Guide](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/). If your theme does not include templates to display listing pages and vehicle detail pages, the plugin provides those pages automatically.
 
+= Can I change the dollar sign to my local currency? Miles to kilometers? =
+Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/internationalization/).
 
 == Screenshots ==
 
