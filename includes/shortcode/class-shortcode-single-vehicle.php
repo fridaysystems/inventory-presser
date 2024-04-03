@@ -187,7 +187,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 
 					array_walk(
 						$sections,
-						function( $value ) {
+						function ( $value ) {
 							echo $value;
 						}
 					);
