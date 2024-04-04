@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales, car lot,
 Requires at least: 5.0.0
 Tested up to: 6.5.0
 Requires PHP: 7.0.0
-Stable tag: 14.12.4
+Stable tag: 14.12.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,6 +90,11 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Changelog ==
 
+= 14.12.5 =
+* [Added] Adds support for marking vehicles "Sale pending". Adds a term to the Availability taxonomy during plugin activation. Adds a template tag invp_is_pending(). Shows "Sale pending" instead of any price.
+* [Fixed] Removes valid html title opening tags from readme.txt and changelog.txt. These files can more easily be more easily embedded in web pages.
+* [Changed] Changes tested up to version to 6.5.0.
+
 = 14.12.4 =
 * [Fixed] Optimizes the way sliders are resized when the browser window is resized.
 * [Fixed] Fixes a bug when prefixing taxonomy term URLs with /inventory to avoid extraneous database queries. This was breaking the menu administration page.
@@ -126,6 +131,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.12.5 =
+Adds support for marking vehicles "Sale pending". Adds a term to the Availability taxonomy during plugin activation. Adds a template tag invp_is_pending(). Shows "Sale pending" instead of any price. Removes valid html title opening tags from readme.txt and changelog.txt. These files can more easily be more easily embedded in web pages. Changes tested up to version to 6.5.0.
 
 = 14.12.4 =
 Optimizes the way sliders are resized when the browser window is resized. Fixes a bug when prefixing taxonomy term URLs with /inventory to avoid extraneous database queries. This was breaking the menu administration page. Updates the install instructions in readme.txt.
