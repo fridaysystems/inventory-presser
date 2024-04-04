@@ -978,6 +978,11 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 		return apply_filters( 'invp_sold_string', sprintf( '<span class="vehicle-sold">%s</span>', __( 'SOLD!', 'inventory-presser' ) ) );
 	}
 
+	// If the vehicle is pending, just say so.
+	if ( invp_is_pending( $post_ID ) ) {
+		return apply_filters( 'invp_pending_string', sprintf( '<span class="vehicle-pending">%s</span>', __( 'Sale Pending', 'inventory-presser' ) ) );
+	}
+
 	if ( null === $zero_string ) {
 		$zero_string = __( 'Call For Price', 'inventory-presser' );
 	}
@@ -1335,6 +1340,19 @@ function invp_is_featured( $post_ID = null ) {
 		$post_ID = get_the_ID();
 	}
 	return ! empty( INVP::get_meta( 'featured', $post_ID ) );
+}
+
+/**
+ * Returns true if this vehicle is pending.
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return bool
+ */
+function invp_is_pending( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return has_term( 'sale-pending', 'availability', $post_ID );
 }
 
 /**
