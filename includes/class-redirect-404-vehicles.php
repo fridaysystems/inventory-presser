@@ -86,7 +86,11 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 		 * @param  mixed $wp_obj
 		 * @return void
 		 */
-		function maybe_redirect( $wp_obj ) {
+		public function maybe_redirect( $wp_obj ) {
+
+			if ( is_admin() ) {
+				return;
+			}
 
 			// is this a request for a vehicle?
 			// is this a 404?
