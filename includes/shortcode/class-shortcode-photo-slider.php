@@ -40,6 +40,7 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 	public function content( $atts ) {
 		$atts = shortcode_atts(
 			array(
+				'id'               => null,
 				'include_carousel' => true,
 			),
 			$atts,
@@ -54,7 +55,14 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 		wp_enqueue_style( 'invp-flexslider' );
 		wp_enqueue_script( 'invp-flexslider', '', array(), false, true );
 
-		$image_url_lists = invp_get_the_photos( array( 'full', 'large', 'thumb' ) );
+		// Was the post ID passed in as an argument?
+		if ( ! empty( $atts['id'] ) ) {
+			$post_id = intval( $atts['id'] );
+		} else {
+			$post_id = get_the_ID();
+		}
+
+		$image_url_lists = invp_get_the_photos( array( 'full', 'large', 'thumb' ), $post_id );
 
 		ob_start();
 		?>
