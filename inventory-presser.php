@@ -555,6 +555,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * @return void
 		 */
 		public function add_hooks() {
+			// Only do these things once.
+			if ( has_filter( 'invp_prefix_meta_key', array( 'INVP', 'translate_custom_field_names' ) ) ) {
+				return;
+			}
+
 			// include all this plugin's classes that live in external files.
 			$this->include_dependencies();
 
