@@ -1,4 +1,4 @@
-jQuery(document).ready(function(){
+window.addEventListener( 'load', function(e) {
 	/**
 	 * The more slides shown at once, the shorter the slider is. Cap at 2 in
 	 * frame at one time so the thumbnails do not appear smaller than postage
@@ -8,8 +8,8 @@ jQuery(document).ready(function(){
 		&& widget_slider.showcount > 2 ) {
 		widget_slider.showcount = 2;
 	}
-	var flexslider = jQuery('.widget__invp_slick .flexslider');
-	flexslider.flexslider({
+	var flexslider = document.querySelector('.widget__invp_slick .flexslider');
+	jQuery(flexslider).flexslider({
 		animation: 'slide', /* Select your animation type, "fade" or "slide" */
 		slideshow: true, /* Animate slider automatically */
 		animationSpeed: 4000, /* Set the speed of animations, in milliseconds */
@@ -24,6 +24,22 @@ jQuery(document).ready(function(){
 			var current_image_height = jQuery('.widget__invp_slick .flexslider').css('height').replace( 'px', '' );
 			//when the slide changes, reset the next/prev text line-height
 			jQuery('.widget__invp_slick .flexslider .flex-direction-nav a,.widget__invp_slick .flexslider .flex-direction-nav li').css('line-height', current_image_height + 'px' );
+			// Style previous and next buttons.
+			var navLinks = document.querySelectorAll( '#widget_slider.flexslider .flex-direction-nav a' );
+			if ( navLinks.length ) {
+				navLinks.forEach( l => {
+					var firstImage = l.parentNode.parentNode.parentNode.querySelector('.slides li:first-child img');
+					if ( firstImage ) {
+						var h = firstImage.style.height;
+						if ( '' === h ) {
+							h = firstImage.clientHeight + 'px';
+						}
+						if ( '0px' !== h ) {
+							l.style.lineHeight = '' !== h ? h : '112.5px';
+						}
+					}
+				});
+			}
 		}
 	});
 });

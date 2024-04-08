@@ -36,10 +36,10 @@ class Inventory_Presser_Shortcode_Slider {
 	public function content( $atts ) {
 		$atts = shortcode_atts(
 			array(
-				'per_page' => 10,
-				'captions' => 'true',
-				'orderby'  => 'rand',
-				'order'    => 'ASC',
+				'captions'  => 'true',
+				'orderby'   => 'rand',
+				'order'     => 'ASC',
+				'showcount' => 3, // How many vehicles are shown at one time?
 			),
 			$atts,
 			'inventory_slider'
@@ -54,20 +54,34 @@ class Inventory_Presser_Shortcode_Slider {
 			return '';
 		}
 
-		// Need flexslider for this content
-		wp_enqueue_script( 'invp-flexslider' );
+		if ( ! wp_script_is( 'invp-slider', 'registered' ) ) {
+			Inventory_Presser_Plugin::include_scripts_and_styles();
+		}
+		// Need flexslider for this content.
+		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );
+		wp_enqueue_style( 'invp-slider' );
+		// Provide one of the widget settings to JavaScript.
+		wp_add_inline_script(
+			'invp-slider',
+			'const widget_slider = ' . wp_json_encode(
+				array(
+					'showcount' => $atts['showcount'],
+				)
+			),
+			'before'
+		);
+		wp_enqueue_script( 'invp-slider' );
 
-		$flex_html = '<div class="flexslider flex-native">'
+		$flex_html = '<div class="widget__invp_slick"><div id="slider-width"></div><div id="widget_slider" class="flexslider flex-native">'
 		. '<ul class="slides">';
 
 		foreach ( $inventory_ids as $inventory_id ) {
 			$flex_html .= sprintf(
 				'<li><a class="flex-link" href="%s">'
-				. '<div class="grid-image" style="background-image: url(\'%s\');">'
-				. '</div>',
+				. '%s',
 				get_the_permalink( $inventory_id ),
-				invp_get_the_photo_url( 'large', $inventory_id )
+				get_the_post_thumbnail( $inventory_id, 'large' )
 			);
 
 			if ( $atts['captions'] ) {
@@ -80,7 +94,7 @@ class Inventory_Presser_Shortcode_Slider {
 			$flex_html .= '</a></li>';
 		}
 
-		return $flex_html . '</ul></div>';
+		return $flex_html . '</ul></div></div>';
 	}
 
 	public static function get_vehicle_IDs( $shortcode_atts ) {
