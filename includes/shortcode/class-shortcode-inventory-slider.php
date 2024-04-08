@@ -9,20 +9,16 @@ defined( 'ABSPATH' ) || exit;
 class Inventory_Presser_Shortcode_Slider {
 
 	/**
-	 * add
-	 *
 	 * Adds two shortcodes
 	 *
 	 * @return void
 	 */
-	function add() {
+	public function add() {
 		add_shortcode( 'invp-inventory-slider', array( $this, 'content' ) );
 		add_shortcode( 'invp_inventory_slider', array( $this, 'content' ) );
 	}
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks that power the shortcode
 	 *
 	 * @return void
@@ -32,16 +28,12 @@ class Inventory_Presser_Shortcode_Slider {
 	}
 
 	/**
-	 * content
-	 *
 	 * Creates the HTML content of the shortcode
 	 *
 	 * @param  array $atts
 	 * @return string HTML that renders a vehicle photo flexslider
 	 */
-	function content( $atts ) {
-
-		// Canvass shortcode attributes
+	public function content( $atts ) {
 		$atts = shortcode_atts(
 			array(
 				'per_page' => 10,

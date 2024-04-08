@@ -20,15 +20,13 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 
 
 		/**
-		 * extract_make
-		 *
 		 * Finds the vehicle make from the request whether it was a search or a
 		 * request for a specific vehicle that no longer exists.
 		 *
-		 * @param  mixed $wp_obj
+		 * @param  WP $wp_obj Current WordPress environment instance (passed by reference).
 		 * @return string A vehicle manufacturer name
 		 */
-		function extract_make( $wp_obj ) {
+		protected function extract_make( $wp_obj ) {
 
 			if ( ! $this->is_request_for_vehicle( $wp_obj ) ) {
 				return '';
@@ -55,8 +53,6 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 		}
 
 		/**
-		 * hooks
-		 *
 		 * Adds hooks
 		 *
 		 * @return void
@@ -68,22 +64,20 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 		/**
 		 * is_request_for_vehicle
 		 *
-		 * @param  mixed $wp_obj
+		 * @param  WP $wp_obj Current WordPress environment instance (passed by reference).
 		 * @return bool
 		 */
-		function is_request_for_vehicle( $wp_obj ) {
+		protected function is_request_for_vehicle( $wp_obj ) {
 			return isset( $wp_obj->query_vars ) && isset( $wp_obj->query_vars['post_type'] )
-			&& INVP::POST_TYPE == $wp_obj->query_vars['post_type'];
+			&& INVP::POST_TYPE === $wp_obj->query_vars['post_type'];
 		}
 
 		/**
-		 * maybe_redirect
-		 *
 		 * Checks to see if the request is for a vehicle that no longer exists.
 		 * If it was, it decides where to redirect the user and performs that
 		 * redirect.
 		 *
-		 * @param  mixed $wp_obj
+		 * @param  WP $wp_obj Current WordPress environment instance (passed by reference).
 		 * @return void
 		 */
 		public function maybe_redirect( $wp_obj ) {

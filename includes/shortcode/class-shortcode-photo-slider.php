@@ -32,27 +32,24 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 	}
 
 	/**
-	 * content
-	 *
 	 * Creates the HTML content of the shortcode
 	 *
-	 * @param  array $atts
+	 * @param  array $atts Shortcode attributes array.
 	 * @return string HTML that renders a vehicle photo flexslider
 	 */
-	function content( $atts ) {
-		// Canvass shortcode attributes
+	public function content( $atts ) {
 		$atts = shortcode_atts(
 			array(
 				'include_carousel' => true,
 			),
 			$atts,
 			'photo_slider'
-		); // Use shortcode_atts_inventory_slider to filter the incoming attributes
+		); // Use shortcode_atts_inventory_slider to filter the incoming attributes.
 
 		// Parse boolean values to make life easy on users.
 		$atts['include_carousel'] = filter_var( $atts['include_carousel'], FILTER_VALIDATE_BOOLEAN );
 
-		// Need flexslider for this content
+		// Need flexslider for this content.
 		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );
 		wp_enqueue_script( 'invp-flexslider', '', array(), false, true );
