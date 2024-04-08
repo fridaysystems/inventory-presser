@@ -10,7 +10,7 @@ function invpFlexsliderDoneResizing() {
 }
 
 window.addEventListener( 'load', function() {
-	jQuery('.flexslider').not('#carousel').flexslider({
+	jQuery('#slider.flexslider').not('#carousel').flexslider({
 		animation: 'slide',
 		animationSpeed: invp.is_singular ? 200 : 300,
 		slideshowSpeed: 3500,
@@ -58,7 +58,10 @@ window.addEventListener( 'load', function() {
 	window.invp.resizeObserver = new ResizeObserver(entries => {
 		window.dispatchEvent(new Event('resize'));
 	});
-	window.invp.resizeObserver.observe(document.querySelector('.flex-active-slide img'));
+	var activeSlide = document.querySelector('#slider .flex-active-slide img');
+	if ( activeSlide ) {
+		window.invp.resizeObserver.observe(activeSlide);
+	}
 });
 function flexsliderMaybeShrinkFrame() {
 	// Is the slider wider than the width of the first image?
@@ -107,9 +110,9 @@ function flexsliderMaybeResizeCurrentImage() {
 	}
 
 	// When the slide changes, reset the next/prev text line-height.
-	document.querySelectorAll('.flexslider:not(#carousel) .flex-direction-nav a').forEach( a => a.style.lineHeight = activeSlide.height + 'px' );
+	document.querySelectorAll('#slider.flexslider:not(#carousel) .flex-direction-nav a').forEach( a => a.style.lineHeight = activeSlide.height + 'px' );
 	// Resize the whole slider based on the height of the current image.
-	document.querySelector('.flexslider:not(#carousel) .flex-viewport').height = activeSlide.height + 'px';
+	document.querySelector('#slider.flexslider:not(#carousel) .flex-viewport').height = activeSlide.height + 'px';
 }
 
 function flexsliderNavigateToImage( evt ) {
@@ -228,10 +231,10 @@ function flexsliderPopIn() {
 }
 
 function flexsliderStylePreviousNext() {
-	var navLinks = document.querySelectorAll( '.flexslider .flex-direction-nav a' );
+	var navLinks = document.querySelectorAll( '#slider.flexslider .flex-direction-nav a' );
 	if ( navLinks.length ) {
 		navLinks.forEach( l => {
-			var firstImage = l.parentNode.parentNode.parentNode.querySelector('.slides li:first-child img');
+			var firstImage = l.parentNode.parentNode.parentNode.querySelector('#slider .slides li:first-child img');
 			if ( firstImage ) {
 				var h = firstImage.style.height;
 				if ( '' === h ) {
