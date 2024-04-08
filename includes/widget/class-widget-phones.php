@@ -274,7 +274,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance               = array();
-		$instance['title']      = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['title']      = ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
 		$instance['format']     = ( ! empty( $new_instance['format'] ) ) ? $new_instance['format'] : current( array_keys( $this->formats() ) );
 		$instance['cb_display'] = ( ! empty( $new_instance['cb_display'] ) ) ? $new_instance['cb_display'] : array();
 		return $instance;

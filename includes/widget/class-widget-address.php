@@ -155,7 +155,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance                   = array();
-		$instance['title']          = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['title']          = ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
 		$instance['cb_display']     = ( ! empty( $new_instance['cb_display'] ) ) ? $new_instance['cb_display'] : array();
 		$instance['cb_single_line'] = ( ! empty( $new_instance['cb_single_line'] ) ) ? $new_instance['cb_single_line'] : '';
 		return $instance;

@@ -338,10 +338,10 @@ class Inventory_Presser_Slider extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance                    = array();
-		$instance['title']           = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['showcount']       = ( ! empty( $new_instance['showcount'] ) ) ? strip_tags( $new_instance['showcount'] ) : 3;
-		$instance['featured_select'] = ( ! empty( $new_instance['featured_select'] ) ) ? strip_tags( $new_instance['featured_select'] ) : '';
-		$instance['showtext']        = ( ! empty( $new_instance['showtext'] ) ) ? strip_tags( $new_instance['showtext'] ) : '';
+		$instance['title']           = ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
+		$instance['showcount']       = ( ! empty( $new_instance['showcount'] ) ) ? wp_strip_all_tags( $new_instance['showcount'] ) : 3;
+		$instance['featured_select'] = ( ! empty( $new_instance['featured_select'] ) ) ? wp_strip_all_tags( $new_instance['featured_select'] ) : '';
+		$instance['showtext']        = ( ! empty( $new_instance['showtext'] ) ) ? wp_strip_all_tags( $new_instance['showtext'] ) : '';
 		$instance['cb_showtitle']    = ( ! empty( $new_instance['cb_showtitle'] ) ) ? $new_instance['cb_showtitle'] : '';
 		$instance['cb_showprice']    = ( ! empty( $new_instance['cb_showprice'] ) ) ? $new_instance['cb_showprice'] : '';
 		return $instance;

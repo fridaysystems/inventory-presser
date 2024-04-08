@@ -156,10 +156,10 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 		$image_keys               = array_keys( $this->images() );
 		$instance                 = array();
-		$instance['title']        = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['before_image'] = ( ! empty( $new_instance['before_image'] ) ) ? strip_tags( $new_instance['before_image'] ) : '';
-		$instance['image']        = ( ! empty( $new_instance['image'] ) ) ? strip_tags( $new_instance['image'] ) : $image_keys[0];
-		$instance['after_image']  = ( ! empty( $new_instance['after_image'] ) ) ? strip_tags( $new_instance['after_image'] ) : '';
+		$instance['title']        = ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
+		$instance['before_image'] = ( ! empty( $new_instance['before_image'] ) ) ? wp_strip_all_tags( $new_instance['before_image'] ) : '';
+		$instance['image']        = ( ! empty( $new_instance['image'] ) ) ? wp_strip_all_tags( $new_instance['image'] ) : $image_keys[0];
+		$instance['after_image']  = ( ! empty( $new_instance['after_image'] ) ) ? wp_strip_all_tags( $new_instance['after_image'] ) : '';
 		return $instance;
 	}
 }

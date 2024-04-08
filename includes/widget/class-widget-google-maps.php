@@ -140,7 +140,7 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		return array(
-			'title'         => ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '',
+			'title'         => ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '',
 			'location_slug' => ( ! empty( $new_instance['location_slug'] ) ) ? $new_instance['location_slug'] : '',
 		);
 	}

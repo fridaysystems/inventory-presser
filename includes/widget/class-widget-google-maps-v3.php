@@ -203,8 +203,8 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		return array(
-			'title'          => ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '',
-			'api_key'        => ( ! empty( $new_instance['api_key'] ) ) ? strip_tags( $new_instance['api_key'] ) : '',
+			'title'          => ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '',
+			'api_key'        => ( ! empty( $new_instance['api_key'] ) ) ? wp_strip_all_tags( $new_instance['api_key'] ) : '',
 			'location_slugs' => ( ! empty( $new_instance['location_slugs'] ) ) ? $new_instance['location_slugs'] : '',
 		);
 	}
