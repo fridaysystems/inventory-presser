@@ -1112,6 +1112,18 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			wp_register_style( 'invp-epa-fuel-economy', plugins_url( "css/widget-epa-fuel-economy{$min}.css", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION );
 			wp_register_style( 'invp-slider', plugins_url( "css/widget-slider{$min}.css", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION );
 
+			// Register a script without a handle for our inline invp object.
+			wp_register_script( 'invp', '' );
+			wp_add_inline_script(
+				'invp',
+				'var invp = ' . wp_json_encode(
+					array(
+						'meta_prefix' => INVP::meta_prefix(), // Used by classic-editor.js & editor-sidebar.js.
+						'is_singular' => is_singular( INVP::POST_TYPE ), // Used by flexslider.js.
+					)
+				) . ';'
+			);
+
 			/**
 			 * Register flexslider and provide overrides for scripts and styles
 			 */
@@ -1119,7 +1131,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			wp_register_script(
 				'flexslider',
 				plugins_url( "/vendor/woocommerce/FlexSlider/jquery.flexslider{$min_dash}.js", INVP_PLUGIN_FILE_PATH ),
-				array( 'jquery' ),
+				array( 'invp', 'jquery' ),
 				INVP_PLUGIN_VERSION,
 				true
 			);
@@ -1177,26 +1189,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				null,
 				INVP_PLUGIN_VERSION
 			);
-
-			/**
-			 * Make the meta prefix to the front-end (the object name invp is
-			 * localized for the admin dashboard in
-			 * Inventory_Presser_Admin_Customize_Dashboard)
-			 */
-			if ( ! is_admin() ) {
-				?>
-				<script> var invp = 
-				<?php
-				echo wp_json_encode(
-					array(
-						'meta_prefix' => INVP::meta_prefix(),
-						'is_singular' => is_singular( INVP::POST_TYPE ),
-					)
-				);
-				?>
-				; </script>
-				<?php
-			}
 		}
 
 		/**
