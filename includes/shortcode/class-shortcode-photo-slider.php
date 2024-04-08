@@ -53,7 +53,7 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 		// Need flexslider for this content.
 		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );
-		wp_enqueue_script( 'invp-flexslider', '', array(), false, true );
+		wp_enqueue_script( 'invp-flexslider' );
 
 		// Was the post ID passed in as an argument?
 		if ( ! empty( $atts['id'] ) ) {
