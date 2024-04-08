@@ -628,6 +628,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				add_action( 'pre_get_posts', array( $this, 'modify_query_for_max_price' ), 99, 1 );
 			}
 
+			// Register scripts and styles.
+			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'include_scripts_and_styles' ) );
+			add_action( 'enqueue_block_assets', array( __CLASS__, 'include_scripts_and_styles' ) );
+
 			// Allow custom fields to be searched.
 			if ( class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 				$add_custom_fields_to_search = new Add_Custom_Fields_To_Search();
@@ -651,10 +655,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$redirect_404_vehicles = new Redirect_404_Vehicles();
 				$redirect_404_vehicles->add_hooks();
 			}
-
-			// Register scripts and styles on the frontend and in the block editor.
-			add_action( 'wp_enqueue_scripts', array( $this, 'include_scripts_and_styles' ), 11 );
-			add_action( 'enqueue_block_assets', array( $this, 'include_scripts_and_styles' ), 11 );
 
 			// Modify the URL of an "Email a Friend" menu item on the "Vehicle Details Buttons" menu.
 			if ( class_exists( 'Inventory_Presser_Email_A_Friend' ) ) {
@@ -1091,7 +1091,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 *
 		 * @return void
 		 */
-		public function include_scripts_and_styles() {
+		public static function include_scripts_and_styles() {
 
 			// This method might have run already.
 			if ( wp_script_is( 'invp-slider', 'registered' ) ) {
