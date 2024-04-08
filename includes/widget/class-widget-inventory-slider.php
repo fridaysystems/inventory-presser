@@ -18,8 +18,6 @@ class Inventory_Presser_Slider extends WP_Widget {
 	);
 
 	/**
-	 * __construct
-	 *
 	 * Calls the parent class' contructor and adds a hook that will delete the
 	 * option that stores this widget's data when the plugin's delete all data
 	 * method is run.
@@ -40,8 +38,6 @@ class Inventory_Presser_Slider extends WP_Widget {
 	}
 
 	/**
-	 * delete_option
-	 *
 	 * Deletes the option that stores this widget's data.
 	 *
 	 * @return void
@@ -52,8 +48,6 @@ class Inventory_Presser_Slider extends WP_Widget {
 
 
 	/**
-	 * featured_select_options
-	 *
 	 * Creates an array of criteria options that powers the widget.
 	 *
 	 * @return array
@@ -68,8 +62,6 @@ class Inventory_Presser_Slider extends WP_Widget {
 	}
 
 	/**
-	 * include_scripts
-	 *
 	 * Enqueues stylesheets and JavaScripts
 	 *
 	 * @return void
@@ -96,8 +88,6 @@ class Inventory_Presser_Slider extends WP_Widget {
 	}
 
 	/**
-	 * widget
-	 *
 	 * Outputs the widget front-end HTML
 	 *
 	 * @param  array $args
@@ -210,8 +200,6 @@ class Inventory_Presser_Slider extends WP_Widget {
 	}
 
 	/**
-	 * form
-	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance
@@ -328,8 +316,6 @@ class Inventory_Presser_Slider extends WP_Widget {
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
 	 * @param  array $new_instance
