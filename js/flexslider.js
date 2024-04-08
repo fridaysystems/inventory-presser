@@ -231,10 +231,10 @@ function flexsliderPopIn() {
 }
 
 function flexsliderStylePreviousNext() {
-	var navLinks = document.querySelectorAll( '#slider.flexslider .flex-direction-nav a' );
+	var navLinks = document.querySelectorAll( '#slider.flexslider .flex-direction-nav a, #carousel.flexslider .flex-direction-nav a' );
 	if ( navLinks.length ) {
 		navLinks.forEach( l => {
-			var firstImage = l.parentNode.parentNode.parentNode.querySelector('#slider .slides li:first-child img');
+			var firstImage = l.parentNode.parentNode.parentNode.querySelector('.slides li:first-child img');
 			if ( firstImage ) {
 				var h = firstImage.style.height;
 				if ( '' === h ) {

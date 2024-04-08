@@ -27,39 +27,42 @@
 #widget_slider .flex-direction-nav a{
 	top: 0;
 	bottom: 0;
-}
-
-.flex-direction-nav a {
+	opacity: .6;
 	height: 100%;
+	width: 30px;
 	transition: none;
-	opacity: 1;
 	color: #fff;
 	margin: 0;
 }
-.flex-direction-nav a:before{
-	color: #fff;
-	text-shadow: -1px 0 #666, 0 1px #666, 1px 0 #666, 0 -1px #666;
-}
-.flexslider:hover .flex-direction-nav .flex-prev,
-.flexslider:hover .flex-direction-nav .flex-next{
+#widget_slider .flex-direction-nav a:hover{
 	opacity: 1;
 }
-ul.flex-direction-nav li{
+
+#widget_slider .flex-direction-nav a:before{
+	color: #fff;
+	text-shadow: -1px 0 #666, 0 1px #666, 1px 0 #666, 0 -1px #666;
+	font-size: 25px;
+}
+#widget_slider .flexslider:hover .flex-direction-nav .flex-prev,
+#widget_slider .flexslider:hover .flex-direction-nav .flex-next{
+	opacity: 1;
+}
+#widget_slider ul.flex-direction-nav li{
 	line-height: 1;
 }
 #widget_slider ul.flex-direction-nav li::marker{
 	content: none;
 }
-.flex-direction-nav a:focus{
+#widget_slider .flex-direction-nav a:focus{
 	outline: none;
 }
-.flex-direction-nav .flex-next,
-.flexslider:hover .flex-direction-nav .flex-next{
+#widget_slider .flex-direction-nav .flex-next,
+#widget_slider .flexslider:hover .flex-direction-nav .flex-next{
 	right: 0;
 	padding-right: .5em;
 }
-.flex-direction-nav .flex-prev,
-.flexslider:hover .flex-direction-nav .flex-prev{
+#widget_slider .flex-direction-nav .flex-prev,
+#widget_slider .flexslider:hover .flex-direction-nav .flex-prev{
 	left: 0;
 	padding-left: .5em;
 }

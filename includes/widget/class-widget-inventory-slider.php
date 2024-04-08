@@ -176,7 +176,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
-		echo '<div id="slider-width"></div><div id="slider" class="flexslider"><ul class="slides">';
+		echo '<div id="slider-width"></div><div id="widget_slider" class="flexslider"><ul class="slides">';
 
 		foreach ( $inventory_ids as $inventory_id ) {
 			printf(
