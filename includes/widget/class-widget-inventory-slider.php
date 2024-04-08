@@ -11,7 +11,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 
 	const ID_BASE = '_invp_slick';
 
-	var $text_displays = array(
+	protected $text_displays = array(
 		'none'   => 'None',
 		'top'    => 'Top',
 		'bottom' => 'Bottom',
