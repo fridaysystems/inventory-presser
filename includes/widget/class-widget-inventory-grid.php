@@ -186,9 +186,9 @@ class Inventory_Presser_Grid extends WP_Widget {
 
 		if ( $args['show_button'] ) {
 			$grid_html .= sprintf(
-				'<div class="invp-grid-button"><button onclick="location.href=\'%s\';" class="button">%s</button></div>',
-				get_post_type_archive_link( INVP::POST_TYPE ),
-				__( 'Full Inventory', 'inventory-presser' )
+				'<div class="invp-grid-button"><button onclick="location.href=\'%s\';" class="button wp-element-button">%s</button></div>',
+				esc_url( get_post_type_archive_link( INVP::POST_TYPE ) ),
+				esc_html__( 'Full Inventory', 'inventory-presser' )
 			);
 		}
 
