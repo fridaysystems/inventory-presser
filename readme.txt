@@ -109,7 +109,7 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 * [Fixed] Fixes a bug when saving vehicles to prevent duplicate meta values for meta registered as singles.
 * [Fixed] Fixes a bug where all search queries sitewide were joined to the taxonomy term tables. Vehicle data in terms is mirrored in post meta, so this was no longer necessary.
 * [Fixed] Fixes a JavaScript bug when loading photo sliders on vehicle singles where the vehicle only has one photo and a carousel is not displayed.
-* [Removed] Stops adding a querystring containing the photo has to photo link URLs.
+* [Removed] Stops adding a querystring containing the photo hash to photo link URLs.
 
 = 14.12.1 =
 * [Fixed] Fixes a bug introduced in 14.12.0 in the Grid widget when Show Captions is enabled.
