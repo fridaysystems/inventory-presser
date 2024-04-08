@@ -15,10 +15,11 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	 * @return void
 	 */
 	public function sidebar_plugin_register() {
+		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_script(
 			'invp-plugin-sidebar',
-			plugins_url( '/js/editor-sidebar.min.js', INVP_PLUGIN_FILE_PATH ),
-			array( 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-data', 'wp-hooks', 'wp-i18n' ),
+			plugins_url( "/js/editor-sidebar{$min}.js", INVP_PLUGIN_FILE_PATH ),
+			array( 'invp', 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-data', 'wp-hooks', 'wp-i18n' ),
 			INVP_PLUGIN_VERSION,
 			true
 		);
