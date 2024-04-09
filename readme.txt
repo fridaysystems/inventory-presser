@@ -92,10 +92,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 = 14.12.6 =
 * [Added] Adds an ID parameter to the [invp_photo_slider] shortcode so it can be used on any page.
-* [Added] Adds a showcount parameter to the [invp_inventory_slider] shortcode.
-* [Fixed] Fixes bugs in the [invp_inventory_slider] shortcode so it operates more closely like the widget.
 * [Fixed] Fixes a bug that caused an intermittent error in the Block editor "Updating failed. The response is not a valid JSON response."
-* [Fixed] Only redirect 404 vehicle requests on the front end.
+* [Fixed] Fixes bugs in the [invp_inventory_slider] shortcode so it operates more closely like the widget. Adds a showcount parameter
+* [Fixed] Fixes a bug that redirected 404 vehicle requests in the dashboard to the front end error page instead of the empty posts list.
 
 = 14.12.5 =
 * [Added] Adds support for marking vehicles "Sale pending". Adds a term to the Availability taxonomy during plugin activation. Adds a template tag invp_is_pending(). Shows "Sale pending" instead of any price.
