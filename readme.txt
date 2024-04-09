@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales, car lot,
 Requires at least: 5.0.0
 Tested up to: 6.5.0
 Requires PHP: 7.0.0
-Stable tag: 14.12.5
+Stable tag: 14.12.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,11 @@ Manage and market dealership inventory with listings and photo sliders built on 
 1. Visit yoursite.com/inventory to see the built-in templates
 1. Design your own pages using [post meta fields](https://inventorypresser.com/docs/vehicle-post-type/) or [Elementor Dynamic Tags](https://inventorypresser.com/products/plugins/elementor-add-on/)
 1. Decide how to [manage inventory updates](https://inventorypresser.com/docs/adding-or-importing-inventory/)
+
+=== Requires 5.0.0 ===
+
+This plugin uses a few features that were launched in WordPress 5.0.0, including an Editor Sidebar and `wp_add_inline_script()` calls without sources.
+
 
 == Frequently Asked Questions ==
 
@@ -137,6 +142,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.12.6 =
+Fixes a bug that caused an intermittent error in the Block editor "Updating failed. The response is not a valid JSON response." Adds an ID parameter to the [invp_photo_slider] shortcode so it can be used on any page. Fixes bugs in the [invp_inventory_slider] shortcode so it operates more closely like the widget. Adds a showcount parameter. Fixes a bug that redirected 404 vehicle requests in the dashboard to the front end error page instead of the empty posts list.
 
 = 14.12.5 =
 Adds support for marking vehicles "Sale pending". Adds a term to the Availability taxonomy during plugin activation. Adds a template tag invp_is_pending(). Shows "Sale pending" instead of any price. Removes valid html title opening tags from readme.txt and changelog.txt. These files can more easily be more easily embedded in web pages. Changes tested up to version to 6.5.0.
