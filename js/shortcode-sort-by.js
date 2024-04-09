@@ -33,9 +33,6 @@ window.addEventListener(
 				params["orderby"] = el.value;
 				params["order"]   = el.options[el.selectedIndex].dataset.order; // jQuery(this).find(':selected').data('order');
 				var qstringarr    = [];
-				// jQuery.each(params, function(key,value){
-				// qstringarr.push(key + '=' + value);
-				// });
 				for ( var key in params ) {
 					if ( params.hasOwnProperty( key ) ) {
 						qstringarr.push( key + '=' + params[key] );
