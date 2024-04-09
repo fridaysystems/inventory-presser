@@ -35,11 +35,6 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		);
 
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
-
-		// Register script and style files for leaflet.js
-		wp_register_script( self::SCRIPT_HANDLE_LEAFLET, plugins_url( 'js/leaflet/leaflet.js', INVP_PLUGIN_FILE_PATH ) );
-		wp_register_style( self::SCRIPT_HANDLE_LEAFLET, plugins_url( 'js/leaflet/leaflet.min.css', INVP_PLUGIN_FILE_PATH ) );
-		wp_register_style( self::ID_BASE, plugins_url( 'css/widget-map.min.css', INVP_PLUGIN_FILE_PATH ) );
 	}
 
 	/**
@@ -126,14 +121,14 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			return;
 		}
 
-		// Enqueue leaflet.js scripts and styles
+		// Enqueue leaflet.js scripts and styles.
 		if ( ! wp_script_is( self::SCRIPT_HANDLE_LEAFLET ) ) {
 			wp_enqueue_script( self::SCRIPT_HANDLE_LEAFLET );
 			wp_enqueue_style( self::SCRIPT_HANDLE_LEAFLET );
 			wp_enqueue_style( self::ID_BASE );
 		}
 
-		// Include the JavaScript file that powers the map, but only once
+		// Include the JavaScript file that powers the map.
 		$handle = 'invp-maps';
 		/**
 		 * If there are two Map widgets on the same page, we need to avoid the
@@ -141,10 +136,9 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		 * produce a JavaScript error.
 		 */
 		if ( ! wp_script_is( $handle ) ) {
-			// First instance of this widget on the page
-			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-			wp_enqueue_script( $handle, plugins_url( "js/widget-map{$min}.js", INVP_PLUGIN_FILE_PATH ) );
-			// Localize an API key and the popups array we built data for JavaScript
+			// First instance of this widget on the page.
+			wp_enqueue_script( $handle );
+			// Localize an API key and the popups array for JavaScript.
 			wp_add_inline_script(
 				$handle,
 				'const invp_maps = ' . wp_json_encode(
@@ -156,7 +150,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 				'before'
 			);
 		} else {
-			// There is another Map widget on this page already
+			// There is another Map widget on this page already.
 			foreach ( $popups as $popup ) {
 				wp_add_inline_script( $handle, 'invp_maps.popups.push( ' . wp_json_encode( $popup ) . ' );', 'before' );
 			}

@@ -39,12 +39,6 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 				'show_instance_in_rest' => true,
 			) // Args
 		);
-
-		// include scripts if widget is used
-		if ( is_active_widget( false, false, self::ID_BASE ) ) {
-			add_action( 'wp_enqueue_scripts', array( $this, 'load_javascript' ) );
-		}
-
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
@@ -157,16 +151,6 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	}
 
 	/**
-	 * Includes a JavaScript file that powers the widget
-	 *
-	 * @return void
-	 */
-	function load_javascript() {
-		wp_register_script( 'order-by-widget-javascript', plugins_url( 'js/order-by-post-meta-widget.min.js', INVP_PLUGIN_FILE_PATH ) );
-		wp_enqueue_script( 'order-by-widget-javascript' );
-	}
-
-	/**
 	 * Crudely takes a post meta key, removes underscores, and converts the
 	 * string to Title Case.
 	 *
@@ -216,6 +200,7 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
+		wp_enqueue_script( 'order-by-widget-javascript' );
 		extract( $args );
 
 		$title = apply_filters( 'widget_title', ( isset( $instance['title'] ) ? $instance['title'] : '' ) );

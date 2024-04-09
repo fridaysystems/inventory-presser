@@ -1107,13 +1107,33 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * widgets or shortcodes are used.
 			 */
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-			wp_register_style( 'invp-grid', plugins_url( "css/widget-grid{$min}.css", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION );
-			wp_register_style( 'invp-maximum-price-filters', plugins_url( "css/widget-maximum-price-filters{$min}.css", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION );
-			wp_register_style( 'invp-epa-fuel-economy', plugins_url( "css/widget-epa-fuel-economy{$min}.css", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION );
-			wp_register_style( 'invp-slider', plugins_url( "css/widget-slider{$min}.css", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION );
+			wp_register_style(
+				'invp-grid',
+				plugins_url( "css/widget-grid{$min}.css", INVP_PLUGIN_FILE_PATH ),
+				array(),
+				INVP_PLUGIN_VERSION
+			);
+			wp_register_style(
+				'invp-maximum-price-filters',
+				plugins_url( "css/widget-maximum-price-filters{$min}.css", INVP_PLUGIN_FILE_PATH ),
+				array(),
+				INVP_PLUGIN_VERSION
+			);
+			wp_register_style(
+				'invp-epa-fuel-economy',
+				plugins_url( "css/widget-epa-fuel-economy{$min}.css", INVP_PLUGIN_FILE_PATH ),
+				array(),
+				INVP_PLUGIN_VERSION
+			);
+			wp_register_style(
+				'invp-slider',
+				plugins_url( "css/widget-slider{$min}.css", INVP_PLUGIN_FILE_PATH ),
+				array(),
+				INVP_PLUGIN_VERSION
+			);
 
 			// Register a script without a handle for our inline invp object.
-			wp_register_script( 'invp', '' );
+			wp_register_script( 'invp', '', array(), INVP_PLUGIN_VERSION, true );
 			wp_add_inline_script(
 				'invp',
 				'var invp = ' . wp_json_encode(
@@ -1160,16 +1180,38 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				true
 			);
 
-			if ( ! empty( $min ) ) {
-				wp_register_style( 'flexslider', plugins_url( "/css/woocommerce-flexslider{$min}.css", INVP_PLUGIN_FILE_PATH ), null, INVP_PLUGIN_VERSION );
-			} else {
-				wp_register_style( 'flexslider', plugins_url( '/vendor/woocommerce/FlexSlider/flexslider.css', INVP_PLUGIN_FILE_PATH ), null, INVP_PLUGIN_VERSION );
-			}
-			// Our overrides.
-			wp_register_style( 'invp-flexslider', plugins_url( "/css/flexslider{$min}.css", INVP_PLUGIN_FILE_PATH ), array( 'flexslider' ), INVP_PLUGIN_VERSION );
+			// Sort by Vehicle Attributes (Order By) widget.
+			wp_register_script(
+				'order-by-widget-javascript',
+				plugins_url( "js/order-by-post-meta-widget{$min}.js", INVP_PLUGIN_FILE_PATH ),
+				array(),
+				INVP_PLUGIN_VERSION,
+				true
+			);
+
+			// Flexslider.
+			wp_register_style(
+				'flexslider',
+				plugins_url( ! empty( $min ) ? "/css/woocommerce-flexslider{$min}.css" : '/vendor/woocommerce/FlexSlider/flexslider.css', INVP_PLUGIN_FILE_PATH ),
+				null,
+				INVP_PLUGIN_VERSION
+			);
+			// Our Flexslider overrides.
+			wp_register_style(
+				'invp-flexslider',
+				plugins_url( "/css/flexslider{$min}.css", INVP_PLUGIN_FILE_PATH ),
+				array( 'flexslider' ),
+				INVP_PLUGIN_VERSION
+			);
 
 			// Register the iFrameResizer.js script for use by our [invp_iframe] shortcode and Iframe block.
-			wp_register_script( 'invp-iframe-resizer', plugins_url( "/js/iframe-resizer/iframeResizer{$min}.js", INVP_PLUGIN_FILE_PATH ), array(), INVP_PLUGIN_VERSION, true );
+			wp_register_script(
+				'invp-iframe-resizer',
+				plugins_url( "/js/iframe-resizer/iframeResizer{$min}.js", INVP_PLUGIN_FILE_PATH ),
+				array(),
+				INVP_PLUGIN_VERSION,
+				true
+			);
 
 			/**
 			 * Register a stylesheet that will be used by two shortcodes,
@@ -1195,6 +1237,34 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'invp_single_vehicle',
 				plugins_url( "/css/shortcode-single-vehicle{$min}.css", INVP_PLUGIN_FILE_PATH ),
 				null,
+				INVP_PLUGIN_VERSION
+			);
+
+			// Register leaflet.js script and style files used in Map widget.
+			wp_register_script(
+				Inventory_Presser_Map_Widget::SCRIPT_HANDLE_LEAFLET,
+				plugins_url( 'js/leaflet/leaflet.js', INVP_PLUGIN_FILE_PATH ),
+				array(),
+				INVP_PLUGIN_VERSION,
+				true
+			);
+			wp_register_script(
+				'invp-maps',
+				plugins_url( "js/widget-map{$min}.js", INVP_PLUGIN_FILE_PATH ),
+				array( Inventory_Presser_Map_Widget::SCRIPT_HANDLE_LEAFLET ),
+				INVP_PLUGIN_VERSION,
+				true
+			);
+			wp_register_style(
+				Inventory_Presser_Map_Widget::SCRIPT_HANDLE_LEAFLET,
+				plugins_url( "js/leaflet/leaflet{$min}.css", INVP_PLUGIN_FILE_PATH ),
+				array(),
+				INVP_PLUGIN_VERSION
+			);
+			wp_register_style(
+				Inventory_Presser_Map_Widget::ID_BASE,
+				plugins_url( "css/widget-map{$min}.css", INVP_PLUGIN_FILE_PATH ),
+				array(),
 				INVP_PLUGIN_VERSION
 			);
 		}
