@@ -40,6 +40,9 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 
 		$image_url_lists = invp_get_the_photos( array( 'full', 'large', 'thumb' ) );
 
+		if ( ! wp_style_is( 'invp-attribute-table', 'registered' ) ) {
+			Inventory_Presser_Plugin::include_scripts_and_styles();
+		}
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );

@@ -48,6 +48,9 @@ class Inventory_Presser_Shortcode_Archive {
 	 * @return string HTML that renders an archive-vehicle template
 	 */
 	public function content( $atts ) {
+		if ( ! wp_style_is( 'invp-attribute-table', 'registered' ) ) {
+			Inventory_Presser_Plugin::include_scripts_and_styles();
+		}
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'invp_archive_vehicle' );
 

@@ -60,6 +60,9 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 		// Parse boolean values to make life easy on users.
 		$atts['show_titles'] = filter_var( $atts['show_titles'], FILTER_VALIDATE_BOOLEAN );
 
+		if ( ! wp_style_is( 'invp-attribute-table', 'registered' ) ) {
+			Inventory_Presser_Plugin::include_scripts_and_styles();
+		}
 		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'invp_archive_vehicle' );
 

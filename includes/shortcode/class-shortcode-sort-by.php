@@ -78,6 +78,9 @@ class Inventory_Presser_Shortcode_Sort_By {
 			return '';
 		}
 
+		if ( ! wp_script_is( 'invp_sort_by', 'registered' ) ) {
+			Inventory_Presser_Plugin::include_scripts_and_styles();
+		}
 		wp_enqueue_script( 'invp_sort_by' );
 
 		$html = '';

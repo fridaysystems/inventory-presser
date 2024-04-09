@@ -50,6 +50,9 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 		// Parse boolean values to make life easy on users.
 		$atts['include_carousel'] = filter_var( $atts['include_carousel'], FILTER_VALIDATE_BOOLEAN );
 
+		if ( ! wp_style_is( 'flexslider', 'registered' ) ) {
+			Inventory_Presser_Plugin::include_scripts_and_styles();
+		}
 		// Need flexslider for this content.
 		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );

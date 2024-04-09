@@ -43,6 +43,9 @@ class Inventory_Presser_Shortcode_Iframe {
 	 */
 	public function content( $atts ) {
 		$script_handle = 'invp-iframe-resizer';
+		if ( ! wp_script_is( $script_handle, 'registered' ) ) {
+			Inventory_Presser_Plugin::include_scripts_and_styles();
+		}
 		wp_enqueue_script( $script_handle );
 		wp_add_inline_script( $script_handle, 'iFrameResize({ log:false,sizeWidth:true });' );
 
