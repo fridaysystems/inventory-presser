@@ -1152,6 +1152,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				true
 			);
 
+			wp_register_script(
+				'invp_sort_by',
+				plugins_url( "/js/shortcode-sort-by{$min}.js", INVP_PLUGIN_FILE_PATH ),
+				array(),
+				INVP_PLUGIN_VERSION,
+				true
+			);
+
 			if ( ! empty( $min ) ) {
 				wp_register_style( 'flexslider', plugins_url( "/css/woocommerce-flexslider{$min}.css", INVP_PLUGIN_FILE_PATH ), null, INVP_PLUGIN_VERSION );
 			} else {

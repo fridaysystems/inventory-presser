@@ -25,7 +25,6 @@ class Inventory_Presser_Shortcode_Sort_By {
 	public function add_hooks() {
 		add_action( 'init', array( $this, 'add' ) );
 		add_action( 'init', array( $this, 'change_sorter_based_on_price_display' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'register_script' ) );
 	}
 
 	/**
@@ -195,22 +194,6 @@ class Inventory_Presser_Shortcode_Sort_By {
 				add_filter( 'invp_sort_dropdown_options', array( $this, 'remove_price_from_sort_dropdown' ) );
 				break;
 		}
-	}
-
-	/**
-	 * Registers a JavaScript file required for the dropdown to operate.
-	 *
-	 * @return void
-	 */
-	public function register_script() {
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script(
-			'invp_sort_by',
-			plugins_url( "/js/shortcode-sort-by$min.js", INVP_PLUGIN_FILE_PATH ),
-			array(),
-			null,
-			true
-		);
 	}
 
 	/**
