@@ -16,11 +16,13 @@ class Inventory_Presser_Admin_Bar {
 	/**
 	 * Adds a Vehicle button to the Admin Bar
 	 *
+	 * @param WP_Admin_Bar $admin_bar The WP_Admin_Bar object.
 	 * @return void
 	 */
-	function add_vehicles_to_admin_bar( $admin_bar ) {
-		// do not do this if we are already looking at the dashboard
-		if ( is_admin() ) {
+	public function add_vehicles_to_admin_bar( $admin_bar ) {
+		// Do not add an admin bar item if we are looking at the dashboard.
+		// Only show this item to users who can edit posts.
+		if ( is_admin() || ! current_user_can( 'edit_posts' ) ) {
 			return;
 		}
 
