@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales, car lot,
 Requires at least: 5.0.0
 Tested up to: 6.5.2
 Requires PHP: 7.0.0
-Stable tag: 14.12.6
+Stable tag: 14.12.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,6 +29,7 @@ Manage and market dealership inventory with listings and photo sliders built on 
 
 ### Works Well with Plugins & Themes
 
+* Multisite Compatible
 * Add vehicles to lead forms in [Contact Form 7](https://inventorypresser.com/docs/contact-form-7-integration/contact-form-7-vehicle-form-tag/) & [WPForms](https://inventorypresser.com/docs/capturing-vehicle-leads-with-wpforms/)
 * Supports Classic Editor
 * [Elementor Dynamic Tags](https://inventorypresser.com/products/plugins/elementor-add-on/) add-on available
@@ -95,6 +96,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Changelog ==
 
+= 14.12.7 =
+* [Fixed] Fixes a bug introduced in 14.12.6 that broke this plugin's Block Editor sidebar.
+
 = 14.12.6 =
 * [Added] Adds an ID parameter to the [invp_photo_slider] shortcode so it can be used on any page.
 * [Fixed] Fixes a bug that caused an intermittent error in the Block editor "Updating failed. The response is not a valid JSON response."
@@ -144,6 +148,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.12.7 =
+Fixes a bug introduced in 14.12.6 that broke this plugin's Block Editor sidebar.
 
 = 14.12.6 =
 Fixes a bug that caused an intermittent error in the Block editor "Updating failed. The response is not a valid JSON response." Stops showing the Vehicles admin bar item to logged in users who cannot edit posts. Adds an ID parameter to the [invp_photo_slider] shortcode so it can be used on any page. Fixes bugs in the [invp_inventory_slider] shortcode so it operates more closely like the widget. Adds a showcount parameter. Fixes a bug that redirected 404 vehicle requests in the dashboard to the front end error page instead of the empty posts list. Changes tested up to version to 6.5.2.
