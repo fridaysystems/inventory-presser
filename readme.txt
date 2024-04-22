@@ -62,7 +62,7 @@ Manage and market dealership inventory with listings and photo sliders built on 
 1. Design your own pages using [post meta fields](https://inventorypresser.com/docs/vehicle-post-type/) or [Elementor Dynamic Tags](https://inventorypresser.com/products/plugins/elementor-add-on/)
 1. Decide how to [manage inventory updates](https://inventorypresser.com/docs/adding-or-importing-inventory/)
 
-=== Requires 5.0.0 ===
+### Requires 5.0.0
 
 This plugin uses a few features that were launched in WordPress 5.0.0, including an Editor Sidebar and `wp_add_inline_script()` calls without sources.
 
@@ -95,6 +95,10 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 14.13.0 =
+* [Added] Updates WP All Import integration to detect comma-delimited options. Previously, only pipe-delimited options were split into the meta field during imports.
+* [Fixed] Fixes a bug in the "hours today" sentence. Stops using the PHP function jddayofweek().
 
 = 14.12.7 =
 * [Fixed] Fixes a bug introduced in 14.12.6 that broke this plugin's Block Editor sidebar.
