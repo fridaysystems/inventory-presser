@@ -147,22 +147,22 @@ class Inventory_Presser_Shortcode_Hours_Today {
 	 * @return string A string like "Open today until 5:00pm" or "Closed until 9:00am on Monday"
 	 */
 	function create_sentence( $days ) {
-		if ( null == $days || 0 == sizeof( $days ) ) {
+		if ( null === $days || 0 === count( $days ) ) {
 			return '';
 		}
 
-		// find today
+		// Find today. It might not be in the array at all.
 		$today         = null;
-		$today_weekday = date( 'w', current_time( 'timestamp' ) ); // 0 if today is Sunday
+		$today_weekday = gmdate( 'w', current_time( 'timestamp' ) ); // 0 if today is Sunday
 		foreach ( $days as $day ) {
-			if ( $today_weekday == $day->weekday ) {
+			if ( $today_weekday === $day->weekday ) {
 				$today = $day;
 				break;
 			}
 		}
 
 		// are we open right now?
-		if ( null != $today && $today->open_right_now() ) {
+		if ( null !== $today && $today->open_right_now() ) {
 			// currently open
 			return __( 'Open today until ', 'inventory-presser' ) . $today->close_string();
 		} elseif ( null != $today && $today->open_later_today() ) {
@@ -174,9 +174,9 @@ class Inventory_Presser_Shortcode_Hours_Today {
 			return __( 'Opening at ', 'inventory-presser' ) . $open_string . __( ' today', 'inventory-presser' );
 		}
 
-		// find the next day we are open
+		// Find the next day we are open.
 		$next_open_day = self::find_next_open_day( $days );
-		if ( null == $next_open_day ) {
+		if ( null === $next_open_day ) {
 			return '';
 		}
 
@@ -214,7 +214,7 @@ class Inventory_Presser_Shortcode_Hours_Today {
 		 * Find hours for which we will create sentence(s)
 		 */
 		$hours_set = $this->find_hours_set( $atts );
-		if ( null == $hours_set ) {
+		if ( null === $hours_set ) {
 			return '';
 		}
 
@@ -332,8 +332,6 @@ class Inventory_Presser_Shortcode_Hours_Today {
 	}
 
 	/**
-	 * find_next_open_day
-	 *
 	 * Takes an array of days and finds the next day the business has hours.
 	 * Does not check if the business is still open today. Helps make the jump
 	 * from Friday to the next open day on Monday.
@@ -343,7 +341,7 @@ class Inventory_Presser_Shortcode_Hours_Today {
 	 */
 	public static function find_next_open_day( $days ) {
 		// find today
-		$today_weekday = date( 'w', current_time( 'timestamp' ) ); // 0 if today is Sunday
+		$today_weekday = gmdate( 'w', current_time( 'timestamp' ) ); // 0 if today is Sunday
 		$after_day     = null;
 		$before_day    = null;
 		$open_days     = array_filter(
@@ -353,13 +351,13 @@ class Inventory_Presser_Shortcode_Hours_Today {
 			}
 		);
 		foreach ( $open_days as $day ) {
-			if ( $day->weekday > $today_weekday && ( null == $after_day || $day->weekday < $after_day->weekday ) ) {
+			if ( $day->weekday > $today_weekday && ( null === $after_day || $day->weekday < $after_day->weekday ) ) {
 				$after_day = $day;
 			}
-			if ( $day->weekday < $today_weekday && ( null == $before_day || $day->weekday < $before_day->weekday ) ) {
+			if ( $day->weekday < $today_weekday && ( null === $before_day || $day->weekday < $before_day->weekday ) ) {
 				$before_day = $day;
 			}
 		}
-		return ( null == $after_day ? $before_day : $after_day );
+		return ( null === $after_day ? $before_day : $after_day );
 	}
 }

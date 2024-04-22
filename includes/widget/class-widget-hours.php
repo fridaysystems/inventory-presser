@@ -74,10 +74,10 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		}
 		$html .= '<div class="invp-hours">';
 
-		// get all locations
+		// Get all location taxonomy terms.
 		$location_info = get_terms(
-			'location',
 			array(
+				'taxonomy'   => 'location',
 				'fields'     => 'id=>name',
 				'hide_empty' => false,
 			)
