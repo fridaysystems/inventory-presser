@@ -187,8 +187,9 @@ class Inventory_Presser_Shortcode_Hours_Today {
 		if ( $next_open_day->is_tomorrow() ) {
 			$str .= __( ' tomorrow', 'inventory-presser' );
 		} else {
-			$str .= __( ' on ', 'inventory-presser' ) . jddayofweek( $next_open_day->weekday - 1, 1 );
+			$str .= __( ' on ', 'inventory-presser' ) . ucfirst( array_keys( INVP::weekdays() )[ $next_open_day->weekday - 1 ] );
 		}
+
 		return $str;
 	}
 
