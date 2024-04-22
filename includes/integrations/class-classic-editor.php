@@ -252,15 +252,9 @@ class Inventory_Presser_Classic_Editor {
 			array(),
 			INVP_PLUGIN_VERSION
 		);
-		wp_enqueue_script(
-			$handle,
-			plugins_url( "/js/classic-editor{$min}.js", INVP_PLUGIN_FILE_PATH ),
-			array( 'invp' ),
-			INVP_PLUGIN_VERSION,
-			true
-		);
+		wp_enqueue_script( $handle );
 
-		// Provide data to JavaScript for the editor
+		// Provide data to JavaScript for the editor.
 		wp_add_inline_script(
 			$handle,
 			'const invp_classic_editor = ' . wp_json_encode(

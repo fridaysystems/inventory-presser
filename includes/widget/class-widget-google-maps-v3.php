@@ -98,17 +98,16 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 			$popups[] = $popup;
 		}
 
-		// Enqueue JavaScript
-		wp_enqueue_script(
+		// Enqueue JavaScript.
+		wp_register_script(
 			self::ID_BASE . '_goog',
-			'https://maps.googleapis.com/maps/api/js?key=' . $instance['api_key']
+			'https://maps.googleapis.com/maps/api/js?key=' . $instance['api_key'],
+			array(),
+			INVP_PLUGIN_VERSION,
+			true
 		);
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_script(
-			self::ID_BASE,
-			plugins_url( "js/widget-google-maps-v3{$min}.js", INVP_PLUGIN_FILE_PATH ),
-			array( self::ID_BASE . '_goog' )
-		);
+		wp_enqueue_script( self::ID_BASE . '_goog' );
+		wp_enqueue_script( self::ID_BASE );
 		wp_add_inline_script(
 			self::ID_BASE,
 			'const ' . self::ID_BASE . ' = ' . wp_json_encode(

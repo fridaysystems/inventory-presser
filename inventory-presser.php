@@ -1267,6 +1267,40 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				array(),
 				INVP_PLUGIN_VERSION
 			);
+
+			// Admin location meta scripts.
+			wp_register_script(
+				'inventory-presser-timepicker',
+				plugins_url( '/js/jquery.timepicker.min.js', INVP_PLUGIN_FILE_PATH ),
+				array( 'jquery' ),
+				INVP_PLUGIN_VERSION,
+				true
+			);
+			wp_register_script(
+				'inventory-presser-location',
+				plugins_url( "/js/tax-location{$min}.js", INVP_PLUGIN_FILE_PATH ),
+				array( 'inventory-presser-timepicker', 'jquery-ui-sortable' ),
+				INVP_PLUGIN_VERSION,
+				true
+			);
+
+			// Classic Editor scripts.
+			wp_register_script(
+				'invp-classic-editor',
+				plugins_url( "/js/classic-editor{$min}.js", INVP_PLUGIN_FILE_PATH ),
+				array( 'invp' ),
+				INVP_PLUGIN_VERSION,
+				true
+			);
+
+			// Google Maps widget scripts.
+			wp_register_script(
+				'invp_google_maps_v3',
+				plugins_url( "js/widget-google-maps-v3{$min}.js", INVP_PLUGIN_FILE_PATH ),
+				array( 'invp_google_maps_v3_goog' ),
+				INVP_PLUGIN_VERSION,
+				true
+			);
 		}
 
 		/**

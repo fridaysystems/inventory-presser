@@ -394,21 +394,9 @@ class Inventory_Presser_Admin_Location_Meta {
 				array(),
 				INVP_PLUGIN_VERSION
 			);
-			wp_enqueue_script(
-				'inventory-presser-timepicker',
-				plugins_url( '/js/jquery.timepicker.min.js', INVP_PLUGIN_FILE_PATH ), // Non-minimized version not included.
-				array( 'jquery' ),
-				INVP_PLUGIN_FILE_PATH,
-				true
-			);
+			wp_enqueue_script( 'inventory-presser-timepicker' );
 			wp_enqueue_script( 'jquery-ui-sortable' );
-			wp_enqueue_script(
-				'inventory-presser-location',
-				plugins_url( "/js/tax-location{$min}.js", INVP_PLUGIN_FILE_PATH ),
-				array( 'inventory-presser-timepicker', 'jquery-ui-sortable' ),
-				INVP_PLUGIN_FILE_PATH,
-				true
-			);
+			wp_enqueue_script( 'inventory-presser-location' );
 		}
 	}
 
