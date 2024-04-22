@@ -155,7 +155,7 @@ class Inventory_Presser_Shortcode_Hours_Today {
 		$today         = null;
 		$today_weekday = gmdate( 'w', current_time( 'timestamp' ) ); // 0 if today is Sunday
 		foreach ( $days as $day ) {
-			if ( $today_weekday === $day->weekday ) {
+			if ( strval( $day->weekday ) === $today_weekday ) {
 				$today = $day;
 				break;
 			}
