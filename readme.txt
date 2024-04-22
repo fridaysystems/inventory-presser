@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales, car lot,
 Requires at least: 5.0.0
 Tested up to: 6.5.2
 Requires PHP: 7.0.0
-Stable tag: 14.12.7
+Stable tag: 14.13.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.13.0 =
+Updates WP All Import integration to detect comma-delimited options. Previously, only pipe-delimited options were split into the meta field during imports. Fixes a bug in the "hours today" sentence. Stops using the PHP function jddayofweek().
 
 = 14.12.7 =
 Fixes a bug introduced in 14.12.6 that broke this plugin's Block Editor sidebar.
