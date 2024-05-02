@@ -97,6 +97,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Changelog ==
 
+= 14.13.1 =
+* [Fixed] Stops showing an admin notice on this plugin's settings page. Adds the information to the Site Health page under the Tools menu instead.
+
 = 14.13.0 =
 * [Added] Updates WP All Import integration to detect comma-delimited options. Previously, only pipe-delimited options were split into the meta field during imports.
 * [Fixed] Fixes a bug in the "hours today" sentence. Stops using the PHP function jddayofweek().

@@ -794,12 +794,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					$posts_list->add_hooks();
 				}
 
-				// If the user is looking at our options page, suggest settings tweaks.
-				if ( class_exists( 'Inventory_Presser_Admin_Settings_Suggester' ) ) {
-					$settings_suggester = new Inventory_Presser_Admin_Settings_Suggester();
-					$settings_suggester->add_hooks();
-				}
-
 				// Add a sidebar to the editor when editing vehicles.
 				if ( class_exists( 'Inventory_Presser_Admin_Editor_Sidebar' ) ) {
 					$sidebar = new Inventory_Presser_Admin_Editor_Sidebar();
@@ -839,6 +833,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			// Add a link to the Settings page on the plugin management page.
 			add_filter( 'plugin_action_links_' . INVP_PLUGIN_BASE, array( $this, 'insert_settings_link' ), 2, 2 );
+
+			// Add tests to the Site Health Status page.
+			if ( class_exists( 'Inventory_Presser_Site_Health' ) ) {
+				$health = new Inventory_Presser_Site_Health();
+				$health->add_hooks();
+			}
 
 			add_action( 'plugins_loaded', array( $this, 'load_integrations' ) );
 		}
@@ -1027,7 +1027,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'admin/class-admin-options.php',
 				'admin/class-admin-photo-arranger.php',
 				'admin/class-admin-posts-list.php',
-				'admin/class-admin-settings-suggester.php',
 				'class-additional-listings-pages.php',
 				'class-allow-inventory-as-home-page.php',
 				'class-badges.php',
@@ -1041,6 +1040,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-redirect-404-vehicles.php',
 				'class-rest.php',
 				'class-schema-org-generator.php',
+				'class-site-health.php',
 				'integrations/class-classic-editor.php',
 				'integrations/class-forms-integration.php',
 				'integrations/class-contact-form-7.php',
