@@ -26,6 +26,7 @@ Manage and market dealership inventory with listings and photo sliders built on 
 * Visit yoursite.com/inventory to see the built-in templates
 * Design your own pages using [post meta fields](https://inventorypresser.com/docs/vehicle-post-type/) or [Elementor Dynamic Tags](https://inventorypresser.com/products/plugins/elementor-add-on/)
 * Decide how to [manage inventory updates](https://inventorypresser.com/docs/adding-or-importing-inventory/)
+* [Add vehicles to lead forms](https://inventorypresser.com/docs/add-vehicles-to-lead-forms/)
 
 ### Works Well with Plugins & Themes
 
