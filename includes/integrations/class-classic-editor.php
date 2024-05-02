@@ -37,8 +37,8 @@ class Inventory_Presser_Classic_Editor {
 			return;
 		}
 		global $pagenow, $current_screen;
-		if ( ( $pagenow !== 'post.php' || INVP::POST_TYPE !== $current_screen->post_type ) ) {
-			// No. Not editing a vehicle.
+		if ( ! in_array( $pagenow, array( 'post-new.php', 'post.php' ), true ) || INVP::POST_TYPE !== $current_screen->post_type ) {
+			// No. Not adding or editing editing a vehicle.
 			return;
 		}
 
@@ -71,10 +71,10 @@ class Inventory_Presser_Classic_Editor {
 	 */
 	public function add_meta_boxes_to_cpt() {
 		// Add a meta box to the New/Edit post page
-		// add_meta_box('vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), INVP::POST_TYPE, 'normal', 'high' );
+		add_meta_box('vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), INVP::POST_TYPE, 'normal', 'high' );
 
 		// and another for prices
-		// add_meta_box('prices-meta', 'Prices', array( $this, 'meta_box_html_prices' ), INVP::POST_TYPE, 'normal', 'high' );
+		add_meta_box('prices-meta', 'Prices', array( $this, 'meta_box_html_prices' ), INVP::POST_TYPE, 'normal', 'high' );
 
 		// Add another meta box to the New/Edit post page
 		add_meta_box( 'options-meta', 'Optional equipment', array( $this, 'meta_box_html_options' ), INVP::POST_TYPE, 'normal', 'high' );
@@ -622,19 +622,8 @@ class Inventory_Presser_Classic_Editor {
 
 			// YouTube
 			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" value="%s"></td></tr>'
+			. '<td><input type="text" name="%s" value="%s"></td></tr>',
 
-			// Beam (boats)
-			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" value="%s"></td></tr>'
-
-			// Length (boats)
-			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" value="%s"></td></tr>'
-
-			// Hull material
-			. '<tr class="boat-postmeta"><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><select name="%s"><option></option>',
 			apply_filters( 'invp_prefix_meta_key', 'color' ),
 			__( 'Color', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'color' ),
@@ -644,50 +633,65 @@ class Inventory_Presser_Classic_Editor {
 			apply_filters( 'invp_prefix_meta_key', 'interior_color' ),
 			$interior_color,
 			apply_filters( 'invp_prefix_meta_key', 'odometer' ),
-			__( 'Odometer', 'inventory-presser' ),
+			apply_filters( 'invp_odometer_word', __( 'Odometer', 'inventory-presser' ) ),
 			apply_filters( 'invp_prefix_meta_key', 'odometer' ),
 			$odometer,
 			apply_filters( 'invp_odometer_word', 'miles' ),
 			apply_filters( 'invp_prefix_meta_key', 'youtube' ),
 			__( 'YouTube video ID', 'inventory-presser' ),
 			apply_filters( 'invp_prefix_meta_key', 'youtube' ),
-			$youtube,
-			apply_filters( 'invp_prefix_meta_key', 'beam' ),
-			__( 'Beam', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'beam' ),
-			$beam,
-			apply_filters( 'invp_prefix_meta_key', 'length' ),
-			__( 'Length', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'length' ),
-			$length,
-			apply_filters( 'invp_prefix_meta_key', 'hull_material' ),
-			__( 'Hull material', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'hull_material' )
+			$youtube
 		);
 
-		$hull_materials = apply_filters(
-			'invp_default_hull_materials',
-			array(
-				'Aluminum',
-				'Carbon Fiber',
-				'Composite',
-				'Ferro-Cement',
-				'Fiberglass',
-				'Hypalon',
-				'Other',
-				'PVC',
-				'Steel',
-				'Wood',
-			)
-		);
-		foreach ( $hull_materials as $m ) {
+		$type = $custom[ apply_filters( 'invp_prefix_meta_key', 'type' ) ] ?? '';
+		if ( 'boat' === strtolower( $type ) ) {
+			// Add boat fields.
 			printf(
-				'<option%s>%s</option>',
-				selected( $m, $hull_material, false ),
-				$m
+				// Beam (boats).
+				'<tr class="boat-postmeta"><th scope="row"><label for="%1$s">%2$s</label></th>'
+				. '<td><input type="text" name="%1$s" value="%3$s"></td></tr>'
+
+				// Length (boats).
+				. '<tr class="boat-postmeta"><th scope="row"><label for="%4$s">%5$s</label></th>'
+				. '<td><input type="text" name="%4$s" value="%6$s"></td></tr>'
+
+				// Hull material.
+				. '<tr class="boat-postmeta"><th scope="row"><label for="%7$s">%8$s</label></th>'
+				. '<td><select name="%7$s"><option></option>',
+				esc_attr( apply_filters( 'invp_prefix_meta_key', 'beam' ) ),
+				esc_html__( 'Beam', 'inventory-presser' ),
+				esc_attr( $beam ),
+				esc_attr( apply_filters( 'invp_prefix_meta_key', 'length' ) ),
+				esc_html__( 'Length', 'inventory-presser' ),
+				esc_attr( $length ),
+				esc_attr( apply_filters( 'invp_prefix_meta_key', 'hull_material' ) ),
+				esc_html__( 'Hull material', 'inventory-presser' )
 			);
+			$hull_materials = apply_filters(
+				'invp_default_hull_materials',
+				array(
+					__( 'Aluminum', 'inventory-presser' ),
+					__( 'Carbon Fiber', 'inventory-presser' ),
+					__( 'Composite', 'inventory-presser' ),
+					__( 'Ferro-Cement', 'inventory-presser' ),
+					__( 'Fiberglass', 'inventory-presser' ),
+					__( 'Hypalon', 'inventory-presser' ),
+					__( 'Other', 'inventory-presser' ),
+					__( 'PVC', 'inventory-presser' ),
+					__( 'Steel', 'inventory-presser' ),
+					__( 'Wood', 'inventory-presser' ),
+				)
+			);
+			foreach ( $hull_materials as $m ) {
+				printf(
+					'<option%s>%s</option>',
+					selected( $m, $hull_material, false ),
+					esc_html( $m )
+				);
+			}
+			echo '</select></td></tr>';
 		}
-		echo '</select></tbody></table>';
+		echo '</tbody></table>';
 	}
 
 	/**
