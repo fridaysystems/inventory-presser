@@ -97,7 +97,8 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Changelog ==
 
-= 14.13.1 =
+= 14.14.0 =
+* [Added] Adds better support for the Classic Editor.
 * [Fixed] Stops showing an admin notice on this plugin's settings page. Adds the information to the Site Health page under the Tools menu instead.
 
 = 14.13.0 =
