@@ -739,7 +739,7 @@ class INVP {
 					'type'  => 'string',
 				),
 				array(
-					'label'  => __( 'Odometer', 'inventory_presser' ),
+					'label'  => apply_filters( 'invp_odometer_word', __( 'Odometer', 'inventory_presser' ) ),
 					'name'   => 'odometer',
 					'sample' => '102000',
 					'type'   => 'string',

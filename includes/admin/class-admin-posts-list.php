@@ -26,7 +26,7 @@ class Inventory_Presser_Admin_Posts_List {
 		// add our columns
 		$column[ apply_filters( 'invp_prefix_meta_key', 'stock_number' ) ] = __( 'Stock #', 'inventory-presser' );
 		$column[ apply_filters( 'invp_prefix_meta_key', 'color' ) ]        = __( 'Color', 'inventory-presser' );
-		$column[ apply_filters( 'invp_prefix_meta_key', 'odometer' ) ]     = __( 'Odometer', 'inventory-presser' );
+		$column[ apply_filters( 'invp_prefix_meta_key', 'odometer' ) ]     = apply_filters( 'invp_odometer_word', __( 'Odometer', 'inventory-presser' ) );
 		$column[ apply_filters( 'invp_prefix_meta_key', 'price' ) ]        = __( 'Price', 'inventory-presser' );
 		$column[ apply_filters( 'invp_prefix_meta_key', 'photo_count' ) ]  = __( 'Photos', 'inventory-presser' );
 		$column[ apply_filters( 'invp_prefix_meta_key', 'thumbnail' ) ]    = __( 'Thumbnail', 'inventory-presser' );
