@@ -38,8 +38,8 @@ function invp_vehicle_type_changed( type_slug ) {
 	// HIN or VIN?
 	jQuery( 'label[for="' + invp.meta_prefix + 'vin"]' ).html( is_boat ? 'HIN' : 'VIN' );
 
-	// odometer units are hours or miles
-	jQuery( '.invp_odometer_units' ).html( is_boat ? 'hours' : invp.miles_word );
+	// Odometer units are usually miles, but can be changed.
+	jQuery( '.invp_odometer_units' ).html( invp.odometer_units );
 
 	if ( is_boat ) {
 

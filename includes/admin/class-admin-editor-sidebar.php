@@ -85,8 +85,9 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 							__( 'Wood', 'inventory-presser' ),
 						)
 					),
-					'miles_word'          => apply_filters( 'invp_odometer_word', 'miles' ),
 					'meta_prefix'         => INVP::meta_prefix(),
+					'odometer_label'      => apply_filters( 'invp_odometer_word', __( 'Odometer', 'inventory-presser' ) ),
+					'odometer_units'      => apply_filters( 'invp_odometer_word', __( 'miles', 'inventory-presser' ) ),
 					'payment_frequencies' => apply_filters(
 						'invp_default_payment_frequencies',
 						array(

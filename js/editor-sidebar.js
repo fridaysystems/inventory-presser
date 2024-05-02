@@ -22,7 +22,7 @@
 				return key.toUpperCase();
 
 			case 'odometer':
-				return __( 'Odometer', 'inventory-presser' ) + ' (' + invp.miles_word + ')';
+				return invp.odometer_label + ' (' + invp.odometer_units + ')';
 
 			case 'youtube':
 				return __( 'YouTube Video ID', 'inventory-presser' );
