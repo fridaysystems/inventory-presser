@@ -586,14 +586,14 @@ class Inventory_Presser_Classic_Editor {
 		$boat_styles = apply_filters(
 			'invp_default_boat_styles',
 			array(
-				'Bass boat',
-				'Bow Rider',
-				'Cabin Cruiser',
-				'Center Console',
-				'Cuddy Cabin',
-				'Deck boat',
-				'Performance',
-				'Pontoon',
+				__( 'Bass boat', 'inventory-presser' ),
+				__( 'Bow Rider', 'inventory-presser' ),
+				__( 'Cabin Cruiser', 'inventory-presser' ),
+				__( 'Center Console', 'inventory-presser' ),
+				__( 'Cuddy Cabin', 'inventory-presser' ),
+				__( 'Deck boat', 'inventory-presser' ),
+				__( 'Performance', 'inventory-presser' ),
+				__( 'Pontoon', 'inventory-presser' ),
 			)
 		);
 		foreach ( $boat_styles as $s ) {
