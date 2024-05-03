@@ -814,7 +814,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$schema_generator->add_hooks();
 			}
 
+			// Adds the "View Details" button to each vehicle in archive loops.
 			add_action( 'invp_archive_buttons', array( $this, 'add_view_details_button' ) );
+
+			// Embeds a contact form on vehicle singles if one is chosen at Vehicles → Options.
+			add_action( 'invp_single_sections', array( $this, 'single_sections_add_form' ) );
 
 			add_action( 'plugins_loaded', array( $this, 'loaded' ) );
 
@@ -1740,6 +1744,53 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				}
 				Inventory_Presser_Taxonomies::save_taxonomy_term( $post_id, $taxonomy_name, apply_filters( 'invp_prefix_meta_key', $slug ) );
 			}
+		}
+
+		/**
+		 * Adds a contact form to single vehicle pages if a form is saved in the
+		 * setting.
+		 *
+		 * @param  array $sections
+		 * @return array
+		 */
+		public function single_sections_add_form( $sections ) {
+			// Does this setting have a value?
+			$settings = INVP::settings();
+			if ( ! empty( $settings['singles_contact_form'] ) ) {
+				// Value is a form ID prefixed with the form builder. GF_8.
+				$form = explode( '_', $settings['singles_contact_form'] );
+				if ( ! is_array( $form ) || 2 !== count( $form ) ) {
+					return $sections;
+				}
+				$form_html         = '';
+				$shortcode_pattern = '';
+				switch ( $form[0] ) {
+					case 'CF7':
+						$shortcode_pattern = '[contact-form-7 id="%s"]';
+						break;
+
+					case 'GF':
+						$shortcode_pattern = '[gravityform id="%s" title="false" description="false" ajax="true"]';
+						break;
+
+					case 'WPF':
+						$shortcode_pattern = '[wpforms id="%s"]';
+						break;
+				}
+				$shortcode = sprintf( $shortcode_pattern, $form[1] );
+				if ( '' !== $shortcode ) {
+					$form_html = apply_shortcodes( apply_filters( 'invp_single_sections_form_shortcode', $shortcode ) );
+				}
+				if ( '' !== $form_html ) {
+					// Add the form to the sections array.
+					$sections['form'] = sprintf(
+						'<h2 class="vehicle-content-wrap">%s</h2><div class="vehicle-content-wrap">%s</div>',
+						esc_html( apply_filters( 'invp_single_sections_form_title', __( 'Check Availability', 'inventory-presser' ) ) ),
+						$form_html
+					);
+				}
+			}
+			return $sections;
 		}
 	}
 

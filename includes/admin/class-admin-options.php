@@ -258,6 +258,17 @@ class Inventory_Presser_Admin_Options {
 		);
 
 		/**
+		 * Simplify adding a contact form to vehicle singles.
+		 */
+		add_settings_field(
+			'singles_contact_form', // id.
+			__( 'Singles Contact Form', 'inventory-presser' ), // title.
+			array( $this, 'callback_singles_contact_form' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_section_listings' // section.
+		);
+
+		/**
 		 * SECTION Carfax
 		 */
 		add_settings_section(
@@ -591,6 +602,69 @@ class Inventory_Presser_Admin_Options {
 		);
 	}
 
+	public function callback_singles_contact_form() {
+		$setting_name  = 'singles_contact_form';
+		$current_value = isset( $this->option[ $setting_name ] ) ? $this->option[ $setting_name ] : 0;
+		$options       = sprintf( '<option>%s</option>', esc_html__( 'None', 'inventory-presser' ) );
+
+		// Get all Contact Form 7 forms and build <option> elements.
+		if ( class_exists( 'WPCF7_ContactForm' ) ) {
+			$args = array(
+				'order'   => 'ASC',
+				'orderby' => 'title',
+			);
+			foreach ( \WPCF7_ContactForm::find( $args ) as $cf7form ) {
+				$options .= sprintf(
+					'<option value="CF7_%1$s"%2$s>%3$s: %4$s</option>',
+					esc_attr( $cf7form->id() ),
+					selected( 'CF7_' . $cf7form->id(), $current_value, false ),
+					esc_html__( 'Contact Form 7', 'inventory-presser' ),
+					esc_attr( $cf7form->title() )
+				);
+			}
+		}
+
+		// Get all WP Forms and build <option> elements.
+		if ( function_exists( 'wpforms' ) ) {
+			$wpforms = wpforms()->get( 'form' )->get(
+				'',
+				array(
+					'orderby' => 'title',
+				)
+			);
+			foreach ( $wpforms as $wpform ) {
+				$options .= sprintf(
+					'<option value="WPF_%1$s"%2$s>%3$s: %4$s</option>',
+					esc_attr( $wpform->ID ),
+					selected( $wpform->ID, $current_value, false ),
+					esc_html__( 'WP Forms', 'inventory-presser' ),
+					esc_attr( $wpform->post_title )
+				);
+			}
+		}
+
+		// Get all Gravity Forms and build <option> elements.
+		if ( class_exists( 'GFAPI' ) ) {
+			foreach ( GFAPI::get_forms() as $gform ) {
+				$options .= sprintf(
+					'<option value="GF_%s"%s>%s: %s</option>',
+					esc_attr( $gform['id'] ),
+					selected( 'GF_' . $gform['id'], $current_value, false ),
+					esc_html__( 'Gravity Forms', 'event-milestones' ),
+					esc_attr( $gform['title'] )
+				);
+			}
+		}
+
+		printf(
+			'<select name="%1$s[%2$s]" id="%2$s">%3$s</select><p class="description" id="%1$s[%2$s]-description">%4$s</p>',
+			esc_attr( INVP::OPTION_NAME ),
+			esc_attr( $setting_name ),
+			$options,
+			esc_html__( 'Choose a form to include on vehicle single pages.', 'inventory-presser' )
+		);
+	}
+
 	/**
 	 * Output the controls that create the Skip Trash setting.
 	 *
@@ -907,6 +981,10 @@ class Inventory_Presser_Admin_Options {
 				$url_paths[]    = $additional_listing['url_path'];
 			}
 			$sanitary_values['additional_listings_pages'] = $unique_rules;
+		}
+
+		if ( isset( $input['singles_contact_form'] ) ) {
+			$sanitary_values['singles_contact_form'] = $input['singles_contact_form'];
 		}
 
 		return apply_filters( 'invp_options_page_sanitized_values', $sanitary_values, $input );
