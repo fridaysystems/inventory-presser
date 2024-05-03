@@ -739,7 +739,7 @@ class INVP {
 					'type'  => 'string',
 				),
 				array(
-					'label'  => apply_filters( 'invp_odometer_word', __( 'Odometer', 'inventory_presser' ) ),
+					'label'  => __( 'Odometer', 'inventory_presser' ), // Do not filter this one. It causes infinite loops.
 					'name'   => 'odometer',
 					'sample' => '102000',
 					'type'   => 'string',
