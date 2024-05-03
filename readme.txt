@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales, car lot,
 Requires at least: 5.0.0
 Tested up to: 6.5.2
 Requires PHP: 7.0.0
-Stable tag: 14.13.0
+Stable tag: 14.14.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
