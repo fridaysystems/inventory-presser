@@ -98,8 +98,11 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 == Changelog ==
 
 = 14.14.0 =
+* [Added] Adds a setting "Singles Contact Form" at Vehicles → Options to embed a lead form on vehicle single pages. Supports Contact Form 7, Gravity Forms, and WP Forms.
 * [Added] Adds better support for the Classic Editor.
 * [Fixed] Stops showing an admin notice on this plugin's settings page. Adds the information to the Site Health page under the Tools menu instead.
+* [Fixed] Makes more strings translateable, including default boat styles and hull materials.
+* [Changed] Stops removing the odometer field from the vehicle attribute table for boats.
 
 = 14.13.0 =
 * [Added] Updates WP All Import integration to detect comma-delimited options. Previously, only pipe-delimited options were split into the meta field during imports.
