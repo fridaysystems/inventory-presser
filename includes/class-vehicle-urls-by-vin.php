@@ -5,9 +5,9 @@
  * This class redirects URLs based on a VIN to proper permalinks
  *
  * Create a redirect that takes a URL like this:
- * http://localhost/vin/JM1NB354940406328/ and redirects to the post that
+ * https://demo.inventorypresser.com/vin/JM1NB354940406328/ and redirects to the post that
  * lives at some permalink like
- * http://localhost/inventory/2004-mazda-speed-miata/
+ * https://demo.inventorypresser.com/inventory/2004-mazda-speed-miata/
  *
  * @since      1.2.1
  * @package inventory-presser
@@ -36,7 +36,7 @@ if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) ) {
 		}
 
 		/**
-		 * Adds a rewrite rule to redirect URLs like http://localhost/vin/JM1NB354940406328/
+		 * Adds a rewrite rule to redirect URLs like https://demo.inventorypresser.com/vin/JM1NB354940406328/
 		 *
 		 * @return void
 		 */

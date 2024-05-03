@@ -170,7 +170,7 @@ function invp_get_the_carfax_url_report( $post_ID = null ) {
 	 * Fallback to the pre-August-2019 URLs, save for the partner
 	 * querystring parameter.
 	 */
-	return 'http://www.carfax.com/VehicleHistory/p/Report.cfx?vin=' . invp_get_the_VIN();
+	return 'https://www.carfax.com/VehicleHistory/p/Report.cfx?vin=' . invp_get_the_VIN();
 }
 
 /**

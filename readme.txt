@@ -6,7 +6,7 @@ Tested up to: 6.5.2
 Requires PHP: 7.0.0
 Stable tag: 14.13.0
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Stores vehicles. Supports multiple lot locations & separate hours for each. Listing templates & photo sliders run on any theme. Multisite compatible.
 

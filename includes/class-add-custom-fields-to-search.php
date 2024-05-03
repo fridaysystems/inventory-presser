@@ -8,7 +8,7 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 	 *
 	 * An object that modifies the WordPress search query to include custom fields
 	 *
-	 * @see http://adambalee.com/search-wordpress-by-custom-fields-without-a-plugin/
+	 * @see https://adambalee.com/search-wordpress-by-custom-fields-without-a-plugin/
 	 *
 	 * @since      1.2.1
 	 * @package    inventory-presser
@@ -58,7 +58,7 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 		/**
 		 * Join posts and postmeta tables
 		 *
-		 * @see http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_join
+		 * @see https://codex.wordpress.org/Plugin_API/Filter_Reference/posts_join
 		 *
 		 * @param  string $join The JOIN clause of the query.
 		 * @return string
@@ -78,7 +78,7 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 		/**
 		 * Modify the search query with posts_where
 		 *
-		 * @see http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_where
+		 * @see https://codex.wordpress.org/Plugin_API/Filter_Reference/posts_where
 		 *
 		 * @param  string $where
 		 * @return string

@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
  * Text Domain: inventory-presser
  * Domain Path: /languages
  * License: GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 if ( ! defined( 'INVP_PLUGIN_BASE' ) ) {
@@ -408,7 +408,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * Deletes the rewrite_rules option so the rewrite rules are generated
 		 * on the next page load without ours. Called during deactivation.
 		 *
-		 * @see http://wordpress.stackexchange.com/a/44337/13090
+		 * @see https://wordpress.stackexchange.com/a/44337/13090
 		 *
 		 * @param  bool $network_wide True if this plugin is being Network Activated or Network Deactivated by the multisite admin.
 		 * @return void
@@ -480,7 +480,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		/**
 		 * Generate every possible combination of rewrite rules, including paging, based on post type taxonomy
 		 *
-		 * @see http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
+		 * @see https://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls/
 		 *
 		 * @param  string $post_type The name of a post type.
 		 * @param  array  $query_vars An array of query variables.

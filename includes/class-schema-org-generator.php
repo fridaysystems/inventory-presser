@@ -66,7 +66,7 @@ class Inventory_Presser_Schema_Org_Generator {
 	 */
 	function schema_org_json_ld( $post_ID ) {
 		$obj = array(
-			'@context' => 'http://schema.org/',
+			'@context' => 'https://schema.org/',
 			'@type'    => 'Vehicle',
 		);
 

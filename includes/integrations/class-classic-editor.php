@@ -45,7 +45,7 @@ class Inventory_Presser_Classic_Editor {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes_to_cpt' ) );
 
 		// Move all "advanced" meta boxes above the default editor
-		// http://wordpress.stackexchange.com/a/88103
+		// https://wordpress.stackexchange.com/a/88103
 		add_action( 'edit_form_after_title', array( $this, 'move_advanced_meta_boxes' ) );
 
 		// Move the "Tags" metabox below the meta boxes for vehicle custom taxonomies

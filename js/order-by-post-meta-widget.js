@@ -17,7 +17,7 @@ function extract_wp_query_args_from_url() {
 
 
 function html_form_launch( url, method, params ) {
-	// build a form and submit it, found @ http://stackoverflow.com/a/133997/338432
+	// build a form and submit it, found @ https://stackoverflow.com/a/133997/338432
 	var form = document.createElement( 'form' );
 	form.setAttribute( 'method', method );
 	if ( '' !== url ) {

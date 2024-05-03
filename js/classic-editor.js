@@ -86,7 +86,7 @@ function update_add_media_button_annotation( ) {
 
 /**
  * Update the attachment count after uploads
- * http://stackoverflow.com/questions/14279786/how-to-run-some-code-as-soon-as-new-image-gets-uploaded-in-wordpress-3-5-uploade#14515707
+ * https://stackoverflow.com/questions/14279786/how-to-run-some-code-as-soon-as-new-image-gets-uploaded-in-wordpress-3-5-uploade#14515707
  */
 jQuery( document ).ready(
 	function(){

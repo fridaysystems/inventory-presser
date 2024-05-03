@@ -84,7 +84,7 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 		if ( isset( $instance['before_image'] ) ) {
 			echo wpautop( $instance['before_image'] );
 		}
-		printf( '<a href="%s" target="_blank"><img src="%s"></a>', 'http://kbb.com', plugins_url( '/images/' . $this->images()[ $image ]['img'], INVP_PLUGIN_FILE_PATH ) );
+		printf( '<a href="%s" target="_blank"><img src="%s"></a>', 'https://kbb.com', plugins_url( '/images/' . $this->images()[ $image ]['img'], INVP_PLUGIN_FILE_PATH ) );
 		if ( isset( $instance['after_image'] ) ) {
 			echo wpautop( $instance['after_image'] );
 		}
