@@ -19,7 +19,7 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 		wp_register_script(
 			'invp-plugin-sidebar',
 			plugins_url( "/js/editor-sidebar{$min}.js", INVP_PLUGIN_FILE_PATH ),
-			array( 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-data', 'wp-hooks', 'wp-i18n' ),
+			array( 'invp', 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-data', 'wp-hooks', 'wp-i18n' ),
 			INVP_PLUGIN_VERSION,
 			true
 		);
@@ -63,56 +63,6 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 			plugins_url( '/css/editor-sidebar.min.css', INVP_PLUGIN_FILE_PATH ),
 			array(),
 			INVP_PLUGIN_VERSION
-		);
-
-		// Provide data to JavaScript for the editor.
-		wp_add_inline_script(
-			'wp-api',
-			'const invp = ' . wp_json_encode(
-				array(
-					'hull_materials'      => apply_filters(
-						'invp_default_hull_materials',
-						array(
-							__( 'Aluminum', 'inventory-presser' ),
-							__( 'Carbon Fiber', 'inventory-presser' ),
-							__( 'Composite', 'inventory-presser' ),
-							__( 'Ferro-Cement', 'inventory-presser' ),
-							__( 'Fiberglass', 'inventory-presser' ),
-							__( 'Hypalon', 'inventory-presser' ),
-							__( 'Other', 'inventory-presser' ),
-							__( 'PVC', 'inventory-presser' ),
-							__( 'Steel', 'inventory-presser' ),
-							__( 'Wood', 'inventory-presser' ),
-						)
-					),
-					'meta_prefix'         => INVP::meta_prefix(),
-					'odometer_label'      => apply_filters( 'invp_odometer_word', __( 'Odometer', 'inventory-presser' ) ),
-					'odometer_units'      => apply_filters( 'invp_odometer_word', __( 'miles', 'inventory-presser' ) ),
-					'payment_frequencies' => apply_filters(
-						'invp_default_payment_frequencies',
-						array(
-							'Monthly'      => 'monthly',
-							'Weekly'       => 'weekly',
-							'Bi-weekly'    => 'biweekly',
-							'Semi-monthly' => 'semimonthly',
-						)
-					),
-					'title_statuses'      => apply_filters(
-						'invp_default_title_statuses',
-						array(
-							'Unspecified',
-							'Clear',
-							'Clean',
-							'Flood, Water Damage',
-							'Lemon and Manufacturers Buyback',
-							'Rebuild, Rebuildable, and Reconstructed',
-							'Salvage',
-							'Other',
-						)
-					),
-				)
-			),
-			'before'
 		);
 	}
 }

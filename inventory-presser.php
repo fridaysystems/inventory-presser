@@ -1137,16 +1137,57 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			);
 
 			// Register a script without a handle for our inline invp object.
-			wp_register_script( 'invp', '', array(), INVP_PLUGIN_VERSION, true );
-			wp_add_inline_script(
-				'invp',
-				'var invp = ' . wp_json_encode(
-					array(
-						'meta_prefix' => INVP::meta_prefix(), // Used by classic-editor.js & editor-sidebar.js.
-						'is_singular' => is_singular( INVP::POST_TYPE ), // Used by flexslider.js.
-					)
-				) . ';'
-			);
+			if ( ! wp_script_is( 'invp', 'registered' ) ) {
+				wp_register_script( 'invp', '', array(), INVP_PLUGIN_VERSION, true );
+				wp_add_inline_script(
+					'invp',
+					'var invp = ' . wp_json_encode(
+						array(
+							'hull_materials'      => apply_filters(
+								'invp_default_hull_materials',
+								array(
+									__( 'Aluminum', 'inventory-presser' ),
+									__( 'Carbon Fiber', 'inventory-presser' ),
+									__( 'Composite', 'inventory-presser' ),
+									__( 'Ferro-Cement', 'inventory-presser' ),
+									__( 'Fiberglass', 'inventory-presser' ),
+									__( 'Hypalon', 'inventory-presser' ),
+									__( 'Other', 'inventory-presser' ),
+									__( 'PVC', 'inventory-presser' ),
+									__( 'Steel', 'inventory-presser' ),
+									__( 'Wood', 'inventory-presser' ),
+								)
+							),
+							'is_singular'         => is_singular( INVP::POST_TYPE ), // Used by flexslider.js.
+							'meta_prefix'         => INVP::meta_prefix(), // Used by classic-editor.js & editor-sidebar.js.
+							'odometer_label'      => apply_filters( 'invp_odometer_word', __( 'Odometer', 'inventory-presser' ) ),
+							'odometer_units'      => apply_filters( 'invp_odometer_word', __( 'miles', 'inventory-presser' ) ),
+							'payment_frequencies' => apply_filters(
+								'invp_default_payment_frequencies',
+								array(
+									'Monthly'      => 'monthly',
+									'Weekly'       => 'weekly',
+									'Bi-weekly'    => 'biweekly',
+									'Semi-monthly' => 'semimonthly',
+								)
+							),
+							'title_statuses'      => apply_filters(
+								'invp_default_title_statuses',
+								array(
+									__( 'Unspecified', 'inventory-presser' ),
+									__( 'Clear', 'inventory-presser' ),
+									__( 'Clean', 'inventory-presser' ),
+									__( 'Flood, Water Damage', 'inventory-presser' ),
+									__( 'Lemon and Manufacturers Buyback', 'inventory-presser' ),
+									__( 'Rebuild, Rebuildable, and Reconstructed', 'inventory-presser' ),
+									__( 'Salvage', 'inventory-presser' ),
+									__( 'Other', 'inventory-presser' ),
+								)
+							),
+						)
+					) . ';'
+				);
+			}
 
 			/**
 			 * Register flexslider and provide overrides for scripts and styles

@@ -245,7 +245,10 @@ class Inventory_Presser_Classic_Editor {
 	 */
 	public function scripts_and_styles( $hook ) {
 		$handle = 'invp-classic-editor';
-		$min    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		if ( ! wp_script_is( $handle, 'registered' ) ) {
+			Inventory_Presser_Plugin::include_scripts_and_styles();
+		}
+		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_style(
 			$handle,
 			plugins_url( "/css/classic-editor{$min}.css", INVP_PLUGIN_FILE_PATH ),
