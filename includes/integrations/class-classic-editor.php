@@ -44,23 +44,23 @@ class Inventory_Presser_Classic_Editor {
 
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes_to_cpt' ) );
 
-		// Move all "advanced" meta boxes above the default editor
-		// https://wordpress.stackexchange.com/a/88103
+		// Move all "advanced" meta boxes above the default editor.
+		// https://wordpress.stackexchange.com/a/88103.
 		add_action( 'edit_form_after_title', array( $this, 'move_advanced_meta_boxes' ) );
 
-		// Move the "Tags" metabox below the meta boxes for vehicle custom taxonomies
+		// Move the "Tags" metabox below the meta boxes for vehicle custom taxonomies.
 		add_action( 'add_meta_boxes', array( $this, 'move_tags_meta_box' ), 0 );
 
-		// Load our scripts
+		// Load our scripts.
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 
-		// Add some content next to the "Add Media" button
+		// Add some content next to the "Add Media" button.
 		add_action( 'media_buttons', array( $this, 'annotate_add_media_button' ) );
 
-		// Define an AJAX handler for the 'Delete All Media' button
+		// Define an AJAX handler for the 'Delete All Media' button.
 		add_filter( 'wp_ajax_delete_all_post_attachments', array( $this, 'delete_all_post_attachments' ) );
 
-		// Make our Add Media button annotation available from an AJAX call
+		// Make our Add Media button annotation available from an AJAX call.
 		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
 	}
 
@@ -70,16 +70,16 @@ class Inventory_Presser_Classic_Editor {
 	 * @return void
 	 */
 	public function add_meta_boxes_to_cpt() {
-		// Add a meta box to the New/Edit post page
-		add_meta_box('vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), INVP::POST_TYPE, 'normal', 'high' );
+		// Add a meta box to the New/Edit post page.
+		add_meta_box( 'vehicle-meta', 'Attributes', array( $this, 'meta_box_html_vehicle' ), INVP::POST_TYPE, 'normal', 'high' );
 
-		// and another for prices
-		add_meta_box('prices-meta', 'Prices', array( $this, 'meta_box_html_prices' ), INVP::POST_TYPE, 'normal', 'high' );
+		// And another for prices.
+		add_meta_box( 'prices-meta', 'Prices', array( $this, 'meta_box_html_prices' ), INVP::POST_TYPE, 'normal', 'high' );
 
-		// Add another meta box to the New/Edit post page
+		// Add another meta box to the New/Edit post page.
 		add_meta_box( 'options-meta', 'Optional equipment', array( $this, 'meta_box_html_options' ), INVP::POST_TYPE, 'normal', 'high' );
 
-		// Add a meta box to the side column for a featured vehicle checkbox
+		// Add a meta box to the side column for a featured vehicle checkbox.
 		add_meta_box( 'featured', 'Featured Vehicle', array( $this, 'meta_box_html_featured' ), INVP::POST_TYPE, 'side', 'low' );
 	}
 
@@ -90,7 +90,7 @@ class Inventory_Presser_Classic_Editor {
 	 * @return void
 	 */
 	public function annotate_add_media_button( $editor_id ) {
-		if ( 'content' != $editor_id ) {
+		if ( 'content' !== $editor_id ) {
 			return;
 		}
 
@@ -102,8 +102,6 @@ class Inventory_Presser_Classic_Editor {
 	}
 
 	/**
-	 * create_add_media_button_annotation
-	 *
 	 * Computes the number of attachments on vehicles so the number can be
 	 * shown in the classic editor near the Add Media button.
 	 *
@@ -116,16 +114,16 @@ class Inventory_Presser_Classic_Editor {
 			 * This function is being called via AJAX and the
 			 * post_id is incoming, so get the post
 			 */
-			$post = get_post( intval( $_POST['post_ID'] ) );
+			$the_post = get_post( intval( $_POST['post_ID'] ) );
 		}
 
-		if ( INVP::POST_TYPE != $post->post_type ) {
+		if ( INVP::POST_TYPE !== $the_post->post_type ) {
 			return '';
 		}
 
 		$attachments = get_children(
 			array(
-				'post_parent'    => $post->ID,
+				'post_parent'    => $the_post->ID,
 				'post_type'      => 'attachment',
 				'posts_per_page' => apply_filters( 'invp_query_limit', 1000, __METHOD__ ),
 			)
@@ -142,23 +140,23 @@ class Inventory_Presser_Classic_Editor {
 				case 'image/jpeg':
 				case 'image/png':
 				case 'image/gif':
-					$counts['image']++;
+					++$counts['image'];
 					break;
 				case 'video/mpeg':
 				case 'video/mp4':
 				case 'video/quicktime':
-					$counts['video']++;
+					++$counts['video'];
 					break;
 				case 'text/csv':
 				case 'text/plain':
 				case 'text/xml':
-					$counts['text']++;
+					++$counts['text'];
 					break;
 				case 'application/pdf':
-					$counts['PDF']++;
+					++$counts['PDF'];
 					break;
 				default:
-					$counts['other']++;
+					++$counts['other'];
 					break;
 			}
 		}
@@ -166,10 +164,10 @@ class Inventory_Presser_Classic_Editor {
 			$note = '';
 			foreach ( $counts as $key => $count ) {
 				if ( 0 < $count ) {
-					if ( '' != $note ) {
+					if ( '' !== $note ) {
 						$note .= ', ';
 					}
-					$note .= $count . ' ' . $key . ( 1 != $count ? 's' : '' );
+					$note .= $count . ' ' . $key . ( 1 !== $count ? 's' : '' );
 				}
 			}
 			return $note . ' ';
@@ -189,18 +187,18 @@ class Inventory_Presser_Classic_Editor {
 			return '';
 		}
 		// does this post have attachments?
-		$post = get_post( $post->ID );
-		if ( INVP::POST_TYPE != $post->post_type ) {
+		$the_post = get_post( $post->ID );
+		if ( INVP::POST_TYPE !== $the_post->post_type ) {
 			return '';
 		}
 		$attachments = get_children(
 			array(
-				'post_parent'    => $post->ID,
+				'post_parent'    => $the_post->ID,
 				'post_type'      => 'attachment',
 				'posts_per_page' => -1,
 			)
 		);
-		if ( 0 === sizeof( $attachments ) ) {
+		if ( 0 === count( $attachments ) ) {
 			return '';
 		}
 		return sprintf(
@@ -211,26 +209,24 @@ class Inventory_Presser_Classic_Editor {
 	}
 
 	/**
-	 * delete_all_post_attachments
-	 *
 	 * Deletes all a post's attachments. The callback behind the Delete All
 	 * Media button.
 	 *
 	 * @return void
 	 */
 	public function delete_all_post_attachments() {
-		if ( empty( $_POST['_ajax_nonce'] ) || ! wp_verify_nonce( $_POST['_ajax_nonce'], self::NONCE_DELETE_ALL_MEDIA ) ) {
+		if ( empty( $_POST['_ajax_nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_ajax_nonce'] ), self::NONCE_DELETE_ALL_MEDIA ) ) {
 			return;
 		}
 
-		$post_id = isset( $_POST['post_ID'] ) ? $_POST['post_ID'] : 0;
+		$post_id = isset( $_POST['post_ID'] ) ? wp_unslash( $_POST['post_ID'] ) : 0;
 
 		if ( ! isset( $post_id ) ) {
-			return; // Will die in case you run a function like this: delete_post_media($post_id); if you will remove this line - ALL ATTACHMENTS WHO HAS A PARENT WILL BE DELETED PERMANENTLY!
-		} elseif ( 0 == $post_id ) {
-			return; // Will die in case you have 0 set. there's no page id called 0 :)
+			return;
+		} elseif ( 0 === $post_id ) {
+			return;
 		} elseif ( is_array( $post_id ) ) {
-			return; // Will die in case you place there an array of pages.
+			return;
 		} else {
 			INVP::delete_attachments( $post_id );
 		}
@@ -278,12 +274,10 @@ class Inventory_Presser_Classic_Editor {
 	public function meta_box_html_featured( $post ) {
 		$meta_key = apply_filters( 'invp_prefix_meta_key', 'featured' );
 		printf(
-			'<input type="checkbox" id="%s" name="%s" value="1"%s><label for="%s">%s</label>',
-			$meta_key,
-			$meta_key,
+			'<input type="checkbox" id="%1$s" name="%1$s" value="1"%2$s><label for="%1$s">%3$s</label>',
+			esc_attr( $meta_key ),
 			checked( '1', INVP::get_meta( $meta_key, $post->ID ), false ),
-			$meta_key,
-			__( 'Featured in Slideshows', 'inventory-presser' )
+			esc_html__( 'Featured in Slideshows', 'inventory-presser' )
 		);
 	}
 
@@ -379,7 +373,7 @@ class Inventory_Presser_Classic_Editor {
 			)
 		);
 
-		// turn the array into an associative array with value false for all
+		// Turn the array into an associative array with value false for all.
 		$options = array_fill_keys( $options, false );
 
 		$options_array = invp_get_the_options( $post->ID );
@@ -388,24 +382,21 @@ class Inventory_Presser_Classic_Editor {
 				$options[ $option ] = true;
 			}
 		}
-		// sort the array by key
+		// Sort the array by key.
 		ksort( $options );
-		// output a bunch of checkboxes
-		$HTML = '<div class="list-with-columns"><ul class="optional-equipment">';
+		// Output a bunch of checkboxes.
+		$html = '<div class="list-with-columns"><ul class="optional-equipment">';
 		foreach ( $options as $key => $value ) {
-			// element IDs cannot contain slashes, spaces or parentheses
+			// Element IDs cannot contain slashes, spaces or parentheses.
 			$id    = 'option-' . preg_replace( '/\/\(\)/i', '', str_replace( ' ', '_', $key ) );
-			$HTML .= sprintf(
-				'<li><input type="checkbox" id="%s" name="%s" value="%s"%s><label for="%s">%s</label></li>',
-				$id,
-				'inventory_presser_options_array[]',
-				$key,
-				checked( true, $value, false ),
-				$id,
-				$key
+			$html .= sprintf(
+				'<li><input type="checkbox" id="%1$s" name="inventory_presser_options_array[]" value="%2$s"%3$s><label for="%1$s">%2$s</label></li>',
+				esc_attr( $id ),
+				esc_attr( $key ),
+				checked( true, $value, false )
 			);
 		}
-		echo $HTML . '</ul></div>';
+		echo $html . '</ul></div>';
 	}
 
 	/**
@@ -417,10 +408,10 @@ class Inventory_Presser_Classic_Editor {
 	 */
 	public function meta_box_html_prices( $post, $meta_box ) {
 		$prices = array(
-			'price'        => 'Price',
-			'msrp'         => 'MSRP',
-			'down_payment' => 'Down payment',
-			'payment'      => 'Payment',
+			'price'        => __( 'Price', 'inventory-presser' ),
+			'msrp'         => __( 'MSRP', 'inventory-presser' ),
+			'down_payment' => __( 'Down payment', 'inventory-presser' ),
+			'payment'      => __( 'Payment', 'inventory-presser' ),
 		);
 
 		echo '<table class="form-table"><tbody>';
@@ -428,21 +419,19 @@ class Inventory_Presser_Classic_Editor {
 			$meta_key = apply_filters( 'invp_prefix_meta_key', $key );
 
 			printf(
-				'<tr><th scope="row"><label for="%s">%s</label></th>'
-				. '<td><input type="text" name="%s" value="%s" onkeypress="return is_number(event)"></td></tr>',
-				$meta_key,
-				$label,
-				$meta_key,
-				INVP::get_meta( $key, $post->ID )
+				'<tr><th scope="row"><label for="%1$s">%2$s</label></th>'
+				. '<td><input type="text" name="%1$s" value="%3$s" onkeypress="return is_number(event)"></td></tr>',
+				esc_attr( $meta_key ),
+				esc_html( $label ),
+				esc_attr( INVP::get_meta( $key, $post->ID ) )
 			);
 		}
 
-		// Payment frequency is a drop-down
+		// Payment frequency is a drop-down.
 		printf(
-			'<tr><th scope="row"><label for="%s">Payment frequency</label></th>'
-			. '<td><select name="%s"><option></option>',
-			$meta_key,
-			$meta_key
+			'<tr><th scope="row"><label for="%1$s">Payment frequency</label></th>'
+			. '<td><select name="%1$s"><option></option>',
+			esc_attr( $meta_key )
 		);
 
 		$frequencies = apply_filters(
@@ -475,115 +464,116 @@ class Inventory_Presser_Classic_Editor {
 	 * @return void
 	 */
 	public function meta_box_html_vehicle( $post, $meta_box ) {
-		// HTML output for vehicle data meta box
+		// Get the post meta and flatten some of our keys into an array.
 		$custom = get_post_custom( $post->ID );
+		$meta   = array();
+		$keys   = array(
+			'body_style',
+			'color',
+			'engine',
+			'interior_color',
+			'make',
+			'model',
+			'odometer',
+			'stock_number',
+			'trim',
+			'vin',
+			'year',
+			'youtube',
+			// Boat fields.
+			'beam',
+			'condition_boat',
+			'draft',
+			'engine_count',
+			'engine_make',
+			'engine_model',
+			'horsepower',
+			'hull_material',
+			'length',
+		);
 
-		$body_style     = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'body_style' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'body_style' ) ][0] : '' );
-		$color          = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'color' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'color' ) ][0] : '' );
-		$engine         = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'engine' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'engine' ) ][0] : '' );
-		$interior_color = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'interior_color' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'interior_color' ) ][0] : '' );
-		$make           = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'make' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'make' ) ][0] : '' );
-		$model          = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'model' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'model' ) ][0] : '' );
-		$odometer       = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'odometer' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'odometer' ) ][0] : '' );
-		$stock_number   = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'stock_number' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'stock_number' ) ][0] : '' );
-		$trim           = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'trim' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'trim' ) ][0] : '' );
-		$VIN            = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'vin' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'vin' ) ][0] : '' );
-		$year           = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'year' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'year' ) ][0] : '' );
-		$youtube        = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'youtube' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'youtube' ) ][0] : '' );
-
-		// boat items
-		$beam          = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'beam' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'beam' ) ][0] : '' );
-		$length        = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'length' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'length' ) ][0] : '' );
-		$hull_material = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', 'hull_material' ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', 'hull_material' ) ][0] : '' );
+		foreach ( $keys as $key ) {
+			$meta[ $key ] = ( isset( $custom[ apply_filters( 'invp_prefix_meta_key', $key ) ] ) ? $custom[ apply_filters( 'invp_prefix_meta_key', $key ) ][0] : '' );
+		}
 
 		printf(
 			'<table class="form-table"><tbody>'
 
-			// VIN
-			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td>%s</td>'
+			// VIN.
+			. '<tr><th scope="row"><label for="%1$s">%2$s</label></th>'
+			. '<td>%3$s</td>'
 
-			// Stock number
-			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" value="%s"></td>'
+			// Stock number.
+			. '<tr><th scope="row"><label for="%4$s">%5$s</label></th>'
+			. '<td><input type="text" name="%4$s" value="%6$s"></td>'
 
-			// Year
-			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><select name="%s"><option></option>',
-			apply_filters( 'invp_prefix_meta_key', 'vin' ),
-			__( 'VIN', 'inventory-presser' ),
-			apply_filters(
+			// Year.
+			. '<tr><th scope="row"><label for="%7$s">%8$s</label></th>'
+			. '<td><select name="%7$s"><option></option>',
+			/*  1 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'vin' ) ),
+			/*  2 */ esc_html__( 'VIN', 'inventory-presser' ),
+			/*  3 */ apply_filters(
 				'invp_edit_control_vin',
 				sprintf(
 					'<input type="text" name="%s" maxlength="17" value="%s">',
-					apply_filters( 'invp_prefix_meta_key', 'vin' ),
-					$VIN
+					esc_attr( apply_filters( 'invp_prefix_meta_key', 'vin' ) ),
+					esc_attr( $meta['vin'] )
 				)
 			),
-			apply_filters( 'invp_prefix_meta_key', 'stock_number' ),
-			__( 'Stock number', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'stock_number' ),
-			$stock_number,
-			apply_filters( 'invp_prefix_meta_key', 'year' ),
-			__( 'Year', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'year' )
+			/*  4 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'stock_number' ) ),
+			/*  5 */ esc_html__( 'Stock number', 'inventory-presser' ),
+			/*  6 */ esc_attr( $meta['stock_number'] ),
+			/*  7 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'year' ) ),
+			/*  8 */ esc_html__( 'Year', 'inventory-presser' )
 		);
 
-		for ( $y = date( 'Y' ) + 2; $y >= 1920; $y-- ) {
+		for ( $y = gmdate( 'Y' ) + 2; $y >= 1920; $y-- ) {
 			printf(
 				'<option%s>%s</option>',
-				selected( $y, $year, false ),
-				$y
+				selected( $y, $meta['year'], false ),
+				esc_html( $y )
 			);
 		}
 
 		printf(
 			'</select></td></tr>'
 
-			// Make
-			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" value="%s"></td></tr>'
+			// Make.
+			. '<tr><th scope="row"><label for="%1$s">%2$s</label></th>'
+			. '<td><input type="text" name="%1$s" value="%3$s"></td></tr>'
 
-			// Model
-			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" value="%s"></td></tr>'
+			// Model.
+			. '<tr><th scope="row"><label for="%4$s">%5$s</label></th>'
+			. '<td><input type="text" name="%4$s" value="%6$s"></td></tr>'
 
-			// Trim level
-			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" value="%s"></td></tr>'
+			// Trim level.
+			. '<tr><th scope="row"><label for="%7$s">%8$s</label></th>'
+			. '<td><input type="text" name="%7$s" value="%9$s"></td></tr>'
 
-			// Engine
-			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" value="%s"></td></tr>'
+			// Engine.
+			. '<tr><th scope="row"><label for="%10$s">%11$s</label></th>'
+			. '<td><input type="text" name="%10$s" value="%12$s"></td></tr>'
 
-			// Body style
-			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" id="%s" value="%s">'
+			// Body style.
+			. '<tr><th scope="row"><label for="%13$s">%14$s</label></th>'
+			. '<td><input type="text" name="%13$s" id="%13$s" value="%15$s">'
 
-			. '<select name="%s_hidden" id="%s_hidden">',
-			apply_filters( 'invp_prefix_meta_key', 'make' ),
-			__( 'Make', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'make' ),
-			$make,
-			apply_filters( 'invp_prefix_meta_key', 'model' ),
-			__( 'Model', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'model' ),
-			$model,
-			apply_filters( 'invp_prefix_meta_key', 'trim' ),
-			__( 'Trim', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'trim' ),
-			$trim,
-			apply_filters( 'invp_prefix_meta_key', 'engine' ),
-			__( 'Engine', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'engine' ),
-			$engine,
-			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
-			__( 'Body style', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
-			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
-			$body_style,
-			apply_filters( 'invp_prefix_meta_key', 'body_style' ),
-			apply_filters( 'invp_prefix_meta_key', 'body_style' )
+			. '<select name="%13$s_hidden" id="%13$s_hidden">',
+			/*  1 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'make' ) ),
+			/*  2 */ esc_html__( 'Make', 'inventory-presser' ),
+			/*  3 */ esc_attr( $meta['make'] ),
+			/*  4 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'model' ) ),
+			/*  5 */ esc_html__( 'Model', 'inventory-presser' ),
+			/*  6 */ esc_attr( $meta['model'] ),
+			/*  7 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'trim' ) ),
+			/*  8 */ esc_html__( 'Trim', 'inventory-presser' ),
+			/*  9 */ esc_attr( $meta['trim'] ),
+			/* 10 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'engine' ) ),
+			/* 11 */ esc_html__( 'Engine', 'inventory-presser' ),
+			/* 12 */ esc_attr( $meta['engine'] ),
+			/* 13 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'body_style' ) ),
+			/* 14 */ esc_html__( 'Body style', 'inventory-presser' ),
+			/* 15 */ esc_attr( $meta['body_style'] )
 		);
 
 		$boat_styles = apply_filters(
@@ -602,51 +592,46 @@ class Inventory_Presser_Classic_Editor {
 		foreach ( $boat_styles as $s ) {
 			printf(
 				'<option%s>%s</option>',
-				selected( $s, $body_style ),
-				$s
+				selected( $s, $meta['body_style'] ),
+				esc_html( $s )
 			);
 		}
 
 		printf(
 			'</select></td></tr>'
 
-			// Color
-			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" value="%s"></td></tr>'
+			// Color.
+			. '<tr><th scope="row"><label for="%1$s">%2$s</label></th>'
+			. '<td><input type="text" name="%1$s" value="%3$s"></td></tr>'
 
-			// Interior color
-			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" value="%s"></td></tr>'
+			// Interior color.
+			. '<tr><th scope="row"><label for="%4$s">%5$s</label></th>'
+			. '<td><input type="text" name="%4$s" value="%6$s"></td></tr>'
 
-			// Odometer
-			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" value="%s">'
-			. ' <span class="invp_odometer_units">%s</span></td></tr>'
+			// Odometer.
+			. '<tr><th scope="row"><label for="%7$s">%8$s</label></th>'
+			. '<td><input type="text" name="%7$s" value="%9$s">'
+			. ' <span class="invp_odometer_units">%10$s</span></td></tr>'
 
-			// YouTube
-			. '<tr><th scope="row"><label for="%s">%s</label></th>'
-			. '<td><input type="text" name="%s" value="%s"></td></tr>',
-
-			apply_filters( 'invp_prefix_meta_key', 'color' ),
-			__( 'Color', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'color' ),
-			$color,
-			apply_filters( 'invp_prefix_meta_key', 'interior_color' ),
-			__( 'Interior color', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'interior_color' ),
-			$interior_color,
-			apply_filters( 'invp_prefix_meta_key', 'odometer' ),
-			apply_filters( 'invp_odometer_word', __( 'Odometer', 'inventory-presser' ) ),
-			apply_filters( 'invp_prefix_meta_key', 'odometer' ),
-			$odometer,
-			apply_filters( 'invp_odometer_word', 'miles' ),
-			apply_filters( 'invp_prefix_meta_key', 'youtube' ),
-			__( 'YouTube video ID', 'inventory-presser' ),
-			apply_filters( 'invp_prefix_meta_key', 'youtube' ),
-			$youtube
+			// YouTube.
+			. '<tr><th scope="row"><label for="%11$s">%12$s</label></th>'
+			. '<td><input type="text" name="%11$s" value="%13$s"></td></tr>',
+			/*  1 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'color' ) ),
+			/*  2 */ esc_html__( 'Color', 'inventory-presser' ),
+			/*  3 */ esc_attr( $meta['color'] ),
+			/*  4 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'interior_color' ) ),
+			/*  5 */ esc_html__( 'Interior color', 'inventory-presser' ),
+			/*  6 */ esc_attr( $meta['interior_color'] ),
+			/*  7 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'odometer' ) ),
+			/*  8 */ esc_attr( apply_filters( 'invp_odometer_word', __( 'Odometer', 'inventory-presser' ) ) ),
+			/*  9 */ esc_attr( $meta['odometer'] ),
+			/* 10 */ esc_attr( apply_filters( 'invp_odometer_word', 'miles' ) ),
+			/* 11 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'youtube' ) ),
+			/* 12 */ esc_html__( 'YouTube video ID', 'inventory-presser' ),
+			/* 13 */ esc_attr( $meta['youtube'] )
 		);
 
-		$type = $custom[ apply_filters( 'invp_prefix_meta_key', 'type' ) ] ?? '';
+		$type = $custom[ apply_filters( 'invp_prefix_meta_key', 'type' ) ][0] ?? '';
 		if ( 'boat' === strtolower( $type ) ) {
 			// Add boat fields.
 			printf(
@@ -654,21 +639,63 @@ class Inventory_Presser_Classic_Editor {
 				'<tr class="boat-postmeta"><th scope="row"><label for="%1$s">%2$s</label></th>'
 				. '<td><input type="text" name="%1$s" value="%3$s"></td></tr>'
 
-				// Length (boats).
+				// Boat condition.
 				. '<tr class="boat-postmeta"><th scope="row"><label for="%4$s">%5$s</label></th>'
 				. '<td><input type="text" name="%4$s" value="%6$s"></td></tr>'
 
-				// Hull material.
+				// Draft (boats).
 				. '<tr class="boat-postmeta"><th scope="row"><label for="%7$s">%8$s</label></th>'
-				. '<td><select name="%7$s"><option></option>',
-				esc_attr( apply_filters( 'invp_prefix_meta_key', 'beam' ) ),
-				esc_html__( 'Beam', 'inventory-presser' ),
-				esc_attr( $beam ),
-				esc_attr( apply_filters( 'invp_prefix_meta_key', 'length' ) ),
-				esc_html__( 'Length', 'inventory-presser' ),
-				esc_attr( $length ),
-				esc_attr( apply_filters( 'invp_prefix_meta_key', 'hull_material' ) ),
-				esc_html__( 'Hull material', 'inventory-presser' )
+				. '<td><input type="text" name="%7$s" value="%9$s"></td></tr>'
+
+				// # of Engines (boats).
+				. '<tr class="boat-postmeta"><th scope="row"><label for="%10$s">%11$s</label></th>'
+				. '<td><input type="text" name="%10$s" value="%12$s"></td></tr>'
+
+				// Engine make (boats).
+				. '<tr class="boat-postmeta"><th scope="row"><label for="%13$s">%14$s</label></th>'
+				. '<td><input type="text" name="%13$s" value="%15$s"></td></tr>'
+
+				// Engine model (boats).
+				. '<tr class="boat-postmeta"><th scope="row"><label for="%16$s">%17$s</label></th>'
+				. '<td><input type="text" name="%16$s" value="%18$s"></td></tr>'
+
+				// Horsepower (boats).
+				. '<tr class="boat-postmeta"><th scope="row"><label for="%19$s">%20$s</label></th>'
+				. '<td><input type="text" name="%20$s" value="%21$s"></td></tr>'
+
+				// Length (boats).
+				. '<tr class="boat-postmeta"><th scope="row"><label for="%22$s">%23$s</label></th>'
+				. '<td><input type="text" name="%22$s" value="%24$s"></td></tr>'
+
+				// Hull material (boats).
+				. '<tr class="boat-postmeta"><th scope="row"><label for="%25$s">%26$s</label></th>'
+				. '<td><select name="%25$s"><option></option>',
+				/*  1 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'beam' ) ),
+				/*  2 */ esc_html__( 'Beam', 'inventory-presser' ),
+				/*  3 */ esc_attr( $meta['beam'] ),
+				/*  4 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'condition_boat' ) ),
+				/*  5 */ esc_html__( 'Boat Condition', 'inventory-presser' ),
+				/*  6 */ esc_attr( $meta['condition_boat'] ),
+				/*  7 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'draft' ) ),
+				/*  8 */ esc_html__( 'Max Draft', 'inventory-presser' ),
+				/*  9 */ esc_attr( $meta['draft'] ),
+				/* 10 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'engine_count' ) ),
+				/* 11 */ esc_html__( 'Number of Engines', 'inventory-presser' ),
+				/* 12 */ esc_attr( $meta['engine_count'] ),
+				/* 13 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'engine_make' ) ),
+				/* 14 */ esc_html__( 'Engine Make', 'inventory-presser' ),
+				/* 15 */ esc_attr( $meta['engine_make'] ),
+				/* 16 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'engine_model' ) ),
+				/* 17 */ esc_html__( 'Engine Model', 'inventory-presser' ),
+				/* 18 */ esc_attr( $meta['engine_model'] ),
+				/* 19 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'horsepower' ) ),
+				/* 20 */ esc_html__( 'Horsepower', 'inventory-presser' ),
+				/* 21 */ esc_attr( $meta['horsepower'] ),
+				/* 22 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'length' ) ),
+				/* 23 */ esc_html__( 'Length', 'inventory-presser' ),
+				/* 24 */ esc_attr( $meta['length'] ),
+				/* 25 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'hull_material' ) ),
+				/* 26 */ esc_html__( 'Hull material', 'inventory-presser' )
 			);
 			$hull_materials = apply_filters(
 				'invp_default_hull_materials',
@@ -688,7 +715,7 @@ class Inventory_Presser_Classic_Editor {
 			foreach ( $hull_materials as $m ) {
 				printf(
 					'<option%s>%s</option>',
-					selected( $m, $hull_material, false ),
+					selected( $m, $meta['hull_material'], false ),
 					esc_html( $m )
 				);
 			}
@@ -706,7 +733,7 @@ class Inventory_Presser_Classic_Editor {
 		global $post, $wp_meta_boxes;
 		$post_type = get_post_type( $post );
 
-		if ( INVP::POST_TYPE != $post_type ) {
+		if ( INVP::POST_TYPE !== $post_type ) {
 			return;
 		}
 

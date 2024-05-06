@@ -117,27 +117,27 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 				// VIN
 				array(
 					'member' => 'vin',
-					'label'  => 'boat' == strtolower( invp_get_the_type( $post_ID ) ) ? __( 'HIN', 'inventory-presser' ) : __( 'VIN', 'inventory-presser' ),
+					'label'  => 'boat' === strtolower( invp_get_the_type( $post_ID ) ) ? __( 'HIN', 'inventory-presser' ) : __( 'VIN', 'inventory-presser' ),
 					'value'  => invp_get_the_VIN( $post_ID ),
 				),
 			)
 		);
 
-		// Boat-specific fields
-		if ( 'boat' == strtolower( invp_get_the_type( $post_ID ) ) ) {
-			// Beam
+		// Boat-specific fields.
+		if ( 'boat' === strtolower( invp_get_the_type( $post_ID ) ) ) {
+			// Beam.
 			$table_items[] = array(
 				'member' => 'beam',
 				'label'  => __( 'Beam', 'inventory-presser' ),
 			);
 
-			// Length
+			// Length.
 			$table_items[] = array(
 				'member' => 'length',
 				'label'  => __( 'Length', 'inventory-presser' ),
 			);
 
-			// Hull material
+			// Hull material.
 			$table_items[] = array(
 				'member' => 'hull_material',
 				'label'  => __( 'Hull Material', 'inventory-presser' ),

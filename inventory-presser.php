@@ -234,8 +234,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 				// Boat fields might not exist on all vehicles. Do not require them.
 				case 'beam':
-				case 'length':
+				case 'condition_boat':
+				case 'draft':
+				case 'engine_count':
+				case 'engine_make':
+				case 'engine_model':
+				case 'horsepower':
 				case 'hull_material':
+				case 'length':
 					unset( $query->query_vars['meta_key'] );
 					$query->set(
 						'meta_query',

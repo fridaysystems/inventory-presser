@@ -419,7 +419,7 @@ class INVP {
 
 	/**
 	 * Produces an array of arrays that define all the meta fields that
-	 * define our vehicle post type.
+	 * define our vehicle post type for all vehicle types including boats.
 	 *
 	 * @return array An array of arrays, defining the meta fields that are registered and used by this class.
 	 */
@@ -430,7 +430,7 @@ class INVP {
 				array(
 					'label'  => __( 'Availability', 'inventory_presser' ),
 					'name'   => 'availability',
-					'sample' => 'For Sale',
+					'sample' => __( 'For Sale', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -441,7 +441,7 @@ class INVP {
 				array(
 					'label'  => __( 'Body Style', 'inventory_presser' ),
 					'name'   => 'body_style',
-					'sample' => 'EXTENDED CAB PICKUP',
+					'sample' => __( 'EXTENDED CAB PICKUP', 'inventory-presser') ,
 					'type'   => 'string',
 				),
 				array(
@@ -514,19 +514,25 @@ class INVP {
 				array(
 					'label'  => __( 'Color', 'inventory_presser' ),
 					'name'   => 'color',
-					'sample' => 'Merlot Jewel Metallic',
+					'sample' => __( 'Merlot Jewel Metallic', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
 					'label'  => __( 'Base Color', 'inventory_presser' ),
 					'name'   => 'color_base',
-					'sample' => 'Red',
+					'sample' => __( 'Red', 'inventory-presser' ),
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Boat Condition', 'inventory_presser' ),
+					'name'   => 'condition_boat', // for boats.
+					'sample' => __( 'Excellent', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
 					'label'  => __( 'Condition', 'inventory_presser' ),
 					'name'   => 'condition',
-					'sample' => 'Used',
+					'sample' => __( 'Used', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -549,7 +555,7 @@ class INVP {
 				array(
 					'label'  => __( 'Description', 'inventory_presser' ),
 					'name'   => 'description',
-					'sample' => 'Clean, non-smoker, must-see!',
+					'sample' => __( 'Clean, non-smoker, must-see!', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -567,7 +573,7 @@ class INVP {
 				array(
 					'label'  => __( 'Drive Type', 'inventory_presser' ),
 					'name'   => 'drive_type',
-					'sample' => 'Rear Wheel Drive',
+					'sample' => __( 'Rear Wheel Drive', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -578,7 +584,25 @@ class INVP {
 				array(
 					'label'  => __( 'Engine', 'inventory_presser' ),
 					'name'   => 'engine',
-					'sample' => '3.7L 5 cylinder',
+					'sample' => __( '3.7L 5 cylinder', 'inventory-presser' ),
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( '# of Engines', 'inventory_presser' ),
+					'name'   => 'engine_count', // For boats.
+					'sample' => '1',
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Engine Make', 'inventory_presser' ),
+					'name'   => 'engine_make', // For boats.
+					'sample' => __( 'Yamaha', 'inventory-presser' ),
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Engine Model', 'inventory_presser' ),
+					'name'   => 'engine_model', // For boats.
+					'sample' => 'F200LB',
 					'type'   => 'string',
 				),
 				array(
@@ -589,19 +613,19 @@ class INVP {
 				array(
 					'label'  => __( 'Fuel', 'inventory_presser' ),
 					'name'   => 'fuel',
-					'sample' => 'Gas',
+					'sample' => __( 'Gas', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
 					'label'  => __( 'Fuel Economy Name (fuel type 1)', 'inventory_presser' ),
 					'name'   => 'fuel_economy_1_name',
-					'sample' => 'Regular Gasoline',
+					'sample' => __( 'Regular Gasoline', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
 					'label'  => __( 'Fuel Economy Annual Fuel Consumption (fuel type 1)', 'inventory_presser' ),
 					'name'   => 'fuel_economy_1_annual_consumption',
-					'sample' => '13.18 barrels',
+					'sample' => __( '13.18 barrels', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -613,7 +637,7 @@ class INVP {
 				array(
 					'label'  => __( 'Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 1)', 'inventory_presser' ),
 					'name'   => 'fuel_economy_1_annual_emissions',
-					'sample' => '355 grams per mile',
+					'sample' => __( '355 grams per mile', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -637,13 +661,13 @@ class INVP {
 				array(
 					'label'  => __( 'Fuel Economy Name (fuel type 2)', 'inventory_presser' ),
 					'name'   => 'fuel_economy_2_name',
-					'sample' => 'Regular Gasoline',
+					'sample' => __( 'Regular Gasoline', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
 					'label'  => __( 'Fuel Economy Annual Fuel Consumption (fuel type 2)', 'inventory_presser' ),
 					'name'   => 'fuel_economy_2_annual_consumption',
-					'sample' => '13.18 barrels',
+					'sample' => __( '13.18 barrels', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -655,7 +679,7 @@ class INVP {
 				array(
 					'label'  => __( 'Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 2)', 'inventory_presser' ),
 					'name'   => 'fuel_economy_2_annual_emissions',
-					'sample' => '355 grams per mile',
+					'sample' => __( '355 grams per mile', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -683,6 +707,11 @@ class INVP {
 					'type'   => 'number',
 				),
 				array(
+					'label' => __( 'Horsepower', 'inventory_presser' ),
+					'name'  => 'horsepower', // for boats.
+					'type'  => 'number',
+				),
+				array(
 					'label' => __( 'Hull Material', 'inventory_presser' ),
 					'name'  => 'hull_material', // for boats.
 					'type'  => 'string',
@@ -690,7 +719,7 @@ class INVP {
 				array(
 					'label'  => __( 'Interior Color', 'inventory_presser' ),
 					'name'   => 'interior_color',
-					'sample' => 'Black',
+					'sample' => __( 'Black', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -712,13 +741,19 @@ class INVP {
 				array(
 					'label'  => __( 'Location', 'inventory_presser' ),
 					'name'   => 'location',
-					'sample' => '120 Mall Blvd',
+					'sample' => __( '120 Mall Blvd', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
 					'label'  => __( 'Make', 'inventory_presser' ),
 					'name'   => 'make',
-					'sample' => 'GMC',
+					'sample' => __( 'GMC', 'inventory-presser' ),
+					'type'   => 'string',
+				),
+				array(
+					'label'  => __( 'Max Draft', 'inventory_presser' ),
+					'name'   => 'draft', // for boats.
+					'sample' => '1\' 0"',
 					'type'   => 'string',
 				),
 				array(
@@ -747,7 +782,7 @@ class INVP {
 				array(
 					'label'  => __( 'Options', 'inventory_presser' ),
 					'name'   => 'options_array',
-					'sample' => 'Heated Seats',
+					'sample' => __( 'Heated Seats', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -759,7 +794,7 @@ class INVP {
 				array(
 					'label'  => __( 'Payment Frequency', 'inventory_presser' ),
 					'name'   => 'payment_frequency',
-					'sample' => 'monthly',
+					'sample' => __( 'monthly', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -771,7 +806,7 @@ class INVP {
 				array(
 					'label'  => __( 'Propulsion Type', 'inventory_presser' ),
 					'name'   => 'propulsion_type',
-					'sample' => 'Outboard',
+					'sample' => __( 'Outboard', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -795,13 +830,13 @@ class INVP {
 				array(
 					'label'  => __( 'Title Status', 'inventory_presser' ),
 					'name'   => 'title_status',
-					'sample' => 'Clean',
+					'sample' => __( 'Clean', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
 					'label'  => __( 'Transmission', 'inventory_presser' ),
 					'name'   => 'transmission',
-					'sample' => 'Automatic',
+					'sample' => __( 'Automatic', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
@@ -813,13 +848,13 @@ class INVP {
 				array(
 					'label'  => __( 'Trim Level', 'inventory_presser' ),
 					'name'   => 'trim',
-					'sample' => 'SLE-1 Ext. Cab 4WD',
+					'sample' => __( 'SLE-1 Ext. Cab 4WD', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
 					'label'  => __( 'Type', 'inventory_presser' ),
 					'name'   => 'type',
-					'sample' => 'Passenger Car',
+					'sample' => __( 'Passenger Car', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(
