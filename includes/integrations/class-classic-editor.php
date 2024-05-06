@@ -661,7 +661,7 @@ class Inventory_Presser_Classic_Editor {
 
 				// Horsepower (boats).
 				. '<tr class="boat-postmeta"><th scope="row"><label for="%19$s">%20$s</label></th>'
-				. '<td><input type="text" name="%20$s" value="%21$s"></td></tr>'
+				. '<td><input type="text" name="%19$s" value="%21$s"></td></tr>'
 
 				// Length (boats).
 				. '<tr class="boat-postmeta"><th scope="row"><label for="%22$s">%23$s</label></th>'
