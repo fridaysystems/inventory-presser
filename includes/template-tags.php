@@ -200,6 +200,19 @@ function invp_get_the_condition( $post_ID = null ) {
 }
 
 /**
+ * Template tag. Returns the condition of the boat, usually "Excellent" or "Good".
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return string
+ */
+function invp_get_the_condition_boat( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'condition_boat', $post_ID );
+}
+
+/**
  * invp_get_the_dealer_id
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
@@ -259,6 +272,19 @@ function invp_get_the_down_payment( $post_ID = null ) {
 }
 
 /**
+ * invp_get_the_draft
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return string
+ */
+function invp_get_the_draft( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'draft', $post_ID );
+}
+
+/**
  * Template tag. Returns the drive type, or a description of how many driven
  * wheels are on the vehicle.
  *
@@ -299,6 +325,45 @@ function invp_get_the_engine( $post_ID = null ) {
 }
 
 /**
+ * invp_get_the_engine_count
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return string
+ */
+function invp_get_the_engine_count( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'engine_count', $post_ID );
+}
+
+/**
+ * invp_get_the_engine_make
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return string
+ */
+function invp_get_the_engine_make( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'engine_make', $post_ID );
+}
+
+/**
+ * invp_get_the_engine_model
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return string
+ */
+function invp_get_the_engine_model( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'engine_model', $post_ID );
+}
+
+/**
  * invp_get_the_fuel
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
@@ -333,6 +398,19 @@ function invp_get_the_fuel_economy_value( $key, $fuel_type = 1, $post_ID = null 
 	}
 
 	return INVP::get_meta( $key, $post_ID );
+}
+
+/**
+ * invp_get_the_horsepower
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return string
+ */
+function invp_get_the_horsepower( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return INVP::get_meta( 'horsepower', $post_ID );
 }
 
 /**
@@ -1301,8 +1379,20 @@ function invp_have_carfax_report( $post_ID = null ) {
 }
 
 /**
- * Answers the question, "is this vehicle designated a "one owner" by
- * Carfax?
+ * Is this vehicle a boat?
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return bool True if this vehicle's type is boat.
+ */
+function invp_is_boat( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return 'boat' === strtolower( invp_get_the_type( $post_ID ) );
+}
+
+/**
+ * Is this vehicle designated a "one owner" by Carfax?
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return bool True if this vehicle is designated as a "one owner" by Carfax
@@ -1316,7 +1406,7 @@ function invp_is_carfax_one_owner( $post_ID = null ) {
 }
 
 /**
- * Answers the question, "is this vehicle certified pre-owned?"
+ * Is this vehicle certified pre-owned?
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return bool True if this vehicle is certified pre-owned

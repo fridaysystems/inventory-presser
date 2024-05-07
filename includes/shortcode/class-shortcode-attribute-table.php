@@ -74,6 +74,16 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 			}
 		}
 
+		// Boat-specific fields.
+		if ( invp_is_boat( $post_ID ) ) {
+			// Body Style. For Boats!
+			$table_items[] = array(
+				'member' => 'body_style',
+				'label'  => __( 'Body Style', 'inventory-presser' ),
+				'value'  => invp_get_the_body_style( $post_ID ),
+			);
+		}
+
 		// Odometer.
 		$table_items[] = array(
 			'member' => 'odometer',
@@ -81,86 +91,83 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 			'value'  => invp_get_the_odometer( ' ' . apply_filters( 'invp_odometer_word', 'Miles' ), $post_ID ),
 		);
 
-		$table_items = array_merge(
-			$table_items,
-			array(
-
-				// Transmission.
-				array(
-					'member' => 'transmission',
-					'label'  => __( 'Transmission', 'inventory-presser' ),
-					'value'  => invp_get_the_transmission( $post_ID ),
-				),
-
-				// Exterior Color.
-				array(
-					'member' => 'color',
-					'label'  => __( 'Color', 'inventory_presser' ),
-					'value'  => invp_get_the_color( $post_ID ),
-				),
-
-				// Drive Type.
-				array(
-					'member' => 'drive_type',
-					'label'  => __( 'Drive Type', 'inventory-presser' ),
-					'value'  => invp_get_the_drive_type( $post_ID ),
-				),
-
-				// Interior Color.
-				array(
-					'member' => 'interior_color',
-					'label'  => __( 'Interior', 'inventory_presser' ),
-					'value'  => invp_get_the_interior_color( $post_ID ),
-				),
-
-				// Doors.
-				array(
-					'member' => 'doors',
-					'label'  => __( 'Doors', 'inventory-presser' ),
-					'value'  => invp_get_the_doors( $post_ID ),
-				),
-
-				// Stock Number.
-				array(
-					'member' => 'stock_number',
-					'label'  => __( 'Stock', 'inventory-presser' ),
-					'value'  => invp_get_the_stock_number( $post_ID ),
-				),
-
-				// Fuel + Engine.
-				array(
-					'member' => 'engine',
-					'label'  => __( 'Engine', 'inventory-presser' ),
-					'value'  => trim( implode( ' ', array( invp_get_the_fuel( $post_ID ), invp_get_the_engine( $post_ID ) ) ) ),
-				),
-
-				// VIN.
-				array(
-					'member' => 'vin',
-					'label'  => 'boat' === strtolower( invp_get_the_type( $post_ID ) ) ? __( 'HIN', 'inventory-presser' ) : __( 'VIN', 'inventory-presser' ),
-					'value'  => invp_get_the_VIN( $post_ID ),
-				),
-			)
+		// Transmission.
+		$table_items[] = array(
+			'member' => 'transmission',
+			'label'  => __( 'Transmission', 'inventory-presser' ),
+			'value'  => invp_get_the_transmission( $post_ID ),
 		);
 
-		// Boat-specific fields.
-		if ( 'boat' === strtolower( invp_get_the_type( $post_ID ) ) ) {
-			// Beam.
+		// Exterior Color.
+		$table_items[] = array(
+			'member' => 'color',
+			'label'  => __( 'Color', 'inventory_presser' ),
+			'value'  => invp_get_the_color( $post_ID ),
+		);
+
+		// Drive Type.
+		$table_items[] = array(
+			'member' => 'drive_type',
+			'label'  => __( 'Drive Type', 'inventory-presser' ),
+			'value'  => invp_get_the_drive_type( $post_ID ),
+		);
+
+		// Interior Color.
+		$table_items[] = array(
+			'member' => 'interior_color',
+			'label'  => __( 'Interior', 'inventory_presser' ),
+			'value'  => invp_get_the_interior_color( $post_ID ),
+		);
+
+		// Doors.
+		$table_items[] = array(
+			'member' => 'doors',
+			'label'  => __( 'Doors', 'inventory-presser' ),
+			'value'  => invp_get_the_doors( $post_ID ),
+		);
+
+		// Stock Number.
+		$table_items[] = array(
+			'member' => 'stock_number',
+			'label'  => __( 'Stock', 'inventory-presser' ),
+			'value'  => invp_get_the_stock_number( $post_ID ),
+		);
+
+		// Fuel + Engine.
+		$table_items[] = array(
+			'member' => 'engine',
+			'label'  => __( 'Engine', 'inventory-presser' ),
+			'value'  => trim( implode( ' ', array( invp_get_the_fuel( $post_ID ), invp_get_the_engine( $post_ID ) ) ) ),
+		);
+
+		// Boat-specific engine fields.
+		if ( invp_is_boat( $post_ID ) ) {
+			// Number of Engines.
 			$table_items[] = array(
-				'member' => 'beam',
-				'label'  => __( 'Beam', 'inventory-presser' ),
+				'member' => 'engine_count',
+				'label'  => __( 'Number of Engines', 'inventory-presser' ),
+				'value'  => invp_get_the_engine_count( $post_ID ),
+			);
+
+			// Horsepower.
+			$table_items[] = array(
+				'member' => 'horsepower',
+				'label'  => __( 'Horsepower', 'inventory-presser' ),
+				'value'  => invp_get_the_horsepower( $post_ID ),
 			);
 
 			// Length.
 			$table_items[] = array(
 				'member' => 'length',
 				'label'  => __( 'Length', 'inventory-presser' ),
+				'value'  => invp_get_the_length( $post_ID ),
 			);
 
 			// Hull material.
 			$table_items[] = array(
 				'member' => 'hull_material',
 				'label'  => __( 'Hull Material', 'inventory-presser' ),
+				'value'  => invp_get_the_hull_material( $post_ID ),
 			);
 		}
 
