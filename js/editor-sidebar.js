@@ -86,7 +86,7 @@
 
 	function ucwords( str )
 	{
-		return (str + '').split( ' ' ).map( x => x.charAt( 0 ).toUpperCase() + x.substr( 1 ) ).join( ' ' );
+		return (str + '').split( ' ' ).map( x => x.charAt( 0 ).toUpperCase() + x.substring( 1 ) ).join( ' ' );
 	}
 
 	// Most text fields.
