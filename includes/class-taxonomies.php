@@ -172,111 +172,44 @@ class Inventory_Presser_Taxonomies {
 	}
 
 	/**
-	 * Outputs HTML that renders a meta box for the colors taxonomy
+	 * Outputs HTML that renders a meta box in the Classic Editor for all our taxonomies.
 	 *
-	 * @param  mixed $post
+	 * @param  WP_Post $post Current post object.
+	 * @param  array   $box  Categories meta box arguments.
 	 * @return void
 	 */
-	public static function meta_box_html_colors( $post ) {
-		echo self::taxonomy_meta_box_html( 'colors', apply_filters( 'invp_prefix_meta_key', 'color_base' ), $post );
-	}
-
-	/**
-	 * Outputs HTML that renders a meta box for the condition taxonomy
-	 *
-	 * @param  mixed $post
-	 * @return void
-	 */
-	public static function meta_box_html_condition( $post ) {
-		echo self::taxonomy_meta_box_html( 'condition', apply_filters( 'invp_prefix_meta_key', 'condition' ), $post );
-	}
-
-	/**
-	 * Outputs HTML that renders a meta box for the cylinders taxonomy
-	 *
-	 * @param  mixed $post
-	 * @return void
-	 */
-	public static function meta_box_html_cylinders( $post ) {
-		echo self::taxonomy_meta_box_html( 'cylinders', apply_filters( 'invp_prefix_meta_key', 'cylinders' ), $post );
-	}
-
-	/**
-	 * Outputs HTML that renders a meta box for the availability taxonomy
-	 *
-	 * @param  mixed $post
-	 * @return void
-	 */
-	public static function meta_box_html_availability( $post ) {
-		echo self::taxonomy_meta_box_html( 'availability', apply_filters( 'invp_prefix_meta_key', 'availability' ), $post );
-	}
-
-	/**
-	 * Outputs HTML that renders a meta box for the drive type taxonomy
-	 *
-	 * @param  mixed $post
-	 * @return void
-	 */
-	public static function meta_box_html_drive_type( $post ) {
-		echo self::taxonomy_meta_box_html( 'drive_type', apply_filters( 'invp_prefix_meta_key', 'drive_type' ), $post );
-	}
-
-	/**
-	 * Outputs HTML that renders a meta box for the fuel taxonomy
-	 *
-	 * @param  mixed $post
-	 * @return void
-	 */
-	public static function meta_box_html_fuel( $post ) {
-		echo self::taxonomy_meta_box_html( 'fuel', apply_filters( 'invp_prefix_meta_key', 'fuel' ), $post );
-	}
-
-	/**
-	 * Outputs HTML that renders a meta box for the propulsion type taxonomy
-	 *
-	 * @param  mixed $post
-	 * @return void
-	 */
-	public static function meta_box_html_propulsion_type( $post ) {
-		echo self::taxonomy_meta_box_html( 'propulsion_type', apply_filters( 'invp_prefix_meta_key', 'propulsion_type' ), $post );
-	}
-
-	/**
-	 * Outputs HTML that renders a meta box for the transmission taxonomy
-	 *
-	 * @param  mixed $post
-	 * @return void
-	 */
-	public static function meta_box_html_transmission( $post ) {
-		echo self::taxonomy_meta_box_html( 'transmission', apply_filters( 'invp_prefix_meta_key', 'transmission' ), $post );
+	public static function meta_box_html( $post, $box ) {
+		$taxonomy = $box['args']['taxonomy'] ?? '';
+		if ( '' === $taxonomy ) {
+			return;
+		}
+		printf(
+			'%1$s <a href="edit-tags.php?taxonomy=%2$s&post_type=%3$s">%4$s</a>',
+			self::taxonomy_meta_box_html( $taxonomy, apply_filters( 'invp_prefix_meta_key', $taxonomy ), $post ),
+			esc_attr( $taxonomy ),
+			esc_attr( INVP::POST_TYPE ),
+			esc_html__( 'Manage', 'inventory-presser' )
+		);
 	}
 
 	/**
 	 * Outputs HTML that renders a meta box for the type taxonomy
 	 *
-	 * @param  mixed $post
+	 * @param  WP_Post $post Current post object.
 	 * @return void
 	 */
 	public static function meta_box_html_type( $post ) {
-		$html = self::taxonomy_meta_box_html( 'type', apply_filters( 'invp_prefix_meta_key', 'type' ), $post );
+		$taxonomy = 'type';
+		$html     = sprintf(
+			'%1$s <a href="edit-tags.php?taxonomy=%2$s&post_type=%3$s">%4$s</a>',
+			self::taxonomy_meta_box_html( $taxonomy, apply_filters( 'invp_prefix_meta_key', $taxonomy ), $post ),
+			esc_attr( $taxonomy ),
+			esc_attr( INVP::POST_TYPE ),
+			esc_html__( 'Manage', 'inventory-presser' )
+		);
 		// add an onchange attribute to the select.
 		$html = str_replace( '<select', '<select onchange="invp_vehicle_type_changed( this.value );" ', $html );
 		echo $html;
-	}
-
-	/**
-	 * Outputs HTML that renders a meta box for the location taxonomy
-	 *
-	 * @param  mixed $post
-	 * @return void
-	 */
-	public static function meta_box_html_locations( $post ) {
-		printf(
-			'%s<p><a href="edit-tags.php?taxonomy=location&post_type=%s">%s</a></p>',
-			self::taxonomy_meta_box_html( 'location', apply_filters( 'invp_prefix_meta_key', 'location' ), $post ),
-			esc_attr( INVP::POST_TYPE ),
-			esc_html__( 'Manage locations', 'inventory-presser' )
-		);
 	}
 
 	/**
@@ -720,7 +653,7 @@ class Inventory_Presser_Taxonomies {
 							'new_item_name' => __( 'New Condition Name', 'inventory-presser' ),
 							'back_to_items' => __( '&larr; Go to conditions', 'inventory-presser' ),
 						),
-						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_condition' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
 						'query_var'      => 'condition',
 						'singular_label' => __( 'Condition', 'inventory-presser' ),
 						'show_in_menu'   => false,
@@ -787,7 +720,7 @@ class Inventory_Presser_Taxonomies {
 							'new_item_name' => __( 'New Availability Name', 'inventory-presser' ),
 							'back_to_items' => __( '&larr; Go to availabilities', 'inventory-presser' ),
 						),
-						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_availability' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
 						'query_var'      => 'availability',
 						'singular_label' => __( 'Availability', 'inventory-presser' ),
 						'show_in_menu'   => false,
@@ -817,7 +750,7 @@ class Inventory_Presser_Taxonomies {
 							'new_item_name' => __( 'New Drive Type Name', 'inventory-presser' ),
 							'back_to_items' => __( '&larr; Go to drive types', 'inventory-presser' ),
 						),
-						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_drive_type' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
 						'query_var'      => 'drive-type',
 						'singular_label' => __( 'Drive type', 'inventory-presser' ),
 						'show_in_menu'   => false,
@@ -855,7 +788,7 @@ class Inventory_Presser_Taxonomies {
 							'new_item_name' => __( 'New Propulsion Type Name', 'inventory-presser' ),
 							'back_to_items' => __( '&larr; Go to propulsion types', 'inventory-presser' ),
 						),
-						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_propulsion_type' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
 						'query_var'      => 'propulsion-type',
 						'singular_label' => __( 'Propulsion type', 'inventory-presser' ),
 						'show_in_menu'   => false,
@@ -886,7 +819,7 @@ class Inventory_Presser_Taxonomies {
 							'new_item_name' => __( 'New Fuel Type Name', 'inventory-presser' ),
 							'back_to_items' => __( '&larr; Go to fuel types', 'inventory-presser' ),
 						),
-						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_fuel' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
 						'query_var'      => 'fuel',
 						'singular_label' => __( 'Fuel', 'inventory-presser' ),
 						'show_in_menu'   => false,
@@ -923,7 +856,7 @@ class Inventory_Presser_Taxonomies {
 							'new_item_name' => __( 'New Transmission Name', 'inventory-presser' ),
 							'back_to_items' => __( '&larr; Go to transmissions', 'inventory-presser' ),
 						),
-						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_transmission' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
 						'query_var'      => 'transmission',
 						'singular_label' => __( 'Transmission', 'inventory-presser' ),
 						'show_in_menu'   => false,
@@ -953,7 +886,7 @@ class Inventory_Presser_Taxonomies {
 							'new_item_name' => __( 'New Cylinder Count', 'inventory-presser' ),
 							'back_to_items' => __( '&larr; Go to cylinder counts', 'inventory-presser' ),
 						),
-						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_cylinders' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
 						'query_var'      => 'cylinders',
 						'singular_label' => __( 'Cylinders', 'inventory-presser' ),
 						'show_in_menu'   => false,
@@ -1012,7 +945,7 @@ class Inventory_Presser_Taxonomies {
 							'new_item_name' => __( 'New Color Name', 'inventory-presser' ),
 							'back_to_items' => __( '&larr; Go to colors', 'inventory-presser' ),
 						),
-						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_colors' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
 						'query_var'      => 'colors',
 						'singular_label' => __( 'Color', 'inventory-presser' ),
 						'show_in_menu'   => false,
@@ -1058,12 +991,191 @@ class Inventory_Presser_Taxonomies {
 							'menu_name'     => __( 'Locations', 'inventory-presser' ),
 							'back_to_items' => __( '&larr; Go to locations', 'inventory-presser' ),
 						),
-						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html_locations' ),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
 						'query_var'      => 'location',
 						'singular_label' => __( 'Location', 'inventory-presser' ),
 						'show_in_menu'   => true,
 						'show_in_rest'   => true,
 						'show_ui'        => true,
+					),
+				),
+
+				// Boat Condition.
+				array(
+					'args'      => array(
+						'hierarchical'   => true,
+						'label'          => __( 'Condition', 'inventory-presser' ),
+						'labels'         => array(
+							'name'          => __( 'Condition', 'inventory-presser' ),
+							'singular_name' => __( 'Condition', 'inventory-presser' ),
+							'search_items'  => __( 'Search conditions', 'inventory-presser' ),
+							'popular_items' => __( 'Popular conditions', 'inventory-presser' ),
+							'all_items'     => __( 'All conditions', 'inventory-presser' ),
+							'parent_item'   => __( 'Parent Condition', 'inventory-presser' ),
+							'edit_item'     => __( 'Edit Condition', 'inventory-presser' ),
+							'add_new_item'  => __( 'Add New Condition', 'inventory-presser' ),
+							'new_item_name' => __( 'New Condition Name', 'inventory-presser' ),
+							'back_to_items' => __( '&larr; Go to condition', 'inventory-presser' ),
+						),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
+						'query_var'      => 'condition_boat',
+						'singular_label' => __( 'Condition', 'inventory-presser' ),
+						'show_in_menu'   => false,
+						'show_in_rest'   => true,
+						'show_ui'        => true,
+					),
+					'term_data' => array(
+						'New'       => 'New',
+						'Excellent' => 'Excellent',
+						'Good'      => 'Good',
+						'Fair'      => 'Fair',
+						'Poor'      => 'Poor',
+					),
+				),
+
+				// Number of Engines (boats).
+				array(
+					'args'      => array(
+						'hierarchical'   => true,
+						'label'          => __( 'Number of Engines', 'inventory-presser' ),
+						'labels'         => array(
+							'name'          => __( 'Number of Engines', 'inventory-presser' ),
+							'singular_name' => __( 'Number', 'inventory-presser' ),
+							'search_items'  => __( 'Search numbers', 'inventory-presser' ),
+							'popular_items' => __( 'Popular numbers', 'inventory-presser' ),
+							'all_items'     => __( 'All numbers', 'inventory-presser' ),
+							'parent_item'   => __( 'Parent numbers', 'inventory-presser' ),
+							'edit_item'     => __( 'Edit Number', 'inventory-presser' ),
+							'add_new_item'  => __( 'Add New Number of Engines', 'inventory-presser' ),
+							'new_item_name' => __( 'New Number Name', 'inventory-presser' ),
+							'back_to_items' => __( '&larr; Go to number', 'inventory-presser' ),
+						),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
+						'query_var'      => 'engine_count',
+						'singular_label' => __( 'Number of Engines', 'inventory-presser' ),
+						'show_in_menu'   => false,
+						'show_in_rest'   => true,
+						'show_ui'        => true,
+					),
+					'term_data' => array(
+						'1' => '1',
+						'2' => '2',
+					),
+				),
+
+				// Engine Make (boats).
+				array(
+					'args' => array(
+						'hierarchical'   => true,
+						'label'          => __( 'Engine Makes', 'inventory-presser' ),
+						'labels'         => array(
+							'name'          => __( 'Engine Makes', 'inventory-presser' ),
+							'singular_name' => __( 'Engine Make', 'inventory-presser' ),
+							'search_items'  => __( 'Search engine makes', 'inventory-presser' ),
+							'popular_items' => __( 'Popular engine makes', 'inventory-presser' ),
+							'all_items'     => __( 'All engine makes', 'inventory-presser' ),
+							'parent_item'   => __( 'Parent Engine Make', 'inventory-presser' ),
+							'edit_item'     => __( 'Edit Engine Make', 'inventory-presser' ),
+							'add_new_item'  => __( 'Add New Engine Make', 'inventory-presser' ),
+							'new_item_name' => __( 'New Engine Make Name', 'inventory-presser' ),
+							'back_to_items' => __( '&larr; Go to engine make', 'inventory-presser' ),
+						),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
+						'query_var'      => 'engine_make',
+						'singular_label' => __( 'Engine Make', 'inventory-presser' ),
+						'show_in_menu'   => false,
+						'show_in_rest'   => true,
+						'show_ui'        => true,
+					),
+				),
+
+				// Engine Model (boats).
+				array(
+					'args' => array(
+						'hierarchical'   => true,
+						'label'          => __( 'Engine Models', 'inventory-presser' ),
+						'labels'         => array(
+							'name'          => __( 'Engine Models', 'inventory-presser' ),
+							'singular_name' => __( 'Engine Model', 'inventory-presser' ),
+							'search_items'  => __( 'Search engine models', 'inventory-presser' ),
+							'popular_items' => __( 'Popular engine models', 'inventory-presser' ),
+							'all_items'     => __( 'All engine models', 'inventory-presser' ),
+							'parent_item'   => __( 'Parent Engine Model', 'inventory-presser' ),
+							'edit_item'     => __( 'Edit Engine Model', 'inventory-presser' ),
+							'add_new_item'  => __( 'Add New Engine Model', 'inventory-presser' ),
+							'new_item_name' => __( 'New Engine Model Name', 'inventory-presser' ),
+							'back_to_items' => __( '&larr; Go to engine model', 'inventory-presser' ),
+						),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
+						'query_var'      => 'engine_model',
+						'singular_label' => __( 'Engine Model', 'inventory-presser' ),
+						'show_in_menu'   => false,
+						'show_in_rest'   => true,
+						'show_ui'        => true,
+					),
+				),
+
+				// Horsepower (boats).
+				array(
+					'args' => array(
+						'hierarchical'   => true,
+						'label'          => __( 'Horsepower', 'inventory-presser' ),
+						'labels'         => array(
+							'name'          => __( 'Horsepower', 'inventory-presser' ),
+							'singular_name' => __( 'Horsepower', 'inventory-presser' ),
+							'search_items'  => __( 'Search horsepower', 'inventory-presser' ),
+							'popular_items' => __( 'Popular horsepower', 'inventory-presser' ),
+							'all_items'     => __( 'All horsepower', 'inventory-presser' ),
+							'parent_item'   => __( 'Parent Horsepower', 'inventory-presser' ),
+							'edit_item'     => __( 'Edit Horsepower', 'inventory-presser' ),
+							'add_new_item'  => __( 'Add New Horsepower', 'inventory-presser' ),
+							'new_item_name' => __( 'New Horsepower Name', 'inventory-presser' ),
+							'back_to_items' => __( '&larr; Go to horsepower', 'inventory-presser' ),
+						),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
+						'query_var'      => 'horsepower',
+						'singular_label' => __( 'Horsepower', 'inventory-presser' ),
+						'show_in_menu'   => false,
+						'show_in_rest'   => true,
+						'show_ui'        => true,
+					),
+				),
+
+				// Hull Material (boats).
+				array(
+					'args' => array(
+						'hierarchical'   => true,
+						'label'          => __( 'Hull Materials', 'inventory-presser' ),
+						'labels'         => array(
+							'name'          => __( 'Hull Materials', 'inventory-presser' ),
+							'singular_name' => __( 'Hull Material', 'inventory-presser' ),
+							'search_items'  => __( 'Search hull materials', 'inventory-presser' ),
+							'popular_items' => __( 'Popular hull materials', 'inventory-presser' ),
+							'all_items'     => __( 'All hull materials', 'inventory-presser' ),
+							'parent_item'   => __( 'Parent Hull Material', 'inventory-presser' ),
+							'edit_item'     => __( 'Edit Hull Material', 'inventory-presser' ),
+							'add_new_item'  => __( 'Add New Hull Material', 'inventory-presser' ),
+							'new_item_name' => __( 'New Hull Material Name', 'inventory-presser' ),
+							'back_to_items' => __( '&larr; Go to hull materials', 'inventory-presser' ),
+						),
+						'meta_box_cb'    => array( 'Inventory_Presser_Taxonomies', 'meta_box_html' ),
+						'query_var'      => 'hull materials',
+						'singular_label' => __( 'Hull Material', 'inventory-presser' ),
+						'show_in_menu'   => false,
+						'show_in_rest'   => true,
+						'show_ui'        => true,
+					),
+					'term_data' => array(
+						__( 'Aluminum', 'inventory-presser' ) => __( 'Aluminum', 'inventory-presser' ),
+						__( 'Carbon Fiber', 'inventory-presser' ) => __( 'Carbon Fiber', 'inventory-presser' ),
+						__( 'Composite', 'inventory-presser' ) => __( 'Composite', 'inventory-presser' ),
+						__( 'Ferro-Cement', 'inventory-presser' ) => __( 'Ferro-Cement', 'inventory-presser' ),
+						__( 'Fiberglass', 'inventory-presser' ) => __( 'Fiberglass', 'inventory-presser' ),
+						__( 'Hypalon', 'inventory-presser' ) => __( 'Hypalon', 'inventory-presser' ),
+						__( 'Other', 'inventory-presser' ) => __( 'Other', 'inventory-presser' ),
+						__( 'PVC', 'inventory-presser' )   => __( 'PVC', 'inventory-presser' ),
+						__( 'Steel', 'inventory-presser' ) => __( 'Steel', 'inventory-presser' ),
+						__( 'Wood', 'inventory-presser' )  => __( 'Wood', 'inventory-presser' ),
 					),
 				),
 			)
