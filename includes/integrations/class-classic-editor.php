@@ -634,6 +634,7 @@ class Inventory_Presser_Classic_Editor {
 		$type = $custom[ apply_filters( 'invp_prefix_meta_key', 'type' ) ][0] ?? '';
 		if ( 'boat' === strtolower( $type ) ) {
 			// Add boat fields.
+			printf( '<tr><td><h3>%s</h3></td></tr>', esc_html__( 'Boat-specific', 'inventory-presser' ) );
 			printf(
 				// Beam (boats).
 				'<tr class="boat-postmeta"><th scope="row"><label for="%1$s">%2$s</label></th>'
