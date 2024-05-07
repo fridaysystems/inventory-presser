@@ -109,7 +109,8 @@ class Inventory_Presser_Classic_Editor {
 	 */
 	protected function create_add_media_button_annotation() {
 		global $post;
-		if ( ! is_object( $post ) && isset( $_POST['post_ID'] ) ) {
+		$the_post = $post;
+		if ( ! is_object( $the_post ) && isset( $_POST['post_ID'] ) ) {
 			/**
 			 * This function is being called via AJAX and the
 			 * post_id is incoming, so get the post

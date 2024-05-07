@@ -11,23 +11,17 @@ defined( 'ABSPATH' ) || exit;
  */
 class Inventory_Presser_Shortcode_Archive_Vehicle {
 
-
-
 	/**
-	 * add
-	 *
 	 * Adds two shortcodes
 	 *
 	 * @return void
 	 */
-	function add() {
+	public function add() {
 		add_shortcode( 'invp-archive-vehicle', array( $this, 'content' ) );
 		add_shortcode( 'invp_archive_vehicle', array( $this, 'content' ) );
 	}
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks that power the shortcode
 	 *
 	 * @return void
@@ -37,14 +31,12 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 	}
 
 	/**
-	 * content
-	 *
 	 * Creates the HTML content of the shortcode
 	 *
 	 * @param  array $atts
 	 * @return string HTML that renders an archive-vehicle template
 	 */
-	function content( $atts ) {
+	public function content( $atts ) {
 		/**
 		 * Default show_titles to false because this shortcode is used to
 		 * replace the_content when themes handle our custom post type, and

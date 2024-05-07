@@ -168,10 +168,10 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 
 		$html = '';
 		foreach ( $table_items as $item ) {
-			// does the vehicle have a value for this member?
+			// Does the vehicle have a value for this member?
 			$member = $item['member'];
 			if ( empty( $item['value'] ) && empty( INVP::get_meta( $member, $post_ID ) ) ) {
-				// no
+				// No.
 				continue;
 			}
 

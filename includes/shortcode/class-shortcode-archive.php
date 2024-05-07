@@ -139,8 +139,8 @@ class Inventory_Presser_Shortcode_Archive {
 					'invp_archive_shortcode_no_results',
 					sprintf(
 						'<p>%s</p><h2>%s</h2><p>%s</p>',
-						__( 'No vehicles found.', 'inventory-presser' ),
-						__( 'Search Inventory', 'inventory-presser' ),
+						esc_html__( 'No vehicles found.', 'inventory-presser' ),
+						esc_html__( 'Search Inventory', 'inventory-presser' ),
 						apply_filters( 'invp_archive_shortcode_no_results_search', get_search_form() )
 					)
 				);
