@@ -169,6 +169,44 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 				'label'  => __( 'Hull Material', 'inventory-presser' ),
 				'value'  => invp_get_the_hull_material( $post_ID ),
 			);
+
+			// Is this table displayed on a boat single?
+			if ( is_singular( INVP::POST_TYPE ) ) {
+				// Beam.
+				$table_items[] = array(
+					'member' => 'beam',
+					'label'  => __( 'Beam', 'inventory-presser' ),
+					'value'  => invp_get_the_beam( $post_ID ),
+				);
+
+				// Draft.
+				$table_items[] = array(
+					'member' => 'draft',
+					'label'  => __( 'Max Draft', 'inventory-presser' ),
+					'value'  => invp_get_the_draft( $post_ID ),
+				);
+
+				// Engine Make.
+				$table_items[] = array(
+					'member' => 'engine_make',
+					'label'  => __( 'Engine Make', 'inventory-presser' ),
+					'value'  => invp_get_the_engine_make( $post_ID ),
+				);
+
+				// Engine Model.
+				$table_items[] = array(
+					'member' => 'engine_model',
+					'label'  => __( 'Engine Model', 'inventory-presser' ),
+					'value'  => invp_get_the_engine_model( $post_ID ),
+				);
+
+				// Boat Condition.
+				$table_items[] = array(
+					'member' => 'condition_boat',
+					'label'  => __( 'Condition', 'inventory-presser' ),
+					'value'  => invp_get_the_condition_boat( $post_ID ),
+				);
+			}
 		}
 
 		$table_items = apply_filters( 'invp_vehicle_attribute_table_items', $table_items );
