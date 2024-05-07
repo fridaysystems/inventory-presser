@@ -100,9 +100,12 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 = 14.14.0 =
 * [Added] Adds a setting "Singles Contact Form" at Vehicles → Options to embed a lead form on vehicle single pages. Supports Contact Form 7, Gravity Forms, and WP Forms.
 * [Added] Adds better support for the Classic Editor.
+* [Added] Adds more boat fields for condition, draft, number of engines, engine make, engine model, and horsepower.
+* [Added] Adds template tags for boats including invp_is_boat(), invp_get_the_condition_boat(), invp_get_the_draft(), invp_get_the_engine_count(), invp_get_the_engine_make(), invp_get_the_engine_model(), and invp_get_the_horsepower().
 * [Fixed] Stops showing an admin notice on this plugin's settings page. Adds the information to the Site Health page under the Tools menu instead.
 * [Fixed] Makes more strings translateable, including default boat styles and hull materials.
 * [Changed] Stops removing the odometer field from the vehicle attribute table for boats.
+* [Changed] Changes the fields for boats in the attribute table shortcode, and therefore the default archive and single templates.
 
 = 14.13.0 =
 * [Added] Updates WP All Import integration to detect comma-delimited options. Previously, only pipe-delimited options were split into the meta field during imports.
@@ -160,6 +163,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.14.0 =
+Adds a setting "Singles Contact Form" at Vehicles → Options to embed a lead form on vehicle single pages. Supports Contact Form 7, Gravity Forms, and WP Forms. Adds better support for the Classic Editor. Adds more boat fields for condition, draft, number of engines, engine make, engine model, and horsepower. Adds template tags for boats including invp_is_boat(), invp_get_the_condition_boat(), invp_get_the_draft(), invp_get_the_engine_count(), invp_get_the_engine_make(), invp_get_the_engine_model(), and invp_get_the_horsepower(). Stops showing an admin notice on this plugin's settings page. Adds the information to the Site Health page under the Tools menu instead. Makes more strings translateable, including default boat styles and hull materials. Stops removing the odometer field from the vehicle attribute table for boats. Changes the fields for boats in the attribute table shortcode, and therefore the default archive and single templates.
 
 = 14.13.0 =
 Updates WP All Import integration to detect comma-delimited options. Previously, only pipe-delimited options were split into the meta field during imports. Fixes a bug in the "hours today" sentence. Stops using the PHP function jddayofweek().
