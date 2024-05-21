@@ -996,6 +996,10 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 					array( 'class' => "attachment-$size size-$size invp-image" )
 				);
 
+				if ( '' === $img_element ) {
+					continue;
+				}
+
 				$image_urls[ $size ][] = $img_element;
 
 				if ( 'full' === $size ) {
@@ -1003,13 +1007,15 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 				}
 			}
 			if ( empty( $image_urls['urls'] ) ) {
-				$img_element          = wp_get_attachment_image(
+				$img_element = wp_get_attachment_image(
 					$image->ID,
 					'full',
 					false,
 					array( 'class' => "attachment-$size size-$size invp-image" )
 				);
-				$image_urls['urls'][] = INVP::extract_image_element_src( $img_element );
+				if ( '' !== $img_element ) {
+					$image_urls['urls'][] = INVP::extract_image_element_src( $img_element );
+				}
 			}
 		}
 		set_transient( $cache_key_image_urls, $image_urls, MINUTE_IN_SECONDS * 5 );
