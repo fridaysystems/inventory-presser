@@ -2,7 +2,7 @@
 Contributors: salzano
 Tags: car dealer, car dealership, car listings, auto dealer, car sales, car lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 6.5.2
+Tested up to: 6.5.3
 Requires PHP: 7.0.0
 Stable tag: 14.14.0
 License: GPLv2 or later
@@ -93,11 +93,14 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 = 14.14.0 =
 * [Added] Adds a setting "Singles Contact Form" at Vehicles → Options to embed a lead form on vehicle single pages. Supports Contact Form 7, Gravity Forms, and WP Forms.
+* [Added] Adds "make" and "model" attributes to the Inventory Grid and Inventory Slider.
+* [Added] Changes the "Show All Taxonomies" option to a "Manage Taxonomies" button that leads to another options page. Users can now toggle which taxonomies are active, show in the admin menu, and display in editors for each vehicle type. This makes the plugin much more friendly to boat dealers and anyone managing vehicles that are not passenger cars.
 * [Added] Adds better support for the Classic Editor.
 * [Added] Adds more boat fields for condition, draft, number of engines, engine make, engine model, and horsepower.
 * [Added] Adds template tags for boats including invp_is_boat(), invp_get_the_condition_boat(), invp_get_the_draft(), invp_get_the_engine_count(), invp_get_the_engine_make(), invp_get_the_engine_model(), and invp_get_the_horsepower().
 * [Fixed] Stops showing an admin notice on this plugin's settings page. Adds the information to the Site Health page under the Tools menu instead.
 * [Fixed] Makes more strings translateable, including default boat styles and hull materials.
+* [Fixed] Bug fix. Prevent invp_get_the_photos() from returning a list of urls containing empty strings. Vehicles with broken images would prevent the flexslider from starting on details pages.
 * [Changed] Stops removing the odometer field from the vehicle attribute table for boats.
 * [Changed] Changes the fields for boats in the attribute table shortcode, and therefore the default archive and single templates.
 
@@ -159,7 +162,7 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 == Upgrade Notice ==
 
 = 14.14.0 =
-Adds a setting "Singles Contact Form" at Vehicles → Options to embed a lead form on vehicle single pages. Supports Contact Form 7, Gravity Forms, and WP Forms. Adds better support for the Classic Editor. Adds more boat fields for condition, draft, number of engines, engine make, engine model, and horsepower. Adds template tags for boats including invp_is_boat(), invp_get_the_condition_boat(), invp_get_the_draft(), invp_get_the_engine_count(), invp_get_the_engine_make(), invp_get_the_engine_model(), and invp_get_the_horsepower(). Stops showing an admin notice on this plugin's settings page. Adds the information to the Site Health page under the Tools menu instead. Makes more strings translateable, including default boat styles and hull materials. Stops removing the odometer field from the vehicle attribute table for boats. Changes the fields for boats in the attribute table shortcode, and therefore the default archive and single templates.
+Adds a setting "Singles Contact Form" at Vehicles → Options to embed a lead form on vehicle single pages. Supports Contact Form 7, Gravity Forms, and WP Forms. Adds "make" and "model" attributes to the Inventory Grid and Inventory Slider. Changes the "Show All Taxonomies" option to a "Manage Taxonomies" button that leads to another options page. Users can now toggle which taxonomies are active, show in the admin menu, and display in editors for each vehicle type. This makes the plugin much more friendly to boat dealers and anyone managing vehicles that are not passenger cars. Adds better support for the Classic Editor. Adds more boat fields for condition, draft, number of engines, engine make, engine model, and horsepower. Adds template tags for boats including invp_is_boat(), invp_get_the_condition_boat(), invp_get_the_draft(), invp_get_the_engine_count(), invp_get_the_engine_make(), invp_get_the_engine_model(), and invp_get_the_horsepower(). Stops showing an admin notice on this plugin's settings page. Adds the information to the Site Health page under the Tools menu instead. Makes more strings translateable, including default boat styles and hull materials. Bug fix. Prevent invp_get_the_photos() from returning a list of urls containing empty strings. Vehicles with broken images would prevent the flexslider from starting on details pages. Stops removing the odometer field from the vehicle attribute table for boats. Changes the fields for boats in the attribute table shortcode, and therefore the default archive and single templates.
 
 = 14.13.0 =
 Updates WP All Import integration to detect comma-delimited options. Previously, only pipe-delimited options were split into the meta field during imports. Fixes a bug in the "hours today" sentence. Stops using the PHP function jddayofweek().
