@@ -89,7 +89,7 @@ class Inventory_Presser_Shortcode_Hours_Today {
 	 * @return DateTime
 	 */
 	static function create_date_object_from_hour_string( $hour_string ) {
-		return DateTime::createFromFormat( 'g:ia', strtolower( str_replace( ' ', '', $hour_string ) ) );
+		return DateTime::createFromFormat( 'g:ia', strtolower( str_replace( ' ', '', $hour_string ?? '' ) ) );
 	}
 
 	/**

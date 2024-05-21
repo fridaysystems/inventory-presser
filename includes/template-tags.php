@@ -640,7 +640,7 @@ function invp_get_the_location_sentence( $post_ID = null ) {
 	}
 
 	// Could have two locations on the same vehicle, so just take the first.
-	$location = str_replace( chr( 13 ) . chr( 10 ), ', ', $location_terms[0]->description );
+	$location = str_replace( chr( 13 ) . chr( 10 ), ', ', $location_terms[0]->description ?? '' );
 	if ( empty( $location ) ) {
 		return '';
 	}

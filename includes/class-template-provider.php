@@ -69,7 +69,7 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) ) {
 				return $template;
 			}
 
-			$single_or_archive = str_replace( '_template', '', current_filter() );
+			$single_or_archive = str_replace( '_template', '', current_filter() ?? '' );
 
 			remove_filter( $single_or_archive . '_template', array( $this, 'maybe_provide_template' ) );
 

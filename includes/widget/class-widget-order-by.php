@@ -150,7 +150,7 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	 * @return string
 	 */
 	function prettify_meta_key( $key ) {
-		return str_replace( '_', ' ', ucfirst( apply_filters( 'invp_unprefix_meta_key', $key ) ) );
+		return str_replace( '_', ' ', ucfirst( apply_filters( 'invp_unprefix_meta_key', $key ) ?? '' ) );
 	}
 
 	/**

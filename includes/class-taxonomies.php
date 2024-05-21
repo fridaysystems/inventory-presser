@@ -229,7 +229,7 @@ class Inventory_Presser_Taxonomies {
 			}
 
 			foreach ( $taxonomy_data[ $i ]['term_data'] as $abbr => $desc ) {
-				$taxonomy_name = str_replace( '-', '_', $taxonomy_data[ $i ]['args']['query_var'] );
+				$taxonomy_name = str_replace( '-', '_', $taxonomy_data[ $i ]['args']['query_var'] ?? '' );
 				if ( ! is_array( term_exists( $desc, $taxonomy_name ) ) ) {
 					$term_exists = wp_insert_term(
 						$desc,
@@ -255,7 +255,7 @@ class Inventory_Presser_Taxonomies {
 			if ( ! isset( $taxonomy_array['args'] ) || ! isset( $taxonomy_array['args']['query_var'] ) ) {
 				continue;
 			}
-			$slug = str_replace( ' ', '_', strtolower( $taxonomy_array['args']['query_var'] ) );
+			$slug = str_replace( ' ', '_', strtolower( $taxonomy_array['args']['query_var'] ?? '' ) );
 			array_push( $arr, $slug );
 		}
 		return $arr;
@@ -399,7 +399,7 @@ class Inventory_Presser_Taxonomies {
 		$count         = count( $taxonomy_data );
 		for ( $i = 0; $i < $count; $i++ ) {
 			// create the taxonomy, replace hyphens with underscores.
-			$taxonomy_name = str_replace( '-', '_', $taxonomy_data[ $i ]['args']['query_var'] );
+			$taxonomy_name = str_replace( '-', '_', $taxonomy_data[ $i ]['args']['query_var'] ?? '' );
 			register_taxonomy( $taxonomy_name, INVP::POST_TYPE, $taxonomy_data[ $i ]['args'] );
 		}
 	}
