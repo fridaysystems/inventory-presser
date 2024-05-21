@@ -602,6 +602,11 @@ class Inventory_Presser_Admin_Options {
 		);
 	}
 
+	/**
+	 * Outputs the controls that create the Singles Contact Form setting.
+	 *
+	 * @return void
+	 */
 	public function callback_singles_contact_form() {
 		$setting_name  = 'singles_contact_form';
 		$current_value = isset( $this->option[ $setting_name ] ) ? $this->option[ $setting_name ] : 0;

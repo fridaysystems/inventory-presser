@@ -81,8 +81,6 @@ class Inventory_Presser_Shortcode_Hours_Today {
 	}
 
 	/**
-	 * create_date_object_from_hour_string
-	 *
 	 * Create a DateTime object from a string like "9:00 AM"
 	 *
 	 * @param  string $hour_string A string like "9:00 AM"
