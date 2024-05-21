@@ -20,21 +20,13 @@ Manage and market dealership inventory with listings and photo sliders built on 
 * Categorizes inventory by type, body style, fuel, transmission, drive type, availability, new or used, location, and more
 * Includes blocks, [shortcodes](https://inventorypresser.com/docs/shortcodes/), and [widgets](https://inventorypresser.com/docs/feature-list/widgets/) including vehicle sliders and inventory grids
 
-### Get Started in minutes
+### Get Started in Minutes
 
 * Install the plugin and [load the sample vehicles](https://inventorypresser.com/docs/settings/load-sample-vehicles/)
 * Visit yoursite.com/inventory to see the built-in templates
-* Design your own pages using [post meta fields](https://inventorypresser.com/docs/vehicle-post-type/) or [Elementor Dynamic Tags](https://inventorypresser.com/products/plugins/elementor-add-on/)
-* Decide how to [manage inventory updates](https://inventorypresser.com/docs/adding-or-importing-inventory/)
+* Design your own pages using [post meta fields](https://inventorypresser.com/docs/vehicle-post-type/), [Elementor Dynamic Tags](https://inventorypresser.com/products/plugins/elementor-add-on/), or [Divi Builder](https://inventorypresser.com/docs/divi-setup-guide/)
+* Decide how to best [manage inventory updates](https://inventorypresser.com/docs/adding-or-importing-inventory/)
 * [Add vehicles to lead forms](https://inventorypresser.com/docs/add-vehicles-to-lead-forms/)
-
-### Works Well with Plugins & Themes
-
-* Multisite Compatible
-* Add vehicles to lead forms in [Contact Form 7](https://inventorypresser.com/docs/contact-form-7-integration/contact-form-7-vehicle-form-tag/) & [WPForms](https://inventorypresser.com/docs/capturing-vehicle-leads-with-wpforms/)
-* Supports Classic Editor
-* [Elementor Dynamic Tags](https://inventorypresser.com/products/plugins/elementor-add-on/) add-on available
-* Works in Divi Builder
 
 ### Integration Guides
 
@@ -44,8 +36,10 @@ Manage and market dealership inventory with listings and photo sliders built on 
 
 ### Developer-friendly Best Practices
 
-* [Custom post type `inventory_vehicle`](https://inventorypresser.com/docs/vehicle-post-type/) enables [vehicle data imports](https://inventorypresser.com/docs/using-the-rest-api-to-update-vehicle-listings-in-wordpress/)
+* Multisite Compatible
+* Supports Classic Editor
 * Editor sidebar integrates custom fields into the block editor
+* [Custom post type `inventory_vehicle`](https://inventorypresser.com/docs/vehicle-post-type/) enables [vehicle data imports](https://inventorypresser.com/docs/using-the-rest-api-to-update-vehicle-listings-in-wordpress/)
 * Adds columns to the posts list for vehicles for stock number, color, odometer, price, photo count, and thumbnail
 * Implements 10+ custom taxonomies to group vehicles by year, make, model, type, body style, fuel, transmission, drive type, availability, new or used, location, and more
 * [Hooks](https://inventorypresser.com/docs/hooks/) in all the right places & powerful [shortcodes](https://inventorypresser.com/docs/shortcodes/)

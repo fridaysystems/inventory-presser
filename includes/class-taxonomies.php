@@ -460,7 +460,7 @@ class Inventory_Presser_Taxonomies {
 			);
 			$id_arr   = wp_insert_term( $term_slug, $taxonomy_name, $term_arr );
 			if ( ! is_wp_error( $id_arr ) ) {
-				$term->term_id = $id_arr['term_id'];
+				$term = WP_Term::get_instance( $id_arr['term_id'], $taxonomy_name );
 			}
 		}
 		$set = wp_set_object_terms( $post_id, $term->term_id, $taxonomy_name, false );
