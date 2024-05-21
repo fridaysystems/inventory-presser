@@ -37,18 +37,20 @@ class Inventory_Presser_Shortcode_Slider {
 		$atts = shortcode_atts(
 			array(
 				'captions'  => 'true',
+				'make'      => '',
+				'model'     => '',
 				'orderby'   => 'rand',
 				'order'     => 'ASC',
 				'showcount' => 3, // How many vehicles are shown at one time?
 			),
 			$atts,
 			'inventory_slider'
-		); // Use shortcode_atts_inventory_slider to filter the incoming attributes
+		); // Use shortcode_atts_inventory_slider to filter the incoming attributes.
 
 		// Parse boolean values to make life easy on users.
 		$atts['captions'] = filter_var( $atts['captions'], FILTER_VALIDATE_BOOLEAN );
 
-		// Get the vehicle IDs and loop over them
+		// Get the vehicle IDs and loop over them.
 		$inventory_ids = self::get_vehicle_IDs( $atts );
 		if ( empty( $inventory_ids ) ) {
 			return '';
@@ -97,6 +99,30 @@ class Inventory_Presser_Shortcode_Slider {
 		return $flex_html . '</ul></div></div>';
 	}
 
+	protected static function add_make_and_model_query_args( $query_args, $shortcode_atts ) {
+		// Make filter.
+		if ( ! empty( $shortcode_atts['make'] ) ) {
+			$query_args['tax_query'] = array(
+				array(
+					'taxonomy' => 'make',
+					'field'    => 'slug',
+					'terms'    => $shortcode_atts['make'],
+				),
+			);
+		}
+
+		// Model filter.
+		if ( ! empty( $shortcode_atts['model'] ) ) {
+			$query_args['meta_query'][] = array(
+				'key'     => apply_filters( 'invp_prefix_meta_key', 'model' ),
+				'value'   => $shortcode_atts['model'],
+				'compare' => 'LIKE',
+			);
+		}
+
+		return $query_args;
+	}
+
 	public static function get_vehicle_IDs( $shortcode_atts ) {
 		$gpargs = array(
 			'posts_per_page' => 10,
@@ -118,10 +144,10 @@ class Inventory_Presser_Shortcode_Slider {
 			'order'          => $shortcode_atts['order'],
 		);
 
-		$inventory_ids = get_posts( $gpargs );
+		$inventory_ids = get_posts( self::add_make_and_model_query_args( $gpargs, $shortcode_atts ) );
 
+		// If we found less than 10 vehicles, do not required featured vehicles.
 		if ( count( $inventory_ids ) < 10 ) {
-
 			$gpargs = array(
 				'posts_per_page' => 10 - ( count( $inventory_ids ) ),
 				'post_type'      => INVP::POST_TYPE,
@@ -149,7 +175,7 @@ class Inventory_Presser_Shortcode_Slider {
 				'order'          => $shortcode_atts['order'],
 			);
 
-			$inventory_ids += get_posts( $gpargs );
+			$inventory_ids += get_posts( self::add_make_and_model_query_args( $gpargs, $shortcode_atts ) );
 		}
 
 		if ( ! $inventory_ids ) {

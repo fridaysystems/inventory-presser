@@ -76,6 +76,8 @@ class Inventory_Presser_Grid extends WP_Widget {
 			'columns'                 => 5,     // In how many columns should the tiles be arranged?
 			'featured_only'           => false, // Include only featured vehicles?
 			'limit'                   => 15,    // How many vehicles in the grid maximum?
+			'make'                    => '',    // Only show vehicles of this make.
+			'model'                   => '',    // Only show vehicles of this model.
 			'newest_first'            => false, // Sort the most recently modified vehicles first?
 			'priced_first'            => false, // Sort the vehicles with prices first?
 			'show_button'             => false, // Display a "Full Inventory" button below the grid?
@@ -103,6 +105,7 @@ class Inventory_Presser_Grid extends WP_Widget {
 			'fields'         => 'ids',
 			'orderby'        => 'rand', // Defaults to random order.
 			'order'          => 'ASC',
+			'tax_query'      => array(),
 		);
 
 		if ( $args['newest_first'] ) {
@@ -121,10 +124,28 @@ class Inventory_Presser_Grid extends WP_Widget {
 			);
 		}
 
+		// Are we only showing 1 make?
+		if ( ! empty( $args['make'] ) ) {
+			$post_args['tax_query'][] = array(
+				'taxonomy' => 'make',
+				'field'    => 'slug',
+				'terms'    => $args['make'],
+			);
+		}
+
+		// Are we only showing 1 model?
+		if ( ! empty( $args['model'] ) ) {
+			$post_args['meta_query'][] = array(
+				'key'     => apply_filters( 'invp_prefix_meta_key', 'model' ),
+				'value'   => $args['model'],
+				'compare' => 'LIKE',
+			);
+		}
+
 		// Should we exclude sold vehicles?
 		$plugin_settings = INVP::settings();
 		if ( isset( $plugin_settings['include_sold_vehicles'] ) && ! $plugin_settings['include_sold_vehicles'] ) {
-			$post_args['tax_query'] = Inventory_Presser_Taxonomies::tax_query_exclude_sold();
+			$post_args['tax_query'][] = Inventory_Presser_Taxonomies::tax_query_exclude_sold();
 		}
 
 		$inventory_ids = get_posts( $post_args );

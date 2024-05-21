@@ -57,6 +57,8 @@ class Inventory_Presser_Shortcode_Grid {
 				'columns'                 => 3, // replaces 'size'.
 				'featured_only'           => false,
 				'limit'                   => 15, // replaces 'per_page'.
+				'make'                    => '',
+				'model'                   => '',
 				'newest_first'            => false,
 				'priced_first'            => false,
 				'show_button'             => true, // replaces 'button'.
