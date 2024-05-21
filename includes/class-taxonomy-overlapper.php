@@ -319,6 +319,13 @@ class Inventory_Presser_Taxonomy_Overlapper {
 				'transmission'    => 'transmission',
 				'type'            => 'type',
 				'wholesale'       => 'availability',
+
+				'condition_boat'  => 'condition_boat',
+				'engine_count'    => 'engine_count',
+				'engine_make'     => 'engine_make',
+				'engine_model'    => 'engine_model',
+				'horsepower'      => 'horsepower',
+				'hull_material'   => 'hull_material',
 			)
 		);
 	}

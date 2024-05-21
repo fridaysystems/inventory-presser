@@ -29,11 +29,8 @@ function delete_all_post_attachments( ) {
 function invp_vehicle_type_changed( type_slug ) {
 	var is_boat = 'boat' == type_slug;
 
-	// show or hide the propulsion type taxonomy meta box and boat-specific fields
-	jQuery( '#propulsion_typediv,tr.boat-postmeta' ).toggle( is_boat );
-
-	// show or hide the drive type taxonomy meta box
-	jQuery( '#drive_typediv' ).toggle( ! is_boat );
+	// show or hide the boat-specific fields
+	jQuery( 'tr.boat-postmeta' ).toggle( is_boat );
 
 	// HIN or VIN?
 	jQuery( 'label[for="' + invp.meta_prefix + 'vin"]' ).html( is_boat ? 'HIN' : 'VIN' );

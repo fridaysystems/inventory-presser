@@ -12,11 +12,12 @@ defined( 'ABSPATH' ) || exit;
  */
 class INVP {
 
-	const LOCATION_MAX_PHONES = 10; // The maximum number of phones a single address holds.
-	const LOCATION_MAX_HOURS  = 5; // The maximum number of sets of hours a single address holds.
-	const POST_TYPE           = 'inventory_vehicle';
-	const OPTION_NAME         = 'inventory_presser';
-	const OPTION_PAGE         = 'dealership-options';
+	const LOCATION_MAX_PHONES    = 10; // The maximum number of phones a single address holds.
+	const LOCATION_MAX_HOURS     = 5; // The maximum number of sets of hours a single address holds.
+	const POST_TYPE              = 'inventory_vehicle';
+	const OPTION_NAME            = 'inventory_presser';
+	const OPTION_PAGE            = 'dealership-options';
+	const OPTION_PAGE_TAXONOMIES = 'invp-taxonomies';
 
 	/**
 	 * Returns the currency symbol. Default is a United States dollar sign.

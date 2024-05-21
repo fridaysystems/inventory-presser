@@ -349,10 +349,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				apply_filters(
 					'invp_post_type_args',
 					array(
-						'description'     => __( 'Vehicles for sale', 'inventory-presser' ),
-						'has_archive'     => true,
-						'hierarchical'    => false,
-						'labels'          => array(
+						'description'   => __( 'Vehicles for sale', 'inventory-presser' ),
+						'has_archive'   => true,
+						'hierarchical'  => false,
+						'labels'        => array(
 							'name'                  => _x( 'Vehicles', 'Post type general name', 'inventory-presser' ),
 							'singular_name'         => _x( 'Vehicle', 'Post type singular name', 'inventory-presser' ),
 							'menu_name'             => _x( 'Vehicles', 'Admin Menu text', 'inventory-presser' ),
@@ -374,22 +374,22 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							'items_list_navigation' => _x( 'Vehicles list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'inventory-presser' ),
 							'items_list'            => _x( 'Vehicles list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'inventory-presser' ),
 						),
-						'menu_icon'       => 'dashicons-admin-network',
-						'menu_position'   => 5, // below Posts.
-						'public'          => true,
-						'rest_base'       => 'inventory',
-						'rewrite'         => array(
+						'menu_icon'     => 'dashicons-admin-network',
+						'menu_position' => 5, // below Posts.
+						'public'        => true,
+						'rest_base'     => 'inventory',
+						'rewrite'       => array(
 							'slug'       => 'inventory',
 							'with_front' => false,
 						),
-						'show_in_rest'    => true,
-						'supports'        => array(
+						'show_in_rest'  => true,
+						'supports'      => array(
 							'custom-fields',
 							'editor',
 							'title',
 							'thumbnail',
 						),
-						'taxonomies'      => Inventory_Presser_Taxonomies::query_vars_array(),
+						'taxonomies'    => Inventory_Presser_Taxonomies::query_vars_array(),
 					)
 				)
 			);
@@ -555,6 +555,31 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		}
 
 		/**
+		 * Provides default values for the plugin settings stored in an option
+		 * with name INVP::OPTION_NAME.
+		 *
+		 * @return void
+		 */
+		public static function set_default_settings() {
+			$settings = INVP::settings();
+			// Do not overwrite taxonomies setting if it exists.
+			if ( ! empty( $settings['taxonomies'] ) ) {
+				return;
+			}
+
+			// If the old show_all_taxonomies is set, maintain that behavior.
+			$show_menu = false;
+			if ( isset( $settings['show_all_taxonomies'] ) ) {
+				$show_menu = $settings['show_all_taxonomies'];
+				unset( $settings['show_all_taxonomies'] );
+			}
+			if ( ! isset( $settings['taxonomies'] ) ) {
+				$settings['taxonomies'] = Inventory_Presser_Admin_Options::taxonomies_setting_default( $settings );
+			}
+			update_option( INVP::OPTION_NAME, $settings );
+		}
+
+		/**
 		 * This is the driver function of the entire plugin. Includes dependencies
 		 * and adds all hooks.
 		 *
@@ -618,6 +643,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			// Flush rewrite rules when the plugin is activated.
 			register_activation_hook( INVP_PLUGIN_FILE_PATH, array( __CLASS__, 'flush_rewrite' ) );
+
+			// Set default settings values.
+			register_activation_hook( INVP_PLUGIN_FILE_PATH, array( __CLASS__, 'set_default_settings' ) );
 
 			// Delete an option during deactivation.
 			register_deactivation_hook( INVP_PLUGIN_FILE_PATH, array( __CLASS__, 'delete_rewrite_rules_option' ) );
@@ -1144,6 +1172,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			// Register a script without a handle for our inline invp object.
 			if ( ! wp_script_is( 'invp', 'registered' ) ) {
+				$settings = INVP::settings();
 				wp_register_script( 'invp', '', array(), INVP_PLUGIN_VERSION, true );
 				wp_add_inline_script(
 					'invp',
@@ -1177,6 +1206,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 									'Semi-monthly' => 'semimonthly',
 								)
 							),
+							'taxonomies'          => $settings['taxonomies'] ?? array(),
 							'title_statuses'      => apply_filters(
 								'invp_default_title_statuses',
 								array(
@@ -1243,7 +1273,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// Flexslider.
 			wp_register_style(
 				'flexslider',
-				plugins_url( ! empty( $min ) ? "/css/woocommerce-flexslider{$min}.css" : '/vendor/woocommerce/FlexSlider/flexslider.css', INVP_PLUGIN_FILE_PATH ),
+				plugins_url( ( ! empty( $min ) ? "/css/woocommerce-flexslider{$min}.css" : '/vendor/woocommerce/FlexSlider/flexslider.css' ), INVP_PLUGIN_FILE_PATH ),
 				null,
 				INVP_PLUGIN_VERSION
 			);
@@ -1530,7 +1560,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					$field_start = strpos( $pieces['where'] ?? '', 'mt' . ( $m + 1 ) . '.meta_key = \'' ) + 16;
 					$field_end   = strpos( $pieces['where'] ?? '', "'", $field_start ) - $field_start;
 					if ( is_integer( $field_start ) && is_integer( $field_end ) ) {
-						$field_name  = substr( $pieces['where'], $field_start, $field_end );
+						$field_name = substr( $pieces['where'], $field_start, $field_end );
 						if ( INVP::meta_value_is_number( $field_name ) ) {
 							$replacement .= '+0';
 						}

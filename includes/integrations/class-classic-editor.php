@@ -36,6 +36,13 @@ class Inventory_Presser_Classic_Editor {
 			// No. Classic Editor plugin is not active.
 			return;
 		}
+		// Is the Block Editor enabled as a default, though?
+		$block_editor_active = array( 'no-replace', 'block' );
+		if ( in_array( get_option( 'classic-editor-replace' ), $block_editor_active, true ) ) {
+			// Yes.
+			return;
+		}
+
 		global $pagenow, $current_screen;
 		if ( ! in_array( $pagenow, array( 'post-new.php', 'post.php' ), true ) || INVP::POST_TYPE !== $current_screen->post_type ) {
 			// No. Not adding or editing editing a vehicle.

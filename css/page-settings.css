@@ -1,28 +1,28 @@
 /* Vehicles → Options */
-table.additional_listings_pages{
+table.invp-settings{
 	margin-top: 1em;
 	margin-bottom: .75em;
 }
-table.additional_listings_pages th {
+table.invp-settings th {
 	font-weight: normal;
 	padding: 8px 10px;
 }
-table.additional_listings_pages td{
+table.invp-settings td{
 	white-space: nowrap;
 }
-table.additional_listings_pages td:nth-child(3){
+#additional_listings_pages_settings table.invp-settings td:nth-child(3){
 	width: 99%;
 }
-table.additional_listings_pages .dashicons{
+table.invp-settings .dashicons{
 	padding-top: .18em;
 }
-.wp-core-ui table.additional_listings_pages a.action{
+.wp-core-ui table.invp-settings a.action{
 	margin-right: .5em;
 }
-table.additional_listings_pages td.active{
+table.invp-settings td.active{
 	text-align: center;
 }
-input.additional_listings_pages_slug{
+input.invp-settings_slug{
 	width: 50%;
 	min-width: 200px;
 }

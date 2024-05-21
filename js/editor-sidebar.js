@@ -1,3 +1,37 @@
+// Hide taxonomy meta boxes in the Block Editor.
+wp.api.loadPromise.done( function() {
+	var post = new wp.api.models.Inventory( { id: wp.media.view.settings.post.id } );
+	post.fetch().then( ( post ) => {
+		var inventoryTypes = new wp.api.collections.Inventory_type();
+		inventoryTypes.fetch().then( ( types ) => {
+			types.forEach( ( type ) => {
+				if ( -1 !== post.inventory_type.indexOf( type.id ) ) {
+					invp_block_editor_hide_taxonomies( type.slug );
+				}
+			} );
+		} );
+	} );
+} );
+function invp_block_editor_hide_taxonomies( typeSlug ) {
+	for ( var taxonomy in invp.taxonomies ) {
+		// If the user has disabled this taxonomy, remove its meta box.
+		if ( invp.taxonomies[taxonomy].active === false ) {
+			wp.data.dispatch( 'core/edit-post').removeEditorPanel( 'taxonomy-panel-' + taxonomy.replace( '-', '_' ) );
+			continue;
+		}
+
+		// If this taxonomy is not active for this vehicle type, remove its meta box.
+		if ( 'undefined' === typeof invp.taxonomies[taxonomy][typeSlug]
+			|| false === invp.taxonomies[taxonomy][typeSlug] ) {
+
+			wp.data.dispatch( 'core/edit-post').removeEditorPanel( 'taxonomy-panel-' + taxonomy.replace( '-', '_' ) );
+		}
+	}
+}
+
+/**
+ * Editor sidebar spin up.
+ */
 ( function( wp ) {
 	var registerPlugin = wp.plugins.registerPlugin;
 	var PluginSidebar  = wp.editPost.PluginSidebar;

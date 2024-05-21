@@ -19,6 +19,8 @@ class Inventory_Presser_REST {
 				/invp/v1/feed-complete routes.
 		*/
 		add_action( 'rest_api_init', array( $this, 'add_routes' ) );
+		// Adds the inventory_type_slugs field to the response of the /wp-json/wp/v2/inventory_vehicle route.
+		add_action( 'rest_api_init', array( $this, 'add_inventory_type_slugs_to_posts' ) );
 
 		// Allow attachments to be ordered by the inventory_presser_photo_number meta value.
 		add_filter( 'rest_attachment_collection_params', array( $this, 'allow_orderby_photo_number' ) );
@@ -26,6 +28,26 @@ class Inventory_Presser_REST {
 
 		// Allow vehicles to be returned in a random order.
 		add_filter( 'rest_' . INVP::POST_TYPE . '_collection_params', array( $this, 'allow_orderby_rand' ) );
+	}
+
+	/**
+	 * Adds an attribute `inventory_type_slugs` to the response of the
+	 * /wp-json/wp/v2/inventory_vehicle route.
+	 *
+	 * @return void
+	 */
+	public function add_inventory_type_slugs_to_posts() {
+		register_rest_field(
+			INVP::POST_TYPE,
+			'inventory_type_slugs',
+			array(
+				'get_callback' => array( $this, 'get_the_type_slugs' ),
+				'schema'       => array(
+					'description' => __( 'The type taxonomy term slugs.', 'inventory-presser' ),
+					'type'        => 'string',
+				),
+			)
+		);
 	}
 
 	/**
@@ -49,6 +71,20 @@ class Inventory_Presser_REST {
 	public function allow_orderby_rand( $query_params ) {
 		$query_params['orderby']['enum'][] = 'rand';
 		return $query_params;
+	}
+
+	/**
+	 * Given a post object, returns the term slugs of the type taxonomy.
+	 *
+	 * @param  array $post_object An array representing a post object.
+	 * @return array Term slugs of the type taxonomy.
+	 */
+	public function get_the_type_slugs( $post_object ) {
+		$terms = get_the_terms( $post_object['id'], 'type' );
+		if ( is_array( $terms ) ) {
+			return wp_list_pluck( $terms, 'slug' );
+		}
+		return array();
 	}
 
 	/**

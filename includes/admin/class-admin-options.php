@@ -30,7 +30,7 @@ class Inventory_Presser_Admin_Options {
 	public function add_hooks() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
-		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
+		add_action( 'admin_menu', array( $this, 'add_options_pages' ) );
 
 		// Look for a query variable that triggers Delete All Vehicles.
 		add_action( 'admin_init', array( $this, 'detect_manage_vehicles_query_var' ) );
@@ -42,83 +42,24 @@ class Inventory_Presser_Admin_Options {
 		add_action( 'update_option_' . INVP::OPTION_NAME, array( $this, 'maybe_flush_permalinks' ), 10, 2 );
 	}
 
-	public function detect_manage_vehicles_query_var() {
-		if ( 'GET' != $_SERVER['REQUEST_METHOD'] ) {
-			return;
-		}
-
-		if ( empty( $_GET['_wpnonce'] ) || empty( $_GET[ self::QUERY_VAR_MANAGE_VEHICLES ] ) ) {
-			return;
-		}
-
-		if ( ! wp_verify_nonce( $_GET['_wpnonce'], self::QUERY_VAR_MANAGE_VEHICLES ) ) {
-			return;
-		}
-
-		$action = sanitize_text_field( $_GET[ self::QUERY_VAR_MANAGE_VEHICLES ] );
-		switch ( $action ) {
-			case 'delete_all_vehicles':
-				INVP::delete_all_inventory();
-				break;
-			case 'load_sample_vehicles':
-				INVP::load_sample_vehicles();
-				break;
-		}
-
-		// Redirect to prevent duplicate actions on reloads.
-		wp_safe_redirect( admin_url( 'edit.php?post_type=' . INVP::POST_TYPE . '&page=' . INVP::OPTION_PAGE ) );
-		exit;
-	}
-
-	/**
-	 * If the additional listing pages settings are changed, or the switch
-	 * is on and the array of pages is different, flush rewrite rules
-	 *
-	 * @param  string $option
-	 * @param  mixed  $old_value
-	 * @param  mixed  $value
-	 * @return void
-	 */
-	public function maybe_flush_permalinks( $old_value, $value ) {
-		// Did the additional listings pages settings change?
-		if ( ( ! isset( $old_value['additional_listings_pages'] ) && isset( $value['additional_listings_pages'] ) )
-			|| ( isset( $old_value['additional_listings_pages'] ) && ! isset( $value['additional_listings_pages'] ) )
-			|| ( isset( $old_value['additional_listings_pages'] ) && isset( $value['additional_listings_pages'] ) && $old_value['additional_listings_pages'] !== $value['additional_listings_pages'] )
-		) {
-			Inventory_Presser_Plugin::flush_rewrite( false );
-		}
-	}
-
-	/**
-	 * Registers JavaScript and CSS file that power the settings page.
-	 *
-	 * @return void
-	 */
-	public function scripts_and_styles() {
-		$handle = 'invp_page_settings';
-		$min    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script(
-			$handle,
-			plugins_url( "/js/page-settings${min}.js", INVP_PLUGIN_FILE_PATH ),
-			array( 'jquery' ),
-			INVP_PLUGIN_VERSION,
-			true
-		);
-		wp_register_style(
-			$handle,
-			plugins_url( "/css/page-settings${min}.css", INVP_PLUGIN_FILE_PATH ),
-			array(),
-			INVP_PLUGIN_VERSION
-		);
-	}
-
 	/**
 	 * Adds an options page to the dashboard to hold all this plugin's settings.
 	 *
 	 * @return void
 	 */
-	public function add_options_page() {
+	public function add_options_pages() {
 		if ( post_type_exists( INVP::POST_TYPE ) ) {
+			// Taxonomy settings page.
+			add_submenu_page(
+				'edit.php?post_type=' . INVP::POST_TYPE,
+				__( 'Taxonomies', 'inventory-presser' ), // page_title.
+				__( 'Taxonomies', 'inventory-presser' ), // menu_title.
+				'manage_options', // capability.
+				'invp-taxonomies', // menu_slug.
+				array( $this, 'options_page_content_taxonomies' ) // function.
+			);
+
+			// Main options page at Vehicles > Options.
 			add_submenu_page(
 				'edit.php?post_type=' . INVP::POST_TYPE,
 				__( 'Options', 'inventory-presser' ), // page_title.
@@ -127,16 +68,7 @@ class Inventory_Presser_Admin_Options {
 				INVP::OPTION_PAGE, // menu_slug.
 				array( $this, 'options_page_content' ) // function.
 			);
-			return;
 		}
-
-		add_options_page(
-			__( 'Inventory Presser', 'inventory-presser' ), // page_title.
-			__( 'Inventory Presser', 'inventory-presser' ), // menu_title.
-			'manage_options', // capability.
-			INVP::OPTION_PAGE, // menu_slug.
-			array( $this, 'options_page_content' ) // function.
-		);
 	}
 
 	/**
@@ -182,11 +114,11 @@ class Inventory_Presser_Admin_Options {
 			$section // section.
 		);
 
-		// [x] Show all taxonomies under Vehicles menu in Dashboard
+		// Taxonomies is just a link to a separate settings page since 14.14.0.
 		add_settings_field(
-			'show_all_taxonomies', // id.
-			__( 'Show All Taxonomies', 'inventory-presser' ), // title.
-			array( $this, 'callback_show_all_taxonomies' ), // callback.
+			'manage_taxonomies', // id.
+			__( 'Taxonomies', 'inventory-presser' ), // title.
+			array( $this, 'callback_manage_taxonomies' ), // callback.
 			INVP::option_page(), // page.
 			$section // section.
 		);
@@ -295,6 +227,24 @@ class Inventory_Presser_Admin_Options {
 			INVP::option_page(), // page.
 			'dealership_options_section_carfax' // section.
 		);
+
+		/**
+		 * Register a section and setting stored in the same option but managed
+		 * on a different page.
+		 */
+		add_settings_section(
+			'section_taxonomies', // id.
+			__( 'Taxonomies', 'inventory-presser' ), // title.
+			array( $this, 'settings_section_content_taxonomies' ), // callback.
+			INVP::OPTION_PAGE_TAXONOMIES . '-admin' // page.
+		);
+		add_settings_field(
+			'taxonomies', // id.
+			__( 'Taxonomies', 'inventory-presser' ), // title.
+			array( $this, 'callback_taxonomies' ), // callback.
+			INVP::OPTION_PAGE_TAXONOMIES . '-admin', // page.
+			'section_taxonomies' // section.
+		);
 	}
 
 	/**
@@ -326,7 +276,7 @@ class Inventory_Presser_Admin_Options {
 	public function callback_additional_listings_page() {
 		?>
 		<div id="additional_listings_pages_settings">
-			<table class="wp-list-table widefat striped additional_listings_pages">
+			<table class="wp-list-table widefat striped invp-settings">
 				<thead>
 					<tr>
 						<th><?php esc_html_e( 'Active', 'inventory-presser' ); ?></th>
@@ -569,19 +519,23 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * Output the controls that create the Show all Taxonomies setting.
+	 * Output the controls that create the Taxonomies setting. A link to another
+	 * settings page.
 	 *
 	 * @return void
 	 */
-	public function callback_show_all_taxonomies() {
-		$this->boolean_checkbox_setting_callback(
-			'show_all_taxonomies',
-			__( 'Show all taxonomies under Vehicles menu in Dashboard', 'inventory-presser' )
+	public function callback_manage_taxonomies() {
+		printf(
+			'<a class="button" href="%1$s">%2$s</a>',
+			esc_url_raw( admin_url( sprintf( 'edit.php?post_type=%s&page=invp-taxonomies', INVP::POST_TYPE ) ) ),
+			esc_html__( 'Manage Taxonomies', 'inventory-presser' )
 		);
 
-		$links         = array();
-		$taxonomy_data = Inventory_Presser_Taxonomies::taxonomy_data();
-		for ( $i = 0; $i < sizeof( $taxonomy_data ); $i++ ) {
+		// Write a sentence that explains what this setting does with links to all the taxonomies.
+		$links          = array();
+		$taxonomy_data  = Inventory_Presser_Taxonomies::taxonomy_data();
+		$taxonomy_count = count( $taxonomy_data );
+		for ( $i = 0; $i < $taxonomy_count; $i++ ) {
 			if ( empty( $taxonomy_data[ $i ]['args']['query_var'] )
 				|| empty( $taxonomy_data[ $i ]['args']['label'] ) ) {
 				continue;
@@ -597,7 +551,7 @@ class Inventory_Presser_Admin_Options {
 
 		printf(
 			'<p class="description">%s %s</p>',
-			__( 'Show or hide these menu items:', 'inventory-presser' ),
+			esc_html__( 'Enable, disable, show, and hide these taxonomies in the dashboard menu and Editors:', 'inventory-presser' ),
 			implode( ', ', $links )
 		);
 	}
@@ -745,6 +699,90 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
+	 * Output the controls that create the Taxonomies settings.
+	 *
+	 * @return void
+	 */
+	public function callback_taxonomies() {
+		?>
+		<div id="taxonomies_settings">
+			<table class="wp-list-table widefat striped taxonomies invp-settings">
+				<thead>
+					<tr>
+						<th><?php esc_html_e( 'Taxonomy', 'inventory-presser' ); ?></th>
+						<th><?php esc_html_e( 'Active', 'inventory-presser' ); ?></th>
+						<th><?php esc_html_e( 'Show in Admin Menu', 'inventory-presser' ); ?></th>
+		<?php
+		$types = get_terms(
+			array(
+				'taxonomy'   => 'type',
+				'hide_empty' => false,
+			)
+		);
+		foreach ( $types as $type ) {
+			printf(
+				'<th>%s</th>',
+				esc_html( $type->name )
+			);
+		}
+		?>
+					</tr>
+				</thead>
+				<tbody>
+		<?php
+		$taxonomy_data  = Inventory_Presser_Taxonomies::taxonomy_data();
+		$taxonomy_count = count( $taxonomy_data );
+		$type_count     = count( $types );
+		for ( $i = 0; $i < $taxonomy_count; $i++ ) {
+			if ( empty( $taxonomy_data[ $i ]['args']['query_var'] )
+				|| empty( $taxonomy_data[ $i ]['args']['label'] ) ) {
+				continue;
+			}
+			echo '<tr><td>';
+			// Link the taxonomy name to where terms can be edited if the taxonomy is active.
+			if ( $this->option['taxonomies'][ $taxonomy_data[ $i ]['args']['query_var'] ]['active'] ?? false ) {
+				printf(
+					'<a href="%s">%s</a>',
+					esc_url_raw(
+						admin_url(
+							sprintf(
+								'edit-tags.php?taxonomy=%s&post_type=%s',
+								$taxonomy_data[ $i ]['args']['query_var'],
+								INVP::POST_TYPE
+							)
+						)
+					),
+					esc_html( $taxonomy_data[ $i ]['args']['label'] )
+				);
+			} else {
+				echo esc_html( $taxonomy_data[ $i ]['args']['label'] );
+			}
+			// Output the Active and Show in Admin Menu checkboxes.
+			printf(
+				'</td><td><input type="checkbox" name="%1$s[taxonomies][%2$s][active]" %3$s /></td><td><input type="checkbox" name="%1$s[taxonomies][%2$s][admin_menu]" %4$s /></td>',
+				esc_attr( INVP::OPTION_NAME ),
+				esc_attr( $taxonomy_data[ $i ]['args']['query_var'] ),
+				checked( true, boolval( $this->option['taxonomies'][ $taxonomy_data[ $i ]['args']['query_var'] ]['active'] ?? false ), false ), // Active.
+				checked( true, boolval( $this->option['taxonomies'][ $taxonomy_data[ $i ]['args']['query_var'] ]['admin_menu'] ?? false ), false ), // Show in Admin Menu.
+			);
+
+			// Output checkboxes for each vehicle type.
+			for ( $j = 0; $j < $type_count; $j++ ) {
+				printf(
+					'<td><input type="checkbox" name="%1$s[taxonomies][%2$s][%3$s]" %4$s /></td>',
+					esc_attr( INVP::OPTION_NAME ),
+					esc_attr( $taxonomy_data[ $i ]['args']['query_var'] ),
+					esc_attr( $types[ $j ]->slug ),
+					checked( true, boolval( $this->option['taxonomies'][ $taxonomy_data[ $i ]['args']['query_var'] ][ $types[ $j ]->slug ] ?? false ), false )
+				);
+			}
+			echo '</tr>';
+		}
+
+		echo '</tbody></table></div>';
+	}
+
+	/**
 	 * Outputs a checkbox and label to enable the photo arranger Gallery Block
 	 * feature.
 	 *
@@ -786,6 +824,34 @@ class Inventory_Presser_Admin_Options {
 			'use_carfax_provided_buttons',
 			__( 'Use Carfax-provided, dynamic buttons that may also say things like "GOOD VALUE"', 'inventory-presser' )
 		);
+	}
+
+	public function detect_manage_vehicles_query_var() {
+		if ( 'GET' != $_SERVER['REQUEST_METHOD'] ) {
+			return;
+		}
+
+		if ( empty( $_GET['_wpnonce'] ) || empty( $_GET[ self::QUERY_VAR_MANAGE_VEHICLES ] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'], self::QUERY_VAR_MANAGE_VEHICLES ) ) {
+			return;
+		}
+
+		$action = sanitize_text_field( $_GET[ self::QUERY_VAR_MANAGE_VEHICLES ] );
+		switch ( $action ) {
+			case 'delete_all_vehicles':
+				INVP::delete_all_inventory();
+				break;
+			case 'load_sample_vehicles':
+				INVP::load_sample_vehicles();
+				break;
+		}
+
+		// Redirect to prevent duplicate actions on reloads.
+		wp_safe_redirect( admin_url( 'edit.php?post_type=' . INVP::POST_TYPE . '&page=' . INVP::OPTION_PAGE ) );
+		exit;
 	}
 
 	/**
@@ -870,7 +936,26 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
-	 * Outputs the settings page HTML content
+	 * If the additional listing pages settings are changed, or the switch
+	 * is on and the array of pages is different, flush rewrite rules
+	 *
+	 * @param  string $option
+	 * @param  mixed  $old_value
+	 * @param  mixed  $value
+	 * @return void
+	 */
+	public function maybe_flush_permalinks( $old_value, $value ) {
+		// Did the additional listings pages settings change?
+		if ( ( ! isset( $old_value['additional_listings_pages'] ) && isset( $value['additional_listings_pages'] ) )
+			|| ( isset( $old_value['additional_listings_pages'] ) && ! isset( $value['additional_listings_pages'] ) )
+			|| ( isset( $old_value['additional_listings_pages'] ) && isset( $value['additional_listings_pages'] ) && $old_value['additional_listings_pages'] !== $value['additional_listings_pages'] )
+		) {
+			Inventory_Presser_Plugin::flush_rewrite( false );
+		}
+	}
+
+	/**
+	 * Outputs the settings page HTML content for the primary options page.
 	 *
 	 * @return void
 	 */
@@ -900,17 +985,67 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	/**
+	 * Outputs the settings page HTML content for the taxonomies settings page.
+	 *
+	 * @return void
+	 */
+	public function options_page_content_taxonomies() {
+		wp_enqueue_script( 'invp_page_settings' );
+		wp_enqueue_style( 'invp_page_settings' );
+
+		$this->option = INVP::settings();
+
+		?>
+		<div class="wrap">
+			<h2><?php esc_html_e( 'Inventory Presser Settings', 'inventory-presser' ); ?></h2>
+		<?php
+		settings_errors();
+
+		?>
+		<form method="post" action="options.php">
+		<?php
+		settings_fields( INVP::option_group() );
+		do_settings_sections( 'invp-taxonomies-admin' );
+		submit_button();
+
+		?>
+		</form>
+		</div>
+		<?php
+	}
+
+	/**
 	 * Santitizes the user input into the options inputs before they are saved.
 	 *
 	 * @param  array $input Array of submitted settings page values.
 	 * @return array
 	 */
 	public function sanitize_options( $input ) {
-		$sanitary_values = array();
+		$settings = INVP::settings();
+
+		// Is this the taxonomies page at edit.php?post_type=inventory_vehicle&page=invp-taxonomies?
+		if ( 1 === count( $input ) && 'taxonomies' === key( $input ) ) {
+			// Yes, this is not the main settings page.
+			array_walk_recursive( $input['taxonomies'], array( $this, 'sanitize_taxonomies_walker' ) );
+			$sanitary_values = array_merge( $settings, $input );
+			// Do not allow the Types taxonomy to be disabled.
+			$sanitary_values['taxonomies']['type']['active'] = true;
+			// Return early, the rest of this method is sanitizing a different page.
+			return apply_filters( 'invp_options_page_taxonomies_sanitized_values', $sanitary_values, $input );
+		}
+
+		// Sanitize settings from the main settings page at edit.php?post_type=inventory_vehicle&page=dealership-options.
+		$sanitary_values = array(
+			'taxonomies' => $settings['taxonomies'] ?? self::taxonomies_setting_default( $settings ), // Keep the taxonomies settings saved by a separate page.
+		);
+
+		// If the old show_all_taxonomies setting is set, translate it.
+		if ( isset( $settings['show_all_taxonomies'] ) ) {
+			unset( $settings['show_all_taxonomies'] );
+		}
 
 		$boolean_settings = array(
 			'include_sold_vehicles',
-			'show_all_taxonomies',
 			'skip_trash',
 			'use_arranger_gallery',
 			'use_carfax',
@@ -993,5 +1128,176 @@ class Inventory_Presser_Admin_Options {
 		}
 
 		return apply_filters( 'invp_options_page_sanitized_values', $sanitary_values, $input );
+	}
+
+	/**
+	 * Callback function for array_walk_recursive to sanitize taxonomies settings.
+	 *
+	 * @param  mixed $value
+	 * @param  mixed $index
+	 * @return bool
+	 */
+	protected function sanitize_taxonomies_walker( &$value, $index ) {
+		$value = boolval( $value );
+	}
+
+	/**
+	 * Registers JavaScript and CSS file that power the settings page.
+	 *
+	 * @return void
+	 */
+	public function scripts_and_styles() {
+		$handle = 'invp_page_settings';
+		$min    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		wp_register_script(
+			$handle,
+			plugins_url( "/js/page-settings${min}.js", INVP_PLUGIN_FILE_PATH ),
+			array( 'jquery' ),
+			INVP_PLUGIN_VERSION,
+			true
+		);
+		wp_add_inline_script(
+			$handle,
+			'const invp_page_settings = ' . wp_json_encode(
+				array(
+					'taxonomies' => Inventory_Presser_Taxonomies::query_vars_array(),
+				)
+			),
+			'before'
+		);
+		wp_register_style(
+			$handle,
+			plugins_url( "/css/page-settings${min}.css", INVP_PLUGIN_FILE_PATH ),
+			array(),
+			INVP_PLUGIN_VERSION
+		);
+	}
+
+	/**
+	 * Outputs some instructions for the Taxonomies settings page.
+	 *
+	 * @return void
+	 */
+	public function settings_section_content_taxonomies() {
+		printf(
+			/* translators: 1. An opening anchor tag, 2. A closing anchor tag */
+			esc_html__( 'Configure which taxonomies are active, whether they are shown in the dashboard menu, and for which vehicle types they should appear in the editor. Vehicle types can be added and removed %1$shere%2$s. Deleted types provided by the plugin will be restored during plugin activation.', 'inventory-presser' ),
+			'<a href="' . esc_url( admin_url( 'edit-tags.php?taxonomy=type&post_type=' . INVP::POST_TYPE ) ) . '">',
+			'</a>'
+		);
+	}
+
+	/**
+	 * Creates a default value for the `taxonomies` key stored in the option.
+	 *
+	 * @param  array $settings The value of this plugin's option full of settings.
+	 * @return array
+	 */
+	public static function taxonomies_setting_default( $settings = null ) {
+		// Backwards compatibility with a deleted setting.
+		$show_menu = $settings['show_all_taxonomies'] ?? false;
+		// This array is used 10 times below.
+		$common = array(
+			'active'     => true,
+			'admin_menu' => $show_menu,
+			'atv'        => true,
+			'boat'       => true,
+			'bus'        => true,
+			'mot'        => true,
+			'mow'        => true,
+			'oth'        => true,
+			'car'        => true,
+			'rv'         => true,
+			'suv'        => true,
+			'trlr'       => true,
+			'tru'        => true,
+			'van'        => true,
+		);
+		return array(
+			'model-year'      => $common,
+			'make'            => $common,
+			'model'           => $common,
+			'condition'       => $common,
+			'type'            => $common,
+			'availability'    => $common,
+			'drive-type'      => array(
+				'active'     => true,
+				'admin_menu' => $show_menu,
+				'atv'        => true,
+				'bus'        => true,
+				'mot'        => true,
+				'mow'        => true,
+				'oth'        => true,
+				'car'        => true,
+				'rv'         => true,
+				'suv'        => true,
+				'trlr'       => true,
+				'tru'        => true,
+				'van'        => true,
+			),
+			'propulsion-type' => array(
+				'active'     => true,
+				'admin_menu' => $show_menu,
+				'boat'       => true,
+			),
+			'fuel'            => $common,
+			'transmission'    => array(
+				'active'     => true,
+				'admin_menu' => $show_menu,
+				'atv'        => true,
+				'bus'        => true,
+				'mot'        => true,
+				'mow'        => true,
+				'oth'        => true,
+				'car'        => true,
+				'rv'         => true,
+				'suv'        => true,
+				'trlr'       => true,
+				'tru'        => true,
+				'van'        => true,
+			),
+			'cylinders'       => array(
+				'active'     => true,
+				'admin_menu' => $show_menu,
+				'atv'        => true,
+				'bus'        => true,
+				'mot'        => true,
+				'mow'        => true,
+				'oth'        => true,
+				'car'        => true,
+				'rv'         => true,
+				'suv'        => true,
+				'trlr'       => true,
+				'tru'        => true,
+				'van'        => true,
+			),
+			'style'           => $common,
+			'colors'          => $common,
+			'location'        => $common,
+			'condition_boat'  => array(
+				'active' => true,
+				'boat'   => true,
+			),
+			'engine_count'    => array(
+				'active' => true,
+				'boat'   => true,
+			),
+			'engine_make'     => array(
+				'active' => true,
+				'boat'   => true,
+			),
+			'engine_model'    => array(
+				'active' => true,
+				'boat'   => true,
+			),
+			'horsepower'      => array(
+				'active' => true,
+				'boat'   => true,
+			),
+			'hull_materials'  => array(
+				'active' => true,
+				'boat'   => true,
+			),
+		);
 	}
 }
