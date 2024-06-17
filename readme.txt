@@ -2,9 +2,9 @@
 Contributors: salzano
 Tags: car dealer, car dealership, car listings, auto dealer, car sales, car lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 6.5.3
+Tested up to: 6.5.4
 Requires PHP: 7.0.0
-Stable tag: 14.14.0
+Stable tag: 14.14.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
