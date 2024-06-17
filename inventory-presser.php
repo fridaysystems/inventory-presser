@@ -664,6 +664,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			// Register scripts and styles.
 			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'include_scripts_and_styles' ) );
+			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'include_scripts_and_styles' ) );
 			add_action( 'enqueue_block_assets', array( __CLASS__, 'include_scripts_and_styles' ) );
 
 			// Allow custom fields to be searched.

@@ -209,6 +209,13 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 			}
 		}
 
+		// VIN or HIN for boats.
+		$table_items[] = array(
+			'member' => 'vin',
+			'label'  => invp_is_boat( $post_ID ) ? __( 'HIN', 'inventory-presser' ) : __( 'VIN', 'inventory-presser' ),
+			'value'  => invp_get_the_vin(),
+		);
+
 		$table_items = apply_filters( 'invp_vehicle_attribute_table_items', $table_items );
 
 		$html = '';
