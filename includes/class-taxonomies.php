@@ -140,6 +140,46 @@ class Inventory_Presser_Taxonomies {
 
 		// Change which taxonomies appear in the dashboard menu.
 		add_filter( 'invp_taxonomy_data', array( $this, 'change_taxonomy_show_in_menu_attribute' ) );
+
+		// Add a noindex meta tag to vehicle archive pages that have a lot of filters.
+		add_filter( 'wp_robots', array( $this, 'maybe_add_noindex' ) );
+	}
+
+	/**
+	 * A URL like this works:
+	 * example.com/inventory/make/honda/make/gmc/make/toyota/make/ford. Try to
+	 * prevent tons of bot traffic to deep filtered inventory pages with a
+	 * noindex meta tag.
+	 *
+	 * @param  array $robots
+	 * @return array
+	 */
+	public function maybe_add_noindex( $robots ) {
+		// Is this a vehicle archive?
+		if ( ! is_post_type_archive( INVP::POST_TYPE ) ) {
+			// No.
+			return $robots;
+		}
+
+		// How many taxonomy filters are in the query?
+		$filter_count = 0;
+		foreach ( self::query_vars_array() as $query_var ) {
+			$vars = get_query_var( $query_var );
+			if ( '' !== $vars ) {
+				if ( is_array( $vars ) ) {
+					$filter_count += count( $vars );
+				} else {
+					++$filter_count;
+				}
+
+				// More than one?
+				if ( $filter_count > 1 ) {
+					$robots['noindex'] = $robots['nofollow'] = true;
+					return $robots;
+				}
+			}
+		}
+		return $robots;
 	}
 
 	/**
