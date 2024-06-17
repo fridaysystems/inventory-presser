@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Inventory_Presser_Shortcode_Vin
+ * Inventory_Presser_Shortcode_Attribute_Table
  *
  * Creates a shortcode that outputs a vehicle identification number.
  */

@@ -91,6 +91,11 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Changelog ==
 
+= 14.14.2 =
+* [Fixed] Adds a meta noindex nofollow tag to inventory archives that are filtered by 2 or more of our taxonomies. Prevent /inventory/make/toyota/make/lexus/fuel/gas/ from being indexed or followed by bots.
+* [Fixed] Bug fix. Register scripts in the dashboard. The location taxonomy add phone and add hours buttons were broken because the script powering them stopped loading.
+* [Fixed] Bug fix. Restores VIN to vehicle attribute table. VIN was erroneously removed in 14.14.0.
+
 = 14.14.0 =
 * [Added] Adds a setting "Singles Contact Form" at Vehicles → Options to embed a lead form on vehicle single pages. Supports Contact Form 7, Gravity Forms, and WP Forms.
 * [Added] Adds "make" and "model" attributes to the Inventory Grid and Inventory Slider.
@@ -160,6 +165,12 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.14.2 =
+Adds a meta noindex nofollow tag to inventory archives that are filtered by 2 or more of our taxonomies. Prevent /inventory/make/toyota/make/lexus/fuel/gas/ from being indexed or followed by bots. Bug fix. Register scripts in the dashboard. The location taxonomy add phone and add hours buttons were broken because the script powering them stopped loading. Bug fix. Restores VIN to vehicle attribute table. VIN was erroneously removed in 14.14.0.
+
+= 14.14.1 =
+Bug fix. Restores VIN to vehicle attribute table. VIN was erroneously removed in 14.14.0.
 
 = 14.14.0 =
 Adds a setting "Singles Contact Form" at Vehicles → Options to embed a lead form on vehicle single pages. Supports Contact Form 7, Gravity Forms, and WP Forms. Adds "make" and "model" attributes to the Inventory Grid and Inventory Slider. Changes the "Show All Taxonomies" option to a "Manage Taxonomies" button that leads to another options page. Users can now toggle which taxonomies are active, show in the admin menu, and display in editors for each vehicle type. This makes the plugin much more friendly to boat dealers and anyone managing vehicles that are not passenger cars. Adds better support for the Classic Editor. Adds more boat fields for condition, draft, number of engines, engine make, engine model, and horsepower. Adds template tags for boats including invp_is_boat(), invp_get_the_condition_boat(), invp_get_the_draft(), invp_get_the_engine_count(), invp_get_the_engine_make(), invp_get_the_engine_model(), and invp_get_the_horsepower(). Stops showing an admin notice on this plugin's settings page. Adds the information to the Site Health page under the Tools menu instead. Makes more strings translateable, including default boat styles and hull materials. Bug fix. Prevent invp_get_the_photos() from returning a list of urls containing empty strings. Vehicles with broken images would prevent the flexslider from starting on details pages. Stops removing the odometer field from the vehicle attribute table for boats. Changes the fields for boats in the attribute table shortcode, and therefore the default archive and single templates.
