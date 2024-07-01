@@ -58,6 +58,14 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) ) {
 		 * @return string The same template file that was passed in
 		 */
 		public function maybe_provide_template( $template ) {
+
+			// Is this setting enabled?
+			$settings = INVP::settings();
+			if ( ! isset( $settings['provide_templates'] ) || ! $settings['provide_templates'] ) {
+				// No.
+				return $template;
+			}
+
 			// is this our vehicle post type?
 			global $post;
 			if ( empty( $post ) ) {

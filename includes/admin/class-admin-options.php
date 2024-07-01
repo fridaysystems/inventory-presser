@@ -177,6 +177,15 @@ class Inventory_Presser_Admin_Options {
 			'dealership_options_section_listings' // section.
 		);
 
+		// [x] Provide single and archive templates
+		add_settings_field(
+			'provide_templates', // id.
+			__( 'Templates', 'inventory-presser' ), // title.
+			array( $this, 'callback_provide_templates' ), // callback.
+			INVP::option_page(), // page.
+			'dealership_options_section_listings' // section.
+		);
+
 		/**
 		 * Create an additional inventory archive at pmgautosales.com/[cash-deals]
 		 * that contains vehicles that have a value for field [Down Payment]
@@ -515,6 +524,18 @@ class Inventory_Presser_Admin_Options {
 			esc_attr( INVP::OPTION_NAME ),
 			esc_html__( 'Call for Price', 'inventory-presser' ),
 			esc_html__( 'will display for any price that is zero', 'inventory-presser' )
+		);
+	}
+
+	/**
+	 * Outputs a checkbox control for the Provide Templates setting.
+	 *
+	 * @return void
+	 */
+	public function callback_provide_templates() {
+		$this->boolean_checkbox_setting_callback(
+			'provide_templates',
+			__( 'Provide single and archive templates', 'inventory-presser' )
 		);
 	}
 
@@ -1059,6 +1080,7 @@ class Inventory_Presser_Admin_Options {
 
 		$boolean_settings = array(
 			'include_sold_vehicles',
+			'provide_templates',
 			'skip_trash',
 			'use_arranger_gallery',
 			'use_carfax',

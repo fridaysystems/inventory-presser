@@ -1197,6 +1197,8 @@ class INVP {
 	 */
 	public static function settings() {
 		$defaults = array(
+			'include_sold_vehicles'       => false,
+			'provide_templates'           => true,
 			'skip_trash'                  => true,
 			'sort_vehicles_by'            => 'make',
 			'sort_vehicles_order'         => 'ASC',
