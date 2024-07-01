@@ -1854,6 +1854,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					case 'WPF':
 						$shortcode_pattern = '[wpforms id="%s"]';
 						break;
+
+					case 'WSF':
+						$shortcode_pattern = '[ws_form id="%s"]';
+						break;
 				}
 				$shortcode = sprintf( $shortcode_pattern, $form[1] );
 				if ( '' !== $shortcode ) {

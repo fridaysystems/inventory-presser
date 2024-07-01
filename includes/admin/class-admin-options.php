@@ -615,6 +615,19 @@ class Inventory_Presser_Admin_Options {
 			}
 		}
 
+		// Get all WS Forms and build <option> elements.
+		if ( class_exists( 'WS_Form_Common' ) ) {
+			foreach ( WS_Form_Common::get_forms_array( false ) as $id => $wsform ) {
+				$options .= sprintf(
+					'<option value="WSF_%s"%s>%s: %s</option>',
+					esc_attr( $id ),
+					selected( 'WSF_' . $id, $current_value, false ),
+					esc_html__( 'WS Form', 'inventory-presser' ),
+					esc_attr( preg_replace( '/\s\([^\)]+\)$/', '', $wsform ) )
+				);
+			}
+		}
+
 		printf(
 			'<select name="%1$s[%2$s]" id="%2$s">%3$s</select><p class="description" id="%1$s[%2$s]-description">%4$s</p>',
 			esc_attr( INVP::OPTION_NAME ),
