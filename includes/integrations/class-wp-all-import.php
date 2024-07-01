@@ -36,21 +36,43 @@ class Inventory_Presser_WP_All_Import {
 			return;
 		}
 
+		if ( empty( $meta_value ) ) {
+			return;
+		}
+
 		// Are there lots of commas or pipes in the value?
-		$pipe_count  = substr_count( $meta_value ?? '', '|' );
-		$comma_count = substr_count( $meta_value ?? '', ',' );
-		if ( $pipe_count + $comma_count < 2 ) {
+		$delimiters = array(
+			'|' => substr_count( $meta_value ?? '', '|' ),
+			',' => substr_count( $meta_value ?? '', ',' ),
+			';' => substr_count( $meta_value ?? '', ';' ),
+		);
+		$delimiters = array_filter(
+			$delimiters,
+			function ( $value ) {
+				return $value > 1;
+			}
+		);
+
+		if ( empty( $delimiters ) ) {
 			// No.
 			return;
 		}
-		$delimiter = $pipe_count > $comma_count ? '|' : ',';
 
-		// Erase the current value.
+		$found_delimiter = array_search( max( $delimiters ), $delimiters, true );
+		if ( false === $found_delimiter ) {
+			// No.
+			return;
+		}
+
+		// Repeating delimiter found. Erase the current value.
 		delete_post_meta( $post_id, $meta_key );
 
 		// Add each option individually, options_array is a multi-meta value.
-		foreach ( explode( $delimiter, $meta_value ) as $option ) {
-			add_post_meta( $post_id, $meta_key, $option );
+		foreach ( array_filter( explode( $found_delimiter, $meta_value ) ) as $option ) {
+			if ( '' === trim( $option ) ) {
+				continue;
+			}
+			add_post_meta( $post_id, $meta_key, trim( $option ) );
 		}
 	}
 
