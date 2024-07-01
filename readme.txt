@@ -2,9 +2,9 @@
 Contributors: salzano
 Tags: car dealer, car dealership, car listings, auto dealer, car sales, car lot, motorcycle, rv
 Requires at least: 5.0.0
-Tested up to: 6.5.4
+Tested up to: 6.5.5
 Requires PHP: 7.0.0
-Stable tag: 14.14.2
+Stable tag: 14.15.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,13 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Changelog ==
 
+= 14.15.0 =
+* [Added] Adds a setting Provide Templates at Vehicles > Options. Lets users toggle the provided templates for archive and single vehicles.
+* [Added] Adds WS Form to the list of recognized form builders in the Singles Contact Form setting.
+* [Fixed] Bug fix. Fixes the Add Listings Page button in the settings. This button stopped adding a new row to the Listings Pages table in 14.14.0.
+* [Changed] Edits WP All Import integration to detect semicolon as an option delimiter in addition to pipes and commas.
+* [Changed] Changes tested up to version number to 6.5.5.
+
 = 14.14.2 =
 * [Fixed] Adds a meta noindex nofollow tag to inventory archives that are filtered by 2 or more of our taxonomies. Prevent /inventory/make/toyota/make/lexus/fuel/gas/ from being indexed or followed by bots.
 * [Fixed] Bug fix. Register scripts in the dashboard. The location taxonomy add phone and add hours buttons were broken because the script powering them stopped loading.
@@ -165,6 +172,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.15.0 =
+Adds a setting Provide Templates at Vehicles > Options. Lets users toggle the provided templates for archive and single vehicles. Adds WS Form to the list of recognized form builders in the Singles Contact Form setting. Bug fix. Fixes the Add Listings Page button in the settings. This button stopped adding a new row to the Listings Pages table in 14.14.0. Edits WP All Import integration to detect semicolon as an option delimiter in addition to pipes and commas.
 
 = 14.14.2 =
 Adds a meta noindex nofollow tag to inventory archives that are filtered by 2 or more of our taxonomies. Prevent /inventory/make/toyota/make/lexus/fuel/gas/ from being indexed or followed by bots. Bug fix. Register scripts in the dashboard. The location taxonomy add phone and add hours buttons were broken because the script powering them stopped loading. Bug fix. Restores VIN to vehicle attribute table. VIN was erroneously removed in 14.14.0.
