@@ -168,7 +168,7 @@ class Inventory_Presser_Admin_Options {
 			'dealership_options_section_listings' // section.
 		);
 
-		// [x] Include sold vehicles
+		// [x] Include sold vehicles in listings and search results
 		add_settings_field(
 			'include_sold_vehicles', // id.
 			__( 'Sold Vehicles', 'inventory-presser' ), // title.

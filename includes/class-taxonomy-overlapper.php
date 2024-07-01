@@ -267,7 +267,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 			// it's not a slug, what about a name?
 			$term = get_term_by( 'name', $meta_value, $taxonomy );
 			if ( ! $term ) {
-				// No, create a term
+				// No, create a term.
 				$term_id_array = wp_insert_term(
 					$meta_value,
 					$taxonomy,
