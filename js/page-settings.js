@@ -41,8 +41,8 @@ window.addEventListener( 'load', function () {
 			$( 'button#add_additional_listings_page' ).on(
 				'click',
 				function () {
-					var row_html = $( 'table.additional_listings_pages tbody tr:last' )[0].outerHTML;
-					$( 'table.additional_listings_pages tbody' ).append( repeat_row( row_html ) );
+					var row_html = $( '#additional_listings_pages_settings table.invp-settings tbody tr:last' )[0].outerHTML;
+					$( '#additional_listings_pages_settings table.invp-settings tbody' ).append( repeat_row( row_html ) );
 					// rebind the operator selects.
 					$( 'select.operator' ).off( 'change' );
 					$( 'select.operator' ).on( 'change', toggle_value_input );
