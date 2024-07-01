@@ -257,7 +257,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 		 * Wholesale is a term in the Availability taxonomy rather than a real
 		 * boolean as the meta field suggests & is registered.
 		 */
-		if ( 'wholesale' == strtolower( $unprefixed ) ) {
+		if ( 'wholesale' === strtolower( $unprefixed ) ) {
 			$meta_value = 'Wholesale';
 		}
 
@@ -276,7 +276,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 						'slug'        => INVP::sluggify( $meta_value ),
 					)
 				);
-				if ( ! empty( $term_id_array['term_id'] ) ) {
+				if ( ! is_wp_error( $term_id_array ) && ! empty( $term_id_array['term_id'] ) ) {
 					$term = get_term( $term_id_array['term_id'], $taxonomy );
 				}
 			}
