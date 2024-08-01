@@ -283,6 +283,17 @@ class Inventory_Presser_Admin_Options {
 	 * @return void
 	 */
 	public function callback_additional_listings_page() {
+		// Is Divi or a Divi child theme active?
+		if ( in_array( 'Divi', array( get_template(), get_stylesheet() ), true ) ) {
+			// Yes. This feature does not work on Divi.
+			printf(
+				'<div class="invp-notice invp-notice-error"><p>%s %s <a href="https://inventorypresser.com/docs/divi-setup-guide/">%s →</a></p></div>',
+				esc_html__( 'Listings Pages feature does not work on Divi.', 'inventory-presser' ),
+				esc_html__( 'Visit', 'inventory-presser' ),
+				esc_html__( 'Divi Setup Guide', 'inventory-presser' )
+			);
+		}
+
 		?>
 		<div id="additional_listings_pages_settings">
 			<table class="wp-list-table widefat striped invp-settings">
