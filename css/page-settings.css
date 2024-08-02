@@ -13,6 +13,22 @@ table.invp-settings td{
 #additional_listings_pages_settings table.invp-settings td:nth-child(3){
 	width: 99%;
 }
+#additional_listings_pages_settings table td span.item{
+	display: block;
+	line-height: 36px;
+}
+#additional_listings_pages_settings table td input.value{
+	position: relative;
+	top: 2px;
+}
+#additional_listings_pages_settings table td label{
+	display: inline-block;
+	width: 3em
+}
+#additional_listings_pages_settings table td.active,
+#additional_listings_pages_settings table td.actions{
+	vertical-align: top;
+}
 table.invp-settings .dashicons{
 	padding-top: .18em;
 }

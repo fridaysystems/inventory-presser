@@ -300,11 +300,7 @@ class Inventory_Presser_Admin_Options {
 				<thead>
 					<tr>
 						<th><?php esc_html_e( 'Active', 'inventory-presser' ); ?></th>
-						<th><?php esc_html_e( 'Title', 'inventory-presser' ); ?></th>
-						<th><?php esc_html_e( 'URL path', 'inventory-presser' ); ?></th>
-						<th><?php esc_html_e( 'Filter field', 'inventory-presser' ); ?></th>
-						<th><?php esc_html_e( 'Operator', 'inventory-presser' ); ?></th>
-						<th><?php esc_html_e( 'Value', 'inventory-presser' ); ?></th>
+						<th><?php esc_html_e( 'Settings', 'inventory-presser' ); ?></th>
 						<th></th>
 					</tr>
 				</thead>
@@ -332,74 +328,73 @@ class Inventory_Presser_Admin_Options {
 						<td class="active">
 							<?php
 							printf(
-								'<input type="checkbox" id="additional_listings_pages_active_%1$s" name="%2$s[additional_listings_pages][%1$s][active]" %3$s />',
+								'<input type="checkbox" id="additional_listings_pages_active_%1$s" name="%2$s[additional_listings_pages][%1$s][active]" title="%4$s" %3$s />',
 								esc_attr( $a ),
 								esc_attr( INVP::OPTION_NAME ),
-								checked( true, $additional_listings[ $a ]['active'] ?? true, false )
+								checked( true, $additional_listings[ $a ]['active'] ?? true, false ),
+								esc_html__( 'Toggle active or inactive', 'inventory-presser' )
 							);
 							?>
 						</td>
 						<td>
 							<?php
-							// text box for page title.
+							// Title.
 							printf(
-								'<input type="text" id="additional_listings_pages_title_%1$s" name="%2$s[additional_listings_pages][%1$s][title]" value="%3$s" />',
+								'<span class="item"><label for="additional_listings_pages_title_%1$s">%4$s</label> <input type="text" id="additional_listings_pages_title_%1$s" name="%2$s[additional_listings_pages][%1$s][title]" value="%3$s" /></span>',
 								esc_attr( $a ),
 								esc_attr( INVP::OPTION_NAME ),
-								esc_attr( $additional_listings[ $a ]['title'] ?? '' )
+								esc_attr( $additional_listings[ $a ]['title'] ?? '' ),
+								esc_html__( 'Title', 'inventory-presser' )
 							);
-							?>
-							</td>
-						<td>
-							<?php
-							// url path.
+
+							// URL.
 							printf(
-								'%1$s/<input type="text" id="additional_listings_pages_slug_%2$s" name="%3$s[additional_listings_pages][%2$s][url_path]" class="additional_listings_pages_slug" value="%4$s" />',
+								'<span class="item"><label for="additional_listings_pages_slug_%2$s">%5$s</label> <input type="text" disabled="disabled" value="%1$s/" /><input type="text" id="additional_listings_pages_slug_%2$s" name="%3$s[additional_listings_pages][%2$s][url_path]" class="additional_listings_pages_slug" value="%4$s" /></span>',
 								esc_url( site_url() ),
 								esc_attr( $a ),
 								esc_attr( INVP::OPTION_NAME ),
-								esc_attr( $additional_listings[ $a ]['url_path'] ?? '' )
+								esc_attr( $additional_listings[ $a ]['url_path'] ?? '' ),
+								esc_html__( 'URL', 'inventory-presser' )
 							);
-							?>
-							</td>
-						<td>
-							<?php
-							// select list of vehicle fields.
+
+							// Filter.
+							printf(
+								'<span class="item"><label for="additional_listings_pages_key_%1$s">%2$s</label> ',
+								esc_attr( 'additional_listings_pages_key_' . $a ),
+								esc_html__( 'Filter', 'inventory-presser' )
+							);
 							echo $this->html_select_vehicle_keys(
 								array(
-									'id'    => 'additional_listings_pages_key_' . $a,
-									'name'  => INVP::OPTION_NAME . '[additional_listings_pages][' . $a . '][key]',
-									'class' => 'filter-key',
+									'id'    => esc_attr( 'additional_listings_pages_key_' . $a ),
+									'name'  => esc_attr( INVP::OPTION_NAME . '[additional_listings_pages][' . $a . '][key]' ),
+									'class' => esc_attr( 'filter-key' ),
+									'title' => esc_attr__( 'Filter field', 'inventory-presser' ),
 								),
 								$additional_listings[ $a ]['key'] ?? ''
 							);
-							?>
-							</td>
-						<td>
-							<?php
-							// select list of operators.
+
+							// Operator.
 							echo $this->html_select_operator(
 								array(
-									'id'    => 'additional_listings_pages_operator_' . $a,
-									'name'  => INVP::OPTION_NAME . '[additional_listings_pages][' . $a . '][operator]',
-									'class' => 'operator',
+									'id'    => esc_attr( 'additional_listings_pages_operator_' . $a ),
+									'name'  => esc_attr( INVP::OPTION_NAME . '[additional_listings_pages][' . $a . '][operator]' ),
+									'class' => esc_attr( 'operator' ),
+									'title' => esc_attr__( 'Operator', 'inventory-presser' ),
 								),
 								$additional_listings[ $a ]['operator'] ?? ''
 							);
-							?>
-							</td>
-						<td>
-							<?php
-							// text box for comparison value.
+
+							// Comparison value.
 							printf(
-								'<input type="text" id="additional_listings_pages_value_%1$s" name="%2$s[additional_listings_pages][%1$s][value]" value="%3$s" />',
+								'<input type="text" class="value" id="additional_listings_pages_value_%1$s" name="%2$s[additional_listings_pages][%1$s][value]" value="%3$s" title="%4$s" /></span>',
 								esc_attr( $a ),
 								esc_attr( INVP::OPTION_NAME ),
-								esc_attr( $additional_listings[ $a ]['value'] ?? '' )
+								esc_attr( $additional_listings[ $a ]['value'] ?? '' ),
+								esc_attr__( 'Comparison value', 'inventory-presser' )
 							);
 							?>
 							</td>
-						<td>
+						<td class="actions">
 							<a href="<?php echo esc_url( site_url( $additional_listings[ $a ]['url_path'] ?? '' ) ); ?>" class="button action" title="<?php esc_attr__( 'View this page', 'inventory-presser' ); ?>"><span class="dashicons dashicons-welcome-view-site"></span></a><button class="button action delete-button" id="delete_<?php echo esc_attr( $a ); ?>" title="<?php esc_attr__( 'Delete this page', 'inventory-presser' ); ?>"><span class="dashicons dashicons-trash"></span></button>
 						</td>
 					</tr>
