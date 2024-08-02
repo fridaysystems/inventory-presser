@@ -1,6 +1,6 @@
 === Inventory Presser - Car Dealer Listings ===
 Contributors: salzano
-Tags: car dealer, car dealership, car listings, auto dealer, car sales, car lot, motorcycle, rv
+Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.5.5
 Requires PHP: 7.0.0
