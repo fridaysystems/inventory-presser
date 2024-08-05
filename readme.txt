@@ -24,7 +24,7 @@ Manage and market dealership inventory with listings and photo sliders built on 
 
 * Install the plugin and [load the sample vehicles](https://inventorypresser.com/docs/settings/load-sample-vehicles/)
 * Visit yoursite.com/inventory to see the built-in templates
-* Design your own pages using [post meta fields](https://inventorypresser.com/docs/vehicle-post-type/), [Elementor Dynamic Tags](https://inventorypresser.com/products/plugins/elementor-add-on/), or [Divi Builder](https://inventorypresser.com/docs/divi-setup-guide/)
+* Design your own pages using [post meta fields](https://inventorypresser.com/docs/vehicle-post-type/), Elementor, Avada Builder, or [Divi Builder](https://inventorypresser.com/docs/divi-setup-guide/)
 * Decide how to best [manage inventory updates](https://inventorypresser.com/docs/adding-or-importing-inventory/)
 * [Add vehicles to lead forms](https://inventorypresser.com/docs/add-vehicles-to-lead-forms/)
 
