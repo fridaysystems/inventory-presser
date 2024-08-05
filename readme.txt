@@ -91,6 +91,10 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Changelog ==
 
+= 14.16.0 =
+* [Added] Adds an integration with Gravity Forms. Provides a Vehicle field type that allows users to add vehicles to leads captured with Gravity Forms.
+* [Fixed] Achieves compatibility with Avada Builder by adding all vehicle photos as Featured Images and changing the way some meta fields display when used in Text Block layout elements.
+
 = 14.15.0 =
 * [Added] Adds a setting Provide Templates at Vehicles > Options. Lets users toggle the provided templates for archive and single vehicles.
 * [Added] Adds WS Form to the list of recognized form builders in the Singles Contact Form setting.
