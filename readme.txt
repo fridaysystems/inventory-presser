@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.6.1
 Requires PHP: 7.0.0
-Stable tag: 14.15.0
+Stable tag: 14.16.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,7 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 = 14.16.0 =
 * [Added] Adds an integration with Gravity Forms. Provides a Vehicle field type that allows users to add vehicles to leads captured with Gravity Forms.
 * [Fixed] Achieves compatibility with Avada Builder by adding all vehicle photos as Featured Images and changing the way some meta fields display when used in Text Block layout elements.
+* [Fixed] Redesigns the Listings Pages settings table to fit on narrower screens. Adds a warning to Divi users that the feature does not work on Divi.
 
 = 14.15.0 =
 * [Added] Adds a setting Provide Templates at Vehicles > Options. Lets users toggle the provided templates for archive and single vehicles.
@@ -176,6 +177,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.16.0 =
+Adds an integration with Gravity Forms. Provides a Vehicle field type that allows users to add vehicles to leads captured with Gravity Forms. Achieves compatibility with Avada Builder by adding all vehicle photos as Featured Images and changing the way some meta fields display when used in Text Block layout elements. Redesigns the Listings Pages settings table to fit on narrower screens. Adds a warning to Divi users that the feature does not work on Divi.
 
 = 14.15.0 =
 Adds a setting Provide Templates at Vehicles > Options. Lets users toggle the provided templates for archive and single vehicles. Adds WS Form to the list of recognized form builders in the Singles Contact Form setting. Bug fix. Fixes the Add Listings Page button in the settings. This button stopped adding a new row to the Listings Pages table in 14.14.0. Edits WP All Import integration to detect semicolon as an option delimiter in addition to pipes and commas.
