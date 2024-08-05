@@ -110,11 +110,6 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			} else {
 				$post_ids = $this->get_vehicle_post_ids();
 				foreach ( $post_ids as $post_id ) {
-					$year         = invp_get_the_year( $post_id );
-					$make         = invp_get_the_make( $post_id );
-					$model        = invp_get_the_model( $post_id );
-					$trim         = invp_get_the_trim( $post_id );
-					$stock_number = invp_get_the_stock_number( $post_id );
 					$choices[]    = array(
 						'label' => $this->create_option_label( $post_id ),
 						'value' => $this->create_option_value( $post_id ),
