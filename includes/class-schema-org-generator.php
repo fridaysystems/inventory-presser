@@ -102,8 +102,8 @@ class Inventory_Presser_Schema_Org_Generator {
 			$obj['vehicleModelDate'] = $year;
 		}
 
-		// if the image does not end with 'no-photo.png'.
-		if ( 'no-photo.svg' !== substr( invp_get_the_photo_url( $post_ID ), 12 ) ) {
+		// Do we have photos?
+		if ( 0 < invp_get_the_photo_count( $post_ID ) ) {
 			$obj['image'] = invp_get_the_photo_url( $post_ID );
 		}
 
