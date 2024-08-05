@@ -1041,6 +1041,14 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$classic_editor = new Inventory_Presser_Classic_Editor();
 				$classic_editor->add_hooks();
 			}
+
+			// Avada Builder.
+			$plugin_path = 'fusion-builder/fusion-builder.php';
+			if ( in_array( $plugin_path, $active_plugins, true )
+				|| is_plugin_active_for_network( $plugin_path ) ) {
+				$avada = new Inventory_Presser_Avada();
+				$avada->add_hooks();
+			}
 		}
 
 		/**
@@ -1080,6 +1088,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-rest.php',
 				'class-schema-org-generator.php',
 				'class-site-health.php',
+				'integrations/class-avada.php',
 				'integrations/class-classic-editor.php',
 				'integrations/class-forms-integration.php',
 				'integrations/class-contact-form-7.php',
