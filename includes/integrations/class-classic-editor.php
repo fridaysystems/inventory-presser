@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since      14.10.0
  * @package    inventory-presser
- * @subpackage inventory-presser/includes/admin
+ * @subpackage inventory-presser/includes/integrations
  * @author     Corey Salzano <corey@friday.systems>
  */
 class Inventory_Presser_Classic_Editor {
