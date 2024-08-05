@@ -3,7 +3,7 @@
  * Avada
  *
  * @package inventory-presser
- * @since      14.15.1
+ * @since      14.16.0
  * @subpackage inventory-presser/includes/integrations
  * @author     Corey Salzano <corey@friday.systems>
  */

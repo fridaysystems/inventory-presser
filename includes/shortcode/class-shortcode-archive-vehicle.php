@@ -88,7 +88,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 															if ( has_post_thumbnail() ) {
 																the_post_thumbnail( 'large' );
 															} else {
-																// This will be the no-photo.svg or png.
+																// This will be no-photo.svg.
 																?>
 								<img class="no-photo-available" src="<?php echo esc_attr( invp_get_the_photo_url() ); ?>" alt="<?php the_title(); ?>" />
 																<?php
