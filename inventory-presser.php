@@ -1049,6 +1049,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$avada = new Inventory_Presser_Avada();
 				$avada->add_hooks();
 			}
+
+			// Gravity Forms.
+			$plugin_path = 'gravityforms/gravityforms.php';
+			if ( in_array( $plugin_path, $active_plugins, true )
+				|| is_plugin_active_for_network( $plugin_path ) ) {
+				GF_Fields::register( new GF_Field_Vehicle() );
+			}
 		}
 
 		/**
@@ -1092,6 +1099,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'integrations/class-classic-editor.php',
 				'integrations/class-forms-integration.php',
 				'integrations/class-contact-form-7.php',
+				'integrations/class-gravityforms-field-vehicle.php',
 				'integrations/class-wp-all-import.php',
 				'integrations/class-wpforms.php',
 				'shortcode/class-shortcode-hours-today.php',
