@@ -98,6 +98,12 @@ class Inventory_Presser_Avada {
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 		$params = json_decode( base64_decode( $args['dynamic_params'], true ) );
 
+		// Does this element display a meta field?
+		if ( empty( $params->element_content->key ) ) {
+			// No.
+			return $content;
+		}
+
 		// Is this a custom meta key belonging to Inventory Presser?
 		$keys = INVP::keys();
 		if ( ! in_array( apply_filters( 'invp_unprefix_meta_key', $params->element_content->key ), $keys, true ) ) {
