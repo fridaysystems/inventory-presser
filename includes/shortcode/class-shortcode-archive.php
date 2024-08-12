@@ -74,56 +74,16 @@ class Inventory_Presser_Shortcode_Archive {
 			$atts[ $taxonomy->query_var ] = get_query_var( $taxonomy->query_var );
 		}
 
-		/**
-		 * Handle querystring filters min_price, max_price, and max_odometer.
-		 * This array $querystring_filters has no significance other than
-		 * allowing the foreach loop below to handle 3 parameters similarly.
-		 */
-		$querystring_filters = array(
-			array(
-				'param'    => 'min_price', // querystring parameter name.
-				'field'    => 'price', // meta field suffix.
-				'operator' => '>=', // comparison operator.
-			),
-			array(
-				'param'    => 'max_price',
-				'field'    => 'price',
-				'operator' => '<=',
-			),
-			array(
-				'param'    => 'max_odometer',
-				'field'    => 'odometer',
-				'operator' => '<=',
-			),
-		);
+		// Query vehicles.
+		add_filter( 'invp_range_filters_main_query', '__return_false' );
+		$vehicles_query = new WP_Query( $this->clean_attributes_for_query( $atts ) );
+		remove_filter( 'invp_range_filters_main_query', '__return_false' );
 
-		foreach ( $querystring_filters as $arr ) {
-			// Do we even have the querystring parameter?
-			if ( empty( $_GET[ $arr['param'] ] ) ) {
-				continue;
-			}
-
-			$atts['meta_query'] = Inventory_Presser_Plugin::maybe_add_meta_query(
-				$atts['meta_query'],
-				apply_filters( 'invp_prefix_meta_key', $arr['field'] ),
-				(int) $_GET[ $arr['param'] ],
-				$arr['operator'],
-				'numeric'
-			);
-			if ( ! empty( $atts['meta_key'] ) ) {
-				unset( $atts['meta_key'] );
-			}
-		}
-
-		// Allow our order by mods to affect this query_posts() call.
-		add_filter( 'invp_apply_orderby_to_main_query_only', '__return_false' );
-		query_posts( $this->clean_attributes_for_query( $atts ) );
-		remove_filter( 'invp_apply_orderby_to_main_query_only', '__return_false' );
-
+		// Create the HTML output.
 		$output = '';
-		if ( have_posts() ) {
-			while ( have_posts() ) {
-				the_post();
+		if ( $vehicles_query->have_posts() ) {
+			while ( $vehicles_query->have_posts() ) {
+				$vehicles_query->the_post();
 				$shortcode = sprintf( '[invp_archive_vehicle show_titles="%s"]', strval( $atts['show_titles'] ) );
 				$output   .= apply_shortcodes( $shortcode );
 			}
@@ -150,7 +110,9 @@ class Inventory_Presser_Shortcode_Archive {
 		// Paged navigation.
 		$output .= INVP::get_paging_html();
 
-		wp_reset_query();
+		// Restore original post data.
+		wp_reset_postdata();
+
 		return $output;
 	}
 }

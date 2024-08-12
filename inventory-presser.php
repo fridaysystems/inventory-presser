@@ -1091,6 +1091,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-menu-item-print.php',
 				'class-option-manager.php',
 				'class-photo-numberer.php',
+				'class-range-filters.php',
 				'class-redirect-404-vehicles.php',
 				'class-rest.php',
 				'class-schema-org-generator.php',
