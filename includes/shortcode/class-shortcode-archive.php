@@ -38,6 +38,17 @@ class Inventory_Presser_Shortcode_Archive {
 	 */
 	private function clean_attributes_for_query( $atts ) {
 		unset( $atts['show_titles'] );
+
+		// Turn the location attribute into a tax_query.
+		if ( ! empty( $atts['location'] ) ) {
+			$atts['tax_query'] = array(
+				array(
+					'taxonomy' => 'location',
+					'field'    => 'slug',
+					'terms'    => $atts['location'],
+				),
+			);
+		}
 		return $atts;
 	}
 
@@ -56,6 +67,7 @@ class Inventory_Presser_Shortcode_Archive {
 
 		$atts = shortcode_atts(
 			array(
+				'location'       => '',
 				'paged'          => ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1,
 				'posts_per_page' => get_option( 'posts_per_page' ),
 				'post_status'    => 'publish',
@@ -71,7 +83,10 @@ class Inventory_Presser_Shortcode_Archive {
 		// Add all taxonomy query vars to $atts so filters work.
 		$taxonomies = get_object_taxonomies( $atts['post_type'], 'objects' );
 		foreach ( $taxonomies as $taxonomy ) {
-			$atts[ $taxonomy->query_var ] = get_query_var( $taxonomy->query_var );
+			$query_value = get_query_var( $taxonomy->query_var );
+			if ( '' !== $query_value ) {
+				$atts[ $taxonomy->query_var ] = $query_value;
+			}
 		}
 
 		// Query vehicles.
