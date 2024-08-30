@@ -16,7 +16,7 @@ function invp_block_editor_hide_taxonomies( typeSlug ) {
 	for ( var taxonomy in invp.taxonomies ) {
 		// If the user has disabled this taxonomy, remove its meta box.
 		if ( invp.taxonomies[taxonomy].active === false ) {
-			wp.data.dispatch( 'core/edit-post').removeEditorPanel( 'taxonomy-panel-' + taxonomy.replace( '-', '_' ) );
+			wp.data.dispatch( 'core/editor').removeEditorPanel( 'taxonomy-panel-' + taxonomy.replace( '-', '_' ) );
 			continue;
 		}
 
@@ -24,7 +24,7 @@ function invp_block_editor_hide_taxonomies( typeSlug ) {
 		if ( 'undefined' === typeof invp.taxonomies[taxonomy][typeSlug]
 			|| false === invp.taxonomies[taxonomy][typeSlug] ) {
 
-			wp.data.dispatch( 'core/edit-post').removeEditorPanel( 'taxonomy-panel-' + taxonomy.replace( '-', '_' ) );
+			wp.data.dispatch( 'core/editor').removeEditorPanel( 'taxonomy-panel-' + taxonomy.replace( '-', '_' ) );
 		}
 	}
 }
@@ -34,7 +34,7 @@ function invp_block_editor_hide_taxonomies( typeSlug ) {
  */
 ( function( wp ) {
 	var registerPlugin = wp.plugins.registerPlugin;
-	var PluginSidebar  = wp.editPost.PluginSidebar;
+	var PluginSidebar  = wp.editor.PluginSidebar;
 	var el             = wp.element.createElement;
 	var Text           = wp.components.TextControl;
 	var Select         = wp.components.SelectControl;
