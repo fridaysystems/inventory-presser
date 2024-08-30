@@ -30,7 +30,7 @@ if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) ) {
 		 * @return void
 		 */
 		public function add_hooks() {
-			add_action( 'init', array( $this, 'add_vin_rewrite' ) );
+			add_filter( 'invp_rewrite_rules', array( $this, 'add_vin_rewrite_rule' ) );
 			add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 			add_action( 'template_redirect', array( $this, 'redirect_vin_urls' ) );
 		}
@@ -38,11 +38,13 @@ if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) ) {
 		/**
 		 * Adds a rewrite rule to redirect URLs like https://demo.inventorypresser.com/vin/JM1NB354940406328/
 		 *
-		 * @return void
+		 * @param  array $rules An array of rewrite rules.
+		 * @return array
 		 */
-		public function add_vin_rewrite() {
+		public function add_vin_rewrite_rule( $rules ) {
 			// Allow VINs as short as five digits because classic cars.
-			add_rewrite_rule( '^vin/([A-Z0-9]{5,17})/?$', 'index.php?vin=$matches[1]', 'top' );
+			$rules['^vin/([A-Z0-9]{5,17})/?$'] = 'index.php?vin=$matches[1]';
+			return $rules;
 		}
 
 		/**
