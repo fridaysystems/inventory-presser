@@ -1206,7 +1206,16 @@ class INVP {
 			'use_carfax'                  => false,
 			'use_carfax_provided_buttons' => true,
 		);
-		return wp_parse_args( get_option( self::OPTION_NAME ), $defaults );
+		$settings = wp_parse_args( get_option( self::OPTION_NAME ), $defaults );
+
+		/**
+		 * If the taxonomies settings has never been used, grab defaults so we
+		 * don't break functionality.
+		 */
+		if ( ! isset( $settings['taxonomies'] ) ) {
+			$settings['taxonomies'] = Inventory_Presser_Taxonomies::taxonomies_setting_default( $settings );
+		}
+		return $settings;
 	}
 
 	/**
