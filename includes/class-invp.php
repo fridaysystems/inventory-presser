@@ -46,7 +46,7 @@ class INVP {
 		// delete pages created during activation.
 		// uninstall.php doesn't load the whole plugin but calls this method.
 		if ( ! class_exists( 'Inventory_Presser_Allow_Inventory_As_Home_Page' ) ) {
-			include_once 'class-allow-inventory-as-home-page.php';
+			include_once plugin_dir_path( INVP_PLUGIN_FILE_PATH ) . 'includes/class-allow-inventory-as-home-page.php';
 		}
 		Inventory_Presser_Allow_Inventory_As_Home_Page::delete_pages();
 
@@ -149,7 +149,7 @@ class INVP {
 	 */
 	private static function delete_all_terms_on_blog() {
 		if ( ! class_exists( 'Inventory_Presser_Taxonomies' ) ) {
-			include_once 'class-taxonomies.php';
+			include_once plugin_dir_path( INVP_PLUGIN_FILE_PATH ) . 'includes/class-taxonomies.php';
 		}
 		$taxonomies = new Inventory_Presser_Taxonomies();
 		global $wpdb;
@@ -1213,7 +1213,10 @@ class INVP {
 		 * don't break functionality.
 		 */
 		if ( ! isset( $settings['taxonomies'] ) ) {
-			$settings['taxonomies'] = Inventory_Presser_Taxonomies::taxonomies_setting_default( $settings );
+			if ( ! class_exists( 'Inventory_Presser_Admin_Options' ) ) {
+				include_once plugin_dir_path( INVP_PLUGIN_FILE_PATH ) . 'includes/admin/class-admin-options.php';
+			}
+			$settings['taxonomies'] = Inventory_Presser_Admin_Options::taxonomies_setting_default( $settings );
 		}
 		return $settings;
 	}

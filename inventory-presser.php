@@ -1066,7 +1066,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 */
 		protected function include_dependencies() {
 			// include composer dependencies.
-			include_once 'vendor/autoload.php';
+			include_once plugin_dir_path( INVP_PLUGIN_FILE_PATH ) . 'vendor/autoload.php';
 
 			// Include our object definition dependencies.
 			$file_names = array(
