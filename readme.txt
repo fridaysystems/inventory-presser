@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.6.1
 Requires PHP: 7.0.0
-Stable tag: 14.16.1
+Stable tag: 14.16.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,6 +90,11 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 14.16.2 =
+* [Fixed] Bug fixes in the Add Media and Delete All Media buttons shown in the Classic Editor.
+* [Fixed] Bug fix. Provide default taxonomy settings when a user has never used the Manage Taxonomies button to configure their site. Preserves backwards compatibility to before the setting existed.
+* [Changed] Changes the [invp_archive] shortcode to allow a location parameter that takes a term slug.
 
 = 14.16.1 =
 * [Fixed] Fixes the price and odometer range filters not working outside the context of the [invp_archive] shortcode.
@@ -181,6 +186,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.16.2 =
+Bug fixes in the Add Media and Delete All Media buttons shown in the Classic Editor. Bug fix. Provide default taxonomy settings when a user has never used the Manage Taxonomies button to configure their site. Preserves backwards compatibility to before the setting existed. Changes the [invp_archive] shortcode to allow a location parameter that takes a term slug.
 
 = 14.16.1 =
 Fixes the price and odometer range filters not working outside the context of the [invp_archive] shortcode. Fixes a bug in the Avada Builder integration added in 14.16.0 to prevent a warning being logged when processing Text Block layout elements that do not have a meta key configured.
