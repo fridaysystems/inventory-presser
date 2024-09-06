@@ -201,6 +201,10 @@ class INVP {
 		foreach ( $attachments as $attachment ) {
 			wp_delete_attachment( $attachment->ID );
 		}
+
+		// Delete the transients that hold this vehicle's photos.
+		delete_transient( 'invp_get_the_photos_images_' . $post_id );
+		delete_transient( 'invp_get_the_photos_image_urls_' . $post_id );
 	}
 
 	/**

@@ -938,6 +938,9 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 	if ( ! is_array( $sizes ) ) {
 		$sizes = array( $sizes );
 	}
+	if ( ! in_array( 'full', $sizes, true ) ) {
+		$sizes[] = 'full';
+	}
 
 	if ( empty( $post_ID ) ) {
 		$post_ID = get_the_ID();
@@ -983,7 +986,7 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 		set_transient( $cache_key_images, $images, MINUTE_IN_SECONDS * 5 );
 	}
 
-	$cache_key_image_urls = 'invp_get_the_photos_image_urls' . implode( '_', $sizes ) . '_' . $post_ID;
+	$cache_key_image_urls = 'invp_get_the_photos_image_urls_' . $post_ID;
 	$image_urls           = get_transient( $cache_key_image_urls );
 	if ( empty( $image_urls ) ) {
 		$image_urls = array();
@@ -1006,27 +1009,8 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 					$image_urls['urls'][] = INVP::extract_image_element_src( $img_element );
 				}
 			}
-			if ( empty( $image_urls['urls'] ) ) {
-				$img_element = wp_get_attachment_image(
-					$image->ID,
-					'full',
-					false,
-					array( 'class' => "attachment-$size size-$size invp-image" )
-				);
-				if ( '' !== $img_element ) {
-					$image_urls['urls'][] = INVP::extract_image_element_src( $img_element );
-				}
-			}
 		}
 		set_transient( $cache_key_image_urls, $image_urls, MINUTE_IN_SECONDS * 5 );
-	}
-
-	/**
-	 * Backwards compatibility to versions before 5.4.0 where the
-	 * incoming argument was a string not an array.
-	 */
-	if ( 1 === count( $sizes ) && 'large' !== $sizes[0] ) {
-		return $image_urls[ $sizes[0] ];
 	}
 
 	return $image_urls;

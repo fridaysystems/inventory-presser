@@ -106,6 +106,10 @@ class Inventory_Presser_Photo_Numberer {
 
 		// Assign and save a sequence number for the photo like 1, 2, 3, etc
 		self::save_meta_photo_number( $post_id, $attachment->post_parent );
+
+		// Delete the transients that hold this vehicle's photos.
+		delete_transient( 'invp_get_the_photos_images_' . $post_id );
+		delete_transient( 'invp_get_the_photos_image_urls_' . $post_id );
 	}
 
 	/**

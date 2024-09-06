@@ -28,6 +28,12 @@ class Inventory_Presser_Classic_Editor {
 	 */
 	public function add_hooks() {
 		add_action( 'current_screen', array( $this, 'add_hooks_current_screen' ) );
+
+		// Define an AJAX handler for the 'Delete All Media' button.
+		add_action( 'wp_ajax_delete_all_post_attachments', array( $this, 'delete_all_post_attachments' ) );
+
+		// Make our Add Media button annotation available from an AJAX call.
+		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
 	}
 
 	public function add_hooks_current_screen() {
@@ -63,12 +69,6 @@ class Inventory_Presser_Classic_Editor {
 
 		// Add some content next to the "Add Media" button.
 		add_action( 'media_buttons', array( $this, 'annotate_add_media_button' ) );
-
-		// Define an AJAX handler for the 'Delete All Media' button.
-		add_filter( 'wp_ajax_delete_all_post_attachments', array( $this, 'delete_all_post_attachments' ) );
-
-		// Make our Add Media button annotation available from an AJAX call.
-		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
 	}
 
 	/**
