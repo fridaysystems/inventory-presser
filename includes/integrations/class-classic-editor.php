@@ -36,6 +36,11 @@ class Inventory_Presser_Classic_Editor {
 		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
 	}
 
+	/**
+	 * Adds hooks during the current_screen action filter.
+	 *
+	 * @return void
+	 */
 	public function add_hooks_current_screen() {
 		// Are we editing a vehicle in the Classic Editor?
 		if ( ! is_plugin_active( 'classic-editor/classic-editor.php' ) ) {

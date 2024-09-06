@@ -72,39 +72,37 @@ class Inventory_Presser_Photo_Numberer {
 	}
 
 	/**
-	 * maybe_number_photo
-	 *
 	 * Filter callback on add_attachment. Decides whether to write meta values
 	 * on attachments if they are uploaded to vehicles. If this method
 	 * determines the photo sequence number to be 1, the attachment is also set
 	 * as the featured image.
 	 *
-	 * @param  int $post_id
+	 * @param  int $post_id Attachment ID.
 	 * @return void
 	 */
 	public static function maybe_number_photo( $post_id ) {
 		// Is this new attachment even attached to a post?
 		$attachment = get_post( $post_id );
 		if ( empty( $attachment->post_parent ) ) {
-			// No
+			// No.
 			return;
 		}
 
 		$parent = get_post( $attachment->post_parent );
 
 		// Is this even attached to a vehicle?
-		if ( empty( $parent ) || INVP::POST_TYPE != $parent->post_type ) {
-			// No
+		if ( empty( $parent ) || INVP::POST_TYPE !== $parent->post_type ) {
+			// No.
 			return;
 		}
 
-		// Save the VIN in the photo meta
+		// Save the VIN in the photo meta.
 		self::save_meta_vin( $post_id, $attachment->post_parent );
 
-		// Save a md5 hash checksum of the attachment in meta
+		// Save a md5 hash checksum of the attachment in meta.
 		self::save_meta_hash( $post_id );
 
-		// Assign and save a sequence number for the photo like 1, 2, 3, etc
+		// Assign and save a sequence number for the photo like 1, 2, 3, etc.
 		self::save_meta_photo_number( $post_id, $attachment->post_parent );
 
 		// Delete the transients that hold this vehicle's photos.
