@@ -26,8 +26,10 @@ class Inventory_Presser_REST {
 		add_filter( 'rest_attachment_collection_params', array( $this, 'allow_orderby_photo_number' ) );
 		add_filter( 'rest_attachment_query', array( $this, 'orderby_photo_number' ), 10, 2 );
 
-		// Allow vehicles to be returned in a random order.
-		add_filter( 'rest_' . INVP::POST_TYPE . '_collection_params', array( $this, 'allow_orderby_rand' ) );
+		if ( class_exists( 'INVP' ) ) {
+			// Allow vehicles to be returned in a random order.
+			add_filter( 'rest_' . INVP::POST_TYPE . '_collection_params', array( $this, 'allow_orderby_rand' ) );
+		}
 	}
 
 	/**
@@ -99,15 +101,9 @@ class Inventory_Presser_REST {
 		$order_by = $request->get_param( 'orderby' );
 		if ( isset( $order_by ) && apply_filters( 'invp_prefix_meta_key', 'photo_number' ) === $order_by ) {
 			$args['meta_key'] = $order_by;
-			$args['orderby']  = 'meta_value_num'; // user 'meta_value_num' for numerical fields
+			$args['orderby']  = 'meta_value_num'; // user 'meta_value_num' for numerical fields.
 		}
 		return $args;
-	}
-
-	public function order_attachments( $params ) {
-		// Is the parent of this attachment a vehicle?
-		$params['orderby']['enum'][] = apply_filters( 'invp_prefix_meta_key', 'photo_number' );
-		return $params;
 	}
 
 	/**
@@ -164,6 +160,10 @@ class Inventory_Presser_REST {
 	 * @return array
 	 */
 	public function response_settings() {
+		if ( ! class_exists( 'INVP' ) ) {
+			return array();
+		}
+
 		$public_keys = array(
 			'use_carfax',
 		);

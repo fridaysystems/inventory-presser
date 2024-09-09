@@ -1119,8 +1119,8 @@ class INVP {
 
 		// sentence "Showing 1 to 10 of 99 posts".
 		global $wp_query;
-		$posts_per_page = $wp_query->query_vars['posts_per_page'];
-		$page_number    = null === $wp_query->query_vars['paged'] ? 1 : $wp_query->query_vars['paged'];
+		$posts_per_page = $wp_query->query_vars['posts_per_page'] ?? get_option( 'posts_per_page' );
+		$page_number    = $wp_query->query_vars['paged'] ?? 1;
 		if ( 0 === $page_number ) {
 			// Added this condition for Divi Blog Module because I guess it sets paged = 0.
 			$page_number = 1;
