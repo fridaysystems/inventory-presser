@@ -58,10 +58,8 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	public function form( $instance ) {
 		$title = ( isset( $instance['title'] ) ? $instance['title'] : '' );
 		?>
-		 <p>
-		  <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
-		  <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
-		</p>
+		<p><label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'inventory-presser' ); ?></label>
+		<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" /></p>
 		<?php
 		$args                   = array(
 			'public' => true,
@@ -71,27 +69,28 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 			$already_turned_on_keys = explode( '|', $instance['post-meta-keys'] );
 		}
 
-		echo '<p>Which fields should users be allowed to use as sort fields?</p>'
-		. '<dl>';
+		echo '<p>' . esc_html__( 'Which fields should users be allowed to use as sort fields?', 'inventory-presser' )
+			. '</p><dl>';
 
 		foreach ( $this->get_post_meta_keys_and_labels( $instance ) as $key => $label ) {
 			// output checkbox for each one.
 			echo '<dt>';
-			$title = 'Allow users to order by ' . $key; // title attribute for checkbox and label
-			echo '<input type="checkbox" id="' . $this->get_field_id( 'obpm-key-' . $key )
-			. '" name="obpm-key-' . $key . '"';
-			if ( in_array( $key, $already_turned_on_keys ) ) {
-				echo ' checked="checked"';
-			}
-			echo ' title="' . $title . '"/>'
-			. '<label for="' . $this->get_field_id( 'obpm-key-' . $key ) . '" title="' . $title . '">' . $this->prettify_meta_key( $key ) . '</label>'
-			. '</dt>' // and a text box for a label
+			$title = 'Allow users to order by ' . $key; // title attribute for checkbox and label.
+			echo '<input type="checkbox" id="' . esc_attr( $this->get_field_id( 'obpm-key-' . $key ) )
+			. '" name="obpm-key-' . esc_attr( $key ) . '"'
+			. checked( in_array( $key, $already_turned_on_keys, true ), true, false )
+			. ' title="' . esc_attr( $title ) . '"/>'
+			. '<label for="' . esc_attr( $this->get_field_id( 'obpm-key-' . $key ) )
+			. '" title="' . esc_attr( $title ) . '">'
+			. esc_html( $this->prettify_meta_key( $key ) ) . '</label>'
+			. '</dt>' // and a text box for a label.
 			. '<dd>'
-			. '<label for="' . $this->get_field_id( 'obpm-label-' . $key ) . '">Label</label> '
-			. '<input type="text" id="' . $this->get_field_id( 'obpm-label-' . $key ) . '"'
-			. ' name="obpm-label-' . $key . '" '
-			. 'value="' . $label . '" title="Label for ' . $key . '" />'
-			. '</dd>';
+			. '<label for="' . esc_attr( $this->get_field_id( 'obpm-label-' . $key ) )
+			. '">Label</label> '
+			. '<input type="text" id="' . esc_attr( $this->get_field_id( 'obpm-label-' . $key ) ) . '"'
+			. ' name="obpm-label-' . esc_attr( $key ) . '" '
+			. 'value="' . esc_attr( $label ) . '" title="Label for '
+			. esc_attr( $key ) . '" /></dd>';
 		}
 		echo '</dl>';
 	}
@@ -186,14 +185,14 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 		$title = apply_filters( 'widget_title', ( isset( $instance['title'] ) ? $instance['title'] : '' ) );
 
 		$keys_to_list = explode( '|', $instance['post-meta-keys'] );
-		if ( 0 < sizeof( $keys_to_list ) ) {
+		if ( 0 < count( $keys_to_list ) ) {
 			echo $before_widget;
 			if ( $title ) {
 				echo $before_title . $title . $after_title;
 			}
 			echo '<ul class="order-by-list list-nostyle">';
 			foreach ( $keys_to_list as $key ) {
-				echo '<li><a href="javascript:order_by_post_meta(\'' . $key . '\');">'
+				echo '<li><a href="javascript:order_by_post_meta(\'' . esc_attr( $key ) . '\');">'
 				. ( isset( $instance[ 'label-' . $key ] ) ? $instance[ 'label-' . $key ] : $key )
 				. '</a></li>';
 			}
