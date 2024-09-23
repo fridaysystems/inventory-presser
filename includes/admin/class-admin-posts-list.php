@@ -75,8 +75,6 @@ class Inventory_Presser_Admin_Posts_List {
 	}
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks
 	 *
 	 * @return void
@@ -84,16 +82,16 @@ class Inventory_Presser_Admin_Posts_List {
 	public function add_hooks() {
 		add_filter( 'posts_clauses', array( $this, 'enable_order_by_attachment_count' ), 1, 2 );
 
-		// Add columns to the table that lists all the Vehicles on edit.php
+		// Add columns to the table that lists all the Vehicles on edit.php.
 		add_filter( 'manage_' . INVP::POST_TYPE . '_posts_columns', array( $this, 'add_columns_to_vehicles_table' ) );
 
-		// Populate the columns we added to the Vehicles table
+		// Populate the columns we added to the Vehicles table.
 		add_action( 'manage_' . INVP::POST_TYPE . '_posts_custom_column', array( $this, 'populate_columns_we_added_to_vehicles_table' ), 10, 2 );
 
-		// Make our added columns to the Vehicles table sortable
+		// Make our added columns to the Vehicles table sortable.
 		add_filter( 'manage_edit-' . INVP::POST_TYPE . '_sortable_columns', array( $this, 'make_vehicles_table_columns_sortable' ) );
 
-		// Implement the orderby for each of these added columns
+		// Implement the orderby for each of these added columns.
 		add_filter( 'pre_get_posts', array( $this, 'vehicles_table_columns_orderbys' ) );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts_and_styles' ) );

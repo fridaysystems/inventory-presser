@@ -2,8 +2,6 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Inventory_Presser_Order_By_Widget
- *
  * Creates a widget that allows users to sort vehicles by a vehicle attribute.
  *
  * If a menu item of type "Custom Link" exists with "Email a Friend" set as the
@@ -32,19 +30,17 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 		parent::__construct(
-			self::ID_BASE, // Base ID
-			__( 'Sort by Vehicle Attributes', 'inventory-presser' ), // Name
+			self::ID_BASE, // Base ID.
+			__( 'Sort by Vehicle Attributes', 'inventory-presser' ), // Name.
 			array(
 				'description'           => __( 'A list of vehicle attributes by which users can sort listings.', 'inventory-presser' ),
 				'show_instance_in_rest' => true,
-			) // Args
+			) // Args.
 		);
 		add_action( 'invp_delete_all_data', array( $this, 'delete_option' ) );
 	}
 
 	/**
-	 * delete_option
-	 *
 	 * Deletes the option that stores this widget's data.
 	 *
 	 * @return void
@@ -54,8 +50,6 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	}
 
 	/**
-	 * form
-	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance The widget options
@@ -81,7 +75,7 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 		. '<dl>';
 
 		foreach ( $this->get_post_meta_keys_and_labels( $instance ) as $key => $label ) {
-			// output checkbox for each one
+			// output checkbox for each one.
 			echo '<dt>';
 			$title = 'Allow users to order by ' . $key; // title attribute for checkbox and label
 			echo '<input type="checkbox" id="' . $this->get_field_id( 'obpm-key-' . $key )
@@ -103,19 +97,17 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	}
 
 	/**
-	 * get_post_meta_keys_and_labels
-	 *
 	 * Produces an associative array where the post meta keys are the keys
 	 * and the values are human-readable labels.
 	 *
-	 * @param  array $instance The widget options
+	 * @param  array $instance The widget options.
 	 * @return array
 	 */
 	function get_post_meta_keys_and_labels( $instance ) {
 		$arr = array();
 		foreach ( INVP::keys() as $key ) {
 			$key = apply_filters( 'invp_prefix_meta_key', $key );
-			// if we have a saved label, use that. otherwise, create a label
+			// if we have a saved label, use that. otherwise, create a label.
 			$arr[ $key ] = ( isset( $instance[ 'label-' . $key ] ) ? $instance[ 'label-' . $key ] : $this->prettify_meta_key( $key ) );
 		}
 		/**
@@ -146,16 +138,14 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	 * Crudely takes a post meta key, removes underscores, and converts the
 	 * string to Title Case.
 	 *
-	 * @param  string $key
+	 * @param  string $key The post meta key to prettify.
 	 * @return string
 	 */
-	function prettify_meta_key( $key ) {
+	protected function prettify_meta_key( $key ) {
 		return str_replace( '_', ' ', ucfirst( apply_filters( 'invp_unprefix_meta_key', $key ) ?? '' ) );
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
 	 * @param  array $new_instance
@@ -182,8 +172,6 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	}
 
 	/**
-	 * widget
-	 *
 	 * Outputs the widget front-end HTML
 	 *
 	 * @param  array $args
