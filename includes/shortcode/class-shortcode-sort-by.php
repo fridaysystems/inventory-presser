@@ -67,12 +67,9 @@ class Inventory_Presser_Shortcode_Sort_By {
 			$atts,
 			'invp_sort_by'
 		);
-		if ( ! is_post_type_archive( INVP::POST_TYPE ) ) {
-			return '';
-		}
 
-		// If there are no posts shown in this archive, abort.
 		global $wp_query;
+		// If there are no posts, abort.
 		if ( 0 === $wp_query->found_posts ) {
 			return '';
 		}
