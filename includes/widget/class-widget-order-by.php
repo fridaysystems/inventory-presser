@@ -102,7 +102,7 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	 * @param  array $instance The widget options.
 	 * @return array
 	 */
-	function get_post_meta_keys_and_labels( $instance ) {
+	protected function get_post_meta_keys_and_labels( $instance ) {
 		$arr = array();
 		foreach ( INVP::keys() as $key ) {
 			$key = apply_filters( 'invp_prefix_meta_key', $key );
