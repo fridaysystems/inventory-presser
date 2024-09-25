@@ -68,6 +68,7 @@ class Inventory_Presser_Shortcode_Archive {
 		$atts = shortcode_atts(
 			array(
 				'location'       => '',
+				'order'          => get_query_var( 'order' ),
 				'paged'          => ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1,
 				'posts_per_page' => get_option( 'posts_per_page' ),
 				'post_status'    => 'publish',
@@ -75,6 +76,12 @@ class Inventory_Presser_Shortcode_Archive {
 			),
 			$atts
 		);
+
+		// Allow orderby and order $_GET parameters to change the sort order.
+		if ( '' !== get_query_var( 'orderby' ) ) {
+			$atts['meta_key'] = apply_filters( 'invp_prefix_meta_key', get_query_var( 'orderby' ) );
+			$atts['orderby']  = 'meta_value';
+		}
 
 		// Parse boolean values to make life easy on users.
 		$atts['show_titles'] = filter_var( $atts['show_titles'], FILTER_VALIDATE_BOOLEAN );
