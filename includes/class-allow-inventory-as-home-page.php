@@ -170,7 +170,7 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page {
 		}
 
 		if ( $page_id == get_option( 'page_on_front' ) && $page_id == self::find_page_id() ) {
-			wp_redirect( get_post_type_archive_link( INVP::POST_TYPE ) );
+			wp_safe_redirect( get_post_type_archive_link( INVP::POST_TYPE ) );
 			exit;
 		}
 	}

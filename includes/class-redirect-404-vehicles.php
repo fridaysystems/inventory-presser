@@ -32,15 +32,17 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 				return '';
 			}
 
-			// if this is a search, the make might be in its own query variable
-			if ( isset( $wp_obj->query_vars['make'] ) ) {
+			// if this is a search, the make might be in its own query variable.
+			// $wp_obj is not a WP_Query and does not have a get() method.
+			if ( isset( $wp_obj->query_vars['make'] ) && '' !== $wp_obj->query_vars['make'] ) {
 				return $wp_obj->query_vars['make'];
 			}
 
-			// if this is a request for a single vehicle, parse the make out of the slug
-			if ( isset( $wp_obj->query_vars[ INVP::POST_TYPE ] ) ) {
+			// if this is a request for a single vehicle, parse the make out of the slug.
+			if ( isset( $wp_obj->query_vars[ INVP::POST_TYPE ] )
+				&& '' !== $wp_obj->query_vars[ INVP::POST_TYPE ] ) {
 				$slug_pieces = explode( '-', $wp_obj->query_vars[ INVP::POST_TYPE ] );
-				if ( 2 <= sizeof( $slug_pieces )
+				if ( 2 <= count( $slug_pieces )
 					// is the first piece a number of no more than 4 digits?
 					// We are looking for a slug like 2000-acura-integra.
 					&& 4 >= strlen( $slug_pieces[0] )
@@ -106,8 +108,8 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 
 			// are there cars in this make?
 			$term = get_term_by( 'slug', $make, 'make' );
-			if ( ! $term || 0 == $term->count ) {
-				// no cars in this make, go to vehicle archive
+			if ( ! $term || 0 === $term->count ) {
+				// no cars in this make, go to vehicle archive.
 				wp_safe_redirect( $url, 302 );
 				exit;
 			}

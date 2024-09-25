@@ -44,7 +44,7 @@ class Inventory_Presser_Admin_Posts_List {
 	 * @param  WP_Query $query
 	 * @return array
 	 */
-	function enable_order_by_attachment_count( $pieces, $query ) {
+	public function enable_order_by_attachment_count( $pieces, $query ) {
 		if ( ! is_admin() ) {
 			return $pieces;
 		}
@@ -57,8 +57,8 @@ class Inventory_Presser_Admin_Posts_List {
 			// Get the order query variable - ASC or DESC.
 			$order = strtoupper( $query->get( 'order', '' ) );
 
-			// Make sure the order setting qualifies. If not, set default as ASC
-			if ( ! in_array( $order, array( 'ASC', 'DESC' ) ) ) {
+			// Make sure the order setting qualifies. If not, set default as ASC.
+			if ( ! in_array( $order, array( 'ASC', 'DESC' ), true ) ) {
 				$order = 'ASC';
 			}
 
