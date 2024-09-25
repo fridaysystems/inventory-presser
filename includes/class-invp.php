@@ -1119,8 +1119,8 @@ class INVP {
 
 		// sentence "Showing 1 to 10 of 99 posts".
 		global $wp_query;
-		$posts_per_page = $wp_query->query_vars['posts_per_page'] ?? get_option( 'posts_per_page' );
-		$page_number    = $wp_query->query_vars['paged'] ?? 1;
+		$posts_per_page = $wp_query->get( 'posts_per_page', get_option( 'posts_per_page' ) );
+		$page_number    = $wp_query->get( 'paged', 1 );
 		if ( 0 === $page_number ) {
 			// Added this condition for Divi Blog Module because I guess it sets paged = 0.
 			$page_number = 1;
@@ -1129,7 +1129,7 @@ class INVP {
 		$end_index   = min( array( $start_index + $posts_per_page - 1, $wp_query->found_posts ) );
 
 		$object_name    = 'posts';
-		$post_type_name = isset( $wp_query->query_vars['post_type'] ) ? $wp_query->query_vars['post_type'] : '';
+		$post_type_name = $wp_query->get( 'post_type', '' );
 		if ( '' !== $post_type_name ) {
 			$post_type   = get_post_type_object( $post_type_name );
 			$object_name = strtolower( $post_type->labels->name );

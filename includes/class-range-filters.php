@@ -84,8 +84,7 @@ if ( ! class_exists( 'Inventory_Presser_Range_Filters' ) ) {
 		 */
 		public static function modify_query_for_price_and_odometer_ranges( $query ) {
 			// Is this query for vehicles?
-			if ( empty( $query->query_vars['post_type'] )
-				|| INVP::POST_TYPE !== $query->query_vars['post_type'] ) {
+			if ( INVP::POST_TYPE !== $query->get( 'post_type', '' ) ) {
 				// No.
 				return;
 			}
@@ -108,7 +107,7 @@ if ( ! class_exists( 'Inventory_Presser_Range_Filters' ) ) {
 			}
 
 			// Get original meta query.
-			$meta_query = $query->get( 'meta_query' );
+			$meta_query = $query->get( 'meta_query', array() );
 			if ( ! is_array( $meta_query ) ) {
 				$meta_query = array();
 			}

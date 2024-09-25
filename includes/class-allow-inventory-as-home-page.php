@@ -135,7 +135,7 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page {
 		}
 		global $pagenow, $post_type;
 		if ( is_admin() && is_main_query() && 'edit.php' === $pagenow && 'page' === $post_type ) {
-			$query->query_vars['post__not_in'] = array( $page_id );
+			$query->set( 'post__not_in', array( $page_id ) );
 		}
 	}
 
@@ -163,7 +163,7 @@ class Inventory_Presser_Allow_Inventory_As_Home_Page {
 			return;
 		}
 
-		$page_id = intval( $wp_query->get( 'page_id' ) );
+		$page_id = intval( $wp_query->get( 'page_id', 0 ) );
 		if ( 0 === $page_id ) {
 			// This isn't even a request for a page.
 			return;

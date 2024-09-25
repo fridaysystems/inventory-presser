@@ -107,7 +107,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * logic to sorts by year and model.
 			 */
 			$old = $query->get( 'meta_query', array() );
-			switch ( apply_filters( 'invp_unprefix_meta_key', $query->query_vars['meta_key'] ) ) {
+			switch ( apply_filters( 'invp_unprefix_meta_key', $query->get( 'meta_key' ) ) ) {
 				case 'make':
 					$query->set(
 						'meta_query',
@@ -242,7 +242,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				case 'horsepower':
 				case 'hull_material':
 				case 'length':
-					unset( $query->query_vars['meta_key'] );
+					$query->set( 'meta_key', '' );
 					$query->set(
 						'meta_query',
 						array_merge(
@@ -1517,8 +1517,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// Do not mess with the query if it's not the main one and our CPT.
 			if ( ! isset( $_GET['max_price'] )
 				|| ! $query->is_main_query()
-				|| empty( $query->query_vars['post_type'] )
-				|| INVP::POST_TYPE !== $query->query_vars['post_type']
+				|| INVP::POST_TYPE !== $query->get( 'post_type', '' )
 			) {
 				return;
 			}
