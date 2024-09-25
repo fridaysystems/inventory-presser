@@ -2,9 +2,9 @@
 Contributors: salzano
 Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
-Tested up to: 6.6.1
+Tested up to: 6.6.2
 Requires PHP: 7.0.0
-Stable tag: 14.16.2
+Stable tag: 14.16.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,6 +90,12 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 14.16.3 =
+* [Fixed] Fixes a bug in the [invp_archive] shortcode that prevented orderby and order query parameters from changing the order of vehicles.
+* [Fixed] Fixes a bug in the [invp_sort_by] shortcode that prevented it from working on any page other than an inventory_vehicle post type archive.
+* [Fixed] Bug fixes in the REST API class. Stops assuming posts_per_page and paged will be defined in the query params.
+* [Changed] Changes tested up to version number to 6.6.2.
 
 = 14.16.2 =
 * [Fixed] Bug fixes in the Add Media and Delete All Media buttons shown in the Classic Editor.
@@ -186,6 +192,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.16.3 =
+Fixes a bug in the [invp_archive] shortcode that prevented orderby and order query parameters from changing the order of vehicles. Fixes a bug in the [invp_sort_by] shortcode that prevented it from working on any page other than an inventory_vehicle post type archive. Bug fixes in the REST API class. Stops assuming posts_per_page and paged will be defined in the query params. Changes tested up to version number to 6.6.2.
 
 = 14.16.2 =
 Bug fixes in the Add Media and Delete All Media buttons shown in the Classic Editor. Bug fix. Provide default taxonomy settings when a user has never used the Manage Taxonomies button to configure their site. Preserves backwards compatibility to before the setting existed. Changes the [invp_archive] shortcode to allow a location parameter that takes a term slug.
