@@ -133,7 +133,7 @@ class INVP {
 				} else {
 					wp_trash_post( $post->ID );
 				}
-				$deleted_count++;
+				++$deleted_count;
 			}
 		}
 

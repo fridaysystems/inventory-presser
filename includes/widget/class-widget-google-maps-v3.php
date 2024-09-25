@@ -149,44 +149,48 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 		// API Key.
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'api_key' ); ?>"><?php _e( 'API Key:', 'inventory-presser' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'api_key' ); ?>"><?php esc_html_e( 'API Key:', 'inventory-presser' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'api_key' ); ?>" name="<?php echo $this->get_field_name( 'api_key' ); ?>" type="text" value="<?php echo esc_attr( $api_key ); ?>" />
 			<p class="description">
 			<?php
 
 				printf(
-					'%s <a href="%s">%s</a>',
-					__( 'Obtain an API key at', 'inventory-presser' ),
-					'https://developers.google.com/maps/documentation/javascript/get-api-key',
-					__( 'Google Cloud Console', 'inventory-presser' )
+					'%s <a href="https://developers.google.com/maps/documentation/javascript/get-api-key">%s</a>',
+					esc_html__( 'Obtain an API key at', 'inventory-presser' ),
+					esc_html__( 'Google Cloud Console', 'inventory-presser' )
 				);
 
 			?>
 									</p>
 		</p>
-		<p><?php _e( 'Choose addresses to mark:', 'inventory-presser' ); ?></p>
-												 <?php
+		<p><?php esc_html_e( 'Choose addresses to mark:', 'inventory-presser' ); ?></p>
+												<?php
 
-													// get all location terms
-													$location_terms = get_terms( 'location', array( 'hide_empty' => false ) );
+													// get all location terms.
+													$location_terms = get_terms(
+														array(
+															'taxonomy'   => 'location',
+															'hide_empty' => false,
+														)
+													);
 
 													$location_slugs = isset( $instance['location_slugs'] ) ? $instance['location_slugs'] : array();
-													if ( ! is_array( $location_slugs ) ) {
-														$location_slugs = array( $location_slugs );
-													}
+												if ( ! is_array( $location_slugs ) ) {
+													$location_slugs = array( $location_slugs );
+												}
 
-													// loop through each location, set up form
-													foreach ( $location_terms as $index => $term_object ) {
-														printf(
-															'<p><input id="%s" name="%s[]" value="%s" type="checkbox"%s> <label for="%s">%s</label></p>',
-															$this->get_field_id( $term_object->slug ),
-															$this->get_field_name( 'location_slugs' ),
-															$term_object->slug,
-															checked( in_array( $term_object->slug, $location_slugs ), true, false ),
-															$this->get_field_id( $term_object->slug ),
-															$term_object->description
-														);
-													}
+													// loop through each location, set up form.
+												foreach ( $location_terms as $index => $term_object ) {
+													printf(
+														'<p><input id="%s" name="%s[]" value="%s" type="checkbox"%s> <label for="%s">%s</label></p>',
+														$this->get_field_id( $term_object->slug ),
+														$this->get_field_name( 'location_slugs' ),
+														$term_object->slug,
+														checked( in_array( $term_object->slug, $location_slugs, true ), true, false ),
+														$this->get_field_id( $term_object->slug ),
+														$term_object->description
+													);
+												}
 	}
 
 	/**

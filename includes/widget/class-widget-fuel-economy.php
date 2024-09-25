@@ -119,11 +119,11 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget {
 		$fuel_types = 0;
 
 		if ( ! empty( invp_get_the_fuel_economy_value( 'city', 1, $queried_object->ID ) ) ) {
-			$fuel_types++;
+			++$fuel_types;
 		}
 
 		if ( ! empty( invp_get_the_fuel_economy_value( 'city', 2, $queried_object->ID ) ) ) {
-			$fuel_types++;
+			++$fuel_types;
 		}
 
 		for ( $t = 1; $t <= $fuel_types; $t++ ) {
