@@ -71,8 +71,10 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 		 * @return bool
 		 */
 		protected function is_request_for_vehicle( $wp_obj ) {
-			return isset( $wp_obj->query_vars ) && isset( $wp_obj->query_vars['post_type'] )
-			&& INVP::POST_TYPE === $wp_obj->query_vars['post_type'];
+			// $wp_obj is not a WP_Query and does not have a get() method.
+			return isset( $wp_obj->query_vars )
+				&& isset( $wp_obj->query_vars['post_type'] )
+				&& INVP::POST_TYPE === $wp_obj->query_vars['post_type'];
 		}
 
 		/**
