@@ -88,7 +88,8 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 			}
 
 			// is this a 404?
-			if ( ! $this->is_request_for_vehicle( $wp_obj ) || ! is_404() ) {
+			// is this a request for a vehicle?
+			if ( ! is_404() || ! $this->is_request_for_vehicle( $wp_obj ) ) {
 				return;
 			}
 
