@@ -37,9 +37,7 @@ class Inventory_Presser_Admin_Posts_List {
 	}
 
 	/**
-	 * enable_order_by_attachment_count
-	 *
-	 * Handle the ORDER BY on the vehicle list (edit.php) when sorting by photo
+	 * Handles the ORDER BY on the vehicle list (edit.php) when sorting by photo
 	 * count.
 	 *
 	 * @param  array    $pieces

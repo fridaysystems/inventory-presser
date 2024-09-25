@@ -42,6 +42,7 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 				$slug_pieces = explode( '-', $wp_obj->query_vars[ INVP::POST_TYPE ] );
 				if ( 2 <= sizeof( $slug_pieces )
 					// is the first piece a number of no more than 4 digits?
+					// We are looking for a slug like 2000-acura-integra.
 					&& 4 >= strlen( $slug_pieces[0] )
 					&& is_numeric( $slug_pieces[0] )
 				) {
@@ -62,7 +63,7 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 		}
 
 		/**
-		 * is_request_for_vehicle
+		 * Is the current request for a vehicle?
 		 *
 		 * @param  WP $wp_obj Current WordPress environment instance (passed by reference).
 		 * @return bool
@@ -86,19 +87,18 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 				return;
 			}
 
-			// is this a request for a vehicle?
 			// is this a 404?
 			if ( ! $this->is_request_for_vehicle( $wp_obj ) || ! is_404() ) {
 				return;
 			}
 
-			// base link to the inventory page
+			// base link to the inventory page.
 			$url = get_post_type_archive_link( INVP::POST_TYPE );
 
-			// get the make out of the slug
+			// get the make out of the slug.
 			$make = $this->extract_make( $wp_obj );
 			if ( ! is_string( $make ) || '' == $make ) {
-				// no make, redirect to vehicle archive
+				// no make, redirect to vehicle archive.
 				wp_safe_redirect( $url, 302 );
 				exit;
 			}
@@ -111,10 +111,10 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 				exit;
 			}
 
-			// redirect to this make's archive
+			// redirect to this make's archive.
 			$url = get_term_link( $make, 'make' );
 			if ( is_wp_error( $url ) ) {
-				// no link created for this make? go to vehicle archive
+				// no link created for this make? go to vehicle archive.
 				wp_safe_redirect( $url, 302 );
 				exit;
 			}
