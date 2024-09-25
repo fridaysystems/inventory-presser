@@ -15,11 +15,11 @@ wp.blocks.registerBlockType(
 			},
 		},
 
-		edit: function( props ) {
+		edit: function ( props ) {
 			return props.attributes.engine;
 		},
 
-		save: function( props ) {
+		save: function ( props ) {
 			return wp.element.createElement(
 				'span',
 				{

@@ -43,8 +43,8 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 		 *
 		 * @param  string $output
 		 * @param  string $name
-		 * @param  mixed $html
-		 * @param  mixed $mail_tag
+		 * @param  mixed  $html
+		 * @param  mixed  $mail_tag
 		 * @return string
 		 */
 		public function add_mail_tags( $output, $name, $html, $mail_tag = null ) {

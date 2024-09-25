@@ -110,7 +110,7 @@ if ( class_exists( 'WPForms_Field' ) ) {
 			} else {
 				$post_ids = $this->get_vehicle_post_ids();
 				foreach ( $post_ids as $post_id ) {
-					$choices[]    = array(
+					$choices[] = array(
 						'label' => $this->create_option_label( $post_id ),
 						'value' => $this->create_option_value( $post_id ),
 					);

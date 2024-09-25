@@ -446,7 +446,7 @@ class INVP {
 				array(
 					'label'  => __( 'Body Style', 'inventory_presser' ),
 					'name'   => 'body_style',
-					'sample' => __( 'EXTENDED CAB PICKUP', 'inventory-presser') ,
+					'sample' => __( 'EXTENDED CAB PICKUP', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(

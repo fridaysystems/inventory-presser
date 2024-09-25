@@ -84,10 +84,10 @@
 
 ul.vehicle-features {
 	margin-top: 30px;
-  -webkit-columns: 3 170px;
-	 -moz-columns: 3 170px;
-		  columns: 3 170px;
-  -webkit-column-gap: 40px;
+	-webkit-columns: 3 170px;
+	-moz-columns: 3 170px;
+	columns: 3 170px;
+	-webkit-column-gap: 40px;
 	column-gap: 40px;
 	-moz-column-gap: 40px;
 }

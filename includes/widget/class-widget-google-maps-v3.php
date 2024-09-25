@@ -130,8 +130,6 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 	}
 
 	/**
-	 * form
-	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance
@@ -142,13 +140,13 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 		$title   = $instance['title'] ?? '';
 		$api_key = $instance['api_key'] ?? '';
 
-		// Title ?><p>
+		// Title. ?><p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<?php
 
-		// API Key
+		// API Key.
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'api_key' ); ?>"><?php _e( 'API Key:', 'inventory-presser' ); ?></label>
@@ -192,8 +190,6 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
 	 * @param  array $new_instance

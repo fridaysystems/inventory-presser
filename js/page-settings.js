@@ -2,26 +2,36 @@
  * Vehicles > Options > Manage Taxonomies
  */
 // Disable the other checkboxes when a whole taxonomy is disabled.
-window.addEventListener( 'load', function () {
-	invp_page_settings.taxonomies.forEach( function (taxonomy) {
-		var active = this.document.querySelector('input[type="checkbox"][name="inventory_presser[taxonomies][' + taxonomy + '][active]"]');
-		if ( null !== active ) {
-			active.addEventListener('change', function (ev) {
-				// Toggle the rest of this taxonomy's settings.
-				document.querySelectorAll('input[type="checkbox"][name^="inventory_presser[taxonomies][' + taxonomy + ']"').forEach( function (el) {
-					// Is this the active?
-					if (el.name === 'inventory_presser[taxonomies][' + taxonomy + '][active]') {
-						return;
-					}
-					// Toggle the disabled attribute.
-					el.disabled = !ev.target.checked;
-				} );
-			} );
-			// Trigger the change event to set the initial state.
-			active.dispatchEvent(new Event('change'));
-		}
-	} );
-} );
+window.addEventListener(
+	'load',
+	function () {
+		invp_page_settings.taxonomies.forEach(
+			function (taxonomy) {
+				var active = this.document.querySelector( 'input[type="checkbox"][name="inventory_presser[taxonomies][' + taxonomy + '][active]"]' );
+				if ( null !== active ) {
+						active.addEventListener(
+							'change',
+							function (ev) {
+								// Toggle the rest of this taxonomy's settings.
+								document.querySelectorAll( 'input[type="checkbox"][name^="inventory_presser[taxonomies][' + taxonomy + ']"' ).forEach(
+									function (el) {
+										// Is this the active?
+										if (el.name === 'inventory_presser[taxonomies][' + taxonomy + '][active]') {
+												return;
+										}
+										// Toggle the disabled attribute.
+										el.disabled = ! ev.target.checked;
+									}
+								);
+							}
+						);
+						// Trigger the change event to set the initial state.
+						active.dispatchEvent( new Event( 'change' ) );
+				}
+			}
+		);
+	}
+);
 
 /**
  * Listings pages

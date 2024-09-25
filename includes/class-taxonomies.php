@@ -43,7 +43,7 @@ class Inventory_Presser_Taxonomies {
 	public function delete_term_data() {
 		// remove the terms in taxonomies.
 		$taxonomy_data = self::taxonomy_data();
-		$count = count( $taxonomy_data );
+		$count         = count( $taxonomy_data );
 		for ( $i = 0; $i < $count; $i++ ) {
 			$tax   = $taxonomy_data[ $i ]['args']['label'];
 			$terms = get_terms(
@@ -1180,7 +1180,7 @@ class Inventory_Presser_Taxonomies {
 
 			// Hull Material (boats).
 			array(
-				'args' => array(
+				'args'      => array(
 					'hierarchical'   => true,
 					'label'          => __( 'Hull Materials', 'inventory-presser' ),
 					'labels'         => array(

@@ -31,9 +31,9 @@ for ( const key of invp_blocks.keys ) {
 	registerBlockType(
 		'inventory-presser/' + key['name'].replace( '_', '-' ),
 		{ // Block names must include only lowercase alphanumeric characters or dashes and start with a letter.
-			title: key['label'], // what the user sees
-			icon: 'admin-network', //dashicon
-			category: 'inventory-presser', // block category
+			title: key['label'], // what the user sees.
+			icon: 'admin-network', // dashicon.
+			category: 'inventory-presser', // block category.
 			attributes: {
 				blockValue: {
 					type: key['type'],
@@ -60,8 +60,8 @@ for ( const key of invp_blocks.keys ) {
 				);
 			},
 
-			// No information saved to the block
-			// Data is saved to post meta via attributes
+			// No information saved to the block.
+			// Data is saved to post meta via attributes.
 			save() {
 				return null;
 			},

@@ -13,7 +13,7 @@ function delete_all_post_attachments( ) {
 		jQuery.post(
 			ajaxurl,
 			data,
-			function( response ) {
+			function ( response ) {
 				update_add_media_button_annotation();
 				// clobber the currently shown featured image
 				WPSetThumbnailHTML(
@@ -75,7 +75,7 @@ function update_add_media_button_annotation( ) {
 	jQuery.post(
 		ajaxurl,
 		data,
-		function( response ) {
+		function ( response ) {
 			jQuery( '#media-annotation' ).html( response );
 		}
 	);
@@ -86,7 +86,7 @@ function update_add_media_button_annotation( ) {
  * https://stackoverflow.com/questions/14279786/how-to-run-some-code-as-soon-as-new-image-gets-uploaded-in-wordpress-3-5-uploade#14515707
  */
 jQuery( document ).ready(
-	function(){
+	function () {
 
 		// set up the edit screen for vehicle entry (hides boat fields)
 		invp_vehicle_type_changed( jQuery( '#' + invp.meta_prefix + 'type' ).val() );
@@ -94,17 +94,16 @@ jQuery( document ).ready(
 		// Hack for "Upload New Media" Page (old uploader)
 		// Overriding the uploadSuccess function:
 		if (typeof uploadSuccess !== 'undefined') {
-			  // First backup the function into a new variable.
-			  var uploadSuccess_original = uploadSuccess;
-			  // The original uploadSuccess function with has two arguments: fileObj, serverData
-			  // So we globally declare and override the function with two arguments (argument names shouldn't matter)
-			  uploadSuccess = function(fileObj, serverData)
-	{
-				// Fire the original procedure with the same arguments
-				uploadSuccess_original( fileObj, serverData );
-				// Execute whatever you want here:
-				update_add_media_button_annotation();
-			  }
+				// First backup the function into a new variable.
+				var uploadSuccess_original = uploadSuccess;
+				// The original uploadSuccess function with has two arguments: fileObj, serverData
+				// So we globally declare and override the function with two arguments (argument names shouldn't matter)
+				uploadSuccess = function (fileObj, serverData) {
+					// Fire the original procedure with the same arguments
+					uploadSuccess_original( fileObj, serverData );
+					// Execute whatever you want here:
+					update_add_media_button_annotation();
+				}
 		}
 
 		// Hack for "Insert Media" Dialog (new plupload uploader)
@@ -112,7 +111,7 @@ jQuery( document ).ready(
 		if (typeof wp !== 'undefined' && typeof wp.Uploader !== 'undefined' && typeof wp.Uploader.queue !== 'undefined') {
 			wp.Uploader.queue.on(
 				'reset',
-				function() {
+				function () {
 					update_add_media_button_annotation();
 				}
 			);
@@ -121,7 +120,7 @@ jQuery( document ).ready(
 		// Confirm Delete All Vehicles button presses
 		jQuery( 'a#delete_all_vehicles' ).on(
 			'click',
-			function(){
+			function () {
 				return confirm( 'Are you sure you want to delete all vehicles and vehicle photos?' );
 			}
 		);

@@ -66,6 +66,6 @@ ul.flex-direction-nav li{
 }
 /* chrome fix */
 .flexslider .slides > li {
-    display: list-item;
-    -webkit-backface-visibility: hidden;
+	display: list-item;
+	-webkit-backface-visibility: hidden;
 }

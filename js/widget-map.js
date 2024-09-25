@@ -1,7 +1,7 @@
 var maps = document.getElementsByClassName( 'invp-map' );
 Array.prototype.map.call(
 	maps,
-	function(map) {
+	function (map) {
 		var mymap = L.map( map.id );
 		// load map box tile
 		L.tileLayer(

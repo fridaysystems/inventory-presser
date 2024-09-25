@@ -95,4 +95,3 @@ if ( ! class_exists( 'Vehicle_URLs_By_VIN' ) ) {
 		}
 	}
 }
-

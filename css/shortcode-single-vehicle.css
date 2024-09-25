@@ -30,6 +30,6 @@ ul.vehicle-features {
 	max-width: none;
 }
 .vehicle-columns .vehicle-summary .item {
-  display: inline-block;
-  width: 50%;
+	display: inline-block;
+	width: 50%;
 }

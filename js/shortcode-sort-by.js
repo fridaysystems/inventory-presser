@@ -1,9 +1,9 @@
-var parseQueryString = function() {
+var parseQueryString = function () {
 	var str    = window.location.search;
 	var objURL = {};
 	str.replace(
 		new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
-		function( $0, $1, $2, $3 ){
+		function ( $0, $1, $2, $3 ) {
 			objURL[ $1 ] = $3;
 		}
 	);
@@ -11,14 +11,14 @@ var parseQueryString = function() {
 };
 window.addEventListener(
 	'load',
-	function() {
+	function () {
 		var el = document.getElementById( 'sort_by' );
 		if ( 'undefined' === typeof el ) {
 			return;
 		}
 		el.addEventListener(
 			'change',
-			function() {
+			function () {
 				var new_location = window.location.protocol + '//'
 				+ window.location.hostname
 				+ ( window.location.port ? ':' + window.location.port : '' )

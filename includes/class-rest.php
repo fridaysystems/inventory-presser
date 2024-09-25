@@ -66,7 +66,7 @@ class Inventory_Presser_REST {
 	/**
 	 * Allow vehicles to be returned in a random order.
 	 *
-	 * @param  array $query_params
+	 * @param  array        $query_params
 	 * @param  WP_Post_Type $post_type
 	 * @return array
 	 */

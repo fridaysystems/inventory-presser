@@ -84,7 +84,6 @@ class Inventory_Presser_Slider extends WP_Widget {
 			),
 			'before'
 		);
-
 	}
 
 	/**

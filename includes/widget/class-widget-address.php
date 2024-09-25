@@ -160,5 +160,4 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		$instance['cb_single_line'] = ( ! empty( $new_instance['cb_single_line'] ) ) ? $new_instance['cb_single_line'] : '';
 		return $instance;
 	}
-
 }
