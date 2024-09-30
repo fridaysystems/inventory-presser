@@ -37,7 +37,7 @@ class Inventory_Presser_Photo_Numberer {
 		// Is this the Media Library upload.php?
 		if ( function_exists( 'get_current_screen' ) && $screen = get_current_screen() ) {
 			if ( empty( $screen->parent_file ) || 'upload.php' != $screen->parent_file ) {
-				// No
+				// No.
 				return $title;
 			}
 		} else {
@@ -56,11 +56,11 @@ class Inventory_Presser_Photo_Numberer {
 
 		$parent = get_post_parent( $id );
 		if ( empty( $parent ) || INVP::POST_TYPE != $parent->post_type ) {
-			// No
+			// No.
 			return $title;
 		}
 
-		// Get the photo count
+		// Get the photo count.
 		return sprintf(
 			'%s (%s %s %s %s)',
 			$title,
