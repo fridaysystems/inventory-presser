@@ -26,7 +26,7 @@ class Inventory_Presser_REST {
 		add_filter( 'rest_attachment_collection_params', array( $this, 'allow_orderby_photo_number' ) );
 		add_filter( 'rest_attachment_query', array( $this, 'orderby_photo_number' ), 10, 2 );
 
-		if ( class_exists( 'INVP' ) ) {
+		if ( defined( 'INVP::POST_TYPE' ) ) {
 			// Allow vehicles to be returned in a random order.
 			add_filter( 'rest_' . INVP::POST_TYPE . '_collection_params', array( $this, 'allow_orderby_rand' ) );
 		}

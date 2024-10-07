@@ -156,7 +156,7 @@ class Inventory_Presser_Taxonomies {
 	 */
 	public function maybe_add_noindex( $robots ) {
 		// Is this a vehicle archive?
-		if ( ! is_post_type_archive( INVP::POST_TYPE ) ) {
+		if ( ! defined( 'INVP::POST_TYPE' ) || ! is_post_type_archive( INVP::POST_TYPE ) ) {
 			// No.
 			return $robots;
 		}

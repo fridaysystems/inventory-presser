@@ -237,23 +237,25 @@ class Inventory_Presser_Admin_Options {
 			'dealership_options_section_carfax' // section.
 		);
 
-		/**
-		 * Register a section and setting stored in the same option but managed
-		 * on a different page.
-		 */
-		add_settings_section(
-			'section_taxonomies', // id.
-			__( 'Taxonomies', 'inventory-presser' ), // title.
-			array( $this, 'settings_section_content_taxonomies' ), // callback.
-			INVP::OPTION_PAGE_TAXONOMIES . '-admin' // page.
-		);
-		add_settings_field(
-			'taxonomies', // id.
-			__( 'Taxonomies', 'inventory-presser' ), // title.
-			array( $this, 'callback_taxonomies' ), // callback.
-			INVP::OPTION_PAGE_TAXONOMIES . '-admin', // page.
-			'section_taxonomies' // section.
-		);
+		if ( defined( 'INVP::OPTION_PAGE_TAXONOMIES' ) ) {
+			/**
+			 * Register a section and setting stored in the same option but managed
+			 * on a different page.
+			 */
+			add_settings_section(
+				'section_taxonomies', // id.
+				__( 'Taxonomies', 'inventory-presser' ), // title.
+				array( $this, 'settings_section_content_taxonomies' ), // callback.
+				INVP::OPTION_PAGE_TAXONOMIES . '-admin' // page.
+			);
+			add_settings_field(
+				'taxonomies', // id.
+				__( 'Taxonomies', 'inventory-presser' ), // title.
+				array( $this, 'callback_taxonomies' ), // callback.
+				INVP::OPTION_PAGE_TAXONOMIES . '-admin', // page.
+				'section_taxonomies' // section.
+			);
+		}
 	}
 
 	/**
