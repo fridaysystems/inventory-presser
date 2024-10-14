@@ -129,8 +129,8 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 
 		// loop through each location.
 		$location_info = get_terms(
-			'location',
 			array(
+				'taxonomy'   => 'location',
 				'fields'     => 'id=>name',
 				'hide_empty' => false,
 			)
@@ -177,8 +177,8 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		$cb_display = isset( $instance['cb_display'] ) ? $instance['cb_display'] : array();
 		// get all locations.
 		$location_info = get_terms(
-			'location',
 			array(
+				'taxonomy'   => 'location',
 				'fields'     => 'id=>name',
 				'hide_empty' => false,
 			)

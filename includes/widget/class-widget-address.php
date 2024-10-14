@@ -94,8 +94,13 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 
 		$title = isset( $instance['title'] ) ? $instance['title'] : '';
 
-		// get all locations
-		$location_terms = get_terms( 'location', array( 'hide_empty' => false ) );
+		// get all locations.
+		$location_terms = get_terms(
+			array(
+				'taxonomy'   => 'location',
+				'hide_empty' => false,
+			)
+		);
 
 		// set.
 		if ( isset( $instance['cb_display'] ) ) {

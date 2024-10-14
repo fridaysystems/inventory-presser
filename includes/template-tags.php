@@ -622,7 +622,12 @@ function invp_get_the_location_sentence( $post_ID = null ) {
 	 * return empty string because there's no reason to point out where this
 	 * vehicle is, the dealership address is all over the website.
 	 */
-	$location_terms = get_terms( 'location', array( 'hide_empty' => true ) );
+	$location_terms = get_terms(
+		array(
+			'taxonomy'   => 'location',
+			'hide_empty' => true,
+		)
+	);
 	$location_count = ! is_wp_error( $location_terms ) ? count( $location_terms ) : 0;
 
 	if ( 1 >= $location_count ) {

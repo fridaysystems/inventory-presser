@@ -181,8 +181,13 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		</p>
 		<?php
 
-		// get all location terms
-		$location_terms = get_terms( 'location', array( 'hide_empty' => false ) );
+		// get all location terms.
+		$location_terms = get_terms(
+			array(
+				'taxonomy'   => 'location',
+				'hide_empty' => false,
+			)
+		);
 
 		$location_slug = isset( $instance['location_slug'] ) ? $instance['location_slug'] : array();
 		if ( ! is_array( $location_slug ) ) {

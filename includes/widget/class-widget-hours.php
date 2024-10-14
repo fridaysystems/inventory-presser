@@ -236,8 +236,8 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 		// get all locations.
 		$location_info = get_terms(
-			'location',
 			array(
+				'taxonomy'   => 'location',
 				'fields'     => 'id=>name',
 				'hide_empty' => false,
 			)

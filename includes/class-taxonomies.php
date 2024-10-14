@@ -47,8 +47,8 @@ class Inventory_Presser_Taxonomies {
 		for ( $i = 0; $i < $count; $i++ ) {
 			$tax   = $taxonomy_data[ $i ]['args']['label'];
 			$terms = get_terms(
-				$tax,
 				array(
+					'taxonomy'   => $tax,
 					'fields'     => 'ids',
 					'hide_empty' => false,
 				)
@@ -1237,7 +1237,12 @@ class Inventory_Presser_Taxonomies {
 		);
 
 		// get all the term names and slugs for $taxonomy_name.
-		$terms = get_terms( $taxonomy_name, array( 'hide_empty' => false ) );
+		$terms = get_terms(
+			array(
+				'taxonomy'   => $taxonomy_name,
+				'hide_empty' => false,
+			)
+		);
 
 		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 			// get the saved term for this taxonomy.
