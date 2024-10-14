@@ -8,11 +8,11 @@ Stable tag: 14.16.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Stores vehicles. Supports multiple lot locations & separate hours for each. Listing templates & photo sliders run on any theme. Multisite compatible.
+Vehicle inventory management for dealerships. Supports multiple car lot locations. Provides listing templates & photo sliders. Multisite compatible.
 
 == Description ==
 
-Manage and market dealership inventory with listings and photo sliders built on a vehicle custom post type.
+Adds listings and vehicle details pages to any theme. Comes with templates and photo sliders for automobile and power sports dealerships. Supports multiple lot locations & separate hours for each. This plugin is free software. Visit the Installation tab for download links.
 
 * Store & display cars, trucks, vans, SUVs, motorcycles, ATVs, RVs, and boats
 * [Manage multiple lot locations](https://inventorypresser.com/docs/vehicle-post-type/locations-taxonomy/) and maintain separate phone numbers & hours for each
@@ -24,7 +24,7 @@ Manage and market dealership inventory with listings and photo sliders built on 
 
 * Install the plugin and [load the sample vehicles](https://inventorypresser.com/docs/settings/load-sample-vehicles/)
 * Visit yoursite.com/inventory to see the built-in templates
-* Design your own pages using [post meta fields](https://inventorypresser.com/docs/vehicle-post-type/), Elementor, Avada Builder, or [Divi Builder](https://inventorypresser.com/docs/divi-setup-guide/)
+* Design your own vehicle templates using [post meta fields](https://inventorypresser.com/docs/vehicle-post-type/), Elementor, Avada Builder, or [Divi Builder](https://inventorypresser.com/docs/divi-setup-guide/)
 * Decide how to best [manage inventory updates](https://inventorypresser.com/docs/adding-or-importing-inventory/)
 * [Add vehicles to lead forms](https://inventorypresser.com/docs/add-vehicles-to-lead-forms/)
 
@@ -38,7 +38,7 @@ Manage and market dealership inventory with listings and photo sliders built on 
 
 * Multisite Compatible
 * Supports Classic Editor
-* Editor sidebar integrates custom fields into the block editor
+* Supports Block Editor
 * [Custom post type `inventory_vehicle`](https://inventorypresser.com/docs/vehicle-post-type/) enables [vehicle data imports](https://inventorypresser.com/docs/using-the-rest-api-to-update-vehicle-listings-in-wordpress/)
 * Adds columns to the posts list for vehicles for stock number, color, odometer, price, photo count, and thumbnail
 * Implements 10+ custom taxonomies to group vehicles by year, make, model, type, body style, fuel, transmission, drive type, availability, new or used, location, and more
