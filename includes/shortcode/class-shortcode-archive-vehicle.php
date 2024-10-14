@@ -107,9 +107,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 							<span class="photo-count"><a href="<?php the_permalink(); ?>">
 							<?php
 
-							$multi_icon  = '<span class="dashicons dashicons-format-gallery"></span>';
-							$single_icon = '<span class="dashicons dashicons-format-image"></span>';
-							echo $photo_count . ' ' . ( 1 == $photo_count ? $single_icon : $multi_icon );
+							echo esc_html( $photo_count ) . ' ' . ( 1 === $photo_count ? '<span class="dashicons dashicons-format-image"></span>' : '<span class="dashicons dashicons-format-gallery"></span>' );
 
 							?>
 </a></span>
