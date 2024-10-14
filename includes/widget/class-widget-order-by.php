@@ -180,15 +180,13 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
 
 		wp_enqueue_script( 'order-by-widget-javascript' );
-		extract( $args );
-
 		$title = apply_filters( 'widget_title', ( isset( $instance['title'] ) ? $instance['title'] : '' ) );
 
 		$keys_to_list = explode( '|', $instance['post-meta-keys'] );
 		if ( 0 < count( $keys_to_list ) ) {
-			echo $before_widget;
+			echo $args['before_widget'];
 			if ( $title ) {
-				echo $before_title . $title . $after_title;
+				echo $args['before_title'] . $title . $args['after_title'];
 			}
 			echo '<ul class="order-by-list list-nostyle">';
 			foreach ( $keys_to_list as $key ) {
@@ -196,7 +194,7 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 				. esc_html( isset( $instance[ 'label-' . $key ] ) ? $instance[ 'label-' . $key ] : $key )
 				. '</a></li>';
 			}
-			echo '</ul>' . $after_widget;
+			echo '</ul>' . $args['after_widget'];
 		}
 	}
 }
