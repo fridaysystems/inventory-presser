@@ -122,15 +122,15 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 				get_post_type_archive_link( INVP::POST_TYPE )
 			);
 
-			$class_string = ( 'buttons' === $instance['display_type'] ?? '' ) ? ' class="_button _button-med"' : ' class="price-filter-text"';
+			$class_string = ( 'buttons' === $instance['display_type'] ?? '' ) ? '_button _button-med' : 'price-filter-text';
 
 			foreach ( $price_points as $price_point ) {
 				$this_link = add_query_arg( 'max_price', $price_point, $base_link );
 				printf(
-					'<div><a href="%s"%s><span class="dashicons dashicons-arrow-down-alt"></span>&nbsp;$%s</a></div>',
-					$this_link,
-					$class_string,
-					number_format( $price_point, 0, '.', ',' )
+					'<div><a href="%s" class="%s"><span class="dashicons dashicons-arrow-down-alt"></span>&nbsp;$%s</a></div>',
+					esc_url( $this_link ),
+					esc_attr( $class_string ),
+					esc_html( number_format( $price_point, 0, '.', ',' ) )
 				);
 			}
 		}
