@@ -64,7 +64,7 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
 
 		$image_keys = array_keys( $this->images() );
-		$image      = ( isset( $instance['image'] ) && in_array( $instance['image'], $image_keys ) ) ? $instance['image'] : $image_keys[0];
+		$image      = ( isset( $instance['image'] ) && in_array( $instance['image'], $image_keys, true ) ) ? $instance['image'] : $image_keys[0];
 
 		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '' );
 		// before and after widget arguments are defined by themes.

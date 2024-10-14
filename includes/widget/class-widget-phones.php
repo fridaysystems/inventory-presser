@@ -149,8 +149,8 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 				}
 
 				// There is a phone number is slot $p, has the user configured this widget to display it?
-				if ( in_array( $phone_uid, $instance['cb_display'][ $term_id ] ) ) {
-					// Yes, output this number
+				if ( in_array( $phone_uid, $instance['cb_display'][ $term_id ], true ) ) {
+					// Yes, output this number.
 					$number = get_term_meta( $term_id, 'phone_' . $p . '_number', true );
 					if ( $this->formats()[ $format ]['uses_labels'] ) {
 						$description = get_term_meta( $term_id, 'phone_' . $p . '_description', true );
@@ -210,7 +210,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 					$checkbox_id,
 					$this->get_field_name( 'cb_display[' . $term_id . '][]' ),
 					$phone_uid,
-					checked( ( isset( $cb_display[ $term_id ] ) && is_array( $cb_display[ $term_id ] ) && in_array( $phone_uid, $cb_display[ $term_id ] ) ), true, false )
+					checked( ( isset( $cb_display[ $term_id ] ) && is_array( $cb_display[ $term_id ] ) && in_array( $phone_uid, $cb_display[ $term_id ], true ) ), true, false )
 				);
 
 				$phones_table .= sprintf(
