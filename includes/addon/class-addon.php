@@ -72,8 +72,8 @@ if ( ! class_exists( 'Inventory_Presser_Addon' ) ) {
 						$license_key_key_name, // id
 						__( 'License key', 'inventory-presser' ), // title
 						function () use ( $option_name, $current_value, $license_key_key_name ) {
-							?><p><input type="text" name="<?php echo $option_name; ?>[<?php echo $license_key_key_name; ?>]" class="regular-text code" id="<?php echo $option_name; ?>[<?php echo $license_key_key_name; ?>]" value="<?php echo $current_value; ?>" /></p>
-								<p class="description"><?php printf( '%s <a href="https://inventorypresser.com/">https://inventorypresser.com/</a> %s', __( 'Obtain a key at', 'inventory-presser' ), __( 'to receive plugin updates.', 'inventory-presser' ) ); ?></p>
+							?><p><input type="text" name="<?php echo esc_attr( $option_name ); ?>[<?php echo esc_attr( $license_key_key_name ); ?>]" class="regular-text code" id="<?php echo esc_attr( $option_name ); ?>[<?php echo esc_attr( $license_key_key_name ); ?>]" value="<?php echo esc_attr( $current_value ); ?>" /></p>
+								<p class="description"><?php printf( '%s <a href="https://inventorypresser.com/">https://inventorypresser.com/</a> %s', esc_html__( 'Obtain a key at', 'inventory-presser' ), esc_html__( 'to receive plugin updates.', 'inventory-presser' ) ); ?></p>
 							<?php
 						}, // callback
 						INVP::option_page(), // page

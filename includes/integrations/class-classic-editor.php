@@ -459,9 +459,9 @@ class Inventory_Presser_Classic_Editor {
 		foreach ( $frequencies as $key => $value ) {
 			printf(
 				'<option value="%s"%s>%s</option>',
-				$value,
+				esc_attr( $value ),
 				selected( invp_get_the_payment_frequency( $post->ID ), $value, false ),
-				$key
+				esc_html( $key )
 			);
 		}
 		echo '</select></td></tr>'

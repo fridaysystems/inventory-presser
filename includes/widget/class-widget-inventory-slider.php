@@ -180,16 +180,21 @@ class Inventory_Presser_Slider extends WP_Widget {
 		foreach ( $inventory_ids as $inventory_id ) {
 			printf(
 				'<li style="position: relative"><a href="%s">%s',
-				get_the_permalink( $inventory_id ),
+				esc_url( get_the_permalink( $inventory_id ) ),
 				get_the_post_thumbnail( $inventory_id, 'large' )
 			);
 			if ( $showtext != 'none' ) {
 				printf( '<div class="flex-caption flex-caption-%s">', $showtext );
 				if ( $showtitle ) {
-					printf( '<h3>%s %s %s</h3>', invp_get_the_year( $inventory_id ), invp_get_the_make( $inventory_id ), invp_get_the_model( $inventory_id ) );
+					printf(
+						'<h3>%s %s %s</h3>',
+						esc_html( invp_get_the_year( $inventory_id ) ),
+						esc_html( invp_get_the_make( $inventory_id ) ),
+						esc_html( invp_get_the_model( $inventory_id ) )
+					);
 				}
 				if ( $showprice ) {
-					printf( '<h2>%s</h2>', invp_get_the_price( '', $inventory_id ) );
+					printf( '<h2>%s</h2>', esc_html( invp_get_the_price( '', $inventory_id ) ) );
 				}
 				echo '</div>';
 			}
@@ -218,18 +223,18 @@ class Inventory_Presser_Slider extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
-		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'inventory-presser' ); ?></label>
+		<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'showcount' ); ?>"><?php _e( 'Vehicles to show at one time:', 'inventory-presser' ); ?></label>
-		<select class="widefat" id="<?php echo $this->get_field_id( 'showcount' ); ?>" name="<?php echo $this->get_field_name( 'showcount' ); ?>">
+		<label for="<?php echo esc_attr( $this->get_field_id( 'showcount' ) ); ?>"><?php esc_html_e( 'Vehicles to show at one time:', 'inventory-presser' ); ?></label>
+		<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'showcount' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'showcount' ) ); ?>">
 		<?php
 		for ( $i = 1; $i < 8; $i++ ) {
 			printf(
 				'<option value="%1$d"%2$s>%1$d</option>',
-				$i,
-				selected( $i == $showcount, true, false )
+				esc_attr( $i ),
+				selected( $i === $showcount, true, false )
 			);
 		}
 		?>
@@ -242,15 +247,15 @@ class Inventory_Presser_Slider extends WP_Widget {
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'featured_select' ); ?>"><?php _e( 'Vehicle Selection:', 'inventory-presser' ); ?></label>
-		<select class="widefat" id="<?php echo $this->get_field_id( 'featured_select' ); ?>" name="<?php echo $this->get_field_name( 'featured_select' ); ?>">
+		<label for="<?php echo esc_attr( $this->get_field_id( 'featured_select' ) ); ?>"><?php esc_html_e( 'Vehicle Selection:', 'inventory-presser' ); ?></label>
+		<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'featured_select' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'featured_select' ) ); ?>">
 		<?php
 		foreach ( $this->featured_select_options() as $slug => $label ) {
 			printf(
 				'<option value="%s"%s>%s</option>',
-				$slug,
-				selected( true, $slug == $featured_select, false ),
-				$label
+				esc_attr( $slug ),
+				selected( true, $slug === $featured_select, false ),
+				esc_html( $label )
 			);
 		}
 		?>
@@ -258,15 +263,15 @@ class Inventory_Presser_Slider extends WP_Widget {
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'showtext' ); ?>"><?php _e( 'Text Overlay:', 'inventory-presser' ); ?></label>
-		<select class="widefat" id="<?php echo $this->get_field_id( 'showtext' ); ?>" name="<?php echo $this->get_field_name( 'showtext' ); ?>">
+		<label for="<?php echo esc_attr( $this->get_field_id( 'showtext' ) ); ?>"><?php esc_html_e( 'Text Overlay:', 'inventory-presser' ); ?></label>
+		<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'showtext' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'showtext' ) ); ?>">
 		<?php
 		foreach ( $this->text_displays as $slug => $label ) {
 			printf(
 				'<option value="%s"%s>%s</option>',
-				$slug,
-				selected( $slug == $showtext, true, false ),
-				$label
+				esc_attr( $slug ),
+				selected( $slug === $showtext, true, false ),
+				esc_html( $label )
 			);
 		}
 		?>
@@ -305,10 +310,10 @@ class Inventory_Presser_Slider extends WP_Widget {
 		//-->
 		</script>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'cb_showtitle' ); ?>"><input type="checkbox" id="<?php echo $this->get_field_id( 'cb_showtitle' ); ?>" name="<?php echo $this->get_field_name( 'cb_showtitle' ); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showtitle'] ) && $instance['cb_showtitle'] == 'true' ) ); ?>> <?php _e( 'Overlay year, make, & model', 'inventory-presser' ); ?></label>
+		<label for="<?php echo esc_attr( $this->get_field_id( 'cb_showtitle' ) ); ?>"><input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_showtitle' ) ); ?>" name="<?php echo $this->get_field_name( 'cb_showtitle' ); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showtitle'] ) && 'true' === $instance['cb_showtitle'] ) ); ?>> <?php esc_html_e( 'Overlay year, make, & model', 'inventory-presser' ); ?></label>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'cb_showprice' ); ?>"><input type="checkbox" id="<?php echo $this->get_field_id( 'cb_showprice' ); ?>" name="<?php echo $this->get_field_name( 'cb_showprice' ); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showprice'] ) && $instance['cb_showprice'] == 'true' ) ); ?>> <?php _e( 'Overlay price', 'inventory-presser' ); ?></label>
+		<label for="<?php echo esc_attr( $this->get_field_id( 'cb_showprice' ) ); ?>"><input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_showprice' ) ); ?>" name="<?php echo $this->get_field_name( 'cb_showprice' ); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showprice'] ) && 'true' === $instance['cb_showprice'] ) ); ?>> <?php esc_html_e( 'Overlay price', 'inventory-presser' ); ?></label>
 		</p>
 
 		<?php

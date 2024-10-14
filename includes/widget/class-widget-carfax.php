@@ -118,8 +118,8 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 		} else {
 			printf(
 				'<a href="%s"><img src="%s"></a>',
-				get_post_type_archive_link( INVP::POST_TYPE ),
-				plugins_url( '/images/' . $this->images()[ $image ]['img'], INVP_PLUGIN_FILE_PATH )
+				esc_url( get_post_type_archive_link( INVP::POST_TYPE ) ),
+				esc_url( plugins_url( '/images/' . $this->images()[ $image ]['img'], INVP_PLUGIN_FILE_PATH ) )
 			);
 		}
 		echo wpautop( $instance['after_image'] ) . $args['after_widget'];
@@ -145,24 +145,24 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
-		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'inventory-presser' ); ?></label>
+		<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'before_image' ); ?>"><?php _e( 'Text before image:', 'inventory-presser' ); ?></label>
-		<textarea class="widefat" id="<?php echo $this->get_field_id( 'before_image' ); ?>" name="<?php echo $this->get_field_name( 'before_image' ); ?>"><?php echo esc_attr( $before_image ); ?></textarea>
+		<label for="<?php echo esc_attr( $this->get_field_id( 'before_image' ) ); ?>"><?php esc_html_e( 'Text before image:', 'inventory-presser' ); ?></label>
+		<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'before_image' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'before_image' ) ); ?>"><?php echo esc_attr( $before_image ); ?></textarea>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'image' ); ?>"><?php _e( 'Image:', 'inventory-presser' ); ?></label>
+		<label for="<?php echo esc_attr( $this->get_field_id( 'image' ) ); ?>"><?php esc_html_e( 'Image:', 'inventory-presser' ); ?></label>
 
-		<select class="widefat" id="<?php echo $this->get_field_id( 'image' ); ?>" name="<?php echo $this->get_field_name( 'image' ); ?>">
+		<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'image' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'image' ) ); ?>">
 		<?php
 		foreach ( $this->images() as $key => $imginfo ) {
 			printf(
 				'<option value="%s"%s>%s</option>',
-				$key,
-				selected( $key == $image, true, false ),
-				$imginfo['text']
+				esc_attr( $key ),
+				selected( $key === $image, true, false ),
+				esc_html( $imginfo['text'] )
 			);
 		}
 		?>
@@ -171,8 +171,8 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'after_image' ); ?>"><?php _e( 'Text after image:', 'inventory-presser' ); ?></label>
-		<textarea class="widefat" id="<?php echo $this->get_field_id( 'after_image' ); ?>" name="<?php echo $this->get_field_name( 'after_image' ); ?>"><?php echo esc_attr( $after_image ); ?></textarea>
+		<label for="<?php echo esc_attr( $this->get_field_id( 'after_image' ) ); ?>"><?php esc_html_e( 'Text after image:', 'inventory-presser' ); ?></label>
+		<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'after_image' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'after_image' ) ); ?>"><?php echo esc_attr( $after_image ); ?></textarea>
 		</p>
 		<?php
 	}

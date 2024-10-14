@@ -141,16 +141,16 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 		$api_key = $instance['api_key'] ?? '';
 
 		// Title. ?><p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'inventory-presser' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<?php
 
 		// API Key.
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'api_key' ); ?>"><?php esc_html_e( 'API Key:', 'inventory-presser' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'api_key' ); ?>" name="<?php echo $this->get_field_name( 'api_key' ); ?>" type="text" value="<?php echo esc_attr( $api_key ); ?>" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'api_key' ) ); ?>"><?php esc_html_e( 'API Key:', 'inventory-presser' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'api_key' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'api_key' ) ); ?>" type="text" value="<?php echo esc_attr( $api_key ); ?>" />
 			<p class="description">
 			<?php
 
@@ -182,13 +182,12 @@ class Inventory_Presser_Google_Maps_Widget_V3 extends WP_Widget {
 													// loop through each location, set up form.
 												foreach ( $location_terms as $index => $term_object ) {
 													printf(
-														'<p><input id="%s" name="%s[]" value="%s" type="checkbox"%s> <label for="%s">%s</label></p>',
-														$this->get_field_id( $term_object->slug ),
-														$this->get_field_name( 'location_slugs' ),
-														$term_object->slug,
+														'<p><input id="%1$s" name="%2$s[]" value="%3$s" type="checkbox"%4$s> <label for="%1$s">%5$s</label></p>',
+														esc_attr( $this->get_field_id( $term_object->slug ) ),
+														esc_attr( $this->get_field_name( 'location_slugs' ) ),
+														esc_attr( $term_object->slug ),
 														checked( in_array( $term_object->slug, $location_slugs, true ), true, false ),
-														$this->get_field_id( $term_object->slug ),
-														$term_object->description
+														esc_html( $term_object->description )
 													);
 												}
 	}

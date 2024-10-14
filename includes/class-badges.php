@@ -44,7 +44,7 @@ class Inventory_Presser_Badges {
 				<a class="<?php echo esc_attr( $classes ); ?>" href="<?php echo esc_url( $url ); ?>">
 									<?php
 
-										echo apply_filters( 'invp_button_text_nextgear_inspection_url', __( 'Mechanic\'s Report', 'inventory-presser' ) );
+										echo apply_filters( 'invp_button_text_nextgear_inspection_url', esc_html__( 'Mechanic\'s Report', 'inventory-presser' ) );
 
 									?>
 				</a>

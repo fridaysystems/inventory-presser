@@ -197,23 +197,23 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 						printf(
 							'<tr%s><th>%s</th>',
 							$current_row_class,
-							array_values( INVP::weekdays() )[ $i ]
+							esc_html( array_values( INVP::weekdays() )[ $i ] )
 						);
 
 						if ( 1 == $open_by_appt && ! empty( $open ) && ! empty( $close ) ) {
 							printf(
 								'<td colspan="2">%s - %s &amp; %s</td>',
-								$open,
-								$close,
-								__( 'Appointment', 'inventory-presser' )
+								esc_html( $open ),
+								esc_html( $close ),
+								esc_html__( 'Appointment', 'inventory-presser' )
 							);
-						} elseif ( 1 == $open_by_appt ) {
-							printf( '<td colspan="2">%s</td>', __( 'Appointment Only', 'inventory-presser' ) );
+						} elseif ( 1 === $open_by_appt ) {
+							printf( '<td colspan="2">%s</td>', esc_html__( 'Appointment Only', 'inventory-presser' ) );
 						} elseif ( ! empty( $open ) && ! empty( $close ) ) {
 							printf(
 								'<td>%s</td><td>%s</td>',
-								$open,
-								$close
+								esc_html( $open ),
+								esc_html( $close )
 							);
 						} else {
 							echo '<td colspan="2">Closed</td>';
@@ -310,13 +310,13 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		$title = isset( $instance['title'] ) ? $instance['title'] : __( 'Hours', 'inventory-presser' );
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Main Title', 'inventory-presser' ); ?></label>
-		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Main Title', 'inventory-presser' ); ?></label>
+		<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'cb_showclosed' ); ?>"><?php _e( 'Show All Closed Days', 'inventory-presser' ); ?></label>
-		<input type="checkbox" id="<?php echo $this->get_field_id( 'cb_showclosed' ); ?>" name="<?php echo $this->get_field_name( 'cb_showclosed' ); ?>" value="true"<?php checked( ( isset( $instance['cb_showclosed'] ) && $instance['cb_showclosed'] == 'true' ) ); ?>>
+		<label for="<?php echo esc_attr( $this->get_field_id( 'cb_showclosed' ) ); ?>"><?php esc_html_e( 'Show All Closed Days', 'inventory-presser' ); ?></label>
+		<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_showclosed' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'cb_showclosed' ) ); ?>" value="true"<?php checked( ( isset( $instance['cb_showclosed'] ) && 'true' === $instance['cb_showclosed'] ) ); ?>>
 		</p>
 		<p><?php echo $hours_table; ?></p>
 		<?php

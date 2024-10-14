@@ -59,7 +59,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 					<div class="vehicle-content">
 						<h2 class="post-title vehicle-price">
 						<?php
-								echo invp_get_the_price();
+								echo esc_html( invp_get_the_price() );
 						?>
 						</h2>
 
@@ -69,7 +69,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 						if ( ! empty( $location_sentence ) ) {
 							printf(
 								'<div class="vehicle-location">%s</div>',
-								$location_sentence
+								esc_html( $location_sentence )
 							);
 						}
 

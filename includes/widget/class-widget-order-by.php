@@ -193,7 +193,7 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 			echo '<ul class="order-by-list list-nostyle">';
 			foreach ( $keys_to_list as $key ) {
 				echo '<li><a href="javascript:order_by_post_meta(\'' . esc_attr( $key ) . '\');">'
-				. ( isset( $instance[ 'label-' . $key ] ) ? $instance[ 'label-' . $key ] : $key )
+				. esc_html( isset( $instance[ 'label-' . $key ] ) ? $instance[ 'label-' . $key ] : $key )
 				. '</a></li>';
 			}
 			echo '</ul>' . $after_widget;

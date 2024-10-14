@@ -164,7 +164,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		echo sprintf( '<div class="invp-map %1$s" id="%1$s-inner"></div>', $args['widget_id'] ) . $args['after_widget'];
+		echo sprintf( '<div class="invp-map %1$s" id="%1$s-inner"></div>', esc_attr( $args['widget_id'] ) ) . $args['after_widget'];
 	}
 
 	/**
@@ -181,11 +181,11 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'inventory-presser' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<?php _e( 'Choose addresses to include:', 'inventory-presser' ); ?>
+		<?php esc_html_e( 'Choose addresses to include:', 'inventory-presser' ); ?>
 		</p>
 		<?php
 
@@ -200,20 +200,19 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		// loop through each location, set up form
 		foreach ( $location_terms as $index => $term_object ) {
 			printf(
-				'<p><input id="%s" name="%s[]" value="%s" type="checkbox"%s> <label for="%s">%s</label></p>',
-				$this->get_field_id( $term_object->slug ),
-				$this->get_field_name( 'location_slug' ),
-				$term_object->slug,
-				checked( true, in_array( $term_object->slug, $location_slug ), false ),
-				$this->get_field_id( $term_object->slug ),
-				str_replace( "\r", '', str_replace( PHP_EOL, ', ', $term_object->description ) )
+				'<p><input id="%1$s" name="%2$s[]" value="%3$s" type="checkbox"%4$s> <label for="%1$s">%5$s</label></p>',
+				esc_attr( $this->get_field_id( $term_object->slug ) ),
+				esc_attr( $this->get_field_name( 'location_slug' ) ),
+				esc_attr( $term_object->slug ),
+				checked( true, in_array( $term_object->slug, $location_slug, true ), false ),
+				esc_html( str_replace( "\r", '', str_replace( PHP_EOL, ', ', $term_object->description ) ) )
 			);
 		}
 
 		// Only show this if the API key is missing
 		$settings = INVP::settings();
 		if ( empty( $settings['mapbox_public_token'] ) ) {
-			printf( '<p>%s</p>', __( 'An API token from mapbox.com is required for this widget to work. Obtain a key at mapbox.com and save it on the Inventory Presser Options page.', 'inventory-presser' ) );
+			printf( '<p>%s</p>', esc_html__( 'An API token from mapbox.com is required for this widget to work. Obtain a key at mapbox.com and save it on the Inventory Presser Options page.', 'inventory-presser' ) );
 		}
 	}
 

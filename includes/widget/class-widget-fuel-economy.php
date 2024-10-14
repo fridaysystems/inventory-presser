@@ -55,11 +55,11 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget {
 		$title = ( isset( $instance['title'] ) ? $instance['title'] : '' );
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'inventory-presser' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p><p>
-			<input type="checkbox" id="<?php echo $this->get_field_id( 'include_annual_stats' ); ?>" name="<?php echo $this->get_field_name( 'include_annual_stats' ); ?>" value="true"<?php checked( 'true', ( isset( $instance['include_annual_stats'] ) ? $instance['include_annual_stats'] : '' ) ); ?>>
-			<label for="<?php echo $this->get_field_id( 'include_annual_stats' ); ?>"><?php _e( 'Include annual consumption, cost &amp; emissions', 'inventory-presser' ); ?></label>
+			<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'include_annual_stats' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'include_annual_stats' ) ); ?>" value="true"<?php checked( 'true', ( isset( $instance['include_annual_stats'] ) ? $instance['include_annual_stats'] : '' ) ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'include_annual_stats' ) ); ?>"><?php esc_html_e( 'Include annual consumption, cost &amp; emissions', 'inventory-presser' ); ?></label>
 		</p>
 		<?php
 	}

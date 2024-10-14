@@ -68,7 +68,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 				if ( ! is_wp_error( $location ) && null != $location ) {
 					printf(
 						'<span>%s</span>',
-						str_replace( PHP_EOL, ', ', trim( $location->description ) )
+						esc_html( str_replace( PHP_EOL, ', ', trim( $location->description ) ) )
 					);
 				}
 			}
@@ -133,12 +133,12 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		// Widget admin form
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'inventory-presser' ); ?></label>
-		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'inventory-presser' ); ?></label>
+		<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-		<input type="checkbox" id="<?php echo $this->get_field_id( 'cb_single_line' ); ?>" name="<?php echo $this->get_field_name( 'cb_single_line' ); ?>" value="true"<?php checked( ( isset( $instance['cb_single_line'] ) && $instance['cb_single_line'] == 'true' ) ); ?>>
-		<label for="<?php echo $this->get_field_id( 'cb_single_line' ); ?>"><?php _e( 'Single Line Display', 'inventory-presser' ); ?></label>
+		<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_single_line' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'cb_single_line' ) ); ?>" value="true"<?php checked( ( isset( $instance['cb_single_line'] ) && 'true' === $instance['cb_single_line'] ) ); ?>>
+		<label for="<?php echo esc_attr( $this->get_field_id( 'cb_single_line' ) ); ?>"><?php esc_html_e( 'Single Line Display', 'inventory-presser' ); ?></label>
 		</p>
 		<p><?php echo $address_table; ?></p>
 		<?php

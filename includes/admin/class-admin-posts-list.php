@@ -161,7 +161,7 @@ class Inventory_Presser_Admin_Posts_List {
 				break;
 
 			default:
-				echo $val;
+				echo esc_html( $val );
 		}
 	}
 

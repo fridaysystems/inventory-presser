@@ -308,8 +308,8 @@ jQuery(document).ready(function(){
 					'<tr class="plugin-update-tr active" id="%1$s-update" data-slug="%1$s" data-plugin="%2$s">'
 					. '<td colspan="4" class="plugin-update colspanchange">'
 					. '<div class="update-message notice inline notice-warning notice-alt"><p>',
-					$this->slug,
-					$file
+					esc_attr( $this->slug ),
+					esc_attr( $file )
 				);
 
 				$changelog_link = self_admin_url(
@@ -322,18 +322,18 @@ jQuery(document).ready(function(){
 
 				printf(
 					'%s %s %s <a href="%s" class="thickbox open-plugin-details-modal" aria-label="%s %s %s %s %s">%s %s %s</a>',
-					__( 'There is a new version of', 'inventory-presser' ),
+					esc_html__( 'There is a new version of', 'inventory-presser' ),
 					esc_html( $version_info->name ),
-					__( 'available.', 'inventory-presser' ),
+					esc_html__( 'available.', 'inventory-presser' ),
 					esc_url( $changelog_link ),
-					__( 'View', 'inventory-presser' ),
+					esc_html__( 'View', 'inventory-presser' ),
 					esc_html( $version_info->name ),
-					__( 'version', 'inventory-presser' ),
+					esc_html__( 'version', 'inventory-presser' ),
 					esc_html( $version_info->new_version ),
-					__( 'details', 'inventory-presser' ),
-					__( ' View version', 'inventory-presser' ),
+					esc_html__( 'details', 'inventory-presser' ),
+					esc_html__( ' View version', 'inventory-presser' ),
 					esc_html( $version_info->new_version ),
-					__( 'details', 'inventory-presser' )
+					esc_html__( 'details', 'inventory-presser' )
 				);
 
 				// Do we have a license key? Include "update now" link if so.
@@ -586,7 +586,7 @@ jQuery(document).ready(function(){
 			}
 
 			if ( ! current_user_can( 'update_plugins' ) ) {
-				wp_die( __( 'You do not have permission to install plugin updates', 'inventory-presser' ), __( 'Error', 'inventory-presser' ), array( 'response' => 403 ) );
+				wp_die( esc_html__( 'You do not have permission to install plugin updates', 'inventory-presser' ), esc_html__( 'Error', 'inventory-presser' ), array( 'response' => 403 ) );
 			}
 
 			$data         = $edd_plugin_data[ $_REQUEST['slug'] ];

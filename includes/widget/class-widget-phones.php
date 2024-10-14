@@ -240,18 +240,18 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		$title = isset( $instance['title'] ) ? $instance['title'] : '';
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title (optional):', 'inventory-presser' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title (optional):', 'inventory-presser' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'format' ); ?>"><?php _e( 'Display Format:', 'inventory-presser' ); ?></label>
-			<select class="widefat" id="<?php echo $this->get_field_id( 'format' ); ?>" name="<?php echo $this->get_field_name( 'format' ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'format' ) ); ?>"><?php esc_html_e( 'Display Format:', 'inventory-presser' ); ?></label>
+			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'format' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'format' ) ); ?>">
 		<?php
 		$format = isset( $instance['format'] ) ? $instance['format'] : current( array_keys( $this->formats() ) );
 		foreach ( $this->formats() as $key => $format_array ) {
 			printf(
 				'<option value="%s"%s>%s</option>',
-				$key,
+				esc_attr( $key ),
 				selected( $format == $key, true, false ),
 				$format_array['selector']
 			);
