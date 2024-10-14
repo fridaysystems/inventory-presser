@@ -110,15 +110,15 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 				$hours_title = '';
 				if ( ! empty( $instance['cb_title'][ $term_id ] )
 					&& is_array( $instance['cb_title'][ $term_id ] )
-					&& in_array( $hours_uid, $instance['cb_title'][ $term_id ] )
+					&& in_array( $hours_uid, $instance['cb_title'][ $term_id ], true )
 				) {
 					$hours_title = sprintf( '<strong>%s</strong>', get_term_meta( $term_id, 'hours_' . $h . '_title', true ) );
 				}
 				echo apply_filters( 'invp_hours_title', $hours_title, $hours_uid );
 
-				// get current day number, starting on a monday
-				$current_weekday = date( 'w' ) - 1;
-				$current_weekday = ( $current_weekday == -1 ) ? 6 : $current_weekday;
+				// get current day number, starting on a monday.
+				$current_weekday = gmdate( 'w' ) - 1;
+				$current_weekday = ( -1 === $current_weekday ) ? 6 : $current_weekday;
 
 				$start_of_week = get_option( 'start_of_week' ) - 1;
 

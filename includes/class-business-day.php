@@ -42,7 +42,7 @@ class Inventory_Presser_Business_Day {
 	 * @return void
 	 */
 	private function current_datetime() {
-		return new DateTime( date( DATE_RFC2822, current_time( 'timestamp' ) ) );
+		return new DateTime( gmdate( DATE_RFC2822, current_time( 'timestamp' ) ) );
 	}
 
 	/**
@@ -117,6 +117,6 @@ class Inventory_Presser_Business_Day {
 
 		// 9:30:00
 		$time_string = (string) ( $hour ) . ':' . (string) ( $minute ) . ':00';
-		return ( date( 'g:i a', strtotime( $time_string ) ) );
+		return ( gmdate( 'g:i a', strtotime( $time_string ) ) );
 	}
 }
