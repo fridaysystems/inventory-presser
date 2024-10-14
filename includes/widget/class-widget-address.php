@@ -75,7 +75,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		} else {
 			foreach ( $instance['cb_display'] as $i => $term_id ) {
 				$location = get_term( $term_id, 'location' );
-				if ( ! is_wp_error( $location ) && null != $location ) {
+				if ( ! is_wp_error( $location ) && null !== $location ) {
 					echo '<div>' . nl2br( $location->description ) . '</div>';
 				}
 			}

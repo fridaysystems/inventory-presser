@@ -131,7 +131,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 				$hours_sets = INVP::get_hours( $term_id );
 				$hours_set  = array();
 				foreach ( $hours_sets as $set ) {
-					if ( $hours_uid == $set['uid'] ) {
+					if ( $hours_uid === $set['uid'] ) {
 						$hours_set = $set;
 						break;
 					}
@@ -153,7 +153,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 					$open         = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_open', true );
 					$close        = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_close', true );
 
-					if ( ( 1 == $open_by_appt || ! empty( $open ) && ! empty( $close ) ) || $cb_showclosed ) {
+					if ( ( 1 === $open_by_appt || ! empty( $open ) && ! empty( $close ) ) || $cb_showclosed ) {
 						$echo_row = true;
 					} elseif ( $i < 6 ) {
 						// check the remaining days, output current day if there are other displayed days following
@@ -161,7 +161,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 							$future_open_by_appt = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_appt', true );
 							$future_open         = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_open', true );
 							$future_close        = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_close', true );
-							if ( 1 == $future_open_by_appt || ( ! empty( $future_open ) && ! empty( $future_close ) ) ) {
+							if ( 1 === (int) $future_open_by_appt || ( ! empty( $future_open ) && ! empty( $future_close ) ) ) {
 								$echo_row = true;
 								break;
 							}
@@ -184,10 +184,10 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 						if ( ! $highlighted_a_row
 							&& ( ( ! empty( $days[ $i ] )
 							&& $days[ $i ]->open_right_now()
-							&& $current_weekday == $i ) // if it's today and we're open, highlight the row
-							|| ( $current_weekday != $i
+							&& $current_weekday === $i ) // if it's today and we're open, highlight the row.
+							|| ( $current_weekday !== $i
 							&& ! empty( $next_open_day )
-							&& $next_open_day->weekday - 1 == $i ) // it's not today, it's the next open day though
+							&& $next_open_day->weekday - 1 === $i ) // it's not today, it's the next open day though.
 							)
 						) {
 							$current_row_class = ' class="day-highlight"';
@@ -200,7 +200,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 							esc_html( array_values( INVP::weekdays() )[ $i ] )
 						);
 
-						if ( 1 == $open_by_appt && ! empty( $open ) && ! empty( $close ) ) {
+						if ( 1 === $open_by_appt && ! empty( $open ) && ! empty( $close ) ) {
 							printf(
 								'<td colspan="2">%s - %s &amp; %s</td>',
 								esc_html( $open ),
@@ -264,8 +264,8 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 					break;
 				}
 
-				// Only do this once per location
-				if ( 1 == $h ) {
+				// Only do this once per location.
+				if ( 1 === $h ) {
 					$hours_table .= sprintf(
 						'<tr><td>%s</td><td>%s</td><td>%s</td></tr>',
 						$name,

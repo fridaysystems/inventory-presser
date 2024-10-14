@@ -173,7 +173,7 @@ class Inventory_Presser_Photo_Numberer {
 	 */
 	public static function save_meta_photo_number( $post_id, $parent_post_id, $sequence_number = null ) {
 		// Does this photo already have a sequence number?
-		if ( null == $sequence_number ) {
+		if ( null === $sequence_number ) {
 			if ( ! empty( INVP::get_meta( 'photo_number', $post_id ) ) ) {
 				// Yes
 				return;

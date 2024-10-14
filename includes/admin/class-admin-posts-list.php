@@ -98,7 +98,7 @@ class Inventory_Presser_Admin_Posts_List {
 
 	public function scripts_and_styles() {
 		global $pagenow, $post_type;
-		if ( is_admin() && 'edit.php' == $pagenow && INVP::POST_TYPE == $post_type ) {
+		if ( is_admin() && 'edit.php' === $pagenow && INVP::POST_TYPE === $post_type ) {
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 			wp_enqueue_style(
 				'invp-posts-list',
@@ -188,7 +188,7 @@ class Inventory_Presser_Admin_Posts_List {
 		$orderby = $query->get( 'orderby' );
 		foreach ( $columns as $column ) {
 			$meta_key = apply_filters( 'invp_prefix_meta_key', $column );
-			if ( $orderby == $meta_key ) {
+			if ( $orderby === $meta_key ) {
 				$query->set( 'meta_key', $meta_key );
 				$query->set( 'orderby', 'meta_value' . ( INVP::meta_value_is_number( $meta_key ) ? '_num' : '' ) );
 				return;

@@ -56,7 +56,7 @@ class Inventory_Presser_Business_Day {
 	public function is_tomorrow() {
 		$tomorrow = $this->current_datetime();
 		$tomorrow->add( new DateInterval( 'P1D' ) );
-		return $this->weekday == $tomorrow->format( 'w' );
+		return $this->weekday === $tomorrow->format( 'w' );
 	}
 
 	/**
@@ -67,7 +67,7 @@ class Inventory_Presser_Business_Day {
 	 * @return bool
 	 */
 	public function open_in_some_fashion() {
-		return ( 0 != $this->close_hour && $this->open_hour < $this->close_hour );
+		return ( 0 !== $this->close_hour && $this->open_hour < $this->close_hour );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class Inventory_Presser_Business_Day {
 		$now             = $this->current_datetime();
 		$today_open_date = $this->current_datetime();
 		$today_open_date->setTime( $this->open_hour, $this->open_minute, 0 );
-		return null != $today_open_date && $now < $today_open_date;
+		return null !== $today_open_date && $now < $today_open_date;
 	}
 
 	/**
@@ -99,7 +99,7 @@ class Inventory_Presser_Business_Day {
 		$today_close_date = $this->current_datetime();
 		$today_close_date->setTime( $this->close_hour, $this->close_minute, 0 );
 
-		return null != $today_open_date && $now >= $today_open_date && $now < $today_close_date;
+		return null !== $today_open_date && $now >= $today_open_date && $now < $today_close_date;
 	}
 
 	/**

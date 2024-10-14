@@ -83,7 +83,7 @@ if ( ! class_exists( 'Inventory_Presser_Addon' ) ) {
 				20
 			);
 
-			$hook_parameters_count = 'license_key' == $license_key_key_name ? 3 : 4;
+			$hook_parameters_count = 'license_key' === $license_key_key_name ? 3 : 4;
 			add_filter( $sanitize_values_hook_name, array( __CLASS__, 'sanitize_and_activate_license_key' ), 10, $hook_parameters_count );
 		}
 

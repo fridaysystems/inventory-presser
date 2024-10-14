@@ -869,7 +869,7 @@ class Inventory_Presser_Admin_Options {
 	}
 
 	public function detect_manage_vehicles_query_var() {
-		if ( 'GET' != $_SERVER['REQUEST_METHOD'] ) {
+		if ( 'GET' !== $_SERVER['REQUEST_METHOD'] ?? '' ) {
 			return;
 		}
 

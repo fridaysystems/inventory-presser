@@ -92,7 +92,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 		// Need the stylesheet for this content.
 		wp_enqueue_style( 'invp-maximum-price-filters' );
 
-		$reset_link_only = ( isset( $instance['cb_reset_link_only'] ) && $instance['cb_reset_link_only'] == 'true' );
+		$reset_link_only = ( isset( $instance['cb_reset_link_only'] ) && 'true' === $instance['cb_reset_link_only'] );
 
 		if ( $reset_link_only && ! isset( $_GET['max_price'] ) ) {
 			return;

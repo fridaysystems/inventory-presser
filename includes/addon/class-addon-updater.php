@@ -367,11 +367,11 @@ jQuery(document).ready(function(){
 		 * @return object $_data
 		 */
 		public function plugins_api_filter( $_data, $_action = '', $_args = null ) {
-			if ( $_action !== 'plugin_information' ) {
+			if ( 'plugin_information' !== $_action ) {
 				return $_data;
 			}
 
-			if ( ! isset( $_args->slug ) || ( $_args->slug != $this->slug ) ) {
+			if ( ! isset( $_args->slug ) || ( $_args->slug !== $this->slug ) ) {
 				return $_data;
 			}
 

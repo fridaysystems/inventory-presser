@@ -101,8 +101,8 @@ class Inventory_Presser_Slider extends WP_Widget {
 		$showtext              = isset( $instance['showtext'] ) ? $instance['showtext'] : false;
 		$featured_select_slugs = array_keys( $this->featured_select_options() );
 		$featured_select       = isset( $instance['featured_select'] ) ? $instance['featured_select'] : $featured_select_slugs[0];
-		$showtitle             = ( isset( $instance['cb_showtitle'] ) && $instance['cb_showtitle'] == 'true' );
-		$showprice             = ( isset( $instance['cb_showprice'] ) && $instance['cb_showprice'] == 'true' );
+		$showtitle             = ( isset( $instance['cb_showtitle'] ) && 'true' === $instance['cb_showtitle'] );
+		$showprice             = ( isset( $instance['cb_showprice'] ) && 'true' === $instance['cb_showprice'] );
 
 		$inventory_ids = array();
 
@@ -143,8 +143,8 @@ class Inventory_Presser_Slider extends WP_Widget {
 				);
 				$inventory_ids                  = get_posts( apply_filters( 'invp_slider_widget_query_args', $get_posts_args ) );
 
-				if ( count( $inventory_ids ) < ( $showcount * 5 ) && $featured_select == 'featured_priority' ) {
-					// Get enough non-featured vehicles to fill out the number we need
+				if ( count( $inventory_ids ) < ( $showcount * 5 ) && 'featured_priority' === $featured_select ) {
+					// Get enough non-featured vehicles to fill out the number we need.
 					$get_posts_args['posts_per_page'] = ( $showcount * 5 ) - ( count( $inventory_ids ) );
 					if ( ! empty( $inventory_ids ) ) {
 						$get_posts_args['exclude'] = $inventory_ids;

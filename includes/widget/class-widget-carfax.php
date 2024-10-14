@@ -107,8 +107,8 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 		}
 
 		echo wpautop( $instance['before_image'] );
-		if ( 'svg' == strtolower( pathinfo( $this->images()[ $image ]['img'], PATHINFO_EXTENSION ) ) ) {
-			// Include the SVG inline instead of using an <img> element
+		if ( 'svg' === strtolower( pathinfo( $this->images()[ $image ]['img'], PATHINFO_EXTENSION ) ) ) {
+			// Include the SVG inline instead of using an <img> element.
 			$svg = file_get_contents( $path );
 			printf(
 				'<a href="%s">%s</a>',
