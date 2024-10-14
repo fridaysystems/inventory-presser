@@ -14,7 +14,7 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 	 *
 	 * @return array
 	 */
-	function images() {
+	protected function images() {
 		return array(
 			'default'    => array(
 				'text' => __( 'Simple Show Me Logo', 'inventory-presser' ),
@@ -52,7 +52,7 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
 			self::ID_BASE,
 			'Carfax Badge',

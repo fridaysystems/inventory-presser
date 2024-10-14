@@ -22,7 +22,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Map', 'inventory-presser' ),

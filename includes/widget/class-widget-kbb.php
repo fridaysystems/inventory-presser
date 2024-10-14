@@ -16,7 +16,7 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 	 *
 	 * @return array
 	 */
-	function images() {
+	protected function images() {
 		return array(
 			'default' => array(
 				'text' => __( 'Bordered Rectangle', 'inventory-presser' ),
@@ -32,7 +32,7 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Kelley Blue Book Logo', 'inventory-presser' ),

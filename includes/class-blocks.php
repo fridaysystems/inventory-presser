@@ -44,7 +44,7 @@ class Inventory_Presser_Blocks {
 	 *
 	 * @return void
 	 */
-	function register_block_types() {
+	public function register_block_types() {
 		if ( ! function_exists( 'register_block_type' ) ) {
 			// running on WordPress < 5.0.0, no blocks for you.
 			return;

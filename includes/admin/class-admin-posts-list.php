@@ -20,8 +20,8 @@ class Inventory_Presser_Admin_Posts_List {
 	 * @param  array $column
 	 * @return array
 	 */
-	function add_columns_to_vehicles_table( $column ) {
-		// add our columns
+	public function add_columns_to_vehicles_table( $column ) {
+		// add our columns.
 		$column[ apply_filters( 'invp_prefix_meta_key', 'stock_number' ) ] = __( 'Stock #', 'inventory-presser' );
 		$column[ apply_filters( 'invp_prefix_meta_key', 'color' ) ]        = __( 'Color', 'inventory-presser' );
 		$column[ apply_filters( 'invp_prefix_meta_key', 'odometer' ) ]     = apply_filters( 'invp_odometer_word', __( 'Odometer', 'inventory-presser' ) );
@@ -118,7 +118,7 @@ class Inventory_Presser_Admin_Posts_List {
 	 * @param  array $columns
 	 * @return array
 	 */
-	function make_vehicles_table_columns_sortable( $columns ) {
+	public function make_vehicles_table_columns_sortable( $columns ) {
 		$custom = array(
 			// meta column id => sortby value used in query.
 			apply_filters( 'invp_prefix_meta_key', 'color' ) => apply_filters( 'invp_prefix_meta_key', 'color' ),
@@ -139,7 +139,7 @@ class Inventory_Presser_Admin_Posts_List {
 	 * @param  int    $post_id
 	 * @return void
 	 */
-	function populate_columns_we_added_to_vehicles_table( $column_name, $post_id ) {
+	public function populate_columns_we_added_to_vehicles_table( $column_name, $post_id ) {
 		$custom_fields = get_post_custom( $post_id );
 		$val           = ( isset( $custom_fields[ $column_name ] ) ? $custom_fields[ $column_name ][0] : '' );
 		switch ( true ) {
@@ -171,7 +171,7 @@ class Inventory_Presser_Admin_Posts_List {
 	 * @param  WP_Query $query
 	 * @return void
 	 */
-	function vehicles_table_columns_orderbys( $query ) {
+	public function vehicles_table_columns_orderbys( $query ) {
 		if ( ! is_admin() || ! $query->is_main_query() ) {
 			return;
 		}

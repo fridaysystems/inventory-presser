@@ -24,7 +24,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Vehicle Slider', 'inventory-presser' ),
@@ -52,7 +52,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 	 *
 	 * @return array
 	 */
-	function featured_select_options() {
+	protected function featured_select_options() {
 		return array(
 			'featured_priority' => __( 'Priority for Featured Vehicles', 'inventory-presser' ),
 			'featured_only'     => __( 'Featured Vehicles Only', 'inventory-presser' ),
@@ -67,8 +67,8 @@ class Inventory_Presser_Slider extends WP_Widget {
 	 * @param  array $instance The widget settings.
 	 * @return void
 	 */
-	function include_scripts( $instance ) {
-		// Need flexslider scripts and styles
+	protected function include_scripts( $instance ) {
+		// Need flexslider scripts and styles.
 		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );
 		wp_enqueue_style( 'invp-slider' );

@@ -17,7 +17,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
 			self::ID_BASE,
 			'Hours',

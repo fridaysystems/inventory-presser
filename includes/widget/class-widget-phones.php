@@ -15,7 +15,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	 *
 	 * @return array
 	 */
-	function formats() {
+	protected function formats() {
 		return array(
 			'small_left_label'      => array(
 				'selector'    => __( 'Small, left label', 'inventory-presser' ),
@@ -76,7 +76,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
 			self::ID_BASE,
 			__( 'Phone Number', 'inventory-presser' ),

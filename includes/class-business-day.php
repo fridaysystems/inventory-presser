@@ -19,9 +19,12 @@ class Inventory_Presser_Business_Day {
 	 *
 	 * @return void
 	 */
-	function __construct() {
-		$this->weekday     = $this->open_hour = $this->close_hour =
-		$this->open_minute = $this->close_minute = 0;
+	public function __construct() {
+		$this->weekday      = 0;
+		$this->open_hour    = 0;
+		$this->close_hour   = 0;
+		$this->open_minute  = 0;
+		$this->close_minute = 0;
 	}
 
 	/**
@@ -107,7 +110,7 @@ class Inventory_Presser_Business_Day {
 	 * @param  int $minute
 	 * @return string
 	 */
-	function time_string( $hour, $minute ) {
+	protected function time_string( $hour, $minute ) {
 		if ( ! $this->open_in_some_fashion() ) {
 			return '';
 		}
