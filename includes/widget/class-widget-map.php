@@ -84,8 +84,9 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		 * Create an array that contains the data needed to create the markers
 		 * and popups: location names, addresses, and lat lon coords
 		 */
-		$popups = array();
-		for ( $t = 0; $t < sizeof( $location_terms ); $t++ ) {
+		$popups         = array();
+		$location_count = count( $location_terms );
+		for ( $t = 0; $t < $location_count; $t++ ) {
 			$popup = new stdClass();
 			/**
 			 * Store the widget ID in case there are two instances of this
