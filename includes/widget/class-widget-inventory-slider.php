@@ -64,6 +64,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 	/**
 	 * Enqueues stylesheets and JavaScripts
 	 *
+	 * @param  array $instance The widget settings.
 	 * @return void
 	 */
 	function include_scripts( $instance ) {
@@ -72,9 +73,9 @@ class Inventory_Presser_Slider extends WP_Widget {
 		wp_enqueue_style( 'invp-flexslider' );
 		wp_enqueue_style( 'invp-slider' );
 
-		// Spin-up script
+		// Spin-up script.
 		wp_enqueue_script( 'invp-slider' );
-		// Provide one of the widget settings to JavaScript
+		// Provide one of the widget settings to JavaScript.
 		wp_add_inline_script(
 			'invp-slider',
 			'const widget_slider = ' . wp_json_encode(
@@ -117,7 +118,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 			'order'          => 'ASC',
 			'orderby'        => 'rand',
 			'post_type'      => INVP::POST_TYPE,
-			'posts_per_page' => $showcount * 5, // get 5 sets of the number we'll show at one time
+			'posts_per_page' => $showcount * 5, // get 5 sets of the number we'll show at one time.
 		);
 
 		switch ( $featured_select ) {
@@ -134,8 +135,8 @@ class Inventory_Presser_Slider extends WP_Widget {
 				$inventory_ids              = get_posts( apply_filters( 'invp_slider_widget_query_args', $get_posts_args ) );
 				break;
 
-			// featured_only
-			// featured_priority
+			// featured_only.
+			// featured_priority.
 			default:
 				$get_posts_args['meta_query'][] = array(
 					'key'   => apply_filters( 'invp_prefix_meta_key', 'featured' ),
@@ -166,11 +167,11 @@ class Inventory_Presser_Slider extends WP_Widget {
 		}
 
 		if ( ! $inventory_ids ) {
-			// No vehicles to show, don't output anything
+			// No vehicles to show, don't output anything.
 			return;
 		}
 
-		// before and after widget arguments are defined by themes
+		// before and after widget arguments are defined by themes.
 		echo $args['before_widget'];
 		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
@@ -220,7 +221,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 		$text_displays_slugs = array_keys( $this->text_displays );
 		$showtext            = isset( $instance['showtext'] ) ? $instance['showtext'] : $text_displays_slugs[0]; // "none"
 
-		// Widget admin form
+		// Widget admin form.
 		?>
 		<p>
 		<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'inventory-presser' ); ?></label>

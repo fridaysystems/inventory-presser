@@ -11,8 +11,6 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	const ID_BASE = '_invp_phone';
 
 	/**
-	 * formats
-	 *
 	 * Defines the formats for the widget's display.
 	 *
 	 * @return array
@@ -72,8 +70,6 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	}
 
 	/**
-	 * __construct
-	 *
 	 * Calls the parent class' contructor and adds a hook that will delete the
 	 * option that stores this widget's data when the plugin's delete all data
 	 * method is run.
@@ -94,8 +90,6 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	}
 
 	/**
-	 * delete_option
-	 *
 	 * Deletes the option that stores this widget's data.
 	 *
 	 * @return void
@@ -105,8 +99,6 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	}
 
 	/**
-	 * widget
-	 *
 	 * Outputs the widget front-end HTML
 	 *
 	 * @param  array $args
@@ -118,7 +110,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			return;
 		}
 
-		// before and after widget arguments are defined by themes
+		// before and after widget arguments are defined by themes.
 		echo $args['before_widget'];
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
@@ -135,7 +127,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 			$this->formats()[ $format ]['before']
 		);
 
-		// loop through each location
+		// loop through each location.
 		$location_info = get_terms(
 			'location',
 			array(
@@ -146,7 +138,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		foreach ( $location_info as $term_id => $name ) {
 			// Does this address even have a phone number displayed by this instance of this widget?
 			if ( empty( $instance['cb_display'][ $term_id ] ) ) {
-				// No
+				// No.
 				continue;
 			}
 
@@ -176,8 +168,6 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	}
 
 	/**
-	 * form
-	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance
@@ -185,7 +175,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	 */
 	public function form( $instance ) {
 		$cb_display = isset( $instance['cb_display'] ) ? $instance['cb_display'] : array();
-		// get all locations
+		// get all locations.
 		$location_info = get_terms(
 			'location',
 			array(
@@ -195,18 +185,18 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		);
 		$phones_table  = '<table><tbody>';
 
-		// loop through each location, set up form
+		// loop through each location, set up form.
 		foreach ( $location_info as $term_id => $name ) {
-			// Output a checkbox for every phone number in this location
+			// Output a checkbox for every phone number in this location.
 			for ( $p = 1; $p <= INVP::LOCATION_MAX_PHONES; $p++ ) {
 				// Is there a phone number in this slot?
 				$phone_uid = get_term_meta( $term_id, 'phone_' . $p . '_uid', true );
 				if ( ! $phone_uid ) {
-					// No, we're done with this location
+					// No, we're done with this location.
 					break;
 				}
 
-				// Only do this once per location
+				// Only do this once per location.
 				if ( 1 == $p ) {
 					$phones_table .= sprintf( '<tr><td colspan="3"><strong>%s</strong></td></tr>', $name );
 				}
@@ -236,7 +226,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 
 		$phones_table .= '</tbody></table>';
 
-		// Widget admin form
+		// Widget admin form.
 		$title = isset( $instance['title'] ) ? $instance['title'] : '';
 		?>
 		<p>
@@ -264,8 +254,6 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
 	 * @param  array $new_instance

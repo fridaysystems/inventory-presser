@@ -10,8 +10,6 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 
 
 	/**
-	 * images
-	 *
 	 * Creates an array that defines the available images the widget can display
 	 *
 	 * @return array
@@ -48,8 +46,6 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 	const ID_BASE = '_invp_carfax';
 
 	/**
-	 * __construct
-	 *
 	 * Calls the parent class' contructor and adds a hook that will delete the
 	 * option that stores this widget's data when the plugin's delete all data
 	 * method is run.
@@ -70,8 +66,6 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 	}
 
 	/**
-	 * delete_option
-	 *
 	 * Deletes the option that stores this widget's data.
 	 *
 	 * @return void
@@ -100,7 +94,7 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 		}
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
-		// before and after widget arguments are defined by themes
+		// before and after widget arguments are defined by themes.
 		echo $args['before_widget'];
 		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
@@ -126,8 +120,6 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 	}
 
 	/**
-	 * form
-	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance
@@ -142,7 +134,7 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 		$image        = isset( $instance['image'] ) ? $instance['image'] : $image_keys[0];
 		$after_image  = isset( $instance['after_image'] ) ? $instance['after_image'] : '';
 
-		// Widget admin form
+		// Widget admin form.
 		?>
 		<p>
 		<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'inventory-presser' ); ?></label>
@@ -178,8 +170,6 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
 	 * @param  array $new_instance

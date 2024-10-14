@@ -15,8 +15,6 @@ class Inventory_Presser_Business_Day {
 	public $close_minute; // 0 - 59
 
 	/**
-	 * __construct
-	 *
 	 * Initializes all member variables to 0
 	 *
 	 * @return void
@@ -36,8 +34,6 @@ class Inventory_Presser_Business_Day {
 	}
 
 	/**
-	 * current_datetime
-	 *
 	 * Use WordPress current_time() to create a DateTime object
 	 *
 	 * @return void
@@ -47,8 +43,6 @@ class Inventory_Presser_Business_Day {
 	}
 
 	/**
-	 * is_tomorrow
-	 *
 	 * Is this day tomorrow?
 	 *
 	 * @return bool
@@ -60,8 +54,6 @@ class Inventory_Presser_Business_Day {
 	}
 
 	/**
-	 * open_in_some_fashion
-	 *
 	 * Does this day have any open hours?
 	 *
 	 * @return bool
@@ -71,8 +63,6 @@ class Inventory_Presser_Business_Day {
 	}
 
 	/**
-	 * open_later_today
-	 *
 	 * Is the business open later today even though it's closed now?
 	 *
 	 * @return bool
@@ -85,8 +75,6 @@ class Inventory_Presser_Business_Day {
 	}
 
 	/**
-	 * open_right_now
-	 *
 	 * Is the business open right now?
 	 *
 	 * @return bool
@@ -103,19 +91,15 @@ class Inventory_Presser_Business_Day {
 	}
 
 	/**
-	 * open_string
-	 *
 	 * A string that describes when the business opens on this day
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function open_string() {
 		return $this->time_string( $this->open_hour, $this->open_minute );
 	}
 
 	/**
-	 * time_string
-	 *
 	 * If the business is open at all on this day, what is that opening time in
 	 * a human-friendly format?
 	 *

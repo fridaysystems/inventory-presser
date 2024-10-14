@@ -117,6 +117,11 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 			return $content;
 		}
 
+		/**
+		 * Returns an array of WP Forms Smart Tags we support.
+		 *
+		 * @return array
+		 */
 		protected function tags() {
 			return array(
 				'invp_adf_vehicle' => __( 'ADF XML Vehicle', 'inventory-presser' ),

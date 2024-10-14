@@ -85,8 +85,6 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 	}
 
 	/**
-	 * form
-	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance
@@ -99,11 +97,11 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		// get all locations
 		$location_terms = get_terms( 'location', array( 'hide_empty' => false ) );
 
-		// set
+		// set.
 		if ( isset( $instance['cb_display'] ) ) {
 			$cb_display = $instance['cb_display'];
 		} else {
-			// majority of dealers will have one address, let's precheck it for them
+			// majority of dealers will have one address, let's precheck it for them.
 			if ( count( $location_terms ) == 1 ) {
 				$cb_display = array( $location_terms[0]->term_id );
 			} else {
@@ -116,7 +114,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 			. esc_html__( 'Select Addresses to Display', 'inventory-presser' )
 			. '</td></tr>';
 
-		// loop through each location, set up form
+		// loop through each location, set up form.
 		foreach ( $location_terms as $index => $term_object ) {
 			$address_checkbox = sprintf(
 				'<input id="%s" name="%s" value="%s" type="checkbox"%s>',
@@ -130,7 +128,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 
 		$address_table .= '</tbody></table>';
 
-		// Widget admin form
+		// Widget admin form.
 		?>
 		<p>
 		<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'inventory-presser' ); ?></label>
@@ -145,8 +143,6 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
 	 * @param  array $new_instance

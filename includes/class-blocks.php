@@ -12,7 +12,6 @@ class Inventory_Presser_Blocks {
 	 * Adds a block category to hold all our blocks
 	 *
 	 * @param  array                   $block_categories
-	 * @param  WP_Block_Editor_Context $block_editor_context
 	 * @return array
 	 */
 	public function add_category( $block_categories, $block_editor_context ) {
@@ -39,7 +38,7 @@ class Inventory_Presser_Blocks {
 	}
 
 	/**
-	 * register_block_types
+	 * Enqueues block editor assets
 	 *
 	 * Registers block types
 	 *
@@ -47,7 +46,7 @@ class Inventory_Presser_Blocks {
 	 */
 	function register_block_types() {
 		if ( ! function_exists( 'register_block_type' ) ) {
-			// running on WordPress < 5.0.0, no blocks for you
+			// running on WordPress < 5.0.0, no blocks for you.
 			return;
 		}
 

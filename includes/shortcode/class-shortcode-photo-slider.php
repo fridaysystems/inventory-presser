@@ -9,8 +9,6 @@ defined( 'ABSPATH' ) || exit;
 class Inventory_Presser_Shortcode_Photo_Slider {
 
 	/**
-	 * add
-	 *
 	 * Adds two shortcodes
 	 *
 	 * @return void
@@ -21,8 +19,6 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 	}
 
 	/**
-	 * hooks
-	 *
 	 * Adds hooks that power the shortcode
 	 *
 	 * @return void

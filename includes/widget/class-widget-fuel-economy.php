@@ -11,8 +11,6 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget {
 	const ID_BASE = '_invp_fuel_economy_widget';
 
 	/**
-	 * __construct
-	 *
 	 * Calls the parent class' contructor and adds a hook that will delete the
 	 * option that stores this widget's data when the plugin's delete all data
 	 * method is run.
@@ -21,8 +19,8 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 		parent::__construct(
-			self::ID_BASE, // Base ID
-			__( 'EPA Fuel Economy', 'inventory-presser' ), // Name
+			self::ID_BASE, // Base ID.
+			__( 'EPA Fuel Economy', 'inventory-presser' ), // Name.
 			array(
 				'description'           => __( 'MPG ratings for the current vehicle.', 'inventory-presser' ),
 				'show_instance_in_rest' => true,
@@ -33,8 +31,6 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget {
 	}
 
 	/**
-	 * delete_option
-	 *
 	 * Deletes the option that stores this widget's data.
 	 *
 	 * @return void
@@ -44,8 +40,6 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget {
 	}
 
 	/**
-	 * form
-	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance
@@ -65,8 +59,6 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget {
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
 	 * @param  array $new_instance

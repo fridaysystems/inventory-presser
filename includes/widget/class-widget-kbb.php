@@ -12,8 +12,6 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 	const ID_BASE = '_invp_kbb';
 
 	/**
-	 * images
-	 *
 	 * Creates an array of available images, but only contains one so far
 	 *
 	 * @return array
@@ -28,8 +26,6 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 	}
 
 	/**
-	 * __construct
-	 *
 	 * Calls the parent class' contructor and adds a hook that will delete the
 	 * option that stores this widget's data when the plugin's delete all data
 	 * method is run.
@@ -50,8 +46,6 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 	}
 
 	/**
-	 * delete_option
-	 *
 	 * Deletes the option that stores this widget's data.
 	 *
 	 * @return void
@@ -61,8 +55,6 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 	}
 
 	/**
-	 * widget
-	 *
 	 * Outputs the widget front-end HTML
 	 *
 	 * @param  array $args
@@ -75,7 +67,7 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 		$image      = ( isset( $instance['image'] ) && in_array( $instance['image'], $image_keys ) ) ? $instance['image'] : $image_keys[0];
 
 		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '' );
-		// before and after widget arguments are defined by themes
+		// before and after widget arguments are defined by themes.
 		echo $args['before_widget'];
 		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
@@ -96,8 +88,6 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 	}
 
 	/**
-	 * form
-	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance
@@ -148,8 +138,6 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
 	 * @param  array $new_instance

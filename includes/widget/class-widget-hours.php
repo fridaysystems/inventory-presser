@@ -11,8 +11,6 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 	const ID_BASE = '_invp_hours';
 
 	/**
-	 * __construct
-	 *
 	 * Calls the parent class' contructor and adds a hook that will delete the
 	 * option that stores this widget's data when the plugin's delete all data
 	 * method is run.
@@ -33,8 +31,6 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 	}
 
 	/**
-	 * delete_option
-	 *
 	 * Deletes the option that stores this widget's data.
 	 *
 	 * @return void
@@ -44,8 +40,6 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 	}
 
 	/**
-	 * widget
-	 *
 	 * Outputs the widget front-end HTML
 	 *
 	 * @param  array $args
@@ -65,7 +59,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		 */
 		$html = '';
 
-		// before and after widget arguments are defined by themes
+		// before and after widget arguments are defined by themes.
 		$html .= $args['before_widget'];
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
@@ -83,11 +77,11 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 			)
 		);
 
-		// loop through each location
+		// loop through each location.
 		foreach ( $location_info as $term_id => $name ) {
 			// Does this address even have hours displayed by this instance of this widget?
 			if ( empty( $instance['cb_display'][ $term_id ] ) ) {
-				// No
+				// No.
 				continue;
 			}
 
@@ -141,12 +135,12 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 				echo '<table>';
 
-				// output a row for each day
+				// output a row for each day.
 				$highlighted_a_row = false;
 				for ( $z = $start_of_week; $z < ( $start_of_week + 7 ); $z++ ) {
 					$i = ( $z > 6 ) ? $z - 7 : $z;
 
-					// do a check to make sure we want to output this row
+					// do a check to make sure we want to output this row.
 					$echo_row = false;
 
 					$open_by_appt = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_appt', true );
@@ -156,7 +150,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 					if ( ( 1 === $open_by_appt || ! empty( $open ) && ! empty( $close ) ) || $cb_showclosed ) {
 						$echo_row = true;
 					} elseif ( $i < 6 ) {
-						// check the remaining days, output current day if there are other displayed days following
+						// check the remaining days, output current day if there are other displayed days following.
 						for ( $r = ( $i + 1 ); $r < 7; $r++ ) {
 							$future_open_by_appt = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_appt', true );
 							$future_open         = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $r ) . '_open', true );
@@ -166,13 +160,13 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 								break;
 							}
 						}
-						// if there are no remaining days to display, break out of loop
+						// if there are no remaining days to display, break out of loop.
 						if ( ! $echo_row ) {
 							break;
 						}
 					}
 
-					// output row
+					// output row.
 					if ( $echo_row ) {
 						/**
 						 * Highlight this row if it's today and we have not
@@ -224,15 +218,13 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 				echo '</table>';
 			}
 		}
-		// Only output HTML here if $html has been emptied, that means it was echoed
+		// Only output HTML here if $html has been emptied, that means it was echoed.
 		if ( empty( $html ) ) {
 			echo '</div>' . $args['after_widget'];
 		}
 	}
 
 	/**
-	 * form
-	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance
@@ -242,7 +234,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		$cb_display = isset( $instance['cb_display'] ) ? $instance['cb_display'] : array();
 		$cb_title   = isset( $instance['cb_title'] ) ? $instance['cb_title'] : array();
 
-		// get all locations
+		// get all locations.
 		$location_info = get_terms(
 			'location',
 			array(
@@ -253,14 +245,14 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 		$hours_table = '<table><tbody>';
 
-		// loop through each location, set up form
+		// loop through each location, set up form.
 		foreach ( $location_info as $term_id => $name ) {
-			// Output a checkbox for every set of hours in this location
+			// Output a checkbox for every set of hours in this location.
 			for ( $h = 1; $h <= INVP::LOCATION_MAX_HOURS; $h++ ) {
 				// Are there hours in this slot?
 				$hours_uid = get_term_meta( $term_id, 'hours_' . $h . '_uid', true );
 				if ( ! $hours_uid ) {
-					// No, we're done with this location
+					// No, we're done with this location.
 					break;
 				}
 
@@ -306,7 +298,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 		$hours_table .= '</tbody></table>';
 
-		// Widget admin form
+		// Widget admin form.
 		$title = isset( $instance['title'] ) ? $instance['title'] : __( 'Hours', 'inventory-presser' );
 		?>
 		<p>
@@ -323,8 +315,6 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
 	 * @param  array $new_instance

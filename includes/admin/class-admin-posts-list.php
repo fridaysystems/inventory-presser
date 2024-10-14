@@ -14,8 +14,6 @@ defined( 'ABSPATH' ) || exit;
 class Inventory_Presser_Admin_Posts_List {
 
 	/**
-	 * add_columns_to_vehicles_table
-	 *
 	 * Adds slugs to the post table columns array so the dashboard list of
 	 * vehicles is more informative than the vanilla list for posts.
 	 *
@@ -30,7 +28,7 @@ class Inventory_Presser_Admin_Posts_List {
 		$column[ apply_filters( 'invp_prefix_meta_key', 'price' ) ]        = __( 'Price', 'inventory-presser' );
 		$column[ apply_filters( 'invp_prefix_meta_key', 'photo_count' ) ]  = __( 'Photos', 'inventory-presser' );
 		$column[ apply_filters( 'invp_prefix_meta_key', 'thumbnail' ) ]    = __( 'Thumbnail', 'inventory-presser' );
-		// remove the date and tags columns
+		// remove the date and tags columns.
 		unset( $column['date'] );
 		unset( $column['tags'] );
 		return $column;
@@ -96,6 +94,11 @@ class Inventory_Presser_Admin_Posts_List {
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 	}
 
+	/**
+	 * Enqueues a stylesheet for the list of vehicles in the dashboard.
+	 *
+	 * @return void
+	 */
 	public function scripts_and_styles() {
 		global $pagenow, $post_type;
 		if ( is_admin() && 'edit.php' === $pagenow && INVP::POST_TYPE === $post_type ) {
@@ -110,8 +113,6 @@ class Inventory_Presser_Admin_Posts_List {
 	}
 
 	/**
-	 * make_vehicles_table_columns_sortable
-	 *
 	 * Declares which of our custom columns on the list of posts are sortable.
 	 *
 	 * @param  array $columns
@@ -119,7 +120,7 @@ class Inventory_Presser_Admin_Posts_List {
 	 */
 	function make_vehicles_table_columns_sortable( $columns ) {
 		$custom = array(
-			// meta column id => sortby value used in query
+			// meta column id => sortby value used in query.
 			apply_filters( 'invp_prefix_meta_key', 'color' ) => apply_filters( 'invp_prefix_meta_key', 'color' ),
 			apply_filters( 'invp_prefix_meta_key', 'odometer' ) => apply_filters( 'invp_prefix_meta_key', 'odometer' ),
 			apply_filters( 'invp_prefix_meta_key', 'price' ) => apply_filters( 'invp_prefix_meta_key', 'price' ),
@@ -131,8 +132,6 @@ class Inventory_Presser_Admin_Posts_List {
 	}
 
 	/**
-	 * populate_columns_we_added_to_vehicles_table
-	 *
 	 * Populates the custom columns we added to the posts table in the
 	 * dashboard.
 	 *
@@ -166,8 +165,6 @@ class Inventory_Presser_Admin_Posts_List {
 	}
 
 	/**
-	 * vehicles_table_columns_orderbys
-	 *
 	 * Change the dashboard post query to sort based on a custom column we
 	 * added.
 	 *

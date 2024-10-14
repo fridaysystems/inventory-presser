@@ -61,7 +61,7 @@ if ( ! class_exists( 'Inventory_Presser_Addon' ) ) {
 					// is $settings_section an existing section?
 					global $wp_settings_sections;
 					if ( empty( $wp_settings_sections[ INVP::option_page() ][ $settings_section ] ) ) {
-						// no, abort
+						// no, abort.
 						return;
 					}
 
@@ -69,15 +69,15 @@ if ( ! class_exists( 'Inventory_Presser_Addon' ) ) {
 					$current_value = empty( $option[ $license_key_key_name ] ) ? '' : $option[ $license_key_key_name ];
 
 					add_settings_field(
-						$license_key_key_name, // id
-						__( 'License key', 'inventory-presser' ), // title
+						$license_key_key_name, // id.
+						__( 'License key', 'inventory-presser' ), // title.
 						function () use ( $option_name, $current_value, $license_key_key_name ) {
 							?><p><input type="text" name="<?php echo esc_attr( $option_name ); ?>[<?php echo esc_attr( $license_key_key_name ); ?>]" class="regular-text code" id="<?php echo esc_attr( $option_name ); ?>[<?php echo esc_attr( $license_key_key_name ); ?>]" value="<?php echo esc_attr( $current_value ); ?>" /></p>
 								<p class="description"><?php printf( '%s <a href="https://inventorypresser.com/">https://inventorypresser.com/</a> %s', esc_html__( 'Obtain a key at', 'inventory-presser' ), esc_html__( 'to receive plugin updates.', 'inventory-presser' ) ); ?></p>
 							<?php
 						}, // callback
-						INVP::option_page(), // page
-						$settings_section // section
+						INVP::option_page(), // page.
+						$settings_section // section.
 					);
 				},
 				20

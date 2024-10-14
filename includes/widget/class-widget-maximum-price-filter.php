@@ -24,8 +24,6 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	protected $price_defaults = array( 5000, 10000, 15000, 20000 );
 
 	/**
-	 * __construct
-	 *
 	 * Calls the parent class' contructor and adds a hook that will delete the
 	 * option that stores this widget's data when the plugin's delete all data
 	 * method is run.

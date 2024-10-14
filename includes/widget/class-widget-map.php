@@ -16,8 +16,6 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 	const SCRIPT_HANDLE_LEAFLET = 'invp-leaflet-widget';
 
 	/**
-	 * __construct
-	 *
 	 * Calls the parent class' contructor and adds a hook that will delete the
 	 * option that stores this widget's data when the plugin's delete all data
 	 * method is run.
@@ -38,8 +36,6 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 	}
 
 	/**
-	 * delete_option
-	 *
 	 * Deletes the option that stores this widget's data.
 	 *
 	 * @return void
@@ -49,8 +45,6 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 	}
 
 	/**
-	 * widget
-	 *
 	 * Outputs the widget front-end HTML
 	 *
 	 * @param  array $args
@@ -58,12 +52,12 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 	 * @return void
 	 */
 	public function widget( $args, $instance ) {
-		// abort if we don't have an address to show
+		// abort if we don't have an address to show.
 		if ( empty( $instance['location_slug'] ) ) {
 			return;
 		}
 
-		// abort if we do not have a mapbox.com API token
+		// abort if we do not have a mapbox.com API token.
 		$settings = INVP::settings();
 		if ( empty( $settings['mapbox_public_token'] ) ) {
 			return;
@@ -77,12 +71,12 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			)
 		);
 		if ( ! $location_terms ) {
-			// there are no dealership addresses stored in this site, abort
+			// there are no dealership addresses stored in this site, abort.
 			return;
 		}
 
 		if ( empty( $args['widget_id'] ) ) {
-			// Sometimes the widget ID is unavailable in stuff like Elementor
+			// Sometimes the widget ID is unavailable in stuff like Elementor.
 			$args['widget_id'] = '9999';
 		}
 
@@ -98,11 +92,11 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			 * widget on the same page.
 			 */
 			$popup->widget_id = $args['widget_id'];
-			// Location title/dealership name
+			// Location title/dealership name.
 			$popup->name = $location_terms[ $t ]->name;
-			// Address
+			// Address.
 			$popup->address = str_replace( "\r", '', str_replace( PHP_EOL, '<br />', $location_terms[ $t ]->description ) );
-			// Get the latitude and longitude coordinates for this address
+			// Get the latitude and longitude coordinates for this address.
 			$location = INVP::fetch_latitude_and_longitude( $location_terms[ $t ]->term_id );
 			if ( false !== $location ) {
 				$popup->coords      = new stdClass();
@@ -156,7 +150,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			}
 		}
 
-		// before and after widget arguments are defined by themes
+		// before and after widget arguments are defined by themes.
 		echo $args['before_widget'];
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
@@ -168,8 +162,6 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 	}
 
 	/**
-	 * form
-	 *
 	 * Outputs the widget settings form that is shown in the dashboard.
 	 *
 	 * @param  array $instance
@@ -197,7 +189,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			$location_slug = array( $location_slug );
 		}
 
-		// loop through each location, set up form
+		// loop through each location, set up form.
 		foreach ( $location_terms as $index => $term_object ) {
 			printf(
 				'<p><input id="%1$s" name="%2$s[]" value="%3$s" type="checkbox"%4$s> <label for="%1$s">%5$s</label></p>',
@@ -209,7 +201,7 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			);
 		}
 
-		// Only show this if the API key is missing
+		// Only show this if the API key is missing.
 		$settings = INVP::settings();
 		if ( empty( $settings['mapbox_public_token'] ) ) {
 			printf( '<p>%s</p>', esc_html__( 'An API token from mapbox.com is required for this widget to work. Obtain a key at mapbox.com and save it on the Inventory Presser Options page.', 'inventory-presser' ) );
@@ -217,8 +209,6 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
 	 * @param  array $new_instance

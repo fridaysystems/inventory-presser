@@ -115,7 +115,7 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 
 		$location_slug = isset( $instance['location_slug'] ) ? $instance['location_slug'] : '';
 
-		// loop through each location, set up form
+		// loop through each location, set up form.
 		foreach ( $location_terms as $index => $term_object ) {
 			printf(
 				'<p><input id="%1$s" name="%2$s" value="%3$s" type="radio"%4$s> <label for="%1$s">%5$s</label></p>',
@@ -129,8 +129,6 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 	}
 
 	/**
-	 * update
-	 *
 	 * Saves the widget settings when a dashboard user clicks the Save button.
 	 *
 	 * @param  array $new_instance

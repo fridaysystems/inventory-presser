@@ -175,22 +175,22 @@ class Inventory_Presser_Photo_Numberer {
 		// Does this photo already have a sequence number?
 		if ( null === $sequence_number ) {
 			if ( ! empty( INVP::get_meta( 'photo_number', $post_id ) ) ) {
-				// Yes
+				// Yes.
 				return;
 			}
 
 			// Is the number in the slug?
-			// photo-5-of-19-of-vinsgsdkdkdkgf
+			// photo-5-of-19-of-vinsgsdkdkdkgf.
 			$number = 0;
 			if ( ! empty( $_POST['slug'] ) && preg_match( '/photo\-([0-9]+)\-of\-[0-9]+\-of\-.*/', $_POST['slug'], $matches ) ) {
 				$number = intval( $matches[1] );
 			} else {
-				// Append the photo to the end
+				// Append the photo to the end.
 				// This hook fires after the attachment is added.
 				// How many photos does this vehicle have?
 				$number = invp_get_the_photo_count( $parent_post_id );
 				if ( 1 == $number ) {
-					// This is photo number 1, it should be the featured image
+					// This is photo number 1, it should be the featured image.
 					set_post_thumbnail( $parent_post_id, $post_id );
 				}
 			}
@@ -204,13 +204,11 @@ class Inventory_Presser_Photo_Numberer {
 	}
 
 	/**
-	 * save_meta_vin
-	 *
 	 * Saves the vehicle VIN in attachment meta when an attachment is uploaded
 	 * to a vehicle post.
 	 *
 	 * @param  int $post_id
-	 * @param  int $attachment
+	 * @param  int $parent_post_id
 	 * @return void
 	 */
 	protected static function save_meta_vin( $post_id, $parent_post_id ) {
