@@ -157,7 +157,7 @@ class INVP {
 			$taxonomy_name = str_replace( '-', '_', $taxonomy );
 			$terms         = $wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy IN ('%s') ORDER BY t.name ASC",
+					"SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy IN ( %s ) ORDER BY t.name ASC",
 					$taxonomy_name
 				)
 			);
