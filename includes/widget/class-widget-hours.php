@@ -51,7 +51,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 			return;
 		}
 
-		$cb_showclosed = ( isset( $instance['cb_showclosed'] ) && $instance['cb_showclosed'] == 'true' );
+		$cb_showclosed = ( isset( $instance['cb_showclosed'] ) && 'true' === $instance['cb_showclosed'] );
 
 		/**
 		 * Hold the HTML that begins the widget until we're sure we're going to
