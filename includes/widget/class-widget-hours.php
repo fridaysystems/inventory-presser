@@ -143,7 +143,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 					// do a check to make sure we want to output this row.
 					$echo_row = false;
 
-					$open_by_appt = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_appt', true );
+					$open_by_appt = (int) get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_appt', true );
 					$open         = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_open', true );
 					$close        = get_term_meta( $term_id, 'hours_' . $h . '_' . INVP::weekdays( $i ) . '_close', true );
 

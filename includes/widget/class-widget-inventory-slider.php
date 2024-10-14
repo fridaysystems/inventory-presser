@@ -213,7 +213,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 	public function form( $instance ) {
 
 		$title     = isset( $instance['title'] ) ? $instance['title'] : '';
-		$showcount = isset( $instance['showcount'] ) ? $instance['showcount'] : 3;
+		$showcount = (int) isset( $instance['showcount'] ) ? $instance['showcount'] : 3;
 
 		$featured_select_slugs = array_keys( $this->featured_select_options() );
 		$featured_select       = isset( $instance['featured_select'] ) ? $instance['featured_select'] : $featured_select_slugs[0];
