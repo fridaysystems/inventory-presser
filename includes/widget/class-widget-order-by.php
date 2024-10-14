@@ -160,7 +160,7 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 			if ( isset( $_REQUEST[ 'obpm-key-' . $key ] ) ) {
 				array_push( $keys, $key );
 				if ( isset( $_REQUEST[ 'obpm-label-' . $key ] ) ) {
-					$instance[ 'label-' . $key ] = wp_strip_all_tags( $_REQUEST[ 'obpm-label-' . $key ] );
+					$instance[ 'label-' . $key ] = wp_strip_all_tags( wp_unslash( $_REQUEST[ 'obpm-label-' . $key ] ) );
 				}
 			} else {
 				unset( $instance[ 'label-' . $key ] );
