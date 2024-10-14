@@ -47,7 +47,7 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 		 * @return string
 		 */
 		protected function adf_vehicle_xml() {
-			$form_post_id = intval( $_POST['wpforms']['id'] );
+			$form_post_id = intval( $_POST['wpforms']['id'] ?? '' );
 			$fields       = wpforms_get_form_fields( $form_post_id );
 
 			$field_id = 0;
@@ -63,7 +63,7 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 				return '';
 			}
 
-			$value   = sanitize_text_field( $_POST['wpforms']['fields'][ $field_id ] );
+			$value   = sanitize_text_field( wp_unslash( $_POST['wpforms']['fields'][ $field_id ] ?? '' ) );
 			$post_id = $this->extract_post_id_from_value( $value );
 
 			if ( empty( $post_id ) ) {

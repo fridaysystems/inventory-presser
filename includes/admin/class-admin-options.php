@@ -882,11 +882,11 @@ class Inventory_Presser_Admin_Options {
 			return;
 		}
 
-		if ( ! wp_verify_nonce( $_GET['_wpnonce'], self::QUERY_VAR_MANAGE_VEHICLES ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), self::QUERY_VAR_MANAGE_VEHICLES ) ) {
 			return;
 		}
 
-		$action = sanitize_text_field( $_GET[ self::QUERY_VAR_MANAGE_VEHICLES ] );
+		$action = sanitize_text_field( wp_unslash( $_GET[ self::QUERY_VAR_MANAGE_VEHICLES ] ) );
 		switch ( $action ) {
 			case 'delete_all_vehicles':
 				INVP::delete_all_inventory();

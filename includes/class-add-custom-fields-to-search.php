@@ -35,7 +35,7 @@ if ( ! class_exists( 'Add_Custom_Fields_To_Search' ) ) {
 		 * @return bool
 		 */
 		protected function is_media_library() {
-			return 'upload.php' === basename( $_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING'] );
+			return 'upload.php' === basename( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ), '?' . sanitize_text_field( wp_unslash( $_SERVER['QUERY_STRING'] ?? '' ) ) );
 		}
 
 		/**

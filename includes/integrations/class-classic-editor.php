@@ -228,11 +228,11 @@ class Inventory_Presser_Classic_Editor {
 	 * @return void
 	 */
 	public function delete_all_post_attachments() {
-		if ( empty( $_POST['_ajax_nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['_ajax_nonce'] ), self::NONCE_DELETE_ALL_MEDIA ) ) {
+		if ( empty( $_POST['_ajax_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_nonce'] ) ), self::NONCE_DELETE_ALL_MEDIA ) ) {
 			return;
 		}
 
-		$post_id = isset( $_POST['post_ID'] ) ? wp_unslash( $_POST['post_ID'] ) : 0;
+		$post_id = isset( $_POST['post_ID'] ) ? sanitize_text_field( wp_unslash( $_POST['post_ID'] ) ) : 0;
 
 		if ( ! isset( $post_id ) ) {
 			return;

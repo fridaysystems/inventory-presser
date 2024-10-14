@@ -483,7 +483,7 @@ class Inventory_Presser_Taxonomies {
 			return;
 		}
 
-		$term_slug = sanitize_text_field( $_POST[ $element_name ] );
+		$term_slug = sanitize_text_field( wp_unslash( $_POST[ $element_name ] ) );
 		if ( '' === $term_slug ) {
 			// the user is setting the vehicle type to empty string.
 			wp_remove_object_terms( $post_id, self::get_term_slug( $taxonomy_name, $post_id ), $taxonomy_name );

@@ -182,7 +182,7 @@ class Inventory_Presser_Photo_Numberer {
 			// Is the number in the slug?
 			// photo-5-of-19-of-vinsgsdkdkdkgf.
 			$number = 0;
-			if ( ! empty( $_POST['slug'] ) && preg_match( '/photo\-([0-9]+)\-of\-[0-9]+\-of\-.*/', $_POST['slug'], $matches ) ) {
+			if ( ! empty( $_POST['slug'] ) && preg_match( '/photo\-([0-9]+)\-of\-[0-9]+\-of\-.*/', sanitize_text_field( wp_unslash( $_POST['slug'] ) ), $matches ) ) {
 				$number = intval( $matches[1] );
 			} else {
 				// Append the photo to the end.

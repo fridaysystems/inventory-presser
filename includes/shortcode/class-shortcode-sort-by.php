@@ -119,8 +119,8 @@ class Inventory_Presser_Shortcode_Sort_By {
 		);
 
 		$plugin_settings  = INVP::settings();
-		$current_sort_key = isset( $_GET['orderby'] ) ? $_GET['orderby'] : ( isset( $plugin_settings['sort_vehicles_by'] ) ? $plugin_settings['sort_vehicles_by'] : '' );
-		$current_sort_dir = isset( $_GET['order'] ) ? $_GET['order'] : ( isset( $plugin_settings['sort_vehicles_order'] ) ? $plugin_settings['sort_vehicles_order'] : '' );
+		$current_sort_key = isset( $_GET['orderby'] ) ? sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) : ( isset( $plugin_settings['sort_vehicles_by'] ) ? $plugin_settings['sort_vehicles_by'] : '' );
+		$current_sort_dir = isset( $_GET['order'] ) ? sanitize_text_field( wp_unslash( $_GET['order'] ) ) : ( isset( $plugin_settings['sort_vehicles_order'] ) ? $plugin_settings['sort_vehicles_order'] : '' );
 
 		if ( ! empty( $current_sort_key ) ) {
 			$without_prefix = apply_filters( 'invp_unprefix_meta_key', $current_sort_key );

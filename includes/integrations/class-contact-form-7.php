@@ -303,7 +303,7 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 				$html .= sprintf(
 					'<option value="%s" %s>%s %s %s',
 					esc_attr( $this->prepare_value( $post_id ) ),
-					isset( $_REQUEST['v'] ) ? selected( $post_id, $_REQUEST['v'], false ) : '',
+					isset( $_REQUEST['v'] ) ? selected( $post_id, sanitize_text_field( wp_unslash( $_REQUEST['v'] ) ), false ) : '',
 					esc_html( $meta[ apply_filters( 'invp_prefix_meta_key', 'year' ) ][0] ),
 					esc_html( $meta[ apply_filters( 'invp_prefix_meta_key', 'make' ) ][0] ),
 					esc_html( $meta[ apply_filters( 'invp_prefix_meta_key', 'model' ) ][0] )
