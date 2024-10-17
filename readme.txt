@@ -57,6 +57,11 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 1. Design your own pages using [post meta fields](https://inventorypresser.com/docs/vehicle-post-type/) or [Elementor Dynamic Tags](https://inventorypresser.com/products/plugins/elementor-add-on/)
 1. Decide how to [manage inventory updates](https://inventorypresser.com/docs/adding-or-importing-inventory/)
 
+### Downloads
+
+ * [https://downloads.wordpress.org/plugin/inventory-presser.14.16.3.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.16.3.zip)
+
+
 ### Requires 5.0.0
 
 This plugin uses a few features that were launched in WordPress 5.0.0, including an Editor Sidebar and `wp_add_inline_script()` calls without sources.

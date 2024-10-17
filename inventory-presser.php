@@ -21,6 +21,7 @@ defined( 'ABSPATH' ) || exit;
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * GitHub Plugin URI: https://github.com/fridaysystems/inventory-presser
  * Primary Branch: main
+ * Download URI: https://downloads.wordpress.org/plugin/inventory-presser.14.16.3.zip
  */
 
 if ( ! defined( 'INVP_PLUGIN_BASE' ) ) {
