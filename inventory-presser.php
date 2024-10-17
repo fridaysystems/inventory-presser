@@ -1246,6 +1246,31 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						)
 					) . ';'
 				);
+
+				// Register a script for our blocks.
+				$asset_file = include plugin_dir_path( INVP_PLUGIN_FILE_PATH ) . 'build/index.asset.php';
+				wp_register_script(
+					'invp-blocks',
+					plugins_url( 'build/index.js', INVP_PLUGIN_FILE_PATH ),
+					$asset_file['dependencies'],
+					$asset_file['version'],
+					true
+				);
+				// Provide the vehicle post type meta keys and prefix to JavaScript.
+				wp_add_inline_script(
+					'invp-blocks',
+					'const invp_blocks = ' . wp_json_encode(
+						array(
+							'currency_symbol'             => INVP::currency_symbol(),
+							'keys'                        => INVP::keys_and_types(),
+							'meta_prefix'                 => INVP::meta_prefix(),
+							'odometer_word'               => apply_filters( 'invp_odometer_word', __( 'Miles', 'inventory-presser' ) ),
+							'use_carfax'                  => $settings['use_carfax'],
+							'use_carfax_provided_buttons' => $settings['use_carfax_provided_buttons'],
+						)
+					),
+					'before'
+				);
 			}
 
 			/**
