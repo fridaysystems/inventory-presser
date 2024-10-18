@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.6.2
 Requires PHP: 7.0.0
-Stable tag: 14.16.3
+Stable tag: 14.17.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,7 +59,7 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.14.16.3.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.16.3.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.0.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.0.zip)
 
 
 ### Requires 5.0.0
@@ -95,6 +95,12 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 14.17.0 =
+* [Added] Adds blocks for Down Payment, Make, Model, MSRP, Odometer, Payment, Price, Stock Number, Title Status, Transmission Speeds, Trim Level, VIN, Year, and YouTube Video ID.
+* [Added] Adds a block called Year, Make, Model, and Trim that outputs those meta fields in an H1.
+* [Fixed] Fixes a number of blocks that were broken, including Beam, Body Style, Color, Engine, Interior Color, Last Modified, Length, and Odometer.
+* [Fixed] Fixes bugs in handling input and output. Escapes more strings before output. Sanitizes more input values before they are used.
 
 = 14.16.3 =
 * [Fixed] Fixes a bug in the [invp_archive] shortcode that prevented orderby and order query parameters from changing the order of vehicles.
@@ -197,6 +203,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.17.0 =
+Adds blocks for Down Payment, Make, Model, MSRP, Odometer, Payment, Price, Stock Number, Title Status, Transmission Speeds, Trim Level, VIN, Year, and YouTube Video ID. Adds a block called Year, Make, Model, and Trim that outputs those meta fields in an H1. Fixes a number of blocks that were broken, including Beam, Body Style, Color, Engine, Interior Color, Last Modified, Length, and Odometer. Fixes bugs in handling input and output. Escapes more strings before output. Sanitizes more input values before they are used.
 
 = 14.16.3 =
 Fixes a bug in the [invp_archive] shortcode that prevented orderby and order query parameters from changing the order of vehicles. Fixes a bug in the [invp_sort_by] shortcode that prevented it from working on any page other than an inventory_vehicle post type archive. Bug fixes in the REST API class. Stops assuming posts_per_page and paged will be defined in the query params. Changes tested up to version number to 6.6.2.
