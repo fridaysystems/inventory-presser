@@ -47,7 +47,7 @@ function isNumeric(n) {
 function formatValue( key, value ) {
 	if ( 'odometer' === key ) {
 		if ( isNumeric( value ) ) {
-			return Number( value ).toLocaleString() + ' ' + invp_blocks.odometer_word;
+			return Number( value ).toLocaleString() + ' ' + invp_blocks.odometer_units;
 		}
 		return value;
 	}
@@ -118,7 +118,7 @@ for ( const key of invp_blocks.keys ) {
 				 */
 				if ( ! isSelected ) {
 					// Do not show the input field when the block is not selected.
-					return ( <span> { formatValue( key['name'], meta[ invp_blocks.meta_prefix + key['name'] ] ) } </span> ); //
+					return ( <span> { formatValue( key['name'], meta[ invp_blocks.meta_prefix + key['name'] ] ) } </span> );
 				}
 
 				return (

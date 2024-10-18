@@ -105,6 +105,6 @@ class Inventory_Presser_Blocks {
 		} else {
 			$value = INVP::get_meta( $block_attributes['key'] );
 		}
-		return sprintf( '<span %s>%s</span>', get_block_wrapper_attributes(), $value );
+		return sprintf( '<span %s>%s</span>', wp_kses_data( get_block_wrapper_attributes() ), $value );
 	}
 }

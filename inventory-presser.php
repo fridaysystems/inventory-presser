@@ -1264,7 +1264,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							'currency_symbol'             => INVP::currency_symbol(),
 							'keys'                        => INVP::keys_and_types(),
 							'meta_prefix'                 => INVP::meta_prefix(),
-							'odometer_word'               => apply_filters( 'invp_odometer_word', __( 'Miles', 'inventory-presser' ) ),
+							'odometer_units'              => apply_filters( 'invp_odometer_word', __( 'Miles', 'inventory-presser' ) ),
 							'use_carfax'                  => $settings['use_carfax'],
 							'use_carfax_provided_buttons' => $settings['use_carfax_provided_buttons'],
 						)
