@@ -58,6 +58,8 @@ class Inventory_Presser_Blocks {
 			return;
 		}
 
+		register_block_type( dirname( INVP_PLUGIN_FILE_PATH ) . '/build/blocks/year-make-model-and-trim' );
+
 		// These are meta keys that can be managed by a simple text box.
 		$simple_meta_keys = array(
 			'body_style',
