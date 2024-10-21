@@ -22,18 +22,42 @@ class Inventory_Presser_Site_Health {
 	}
 
 	/**
+	 * When the tests defined in this class are performed, do they produce
+	 * results with statuses of "recommended"?
+	 *
+	 * @return bool
+	 */
+	public function have_recommendations() {
+		$tests = $this->site_status_add_tests( array() );
+		foreach ( $tests['direct'] as $test => $data ) {
+			if ( method_exists( $this, $data['test'][1] ) && is_callable( $data['test'] ) ) {
+				$results[] = call_user_func( $data['test'] );
+			}
+		}
+		return in_array( 'recommended', array_column( $results, 'status' ), true );
+	}
+
+	/**
 	 * Adds our tests to the array of tests.
 	 *
 	 * @param  array $tests
 	 * @return array
 	 */
 	public function site_status_add_tests( $tests ) {
-		// Are media files organized into year/month folders?
+		// Can the user change options like Media settings and permalinks?
 		if ( current_user_can( 'manage_options' ) ) {
 			// Yes.
+
+			// Add a test for media folders.
 			$tests['direct']['invp_media_folders'] = array(
 				'label' => __( 'Inventory Presser', 'inventory-presser' ),
 				'test'  => array( $this, 'site_status_media_folders_result' ),
+			);
+
+			// Add a test for plain permalinks.
+			$tests['direct']['invp_plain_permalinks'] = array(
+				'label' => __( 'Inventory Presser', 'inventory-presser' ),
+				'test'  => array( $this, 'site_status_plain_permalinks_result' ),
 			);
 		}
 		return $tests;
@@ -45,7 +69,9 @@ class Inventory_Presser_Site_Health {
 	 * @return array
 	 */
 	public function site_status_media_folders_result() {
+		// Are media files organized into year/month folders?
 		if ( '1' === get_option( 'uploads_use_yearmonth_folders' ) ) {
+			// Yes.
 			return array(
 				'label'       => __( 'Consider storing vehicle photos in a single folder', 'inventory-presser' ),
 				'status'      => 'recommended',
@@ -74,6 +100,46 @@ class Inventory_Presser_Site_Health {
 			),
 			'actions'     => '',
 			'test'        => 'invp_media_folders',
+		);
+	}
+
+	/**
+	 * Performs the plain permalinks test and returns the result array.
+	 *
+	 * @return array
+	 */
+	public function site_status_plain_permalinks_result() {
+		// Is the permalink structure empty?
+		if ( '' === get_option( 'permalink_structure' ) ) {
+			// Yes.
+			return array(
+				'label'       => __( 'Consider using pretty permalinks', 'inventory-presser' ),
+				'status'      => 'recommended',
+				'badge'       => array(
+					'label' => __( 'Inventory Presser', 'inventory-presser' ),
+					'color' => 'blue',
+				),
+				'description' => sprintf(
+					'<p>%s</p>',
+					__( 'No permalink structure has been chosen at Settings → Permalinks. This means the default vehicle archive is located at /?post_type=inventory_vehicle rather than /inventory.', 'inventory-presser' )
+				),
+				'actions'     => '',
+				'test'        => 'invp_plain_permalinks',
+			);
+		}
+		return array(
+			'label'       => __( 'Permalink structure allows default vehicle archive at /inventory', 'inventory-presser' ),
+			'status'      => 'good',
+			'badge'       => array(
+				'label' => __( 'Inventory Presser', 'inventory-presser' ),
+				'color' => 'blue',
+			),
+			'description' => sprintf(
+				'<p>%s</p>',
+				__( 'A permalink structure has been defined at Settings → Permalinks that allows the default vehicle archive to be located at /inventory.', 'inventory-presser' )
+			),
+			'actions'     => '',
+			'test'        => 'invp_plain_permalinks',
 		);
 	}
 }

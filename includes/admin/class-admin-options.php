@@ -1018,6 +1018,18 @@ class Inventory_Presser_Admin_Options {
 		<?php
 		settings_errors();
 
+		// Can the user change options like Media settings and permalinks?
+		if ( current_user_can( 'manage_options' ) ) {
+			// Are we adding recommendations to the Site Health report?
+			$invp_site_health = new Inventory_Presser_Site_Health();
+			if ( $invp_site_health->have_recommendations() ) {
+				// Yes. Add an admin notice drawing attention to Site Health.
+				printf(
+					'<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
+					esc_html__( 'Site settings can be improved. Visit Tools → Site Health and look for Inventory Presser recommendations.', 'inventory-presser' )
+				);
+			}
+		}
 		?>
 		<form method="post" action="options.php">
 		<?php
