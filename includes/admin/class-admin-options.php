@@ -307,6 +307,20 @@ class Inventory_Presser_Admin_Options {
 					</tr>
 				</thead>
 				<tbody>
+					<tr>
+						<td class="active"><input type="checkbox" checked="checked" disabled="disabled" /></td>
+						<td>
+							<?php
+							$uri = get_post_type_archive_link( INVP::POST_TYPE );
+							printf(
+								'<span class="item"><label>%1$s</label><label><a href="%2$s">%2$s</a></label></span>',
+								esc_html__( 'URL', 'inventory-presser' ),
+								esc_url( $uri )
+							);
+							?>
+						</td>
+						<td><a href="<?php echo esc_url( $uri ); ?>" class="button action" title="<?php esc_attr__( 'View this page', 'inventory-presser' ); ?>"><span class="dashicons dashicons-welcome-view-site"></span></a></td>
+					</tr>
 				<?php
 
 				// output a row for each saved additional listing page + one blank.
