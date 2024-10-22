@@ -170,7 +170,7 @@ function invp_get_the_carfax_url_report( $post_ID = null ) {
 	 * Fallback to the pre-August-2019 URLs, save for the partner
 	 * querystring parameter.
 	 */
-	return 'https://www.carfax.com/VehicleHistory/p/Report.cfx?vin=' . invp_get_the_VIN();
+	return 'https://www.carfax.com/VehicleHistory/p/Report.cfx?vin=' . invp_get_the_VIN( $post_ID );
 }
 
 /**
@@ -559,7 +559,7 @@ function invp_get_the_last_modified( $post_ID = null ) {
 	$time_format = get_option( 'time_format' );
 
 	// Mon, 25 Apr 2022 01:45:46 -0400.
-	$date = DateTime::createFromFormat( 'D, d M Y h:i:s O', invp_get_raw_last_modified() );
+	$date = DateTime::createFromFormat( 'D, d M Y h:i:s O', invp_get_raw_last_modified( $post_ID ) );
 
 	if ( ! $date ) {
 		return '';
@@ -800,7 +800,11 @@ function invp_get_the_msrp( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_odometer( $append = '', $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
 	$raw = INVP::get_meta( 'odometer', $post_ID );
+
 	if ( '0' === $raw ) {
 		return apply_filters( 'invp_get_the_odometer', '', $post_ID );
 	}
