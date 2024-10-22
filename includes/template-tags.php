@@ -18,9 +18,6 @@ defined( 'ABSPATH' ) || exit;
  * @return string
  */
 function invp_get_the_availability( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'availability', $post_ID );
 }
 
@@ -31,9 +28,6 @@ function invp_get_the_availability( $post_ID = null ) {
  * @return double
  */
 function invp_get_the_beam( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'beam', $post_ID );
 }
 
@@ -44,9 +38,6 @@ function invp_get_the_beam( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_body_style( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'body_style', $post_ID );
 }
 
@@ -58,9 +49,6 @@ function invp_get_the_body_style( $post_ID = null ) {
  * @return double
  */
 function invp_get_raw_book_value( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	$raw_kbb  = INVP::get_meta( 'book_value_kbb', $post_ID );
 	$raw_nada = INVP::get_meta( 'book_value_nada', $post_ID );
 	return max( $raw_nada, $raw_kbb );
@@ -74,9 +62,6 @@ function invp_get_raw_book_value( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_book_value( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::currency_symbol() . number_format( invp_get_raw_book_value( $post_ID ), 0, '.', ',' );
 }
 
@@ -88,10 +73,6 @@ function invp_get_the_book_value( $post_ID = null ) {
  * @return string HTML that renders a Carfax button or empty string
  */
 function invp_get_the_carfax_icon_html( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	// Does this vehicle have a Carfax-eligible VIN?
 	if ( strlen( invp_get_the_VIN( $post_ID ) ) !== 17 || invp_get_the_year( $post_ID ) < 1980 ) {
 		return '';
@@ -127,10 +108,6 @@ function invp_get_the_carfax_icon_html( $post_ID = null ) {
  * @return string A URL to an SVG image or empty string
  */
 function invp_get_the_carfax_url_svg( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	$url = INVP::get_meta( 'carfax_url_icon', $post_ID );
 
 	/**
@@ -157,10 +134,6 @@ function invp_get_the_carfax_url_svg( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_carfax_url_report( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	$raw = INVP::get_meta( 'carfax_url_report', $post_ID );
 	if ( ! empty( $raw ) ) {
 		return $raw;
@@ -180,9 +153,6 @@ function invp_get_the_carfax_url_report( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_color( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'color', $post_ID );
 }
 
@@ -193,9 +163,6 @@ function invp_get_the_color( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_condition( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'condition', $post_ID );
 }
 
@@ -206,9 +173,6 @@ function invp_get_the_condition( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_condition_boat( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'condition_boat', $post_ID );
 }
 
@@ -219,9 +183,6 @@ function invp_get_the_condition_boat( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_dealer_id( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'dealer_id', $post_ID );
 }
 
@@ -232,9 +193,6 @@ function invp_get_the_dealer_id( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_description( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'description', $post_ID );
 }
 
@@ -245,9 +203,6 @@ function invp_get_the_description( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_doors( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	$value = INVP::get_meta( 'doors', $post_ID );
 	return 0 === (int) $value ? '' : $value;
 }
@@ -259,10 +214,6 @@ function invp_get_the_doors( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_down_payment( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	$down_payment = INVP::get_meta( 'down_payment', $post_ID );
 	if ( empty( $down_payment ) ) {
 		return '';
@@ -278,9 +229,6 @@ function invp_get_the_down_payment( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_draft( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'draft', $post_ID );
 }
 
@@ -292,9 +240,6 @@ function invp_get_the_draft( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_drive_type( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'drive_type', $post_ID );
 }
 
@@ -305,9 +250,6 @@ function invp_get_the_drive_type( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_edmunds_style_id( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'edmunds_style_id', $post_ID );
 }
 
@@ -318,9 +260,6 @@ function invp_get_the_edmunds_style_id( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_engine( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'engine', $post_ID );
 }
 
@@ -331,9 +270,6 @@ function invp_get_the_engine( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_engine_count( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'engine_count', $post_ID );
 }
 
@@ -344,9 +280,6 @@ function invp_get_the_engine_count( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_engine_make( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'engine_make', $post_ID );
 }
 
@@ -357,9 +290,6 @@ function invp_get_the_engine_make( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_engine_model( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'engine_model', $post_ID );
 }
 
@@ -370,9 +300,6 @@ function invp_get_the_engine_model( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_fuel( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'fuel', $post_ID );
 }
 
@@ -385,10 +312,6 @@ function invp_get_the_fuel( $post_ID = null ) {
  * @return string The meta value string corresponding to the provided $key or empty string.
  */
 function invp_get_the_fuel_economy_value( $key, $fuel_type = 1, $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	/**
 	 * The meta key fuel_economy_five_year_savings does not apply to either fuel
 	 * type, so ignore $fuel_type when this key is passed.
@@ -407,9 +330,6 @@ function invp_get_the_fuel_economy_value( $key, $fuel_type = 1, $post_ID = null 
  * @return string
  */
 function invp_get_the_horsepower( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'horsepower', $post_ID );
 }
 
@@ -420,9 +340,6 @@ function invp_get_the_horsepower( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_hull_material( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'hull_material', $post_ID );
 }
 
@@ -433,9 +350,6 @@ function invp_get_the_hull_material( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_interior_color( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'interior_color', $post_ID );
 }
 
@@ -536,9 +450,6 @@ function invp_get_the_inventory_sentence() {
  * @return string
  */
 function invp_get_raw_last_modified( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'last_modified', $post_ID );
 }
 
@@ -551,10 +462,6 @@ function invp_get_raw_last_modified( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_last_modified( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	$date_format = get_option( 'date_format' );
 	$time_format = get_option( 'time_format' );
 
@@ -575,9 +482,6 @@ function invp_get_the_last_modified( $post_ID = null ) {
  * @return int
  */
 function invp_get_the_length( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'length', $post_ID );
 }
 
@@ -739,9 +643,6 @@ function invp_get_the_location_zip( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_make( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'make', $post_ID );
 }
 
@@ -752,9 +653,6 @@ function invp_get_the_make( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_model( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'model', $post_ID );
 }
 
@@ -778,10 +676,6 @@ function invp_get_raw_msrp( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_msrp( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	$msrp = INVP::get_meta( 'msrp', $post_ID );
 	if ( empty( $msrp ) ) {
 		return '';
@@ -834,10 +728,6 @@ function invp_get_the_odometer( $append = '', $post_ID = null ) {
  * @return array An array of vehicle options
  */
 function invp_get_the_options( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	$raw = INVP::get_meta( 'options_array', $post_ID );
 	if ( empty( $raw ) ) {
 		return array();
@@ -853,10 +743,6 @@ function invp_get_the_options( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_payment( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	if ( invp_is_sold( $post_ID ) ) {
 		return '';
 	}
@@ -876,9 +762,6 @@ function invp_get_the_payment( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_payment_frequency( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'payment_frequency', $post_ID );
 }
 
@@ -1225,9 +1108,6 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
  * @return string
  */
 function invp_get_the_stock_number( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'stock_number', $post_ID );
 }
 
@@ -1238,9 +1118,6 @@ function invp_get_the_stock_number( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_title_status( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'title_status', $post_ID );
 }
 
@@ -1251,9 +1128,6 @@ function invp_get_the_title_status( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_transmission( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	$raw = INVP::get_meta( 'transmission', $post_ID );
 
 	/**
@@ -1286,9 +1160,6 @@ function invp_get_the_transmission( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_transmission_speeds( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'transmission_speeds', $post_ID );
 }
 
@@ -1299,9 +1170,6 @@ function invp_get_the_transmission_speeds( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_trim( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'trim', $post_ID );
 }
 
@@ -1312,9 +1180,6 @@ function invp_get_the_trim( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_type( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'type', $post_ID );
 }
 
@@ -1325,9 +1190,6 @@ function invp_get_the_type( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_VIN( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'vin', $post_ID );
 }
 
@@ -1338,9 +1200,6 @@ function invp_get_the_VIN( $post_ID = null ) {
  * @return string
  */
 function invp_get_the_year( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return INVP::get_meta( 'year', $post_ID );
 }
 
@@ -1351,10 +1210,6 @@ function invp_get_the_year( $post_ID = null ) {
  * @return string This vehicle's YouTube URL or empty string
  */
 function invp_get_the_youtube_url( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	$video_id = INVP::get_meta( 'youtube', $post_ID );
 	if ( empty( $video_id ) ) {
 		return '';
@@ -1370,10 +1225,6 @@ function invp_get_the_youtube_url( $post_ID = null ) {
  * @return bool
  */
 function invp_have_carfax_report( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	return ! empty( INVP::get_meta( 'carfax_have_report', $post_ID ) );
 }
 
@@ -1384,9 +1235,6 @@ function invp_have_carfax_report( $post_ID = null ) {
  * @return bool True if this vehicle's type is boat.
  */
 function invp_is_boat( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return 'boat' === strtolower( invp_get_the_type( $post_ID ) );
 }
 
@@ -1397,10 +1245,6 @@ function invp_is_boat( $post_ID = null ) {
  * @return bool True if this vehicle is designated as a "one owner" by Carfax
  */
 function invp_is_carfax_one_owner( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	return ! empty( INVP::get_meta( 'carfax_one_owner', $post_ID ) );
 }
 
@@ -1411,10 +1255,6 @@ function invp_is_carfax_one_owner( $post_ID = null ) {
  * @return bool True if this vehicle is certified pre-owned
  */
 function invp_is_certified_preowned( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
-
 	return ! empty( INVP::get_meta( 'certified_preowned', $post_ID ) );
 }
 
@@ -1425,9 +1265,6 @@ function invp_is_certified_preowned( $post_ID = null ) {
  * @return bool
  */
 function invp_is_featured( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return ! empty( INVP::get_meta( 'featured', $post_ID ) );
 }
 
@@ -1451,9 +1288,6 @@ function invp_is_pending( $post_ID = null ) {
  * @return bool
  */
 function invp_is_sold( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return false !== strpos( strtolower( INVP::get_meta( 'availability', $post_ID ) ) ?? '', 'sold' );
 }
 
@@ -1477,8 +1311,5 @@ function invp_is_used( $post_ID = null ) {
  * @return bool
  */
 function invp_is_wholesale( $post_ID = null ) {
-	if ( empty( $post_ID ) ) {
-		$post_ID = get_the_ID();
-	}
 	return false !== strpos( strtolower( INVP::get_meta( 'availability', $post_ID ) ) ?? '', 'wholesale' );
 }
