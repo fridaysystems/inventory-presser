@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.6.2
 Requires PHP: 7.0.0
-Stable tag: 14.17.0
+Stable tag: 14.17.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,7 +59,7 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.0.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.0.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.1.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.1.zip)
 
 
 ### Requires 5.0.0
@@ -95,6 +95,13 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 14.17.1 =
+* [Fixed] Helps new users understand where to find the list of vehicles by adding a line to the Listings Pages table on the Settings page for the default post type archive.
+* [Fixed] Detects an empty permalink structure and adds a Site Health test to recommend a change. With default/no permalinks, slash inventory is not added to rewrite rules and the default vehicle archive is /?post_type=inventory_vehicle instead of slash vehicle. Adds an admin notice on the plugin settings page to draw user attention to Site Health when there are recommendations.
+* [Fixed] Bug fix in invp_get_the_last_modified() template tag for support outside the loop. Starts passing the post ID when getting the raw meta value.
+* [Fixed] Bug fix in invp_get_the_carfax_url_report() template tag for support outside the loop. Starts passing the post ID when getting the VIN.
+* [Fixed] Bug fix in invp_get_the_odometer() template tag. Check if the post ID is available from the loop when the passed value is empty or not passed.
 
 = 14.17.0 =
 * [Added] Adds blocks for Down Payment, Make, Model, MSRP, Odometer, Payment, Price, Stock Number, Title Status, Transmission Speeds, Trim Level, VIN, Year, and YouTube Video ID.
@@ -203,6 +210,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.17.1 = 
+Helps new users understand where to find the list of vehicles by adding a line to the Listings Pages table on the Settings page for the default post type archive. Detects an empty permalink structure and adds a Site Health test to recommend a change. With default/no permalinks, slash inventory is not added to rewrite rules and the default vehicle archive is /?post_type=inventory_vehicle instead of slash vehicle. Adds an admin notice on the plugin settings page to draw user attention to Site Health when there are recommendations. Bug fix in invp_get_the_last_modified() template tag for support outside the loop. Starts passing the post ID when getting the raw meta value. Bug fix in invp_get_the_carfax_url_report() template tag for support outside the loop. Starts passing the post ID when getting the VIN. Bug fix in invp_get_the_odometer() template tag. Check if the post ID is available from the loop when the passed value is empty or not passed.
 
 = 14.17.0 =
 Adds blocks for Down Payment, Make, Model, MSRP, Odometer, Payment, Price, Stock Number, Title Status, Transmission Speeds, Trim Level, VIN, Year, and YouTube Video ID. Adds a block called Year, Make, Model, and Trim that outputs those meta fields in an H1. Fixes a number of blocks that were broken, including Beam, Body Style, Color, Engine, Interior Color, Last Modified, Length, and Odometer. Fixes bugs in handling input and output. Escapes more strings before output. Sanitizes more input values before they are used.
