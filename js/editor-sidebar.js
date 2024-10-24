@@ -487,7 +487,7 @@ function invp_block_editor_hide_taxonomies( typeSlug ) {
 					),
 				);
 				// Is this a boat?
-				const inventory_presser_type = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ).inventory_presser_type;
+				const inventory_presser_type = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ).inventory_presser_type ?? '';
 				if ( 'boat' === inventory_presser_type.toLowerCase() ) {
 					// Yes, add the boat fields.
 					fields = el(
