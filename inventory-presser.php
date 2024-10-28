@@ -1193,7 +1193,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				INVP_PLUGIN_VERSION
 			);
 
-			// Register a script without a handle for our inline invp object.
+			// Register a script without a .js URL for our inline invp object.
 			if ( ! wp_script_is( 'invp', 'registered' ) ) {
 				$settings = INVP::settings();
 				wp_register_script( 'invp', '', array(), INVP_PLUGIN_VERSION, true );
@@ -1247,13 +1247,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					) . ';'
 				);
 
-				// Register a script for our blocks.
-				$asset_file = include plugin_dir_path( INVP_PLUGIN_FILE_PATH ) . 'build/index.asset.php';
+				// Register a script for our blocks, also without a .js URL.
 				wp_register_script(
 					'invp-blocks',
-					plugins_url( 'build/index.js', INVP_PLUGIN_FILE_PATH ),
-					$asset_file['dependencies'],
-					$asset_file['version'],
+					'',
+					array(),
+					INVP_PLUGIN_VERSION,
 					true
 				);
 				// Provide the vehicle post type meta keys and prefix to JavaScript.
