@@ -30,6 +30,20 @@ function invp_block_editor_hide_taxonomies( typeSlug ) {
 }
 
 /**
+ * Formats numbers as currency.
+ * @param value Amount.
+ * @returns string
+ */
+function invpFormatCurrency( value ) {
+	// Is value numeric?
+	if ( !isNaN(parseFloat(value)) && isFinite(value) ) {
+		// Yes.
+		return invp_blocks.currency_symbol + Number( value ).toLocaleString();
+	}
+	return value;
+}
+
+/**
  * Editor sidebar spin up.
  */
 ( function( wp ) {

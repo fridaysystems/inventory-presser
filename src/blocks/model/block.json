@@ -1,0 +1,19 @@
+{
+	"title": "Model",
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "inventory-presser/model",
+	"version": "1.0.0",
+	"description": "Displays and edits the model meta field. Model is the name given by the manufacturer.",
+	"icon": "admin-network",
+	"category": "inventory-presser",
+	"attributes": {},
+	"example": {},
+	"textdomain": "inventory-presser",
+	"editorScript": "file:./index.js",
+	"keywords": [
+		"name",
+		"model no"
+	],
+	"render": "file:./render.php"
+}

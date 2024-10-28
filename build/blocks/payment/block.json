@@ -1,0 +1,20 @@
+{
+  "title": "Payment",
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "inventory-presser/payment",
+  "version": "1.0.0",
+  "description": "Displays and edits the payment meta field.",
+  "icon": "admin-network",
+  "category": "inventory-presser",
+  "attributes": {},
+  "example": {},
+  "textdomain": "inventory-presser",
+  "editorScript": "file:./index.js",
+  "keywords": [
+    "car loan",
+    "auto loan",
+    "car payment"
+  ],
+  "render": "file:./render.php"
+}

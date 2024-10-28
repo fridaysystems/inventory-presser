@@ -1,0 +1,22 @@
+{
+  "title": "Body Style",
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "inventory-presser/body-style",
+  "version": "1.0.0",
+  "description": "Displays and edits the body style meta field.",
+  "icon": "admin-network",
+  "category": "inventory-presser",
+  "attributes": {},
+  "example": {},
+  "textdomain": "inventory-presser",
+  "editorScript": "file:./index.js",
+  "keywords": [
+    "body style",
+    "truck",
+    "suv",
+    "wagon",
+    "chassis"
+  ],
+  "render": "file:./render.php"
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Length",
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "inventory-presser/length",
+  "version": "1.0.0",
+  "description": "Displays and edits the length meta field. Helpful for trailers and boats.",
+  "icon": "admin-network",
+  "category": "inventory-presser",
+  "attributes": {},
+  "example": {},
+  "textdomain": "inventory-presser",
+  "editorScript": "file:./index.js",
+  "keywords": [
+    "trailer length",
+    "boat length"
+  ],
+  "render": "file:./render.php"
+}

@@ -1,0 +1,20 @@
+{
+	"title": "Beam",
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "inventory-presser/beam",
+	"version": "1.0.0",
+	"description": "Displays and edits the beam meta field. Beam is the width of a boat at its widest point.",
+	"icon": "admin-network",
+	"category": "inventory-presser",
+	"attributes": {},
+	"example": {},
+	"textdomain": "inventory-presser",
+	"editorScript": "file:./index.js",
+	"keywords": [
+		"boat",
+		"ship",
+		"vessel"
+	],
+	"render": "file:./render.php"
+}

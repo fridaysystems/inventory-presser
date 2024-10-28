@@ -1,0 +1,18 @@
+{
+	"title": "VIN",
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "inventory-presser/vin",
+	"version": "1.0.0",
+	"description": "Displays and edits the VIN meta field. Vehicle Identification Number.",
+	"icon": "admin-network",
+	"category": "inventory-presser",
+	"attributes": {},
+	"example": {},
+	"textdomain": "inventory-presser",
+	"editorScript": "file:./index.js",
+	"keywords": [
+		"serial no"
+	],
+	"render": "file:./render.php"
+}
