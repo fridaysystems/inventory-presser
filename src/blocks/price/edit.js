@@ -27,12 +27,12 @@ export default function Edit( { isSelected } ) {
 	}
 
 	return (
-		<>
+		<div { ...blockProps }>
 			<TextControl
 				label    = { 'Price' }
 				value    = { meta[ invp_blocks.meta_prefix + 'price' ] }
 				onChange = {(newValue) => setMeta( { ...meta, [invp_blocks.meta_prefix + 'price']: newValue } )}
 			/>
-		</>
+		</div>
 	);
 }

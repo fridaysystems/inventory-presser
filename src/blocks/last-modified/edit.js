@@ -27,12 +27,12 @@ export default function Edit( { isSelected } ) {
 	}
 
 	return (
-		<>
+		<div { ...blockProps }>
 			<TextControl
 				label    = { 'Last Modified' }
 				value    = { meta[ invp_blocks.meta_prefix + 'last_modified' ] }
 				readOnly = { 'readonly'}
 			/>
-		</>
+		</div>
 	);
 }

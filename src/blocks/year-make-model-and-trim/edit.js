@@ -29,7 +29,7 @@ export default function Edit( { isSelected } ) {
 	}
 
 	return (
-		<>
+		<div { ...blockProps }>
 			<TextControl
 				label    = { 'Year' }
 				value    = { meta[ invp_blocks.meta_prefix + 'year' ] }
@@ -50,6 +50,6 @@ export default function Edit( { isSelected } ) {
 				value    = { meta[ invp_blocks.meta_prefix + 'trim' ] }
 				onChange = {(newValue) => setMeta( { ...meta, [invp_blocks.meta_prefix + 'trim']: newValue } )}
 			/>
-		</>
+		</div>
 	);
 }

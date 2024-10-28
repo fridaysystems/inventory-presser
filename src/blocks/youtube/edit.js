@@ -31,19 +31,19 @@ export default function Edit( { isSelected } ) {
 			dataType: 'json',
 			context: this
 		})
-			.done( function( response ) {
-				document.getElementById( blockProps.id ).innerHTML = response.html;
-			} );
-			return ( <div { ...blockProps }> { meta[ invp_blocks.meta_prefix + 'youtube' ] } </div> );
+		.done( function( response ) {
+			document.getElementById( blockProps.id + '-oembed' ).innerHTML = response.html;
+		} );
+		return ( <div { ...blockProps }> <div id={ blockProps.id + '-oembed' } > { meta[ invp_blocks.meta_prefix + 'youtube' ] }</div></div> );
 	}
 
 	return (
-		<>
+		<div { ...blockProps }>
 			<TextControl
 				label    = { 'YouTube Video ID' }
 				value    = { meta[ invp_blocks.meta_prefix + 'youtube' ] }
 				onChange = {(newValue) => setMeta( { ...meta, [invp_blocks.meta_prefix + 'youtube']: newValue } )}
 			/>
-		</>
+		</div>
 	);
 }
