@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-
+import { __ } from '@wordpress/i18n';
 import { TextControl } from '@wordpress/components';
 import { useEntityProp } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
@@ -29,7 +29,7 @@ export default function Edit( { isSelected } ) {
 	return (
 		<div { ...blockProps }>
 			<TextControl
-				label    = { 'Last Modified' }
+				label    = { __( 'Last Modified', 'inventory-presser' ) }
 				value    = { meta[ invp_blocks.meta_prefix + 'last_modified' ] }
 				readOnly = { 'readonly'}
 			/>

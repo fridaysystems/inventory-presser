@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-
+import { __ } from '@wordpress/i18n';
 import { TextControl } from '@wordpress/components';
 import { useEntityProp } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
@@ -31,22 +31,22 @@ export default function Edit( { isSelected } ) {
 	return (
 		<div { ...blockProps }>
 			<TextControl
-				label    = { 'Year' }
+				label    = { __( 'Year', 'inventory-presser' ) }
 				value    = { meta[ invp_blocks.meta_prefix + 'year' ] }
 				onChange = {(newValue) => setMeta( { ...meta, [invp_blocks.meta_prefix + 'year']: newValue } )}
 			/>
 			<TextControl
-				label    = { 'Make' }
+				label    = { __( 'Make', 'inventory-presser' ) }
 				value    = { meta[ invp_blocks.meta_prefix + 'make' ] }
 				onChange = {(newValue) => setMeta( { ...meta, [invp_blocks.meta_prefix + 'make']: newValue } )}
 			/>
 			<TextControl
-				label    = { 'Model' }
+				label    = { __( 'Model', 'inventory-presser' ) }
 				value    = { meta[ invp_blocks.meta_prefix + 'model' ] }
 				onChange = {(newValue) => setMeta( { ...meta, [invp_blocks.meta_prefix + 'model']: newValue } )}
 			/>
 			<TextControl
-				label    = { 'Trim Level' }
+				label    = { __( 'Trim Level', 'inventory-presser' ) }
 				value    = { meta[ invp_blocks.meta_prefix + 'trim' ] }
 				onChange = {(newValue) => setMeta( { ...meta, [invp_blocks.meta_prefix + 'trim']: newValue } )}
 			/>

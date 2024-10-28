@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-
+import { __ } from '@wordpress/i18n';
 import { TextControl } from '@wordpress/components';
 import { useEntityProp } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
@@ -29,7 +29,7 @@ export default function Edit( { isSelected } ) {
 	return (
 		<div { ...blockProps }>
 			<TextControl
-				label    = { 'Down Payment' }
+				label    = { __( 'Down Payment', 'inventory-presser' ) }
 				value    = { meta[ invp_blocks.meta_prefix + 'down_payment' ] }
 				onChange = {(newValue) => setMeta( { ...meta, [invp_blocks.meta_prefix + 'down_payment']: newValue } )}
 			/>
