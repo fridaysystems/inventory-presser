@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.6.2
 Requires PHP: 7.0.0
-Stable tag: 14.17.1
+Stable tag: 14.17.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,7 +59,7 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.1.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.1.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.2.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.2.zip)
 
 
 ### Requires 5.0.0
@@ -95,6 +95,12 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 14.17.2 =
+* [Fixed] Bug fix. Makes strings in blocks translatable.
+* [Fixed] Bug fix. Add default block editor toolbar to all blocks to help users move and remove them.
+* [Fixed] Bug fix when loading editor sidebar.
+* [Changed] Changes the way most blocks are built so they each have their own block.json file. This will help directories correctly count how many blocks are provided in the plugin.
 
 = 14.17.1 =
 * [Fixed] Helps new users understand where to find the list of vehicles by adding a line to the Listings Pages table on the Settings page for the default post type archive.
