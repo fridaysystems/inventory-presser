@@ -60,6 +60,7 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 ### Downloads
 
  * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.2.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.2.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.2.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.2.zip)
 
 
 ### Requires 5.0.0

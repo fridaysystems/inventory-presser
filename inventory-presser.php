@@ -22,6 +22,7 @@ defined( 'ABSPATH' ) || exit;
  * GitHub Plugin URI: https://github.com/fridaysystems/inventory-presser
  * Primary Branch: main
  * Download URI: https://downloads.wordpress.org/plugin/inventory-presser.14.17.2.zip
+ * Download URI: https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.2.zip
  */
 
 if ( ! defined( 'INVP_PLUGIN_BASE' ) ) {
