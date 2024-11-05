@@ -12,5 +12,8 @@
   "textdomain": "inventory-presser",
   "editorScript": "file:./index.js",
   "keywords": [],
-  "render": "file:./render.php"
+  "render": "file:./render.php",
+  "usesContext": [
+    "postType"
+  ]
 }
