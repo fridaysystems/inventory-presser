@@ -11,6 +11,11 @@
 	"example": {},
 	"textdomain": "inventory-presser",
 	"editorScript": "file:./index.js",
-	"keywords": [],
-	"render": "file:./render.php"
+	"keywords": [
+		"year of manufacture"
+	],
+	"render": "file:./render.php",
+	"usesContext": [
+		"postType"
+	]
 }

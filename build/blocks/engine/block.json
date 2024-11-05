@@ -16,5 +16,8 @@
     "cylinder count",
     "motor"
   ],
-  "render": "file:./render.php"
+  "render": "file:./render.php",
+  "usesContext": [
+    "postType"
+  ]
 }

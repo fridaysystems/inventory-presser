@@ -16,5 +16,8 @@
 		"leather interior",
 		"seat color"
 	],
-	"render": "file:./render.php"
+	"render": "file:./render.php",
+	"usesContext": [
+		"postType"
+	]
 }

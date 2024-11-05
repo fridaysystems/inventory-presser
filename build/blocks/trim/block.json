@@ -15,5 +15,8 @@
     "trim level",
     "edition"
   ],
-  "render": "file:./render.php"
+  "render": "file:./render.php",
+  "usesContext": [
+    "postType"
+  ]
 }

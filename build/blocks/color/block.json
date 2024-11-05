@@ -16,5 +16,8 @@
     "exterior color",
     "car color"
   ],
-  "render": "file:./render.php"
+  "render": "file:./render.php",
+  "usesContext": [
+    "postType"
+  ]
 }

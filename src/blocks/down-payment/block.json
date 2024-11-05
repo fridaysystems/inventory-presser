@@ -16,5 +16,8 @@
 		"auto loan",
 		"car payment"
 	],
-	"render": "file:./render.php"
+	"render": "file:./render.php",
+	"usesContext": [
+		"postType"
+	]
 }

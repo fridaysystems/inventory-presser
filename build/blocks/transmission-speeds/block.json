@@ -15,5 +15,8 @@
     "gears",
     "gearbox"
   ],
-  "render": "file:./render.php"
+  "render": "file:./render.php",
+  "usesContext": [
+    "postType"
+  ]
 }
