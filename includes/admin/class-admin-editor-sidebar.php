@@ -60,7 +60,7 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 		wp_enqueue_script( 'wp-api' );
 		wp_enqueue_style(
 			'invp-editor-sidebar',
-			plugins_url( '/css/editor-sidebar.min.css', INVP_PLUGIN_FILE_PATH ),
+			plugins_url( "/css/editor-sidebar{$min}.css", INVP_PLUGIN_FILE_PATH ),
 			array(),
 			INVP_PLUGIN_VERSION
 		);
