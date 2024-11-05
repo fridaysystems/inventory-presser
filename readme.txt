@@ -101,6 +101,7 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 * [Fixed] Bug fix. Makes strings in blocks translatable.
 * [Fixed] Bug fix. Add default block editor toolbar to all blocks to help users move and remove them.
 * [Fixed] Bug fix when loading editor sidebar.
+* [Changed] YouTube Video ID block now embeds the video in the block editor.
 * [Changed] Changes the way most blocks are built so they each have their own block.json file. This will help directories correctly count how many blocks are provided in the plugin.
 
 = 14.17.1 =
@@ -217,6 +218,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.17.2 =
+Bug fix. Makes strings in blocks translatable. Bug fix. Add default block editor toolbar to all blocks to help users move and remove them. Bug fix when loading editor sidebar. YouTube Video ID block now embeds the video in the block editor. Changes the way most blocks are built so they each have their own block.json file. This will help directories correctly count how many blocks are provided in the plugin.
 
 = 14.17.1 = 
 Helps new users understand where to find the list of vehicles by adding a line to the Listings Pages table on the Settings page for the default post type archive. Detects an empty permalink structure and adds a Site Health test to recommend a change. With default/no permalinks, slash inventory is not added to rewrite rules and the default vehicle archive is /?post_type=inventory_vehicle instead of slash vehicle. Adds an admin notice on the plugin settings page to draw user attention to Site Health when there are recommendations. Bug fix in invp_get_the_last_modified() template tag for support outside the loop. Starts passing the post ID when getting the raw meta value. Bug fix in invp_get_the_carfax_url_report() template tag for support outside the loop. Starts passing the post ID when getting the VIN. Bug fix in invp_get_the_odometer() template tag. Check if the post ID is available from the loop when the passed value is empty or not passed.
