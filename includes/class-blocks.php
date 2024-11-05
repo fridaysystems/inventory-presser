@@ -83,7 +83,7 @@ class Inventory_Presser_Blocks {
 			'youtube',
 		);
 		foreach ( $block_types as $block_type ) {
-			register_block_type( dirname( INVP_PLUGIN_FILE_PATH ) . '/build/blocks/' . $block_type );
+			register_block_type( dirname( INVP_PLUGIN_FILE_PATH ) . '/build/blocks/' . $block_type . '/block.json' );
 		}
 	}
 }
