@@ -45,6 +45,7 @@ class Inventory_Presser_Blocks {
 	 */
 	public function enqueue_block_editor_assets() {
 		wp_enqueue_script( 'invp-blocks' );
+		wp_enqueue_style( 'invp-block-editor' );
 	}
 
 	/**

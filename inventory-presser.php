@@ -1271,6 +1271,16 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					),
 					'before'
 				);
+				/**
+				 * Register a stylesheet for the Block Editor. This makes the
+				 * blocks provided by this plugin more pleasant to work with.
+				 */
+				wp_register_style(
+					'invp-block-editor',
+					plugins_url( "css/block-editor{$min}.css", INVP_PLUGIN_FILE_PATH ),
+					array(),
+					INVP_PLUGIN_VERSION
+				);
 			}
 
 			/**
