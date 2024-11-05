@@ -26,7 +26,7 @@ export default function Edit( { isSelected, context } ) {
 			<TextControl
 				label    = { __( 'MSRP', 'inventory-presser' ) }
 				value    = { meta[ invp_blocks.meta_prefix + 'msrp' ] }
-				onChange = {(newValue) => setMeta( { ...meta, [invp_blocks.meta_prefix + 'msrp']: newValue } )}
+				onChange = {(newValue) => setMeta( { ...meta, [invp_blocks.meta_prefix + 'msrp']: newValue.replace( /[^0-9\.]/g, '' ) } )}
 			/>
 		</div>
 	);

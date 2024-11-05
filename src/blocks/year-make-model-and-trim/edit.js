@@ -29,7 +29,7 @@ export default function Edit( { isSelected, context } ) {
 			<TextControl
 				label    = { __( 'Year', 'inventory-presser' ) }
 				value    = { meta[ invp_blocks.meta_prefix + 'year' ] }
-				onChange = {(newValue) => setMeta( { ...meta, [invp_blocks.meta_prefix + 'year']: newValue } )}
+				onChange = {(newValue) => setMeta( { ...meta, [invp_blocks.meta_prefix + 'year']: newValue.replace( /[^0-9]/g, '' ) } )}
 			/>
 			<TextControl
 				label    = { __( 'Make', 'inventory-presser' ) }
