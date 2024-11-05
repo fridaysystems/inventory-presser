@@ -567,7 +567,7 @@ class INVP {
 					'label'  => __( 'Doors', 'inventory_presser' ),
 					'name'   => 'doors',
 					'sample' => 4,
-					'type'   => 'number',
+					'type'   => 'integer',
 				),
 				array(
 					'label'  => __( 'Down Payment', 'inventory_presser' ),
@@ -595,8 +595,8 @@ class INVP {
 				array(
 					'label'  => __( '# of Engines', 'inventory_presser' ),
 					'name'   => 'engine_count', // For boats.
-					'sample' => '1',
-					'type'   => 'number',
+					'sample' => 1,
+					'type'   => 'integer',
 				),
 				array(
 					'label'  => __( 'Engine Make', 'inventory_presser' ),
@@ -714,7 +714,7 @@ class INVP {
 				array(
 					'label' => __( 'Horsepower', 'inventory_presser' ),
 					'name'  => 'horsepower', // for boats.
-					'type'  => 'number',
+					'type'  => 'integer',
 				),
 				array(
 					'label' => __( 'Hull Material', 'inventory_presser' ),
@@ -830,7 +830,7 @@ class INVP {
 					'label'  => __( 'Term', 'inventory_presser' ),
 					'name'   => 'term',
 					'sample' => 72,
-					'type'   => 'number',
+					'type'   => 'integer',
 				),
 				array(
 					'label'  => __( 'Title Status', 'inventory_presser' ),
