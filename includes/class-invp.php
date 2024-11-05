@@ -441,7 +441,7 @@ class INVP {
 				array(
 					'label' => __( 'Beam', 'inventory_presser' ),
 					'name'  => 'beam', // for boats.
-					'type'  => 'number',
+					'type'  => 'string',
 				),
 				array(
 					'label'  => __( 'Body Style', 'inventory_presser' ),
@@ -741,7 +741,7 @@ class INVP {
 				array(
 					'label' => __( 'Length', 'inventory_presser' ),
 					'name'  => 'length', // for boats.
-					'type'  => 'integer',
+					'type'  => 'string',
 				),
 				array(
 					'label'  => __( 'Location', 'inventory_presser' ),
