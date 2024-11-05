@@ -885,6 +885,12 @@ class INVP {
 					'sample' => '9pBPgt4VOzM',
 					'type'   => 'string',
 				),
+				array(
+					'label'  => __( 'YouTube Embed HTML', 'inventory_presser' ),
+					'name'   => 'youtube_embed',
+					'sample' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/RLx1rqlmcY4?si=6dLw2OZxR3UA2h4b" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+					'type'   => 'string',
+				),
 			)
 		);
 	}
