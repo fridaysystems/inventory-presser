@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { TextControl } from '@wordpress/components';
 import { useEntityProp } from '@wordpress/core-data';
-import { useSelect } from '@wordpress/data';
 import { useBlockProps } from '@wordpress/block-editor';
 
 export default function Edit( { isSelected, context } ) {
