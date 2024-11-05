@@ -8,7 +8,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 
 export default function Edit( { isSelected, context } ) {
 	const { postType } = context;
-	const [ meta, setMeta ] = useEntityProp( 'postType', postType, 'meta' );
+	const [ meta ] = useEntityProp( 'postType', postType, 'meta' );
 	const blockProps = useBlockProps();
 
 	/**
