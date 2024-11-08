@@ -69,7 +69,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 						if ( ! empty( $location_sentence ) ) {
 							printf(
 								'<div class="vehicle-location">%s</div>',
-								esc_html( $location_sentence )
+								$location_sentence
 							);
 						}
 
