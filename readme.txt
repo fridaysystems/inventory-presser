@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.6.2
 Requires PHP: 7.0.0
-Stable tag: 14.17.2
+Stable tag: 14.17.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.2.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.2.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.2.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.2.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.3.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.3.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.3.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.3.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 14.17.3 =
+* [Fixed] Fixes bug introduced in 14.17.2. Stops escaping HTML in invp_get_the_location_sentence() twice.
 
 = 14.17.2 =
 * [Fixed] Bug fix. Makes strings in blocks translatable.
@@ -218,6 +221,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.17.3 =
+Fixes bug introduced in 14.17.2. Stops escaping HTML in invp_get_the_location_sentence() twice.
 
 = 14.17.2 =
 Bug fix. Makes strings in blocks translatable. Bug fix. Add default block editor toolbar to all blocks to help users move and remove them. Bug fix when loading editor sidebar. YouTube Video ID block now embeds the video in the block editor. Changes the way most blocks are built so they each have their own block.json file. This will help directories correctly count how many blocks are provided in the plugin.
