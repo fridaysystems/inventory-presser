@@ -2,9 +2,9 @@
 Contributors: salzano
 Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
-Tested up to: 6.6.2
+Tested up to: 6.7
 Requires PHP: 7.0.0
-Stable tag: 14.17.3
+Stable tag: 14.17.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.3.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.3.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.3.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.3.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.4.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.4.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.4.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.4.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,10 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 14.17.4 =
+* [Fixed] Fixes a bug that prevented the plugin from deleting data during uninstallation.
+* [Changed] Changes tested up to version number to 6.7.
 
 = 14.17.3 =
 * [Fixed] Fixes bug introduced in 14.17.2. Stops escaping HTML in invp_get_the_location_sentence() twice.
@@ -221,6 +225,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.17.4 =
+Fixes a bug that prevented the plugin from deleting data during uninstallation. Changes tested up to version number to 6.7.
 
 = 14.17.3 =
 Fixes bug introduced in 14.17.2. Stops escaping HTML in invp_get_the_location_sentence() twice.
