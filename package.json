@@ -9,14 +9,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/csalzano/inventory-presser.git"
+		"url": "git+https://github.com/fridaysystems/inventory-presser.git"
 	},
 	"author": "csalzano",
 	"license": "GPL-2.0-only",
 	"bugs": {
-		"url": "https://github.com/csalzano/inventory-presser/issues"
+		"url": "https://github.com/fridaysystems/inventory-presser/issues"
 	},
-	"homepage": "https://github.com/csalzano/inventory-presser#readme",
+	"homepage": "https://github.com/fridaysystems/inventory-presser#readme",
 	"devDependencies": {
 		"@wordpress/scripts": "^30.1.0",
 		"iframe-resizer": "^4.3.2",
