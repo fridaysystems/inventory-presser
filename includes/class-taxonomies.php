@@ -1280,6 +1280,12 @@ class Inventory_Presser_Taxonomies {
 		}
 	}
 
+	/**
+	 * Uses the type of the vehicle loaded into the editor to show or hide other
+	 * taxonomies.
+	 *
+	 * @return void
+	 */
 	public function editor_remove_meta_boxes() {
 		global $wp_meta_boxes;
 		if ( ! isset( $wp_meta_boxes[ INVP::POST_TYPE ]['side']['core'] ) ) {
@@ -1289,7 +1295,15 @@ class Inventory_Presser_Taxonomies {
 		if ( empty( $settings['taxonomies'] ) ) {
 			return;
 		}
+		// What is the type of the vehicle we are editing?
 		$type = $this->get_term_slug( 'type', get_the_ID() );
+		if ( '' === $type ) {
+			/**
+			 * Type not set, or user just pressed "Add New Vehicle". Lie so the
+			 * editor looks ready for a car.
+			 */
+			$type = 'car';
+		}
 		foreach ( self::query_vars_array() as $query_var ) {
 			$is_active = $settings['taxonomies'][ $query_var ][ $type ] ?? false;
 			if ( ! $is_active ) {
