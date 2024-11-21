@@ -71,7 +71,8 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 		public function init() {
 			add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
 			add_filter( 'plugins_api', array( $this, 'plugins_api_filter' ), 10, 3 );
-			remove_action( 'after_plugin_row_' . $this->name, 'wp_plugin_update_row', 10 );
+			// Priority 21 because we want to remove a core hook added at 20.
+			add_action( 'load-plugins.php', array( $this, 'remove_core_update_row' ), 21 );
 			add_action( 'after_plugin_row_' . $this->name, array( $this, 'show_update_notification' ), 10, 2 );
 			add_action( 'admin_init', array( $this, 'show_changelog' ) );
 
@@ -81,6 +82,16 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 			 * a missing license key for one of our add-ons.
 			 */
 			add_filter( 'site_transient_update_plugins', array( $this, 'show_missing_license_notice' ), 10, 2 );
+		}
+
+		/**
+		 * Removes the core "There is a new version of {plugin} available"
+		 * notice on the plugins list. We are adding our own.
+		 *
+		 * @return void
+		 */
+		public function remove_core_update_row() {
+			remove_action( 'after_plugin_row_' . $this->name, 'wp_plugin_update_row', 10 );
 		}
 
 		/**
