@@ -8,11 +8,19 @@ jobs:
   inventorypresser-com-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2 # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      # Deploy using rsync to server
       - name: Deploy to Rocket.net
-        uses: garygrossgarten/github-action-ssh@release
+        uses: burnett01/rsync-deployments@4.1
         with:
-          command: rsync -avz "$GITHUB_WORKSPACE" rzjalis@131.153.207.156:public_html/wp-content/plugins/inventory-presser
-          host: 131.153.207.156
-          username: rzjalis
-          privateKey: ${{ secrets.ROCKET_NET_SSH_KEY_PRIVATE }}
+          # -v: verbose
+          # -z: compress files during transfer
+          # -r: copy files recursively
+          # --delete: delete extraneous files from dest dirs
+          switches: -vzr --delete
+          path: src/
+          remote_path: ${{ secrets.ROCKET_NET_PATH }}
+          remote_host: ${{ secrets.ROCKET_NET_HOST }}
+          remote_user: ${{ secrets.ROCKET_NET_USER }}
+          remote_key: ${{ secrets.ROCKET_NET_SSH_KEY_PRIVATE }}
