@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # Deploy using rsync to server
       - name: Deploy to Rocket.net
-        uses: burnett01/rsync-deployments@4.1
+        uses: burnett01/rsync-deployments@7.0.1
         with:
           # -v: verbose
           # -z: compress files during transfer
