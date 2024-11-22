@@ -8,11 +8,9 @@ jobs:
   inventorypresser-com-deploy:
     runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
+      - uses: garygrossgarten/github-action-ssh@release
+      - uses: actions/checkout@v2 # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Deploy to Rocket.net
-        uses: garygrossgarten/github-action-ssh@release
         with:
           command: rsync -avz "$GITHUB_WORKSPACE" rzjalis@131.153.207.156:public_html/wp-content/plugins/inventory-presser
           host: 131.153.207.156
