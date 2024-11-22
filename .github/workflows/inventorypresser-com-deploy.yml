@@ -19,7 +19,6 @@ jobs:
           # -r: copy files recursively
           # --delete: delete extraneous files from dest dirs
           switches: -vzr --delete
-          path: ${{ github.workspace }}
           remote_path: ${{ secrets.ROCKET_NET_PATH }}
           remote_host: ${{ secrets.ROCKET_NET_HOST }}
           remote_user: ${{ secrets.ROCKET_NET_USER }}
