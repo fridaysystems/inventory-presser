@@ -124,7 +124,7 @@ class INVP {
 		$args          = array(
 			'post_status'    => get_post_stati(),
 			'post_type'      => self::POST_TYPE,
-			'posts_per_page' => -1,
+			'posts_per_page' => apply_filters( 'invp_query_limit', 1000, __METHOD__ ),
 		);
 		$posts         = get_posts( $args );
 		$deleted_count = 0;
@@ -199,7 +199,7 @@ class INVP {
 				'post_parent'    => $post_id,
 				'post_status'    => 'inherit',
 				'post_type'      => 'attachment',
-				'posts_per_page' => -1,
+				'posts_per_page' => apply_filters( 'invp_query_limit', 1000, __METHOD__ ),
 			)
 		);
 
@@ -220,7 +220,7 @@ class INVP {
 	public static function delete_attachment_orphans() {
 		$orphan_media = get_posts(
 			array(
-				'posts_per_page' => -1,
+				'posts_per_page' => apply_filters( 'invp_query_limit', 1000, __METHOD__ ),
 				'post_status'    => 'any',
 				'post_type'      => 'attachment',
 				'meta_query'     => array(
