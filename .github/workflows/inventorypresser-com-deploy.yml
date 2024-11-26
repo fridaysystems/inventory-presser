@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: cd public_html/wp-content/inventory-presser && composer install
+          command: cd public_html/wp-content/plugins/inventory-presser && composer install
           host: 131.153.207.156
           username: rzjalis
           privateKey: ${{ secrets.ROCKET_NET_SSH_KEY_PRIVATE }}
