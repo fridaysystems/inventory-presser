@@ -37,6 +37,11 @@ class INVP {
 	 * @return void
 	 */
 	public static function delete_all_data() {
+		// During uninstall.php runs, the main plugin file is not loaded.
+		if ( ! defined( 'INVP_PLUGIN_FILE_PATH' ) ) {
+			define( 'INVP_PLUGIN_FILE_PATH', dirname( __DIR__ ) . '/inventory-presser.php' );
+		}
+
 		// delete all the vehicles.
 		self::delete_all_inventory();
 
@@ -46,10 +51,6 @@ class INVP {
 		// delete pages created during activation.
 		// uninstall.php doesn't load the whole plugin but calls this method.
 		if ( ! class_exists( 'Inventory_Presser_Allow_Inventory_As_Home_Page' ) ) {
-			// During uninstall.php runs, the main plugin file is not loaded.
-			if ( ! defined( 'INVP_PLUGIN_FILE_PATH' ) ) {
-				define( 'INVP_PLUGIN_FILE_PATH', dirname( __DIR__ ) . '/inventory-presser.php' );
-			}
 			include_once plugin_dir_path( INVP_PLUGIN_FILE_PATH ) . 'includes/class-allow-inventory-as-home-page.php';
 		}
 		Inventory_Presser_Allow_Inventory_As_Home_Page::delete_pages();
