@@ -2,9 +2,9 @@
 Contributors: salzano
 Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
-Tested up to: 6.7
+Tested up to: 6.7.1
 Requires PHP: 7.0.0
-Stable tag: 14.17.5
+Stable tag: 14.17.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.5.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.5.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.5.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.5.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.6.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.6.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.6.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.6.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,10 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 14.17.6 =
+* [Fixed] Fixes a bug that prevented the plugin from uninstalling properly.
+* [Changed] Changes tested up to version number to 6.7.1.
 
 = 14.17.5 =
 * [Fixed] Fixes a bug where adding a new vehicle in Classic Editor would not show all appropriate passenger vehicle meta boxes.
@@ -229,6 +233,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.17.6 =
+Fixes a bug that prevented the plugin from uninstalling properly. Changes tested up to version number to 6.7.1.
 
 = 14.17.5 =
 Fixes a bug where adding a new vehicle in Classic Editor would not show all appropriate passenger vehicle meta boxes. Fixes a bug that caused two plugin update notices for Inventory Presser add-ons in the plugins list.
