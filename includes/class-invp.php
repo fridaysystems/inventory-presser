@@ -128,16 +128,11 @@ class INVP {
 		);
 		$posts         = get_posts( $args );
 		$deleted_count = 0;
-		$settings      = self::settings();
 
 		if ( $posts ) {
+			$settings = self::settings();
 			foreach ( $posts as $post ) {
-				// delete the parent post or vehicle.
-				if ( $settings['skip_trash'] ) {
-					wp_delete_post( $post->ID, $settings['skip_trash'] );
-				} else {
-					wp_trash_post( $post->ID );
-				}
+				wp_delete_post( $post->ID, $settings['skip_trash'] );
 				++$deleted_count;
 			}
 		}
