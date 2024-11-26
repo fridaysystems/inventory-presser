@@ -23,3 +23,10 @@ jobs:
           remote_host: ${{ secrets.ROCKET_NET_HOST }}
           remote_user: ${{ secrets.ROCKET_NET_USER }}
           remote_key: ${{ secrets.ROCKET_NET_SSH_KEY_PRIVATE }}
+      - name: Install dependencies
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: cd public_html/wp-content/inventory-presser && composer install
+          host: 131.153.207.156
+          username: rzjalis
+          privateKey: ${{ secrets.ROCKET_NET_SSH_KEY_PRIVATE }}
