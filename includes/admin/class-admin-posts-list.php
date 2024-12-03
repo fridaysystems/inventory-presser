@@ -144,6 +144,7 @@ class Inventory_Presser_Admin_Posts_List {
 		$val           = ( isset( $custom_fields[ $column_name ] ) ? $custom_fields[ $column_name ][0] : '' );
 		switch ( $column_name ) {
 			case apply_filters( 'invp_prefix_meta_key', 'thumbnail' ):
+				/* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */
 				echo edit_post_link( get_the_post_thumbnail( $post_id, 'thumbnail' ) );
 				break;
 
@@ -156,7 +157,12 @@ class Inventory_Presser_Admin_Posts_List {
 				break;
 
 			case apply_filters( 'invp_prefix_meta_key', 'price' ):
-				echo esc_html( invp_get_the_price( '-', $post_id ) );
+				/**
+				 * Template tag invp_get_the_price() sometimes returns HTML and
+				 * escapes its own entities.
+				 */
+				/* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */
+				echo invp_get_the_price( '-', $post_id );
 				break;
 
 			default:

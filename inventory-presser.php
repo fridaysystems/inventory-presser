@@ -814,7 +814,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$additional_archives->add_hooks();
 			}
 
-			// Add columns to the vehicle posts list.
+			// Add menus to the admin bar.
 			if ( class_exists( 'Inventory_Presser_Admin_Bar' ) ) {
 				$bar = new Inventory_Presser_Admin_Bar();
 				$bar->add_hooks();
