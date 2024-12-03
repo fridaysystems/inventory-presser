@@ -59,7 +59,7 @@ class Inventory_Presser_Admin_Options {
 				array( $this, 'options_page_content_taxonomies' ) // function.
 			);
 
-			// Main options page at Vehicles > Options.
+			// Main options page at Vehicles → Options.
 			add_submenu_page(
 				'edit.php?post_type=' . INVP::POST_TYPE,
 				__( 'Options', 'inventory-presser' ), // page_title.

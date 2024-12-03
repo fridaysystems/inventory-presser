@@ -1,5 +1,5 @@
 /**
- * Vehicles > Options > Manage Taxonomies
+ * Vehicles → Options → Manage Taxonomies
  */
 // Disable the other checkboxes when a whole taxonomy is disabled.
 window.addEventListener(

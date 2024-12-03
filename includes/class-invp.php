@@ -1128,7 +1128,7 @@ class INVP {
 		$posts_per_page = $wp_query->get( 'posts_per_page', get_option( 'posts_per_page' ) );
 		$page_number    = $wp_query->get( 'paged', 1 );
 		if ( 0 === $page_number ) {
-			// Added this condition for Divi Blog Module because I guess it sets paged = 0.
+			// Added this condition for Divi Blog Module because it sets paged = 0.
 			$page_number = 1;
 		}
 		$start_index = $page_number * $posts_per_page - ( $posts_per_page - 1 );
