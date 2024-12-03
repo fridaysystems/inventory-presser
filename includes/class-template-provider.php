@@ -94,26 +94,9 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) ) {
 
 			// Lie to themes using has_post_thumbnail() statically.
 			add_filter( 'has_post_thumbnail', array( __CLASS__, 'lie_about_post_thumbnails' ), 10, 3 );
-			// Except when posts are being output by the Divi Blog Module.
-			add_filter( 'et_builder_blog_query', array( $this, 'dont_lie_to_divi_blog_module' ) );
 
 			// Still return the template.
 			return $template;
-		}
-
-		/**
-		 * Divi Blog Module never runs our shortcodes, so do not lie about
-		 * thumbnails or the module won't show any. Callback on
-		 * et_builder_blog_query, but does not modify the query. This filter is
-		 * used to detect the Divi Blog Module.
-		 *
-		 * @param WP_Query $wp_query The query object created by Divi Blog Module.
-		 * @return WP_Query The unchanged query object.
-		 */
-		public function dont_lie_to_divi_blog_module( $wp_query ) {
-			// Stop lying about whether vehicles have thumbnails or not.
-			remove_filter( 'has_post_thumbnail', array( __CLASS__, 'lie_about_post_thumbnails' ), 10, 3 );
-			return $wp_query;
 		}
 
 		/**

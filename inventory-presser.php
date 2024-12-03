@@ -1055,6 +1055,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$avada->add_hooks();
 			}
 
+			// Divi.
+			$divi = new Inventory_Presser_Divi();
+			$divi->add_hooks();
+
 			// Gravity Forms.
 			$plugin_path = 'gravityforms/gravityforms.php';
 			if ( in_array( $plugin_path, $active_plugins, true )
@@ -1103,6 +1107,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'class-site-health.php',
 				'integrations/class-avada.php',
 				'integrations/class-classic-editor.php',
+				'integrations/class-divi.php',
 				'integrations/class-forms-integration.php',
 				'integrations/class-contact-form-7.php',
 				'integrations/class-gravityforms-field-vehicle.php',
