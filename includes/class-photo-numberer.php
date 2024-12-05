@@ -24,7 +24,9 @@ class Inventory_Presser_Photo_Numberer {
 	 * @return void
 	 */
 	public function add_hooks() {
+		// Check if photos are attached to a vehicle parent.
 		add_action( 'add_attachment', array( __CLASS__, 'maybe_number_photo' ), 10, 1 );
+		add_action( 'edit_attachment', array( __CLASS__, 'maybe_number_photo' ), 10, 1 );
 
 		/**
 		 * Put the sequence number in the title of the post to which photos are
@@ -96,6 +98,15 @@ class Inventory_Presser_Photo_Numberer {
 	 * @return void
 	 */
 	public static function maybe_number_photo( $post_id ) {
+		// Don't double dip during REST API requests.
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return;
+		}
+
+		if ( null === $post_id ) {
+			return;
+		}
+
 		// Is this new attachment even attached to a post?
 		$attachment = get_post( $post_id );
 		if ( empty( $attachment->post_parent ) ) {
@@ -103,10 +114,8 @@ class Inventory_Presser_Photo_Numberer {
 			return;
 		}
 
-		$parent = get_post( $attachment->post_parent );
-
 		// Is this even attached to a vehicle?
-		if ( empty( $parent ) || INVP::POST_TYPE !== $parent->post_type ) {
+		if ( INVP::POST_TYPE !== get_post_type( $attachment->post_parent ) ) {
 			// No.
 			return;
 		}
@@ -142,8 +151,33 @@ class Inventory_Presser_Photo_Numberer {
 			)
 		);
 
-		for ( $s = 1; $s <= sizeof( $posts ); $s++ ) {
-			self::save_meta_photo_number( $posts[ $s ]->ID, $post_id, $s );
+		$unnumbered_posts = get_children(
+			array(
+				'post_parent' => $post_id,
+				'post_type'   => 'attachment',
+			)
+		);
+
+		foreach ( $unnumbered_posts as $unnumbered_post ) {
+			$have_post_ids = array_column( $posts, 'ID' );
+			if ( ! in_array( $unnumbered_post->ID, $have_post_ids, true ) ) {
+				$posts[ $unnumbered_post->ID ] = $unnumbered_post;
+			}
+		}
+
+		$photo_count = count( $posts );
+		if ( 0 === $photo_count ) {
+			return;
+		}
+
+		$n = 1;
+		foreach ( $posts as $child_post_id => $post ) {
+			self::save_meta_photo_number( $child_post_id, $post_id, $n );
+			if ( 1 === $n ) {
+				// This is photo number 1, it should be the featured image.
+				set_post_thumbnail( $post_id, $child_post_id );
+			}
+			++$n;
 		}
 		self::delete_photo_transients( $post_id );
 	}
@@ -193,11 +227,44 @@ class Inventory_Presser_Photo_Numberer {
 			if ( ! empty( $_POST['slug'] ) && preg_match( '/photo\-([0-9]+)\-of\-[0-9]+\-of\-.*/', sanitize_text_field( wp_unslash( $_POST['slug'] ) ), $matches ) ) {
 				$number = intval( $matches[1] );
 			} else {
-				// Append the photo to the end.
-				// This hook fires after the attachment is added.
-				// How many photos does this vehicle have?
-				$number = invp_get_the_photo_count( $parent_post_id );
-				if ( 1 == $number ) {
+				/**
+				 * This hook fires after the attachment(s) are added, so the
+				 * vehicle may have 1 photo that is numbered, and the 3 that
+				 * were just added have the vehicle as a parent but do not have
+				 * number meta values. This request is for one of the 3, they
+				 * are all happening simultaneously.
+				 */
+				global $wpdb;
+				$numbered_count = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT		COUNT( `{$wpdb->prefix}posts`.`ID` )
+
+FROM		`{$wpdb->prefix}postmeta`
+			LEFT JOIN `{$wpdb->prefix}posts` ON `{$wpdb->prefix}posts`.`ID` = `{$wpdb->prefix}postmeta`.`post_id`
+
+WHERE		`{$wpdb->prefix}posts`.`post_parent` = %d
+			AND `post_type` = 'attachment'
+			AND `meta_key` = %s",
+						$parent_post_id,
+						apply_filters( 'invp_prefix_meta_key', 'photo_number' )
+					)
+				);
+
+				// How many unnumbered photos does this vehicle have?
+				$unnumbered_count = invp_get_the_photo_count( $parent_post_id ) - $numbered_count;
+				if ( 1 < $unnumbered_count ) {
+					/**
+					 * Abort. There are a couple unnumbered photos running this
+					 * method simultaneously. Let the photos remain unnumbered
+					 * until the user presses the Save Draft or Update button in
+					 * the editor.
+					 */
+					return;
+				}
+
+				$number = 1 + $numbered_count;
+
+				if ( 1 === $number ) {
 					// This is photo number 1, it should be the featured image.
 					set_post_thumbnail( $parent_post_id, $post_id );
 				}

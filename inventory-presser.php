@@ -716,6 +716,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			if ( class_exists( 'INVP' ) ) {
 				// Everything For Sale because by default we hide other Availabilities like Sold.
 				add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'mark_vehicles_for_sale_during_insertion' ), 10, 3 );
+				// Photos are sometimes attached to posts in simultaneous requests.
+				add_action( 'save_post_' . INVP::POST_TYPE, array( 'Inventory_Presser_Photo_Numberer', 'renumber_photos' ), 10, 1 );
 				// Save custom post meta and term relationships when posts are saved.
 				add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_post_meta' ), 10, 3 );
 				add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );

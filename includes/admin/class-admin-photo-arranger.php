@@ -195,6 +195,9 @@ class Inventory_Presser_Admin_Photo_Arranger {
 			return;
 		}
 
+		// Don't renumber right after we renumber.
+		remove_action( 'save_post_' . INVP::POST_TYPE, array( 'Inventory_Presser_Photo_Numberer', 'renumber_photos' ), 10, 1 );
+
 		// Set a post_parent value on every photo in the gallery block.
 		foreach ( $block['innerBlocks'] as $index => $image_block ) {
 			if ( empty( $image_block['blockName'] ) || 'core/image' !== $image_block['blockName'] ) {
@@ -213,8 +216,12 @@ class Inventory_Presser_Admin_Photo_Arranger {
 
 				// Does the number match?
 				if ( strval( $index + 1 ) !== INVP::get_meta( 'photo_number', $attachment->ID ) ) {
-					// Save VIN and photo hash in photo meta.
-					Inventory_Presser_Photo_Numberer::maybe_number_photo( $attachment->ID );
+					// Save the VIN in the photo meta.
+					Inventory_Presser_Photo_Numberer::save_meta_vin( $attachment->ID, $attachment->post_parent );
+
+					// Save a md5 hash checksum of the attachment in meta.
+					Inventory_Presser_Photo_Numberer::save_meta_hash( $attachment->ID );
+
 					// Force save the sequence number.
 					Inventory_Presser_Photo_Numberer::save_meta_photo_number( $attachment->ID, $post_id, strval( $index + 1 ) );
 				}
