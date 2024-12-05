@@ -34,6 +34,9 @@ class Inventory_Presser_Classic_Editor {
 
 		// Return information to the editor after the Add Media button is used.
 		add_action( 'wp_ajax_get_add_media_result', array( $this, 'get_add_media_result' ) );
+
+		// Stop adding media HTML to the post body after Add Media button is used.
+		add_filter( 'media_send_to_editor', array( $this, 'erase_add_media_html' ), 10, 2 );
 	}
 
 	/**
@@ -93,6 +96,22 @@ class Inventory_Presser_Classic_Editor {
 
 		// Add a meta box to the side column for a featured vehicle checkbox.
 		add_meta_box( 'featured', 'Featured Vehicle', array( $this, 'meta_box_html_featured' ), INVP::POST_TYPE, 'side', 'low' );
+	}
+
+	/**
+	 * Don't add media HTML to the post body when the Add Media button is used
+	 * to attach a photo to a vehicle.
+	 *
+	 * @param string $html HTML markup for a media item sent to the editor.
+	 * @param int    $id The first key from the $_POST['send'] data.
+	 * @return string
+	 */
+	public function erase_add_media_html( $html, $id ) {
+		$parent = get_post_parent( $id );
+		if ( ! empty( $parent->post_type ) && INVP::POST_TYPE !== $parent->post_type ) {
+			return $html;
+		}
+		return '';
 	}
 
 	/**
