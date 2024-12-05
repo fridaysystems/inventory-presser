@@ -351,6 +351,11 @@ class Inventory_Presser_Admin_Photo_Arranger {
 		$parent_id = intval( $parent_id );
 		if ( 'detach' === $action ) {
 			$this->remove_attachment_from_gallery( $attachment_id, $parent_id );
+			// Is this photo set as the Featured Image?
+			if ( (int) get_post_meta( $parent_id, '_thumbnail_id', true ) === $attachment_id ) {
+				// Yes. Remove it.
+				delete_post_thumbnail( $parent_id );
+			}
 			// Remove vehicle-specific meta values.
 			delete_post_meta( $attachment_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ) );
 			delete_post_meta( $attachment_id, apply_filters( 'invp_prefix_meta_key', 'vin' ) );
