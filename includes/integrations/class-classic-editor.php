@@ -775,8 +775,8 @@ class Inventory_Presser_Classic_Editor {
 	}
 
 	/**
-	 * AJAX callback to output the content we put near the Add Media button in
-	 * the classic editor.
+	 * AJAX callback to output the content we put near the Add Media button and
+	 * the vehicle featured image ID in case it changed when adding a photo.
 	 *
 	 * @return void
 	 */

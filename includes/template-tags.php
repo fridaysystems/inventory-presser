@@ -766,9 +766,8 @@ function invp_get_the_payment_frequency( $post_ID = null ) {
 }
 
 /**
- * invp_get_the_photo_count
- *
  * Template tag. Returns the number of images attached to the vehicle post.
+ * Includes photos that do not yet have the vehicle photo post meta values.
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
  * @return int

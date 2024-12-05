@@ -714,6 +714,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 * exclude them without a relationship to a term in that taxonomy.
 			 */
 			if ( class_exists( 'INVP' ) ) {
+				// Everything For Sale because by default we hide other Availabilities like Sold.
 				add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'mark_vehicles_for_sale_during_insertion' ), 10, 3 );
 				// Save custom post meta and term relationships when posts are saved.
 				add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_post_meta' ), 10, 3 );

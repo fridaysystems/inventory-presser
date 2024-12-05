@@ -1,18 +1,22 @@
 <?php
-defined( 'ABSPATH' ) || exit;
-
 /**
- * Inventory_Presser_Photo_Numberer
- *
  * If a user uploads a photo to a vehicle in the dashboard, it needs meta data
  * that tells this plugin how to order that photo among the others during
  * display. This class sets that and other meta values, including the VIN, and
  * md5 hash checksum of the photo file. If it determines a photo upload is the
  * first photo to be attached to a vehicle, that photo is set as the featured
  * image for the vehicle post.
+ *
+ * @package inventory-presser
+ * @author Corey Salzano <corey@friday.systems>
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Inventory_Presser_Photo_Numberer
  */
 class Inventory_Presser_Photo_Numberer {
-
 
 	/**
 	 * Adds hooks
@@ -111,17 +115,14 @@ class Inventory_Presser_Photo_Numberer {
 	}
 
 	/**
-	 * renumber_photos
-	 *
 	 * Reassigns sequence numbers to all photos attached to a vehicle post.
+	 * Useful after multiple attachments or when a photo is deleted.
 	 *
-	 * Designed to run after a photo is deleted from the middle.
-	 *
-	 * @param  int $post_id The post ID of a vehicle
+	 * @param  int $post_id The post ID of a vehicle.
 	 * @return void
 	 */
 	public static function renumber_photos( $post_id ) {
-		// Get all of this vehicle's photos
+		// Get all of this vehicle's photos.
 		$posts = get_children(
 			array(
 				'meta_key'    => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
@@ -137,8 +138,6 @@ class Inventory_Presser_Photo_Numberer {
 	}
 
 	/**
-	 * save_meta_hash
-	 *
 	 * Saves an MD5 hash checksum of the attachment file bytes in the attachment
 	 * post meta. This 32 character string can be used for file comparisons
 	 * while not taxing the server as much as other methods.
@@ -147,7 +146,7 @@ class Inventory_Presser_Photo_Numberer {
 	 * @return void
 	 */
 	protected static function save_meta_hash( $post_id ) {
-		// Save a md5 hash checksum of the attachment in meta
+		// Save a md5 hash checksum of the attachment in meta.
 		$file_path = get_attached_file( $post_id );
 		if ( false === $file_path ) {
 			return;
@@ -160,20 +159,18 @@ class Inventory_Presser_Photo_Numberer {
 	}
 
 	/**
-	 * save_meta_photo_number
-	 *
 	 * Saves a sequence number like 1, 2, or 99 in attachment post meta. This
 	 * number dictates the order in which the photos will be disabled in sliders
 	 * and galleries.
 	 *
-	 * @param  int $post_id         The post ID of the attachment
-	 * @param  int $parent_post_id  The post ID of the vehicle to which $post_id is a child
+	 * @param  int $post_id         The post ID of the attachment.
+	 * @param  int $parent_post_id  The post ID of the vehicle to which $post_id is a child.
 	 * @param  int $sequence_number The sequence number to save. Do not provide to append.
 	 * @return void
 	 */
 	public static function save_meta_photo_number( $post_id, $parent_post_id, $sequence_number = null ) {
-		// Does this photo already have a sequence number?
 		if ( null === $sequence_number ) {
+			// Does this photo already have a sequence number?
 			if ( ! empty( INVP::get_meta( 'photo_number', $post_id ) ) ) {
 				// Yes.
 				return;
@@ -198,6 +195,7 @@ class Inventory_Presser_Photo_Numberer {
 			$number = $sequence_number;
 		}
 
+		// Save the photo number in the photo's meta.
 		if ( 0 !== $number ) {
 			update_post_meta( $post_id, apply_filters( 'invp_prefix_meta_key', 'photo_number' ), $number );
 		}
@@ -207,8 +205,8 @@ class Inventory_Presser_Photo_Numberer {
 	 * Saves the vehicle VIN in attachment meta when an attachment is uploaded
 	 * to a vehicle post.
 	 *
-	 * @param  int $post_id
-	 * @param  int $parent_post_id
+	 * @param  int $post_id The post ID of the attachment.
+	 * @param  int $parent_post_id The post ID of the vehicle to which $post_id is a child.
 	 * @return void
 	 */
 	protected static function save_meta_vin( $post_id, $parent_post_id ) {
