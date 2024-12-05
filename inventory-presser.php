@@ -372,7 +372,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							'not_found'             => __( 'No vehicles found.', 'inventory-presser' ),
 							'not_found_in_trash'    => __( 'No vehicles found in Trash.', 'inventory-presser' ),
 							'archives'              => _x( 'Inventory', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', 'inventory-presser' ),
-							'insert_into_item'      => _x( 'Insert into vehicle description', 'Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4', 'inventory-presser' ),
+							'insert_into_item'      => _x( 'Attach to vehicle', 'Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4', 'inventory-presser' ),
 							'uploaded_to_this_item' => _x( 'Uploaded to this vehicle', 'Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4', 'inventory-presser' ),
 							'filter_items_list'     => _x( 'Filter vehicles list', 'Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4', 'inventory-presser' ),
 							'items_list_navigation' => _x( 'Vehicles list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'inventory-presser' ),
