@@ -36,22 +36,27 @@ class Inventory_Presser_Photo_Numberer {
 	}
 
 	public function add_sequence_number_to_titles( $title, $id = null ) {
+		// Don't double dip during REST API requests.
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return;
+		}
+
+		// What post?
+		if ( empty( $id ) ) {
+			return $title;
+		}
+
 		if ( ! is_admin() ) {
 			return $title;
 		}
 
 		// Is this the Media Library upload.php?
-		if ( function_exists( 'get_current_screen' ) && $screen = get_current_screen() ) {
-			if ( empty( $screen->parent_file ) || 'upload.php' != $screen->parent_file ) {
-				// No.
-				return $title;
-			}
-		} else {
+		if ( ! function_exists( 'get_current_screen' ) ) {
 			return $title;
 		}
-
-		// Is this post ID a vehicle photo?
-		if ( empty( $id ) ) {
+		$screen = get_current_screen();
+		if ( empty( $screen->parent_file ) || 'upload.php' !== $screen->parent_file ) {
+			// No.
 			return $title;
 		}
 
