@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.7.1
 Requires PHP: 7.0.0
-Stable tag: 14.17.6
+Stable tag: 14.18.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.14.17.6.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.17.6.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.6.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.17.6.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.14.18.0.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.18.0.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.18.0.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.18.0.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,14 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 14.18.0 =
+* [Added] Adds the description field to the Attributes meta box in the Classic Editor.
+* [Fixed] Fixes a bug that prevented transients holding vehicle photo arrays from being deleted.
+* [Fixed] Stops adding photo HTML to the post body in the Classic Editor when the Add Media button is used to attach a photo to a vehicle.
+* [Fixed] Fixes a bug when renumbering photos during uploads.
+* [Fixed] Fixes a bug that would remove a newly-added Featured Image when users press Save draft in the Classic Editor.
+* [Fixed] Prevents Divi from clobbering our Gallery Block in new vehicle posts in the Block Editor with their "Build Your Layout Using Divi" nag.
 
 = 14.17.6 =
 * [Fixed] Fixes a bug that prevented the plugin from uninstalling properly.
@@ -233,6 +241,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.18.0 =
+Adds the description field to the Attributes meta box in the Classic Editor. Fixes a bug that prevented transients holding vehicle photo arrays from being deleted. Stops adding photo HTML to the post body in the Classic Editor when the Add Media button is used to attach a photo to a vehicle. Fixes a bug when renumbering photos during uploads. Fixes a bug that would remove a newly-added Featured Image when users press Save draft in the Classic Editor. Prevents Divi from clobbering our Gallery Block in new vehicle posts in the Block Editor with their "Build Your Layout Using Divi" nag.
 
 = 14.17.6 =
 Fixes a bug that prevented the plugin from uninstalling properly. Changes tested up to version number to 6.7.1.
