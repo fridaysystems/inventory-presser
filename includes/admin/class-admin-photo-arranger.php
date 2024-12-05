@@ -220,6 +220,8 @@ class Inventory_Presser_Admin_Photo_Arranger {
 				}
 			}
 		}
+
+		Inventory_Presser_Photo_Numberer::delete_photo_transients( $post_id );
 	}
 
 	/**

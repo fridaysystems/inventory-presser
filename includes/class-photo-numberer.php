@@ -76,6 +76,17 @@ class Inventory_Presser_Photo_Numberer {
 	}
 
 	/**
+	 * Deletes transients that store vehicle photos to help load galleries.
+	 *
+	 * @param  int $post_id The post ID of a vehicle.
+	 * @return void
+	 */
+	public static function delete_photo_transients( $post_id ) {
+		delete_transient( 'invp_get_the_photos_images_' . $post_id );
+		delete_transient( 'invp_get_the_photos_image_urls_' . $post_id );
+	}
+
+	/**
 	 * Filter callback on add_attachment. Decides whether to write meta values
 	 * on attachments if they are uploaded to vehicles. If this method
 	 * determines the photo sequence number to be 1, the attachment is also set
@@ -110,8 +121,7 @@ class Inventory_Presser_Photo_Numberer {
 		self::save_meta_photo_number( $post_id, $attachment->post_parent );
 
 		// Delete the transients that hold this vehicle's photos.
-		delete_transient( 'invp_get_the_photos_images_' . $post_id );
-		delete_transient( 'invp_get_the_photos_image_urls_' . $post_id );
+		self::delete_photo_transients( $attachment->post_parent );
 	}
 
 	/**
@@ -135,6 +145,7 @@ class Inventory_Presser_Photo_Numberer {
 		for ( $s = 1; $s <= sizeof( $posts ); $s++ ) {
 			self::save_meta_photo_number( $posts[ $s ]->ID, $post_id, $s );
 		}
+		self::delete_photo_transients( $post_id );
 	}
 
 	/**
