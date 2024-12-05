@@ -502,6 +502,7 @@ class Inventory_Presser_Classic_Editor {
 		$keys   = array(
 			'body_style',
 			'color',
+			'description',
 			'engine',
 			'interior_color',
 			'make',
@@ -661,6 +662,15 @@ class Inventory_Presser_Classic_Editor {
 			/* 11 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'youtube' ) ),
 			/* 12 */ esc_html__( 'YouTube video ID', 'inventory-presser' ),
 			/* 13 */ esc_attr( $meta['youtube'] )
+		);
+
+		// Description.
+		printf(
+			'<tr><th scope="row"><label for="%1$s">%2$s</label></th>'
+			. '<td><textarea rows="5" class="large-text" name="%1$s">%3$s</textarea></td></tr>',
+			esc_attr( apply_filters( 'invp_prefix_meta_key', 'description' ) ),
+			esc_html__( 'Description', 'inventory-presser' ),
+			esc_textarea( $meta['description'] ),
 		);
 
 		$type = $custom[ apply_filters( 'invp_prefix_meta_key', 'type' ) ][0] ?? '';
