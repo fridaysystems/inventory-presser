@@ -67,18 +67,26 @@ function is_number( evt ) {
 	return ! (charCode > 31 && ( charCode < 48 || charCode > 57 ) );
 }
 
-function update_add_media_button_annotation( ) {
-	var data = {
-		'action': 'output_add_media_button_annotation',
-		'post_ID': document.getElementById( 'post_ID' ).value,
-	};
-	jQuery.post(
-		ajaxurl,
-		data,
-		function ( response ) {
-			jQuery( '#media-annotation' ).html( response );
-		}
-	);
+function update_add_media_button_annotation() {
+	setTimeout( function() {
+		var data = {
+			'action': 'get_add_media_result',
+			'post_ID': document.getElementById( 'post_ID' ).value,
+		};
+		jQuery.post(
+			ajaxurl,
+			data,
+			function ( response ) {
+				if ( ! response.success ) {
+					return;
+				}
+				jQuery( '#media-annotation' ).html( response.data.button_annotation );
+				if ( '' !== response.data._thumbnail_id ) {
+					document.getElementById('_thumbnail_id').value = response.data._thumbnail_id;
+				}
+			}
+		);
+	}, 2000 );
 }
 
 /**
@@ -106,15 +114,22 @@ jQuery( document ).ready(
 				}
 		}
 
-		// Hack for "Insert Media" Dialog (new plupload uploader)
+		// Hack for "Add Media" Dialog (new uploader)
 		// Hooking on the uploader queue (on reset):
-		if (typeof wp !== 'undefined' && typeof wp.Uploader !== 'undefined' && typeof wp.Uploader.queue !== 'undefined') {
-			wp.Uploader.queue.on(
-				'reset',
-				function () {
-					update_add_media_button_annotation();
+		if (typeof wp !== 'undefined') {
+			if ( typeof wp.Uploader !== 'undefined' && typeof wp.Uploader.queue !== 'undefined') {
+				// Photo is uploaded in Add Media modal.
+				wp.Uploader.queue.on( 'reset', update_add_media_button_annotation );
+			}
+			if ( typeof wp.media !== 'undefined' ) {
+				if ( typeof wp.media.frame === 'undefined' ) {
+					wp.media();
+					wp.media.editor.open();
+					wp.media.frame.close();
 				}
-			);
+				// Existing photo is chosen in Add Media modal.
+				wp.media.frame.on( 'insert', update_add_media_button_annotation );
+			}
 		}
 
 		// Confirm Delete All Vehicles button presses

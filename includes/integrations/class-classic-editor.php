@@ -32,8 +32,8 @@ class Inventory_Presser_Classic_Editor {
 		// Define an AJAX handler for the 'Delete All Media' button.
 		add_action( 'wp_ajax_delete_all_post_attachments', array( $this, 'delete_all_post_attachments' ) );
 
-		// Make our Add Media button annotation available from an AJAX call.
-		add_action( 'wp_ajax_output_add_media_button_annotation', array( $this, 'output_add_media_button_annotation' ) );
+		// Return information to the editor after the Add Media button is used.
+		add_action( 'wp_ajax_get_add_media_result', array( $this, 'get_add_media_result' ) );
 	}
 
 	/**
@@ -780,9 +780,15 @@ class Inventory_Presser_Classic_Editor {
 	 *
 	 * @return void
 	 */
-	public function output_add_media_button_annotation() {
-		// because AJAX.
-		echo $this->create_add_media_button_annotation();
-		wp_die();
+	public function get_add_media_result() {
+		$thumbnail_id = '';
+		if ( isset( $_POST['post_ID'] ) ) {
+			$thumbnail_id = get_post_meta( intval( $_POST['post_ID'] ), '_thumbnail_id', true );
+		}
+		$data = array(
+			'button_annotation' => $this->create_add_media_button_annotation(),
+			'_thumbnail_id'     => $thumbnail_id,
+		);
+		wp_send_json_success( $data );
 	}
 }
