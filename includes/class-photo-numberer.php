@@ -59,7 +59,7 @@ class Inventory_Presser_Photo_Numberer {
 		}
 
 		$parent = get_post_parent( $id );
-		if ( empty( $parent ) || INVP::POST_TYPE != $parent->post_type ) {
+		if ( empty( $parent ) || INVP::POST_TYPE !== $parent->post_type ) {
 			// No.
 			return $title;
 		}
