@@ -602,6 +602,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			add_filter( 'invp_prefix_meta_key', array( 'INVP', 'translate_custom_field_names' ) );
 			add_filter( 'invp_unprefix_meta_key', array( 'INVP', 'untranslate_custom_field_names' ) );
 
+			// Provide a path to .mo files in /languages.
+			add_action( 'init', array( $this, 'load_textdomain' ) );
+
 			/**
 			 * Create our post type and taxonomies
 			 */
@@ -1068,6 +1071,15 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				|| is_plugin_active_for_network( $plugin_path ) ) {
 				GF_Fields::register( new GF_Field_Vehicle() );
 			}
+		}
+
+		/**
+		 * Load plugin textdomain.
+		 *
+		 * @return void
+		 */
+		public function load_textdomain() {
+			load_plugin_textdomain( 'inventory-presser', false, dirname( INVP_PLUGIN_FILE_PATH ) . '/languages' );
 		}
 
 		/**
