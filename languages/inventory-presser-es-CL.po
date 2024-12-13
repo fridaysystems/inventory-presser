@@ -1,0 +1,3609 @@
+# Translation of Plugins - Inventory Presser &#8211; Car Dealer Listings - Stable (latest release) in Spanish (Chile)
+# This file is distributed under the same license as the Plugins - Inventory Presser &#8211; Car Dealer Listings - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2024-09-05 15:07:11+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.1\n"
+"Language: es_CL\n"
+"Project-Id-Version: Plugins - Inventory Presser &#8211; Car Dealer Listings - Stable (latest release)\n"
+
+#: build/blocks/youtube/block.json src/blocks/youtube/block.json
+msgctxt "block description"
+msgid "Displays and edits the YouTube video ID meta field."
+msgstr ""
+
+#: build/blocks/youtube/block.json src/blocks/youtube/block.json
+msgctxt "block title"
+msgid "YouTube Video ID"
+msgstr ""
+
+#: build/blocks/year/block.json src/blocks/year/block.json
+msgctxt "block keyword"
+msgid "year of manufacture"
+msgstr ""
+
+#: build/blocks/year/block.json src/blocks/year/block.json
+msgctxt "block description"
+msgid "Displays and edits the model year meta field."
+msgstr ""
+
+#: build/blocks/year/block.json src/blocks/year/block.json
+msgctxt "block title"
+msgid "Year"
+msgstr ""
+
+#: build/blocks/vin/block.json src/blocks/vin/block.json
+msgctxt "block keyword"
+msgid "serial no"
+msgstr ""
+
+#: build/blocks/vin/block.json src/blocks/vin/block.json
+msgctxt "block description"
+msgid "Displays and edits the VIN meta field. Vehicle Identification Number."
+msgstr ""
+
+#: build/blocks/vin/block.json src/blocks/vin/block.json
+msgctxt "block title"
+msgid "VIN"
+msgstr ""
+
+#: build/blocks/trim/block.json src/blocks/trim/block.json
+msgctxt "block keyword"
+msgid "edition"
+msgstr ""
+
+#: build/blocks/trim/block.json src/blocks/trim/block.json
+msgctxt "block description"
+msgid "Displays and edits the trim level meta field."
+msgstr ""
+
+#: build/blocks/trim/block.json src/blocks/trim/block.json
+msgctxt "block title"
+msgid "Trim Level"
+msgstr ""
+
+#: build/blocks/transmission-speeds/block.json
+#: src/blocks/transmission-speeds/block.json
+msgctxt "block keyword"
+msgid "gearbox"
+msgstr ""
+
+#: build/blocks/transmission-speeds/block.json
+#: src/blocks/transmission-speeds/block.json
+msgctxt "block keyword"
+msgid "gears"
+msgstr ""
+
+#: build/blocks/transmission-speeds/block.json
+#: src/blocks/transmission-speeds/block.json
+msgctxt "block description"
+msgid "Displays and edits the transmission speeds meta field."
+msgstr ""
+
+#: build/blocks/transmission-speeds/block.json
+#: src/blocks/transmission-speeds/block.json
+msgctxt "block title"
+msgid "Transmission Speeds"
+msgstr ""
+
+#: build/blocks/title-status/block.json src/blocks/title-status/block.json
+msgctxt "block keyword"
+msgid "salvage"
+msgstr ""
+
+#: build/blocks/title-status/block.json src/blocks/title-status/block.json
+msgctxt "block keyword"
+msgid "rebuilt"
+msgstr ""
+
+#: build/blocks/title-status/block.json src/blocks/title-status/block.json
+msgctxt "block keyword"
+msgid "clear"
+msgstr ""
+
+#: build/blocks/title-status/block.json src/blocks/title-status/block.json
+msgctxt "block description"
+msgid "Displays and edits the title status meta field."
+msgstr ""
+
+#: build/blocks/title-status/block.json src/blocks/title-status/block.json
+msgctxt "block title"
+msgid "Title Status"
+msgstr ""
+
+#: build/blocks/stock-number/block.json src/blocks/stock-number/block.json
+msgctxt "block keyword"
+msgid "stock no"
+msgstr ""
+
+#: build/blocks/stock-number/block.json src/blocks/stock-number/block.json
+msgctxt "block description"
+msgid "Displays and edits the stock number meta field."
+msgstr ""
+
+#: build/blocks/stock-number/block.json src/blocks/stock-number/block.json
+msgctxt "block title"
+msgid "Stock Number"
+msgstr ""
+
+#: build/blocks/price/block.json src/blocks/price/block.json
+msgctxt "block keyword"
+msgid "selling"
+msgstr ""
+
+#: build/blocks/price/block.json src/blocks/price/block.json
+msgctxt "block keyword"
+msgid "list"
+msgstr ""
+
+#: build/blocks/price/block.json src/blocks/price/block.json
+msgctxt "block keyword"
+msgid "asking"
+msgstr ""
+
+#: build/blocks/price/block.json src/blocks/price/block.json
+msgctxt "block description"
+msgid "Displays and edits the price meta field."
+msgstr ""
+
+#: build/blocks/price/block.json src/blocks/price/block.json
+msgctxt "block title"
+msgid "Price"
+msgstr ""
+
+#: build/blocks/payment/block.json src/blocks/payment/block.json
+msgctxt "block description"
+msgid "Displays and edits the payment meta field."
+msgstr ""
+
+#: build/blocks/payment/block.json src/blocks/payment/block.json
+msgctxt "block title"
+msgid "Payment"
+msgstr ""
+
+#: build/blocks/odometer/block.json src/blocks/odometer/block.json
+msgctxt "block keyword"
+msgid "reading"
+msgstr ""
+
+#: build/blocks/odometer/block.json src/blocks/odometer/block.json
+msgctxt "block description"
+msgid "Displays and edits the odometer meta field."
+msgstr ""
+
+#: build/blocks/odometer/block.json src/blocks/odometer/block.json
+msgctxt "block title"
+msgid "Odometer"
+msgstr ""
+
+#: build/blocks/msrp/block.json src/blocks/msrp/block.json
+msgctxt "block keyword"
+msgid "base price"
+msgstr ""
+
+#: build/blocks/msrp/block.json src/blocks/msrp/block.json
+msgctxt "block description"
+msgid "Displays and edits the MSRP meta field. Manufacturer's Suggested Retail Price."
+msgstr ""
+
+#: build/blocks/msrp/block.json src/blocks/msrp/block.json
+msgctxt "block title"
+msgid "MSRP"
+msgstr ""
+
+#: build/blocks/model/block.json src/blocks/model/block.json
+msgctxt "block keyword"
+msgid "model no"
+msgstr ""
+
+#: build/blocks/model/block.json src/blocks/model/block.json
+msgctxt "block keyword"
+msgid "name"
+msgstr ""
+
+#: build/blocks/model/block.json src/blocks/model/block.json
+msgctxt "block description"
+msgid "Displays and edits the model meta field. Model is the name given by the manufacturer."
+msgstr ""
+
+#: build/blocks/model/block.json src/blocks/model/block.json
+msgctxt "block title"
+msgid "Model"
+msgstr ""
+
+#: build/blocks/make/block.json src/blocks/make/block.json
+msgctxt "block keyword"
+msgid "vendor"
+msgstr ""
+
+#: build/blocks/make/block.json src/blocks/make/block.json
+msgctxt "block keyword"
+msgid "marque"
+msgstr ""
+
+#: build/blocks/make/block.json build/blocks/title-status/block.json
+#: src/blocks/make/block.json src/blocks/title-status/block.json
+msgctxt "block keyword"
+msgid "brand"
+msgstr ""
+
+#: build/blocks/make/block.json src/blocks/make/block.json
+msgctxt "block keyword"
+msgid "manufacturer"
+msgstr ""
+
+#: build/blocks/make/block.json src/blocks/make/block.json
+msgctxt "block description"
+msgid "Displays and edits the make meta field. Make is the manufacturer's name."
+msgstr ""
+
+#: build/blocks/make/block.json src/blocks/make/block.json
+msgctxt "block title"
+msgid "Make"
+msgstr ""
+
+#: build/blocks/length/block.json src/blocks/length/block.json
+msgctxt "block keyword"
+msgid "boat length"
+msgstr ""
+
+#: build/blocks/length/block.json src/blocks/length/block.json
+msgctxt "block keyword"
+msgid "trailer length"
+msgstr ""
+
+#: build/blocks/length/block.json src/blocks/length/block.json
+msgctxt "block description"
+msgid "Displays and edits the length meta field. Helpful for trailers and boats."
+msgstr ""
+
+#: build/blocks/length/block.json src/blocks/length/block.json
+msgctxt "block title"
+msgid "Length"
+msgstr ""
+
+#: build/blocks/last-modified/block.json src/blocks/last-modified/block.json
+msgctxt "block keyword"
+msgid "listing date"
+msgstr ""
+
+#: build/blocks/last-modified/block.json src/blocks/last-modified/block.json
+msgctxt "block keyword"
+msgid "last updated"
+msgstr ""
+
+#: build/blocks/last-modified/block.json src/blocks/last-modified/block.json
+msgctxt "block description"
+msgid "Displays the last modified meta field. Read only. The last modified date is automatically updated when vehicle posts are saved."
+msgstr ""
+
+#: build/blocks/last-modified/block.json src/blocks/last-modified/block.json
+msgctxt "block title"
+msgid "Last Modified"
+msgstr ""
+
+#: build/blocks/interior-color/block.json src/blocks/interior-color/block.json
+msgctxt "block keyword"
+msgid "seat color"
+msgstr ""
+
+#: build/blocks/interior-color/block.json src/blocks/interior-color/block.json
+msgctxt "block keyword"
+msgid "leather interior"
+msgstr ""
+
+#: build/blocks/interior-color/block.json src/blocks/interior-color/block.json
+msgctxt "block keyword"
+msgid "cloth interior"
+msgstr ""
+
+#: build/blocks/interior-color/block.json src/blocks/interior-color/block.json
+msgctxt "block description"
+msgid "Displays and edits the interior color meta field."
+msgstr ""
+
+#: build/blocks/interior-color/block.json src/blocks/interior-color/block.json
+msgctxt "block title"
+msgid "Interior Color"
+msgstr ""
+
+#: build/blocks/engine/block.json src/blocks/engine/block.json
+msgctxt "block keyword"
+msgid "motor"
+msgstr ""
+
+#: build/blocks/engine/block.json src/blocks/engine/block.json
+msgctxt "block keyword"
+msgid "cylinder count"
+msgstr ""
+
+#: build/blocks/engine/block.json src/blocks/engine/block.json
+msgctxt "block keyword"
+msgid "displacement"
+msgstr ""
+
+#: build/blocks/engine/block.json src/blocks/engine/block.json
+msgctxt "block description"
+msgid "Displays and edits the engine meta field."
+msgstr ""
+
+#: build/blocks/engine/block.json src/blocks/engine/block.json
+msgctxt "block title"
+msgid "Engine"
+msgstr ""
+
+#: build/blocks/down-payment/block.json build/blocks/payment/block.json
+#: src/blocks/down-payment/block.json src/blocks/payment/block.json
+msgctxt "block keyword"
+msgid "car payment"
+msgstr ""
+
+#: build/blocks/down-payment/block.json build/blocks/payment/block.json
+#: src/blocks/down-payment/block.json src/blocks/payment/block.json
+msgctxt "block keyword"
+msgid "auto loan"
+msgstr ""
+
+#: build/blocks/down-payment/block.json build/blocks/payment/block.json
+#: src/blocks/down-payment/block.json src/blocks/payment/block.json
+msgctxt "block keyword"
+msgid "car loan"
+msgstr ""
+
+#: build/blocks/down-payment/block.json src/blocks/down-payment/block.json
+msgctxt "block description"
+msgid "Displays and edits the down payment meta field."
+msgstr ""
+
+#: build/blocks/down-payment/block.json src/blocks/down-payment/block.json
+msgctxt "block title"
+msgid "Down Payment"
+msgstr ""
+
+#: build/blocks/color/block.json src/blocks/color/block.json
+msgctxt "block keyword"
+msgid "car color"
+msgstr ""
+
+#: build/blocks/color/block.json src/blocks/color/block.json
+msgctxt "block keyword"
+msgid "exterior color"
+msgstr ""
+
+#: build/blocks/color/block.json src/blocks/color/block.json
+msgctxt "block keyword"
+msgid "paint color"
+msgstr ""
+
+#: build/blocks/color/block.json src/blocks/color/block.json
+msgctxt "block description"
+msgid "Displays and edits the exterior color meta field."
+msgstr ""
+
+#: build/blocks/color/block.json src/blocks/color/block.json
+msgctxt "block title"
+msgid "Color"
+msgstr ""
+
+#: build/blocks/body-style/block.json src/blocks/body-style/block.json
+msgctxt "block keyword"
+msgid "chassis"
+msgstr ""
+
+#: build/blocks/body-style/block.json src/blocks/body-style/block.json
+msgctxt "block keyword"
+msgid "wagon"
+msgstr ""
+
+#: build/blocks/body-style/block.json src/blocks/body-style/block.json
+msgctxt "block keyword"
+msgid "suv"
+msgstr ""
+
+#: build/blocks/body-style/block.json src/blocks/body-style/block.json
+msgctxt "block keyword"
+msgid "body style"
+msgstr ""
+
+#: build/blocks/body-style/block.json src/blocks/body-style/block.json
+msgctxt "block description"
+msgid "Displays and edits the body style meta field."
+msgstr ""
+
+#: build/blocks/body-style/block.json src/blocks/body-style/block.json
+msgctxt "block title"
+msgid "Body Style"
+msgstr ""
+
+#: build/blocks/beam/block.json src/blocks/beam/block.json
+msgctxt "block keyword"
+msgid "vessel"
+msgstr ""
+
+#: build/blocks/beam/block.json src/blocks/beam/block.json
+msgctxt "block keyword"
+msgid "ship"
+msgstr ""
+
+#: build/blocks/beam/block.json src/blocks/beam/block.json
+msgctxt "block keyword"
+msgid "boat"
+msgstr ""
+
+#: build/blocks/beam/block.json src/blocks/beam/block.json
+msgctxt "block description"
+msgid "Displays and edits the beam meta field. Beam is the width of a boat at its widest point."
+msgstr ""
+
+#: build/blocks/beam/block.json src/blocks/beam/block.json
+msgctxt "block title"
+msgid "Beam"
+msgstr ""
+
+#: includes/class-invp.php:889
+msgid "YouTube Embed HTML"
+msgstr ""
+
+#: build/blocks/trim/block.json
+#: build/blocks/year-make-model-and-trim/block.json src/blocks/trim/block.json
+#: src/blocks/year-make-model-and-trim/block.json
+msgctxt "block keyword"
+msgid "trim level"
+msgstr ""
+
+#: build/blocks/year-make-model-and-trim/block.json
+#: src/blocks/year-make-model-and-trim/block.json
+msgctxt "block keyword"
+msgid "model year"
+msgstr ""
+
+#: build/blocks/year-make-model-and-trim/block.json
+#: src/blocks/year-make-model-and-trim/block.json
+msgctxt "block keyword"
+msgid "vehicle"
+msgstr ""
+
+#: build/blocks/body-style/block.json
+#: build/blocks/year-make-model-and-trim/block.json
+#: src/blocks/body-style/block.json
+#: src/blocks/year-make-model-and-trim/block.json
+msgctxt "block keyword"
+msgid "truck"
+msgstr ""
+
+#: build/blocks/year-make-model-and-trim/block.json
+#: src/blocks/year-make-model-and-trim/block.json
+msgctxt "block keyword"
+msgid "car"
+msgstr ""
+
+#: build/blocks/year-make-model-and-trim/block.json
+#: src/blocks/year-make-model-and-trim/block.json
+msgctxt "block description"
+msgid "Displays and edits the year, make, model, and trim level meta fields."
+msgstr ""
+
+#: build/blocks/year-make-model-and-trim/block.json
+#: src/blocks/year-make-model-and-trim/block.json
+msgctxt "block title"
+msgid "Year, Make, Model, and Trim"
+msgstr ""
+
+#: inventory-presser.php:1275
+msgid "Miles"
+msgstr ""
+
+#: includes/class-site-health.php:139
+msgid "A permalink structure has been defined at Settings → Permalinks that allows the default vehicle archive to be located at /inventory."
+msgstr ""
+
+#: includes/class-site-health.php:131
+msgid "Permalink structure allows default vehicle archive at /inventory"
+msgstr ""
+
+#: includes/class-site-health.php:124
+msgid "No permalink structure has been chosen at Settings → Permalinks. This means the default vehicle archive is located at /?post_type=inventory_vehicle rather than /inventory."
+msgstr ""
+
+#: includes/class-site-health.php:116
+msgid "Consider using pretty permalinks"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:1035
+msgid "Site settings can be improved. Visit Tools → Site Health and look for Inventory Presser recommendations."
+msgstr ""
+
+#: includes/widget/class-widget-order-by.php:72
+msgid "Which fields should users be allowed to use as sort fields?"
+msgstr ""
+
+#: includes/integrations/class-gravityforms-field-vehicle.php:65
+msgid "Allows users to select one vehicle from a list. Hidden field on vehicle details pages."
+msgstr ""
+
+#: includes/admin/class-admin-options.php:401
+msgid "Comparison value"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:372
+msgid "Filter"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:309
+#: includes/admin/class-admin-options.php:365
+msgid "URL"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:343
+msgid "Toggle active or inactive"
+msgstr ""
+
+#: includes/integrations/class-divi.php:61
+msgid "Divi Setup Guide"
+msgstr ""
+
+#: includes/integrations/class-divi.php:60
+msgid "Visit"
+msgstr ""
+
+#: includes/integrations/class-divi.php:59
+msgid "Listings Pages feature does not work on Divi."
+msgstr ""
+
+#: includes/admin/class-admin-options.php:660
+msgid "WS Form"
+msgstr "WS Form"
+
+#: includes/admin/class-admin-options.php:552
+msgid "Provide single and archive templates"
+msgstr "Proporciona plantillas individuales y de archivo"
+
+#: includes/admin/class-admin-options.php:183
+msgid "Templates"
+msgstr "Plantillas"
+
+#: inventory-presser.php:1934
+msgid "Check Availability"
+msgstr "Comprobar disponibilidad"
+
+#: inventory-presser.php:1251
+msgid "Salvage"
+msgstr "Pérdida total"
+
+#: inventory-presser.php:1250
+msgid "Rebuild, Rebuildable, and Reconstructed"
+msgstr "Reconstruido y reconstruible"
+
+#: inventory-presser.php:1249
+msgid "Lemon and Manufacturers Buyback"
+msgstr "Recompra por el fabricante"
+
+#: inventory-presser.php:1248
+msgid "Flood, Water Damage"
+msgstr "Inundaciones, daños por agua"
+
+#: inventory-presser.php:1246
+msgid "Clear"
+msgstr "Borrar"
+
+#: inventory-presser.php:1245
+msgid "Unspecified"
+msgstr "No especificado"
+
+#: inventory-presser.php:1231
+msgid "miles"
+msgstr "kilómetros"
+
+#: includes/integrations/class-classic-editor.php:679
+msgid "Boat-specific"
+msgstr "Específico para embarcaciones"
+
+#: includes/integrations/class-classic-editor.php:622
+msgid "Pontoon"
+msgstr "Pontón"
+
+#: includes/integrations/class-classic-editor.php:621
+msgid "Performance"
+msgstr "Rendimiento"
+
+#: includes/integrations/class-classic-editor.php:620
+msgid "Deck boat"
+msgstr "Barco de cubierta"
+
+#: includes/integrations/class-classic-editor.php:619
+msgid "Cuddy Cabin"
+msgstr "Cabina Cuddy"
+
+#: includes/integrations/class-classic-editor.php:618
+msgid "Center Console"
+msgstr "Consola central"
+
+#: includes/integrations/class-classic-editor.php:617
+msgid "Cabin Cruiser"
+msgstr "Crucero de cabina"
+
+#: includes/integrations/class-classic-editor.php:616
+msgid "Bow Rider"
+msgstr "Proa abierta"
+
+#: includes/integrations/class-classic-editor.php:615
+msgid "Bass boat"
+msgstr "Barco de pesca"
+
+#: includes/integrations/class-classic-editor.php:445
+msgid "Down payment"
+msgstr "Pie"
+
+#: includes/class-taxonomies.php:1196
+msgid "&larr; Go to hull materials"
+msgstr "&larr; Ir a materiales del chasis"
+
+#: includes/class-taxonomies.php:1195
+msgid "New Hull Material Name"
+msgstr "Nuevo nombre de material del chasis"
+
+#: includes/class-taxonomies.php:1194
+msgid "Add New Hull Material"
+msgstr "Añadir nuevo material del chasis"
+
+#: includes/class-taxonomies.php:1193
+msgid "Edit Hull Material"
+msgstr "Editar material del chasis"
+
+#: includes/class-taxonomies.php:1192
+msgid "Parent Hull Material"
+msgstr "Material del chasis principal"
+
+#: includes/class-taxonomies.php:1191
+msgid "All hull materials"
+msgstr "Todos los materiales del chasis"
+
+#: includes/class-taxonomies.php:1190
+msgid "Popular hull materials"
+msgstr "Materiales del chasis populares"
+
+#: includes/class-taxonomies.php:1189
+msgid "Search hull materials"
+msgstr "Buscar materiales del chasis"
+
+#: includes/class-taxonomies.php:1185 includes/class-taxonomies.php:1187
+msgid "Hull Materials"
+msgstr "Materiales del chasis"
+
+#: includes/class-taxonomies.php:1170
+msgid "&larr; Go to horsepower"
+msgstr "&larr; Ir a la potencia"
+
+#: includes/class-taxonomies.php:1169
+msgid "New Horsepower Name"
+msgstr "Nuevo nombre de potencia"
+
+#: includes/class-taxonomies.php:1168
+msgid "Add New Horsepower"
+msgstr "Añadir nueva potencia"
+
+#: includes/class-taxonomies.php:1167
+msgid "Edit Horsepower"
+msgstr "Editar potencia"
+
+#: includes/class-taxonomies.php:1166
+msgid "Parent Horsepower"
+msgstr "Potencia principal"
+
+#: includes/class-taxonomies.php:1165
+msgid "All horsepower"
+msgstr "Todas las potencias"
+
+#: includes/class-taxonomies.php:1164
+msgid "Popular horsepower"
+msgstr "Potencias populares"
+
+#: includes/class-taxonomies.php:1163
+msgid "Search horsepower"
+msgstr "Buscar potencia"
+
+#: includes/class-taxonomies.php:1144
+msgid "&larr; Go to engine model"
+msgstr "&larr; Ir a modelo del motor"
+
+#: includes/class-taxonomies.php:1143
+msgid "New Engine Model Name"
+msgstr "Nuevo nombre de modelo del motor"
+
+#: includes/class-taxonomies.php:1142
+msgid "Add New Engine Model"
+msgstr "Añadir nuevo modelo del motor"
+
+#: includes/class-taxonomies.php:1141
+msgid "Edit Engine Model"
+msgstr "Editar modelo del motor"
+
+#: includes/class-taxonomies.php:1140
+msgid "Parent Engine Model"
+msgstr "Modelo de motor principal"
+
+#: includes/class-taxonomies.php:1139
+msgid "All engine models"
+msgstr "Todos los modelos del motor"
+
+#: includes/class-taxonomies.php:1138
+msgid "Popular engine models"
+msgstr "Modelos del motor populares"
+
+#: includes/class-taxonomies.php:1137
+msgid "Search engine models"
+msgstr "Buscar modelos del motor"
+
+#: includes/class-taxonomies.php:1133 includes/class-taxonomies.php:1135
+msgid "Engine Models"
+msgstr "Modelos del motor"
+
+#: includes/class-taxonomies.php:1118
+msgid "&larr; Go to engine make"
+msgstr "&larr; Ir a fabricante del motor"
+
+#: includes/class-taxonomies.php:1117
+msgid "New Engine Make Name"
+msgstr "Nuevo nombre de fabricante del motor"
+
+#: includes/class-taxonomies.php:1116
+msgid "Add New Engine Make"
+msgstr "Añadir nuevo fabricante del motor"
+
+#: includes/class-taxonomies.php:1115
+msgid "Edit Engine Make"
+msgstr "Editar fabricante del motor"
+
+#: includes/class-taxonomies.php:1114
+msgid "Parent Engine Make"
+msgstr "Fabricante principal del motor"
+
+#: includes/class-taxonomies.php:1113
+msgid "All engine makes"
+msgstr "Todos los fabricantes del motor"
+
+#: includes/class-taxonomies.php:1112
+msgid "Popular engine makes"
+msgstr "Fabricantes del motor populares"
+
+#: includes/class-taxonomies.php:1111
+msgid "Search engine makes"
+msgstr "Buscar fabricantes del motor"
+
+#: includes/class-taxonomies.php:1107 includes/class-taxonomies.php:1109
+msgid "Engine Makes"
+msgstr "Fabricantes del motor"
+
+#: includes/class-taxonomies.php:1088
+msgid "&larr; Go to number"
+msgstr "&larr; Ir a número"
+
+#: includes/class-taxonomies.php:1087
+msgid "New Number Name"
+msgstr "Nuevo nombre de número"
+
+#: includes/class-taxonomies.php:1086
+msgid "Add New Number of Engines"
+msgstr "Añadir nuevo número de motores"
+
+#: includes/class-taxonomies.php:1085
+msgid "Edit Number"
+msgstr "Editar número"
+
+#: includes/class-taxonomies.php:1084
+msgid "Parent numbers"
+msgstr "Número principal"
+
+#: includes/class-taxonomies.php:1083
+msgid "All numbers"
+msgstr "Todos los números"
+
+#: includes/class-taxonomies.php:1082
+msgid "Popular numbers"
+msgstr "Números populares"
+
+#: includes/class-taxonomies.php:1081
+msgid "Search numbers"
+msgstr "Buscar números"
+
+#: includes/class-taxonomies.php:1077 includes/class-taxonomies.php:1079
+#: includes/class-taxonomies.php:1092
+#: includes/integrations/class-classic-editor.php:726
+#: includes/shortcode/class-shortcode-attribute-table.php:148
+msgid "Number of Engines"
+msgstr ""
+
+#: includes/class-taxonomies.php:1055
+msgid "&larr; Go to condition"
+msgstr "&larr; Ir a condición"
+
+#: includes/class-taxonomies.php:1050
+msgid "All conditions"
+msgstr "Todas las condiciones"
+
+#: includes/class-taxonomies.php:1048
+msgid "Search conditions"
+msgstr "Buscar condiciones"
+
+#: includes/class-taxonomies.php:230 includes/class-taxonomies.php:247
+msgid "Manage"
+msgstr "Administrar"
+
+#: includes/class-site-health.php:99
+msgid "Media uploads are not organized into month- and year-based folders. Photo upload dates are not revealed to users, and vehicle photo URLs will not change even if the photos themselves change."
+msgstr "Los medios subidos no se organizan en carpetas basadas en meses y años. Las fechas de subida de las fotos no se revelan a los usuarios, y las URL de las fotos de los vehículos no cambiarán aunque cambien las propias fotos."
+
+#: includes/class-site-health.php:91
+msgid "Vehicle photos are stored in a predictable way"
+msgstr "Las fotos de los vehículos se almacenan de forma predecible"
+
+#: includes/class-site-health.php:84
+msgid "Media uploads are organized into month- and year-based folders. This reveals photo upload dates to users, and changes vehicle photo URLs when they are updated seasonally. Change the setting at Settings → Media."
+msgstr "Los medios subidos se organizan en carpetas mensuales y anuales. Esto revela las fechas de subida de fotos a los usuarios y cambia las URLs de las fotos de los vehículos cuando se actualizan por temporadas. Cambia los ajustes en Ajustes → Medios."
+
+#: includes/class-site-health.php:76
+msgid "Consider storing vehicle photos in a single folder"
+msgstr "Considera almacenar las fotos del vehículo en una única carpeta"
+
+#: includes/class-rest.php:48
+msgid "The type taxonomy term slugs."
+msgstr "El término de la taxonomía de tipo slugs."
+
+#: includes/class-invp.php:862
+msgid "Passenger Car"
+msgstr ""
+
+#: includes/class-invp.php:856
+msgid "SLE-1 Ext. Cab 4WD"
+msgstr "SLE-1 Ext. Cab 4WD"
+
+#: includes/class-invp.php:844
+msgid "Automatic"
+msgstr "Automático"
+
+#: includes/class-invp.php:838 inventory-presser.php:1247
+msgid "Clean"
+msgstr "Limpio"
+
+#: includes/class-invp.php:814
+msgid "Outboard"
+msgstr "Fueraborda"
+
+#: includes/class-invp.php:802
+msgid "monthly"
+msgstr "mensual"
+
+#: includes/class-invp.php:759
+#: includes/integrations/class-classic-editor.php:723
+#: includes/shortcode/class-shortcode-attribute-table.php:185
+msgid "Max Draft"
+msgstr ""
+
+#: includes/class-invp.php:755
+msgid "GMC"
+msgstr "GMC"
+
+#: includes/class-invp.php:749
+msgid "120 Mall Blvd"
+msgstr "120 Mall Blvd"
+
+#: includes/class-invp.php:727
+msgid "Black"
+msgstr "Negro"
+
+#: includes/class-invp.php:715 includes/class-taxonomies.php:1159
+#: includes/class-taxonomies.php:1161 includes/class-taxonomies.php:1162
+#: includes/class-taxonomies.php:1174
+#: includes/integrations/class-classic-editor.php:735
+#: includes/shortcode/class-shortcode-attribute-table.php:155
+msgid "Horsepower"
+msgstr "Potencia"
+
+#: includes/class-invp.php:645 includes/class-invp.php:687
+msgid "355 grams per mile"
+msgstr "355 gramos por milla"
+
+#: includes/class-invp.php:633 includes/class-invp.php:675
+msgid "13.18 barrels"
+msgstr "13.18 barriles"
+
+#: includes/class-invp.php:627 includes/class-invp.php:669
+msgid "Regular Gasoline"
+msgstr "Gasolina Regular"
+
+#: includes/class-invp.php:621
+msgid "Gas"
+msgstr "Gasolina"
+
+#: includes/class-invp.php:608 includes/class-taxonomies.php:1136
+#: includes/class-taxonomies.php:1148
+#: includes/integrations/class-classic-editor.php:732
+#: includes/shortcode/class-shortcode-attribute-table.php:199
+msgid "Engine Model"
+msgstr "Modelo del motor"
+
+#: includes/class-invp.php:604
+msgid "Yamaha"
+msgstr "Yamaha"
+
+#: includes/class-invp.php:602 includes/class-taxonomies.php:1110
+#: includes/class-taxonomies.php:1122
+#: includes/integrations/class-classic-editor.php:729
+#: includes/shortcode/class-shortcode-attribute-table.php:192
+msgid "Engine Make"
+msgstr "Fabricante del motor"
+
+#: includes/class-invp.php:596
+msgid "# of Engines"
+msgstr "# de motores"
+
+#: includes/class-invp.php:592
+msgid "3.7L 5 cylinder"
+msgstr ""
+
+#: includes/class-invp.php:581
+msgid "Rear Wheel Drive"
+msgstr ""
+
+#: includes/class-invp.php:563
+msgid "Clean, non-smoker, must-see!"
+msgstr "Limpio, no fumador, ¡hay que verlo!"
+
+#: includes/class-invp.php:540
+msgid "Used"
+msgstr "Usado"
+
+#: includes/class-invp.php:534
+msgid "Excellent"
+msgstr "Excelente"
+
+#: includes/class-invp.php:532
+#: includes/integrations/class-classic-editor.php:720
+msgid "Boat Condition"
+msgstr ""
+
+#: includes/class-invp.php:528
+msgid "Red"
+msgstr "Rojo"
+
+#: includes/class-invp.php:522
+msgid "Merlot Jewel Metallic"
+msgstr ""
+
+#: includes/class-invp.php:449
+msgid "EXTENDED CAB PICKUP"
+msgstr "PICKUP CON CABINA EXTENDIDA"
+
+#. translators: 1. An opening anchor tag, 2. A closing anchor tag
+#: includes/admin/class-admin-options.php:1250
+msgid "Configure which taxonomies are active, whether they are shown in the dashboard menu, and for which vehicle types they should appear in the editor. Vehicle types can be added and removed %1$shere%2$s. Deleted types provided by the plugin will be restored during plugin activation."
+msgstr "Configura qué taxonomías están activas, si se muestran en el menú del escritorio y para qué tipos de vehículos deben aparecer en el editor. Los tipos de vehículos se pueden añadir y eliminar %1$saquí%2$s. Los tipos borrados proporcionados por el plugin se restaurarán durante la activación del plugin."
+
+#: includes/admin/class-admin-options.php:762
+msgid "Show in Admin Menu"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:760
+msgid "Taxonomy"
+msgstr "Taxonomía"
+
+#: includes/admin/class-admin-options.php:671
+msgid "Choose a form to include on vehicle single pages."
+msgstr "Elige un formulario para incluirlo en las páginas individuales de los vehículos."
+
+#: includes/admin/class-admin-options.php:647
+msgid "Gravity Forms"
+msgstr "Gravity Forms"
+
+#: includes/admin/class-admin-options.php:634
+msgid "WP Forms"
+msgstr "WP Forms"
+
+#: includes/admin/class-admin-options.php:615
+msgid "Contact Form 7"
+msgstr "Contact Form 7"
+
+#: includes/admin/class-admin-options.php:602
+msgid "None"
+msgstr "Ninguno"
+
+#: includes/admin/class-admin-options.php:589
+msgid "Enable, disable, show, and hide these taxonomies in the dashboard menu and Editors:"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:566
+msgid "Manage Taxonomies"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:206
+msgid "Singles Contact Form"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:55
+#: includes/admin/class-admin-options.php:56
+#: includes/admin/class-admin-options.php:120
+#: includes/admin/class-admin-options.php:247
+#: includes/admin/class-admin-options.php:253
+msgid "Taxonomies"
+msgstr "Taxonomías"
+
+#: includes/template-tags.php:942
+msgid "Sale Pending"
+msgstr "Venta pendiente"
+
+#: includes/widget/class-widget-inventory-grid.php:58
+msgid "columns"
+msgstr "columnas"
+
+#: includes/widget/class-widget-inventory-grid.php:27
+msgid "Display a grid of vehicles."
+msgstr "Mostrar una cuadrícula de vehículos."
+
+#: includes/widget/class-widget-carfax.php:60
+msgid "Choose a Carfax badge that links to your inventory."
+msgstr "Elige un certificado Carfax que enlace con tu inventario."
+
+#: includes/widget/class-widget-address.php:119
+msgid "Select Addresses to Display"
+msgstr ""
+
+#: includes/admin/class-admin-location-meta.php:355
+msgid "Add Hours Set"
+msgstr "Agregar horas"
+
+#: includes/admin/class-admin-location-meta.php:93
+#: includes/admin/class-admin-location-meta.php:268
+#: includes/admin/class-admin-location-meta.php:320
+msgid "Only"
+msgstr "Sólo"
+
+#: includes/admin/class-admin-location-meta.php:93
+#: includes/admin/class-admin-location-meta.php:268
+#: includes/admin/class-admin-location-meta.php:320
+msgid "Appt"
+msgstr "Cita"
+
+#: includes/class-taxonomies.php:1020
+msgid "Parent Location"
+msgstr ""
+
+#: includes/class-taxonomies.php:982
+msgid "New Color Name"
+msgstr ""
+
+#: includes/class-taxonomies.php:979
+msgid "Parent Color"
+msgstr "Color principal"
+
+#: includes/class-taxonomies.php:978
+msgid "All colors"
+msgstr "Todos los colores"
+
+#: includes/class-taxonomies.php:977
+msgid "Popular colors"
+msgstr "Colores populares"
+
+#: includes/class-taxonomies.php:976
+msgid "Search colors"
+msgstr "Buscar colores"
+
+#: includes/class-taxonomies.php:972
+msgid "Colors"
+msgstr "Colores"
+
+#: includes/class-taxonomies.php:958
+msgid "New Body Style Name"
+msgstr ""
+
+#: includes/class-taxonomies.php:955
+msgid "Parent Body Style"
+msgstr ""
+
+#: includes/class-taxonomies.php:954
+msgid "All body styles"
+msgstr "Todos los estilos de carrocería"
+
+#: includes/class-taxonomies.php:953
+msgid "Popular body styles"
+msgstr "Estilos de carrocería populares"
+
+#: includes/class-taxonomies.php:952
+msgid "Search body styles"
+msgstr "Buscar estilos de carrocería"
+
+#: includes/class-taxonomies.php:948 includes/class-taxonomies.php:950
+msgid "Body styles"
+msgstr "Estilos de carrocería"
+
+#: includes/class-taxonomies.php:923
+msgid "New Cylinder Count"
+msgstr ""
+
+#: includes/class-taxonomies.php:920
+msgid "Parent Cylinder Count"
+msgstr ""
+
+#: includes/class-taxonomies.php:919
+msgid "All cylinder counts"
+msgstr "Todos los números de cilindros"
+
+#: includes/class-taxonomies.php:918
+msgid "Popular cylinder counts"
+msgstr "Números de cilindros populares"
+
+#: includes/class-taxonomies.php:917
+msgid "Search cylinder counts"
+msgstr "Buscar números de cilindros"
+
+#: includes/class-taxonomies.php:916
+msgid "Cylinder count"
+msgstr "Número de cilindros"
+
+#: includes/class-taxonomies.php:893
+msgid "New Transmission Name"
+msgstr ""
+
+#: includes/class-taxonomies.php:890
+msgid "Parent Transmission"
+msgstr ""
+
+#: includes/class-taxonomies.php:889
+msgid "All transmissions"
+msgstr "Todas las transmisiones"
+
+#: includes/class-taxonomies.php:888
+msgid "Popular transmissions"
+msgstr "Transmisiones populares"
+
+#: includes/class-taxonomies.php:887
+msgid "Search transmissions"
+msgstr "Buscar transmisiones"
+
+#: includes/class-taxonomies.php:883 includes/class-taxonomies.php:885
+msgid "Transmissions"
+msgstr "Transmisiones"
+
+#: includes/class-taxonomies.php:856
+msgid "New Fuel Type Name"
+msgstr ""
+
+#: includes/class-taxonomies.php:853
+msgid "Parent Fuel Type"
+msgstr ""
+
+#: includes/class-taxonomies.php:852
+msgid "All fuel types"
+msgstr "Todos los tipos de combustible"
+
+#: includes/class-taxonomies.php:851
+msgid "Popular fuel types"
+msgstr "Tipos de combustible populares"
+
+#: includes/class-taxonomies.php:850
+msgid "Search fuel types"
+msgstr "Buscar tipos de combustible"
+
+#: includes/class-taxonomies.php:849
+msgid "Fuel type"
+msgstr ""
+
+#: includes/class-taxonomies.php:848
+msgid "Fuel types"
+msgstr ""
+
+#: includes/class-taxonomies.php:846
+msgid "Fuels"
+msgstr "Combustibles"
+
+#: includes/class-taxonomies.php:825
+msgid "New Propulsion Type Name"
+msgstr ""
+
+#: includes/class-taxonomies.php:822
+msgid "Parent Propulsion Type"
+msgstr ""
+
+#: includes/class-taxonomies.php:821
+msgid "All propulsion types"
+msgstr "Todos los tipos de propulsión"
+
+#: includes/class-taxonomies.php:820
+msgid "Popular propulsion types"
+msgstr "Tipos de propulsión populares"
+
+#: includes/class-taxonomies.php:819
+msgid "Search propulsion types"
+msgstr "Buscar tipos de propulsión"
+
+#: includes/class-taxonomies.php:818 includes/class-taxonomies.php:830
+msgid "Propulsion type"
+msgstr "Tipo de propulsión"
+
+#: includes/class-taxonomies.php:815 includes/class-taxonomies.php:817
+msgid "Propulsion types"
+msgstr "Tipos de propulsión"
+
+#: includes/class-taxonomies.php:787
+msgid "New Drive Type Name"
+msgstr ""
+
+#: includes/class-taxonomies.php:784
+msgid "Parent Drive Type"
+msgstr ""
+
+#: includes/class-taxonomies.php:783
+msgid "All drive types"
+msgstr "Todos los tipos de tracción"
+
+#: includes/class-taxonomies.php:782
+msgid "Popular drive types"
+msgstr "Tipos de tracción populares"
+
+#: includes/class-taxonomies.php:781
+msgid "Search drive types"
+msgstr ""
+
+#: includes/class-taxonomies.php:780 includes/class-taxonomies.php:792
+msgid "Drive type"
+msgstr "Tipo de tracción"
+
+#: includes/class-taxonomies.php:777 includes/class-taxonomies.php:779
+msgid "Drive types"
+msgstr "Tipos de tracción"
+
+#: includes/class-taxonomies.php:757
+msgid "New Availability Name"
+msgstr ""
+
+#: includes/class-taxonomies.php:754
+msgid "Parent Availability"
+msgstr ""
+
+#: includes/class-taxonomies.php:753
+msgid "All sold and for sale"
+msgstr "Todos vendidos y en venta"
+
+#: includes/class-taxonomies.php:752
+msgid "Popular availabilities"
+msgstr "Disponibilidades populares"
+
+#: includes/class-taxonomies.php:751
+msgid "Search availabilities"
+msgstr "Buscar disponibilidades"
+
+#: includes/class-taxonomies.php:747 includes/class-taxonomies.php:749
+msgid "Availabilities"
+msgstr "Disponibilidades"
+
+#: includes/class-taxonomies.php:718
+msgid "New Type Name"
+msgstr "Nuevo nombre de tipo"
+
+#: includes/class-taxonomies.php:715
+msgid "Parent Type"
+msgstr "Tipo principal"
+
+#: includes/class-taxonomies.php:714
+msgid "All types"
+msgstr "Todos los tipos"
+
+#: includes/class-taxonomies.php:713
+msgid "Popular types"
+msgstr "Tipos populares"
+
+#: includes/class-taxonomies.php:712
+msgid "Search types"
+msgstr "Buscar tipos"
+
+#: includes/class-taxonomies.php:708 includes/class-taxonomies.php:710
+msgid "Types"
+msgstr "Tipos"
+
+#: includes/class-taxonomies.php:690 includes/class-taxonomies.php:1054
+msgid "New Condition Name"
+msgstr ""
+
+#: includes/class-taxonomies.php:687 includes/class-taxonomies.php:1051
+msgid "Parent Condition"
+msgstr ""
+
+#: includes/class-taxonomies.php:686
+msgid "All new and used"
+msgstr "Todos nuevos y usados"
+
+#: includes/class-taxonomies.php:685 includes/class-taxonomies.php:1049
+msgid "Popular conditions"
+msgstr "Condiciones populares"
+
+#: includes/class-taxonomies.php:684
+msgid "Search new and used"
+msgstr "Buscar nuevos y usados"
+
+#: includes/class-taxonomies.php:680 includes/class-taxonomies.php:682
+msgid "Conditions"
+msgstr "Condiciones"
+
+#: includes/class-taxonomies.php:666
+msgid "New Model Name"
+msgstr ""
+
+#: includes/class-taxonomies.php:663
+msgid "Parent Model"
+msgstr "Modelo principal"
+
+#: includes/class-taxonomies.php:662
+msgid "All models"
+msgstr "Todos los modelos"
+
+#: includes/class-taxonomies.php:661
+msgid "Popular models"
+msgstr ""
+
+#: includes/class-taxonomies.php:660
+msgid "Search models"
+msgstr "Buscar modelos"
+
+#: includes/class-taxonomies.php:656 includes/class-taxonomies.php:658
+msgid "Models"
+msgstr "Modelos"
+
+#: includes/class-taxonomies.php:642
+msgid "New Make Name"
+msgstr "Nuevo nombre de fabricante"
+
+#: includes/class-taxonomies.php:639
+msgid "Parent Make"
+msgstr "Fabricante principal"
+
+#: includes/class-taxonomies.php:638
+msgid "All makes"
+msgstr "Todos los fabricantes"
+
+#: includes/class-taxonomies.php:637
+msgid "Popular makes"
+msgstr "Fabricantes populares"
+
+#: includes/class-taxonomies.php:636
+msgid "Search makes"
+msgstr "Buscar fabricante"
+
+#: includes/class-taxonomies.php:632 includes/class-taxonomies.php:634
+msgid "Makes"
+msgstr "Fabricante"
+
+#: includes/class-taxonomies.php:618
+msgid "New Model Year"
+msgstr ""
+
+#: includes/class-taxonomies.php:615
+msgid "Parent Model Year"
+msgstr ""
+
+#: includes/class-taxonomies.php:614
+msgid "All years"
+msgstr "Todos los años"
+
+#: includes/class-taxonomies.php:613
+msgid "Popular years"
+msgstr "Años populares"
+
+#: includes/class-taxonomies.php:612
+msgid "Search years"
+msgstr "Buscar años"
+
+#: includes/class-taxonomies.php:611 includes/class-taxonomies.php:623
+msgid "Model year"
+msgstr "Año de modelo"
+
+#: includes/class-taxonomies.php:608 includes/class-taxonomies.php:610
+msgid "Model years"
+msgstr "Años de modelo"
+
+#: includes/class-invp.php:1154
+msgid "to"
+msgstr "a"
+
+#: includes/class-invp.php:1152
+msgid "Showing"
+msgstr "Mostrando"
+
+#: includes/class-taxonomies.php:1215
+#: includes/integrations/class-classic-editor.php:755
+#: inventory-presser.php:1225
+msgid "Wood"
+msgstr "Madera"
+
+#: includes/class-taxonomies.php:1214
+#: includes/integrations/class-classic-editor.php:754
+#: inventory-presser.php:1224
+msgid "Steel"
+msgstr "Acero"
+
+#: includes/class-taxonomies.php:1213
+#: includes/integrations/class-classic-editor.php:753
+#: inventory-presser.php:1223
+msgid "PVC"
+msgstr "PVC"
+
+#: includes/class-taxonomies.php:1212
+#: includes/integrations/class-classic-editor.php:752
+#: inventory-presser.php:1222 inventory-presser.php:1252
+msgid "Other"
+msgstr "Otro"
+
+#: includes/class-taxonomies.php:1211
+#: includes/integrations/class-classic-editor.php:751
+#: inventory-presser.php:1221
+msgid "Hypalon"
+msgstr "Hypalon"
+
+#: includes/class-taxonomies.php:1210
+#: includes/integrations/class-classic-editor.php:750
+#: inventory-presser.php:1220
+msgid "Fiberglass"
+msgstr "Fibra de vidrio"
+
+#: includes/class-taxonomies.php:1209
+#: includes/integrations/class-classic-editor.php:749
+#: inventory-presser.php:1219
+msgid "Ferro-Cement"
+msgstr "Ferrocemento"
+
+#: includes/class-taxonomies.php:1208
+#: includes/integrations/class-classic-editor.php:748
+#: inventory-presser.php:1218
+msgid "Composite"
+msgstr "Compuesto"
+
+#: includes/class-taxonomies.php:1207
+#: includes/integrations/class-classic-editor.php:747
+#: inventory-presser.php:1217
+msgid "Carbon Fiber"
+msgstr "Fibra de carbono"
+
+#: includes/class-taxonomies.php:1206
+#: includes/integrations/class-classic-editor.php:746
+#: inventory-presser.php:1216
+msgid "Aluminum"
+msgstr "Aluminio"
+
+#: includes/integrations/class-wpforms.php:128
+msgid "Site URL"
+msgstr "URL del sitio"
+
+#: includes/integrations/class-wpforms.php:127
+msgid "ADF XML Vehicle"
+msgstr ""
+
+#: includes/integrations/class-wpforms-field-vehicle.php:292
+msgid "Modern"
+msgstr "Moderno"
+
+#: includes/integrations/class-wpforms-field-vehicle.php:291
+msgid "Classic"
+msgstr "Clásico"
+
+#: includes/integrations/class-wpforms-field-vehicle.php:279
+msgid "Classic style is the default one generated by your browser. Modern has a fresh look and displays all selected options in a single row."
+msgstr ""
+
+#: includes/integrations/class-wpforms-field-vehicle.php:278
+msgid "Style"
+msgstr "Estilo"
+
+#. translators: %s - URL to WPForms.com doc article.
+#: includes/integrations/class-wpforms-field-vehicle.php:248
+msgid "For details, including how this looks and works for your site's visitors, please check out <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">our doc</a>."
+msgstr "Para más detalles, incluyendo cómo se ve y funciona para los visitantes de tu sitio, por favor consulta <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">nuestro documento</a>."
+
+#: includes/integrations/class-wpforms-field-vehicle.php:245
+msgid "Allow users to select multiple choices in this field."
+msgstr "Permitir a los usuarios elegir múltiples opciones en este campo."
+
+#: includes/integrations/class-wpforms-field-vehicle.php:244
+msgid "Multiple Options Selection"
+msgstr ""
+
+#: includes/integrations/class-wpforms-field-vehicle.php:61
+msgid "Third Choice"
+msgstr "Tercera opción"
+
+#: includes/integrations/class-wpforms-field-vehicle.php:56
+msgid "Second Choice"
+msgstr "Segunda opción"
+
+#: includes/integrations/class-wpforms-field-vehicle.php:51
+msgid "First Choice"
+msgstr "Primera opción"
+
+#: includes/integrations/class-gravityforms-field-vehicle.php:30
+#: includes/integrations/class-wpforms-field-vehicle.php:45
+msgid "Vehicle"
+msgstr "Vehículo"
+
+#: includes/integrations/class-classic-editor.php:207
+msgid "photos"
+msgstr "fotos"
+
+#: includes/class-taxonomies.php:1029
+msgid "&larr; Go to locations"
+msgstr "&larr; Ir a ubicaciones"
+
+#: includes/class-taxonomies.php:983
+msgid "&larr; Go to colors"
+msgstr "&larr; Ir a colores"
+
+#: includes/class-taxonomies.php:981
+msgid "Add New Color"
+msgstr ""
+
+#: includes/class-taxonomies.php:980
+msgid "Edit Color"
+msgstr "Editar color"
+
+#: includes/class-taxonomies.php:959
+msgid "&larr; Go to body styles"
+msgstr "&larr; Ir a estilos de carrocería"
+
+#: includes/class-taxonomies.php:957
+msgid "Add New Body Style"
+msgstr ""
+
+#: includes/class-taxonomies.php:956
+msgid "Edit Body Style"
+msgstr ""
+
+#: includes/class-taxonomies.php:924
+msgid "&larr; Go to cylinder counts"
+msgstr "&larr; Ir a números de cilindros"
+
+#: includes/class-taxonomies.php:922
+msgid "Add New Cylinder Count"
+msgstr ""
+
+#: includes/class-taxonomies.php:921
+msgid "Edit Cylinder Count"
+msgstr ""
+
+#: includes/class-taxonomies.php:894
+msgid "&larr; Go to transmissions"
+msgstr "&larr; Ir a transmisiones"
+
+#: includes/class-taxonomies.php:892
+msgid "Add New Transmission"
+msgstr ""
+
+#: includes/class-taxonomies.php:891
+msgid "Edit Transmission"
+msgstr ""
+
+#: includes/class-taxonomies.php:857
+msgid "&larr; Go to fuel types"
+msgstr "&larr; Ir a tipos de combustible"
+
+#: includes/class-taxonomies.php:855
+msgid "Add New Fuel Type"
+msgstr ""
+
+#: includes/class-taxonomies.php:854
+msgid "Edit Fuel Type"
+msgstr ""
+
+#: includes/class-taxonomies.php:826
+msgid "&larr; Go to propulsion types"
+msgstr "&larr; Ir a tipos de propulsión"
+
+#: includes/class-taxonomies.php:824
+msgid "Add New Propulsion Type"
+msgstr ""
+
+#: includes/class-taxonomies.php:823
+msgid "Edit Propulsion Type"
+msgstr ""
+
+#: includes/class-taxonomies.php:788
+msgid "&larr; Go to drive types"
+msgstr "&larr; Ir a tipos de tracción"
+
+#: includes/class-taxonomies.php:786
+msgid "Add New Drive Type"
+msgstr ""
+
+#: includes/class-taxonomies.php:785
+msgid "Edit Drive Type"
+msgstr ""
+
+#: includes/class-taxonomies.php:758
+msgid "&larr; Go to availabilities"
+msgstr "&larr; Ir a disponibilidades"
+
+#: includes/class-taxonomies.php:756
+msgid "Add New Availability"
+msgstr ""
+
+#: includes/class-taxonomies.php:755
+msgid "Edit Availability"
+msgstr ""
+
+#: includes/class-taxonomies.php:719
+msgid "&larr; Go to types"
+msgstr "&larr; Ir a tipos"
+
+#: includes/class-taxonomies.php:717
+msgid "Add New Type"
+msgstr "Añadir nuevo tipo"
+
+#: includes/class-taxonomies.php:716
+msgid "Edit Type"
+msgstr ""
+
+#: includes/class-taxonomies.php:691
+msgid "&larr; Go to conditions"
+msgstr "&larr; Ir a condiciones"
+
+#: includes/class-taxonomies.php:689 includes/class-taxonomies.php:1053
+msgid "Add New Condition"
+msgstr ""
+
+#: includes/class-taxonomies.php:688 includes/class-taxonomies.php:1052
+msgid "Edit Condition"
+msgstr ""
+
+#: includes/class-taxonomies.php:667
+msgid "&larr; Go to models"
+msgstr "&larr; Ir a modelos"
+
+#: includes/class-taxonomies.php:665
+msgid "Add New Model"
+msgstr ""
+
+#: includes/class-taxonomies.php:664
+msgid "Edit Model"
+msgstr "Editar modelo"
+
+#: includes/class-taxonomies.php:643
+msgid "&larr; Go to makes"
+msgstr "&larr; Ir a fabricantes"
+
+#: includes/class-taxonomies.php:641
+msgid "Add New Make"
+msgstr "Añadir nuevo fabricante"
+
+#: includes/class-taxonomies.php:640
+msgid "Edit Make"
+msgstr ""
+
+#: includes/class-taxonomies.php:619
+msgid "&larr; Go to years"
+msgstr "&larr; Ir a años"
+
+#: includes/class-taxonomies.php:617
+msgid "Add New Model Year"
+msgstr ""
+
+#: includes/class-taxonomies.php:616
+msgid "Edit Model Year"
+msgstr ""
+
+#: includes/template-tags.php:442
+msgid "vehicles for sale"
+msgstr "vehículos en venta"
+
+#: includes/template-tags.php:440
+msgid "all"
+msgstr "todo"
+
+#: includes/template-tags.php:436
+msgid "Browse"
+msgstr "Explorar"
+
+#: includes/template-tags.php:424
+msgid "Car"
+msgstr "Auto"
+
+#: includes/template-tags.php:421
+msgid "SUV"
+msgstr "SUV"
+
+#: includes/admin/class-admin-options.php:469
+msgid "These features may be impacted by time and memory limits set by your web host."
+msgstr "Estas funciones pueden verse afectadas por los límites de tiempo y memoria establecidos por tu proveedor web."
+
+#: includes/admin/class-admin-options.php:446
+msgid "Load Sample Vehicles"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:101
+msgid "Manage Inventory"
+msgstr ""
+
+#: includes/class-invp.php:830
+msgid "Term"
+msgstr "Término"
+
+#: includes/class-invp.php:818
+msgid "Rate"
+msgstr "Tasa"
+
+#: includes/admin/class-admin-options.php:960
+msgid "No filter"
+msgstr "Sin filtro"
+
+#: includes/admin/class-admin-options.php:925
+msgid "contains"
+msgstr "contiene"
+
+#: includes/admin/class-admin-options.php:924
+msgid "not equal to"
+msgstr "no equivalente a"
+
+#: includes/admin/class-admin-options.php:923
+msgid "equal to"
+msgstr "equivalente a"
+
+#: includes/admin/class-admin-options.php:922
+msgid "less than"
+msgstr "menor que"
+
+#: includes/admin/class-admin-options.php:921
+msgid "greater than"
+msgstr "mayor que"
+
+#: includes/admin/class-admin-options.php:920
+msgid "does not exist"
+msgstr "no existe"
+
+#: includes/admin/class-admin-options.php:919
+msgid "exists"
+msgstr "existe"
+
+#: includes/admin/class-admin-options.php:416
+msgid "Add Listings Page"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:379
+msgid "Filter field"
+msgstr "Filtrar campo"
+
+#: includes/admin/class-admin-options.php:296
+#: includes/admin/class-admin-options.php:761
+msgid "Active"
+msgstr "Activo"
+
+#: includes/admin/class-admin-options.php:195
+msgid "Listings Pages"
+msgstr ""
+
+#: includes/class-invp.php:438 inventory-presser.php:947
+msgid "For Sale"
+msgstr ""
+
+#: includes/class-invp.php:505
+msgid "Carfax Top-Condition Badge URL"
+msgstr ""
+
+#: includes/class-invp.php:500
+msgid "Carfax One-Owner Badge URL"
+msgstr ""
+
+#: includes/class-invp.php:495
+msgid "Carfax Accident-Free Badge URL"
+msgstr ""
+
+#: includes/class-invp.php:485
+msgid "Carfax Top Condition"
+msgstr ""
+
+#: includes/class-invp.php:470
+msgid "Carfax Accident Free"
+msgstr ""
+
+#. Description of the plugin
+#: inventory-presser.php
+msgid "Car listings with photo sliders for automobile and powersports dealerships."
+msgstr "Listados de coches con deslizadores de fotos para concesionarios de automóviles y deportes de motor."
+
+#: includes/admin/class-admin-options.php:849
+msgid "Add a Gallery Block to new vehicle posts to manage photo uploads and their order"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:406
+msgid "Delete this page"
+msgstr "Eliminar esta página"
+
+#: includes/admin/class-admin-options.php:314
+#: includes/admin/class-admin-options.php:406
+msgid "View this page"
+msgstr "Ver esta página"
+
+#: includes/admin/class-admin-options.php:137
+msgid "Rearrange Photos Block"
+msgstr ""
+
+#: includes/class-invp.php:515
+msgid "Certified Pre-owned"
+msgstr ""
+
+#: includes/shortcode/class-shortcode-sort-by.php:218
+msgid "Down Payment High"
+msgstr ""
+
+#: includes/shortcode/class-shortcode-sort-by.php:217
+msgid "Down Payment Low"
+msgstr ""
+
+#: includes/shortcode/class-shortcode-sort-by.php:136
+msgid "Last modified"
+msgstr "Última modificación"
+
+#: includes/shortcode/class-shortcode-sort-by.php:132
+msgid "Date entered"
+msgstr "Fecha de entrada"
+
+#: includes/shortcode/class-shortcode-sort-by.php:116
+msgid "Year Newest"
+msgstr "Año más nuevo"
+
+#: includes/shortcode/class-shortcode-sort-by.php:115
+msgid "Year Oldest"
+msgstr "Año más antiguo"
+
+#: includes/shortcode/class-shortcode-sort-by.php:110
+msgid "High"
+msgstr "Alto"
+
+#: includes/shortcode/class-shortcode-sort-by.php:105
+msgid "Low"
+msgstr "Bajo"
+
+#: includes/shortcode/class-shortcode-sort-by.php:98
+msgid "Price High"
+msgstr "Precio alto"
+
+#: includes/shortcode/class-shortcode-sort-by.php:97
+msgid "Price Low"
+msgstr ""
+
+#: includes/shortcode/class-shortcode-sort-by.php:93
+msgid "Make Z-A"
+msgstr "Ordenar Z-A"
+
+#: includes/shortcode/class-shortcode-sort-by.php:92
+msgid "Make A-Z"
+msgstr "Ordenar A-Z"
+
+#: includes/shortcode/class-shortcode-sort-by.php:65
+msgid "SORT"
+msgstr "ORDENAR"
+
+#: includes/shortcode/class-shortcode-archive.php:125
+msgid "Search Inventory"
+msgstr ""
+
+#: includes/integrations/class-contact-form-7.php:293
+#: includes/integrations/class-wpforms-field-vehicle.php:102
+msgid "Please choose a vehicle..."
+msgstr "Por favor selecciona un vehículo..."
+
+#: includes/widget/class-widget-inventory-slider.php:245
+msgid "Limited to two (2) on display widths of 480px and less."
+msgstr "Limitado a dos (2) en anchos de pantalla de 480px o inferiores."
+
+#: includes/addon/class-addon-updater.php:359
+msgid "update now"
+msgstr "actualizar ahora"
+
+#: includes/addon/class-addon-updater.php:358
+msgid "now"
+msgstr "ahora"
+
+#: includes/addon/class-addon-updater.php:356
+msgid "Update"
+msgstr "Actualizar"
+
+#: includes/addon/class-addon-updater.php:354 includes/template-tags.php:438
+msgid "or"
+msgstr "o"
+
+#: includes/addon/class-addon-updater.php:345
+msgid " View version"
+msgstr " Ver versión"
+
+#: includes/addon/class-addon-updater.php:344
+#: includes/addon/class-addon-updater.php:347
+msgid "details"
+msgstr "detalles"
+
+#: includes/addon/class-addon-updater.php:342
+msgid "version"
+msgstr "versión"
+
+#: includes/addon/class-addon-updater.php:340
+msgid "View"
+msgstr "Ver"
+
+#: includes/addon/class-addon-updater.php:338
+msgid "available."
+msgstr "disponible."
+
+#: includes/addon/class-addon-updater.php:336
+msgid "There is a new version of"
+msgstr "Hay una nueva versión de"
+
+#: includes/widget/class-widget-google-maps.php:29
+msgid "Google Map (legacy)"
+msgstr "Google Map (legacy)"
+
+#: includes/widget/class-widget-google-maps-v3.php:166
+msgid "Choose addresses to mark:"
+msgstr "Selecciona las direcciones a marcar:"
+
+#: includes/widget/class-widget-google-maps-v3.php:160
+msgid "Google Cloud Console"
+msgstr "Google Cloud Console"
+
+#: includes/widget/class-widget-google-maps-v3.php:159
+msgid "Obtain an API key at"
+msgstr "Solicita una clave API en"
+
+#: includes/widget/class-widget-google-maps-v3.php:152
+msgid "API Key:"
+msgstr "Clave API:"
+
+#: includes/widget/class-widget-google-maps-v3.php:31
+msgid "Embeds a Google Map pointed at a dealership address. Requires an API key."
+msgstr "Integra un mapa de Google Map apuntando a la dirección de un concesionario. Requiere una clave API."
+
+#: includes/admin/class-admin-location-meta.php:186
+msgid "Phone Numbers & Hours"
+msgstr "Números de teléfono y horas"
+
+#: includes/admin/class-admin-location-meta.php:58
+#: includes/admin/class-admin-location-meta.php:178
+msgid "Zip"
+msgstr "Código postal"
+
+#: includes/admin/class-admin-location-meta.php:54
+#: includes/admin/class-admin-location-meta.php:170
+msgid "State"
+msgstr "Estado"
+
+#: includes/admin/class-admin-location-meta.php:50
+#: includes/admin/class-admin-location-meta.php:162
+msgid "City"
+msgstr "Ciudad"
+
+#: includes/admin/class-admin-location-meta.php:46
+#: includes/admin/class-admin-location-meta.php:154
+msgid "Street Address line two"
+msgstr "Dirección 2"
+
+#: includes/admin/class-admin-location-meta.php:42
+#: includes/admin/class-admin-location-meta.php:146
+msgid "Street Address"
+msgstr "Dirección"
+
+#: includes/class-invp.php:1156 includes/class-photo-numberer.php:80
+msgid "of"
+msgstr "de"
+
+#: includes/class-photo-numberer.php:78
+msgid "Photo"
+msgstr "Foto"
+
+#: includes/class-invp.php:526
+msgid "Base Color"
+msgstr "Color base"
+
+#: includes/addon/class-addon.php:76
+msgid "to receive plugin updates."
+msgstr "para recibir actualizaciones del plugin."
+
+#: includes/addon/class-addon.php:73
+msgid "License key"
+msgstr "Clave de licencia"
+
+#: includes/addon/class-addon-updater.php:600
+msgid "Error"
+msgstr "Error"
+
+#: includes/addon/class-addon-updater.php:600
+msgid "You do not have permission to install plugin updates"
+msgstr "No tienes permiso para instalar actualizaciones del plugin"
+
+#: includes/class-invp.php:567
+#: includes/shortcode/class-shortcode-attribute-table.php:125
+msgid "Doors"
+msgstr "Puertas"
+
+#: includes/widget/class-widget-map.php:213
+msgid "An API token from mapbox.com is required for this widget to work. Obtain a key at mapbox.com and save it on the Inventory Presser Options page."
+msgstr "Para que este widget funcione es necesario un token de API de mapbox.com. Obtén una clave en mapbox.com y guárdala en la página Opciones de Inventory Presser."
+
+#: includes/widget/class-widget-map.php:181
+msgid "Choose addresses to include:"
+msgstr "Selecciona las direcciones a incluir:"
+
+#: includes/widget/class-widget-map.php:30
+msgid "Embeds a map pointed at a dealership address."
+msgstr "Integra un mapa apuntando a la dirección de un concesionario."
+
+#: includes/widget/class-widget-map.php:28
+msgid "Map"
+msgstr "Mapa"
+
+#: includes/admin/class-admin-options.php:487
+msgid "to use the Map widget."
+msgstr ""
+
+#: includes/addon/class-addon.php:76 includes/admin/class-admin-options.php:484
+msgid "Obtain a key at"
+msgstr "Obtener una clave en"
+
+#: includes/admin/class-admin-options.php:129
+msgid "MapBox Public Token"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:683
+msgid "Skip trash when deleting vehicles and delete permanently"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:111
+msgid "Skip Trash"
+msgstr ""
+
+#: includes/class-invp.php:794
+#: includes/integrations/class-classic-editor.php:446
+#: build/blocks/payment/index.js:1 src/blocks/payment/edit.js:27
+msgid "Payment"
+msgstr "Pago"
+
+#: includes/class-invp.php:550
+msgid "Date Entered"
+msgstr "Fecha de entrada"
+
+#: includes/widget/class-widget-inventory-slider.php:317
+msgid "Overlay price"
+msgstr "Precio superpuesto"
+
+#: includes/widget/class-widget-inventory-slider.php:314
+msgid "Overlay year, make, & model"
+msgstr "Año, fabricante y modelo superpuesto"
+
+#. Author of the plugin
+#: inventory-presser.php
+msgid "Friday Systems"
+msgstr "Friday Systems"
+
+#: includes/class-badges.php:47
+msgid "Mechanic's Report"
+msgstr ""
+
+#: includes/widget/class-widget-address.php:144
+msgid "Single Line Display"
+msgstr ""
+
+#: includes/widget/class-widget-address.php:28
+msgid "Display one or more mailing addresses."
+msgstr "Muestra una o más direcciones postales."
+
+#: includes/widget/class-widget-address.php:26
+msgid "Address"
+msgstr "Dirección"
+
+#: includes/widget/class-widget-inventory-grid.php:302
+msgid "Newest vehicles first"
+msgstr ""
+
+#: includes/widget/class-widget-inventory-grid.php:299
+msgid "Featured vehicles only"
+msgstr "Solo vehículos destacados"
+
+#: includes/widget/class-widget-inventory-grid.php:296
+msgid "Show \"Full Inventory\" button"
+msgstr ""
+
+#: includes/widget/class-widget-inventory-grid.php:290
+msgid "Show captions"
+msgstr ""
+
+#: includes/widget/class-widget-inventory-grid.php:285
+msgid "Maximum:"
+msgstr "Máximo:"
+
+#: includes/widget/class-widget-inventory-grid.php:279
+msgid "Column count:"
+msgstr "Número de columnas:"
+
+#: includes/widget/class-widget-inventory-grid.php:212
+msgid "Full Inventory"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:741
+msgid "Hull material"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:663
+msgid "YouTube video ID"
+msgstr "ID del video de YouTube"
+
+#: includes/integrations/class-classic-editor.php:656
+msgid "Interior color"
+msgstr ""
+
+#: includes/class-taxonomies.php:951 includes/class-taxonomies.php:963
+#: includes/integrations/class-classic-editor.php:608
+msgid "Body style"
+msgstr "Estilo de carrocería"
+
+#: includes/integrations/class-classic-editor.php:602
+msgid "Trim"
+msgstr "Acabado"
+
+#: includes/integrations/class-classic-editor.php:557
+msgid "Stock number"
+msgstr "Número de stock"
+
+#: includes/integrations/class-classic-editor.php:404
+msgid "Xenon Headlights"
+msgstr "Luces de Xenón"
+
+#: includes/integrations/class-classic-editor.php:403
+msgid "Wire Wheels"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:402
+msgid "Winch"
+msgstr "Cabrestante"
+
+#: includes/integrations/class-classic-editor.php:401
+msgid "Wide Tires"
+msgstr "Neumáticos anchos"
+
+#: includes/integrations/class-classic-editor.php:400
+msgid "Wheelchair Access"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:399
+msgid "Two Tone Paint"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:398
+msgid "Turbo"
+msgstr "Turbo"
+
+#: includes/integrations/class-classic-editor.php:397
+msgid "Trailer Hitch"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:396
+msgid "Traction Control"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:395
+msgid "Tow Package"
+msgstr "Remolque"
+
+#: includes/integrations/class-classic-editor.php:394
+msgid "Topper"
+msgstr "Topper"
+
+#: includes/integrations/class-classic-editor.php:393
+msgid "Tonneau Cover"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:392
+msgid "Tilt Steering Wheel"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:391
+msgid "Supercharger"
+msgstr "Supercargador"
+
+#: includes/integrations/class-classic-editor.php:390
+msgid "Sunroof"
+msgstr "Techo corredizo"
+
+#: includes/integrations/class-classic-editor.php:389
+msgid "Styled Steel Wheels"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:388
+msgid "Steering Wheel Controls"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:387
+msgid "Step Side Bed"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:386
+msgid "Sport Package"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:385
+msgid "Spoiler"
+msgstr "Spoiler"
+
+#: includes/integrations/class-classic-editor.php:384
+msgid "Snow Plow"
+msgstr "Quitanieve"
+
+#: includes/integrations/class-classic-editor.php:383
+msgid "Skid Plate(s)"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:382
+msgid "Side Air Bags"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:381
+msgid "Short Bed"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:380
+msgid "Security System"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:379
+msgid "Satellite Radio"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:378
+msgid "Running Boards"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:377
+msgid "Roof Rack"
+msgstr "Portaequipaje"
+
+#: includes/integrations/class-classic-editor.php:376
+msgid "Refrigerator"
+msgstr "Refrigerador"
+
+#: includes/integrations/class-classic-editor.php:375
+msgid "Rear Heat"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:374
+msgid "Rear Defroster"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:373
+msgid "Rear Air Conditioning"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:372
+msgid "Rear Air Bags"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:371
+msgid "Quad Seating"
+msgstr "4 asientos"
+
+#: includes/integrations/class-classic-editor.php:370
+msgid "Privacy Glass"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:369
+msgid "Premium Wheels"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:368
+msgid "Premium Audio"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:367
+msgid "Power Windows"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:366
+msgid "Power Steering"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:365
+msgid "Power Seats"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:364
+msgid "Power Locks"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:363
+msgid "Power Lift Gate"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:362
+msgid "Power Brakes"
+msgstr "Freno asistido"
+
+#: includes/integrations/class-classic-editor.php:361
+msgid "Portable Audio Connection"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:360
+msgid "Oversize Off Road Tires"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:359
+msgid "Navigation System"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:358
+msgid "Multi-zone Climate Control"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:357
+msgid "Moon Roof"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:356
+msgid "Memory Seat(s)"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:355
+msgid "Long Bed"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:354
+msgid "Lift Kit"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:353
+msgid "Leather Seats"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:352
+msgid "Keyless Entry"
+msgstr ""
+
+#: includes/class-invp.php:790
+#: includes/integrations/class-classic-editor.php:351
+msgid "Heated Seats"
+msgstr "Asientos calefactables"
+
+#: includes/integrations/class-classic-editor.php:350
+msgid "Fog Lights"
+msgstr "Luces antiniebla"
+
+#: includes/integrations/class-classic-editor.php:349
+msgid "Extended Cab"
+msgstr "Cabina extendida"
+
+#: includes/integrations/class-classic-editor.php:348
+msgid "DVD Player"
+msgstr "Reproductor DVD"
+
+#: includes/integrations/class-classic-editor.php:347
+msgid "Dual Sliding Doors"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:346
+msgid "Disability Equipped"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:345
+msgid "Custom Paint"
+msgstr "Pintura personalizada"
+
+#: includes/integrations/class-classic-editor.php:344
+msgid "Cruise Control"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:343
+msgid "Cooled Seats"
+msgstr "Asientos climatizados"
+
+#: includes/integrations/class-classic-editor.php:342
+msgid "Convertible"
+msgstr "Convertible"
+
+#: includes/integrations/class-classic-editor.php:341
+msgid "Conversion Package"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:340
+msgid "Cloth Seats"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:339
+msgid "Cell or Intergrated Cell Phone"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:338
+msgid "CD Player"
+msgstr "Reproductor CD"
+
+#: includes/integrations/class-classic-editor.php:337
+msgid "Cassette"
+msgstr "Cassette"
+
+#: includes/integrations/class-classic-editor.php:336
+msgid "Bluetooth, Hands Free"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:335
+msgid "Bed Cap"
+msgstr "Cubierta pick up"
+
+#: includes/integrations/class-classic-editor.php:334
+msgid "Backup Camera"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:333
+msgid "Anti-lock Brakes"
+msgstr "Frenos Antibloqueo"
+
+#: includes/integrations/class-classic-editor.php:332
+msgid "AM/FM Stereo"
+msgstr "Estéreo AM/FM"
+
+#: includes/integrations/class-classic-editor.php:331
+msgid "Aluminum Wheels"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:330
+msgid "Alloy Wheels"
+msgstr "Llantas de aleación"
+
+#: includes/integrations/class-classic-editor.php:329
+msgid "Air Conditioning"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:328
+msgid "Air Bags"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:327
+msgid "3rd Row Seats"
+msgstr ""
+
+#: includes/integrations/class-classic-editor.php:312
+msgid "Featured in Slideshows"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:297 inventory-presser.php:1471
+msgid "Settings"
+msgstr "Ajustes"
+
+#: includes/integrations/class-classic-editor.php:239
+msgid "Delete All Media"
+msgstr ""
+
+#: inventory-presser.php:989
+msgid "Vehicle draft updated. "
+msgstr "Borrador del vehículo actualizado. "
+
+#. translators: 1. A date.
+#: inventory-presser.php:988
+msgid "Vehicle scheduled to list on <strong>%s</strong>. "
+msgstr "Vehículo programado para salir a la venta el <strong>%s</strong>. "
+
+#: inventory-presser.php:986
+msgid "Vehicle submitted. "
+msgstr "Vehículo enviado. "
+
+#: inventory-presser.php:985
+msgid "Vehicle saved."
+msgstr "Vehículo guardado."
+
+#: inventory-presser.php:984
+msgid "Vehicle published. "
+msgstr "Vehículo publicado. "
+
+#. translators: 1. Formatted date timestamp of a post revision.
+#: inventory-presser.php:983
+msgid "Vehicle restored to revision from %s."
+msgstr "Vehículo restaurado a revisión desde %s."
+
+#: inventory-presser.php:981
+msgid "Vehicle updated."
+msgstr "Vehículo actualizado."
+
+#: inventory-presser.php:979 inventory-presser.php:980
+msgid "Custom field updated."
+msgstr "Campo personalizado actualizado."
+
+#: inventory-presser.php:978
+msgid "Vehicle updated. "
+msgstr "Vehículo actualizado. "
+
+#: inventory-presser.php:974
+msgid "M j, Y @ H:i"
+msgstr ""
+
+#: inventory-presser.php:971
+msgid "Preview vehicle"
+msgstr "Previsualizar vehículo"
+
+#: inventory-presser.php:965
+msgid "View vehicle"
+msgstr "Ver vehículo"
+
+#: includes/admin/class-admin-bar.php:32 inventory-presser.php:944
+msgid "Vehicles"
+msgstr "Vehículos"
+
+#: includes/admin/class-admin-posts-list.php:30
+msgid "Thumbnail"
+msgstr "Miniatura"
+
+#: includes/admin/class-admin-posts-list.php:29
+msgid "Photos"
+msgstr "Fotos"
+
+#: includes/admin/class-admin-posts-list.php:25
+msgid "Stock #"
+msgstr "Stock #"
+
+#: includes/widget/class-widget-order-by.php:36
+msgid "A list of vehicle attributes by which users can sort listings."
+msgstr "Una lista de características del vehículo por las que los usuarios pueden ordenar los listados."
+
+#: includes/widget/class-widget-order-by.php:34
+msgid "Sort by Vehicle Attributes"
+msgstr ""
+
+#: includes/widget/class-widget-hours.php:310
+msgid "Show All Closed Days"
+msgstr ""
+
+#: includes/widget/class-widget-hours.php:305
+msgid "Main Title"
+msgstr "Título principal"
+
+#: includes/widget/class-widget-hours.php:271
+msgid "No title entered"
+msgstr "No se introdujo título"
+
+#: includes/widget/class-widget-hours.php:264
+msgid "Display"
+msgstr "Mostrar"
+
+#: includes/widget/class-widget-hours.php:205
+msgid "Appointment Only"
+msgstr ""
+
+#: includes/admin/class-admin-location-meta.php:93
+#: includes/admin/class-admin-location-meta.php:268
+#: includes/admin/class-admin-location-meta.php:320
+#: includes/widget/class-widget-hours.php:202
+msgid "Appointment"
+msgstr "Cita"
+
+#: includes/widget/class-widget-hours.php:25
+msgid "Display hours of operation."
+msgstr "Mostrar horas de servicio."
+
+#: includes/class-taxonomies.php:1013 includes/class-taxonomies.php:1028
+msgid "Locations"
+msgstr "Ubicaciones"
+
+#: includes/class-taxonomies.php:1027
+msgid "No locations"
+msgstr ""
+
+#: includes/class-taxonomies.php:1026
+msgid "No locations found"
+msgstr "No se encontraron ubicaciones"
+
+#: includes/class-taxonomies.php:1025
+msgid "New Location Name"
+msgstr ""
+
+#: includes/class-taxonomies.php:1024
+msgid "Add New Location"
+msgstr ""
+
+#: includes/class-taxonomies.php:1023
+msgid "Update Location"
+msgstr ""
+
+#: includes/class-taxonomies.php:1022
+msgid "View Location"
+msgstr ""
+
+#: includes/class-taxonomies.php:1021
+msgid "Edit Location"
+msgstr ""
+
+#: includes/class-taxonomies.php:1019
+msgid "All locations"
+msgstr "Todas las ubicaciones"
+
+#: includes/class-taxonomies.php:1018
+msgid "Popular locations"
+msgstr "Ubicaciones populares"
+
+#: includes/class-taxonomies.php:1017
+msgid "Search locations"
+msgstr "Buscar ubicaciones"
+
+#: includes/admin/class-admin-location-meta.php:127
+msgid "Add Hours Block"
+msgstr ""
+
+#: includes/admin/class-admin-location-meta.php:126
+#: includes/admin/class-admin-location-meta.php:354
+msgid "When saving multiple sets of hours for a single location, position the primary showroom hours first."
+msgstr ""
+
+#: includes/admin/class-admin-location-meta.php:123
+#: includes/admin/class-admin-location-meta.php:236
+#: includes/admin/class-admin-location-meta.php:299
+msgid "Delete this set of hours"
+msgstr "Eliminar este conjunto de horas"
+
+#: includes/admin/class-admin-location-meta.php:108
+#: includes/admin/class-admin-location-meta.php:284
+#: includes/admin/class-admin-location-meta.php:336
+msgid "Yes"
+msgstr "Sí"
+
+#: includes/admin/class-admin-location-meta.php:107
+#: includes/admin/class-admin-location-meta.php:283
+#: includes/admin/class-admin-location-meta.php:335
+msgid "No"
+msgstr "No"
+
+#: includes/admin/class-admin-location-meta.php:92
+#: includes/admin/class-admin-location-meta.php:267
+#: includes/admin/class-admin-location-meta.php:319
+msgid "Close"
+msgstr "Cerrar"
+
+#: includes/admin/class-admin-location-meta.php:90
+#: includes/admin/class-admin-location-meta.php:265
+#: includes/admin/class-admin-location-meta.php:317
+msgid "Open"
+msgstr "Abrir"
+
+#: includes/admin/class-admin-location-meta.php:85
+#: includes/admin/class-admin-location-meta.php:259
+#: includes/admin/class-admin-location-meta.php:260
+#: includes/admin/class-admin-options.php:355
+#: includes/widget/class-widget-hours.php:265
+msgid "Title"
+msgstr "Título"
+
+#: includes/admin/class-admin-location-meta.php:79
+#: includes/admin/class-admin-location-meta.php:244
+#: includes/widget/class-widget-hours.php:302
+msgid "Hours"
+msgstr "Horas"
+
+#: includes/admin/class-admin-location-meta.php:75
+#: includes/admin/class-admin-location-meta.php:239
+msgid "Add Phone Number"
+msgstr ""
+
+#: includes/admin/class-admin-location-meta.php:72
+msgid "Delete this phone number"
+msgstr "Eliminar este número de teléfono"
+
+#: includes/admin/class-admin-location-meta.php:71
+#: includes/admin/class-admin-location-meta.php:122
+#: includes/admin/class-admin-location-meta.php:235
+#: includes/admin/class-admin-location-meta.php:298
+msgid "Drag to reposition"
+msgstr ""
+
+#: includes/admin/class-admin-location-meta.php:68
+#: includes/admin/class-admin-location-meta.php:212
+#: includes/admin/class-admin-location-meta.php:232
+#: includes/class-taxonomies.php:1080
+msgid "Number"
+msgstr "Número"
+
+#: includes/admin/class-admin-location-meta.php:67
+#: includes/admin/class-admin-location-meta.php:210
+#: includes/admin/class-admin-location-meta.php:231
+msgid "Label"
+msgstr "Etiqueta"
+
+#: includes/admin/class-admin-location-meta.php:62
+#: includes/admin/class-admin-location-meta.php:190
+msgid "Phone Numbers"
+msgstr "Números de teléfono"
+
+#: includes/widget/class-widget-phones.php:233
+msgid "Title (optional):"
+msgstr "Título (opcional):"
+
+#: includes/widget/class-widget-phones.php:84
+msgid "Display one or more phone numbers."
+msgstr "Mostrar uno o más números de teléfono."
+
+#: includes/widget/class-widget-phones.php:82
+msgid "Phone Number"
+msgstr "Número de teléfono"
+
+#: includes/widget/class-widget-phones.php:63
+msgid "Single line no labels"
+msgstr "Línea única sin etiquetas"
+
+#: includes/widget/class-widget-phones.php:56
+msgid "Single line with labels"
+msgstr "Línea única con etiquetas"
+
+#: includes/widget/class-widget-phones.php:49
+msgid "Large, small right label"
+msgstr "Grande, etiqueta derecha pequeña"
+
+#: includes/widget/class-widget-phones.php:42
+msgid "Large, small left label"
+msgstr "Grande, etiqueta izquierda pequeña"
+
+#: includes/widget/class-widget-phones.php:35
+msgid "Large tabled, left label"
+msgstr "Grande, etiqueta izquierda"
+
+#: includes/widget/class-widget-phones.php:28
+msgid "Large, no label"
+msgstr "Grande, sin etiqueta"
+
+#: includes/widget/class-widget-phones.php:21
+msgid "Small, left label"
+msgstr "Pequeña, etiqueta izquierda"
+
+#: includes/widget/class-widget-carfax.php:40
+msgid "Landscape Blue"
+msgstr ""
+
+#: includes/widget/class-widget-carfax.php:36
+msgid "Car Fox Oval"
+msgstr ""
+
+#: includes/widget/class-widget-carfax.php:32
+msgid "Car Fox Left"
+msgstr ""
+
+#: includes/widget/class-widget-carfax.php:28
+msgid "Car Fox Dealership"
+msgstr ""
+
+#: includes/widget/class-widget-carfax.php:24
+msgid "Advantage Dealer Badge"
+msgstr ""
+
+#: includes/widget/class-widget-carfax.php:20
+msgid "Simple Show Me Logo"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:1023
+#: includes/admin/class-admin-options.php:1065
+msgid "Inventory Presser Settings"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:873
+msgid "Use Carfax-provided, dynamic buttons that may also say things like \"GOOD VALUE\""
+msgstr "Utiliza los botones dinámicos proporcionados por Carfax, que también pueden decir cosas como \"BUEN VALOR\"."
+
+#: includes/admin/class-admin-options.php:861
+msgid "Display Carfax buttons near vehicles that link to free Carfax reports"
+msgstr "Mostrar botones Carfax cerca de los vehículos con el link de informes Carfax gratuitos"
+
+#: includes/admin/class-admin-options.php:746
+msgid "order"
+msgstr "orden"
+
+#: includes/admin/class-admin-options.php:732
+msgid "in"
+msgstr "en"
+
+#: includes/admin/class-admin-options.php:540
+msgid "will display for any price that is zero"
+msgstr "se mostrará para cualquier precio de cero"
+
+#: includes/admin/class-admin-options.php:539
+msgid "Call for Price"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:429
+msgid "Include sold vehicles in listings and search results"
+msgstr "Incluir vehículos vendidos en listados y resultados de búsqueda"
+
+#: includes/admin/class-admin-options.php:390
+msgid "Operator"
+msgstr "Operador"
+
+#: includes/admin/class-admin-options.php:234
+msgid "Use Newest Buttons"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:225
+msgid "Enable Carfax"
+msgstr "Permitir Carfax"
+
+#: includes/admin/class-admin-options.php:217
+msgid "Carfax"
+msgstr "Carfax"
+
+#: includes/admin/class-admin-options.php:156
+msgid "Sort Vehicles By"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:148
+msgid "Listings"
+msgstr "Listados"
+
+#: includes/admin/class-admin-options.php:174
+msgid "Sold Vehicles"
+msgstr "Vehículos vendidos"
+
+#: includes/admin/class-admin-options.php:165
+msgid "Price Display"
+msgstr "Visualización de precio"
+
+#: includes/admin/class-admin-options.php:92
+msgid "General"
+msgstr "General"
+
+#: includes/admin/class-admin-options.php:65
+#: includes/admin/class-admin-options.php:66 includes/class-invp.php:788
+#: includes/shortcode/class-shortcode-single-vehicle.php:184
+msgid "Options"
+msgstr "Opciones"
+
+#: includes/widget/class-widget-fuel-economy.php:215
+msgid "grams per mile"
+msgstr "gramos por milla"
+
+#: includes/widget/class-widget-fuel-economy.php:213
+msgid "Annual tailpipe CO2 emissions"
+msgstr "Emisión anual de CO2"
+
+#: includes/widget/class-widget-fuel-economy.php:204
+msgid "Annual fuel cost"
+msgstr "Costo anual de combustible"
+
+#: includes/widget/class-widget-fuel-economy.php:192
+msgid "barrels"
+msgstr "barriles"
+
+#: includes/widget/class-widget-fuel-economy.php:190
+msgid "Annual fuel consumption"
+msgstr "Consumo anual de combustible"
+
+#: includes/widget/class-widget-fuel-economy.php:177
+msgid "Five year savings compared to average vehicle"
+msgstr "Ahorros en 5 años comparado con vehículos promedio"
+
+#: includes/widget/class-widget-fuel-economy.php:158
+msgid "highway"
+msgstr "autopista"
+
+#: includes/widget/class-widget-fuel-economy.php:150
+msgid "city"
+msgstr "ciudad"
+
+#: includes/widget/class-widget-fuel-economy.php:143
+msgid "MPG"
+msgstr "Km/L"
+
+#: includes/widget/class-widget-fuel-economy.php:134
+msgid "combined"
+msgstr "combinado"
+
+#: includes/widget/class-widget-fuel-economy.php:56
+msgid "Include annual consumption, cost &amp; emissions"
+msgstr ""
+
+#: includes/widget/class-widget-fuel-economy.php:25
+msgid "MPG ratings for the current vehicle."
+msgstr ""
+
+#: includes/widget/class-widget-fuel-economy.php:23
+msgid "EPA Fuel Economy"
+msgstr ""
+
+#: includes/template-tags.php:1140
+msgid "Speed"
+msgstr "Velocidad"
+
+#: includes/template-tags.php:985 includes/template-tags.php:1077
+msgid "Down"
+msgstr "Bajo"
+
+#: includes/template-tags.php:1047
+msgid "twice a month"
+msgstr "dos veces al mes"
+
+#: includes/template-tags.php:1043
+msgid "every other week"
+msgstr "cada dos semanas"
+
+#: includes/template-tags.php:1039
+msgid "per month"
+msgstr "por mes"
+
+#: includes/template-tags.php:1035
+msgid "per week"
+msgstr "por semana"
+
+#: includes/admin/class-admin-options.php:511 includes/template-tags.php:1010
+msgid "You Save"
+msgstr "Ahorras"
+
+#: includes/admin/class-admin-options.php:510 includes/template-tags.php:1008
+msgid "Now"
+msgstr "Ahora"
+
+#: includes/admin/class-admin-options.php:508 includes/template-tags.php:1006
+msgid "Retail"
+msgstr "Minorista"
+
+#: includes/admin/class-admin-options.php:515 includes/template-tags.php:946
+#: includes/template-tags.php:992
+msgid "Call For Price"
+msgstr ""
+
+#: includes/template-tags.php:937
+msgid "SOLD!"
+msgstr "¡VENDIDO!"
+
+#: includes/template-tags.php:578
+msgid "Call"
+msgstr "Llamar"
+
+#: includes/template-tags.php:561
+msgid "at"
+msgstr "en"
+
+#: includes/template-tags.php:559
+msgid "See this"
+msgstr "Ver esto"
+
+#: includes/class-allow-inventory-as-home-page.php:36
+msgid "Inventory"
+msgstr "Inventario"
+
+#: includes/class-allow-inventory-as-home-page.php:34
+msgid "This is not the real Inventory page. This page exists so that you can set the site's home page to the Inventory list in the Customizer or the Settings > Reading admin page. The Inventory \"page\" is actually a custom post type archive, and typically will not show up in those settings drop downs. All requests for this page will be redirected to the Inventory archive."
+msgstr ""
+
+#: includes/widget/class-widget-maximum-price-filter.php:207
+msgid "Show Reset Link Only"
+msgstr ""
+
+#: includes/widget/class-widget-maximum-price-filter.php:192
+msgid "Orientation:"
+msgstr "Orientación:"
+
+#: includes/widget/class-widget-maximum-price-filter.php:177
+#: includes/widget/class-widget-phones.php:237
+msgid "Display Format:"
+msgstr ""
+
+#: includes/widget/class-widget-maximum-price-filter.php:173
+msgid "Price Points (separated by commas)"
+msgstr "Precios (separados por comas)"
+
+#: includes/widget/class-widget-maximum-price-filter.php:144
+#: includes/widget/class-widget-maximum-price-filter.php:159
+msgid "Price Filter"
+msgstr "Filtrar precios"
+
+#: includes/widget/class-widget-maximum-price-filter.php:142
+msgid "Remove"
+msgstr "Eliminar"
+
+#: includes/widget/class-widget-maximum-price-filter.php:77
+msgid "Vertical"
+msgstr "Vertical"
+
+#: includes/widget/class-widget-maximum-price-filter.php:76
+msgid "Horizontal"
+msgstr "Horizontal"
+
+#: includes/widget/class-widget-maximum-price-filter.php:64
+msgid "Text"
+msgstr "Texto"
+
+#: includes/widget/class-widget-maximum-price-filter.php:63
+msgid "Buttons"
+msgstr "Botones"
+
+#: includes/widget/class-widget-maximum-price-filter.php:38
+msgid "Filter vehicles by a maximum price."
+msgstr "Filtrar vehículos por precio máximo."
+
+#: includes/widget/class-widget-maximum-price-filter.php:36
+msgid "Maximum Price Filter"
+msgstr ""
+
+#: includes/shortcode/class-shortcode-attribute-table.php:215
+msgid "HIN"
+msgstr "HIN"
+
+#: includes/shortcode/class-shortcode-attribute-table.php:132
+msgid "Stock"
+msgstr "Stock"
+
+#: includes/shortcode/class-shortcode-attribute-table.php:118
+msgid "Interior"
+msgstr "Interior"
+
+#: includes/shortcode/class-shortcode-attribute-table.php:90
+msgid "Mileage"
+msgstr "Kilometraje"
+
+#: includes/shortcode/class-shortcode-attribute-table.php:71
+msgid "Book Value"
+msgstr ""
+
+#: includes/admin/class-admin-options.php:462
+msgid "Delete All Vehicles"
+msgstr ""
+
+#: inventory-presser.php:909
+msgid "View Details"
+msgstr "Ver detalles"
+
+#: includes/shortcode/class-shortcode-hours-today.php:188
+msgid " on "
+msgstr " en "
+
+#: includes/shortcode/class-shortcode-hours-today.php:186
+msgid " tomorrow"
+msgstr " mañana"
+
+#: includes/shortcode/class-shortcode-hours-today.php:182
+msgid "Closed until "
+msgstr "Cerrado hasta "
+
+#: includes/shortcode/class-shortcode-hours-today.php:172
+msgid " today"
+msgstr " hoy"
+
+#: includes/shortcode/class-shortcode-hours-today.php:172
+msgid "Opening at "
+msgstr "Abriendo a las "
+
+#: includes/shortcode/class-shortcode-hours-today.php:165
+msgid "Open today until "
+msgstr "Abierto hoy hasta "
+
+#: includes/class-invp.php:1311
+msgid "Sun"
+msgstr "Dom"
+
+#: includes/class-invp.php:1310
+msgid "Sat"
+msgstr "Sáb"
+
+#: includes/class-invp.php:1309
+msgid "Fri"
+msgstr "Vie"
+
+#: includes/class-invp.php:1308
+msgid "Thu"
+msgstr "Jue"
+
+#: includes/class-invp.php:1307
+msgid "Wed"
+msgstr "Mié"
+
+#: includes/class-invp.php:1306
+msgid "Tue"
+msgstr "Mar"
+
+#: includes/class-invp.php:1305
+msgid "Mon"
+msgstr "Lun"
+
+#: includes/class-invp.php:883 build/blocks/youtube/index.js:1
+#: js/editor-sidebar.js:76 src/blocks/youtube/edit.js:67
+msgid "YouTube Video ID"
+msgstr ""
+
+#: includes/class-invp.php:877
+#: includes/integrations/class-classic-editor.php:560
+#: build/blocks/year-make-model-and-trim/index.js:1
+#: build/blocks/year/index.js:1 src/blocks/year-make-model-and-trim/edit.js:30
+#: src/blocks/year/edit.js:27
+msgid "Year"
+msgstr "Año"
+
+#: includes/class-invp.php:872
+msgid "Is Wholesale"
+msgstr "Mayorista"
+
+#: includes/class-invp.php:866
+#: includes/integrations/class-classic-editor.php:547
+#: includes/shortcode/class-shortcode-attribute-table.php:215
+#: build/blocks/vin/index.js:1 src/blocks/vin/edit.js:27
+msgid "VIN"
+msgstr "VIN"
+
+#: includes/class-invp.php:860 includes/class-taxonomies.php:711
+#: includes/class-taxonomies.php:724
+msgid "Type"
+msgstr "Tipo"
+
+#: includes/class-invp.php:854 build/blocks/trim/index.js:1
+#: build/blocks/year-make-model-and-trim/index.js:1 src/blocks/trim/edit.js:27
+#: src/blocks/year-make-model-and-trim/edit.js:45
+msgid "Trim Level"
+msgstr ""
+
+#: includes/class-invp.php:848 build/blocks/transmission-speeds/index.js:1
+#: src/blocks/transmission-speeds/edit.js:27
+msgid "Transmission Speeds"
+msgstr ""
+
+#: includes/class-invp.php:842 includes/class-taxonomies.php:886
+#: includes/class-taxonomies.php:898
+#: includes/shortcode/class-shortcode-attribute-table.php:97
+msgid "Transmission"
+msgstr "Transmisión"
+
+#: includes/class-invp.php:836 build/blocks/title-status/index.js:1
+#: src/blocks/title-status/edit.js:27
+msgid "Title Status"
+msgstr "Estado del título"
+
+#: includes/class-invp.php:824 build/blocks/stock-number/index.js:1
+#: src/blocks/stock-number/edit.js:27
+msgid "Stock Number"
+msgstr "Número de stock"
+
+#: includes/class-invp.php:812
+msgid "Propulsion Type"
+msgstr ""
+
+#: includes/admin/class-admin-posts-list.php:28 includes/class-invp.php:806
+#: includes/integrations/class-classic-editor.php:443
+#: build/blocks/price/index.js:1 src/blocks/price/edit.js:27
+msgid "Price"
+msgstr "Precio"
+
+#: includes/class-invp.php:800
+msgid "Payment Frequency"
+msgstr ""
+
+#: includes/admin/class-admin-posts-list.php:27 includes/class-invp.php:782
+#: includes/integrations/class-classic-editor.php:659
+#: inventory-presser.php:1230 build/blocks/odometer/index.js:1
+#: src/blocks/odometer/edit.js:27
+msgid "Odometer"
+msgstr "Cuentakilómetros"
+
+#: includes/class-invp.php:777
+msgid "NextGear Inspection URL"
+msgstr "URL de NextGear Inspection"
+
+#: includes/class-invp.php:771
+#: includes/integrations/class-classic-editor.php:444
+#: build/blocks/msrp/index.js:1 src/blocks/msrp/edit.js:27
+msgid "MSRP"
+msgstr "Precio recomendado"
+
+#: includes/class-invp.php:765 includes/class-taxonomies.php:659
+#: includes/class-taxonomies.php:671
+#: includes/integrations/class-classic-editor.php:599
+#: build/blocks/model/index.js:1
+#: build/blocks/year-make-model-and-trim/index.js:1 src/blocks/model/edit.js:27
+#: src/blocks/year-make-model-and-trim/edit.js:40
+msgid "Model"
+msgstr "Modelo"
+
+#: includes/class-invp.php:753 includes/class-taxonomies.php:635
+#: includes/class-taxonomies.php:647
+#: includes/integrations/class-classic-editor.php:596
+#: build/blocks/make/index.js:1
+#: build/blocks/year-make-model-and-trim/index.js:1 src/blocks/make/edit.js:27
+#: src/blocks/year-make-model-and-trim/edit.js:35
+msgid "Make"
+msgstr "Fabricante"
+
+#: includes/class-invp.php:747 includes/class-taxonomies.php:1015
+#: includes/class-taxonomies.php:1016 includes/class-taxonomies.php:1033
+msgid "Location"
+msgstr "Ubicación"
+
+#: includes/class-invp.php:742
+#: includes/integrations/class-classic-editor.php:738
+#: includes/shortcode/class-shortcode-attribute-table.php:162
+#: build/blocks/length/index.js:1 src/blocks/length/edit.js:27
+msgid "Length"
+msgstr "Longitud"
+
+#: includes/class-invp.php:737
+msgid "Leads ID"
+msgstr ""
+
+#: includes/class-invp.php:731 build/blocks/last-modified/index.js:1
+#: src/blocks/last-modified/edit.js:27
+msgid "Last Modified"
+msgstr "Última modificación"
+
+#: includes/class-invp.php:725 build/blocks/interior-color/index.js:1
+#: src/blocks/interior-color/edit.js:27
+msgid "Interior Color"
+msgstr ""
+
+#: includes/class-invp.php:720 includes/class-taxonomies.php:1188
+#: includes/class-taxonomies.php:1200
+#: includes/shortcode/class-shortcode-attribute-table.php:169
+msgid "Hull Material"
+msgstr "Material del chasis"
+
+#: includes/class-invp.php:709
+msgid "Fuel Economy Five Year Savings"
+msgstr ""
+
+#: includes/class-invp.php:703
+msgid "Fuel Economy Highway (fuel type 2)"
+msgstr ""
+
+#: includes/class-invp.php:697
+msgid "Fuel Economy Combined (fuel type 2)"
+msgstr ""
+
+#: includes/class-invp.php:691
+msgid "Fuel Economy City (fuel type 2)"
+msgstr ""
+
+#: includes/class-invp.php:685
+msgid "Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 2)"
+msgstr ""
+
+#: includes/class-invp.php:679
+msgid "Fuel Economy Annual Fuel Cost (fuel type 2)"
+msgstr ""
+
+#: includes/class-invp.php:673
+msgid "Fuel Economy Annual Fuel Consumption (fuel type 2)"
+msgstr ""
+
+#: includes/class-invp.php:667
+msgid "Fuel Economy Name (fuel type 2)"
+msgstr ""
+
+#: includes/class-invp.php:661
+msgid "Fuel Economy Highway (fuel type 1)"
+msgstr ""
+
+#: includes/class-invp.php:655
+msgid "Fuel Economy Combined (fuel type 1)"
+msgstr ""
+
+#: includes/class-invp.php:649
+msgid "Fuel Economy City (fuel type 1)"
+msgstr ""
+
+#: includes/class-invp.php:643
+msgid "Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 1)"
+msgstr ""
+
+#: includes/class-invp.php:637
+msgid "Fuel Economy Annual Fuel Cost (fuel type 1)"
+msgstr ""
+
+#: includes/class-invp.php:631
+msgid "Fuel Economy Annual Fuel Consumption (fuel type 1)"
+msgstr ""
+
+#: includes/class-invp.php:625
+msgid "Fuel Economy Name (fuel type 1)"
+msgstr ""
+
+#: includes/class-invp.php:619 includes/class-taxonomies.php:861
+msgid "Fuel"
+msgstr "Combustible"
+
+#: includes/class-invp.php:614
+msgid "Featured"
+msgstr "Destacado"
+
+#: includes/class-invp.php:590
+#: includes/integrations/class-classic-editor.php:605
+#: includes/shortcode/class-shortcode-attribute-table.php:139
+#: build/blocks/engine/index.js:1 src/blocks/engine/edit.js:27
+msgid "Engine"
+msgstr "Motor"
+
+#: includes/class-invp.php:585
+msgid "Edmunds Style ID"
+msgstr "ID de Edmunds Style"
+
+#: includes/class-invp.php:579
+#: includes/shortcode/class-shortcode-attribute-table.php:111
+msgid "Drive Type"
+msgstr ""
+
+#: includes/class-invp.php:573 build/blocks/down-payment/index.js:1
+#: src/blocks/down-payment/edit.js:27
+msgid "Down Payment"
+msgstr "Pie"
+
+#: includes/class-invp.php:561
+#: includes/integrations/class-classic-editor.php:672
+#: includes/shortcode/class-shortcode-single-vehicle.php:164
+msgid "Description"
+msgstr "Descripción"
+
+#: includes/class-invp.php:556
+msgid "Dealer ID"
+msgstr ""
+
+#: includes/class-invp.php:544 includes/class-taxonomies.php:913
+#: includes/class-taxonomies.php:915 includes/class-taxonomies.php:928
+msgid "Cylinders"
+msgstr "Cilindros"
+
+#: includes/class-invp.php:538 includes/class-taxonomies.php:683
+#: includes/class-taxonomies.php:695 includes/class-taxonomies.php:1044
+#: includes/class-taxonomies.php:1046 includes/class-taxonomies.php:1047
+#: includes/class-taxonomies.php:1059
+#: includes/shortcode/class-shortcode-attribute-table.php:206
+msgid "Condition"
+msgstr "Condición"
+
+#: includes/admin/class-admin-posts-list.php:26 includes/class-invp.php:520
+#: includes/class-taxonomies.php:974 includes/class-taxonomies.php:975
+#: includes/class-taxonomies.php:987
+#: includes/integrations/class-classic-editor.php:653
+#: includes/shortcode/class-shortcode-attribute-table.php:104
+#: build/blocks/color/index.js:1 src/blocks/color/edit.js:27
+msgid "Color"
+msgstr "Color"
+
+#: includes/class-invp.php:510
+msgid "Carfax Report URL"
+msgstr ""
+
+#: includes/class-invp.php:490
+msgid "Carfax Icon URL"
+msgstr ""
+
+#: includes/class-invp.php:480
+msgid "Carfax One Owner"
+msgstr ""
+
+#: includes/class-invp.php:475
+msgid "Carfax Have Report"
+msgstr ""
+
+#: includes/class-invp.php:465
+msgid "Car ID"
+msgstr "ID del Vehículo"
+
+#: includes/class-invp.php:459
+msgid "NADA Book Value"
+msgstr ""
+
+#: includes/class-invp.php:453
+msgid "KBB Book Value"
+msgstr ""
+
+#: includes/class-invp.php:447
+#: includes/shortcode/class-shortcode-attribute-table.php:82
+#: build/blocks/body-style/index.js:1 src/blocks/body-style/edit.js:27
+msgid "Body Style"
+msgstr ""
+
+#: includes/class-invp.php:442
+#: includes/integrations/class-classic-editor.php:717
+#: includes/shortcode/class-shortcode-attribute-table.php:178
+#: build/blocks/beam/index.js:1 src/blocks/beam/edit.js:27
+msgid "Beam"
+msgstr "Luz"
+
+#: includes/class-invp.php:436 includes/class-taxonomies.php:750
+#: includes/class-taxonomies.php:762
+msgid "Availability"
+msgstr "Disponibilidad"
+
+#: includes/widget/class-widget-google-maps.php:109
+msgid "Choose an Address"
+msgstr ""
+
+#: includes/widget/class-widget-google-maps.php:31
+msgid "Embeds a Google Map pointed at a dealership address."
+msgstr "Integra un mapa de Google Map apuntando a la dirección de un concesionario."
+
+#: includes/widget/class-widget-google-maps-v3.php:29
+msgid "Google Map"
+msgstr "Google Maps"
+
+#: includes/class-menu-item-email-a-friend.php:61
+msgid "Email a Friend"
+msgstr ""
+
+#: includes/class-menu-item-email-a-friend.php:55
+msgid "Vehicle Details Buttons"
+msgstr ""
+
+#: includes/widget/class-widget-carfax.php:166
+#: includes/widget/class-widget-kbb.php:134
+msgid "Text after image:"
+msgstr "Texto después de la imagen:"
+
+#: includes/widget/class-widget-carfax.php:148
+#: includes/widget/class-widget-kbb.php:116
+msgid "Image:"
+msgstr "Imagen:"
+
+#: includes/widget/class-widget-carfax.php:144
+#: includes/widget/class-widget-kbb.php:112
+msgid "Text before image:"
+msgstr "Texto antes de la imagen:"
+
+#: includes/widget/class-widget-kbb.php:40
+msgid "KBB logo image linked to kbb.com"
+msgstr "Imagen del logotipo de KBB vinculada a kbb.com"
+
+#: includes/widget/class-widget-kbb.php:38
+msgid "Kelley Blue Book Logo"
+msgstr "Logo de Kelley Blue Book"
+
+#: includes/widget/class-widget-kbb.php:22
+msgid "Bordered Rectangle"
+msgstr ""
+
+#: includes/widget/class-widget-inventory-grid.php:293
+msgid "Show prices"
+msgstr "Mostrar precios"
+
+#: includes/widget/class-widget-inventory-slider.php:267
+msgid "Text Overlay:"
+msgstr "Superposición de texto:"
+
+#: includes/widget/class-widget-inventory-slider.php:251
+msgid "Vehicle Selection:"
+msgstr ""
+
+#: includes/widget/class-widget-inventory-slider.php:231
+msgid "Vehicles to show at one time:"
+msgstr "Vehículos a mostrar a la vez:"
+
+#: includes/widget/class-widget-address.php:139
+#: includes/widget/class-widget-carfax.php:140
+#: includes/widget/class-widget-fuel-economy.php:52
+#: includes/widget/class-widget-google-maps-v3.php:144
+#: includes/widget/class-widget-google-maps.php:105
+#: includes/widget/class-widget-inventory-grid.php:274
+#: includes/widget/class-widget-inventory-slider.php:227
+#: includes/widget/class-widget-kbb.php:108
+#: includes/widget/class-widget-map.php:177
+#: includes/widget/class-widget-maximum-price-filter.php:169
+#: includes/widget/class-widget-order-by.php:61
+msgid "Title:"
+msgstr "Título:"
+
+#: includes/widget/class-widget-inventory-slider.php:60
+msgid "Newest Vehicles First"
+msgstr ""
+
+#: includes/widget/class-widget-inventory-slider.php:59
+msgid "Random"
+msgstr "Aleatorio"
+
+#: includes/widget/class-widget-inventory-slider.php:58
+msgid "Featured Vehicles Only"
+msgstr ""
+
+#: includes/widget/class-widget-inventory-slider.php:57
+msgid "Priority for Featured Vehicles"
+msgstr ""
+
+#: includes/widget/class-widget-inventory-slider.php:32
+msgid "A slideshow for all vehicles with at least one photo."
+msgstr "Una presentación de todos los vehículos con al menos una foto."
+
+#: includes/widget/class-widget-inventory-slider.php:30
+msgid "Vehicle Slider"
+msgstr ""
+
+#: inventory-presser.php:379
+msgctxt "Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4"
+msgid "Vehicles list"
+msgstr "Lista de vehículos"
+
+#: inventory-presser.php:378
+msgctxt "Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4"
+msgid "Vehicles list navigation"
+msgstr ""
+
+#: inventory-presser.php:377
+msgctxt "Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4"
+msgid "Filter vehicles list"
+msgstr "Filtrar lista de vehículos"
+
+#: inventory-presser.php:376
+msgctxt "Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4"
+msgid "Uploaded to this vehicle"
+msgstr "Subido a este vehículo"
+
+#: inventory-presser.php:375
+msgctxt "Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4"
+msgid "Attach to vehicle"
+msgstr ""
+
+#: inventory-presser.php:374
+msgctxt "The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4"
+msgid "Inventory"
+msgstr "Inventario"
+
+#: inventory-presser.php:373
+msgid "No vehicles found in Trash."
+msgstr ""
+
+#: includes/shortcode/class-shortcode-archive.php:124 inventory-presser.php:372
+msgid "No vehicles found."
+msgstr "No se encontraron vehículos."
+
+#: inventory-presser.php:371
+msgid "Parent Vehicles:"
+msgstr ""
+
+#: inventory-presser.php:370
+msgid "Search Vehicles"
+msgstr ""
+
+#: inventory-presser.php:369
+msgid "All Vehicles"
+msgstr "Todos los vehículos"
+
+#: inventory-presser.php:368
+msgid "View Vehicle"
+msgstr "Ver vehículo"
+
+#: inventory-presser.php:367
+msgid "Edit Vehicle"
+msgstr "Editar vehículo"
+
+#: inventory-presser.php:366
+msgid "New Vehicle"
+msgstr ""
+
+#: inventory-presser.php:365
+msgid "Add New Vehicle"
+msgstr ""
+
+#: inventory-presser.php:364
+msgid "Add New"
+msgstr "Añadir nuevo"
+
+#: inventory-presser.php:363
+msgctxt "Add New on Toolbar"
+msgid "Vehicle"
+msgstr "Vehículo"
+
+#: inventory-presser.php:362
+msgctxt "Admin Menu text"
+msgid "Vehicles"
+msgstr "Vehículos"
+
+#: inventory-presser.php:361
+msgctxt "Post type singular name"
+msgid "Vehicle"
+msgstr "Vehículo"
+
+#: inventory-presser.php:360
+msgctxt "Post type general name"
+msgid "Vehicles"
+msgstr "Vehículos"
+
+#: inventory-presser.php:356
+msgid "Vehicles for sale"
+msgstr "Vehículos en venta"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: inventory-presser.php
+msgid "https://inventorypresser.com"
+msgstr "https://inventorypresser.com"
+
+#. Plugin Name of the plugin
+#: inventory-presser.php includes/class-blocks.php:23
+#: includes/class-site-health.php:53 includes/class-site-health.php:59
+#: includes/class-site-health.php:79 includes/class-site-health.php:94
+#: includes/class-site-health.php:119 includes/class-site-health.php:134
+msgid "Inventory Presser"
+msgstr "Inventory Presser"
