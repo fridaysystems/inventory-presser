@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Inventory Presser 14.18.0\n"
+"Project-Id-Version: Inventory Presser 14.18.1\n"
 "Report-Msgid-Bugs-To: corey@friday.systems\n"
 "Last-Translator: Corey Salzano <corey@friday.systems>\n"
 "Language-Team: Corey Salzano <corey@friday.systems>\n"
