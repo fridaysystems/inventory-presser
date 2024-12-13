@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.7.1
 Requires PHP: 7.0.0
-Stable tag: 14.18.0
+Stable tag: 14.18.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.14.18.0.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.18.0.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.18.0.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.18.0.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.14.18.1.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.18.1.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.18.1.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.18.1.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,12 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 14.18.1 =
+* [Added] Adds translation files that were previously only hosted at wordpress.org.
+* [Fixed] Fixes bugs when numbering and rearranging photos in the Block Editor.
+* [Fixed] Bug fixes in WP All Import integration. Assign photo meta data to attachments to vehicles as they are imported.
+* [Fixed] Do not let the Vehicles > Taxonomies settings prevent the Categories taxonomy from working if someone adds it to the vehicles post type.
 
 = 14.18.0 =
 * [Added] Adds the description field to the Attributes meta box in the Classic Editor.
@@ -241,6 +247,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.18.1 =
+Adds translation files that were previously only hosted at wordpress.org. Fixes bugs when numbering and rearranging photos in the Block Editor. Bug fixes in WP All Import integration. Assign photo meta data to attachments to vehicles as they are imported. Do not let the Vehicles > Taxonomies settings prevent the Categories taxonomy from working if someone adds it to the vehicles post type.
 
 = 14.18.0 =
 Adds the description field to the Attributes meta box in the Classic Editor. Fixes a bug that prevented transients holding vehicle photo arrays from being deleted. Stops adding photo HTML to the post body in the Classic Editor when the Add Media button is used to attach a photo to a vehicle. Fixes a bug when renumbering photos during uploads. Fixes a bug that would remove a newly-added Featured Image when users press Save draft in the Classic Editor. Prevents Divi from clobbering our Gallery Block in new vehicle posts in the Block Editor with their "Build Your Layout Using Divi" nag.
