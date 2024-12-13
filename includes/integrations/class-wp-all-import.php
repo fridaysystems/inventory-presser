@@ -1,4 +1,11 @@
 <?php
+/**
+ * WP All Import integration.
+ *
+ * @package inventory-presser
+ * @author Corey Salzano <corey@friday.systems>
+ */
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -9,6 +16,11 @@ defined( 'ABSPATH' ) || exit;
  */
 class Inventory_Presser_WP_All_Import {
 
+	/**
+	 * Adds hooks.
+	 *
+	 * @return void
+	 */
 	public function add_hooks() {
 		// Help save options in a multi-valued meta field.
 		add_action( 'pmxi_update_post_meta', array( $this, 'detect_delimited_options' ), 10, 3 );
@@ -22,13 +34,15 @@ class Inventory_Presser_WP_All_Import {
 	 * contains pipe-delimited or comma-delimited values, split the string and
 	 * add each option individually.
 	 *
-	 * @param  mixed $post_id
-	 * @param  mixed $meta_key
-	 * @param  mixed $meta_value
+	 * @param  mixed $post_id ID of the post whose meta was updated.
+	 * @param  mixed $meta_key The meta key that has been updated.
+	 * @param  mixed $meta_value The new meta value.
 	 * @return void
 	 */
 	public function detect_delimited_options( $post_id, $meta_key, $meta_value ) {
+		// Is it a vehicle?
 		if ( ! class_exists( 'INVP' ) || INVP::POST_TYPE !== get_post_type( $post_id ) ) {
+			// No.
 			return;
 		}
 
@@ -77,14 +91,10 @@ class Inventory_Presser_WP_All_Import {
 	}
 
 	/**
-	 * If the value being saved to the meta key inventory_presser_options_array
-	 * contains a pipe, split the string on pipe and add each option
-	 * individually.
+	 * Add a sequence number and other meta to vehicle photos.
 	 *
-	 * @deprecated 14.13.0 Use detect_delimited_options() instead.
-	 * @param  int    $post_id
-	 * @param  string $meta_key
-	 * @param  mixed  $meta_value
+	 * @param  int $post_id The post ID that's being imported.
+	 * @param  int $attachment_id The attachment ID.
 	 * @return void
 	 */
 	public function detect_piped_options( $post_id, $meta_key, $meta_value ) {
@@ -92,28 +102,24 @@ class Inventory_Presser_WP_All_Import {
 	}
 
 	/**
-	 * set_availability_for_sale
-	 *
 	 * Not all feed imports have a for sale/sold bit that matches up nicely with
 	 * our Availability taxonomy. Mark vehicles as for sale if no relationship
 	 * exists in the taxonomy.
 	 *
-	 * @param  int              $post_id
-	 * @param  SimpleXMLElement $xml_node
-	 * @param  bool             $is_update
+	 * @param  int $post_id The inserted or updated post ID.
 	 * @return void
 	 */
 	public function set_availability_for_sale( $post_id, $xml_node, $is_update ) {
 		$taxonomy = 'availability';
 		if ( ! empty( wp_get_object_terms( $post_id, $taxonomy ) ) ) {
-			// There is already a relationship
+			// There is already a relationship.
 			return;
 		}
 
 		// Do we have a For Sale term?
 		$term = get_term_by( 'slug', 'for-sale', $taxonomy );
 		if ( $term ) {
-			// Yes, create the relationship
+			// Yes, create the relationship.
 			wp_set_object_terms( $post_id, $term->term_id, $taxonomy );
 		}
 	}

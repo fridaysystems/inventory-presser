@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  * Author URI: https://inventorypresser.com
  * Text Domain: inventory-presser
  * Domain Path: /languages
- * License: GPLv2 or later
+ * License: GPLv2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * GitHub Plugin URI: https://github.com/fridaysystems/inventory-presser
  * Primary Branch: main
@@ -598,7 +598,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// include all this plugin's classes that live in external files.
 			$this->include_dependencies();
 
-			// Translate friendly names to actual custom field keys and the other way.
+			// Prefix and unprefix meta keys with "inventory_presser_".
 			add_filter( 'invp_prefix_meta_key', array( 'INVP', 'translate_custom_field_names' ) );
 			add_filter( 'invp_unprefix_meta_key', array( 'INVP', 'untranslate_custom_field_names' ) );
 
