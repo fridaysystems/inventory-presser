@@ -34,7 +34,7 @@ class Inventory_Presser_REST {
 
 	/**
 	 * Adds an attribute `inventory_type_slugs` to the response of the
-	 * /wp-json/wp/v2/inventory_vehicle route.
+	 * /wp-json/wp/v2/inventory route.
 	 *
 	 * @return void
 	 */
