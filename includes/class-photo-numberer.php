@@ -164,6 +164,10 @@ class Inventory_Presser_Photo_Numberer {
 			)
 		);
 
+		if ( count( $posts ) === count( $unnumbered_posts ) ) {
+			return;
+		}
+
 		foreach ( $unnumbered_posts as $unnumbered_post ) {
 			$have_post_ids = array_column( $posts, 'ID' );
 			if ( ! in_array( $unnumbered_post->ID, $have_post_ids, true ) ) {
@@ -241,7 +245,7 @@ class Inventory_Presser_Photo_Numberer {
 				 * are all happening simultaneously.
 				 */
 				global $wpdb;
-				$numbered_count = $wpdb->get_var(
+				$numbered_count = (int) $wpdb->get_var(
 					$wpdb->prepare(
 						"SELECT		COUNT( `{$wpdb->prefix}posts`.`ID` )
 
