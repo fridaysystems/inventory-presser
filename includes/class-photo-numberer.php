@@ -200,7 +200,7 @@ class Inventory_Presser_Photo_Numberer {
 	 * @param  int $post_id
 	 * @return void
 	 */
-	protected static function save_meta_hash( $post_id ) {
+	public static function save_meta_hash( $post_id ) {
 		// Save a md5 hash checksum of the attachment in meta.
 		$file_path = get_attached_file( $post_id );
 		if ( false === $file_path ) {
@@ -297,7 +297,7 @@ WHERE		`{$wpdb->prefix}posts`.`post_parent` = %d
 	 * @param  int $parent_post_id The post ID of the vehicle to which $post_id is a child.
 	 * @return void
 	 */
-	protected static function save_meta_vin( $post_id, $parent_post_id ) {
+	public static function save_meta_vin( $post_id, $parent_post_id ) {
 		$vin = invp_get_the_VIN( $parent_post_id );
 		if ( empty( $vin ) ) {
 			return;
