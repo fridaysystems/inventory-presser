@@ -1275,6 +1275,16 @@ class Inventory_Presser_Taxonomies {
 		foreach ( $taxonomy_data as $taxonomy_array ) {
 			if ( ! isset( $settings['taxonomies'][ $taxonomy_array['args']['query_var'] ]['active'] )
 				|| ! $settings['taxonomies'][ $taxonomy_array['args']['query_var'] ]['active'] ) {
+
+				/**
+				 * Category taxonomy is not enabled on vehicles. Some users want
+				 * it, though. Do not unregister the category taxonomy here--it
+				 * must have been added explicitly via filter.
+				 */
+				if ( 'category' === $taxonomy_array['args']['query_var'] ) {
+					continue;
+				}
+
 				unregister_taxonomy_for_object_type( $taxonomy_array['args']['query_var'], INVP::POST_TYPE );
 			}
 		}
