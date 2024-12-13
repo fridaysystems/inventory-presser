@@ -1,471 +1,556 @@
-# Translation of Plugins - Inventory Presser &#8211; Car Dealer Listings - Stable (latest release) in English (UK)
-# This file is distributed under the same license as the Plugins - Inventory Presser &#8211; Car Dealer Listings - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-07-29 18:10:13+0000\n"
+"Project-Id-Version: Inventory Presser 14.18.0\n"
+"Report-Msgid-Bugs-To: corey@friday.systems\n"
+"Last-Translator: Corey Salzano <corey@friday.systems>\n"
+"Language-Team: Corey Salzano <corey@friday.systems>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/4.0.1\n"
+"POT-Creation-Date: 2024-12-12T15:11:45+00:00\n"
+"PO-Revision-Date: 2024-12-10 11:44:31+0000\n"
 "Language: en_GB\n"
-"Project-Id-Version: Plugins - Inventory Presser &#8211; Car Dealer Listings - Stable (latest release)\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: inventory-presser\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: build/blocks/youtube/block.json src/blocks/youtube/block.json
+#: build/blocks/youtube/block.json
+#: src/blocks/youtube/block.json
 msgctxt "block description"
 msgid "Displays and edits the YouTube video ID meta field."
-msgstr ""
+msgstr "Displays and edits the YouTube video ID meta field."
 
-#: build/blocks/youtube/block.json src/blocks/youtube/block.json
+#: build/blocks/youtube/block.json
+#: src/blocks/youtube/block.json
 msgctxt "block title"
 msgid "YouTube Video ID"
-msgstr ""
+msgstr "YouTube Video ID"
 
-#: build/blocks/year/block.json src/blocks/year/block.json
+#: build/blocks/year/block.json
+#: src/blocks/year/block.json
 msgctxt "block keyword"
 msgid "year of manufacture"
-msgstr ""
+msgstr "year of manufacture"
 
-#: build/blocks/year/block.json src/blocks/year/block.json
+#: build/blocks/year/block.json
+#: src/blocks/year/block.json
 msgctxt "block description"
 msgid "Displays and edits the model year meta field."
-msgstr ""
+msgstr "Displays and edits the model year meta field."
 
-#: build/blocks/year/block.json src/blocks/year/block.json
+#: build/blocks/year/block.json
+#: src/blocks/year/block.json
 msgctxt "block title"
 msgid "Year"
-msgstr ""
+msgstr "Year"
 
-#: build/blocks/vin/block.json src/blocks/vin/block.json
+#: build/blocks/vin/block.json
+#: src/blocks/vin/block.json
 msgctxt "block keyword"
 msgid "serial no"
-msgstr ""
+msgstr "serial no"
 
-#: build/blocks/vin/block.json src/blocks/vin/block.json
+#: build/blocks/vin/block.json
+#: src/blocks/vin/block.json
 msgctxt "block description"
 msgid "Displays and edits the VIN meta field. Vehicle Identification Number."
-msgstr ""
+msgstr "Displays and edits the VIN meta field. Vehicle Identification Number."
 
-#: build/blocks/vin/block.json src/blocks/vin/block.json
+#: build/blocks/vin/block.json
+#: src/blocks/vin/block.json
 msgctxt "block title"
 msgid "VIN"
-msgstr ""
+msgstr "VIN"
 
-#: build/blocks/trim/block.json src/blocks/trim/block.json
+#: build/blocks/trim/block.json
+#: src/blocks/trim/block.json
 msgctxt "block keyword"
 msgid "edition"
-msgstr ""
+msgstr "edition"
 
-#: build/blocks/trim/block.json src/blocks/trim/block.json
+#: build/blocks/trim/block.json
+#: src/blocks/trim/block.json
 msgctxt "block description"
 msgid "Displays and edits the trim level meta field."
-msgstr ""
+msgstr "Displays and edits the trim level meta field."
 
-#: build/blocks/trim/block.json src/blocks/trim/block.json
+#: build/blocks/trim/block.json
+#: src/blocks/trim/block.json
 msgctxt "block title"
 msgid "Trim Level"
-msgstr ""
+msgstr "Trim Level"
 
 #: build/blocks/transmission-speeds/block.json
 #: src/blocks/transmission-speeds/block.json
 msgctxt "block keyword"
 msgid "gearbox"
-msgstr ""
+msgstr "gearbox"
 
 #: build/blocks/transmission-speeds/block.json
 #: src/blocks/transmission-speeds/block.json
 msgctxt "block keyword"
 msgid "gears"
-msgstr ""
+msgstr "gears"
 
 #: build/blocks/transmission-speeds/block.json
 #: src/blocks/transmission-speeds/block.json
 msgctxt "block description"
 msgid "Displays and edits the transmission speeds meta field."
-msgstr ""
+msgstr "Displays and edits the transmission speeds meta field."
 
 #: build/blocks/transmission-speeds/block.json
 #: src/blocks/transmission-speeds/block.json
 msgctxt "block title"
 msgid "Transmission Speeds"
-msgstr ""
+msgstr "Transmission Speeds"
 
-#: build/blocks/title-status/block.json src/blocks/title-status/block.json
+#: build/blocks/title-status/block.json
+#: src/blocks/title-status/block.json
 msgctxt "block keyword"
 msgid "salvage"
-msgstr ""
+msgstr "salvage"
 
-#: build/blocks/title-status/block.json src/blocks/title-status/block.json
+#: build/blocks/title-status/block.json
+#: src/blocks/title-status/block.json
 msgctxt "block keyword"
 msgid "rebuilt"
-msgstr ""
+msgstr "rebuilt"
 
-#: build/blocks/title-status/block.json src/blocks/title-status/block.json
+#: build/blocks/title-status/block.json
+#: src/blocks/title-status/block.json
 msgctxt "block keyword"
 msgid "clear"
-msgstr ""
+msgstr "clear"
 
-#: build/blocks/title-status/block.json src/blocks/title-status/block.json
+#: build/blocks/title-status/block.json
+#: src/blocks/title-status/block.json
 msgctxt "block description"
 msgid "Displays and edits the title status meta field."
-msgstr ""
+msgstr "Displays and edits the title status meta field."
 
-#: build/blocks/title-status/block.json src/blocks/title-status/block.json
+#: build/blocks/title-status/block.json
+#: src/blocks/title-status/block.json
 msgctxt "block title"
 msgid "Title Status"
-msgstr ""
+msgstr "Title Status"
 
-#: build/blocks/stock-number/block.json src/blocks/stock-number/block.json
+#: build/blocks/stock-number/block.json
+#: src/blocks/stock-number/block.json
 msgctxt "block keyword"
 msgid "stock no"
-msgstr ""
+msgstr "stock no"
 
-#: build/blocks/stock-number/block.json src/blocks/stock-number/block.json
+#: build/blocks/stock-number/block.json
+#: src/blocks/stock-number/block.json
 msgctxt "block description"
 msgid "Displays and edits the stock number meta field."
-msgstr ""
+msgstr "Displays and edits the stock number meta field."
 
-#: build/blocks/stock-number/block.json src/blocks/stock-number/block.json
+#: build/blocks/stock-number/block.json
+#: src/blocks/stock-number/block.json
 msgctxt "block title"
 msgid "Stock Number"
-msgstr ""
+msgstr "Stock Number"
 
-#: build/blocks/price/block.json src/blocks/price/block.json
+#: build/blocks/price/block.json
+#: src/blocks/price/block.json
 msgctxt "block keyword"
 msgid "selling"
-msgstr ""
+msgstr "selling"
 
-#: build/blocks/price/block.json src/blocks/price/block.json
+#: build/blocks/price/block.json
+#: src/blocks/price/block.json
 msgctxt "block keyword"
 msgid "list"
-msgstr ""
+msgstr "list"
 
-#: build/blocks/price/block.json src/blocks/price/block.json
+#: build/blocks/price/block.json
+#: src/blocks/price/block.json
 msgctxt "block keyword"
 msgid "asking"
-msgstr ""
+msgstr "asking"
 
-#: build/blocks/price/block.json src/blocks/price/block.json
+#: build/blocks/price/block.json
+#: src/blocks/price/block.json
 msgctxt "block description"
 msgid "Displays and edits the price meta field."
-msgstr ""
+msgstr "Displays and edits the price meta field."
 
-#: build/blocks/price/block.json src/blocks/price/block.json
+#: build/blocks/price/block.json
+#: src/blocks/price/block.json
 msgctxt "block title"
 msgid "Price"
-msgstr ""
+msgstr "Price"
 
-#: build/blocks/payment/block.json src/blocks/payment/block.json
+#: build/blocks/payment/block.json
+#: src/blocks/payment/block.json
 msgctxt "block description"
 msgid "Displays and edits the payment meta field."
-msgstr ""
+msgstr "Displays and edits the payment meta field."
 
-#: build/blocks/payment/block.json src/blocks/payment/block.json
+#: build/blocks/payment/block.json
+#: src/blocks/payment/block.json
 msgctxt "block title"
 msgid "Payment"
-msgstr ""
+msgstr "Payment"
 
-#: build/blocks/odometer/block.json src/blocks/odometer/block.json
+#: build/blocks/odometer/block.json
+#: src/blocks/odometer/block.json
 msgctxt "block keyword"
 msgid "reading"
-msgstr ""
+msgstr "reading"
 
-#: build/blocks/odometer/block.json src/blocks/odometer/block.json
+#: build/blocks/odometer/block.json
+#: src/blocks/odometer/block.json
 msgctxt "block description"
 msgid "Displays and edits the odometer meta field."
-msgstr ""
+msgstr "Displays and edits the odometer meta field."
 
-#: build/blocks/odometer/block.json src/blocks/odometer/block.json
+#: build/blocks/odometer/block.json
+#: src/blocks/odometer/block.json
 msgctxt "block title"
 msgid "Odometer"
-msgstr ""
+msgstr "Odometer"
 
-#: build/blocks/msrp/block.json src/blocks/msrp/block.json
+#: build/blocks/msrp/block.json
+#: src/blocks/msrp/block.json
 msgctxt "block keyword"
 msgid "base price"
-msgstr ""
+msgstr "base price"
 
-#: build/blocks/msrp/block.json src/blocks/msrp/block.json
+#: build/blocks/msrp/block.json
+#: src/blocks/msrp/block.json
 msgctxt "block description"
 msgid "Displays and edits the MSRP meta field. Manufacturer's Suggested Retail Price."
-msgstr ""
+msgstr "Displays and edits the MSRP meta field. Manufacturer's Suggested Retail Price."
 
-#: build/blocks/msrp/block.json src/blocks/msrp/block.json
+#: build/blocks/msrp/block.json
+#: src/blocks/msrp/block.json
 msgctxt "block title"
 msgid "MSRP"
-msgstr ""
+msgstr "MSRP"
 
-#: build/blocks/model/block.json src/blocks/model/block.json
+#: build/blocks/model/block.json
+#: src/blocks/model/block.json
 msgctxt "block keyword"
 msgid "model no"
-msgstr ""
+msgstr "model no"
 
-#: build/blocks/model/block.json src/blocks/model/block.json
+#: build/blocks/model/block.json
+#: src/blocks/model/block.json
 msgctxt "block keyword"
 msgid "name"
-msgstr ""
+msgstr "name"
 
-#: build/blocks/model/block.json src/blocks/model/block.json
+#: build/blocks/model/block.json
+#: src/blocks/model/block.json
 msgctxt "block description"
 msgid "Displays and edits the model meta field. Model is the name given by the manufacturer."
-msgstr ""
+msgstr "Displays and edits the model meta field. Model is the name given by the manufacturer."
 
-#: build/blocks/model/block.json src/blocks/model/block.json
+#: build/blocks/model/block.json
+#: src/blocks/model/block.json
 msgctxt "block title"
 msgid "Model"
-msgstr ""
+msgstr "Model"
 
-#: build/blocks/make/block.json src/blocks/make/block.json
+#: build/blocks/make/block.json
+#: src/blocks/make/block.json
 msgctxt "block keyword"
 msgid "vendor"
-msgstr ""
+msgstr "vendor"
 
-#: build/blocks/make/block.json src/blocks/make/block.json
+#: build/blocks/make/block.json
+#: src/blocks/make/block.json
 msgctxt "block keyword"
 msgid "marque"
-msgstr ""
+msgstr "marque"
 
-#: build/blocks/make/block.json build/blocks/title-status/block.json
-#: src/blocks/make/block.json src/blocks/title-status/block.json
+#: build/blocks/make/block.json
+#: build/blocks/title-status/block.json
+#: src/blocks/make/block.json
+#: src/blocks/title-status/block.json
 msgctxt "block keyword"
 msgid "brand"
-msgstr ""
+msgstr "brand"
 
-#: build/blocks/make/block.json src/blocks/make/block.json
+#: build/blocks/make/block.json
+#: src/blocks/make/block.json
 msgctxt "block keyword"
 msgid "manufacturer"
-msgstr ""
+msgstr "manufacturer"
 
-#: build/blocks/make/block.json src/blocks/make/block.json
+#: build/blocks/make/block.json
+#: src/blocks/make/block.json
 msgctxt "block description"
 msgid "Displays and edits the make meta field. Make is the manufacturer's name."
-msgstr ""
+msgstr "Displays and edits the make meta field. Make is the manufacturer's name."
 
-#: build/blocks/make/block.json src/blocks/make/block.json
+#: build/blocks/make/block.json
+#: src/blocks/make/block.json
 msgctxt "block title"
 msgid "Make"
-msgstr ""
+msgstr "Make"
 
-#: build/blocks/length/block.json src/blocks/length/block.json
+#: build/blocks/length/block.json
+#: src/blocks/length/block.json
 msgctxt "block keyword"
 msgid "boat length"
-msgstr ""
+msgstr "boat length"
 
-#: build/blocks/length/block.json src/blocks/length/block.json
+#: build/blocks/length/block.json
+#: src/blocks/length/block.json
 msgctxt "block keyword"
 msgid "trailer length"
-msgstr ""
+msgstr "trailer length"
 
-#: build/blocks/length/block.json src/blocks/length/block.json
+#: build/blocks/length/block.json
+#: src/blocks/length/block.json
 msgctxt "block description"
 msgid "Displays and edits the length meta field. Helpful for trailers and boats."
-msgstr ""
+msgstr "Displays and edits the length meta field. Helpful for trailers and boats."
 
-#: build/blocks/length/block.json src/blocks/length/block.json
+#: build/blocks/length/block.json
+#: src/blocks/length/block.json
 msgctxt "block title"
 msgid "Length"
-msgstr ""
+msgstr "Length"
 
-#: build/blocks/last-modified/block.json src/blocks/last-modified/block.json
+#: build/blocks/last-modified/block.json
+#: src/blocks/last-modified/block.json
 msgctxt "block keyword"
 msgid "listing date"
-msgstr ""
+msgstr "listing date"
 
-#: build/blocks/last-modified/block.json src/blocks/last-modified/block.json
+#: build/blocks/last-modified/block.json
+#: src/blocks/last-modified/block.json
 msgctxt "block keyword"
 msgid "last updated"
-msgstr ""
+msgstr "last updated"
 
-#: build/blocks/last-modified/block.json src/blocks/last-modified/block.json
+#: build/blocks/last-modified/block.json
+#: src/blocks/last-modified/block.json
 msgctxt "block description"
 msgid "Displays the last modified meta field. Read only. The last modified date is automatically updated when vehicle posts are saved."
-msgstr ""
+msgstr "Displays the last modified meta field. Read only. The last modified date is automatically updated when vehicle posts are saved."
 
-#: build/blocks/last-modified/block.json src/blocks/last-modified/block.json
+#: build/blocks/last-modified/block.json
+#: src/blocks/last-modified/block.json
 msgctxt "block title"
 msgid "Last Modified"
-msgstr ""
+msgstr "Last Modified"
 
-#: build/blocks/interior-color/block.json src/blocks/interior-color/block.json
+#: build/blocks/interior-color/block.json
+#: src/blocks/interior-color/block.json
 msgctxt "block keyword"
 msgid "seat color"
-msgstr ""
+msgstr "seat colour"
 
-#: build/blocks/interior-color/block.json src/blocks/interior-color/block.json
+#: build/blocks/interior-color/block.json
+#: src/blocks/interior-color/block.json
 msgctxt "block keyword"
 msgid "leather interior"
-msgstr ""
+msgstr "leather interior"
 
-#: build/blocks/interior-color/block.json src/blocks/interior-color/block.json
+#: build/blocks/interior-color/block.json
+#: src/blocks/interior-color/block.json
 msgctxt "block keyword"
 msgid "cloth interior"
-msgstr ""
+msgstr "cloth interior"
 
-#: build/blocks/interior-color/block.json src/blocks/interior-color/block.json
+#: build/blocks/interior-color/block.json
+#: src/blocks/interior-color/block.json
 msgctxt "block description"
 msgid "Displays and edits the interior color meta field."
-msgstr ""
+msgstr "Displays and edits the interior colour meta field."
 
-#: build/blocks/interior-color/block.json src/blocks/interior-color/block.json
+#: build/blocks/interior-color/block.json
+#: src/blocks/interior-color/block.json
 msgctxt "block title"
 msgid "Interior Color"
-msgstr ""
+msgstr "Interior Colour"
 
-#: build/blocks/engine/block.json src/blocks/engine/block.json
+#: build/blocks/engine/block.json
+#: src/blocks/engine/block.json
 msgctxt "block keyword"
 msgid "motor"
-msgstr ""
+msgstr "motor"
 
-#: build/blocks/engine/block.json src/blocks/engine/block.json
+#: build/blocks/engine/block.json
+#: src/blocks/engine/block.json
 msgctxt "block keyword"
 msgid "cylinder count"
-msgstr ""
+msgstr "cylinder count"
 
-#: build/blocks/engine/block.json src/blocks/engine/block.json
+#: build/blocks/engine/block.json
+#: src/blocks/engine/block.json
 msgctxt "block keyword"
 msgid "displacement"
-msgstr ""
+msgstr "displacement"
 
-#: build/blocks/engine/block.json src/blocks/engine/block.json
+#: build/blocks/engine/block.json
+#: src/blocks/engine/block.json
 msgctxt "block description"
 msgid "Displays and edits the engine meta field."
-msgstr ""
+msgstr "Displays and edits the engine meta field."
 
-#: build/blocks/engine/block.json src/blocks/engine/block.json
+#: build/blocks/engine/block.json
+#: src/blocks/engine/block.json
 msgctxt "block title"
 msgid "Engine"
-msgstr ""
+msgstr "Engine"
 
-#: build/blocks/down-payment/block.json build/blocks/payment/block.json
-#: src/blocks/down-payment/block.json src/blocks/payment/block.json
+#: build/blocks/down-payment/block.json
+#: build/blocks/payment/block.json
+#: src/blocks/down-payment/block.json
+#: src/blocks/payment/block.json
 msgctxt "block keyword"
 msgid "car payment"
-msgstr ""
+msgstr "car payment"
 
-#: build/blocks/down-payment/block.json build/blocks/payment/block.json
-#: src/blocks/down-payment/block.json src/blocks/payment/block.json
+#: build/blocks/down-payment/block.json
+#: build/blocks/payment/block.json
+#: src/blocks/down-payment/block.json
+#: src/blocks/payment/block.json
 msgctxt "block keyword"
 msgid "auto loan"
-msgstr ""
+msgstr "auto loan"
 
-#: build/blocks/down-payment/block.json build/blocks/payment/block.json
-#: src/blocks/down-payment/block.json src/blocks/payment/block.json
+#: build/blocks/down-payment/block.json
+#: build/blocks/payment/block.json
+#: src/blocks/down-payment/block.json
+#: src/blocks/payment/block.json
 msgctxt "block keyword"
 msgid "car loan"
-msgstr ""
+msgstr "car loan"
 
-#: build/blocks/down-payment/block.json src/blocks/down-payment/block.json
+#: build/blocks/down-payment/block.json
+#: src/blocks/down-payment/block.json
 msgctxt "block description"
 msgid "Displays and edits the down payment meta field."
-msgstr ""
+msgstr "Displays and edits the down payment meta field."
 
-#: build/blocks/down-payment/block.json src/blocks/down-payment/block.json
+#: build/blocks/down-payment/block.json
+#: src/blocks/down-payment/block.json
 msgctxt "block title"
 msgid "Down Payment"
-msgstr ""
+msgstr "Down Payment"
 
-#: build/blocks/color/block.json src/blocks/color/block.json
+#: build/blocks/color/block.json
+#: src/blocks/color/block.json
 msgctxt "block keyword"
 msgid "car color"
-msgstr ""
+msgstr "car colour"
 
-#: build/blocks/color/block.json src/blocks/color/block.json
+#: build/blocks/color/block.json
+#: src/blocks/color/block.json
 msgctxt "block keyword"
 msgid "exterior color"
-msgstr ""
+msgstr "exterior colour"
 
-#: build/blocks/color/block.json src/blocks/color/block.json
+#: build/blocks/color/block.json
+#: src/blocks/color/block.json
 msgctxt "block keyword"
 msgid "paint color"
-msgstr ""
+msgstr "paint colour"
 
-#: build/blocks/color/block.json src/blocks/color/block.json
+#: build/blocks/color/block.json
+#: src/blocks/color/block.json
 msgctxt "block description"
 msgid "Displays and edits the exterior color meta field."
-msgstr ""
+msgstr "Displays and edits the exterior colour meta field."
 
-#: build/blocks/color/block.json src/blocks/color/block.json
+#: build/blocks/color/block.json
+#: src/blocks/color/block.json
 msgctxt "block title"
 msgid "Color"
-msgstr ""
+msgstr "Colour"
 
-#: build/blocks/body-style/block.json src/blocks/body-style/block.json
+#: build/blocks/body-style/block.json
+#: src/blocks/body-style/block.json
 msgctxt "block keyword"
 msgid "chassis"
-msgstr ""
+msgstr "chassis"
 
-#: build/blocks/body-style/block.json src/blocks/body-style/block.json
+#: build/blocks/body-style/block.json
+#: src/blocks/body-style/block.json
 msgctxt "block keyword"
 msgid "wagon"
-msgstr ""
+msgstr "wagon"
 
-#: build/blocks/body-style/block.json src/blocks/body-style/block.json
+#: build/blocks/body-style/block.json
+#: src/blocks/body-style/block.json
 msgctxt "block keyword"
 msgid "suv"
-msgstr ""
+msgstr "suv"
 
-#: build/blocks/body-style/block.json src/blocks/body-style/block.json
+#: build/blocks/body-style/block.json
+#: src/blocks/body-style/block.json
 msgctxt "block keyword"
 msgid "body style"
-msgstr ""
+msgstr "body style"
 
-#: build/blocks/body-style/block.json src/blocks/body-style/block.json
+#: build/blocks/body-style/block.json
+#: src/blocks/body-style/block.json
 msgctxt "block description"
 msgid "Displays and edits the body style meta field."
-msgstr ""
+msgstr "Displays and edits the body style meta field."
 
-#: build/blocks/body-style/block.json src/blocks/body-style/block.json
+#: build/blocks/body-style/block.json
+#: src/blocks/body-style/block.json
 msgctxt "block title"
 msgid "Body Style"
-msgstr ""
+msgstr "Body Style"
 
-#: build/blocks/beam/block.json src/blocks/beam/block.json
+#: build/blocks/beam/block.json
+#: src/blocks/beam/block.json
 msgctxt "block keyword"
 msgid "vessel"
-msgstr ""
+msgstr "vessel"
 
-#: build/blocks/beam/block.json src/blocks/beam/block.json
+#: build/blocks/beam/block.json
+#: src/blocks/beam/block.json
 msgctxt "block keyword"
 msgid "ship"
-msgstr ""
+msgstr "ship"
 
-#: build/blocks/beam/block.json src/blocks/beam/block.json
+#: build/blocks/beam/block.json
+#: src/blocks/beam/block.json
 msgctxt "block keyword"
 msgid "boat"
-msgstr ""
+msgstr "boat"
 
-#: build/blocks/beam/block.json src/blocks/beam/block.json
+#: build/blocks/beam/block.json
+#: src/blocks/beam/block.json
 msgctxt "block description"
 msgid "Displays and edits the beam meta field. Beam is the width of a boat at its widest point."
-msgstr ""
+msgstr "Displays and edits the beam meta field. Beam is the width of a boat at its widest point."
 
-#: build/blocks/beam/block.json src/blocks/beam/block.json
+#: build/blocks/beam/block.json
+#: src/blocks/beam/block.json
 msgctxt "block title"
 msgid "Beam"
-msgstr ""
-
-#: includes/class-invp.php:889
-msgid "YouTube Embed HTML"
-msgstr ""
+msgstr "Beam"
 
 #: build/blocks/trim/block.json
-#: build/blocks/year-make-model-and-trim/block.json src/blocks/trim/block.json
+#: build/blocks/year-make-model-and-trim/block.json
+#: src/blocks/trim/block.json
 #: src/blocks/year-make-model-and-trim/block.json
 msgctxt "block keyword"
 msgid "trim level"
-msgstr ""
+msgstr "trim level"
 
 #: build/blocks/year-make-model-and-trim/block.json
 #: src/blocks/year-make-model-and-trim/block.json
 msgctxt "block keyword"
 msgid "model year"
-msgstr ""
+msgstr "model year"
 
 #: build/blocks/year-make-model-and-trim/block.json
 #: src/blocks/year-make-model-and-trim/block.json
 msgctxt "block keyword"
 msgid "vehicle"
-msgstr ""
+msgstr "vehicle"
 
 #: build/blocks/body-style/block.json
 #: build/blocks/year-make-model-and-trim/block.json
@@ -473,86 +558,86 @@ msgstr ""
 #: src/blocks/year-make-model-and-trim/block.json
 msgctxt "block keyword"
 msgid "truck"
-msgstr ""
+msgstr "truck"
 
 #: build/blocks/year-make-model-and-trim/block.json
 #: src/blocks/year-make-model-and-trim/block.json
 msgctxt "block keyword"
 msgid "car"
-msgstr ""
+msgstr "car"
 
 #: build/blocks/year-make-model-and-trim/block.json
 #: src/blocks/year-make-model-and-trim/block.json
 msgctxt "block description"
 msgid "Displays and edits the year, make, model, and trim level meta fields."
-msgstr ""
+msgstr "Displays and edits the year, make, model, and trim level meta fields."
 
 #: build/blocks/year-make-model-and-trim/block.json
 #: src/blocks/year-make-model-and-trim/block.json
 msgctxt "block title"
 msgid "Year, Make, Model, and Trim"
-msgstr ""
+msgstr "Year, Make, Model, and Trim"
 
 #: inventory-presser.php:1275
 msgid "Miles"
-msgstr ""
+msgstr "Miles"
 
 #: includes/class-site-health.php:139
 msgid "A permalink structure has been defined at Settings → Permalinks that allows the default vehicle archive to be located at /inventory."
-msgstr ""
+msgstr "A permalink structure has been defined at Settings → Permalinks that allows the default vehicle archive to be located at /inventory."
 
 #: includes/class-site-health.php:131
 msgid "Permalink structure allows default vehicle archive at /inventory"
-msgstr ""
+msgstr "Permalink structure allows default vehicle archive at /inventory"
 
 #: includes/class-site-health.php:124
 msgid "No permalink structure has been chosen at Settings → Permalinks. This means the default vehicle archive is located at /?post_type=inventory_vehicle rather than /inventory."
-msgstr ""
+msgstr "No permalink structure has been chosen at Settings → Permalinks. This means the default vehicle archive is located at /?post_type=inventory_vehicle rather than /inventory."
 
 #: includes/class-site-health.php:116
 msgid "Consider using pretty permalinks"
-msgstr ""
+msgstr "Consider using pretty permalinks"
 
 #: includes/admin/class-admin-options.php:1035
 msgid "Site settings can be improved. Visit Tools → Site Health and look for Inventory Presser recommendations."
-msgstr ""
+msgstr "Site settings can be improved. Visit Tools → Site Health and look for Inventory Presser recommendations."
 
 #: includes/widget/class-widget-order-by.php:72
 msgid "Which fields should users be allowed to use as sort fields?"
-msgstr ""
+msgstr "Which fields should users be allowed to use as sort fields?"
 
 #: includes/integrations/class-gravityforms-field-vehicle.php:65
 msgid "Allows users to select one vehicle from a list. Hidden field on vehicle details pages."
-msgstr ""
+msgstr "Allows users to select one vehicle from a list. Hidden field on vehicle details pages."
 
 #: includes/admin/class-admin-options.php:401
 msgid "Comparison value"
-msgstr ""
+msgstr "Comparison value"
 
 #: includes/admin/class-admin-options.php:372
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 #: includes/admin/class-admin-options.php:309
 #: includes/admin/class-admin-options.php:365
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: includes/admin/class-admin-options.php:343
 msgid "Toggle active or inactive"
-msgstr ""
+msgstr "Toggle active or inactive"
 
 #: includes/integrations/class-divi.php:61
 msgid "Divi Setup Guide"
-msgstr ""
+msgstr "Divi Setup Guide"
 
 #: includes/integrations/class-divi.php:60
 msgid "Visit"
-msgstr ""
+msgstr "Visit"
 
 #: includes/integrations/class-divi.php:59
 msgid "Listings Pages feature does not work on Divi."
-msgstr ""
+msgstr "Listings Pages feature does not work on Divi."
 
 #: includes/admin/class-admin-options.php:660
 msgid "WS Form"
@@ -568,7 +653,7 @@ msgstr "Templates"
 
 #: inventory-presser.php:1934
 msgid "Check Availability"
-msgstr ""
+msgstr "Check Availability"
 
 #: inventory-presser.php:1251
 msgid "Salvage"
@@ -576,15 +661,15 @@ msgstr "Salvage"
 
 #: inventory-presser.php:1250
 msgid "Rebuild, Rebuildable, and Reconstructed"
-msgstr ""
+msgstr "Rebuild, Rebuildable, and Reconstructed"
 
 #: inventory-presser.php:1249
 msgid "Lemon and Manufacturers Buyback"
-msgstr ""
+msgstr "Lemon and Manufacturers Buyback"
 
 #: inventory-presser.php:1248
 msgid "Flood, Water Damage"
-msgstr ""
+msgstr "Flood, Water Damage"
 
 #: inventory-presser.php:1246
 msgid "Clear"
@@ -612,27 +697,27 @@ msgstr "Performance"
 
 #: includes/integrations/class-classic-editor.php:620
 msgid "Deck boat"
-msgstr ""
+msgstr "Deck boat"
 
 #: includes/integrations/class-classic-editor.php:619
 msgid "Cuddy Cabin"
-msgstr ""
+msgstr "Cuddy Cabin"
 
 #: includes/integrations/class-classic-editor.php:618
 msgid "Center Console"
-msgstr ""
+msgstr "Center Console"
 
 #: includes/integrations/class-classic-editor.php:617
 msgid "Cabin Cruiser"
-msgstr ""
+msgstr "Cabin Cruiser"
 
 #: includes/integrations/class-classic-editor.php:616
 msgid "Bow Rider"
-msgstr ""
+msgstr "Bow Rider"
 
 #: includes/integrations/class-classic-editor.php:615
 msgid "Bass boat"
-msgstr ""
+msgstr "Bass boat"
 
 #: includes/integrations/class-classic-editor.php:445
 msgid "Down payment"
@@ -644,19 +729,19 @@ msgstr "&larr; Go to hull materials"
 
 #: includes/class-taxonomies.php:1195
 msgid "New Hull Material Name"
-msgstr ""
+msgstr "New Hull Material Name"
 
 #: includes/class-taxonomies.php:1194
 msgid "Add New Hull Material"
-msgstr ""
+msgstr "Add New Hull Material"
 
 #: includes/class-taxonomies.php:1193
 msgid "Edit Hull Material"
-msgstr ""
+msgstr "Edit Hull Material"
 
 #: includes/class-taxonomies.php:1192
 msgid "Parent Hull Material"
-msgstr ""
+msgstr "Parent Hull Material"
 
 #: includes/class-taxonomies.php:1191
 msgid "All hull materials"
@@ -670,9 +755,10 @@ msgstr "Popular hull materials"
 msgid "Search hull materials"
 msgstr "Search hull materials"
 
-#: includes/class-taxonomies.php:1185 includes/class-taxonomies.php:1187
+#: includes/class-taxonomies.php:1185
+#: includes/class-taxonomies.php:1187
 msgid "Hull Materials"
-msgstr ""
+msgstr "Hull Materials"
 
 #: includes/class-taxonomies.php:1170
 msgid "&larr; Go to horsepower"
@@ -680,19 +766,19 @@ msgstr "&larr; Go to horsepower"
 
 #: includes/class-taxonomies.php:1169
 msgid "New Horsepower Name"
-msgstr ""
+msgstr "New Horsepower Name"
 
 #: includes/class-taxonomies.php:1168
 msgid "Add New Horsepower"
-msgstr ""
+msgstr "Add New Horsepower"
 
 #: includes/class-taxonomies.php:1167
 msgid "Edit Horsepower"
-msgstr ""
+msgstr "Edit Horsepower"
 
 #: includes/class-taxonomies.php:1166
 msgid "Parent Horsepower"
-msgstr ""
+msgstr "Parent Horsepower"
 
 #: includes/class-taxonomies.php:1165
 msgid "All horsepower"
@@ -712,19 +798,19 @@ msgstr "&larr; Go to engine model"
 
 #: includes/class-taxonomies.php:1143
 msgid "New Engine Model Name"
-msgstr ""
+msgstr "New Engine Model Name"
 
 #: includes/class-taxonomies.php:1142
 msgid "Add New Engine Model"
-msgstr ""
+msgstr "Add New Engine Model"
 
 #: includes/class-taxonomies.php:1141
 msgid "Edit Engine Model"
-msgstr ""
+msgstr "Edit Engine Model"
 
 #: includes/class-taxonomies.php:1140
 msgid "Parent Engine Model"
-msgstr ""
+msgstr "Parent Engine Model"
 
 #: includes/class-taxonomies.php:1139
 msgid "All engine models"
@@ -738,9 +824,10 @@ msgstr "Popular engine models"
 msgid "Search engine models"
 msgstr "Search engine models"
 
-#: includes/class-taxonomies.php:1133 includes/class-taxonomies.php:1135
+#: includes/class-taxonomies.php:1133
+#: includes/class-taxonomies.php:1135
 msgid "Engine Models"
-msgstr ""
+msgstr "Engine Models"
 
 #: includes/class-taxonomies.php:1118
 msgid "&larr; Go to engine make"
@@ -748,19 +835,19 @@ msgstr "&larr; Go to engine make"
 
 #: includes/class-taxonomies.php:1117
 msgid "New Engine Make Name"
-msgstr ""
+msgstr "New Engine Make Name"
 
 #: includes/class-taxonomies.php:1116
 msgid "Add New Engine Make"
-msgstr ""
+msgstr "Add New Engine Make"
 
 #: includes/class-taxonomies.php:1115
 msgid "Edit Engine Make"
-msgstr ""
+msgstr "Edit Engine Make"
 
 #: includes/class-taxonomies.php:1114
 msgid "Parent Engine Make"
-msgstr ""
+msgstr "Parent Engine Make"
 
 #: includes/class-taxonomies.php:1113
 msgid "All engine makes"
@@ -774,9 +861,10 @@ msgstr "Popular engine makes"
 msgid "Search engine makes"
 msgstr "Search engine makes"
 
-#: includes/class-taxonomies.php:1107 includes/class-taxonomies.php:1109
+#: includes/class-taxonomies.php:1107
+#: includes/class-taxonomies.php:1109
 msgid "Engine Makes"
-msgstr ""
+msgstr "Engine Makes"
 
 #: includes/class-taxonomies.php:1088
 msgid "&larr; Go to number"
@@ -784,15 +872,15 @@ msgstr "&larr; Go to number"
 
 #: includes/class-taxonomies.php:1087
 msgid "New Number Name"
-msgstr ""
+msgstr "New Number Name"
 
 #: includes/class-taxonomies.php:1086
 msgid "Add New Number of Engines"
-msgstr ""
+msgstr "Add New Number of Engines"
 
 #: includes/class-taxonomies.php:1085
 msgid "Edit Number"
-msgstr ""
+msgstr "Edit Number"
 
 #: includes/class-taxonomies.php:1084
 msgid "Parent numbers"
@@ -810,12 +898,13 @@ msgstr "Popular numbers"
 msgid "Search numbers"
 msgstr "Search numbers"
 
-#: includes/class-taxonomies.php:1077 includes/class-taxonomies.php:1079
+#: includes/class-taxonomies.php:1077
+#: includes/class-taxonomies.php:1079
 #: includes/class-taxonomies.php:1092
 #: includes/integrations/class-classic-editor.php:726
 #: includes/shortcode/class-shortcode-attribute-table.php:148
 msgid "Number of Engines"
-msgstr ""
+msgstr "Number of Engines"
 
 #: includes/class-taxonomies.php:1055
 msgid "&larr; Go to condition"
@@ -829,13 +918,14 @@ msgstr "All conditions"
 msgid "Search conditions"
 msgstr "Search conditions"
 
-#: includes/class-taxonomies.php:230 includes/class-taxonomies.php:247
+#: includes/class-taxonomies.php:230
+#: includes/class-taxonomies.php:247
 msgid "Manage"
 msgstr "Manage"
 
 #: includes/class-site-health.php:99
 msgid "Media uploads are not organized into month- and year-based folders. Photo upload dates are not revealed to users, and vehicle photo URLs will not change even if the photos themselves change."
-msgstr ""
+msgstr "Media uploads are not organized into month- and year-based folders. Photo upload dates are not revealed to users, and vehicle photo URLs will not change even if the photos themselves change."
 
 #: includes/class-site-health.php:91
 msgid "Vehicle photos are stored in a predictable way"
@@ -843,7 +933,7 @@ msgstr "Vehicle photos are stored in a predictable way"
 
 #: includes/class-site-health.php:84
 msgid "Media uploads are organized into month- and year-based folders. This reveals photo upload dates to users, and changes vehicle photo URLs when they are updated seasonally. Change the setting at Settings → Media."
-msgstr ""
+msgstr "Media uploads are organized into month- and year-based folders. This reveals photo upload dates to users, and changes vehicle photo URLs when they are updated seasonally. Change the setting at Settings → Media."
 
 #: includes/class-site-health.php:76
 msgid "Consider storing vehicle photos in a single folder"
@@ -855,7 +945,7 @@ msgstr "The type taxonomy term slugs."
 
 #: includes/class-invp.php:862
 msgid "Passenger Car"
-msgstr ""
+msgstr "Passenger Car"
 
 #: includes/class-invp.php:856
 msgid "SLE-1 Ext. Cab 4WD"
@@ -865,7 +955,8 @@ msgstr "SLE-1 Ext. Cab 4WD"
 msgid "Automatic"
 msgstr "Automatic"
 
-#: includes/class-invp.php:838 inventory-presser.php:1247
+#: includes/class-invp.php:838
+#: inventory-presser.php:1247
 msgid "Clean"
 msgstr "Clean"
 
@@ -877,11 +968,10 @@ msgstr "Outboard"
 msgid "monthly"
 msgstr "monthly"
 
-#: includes/class-invp.php:759
 #: includes/integrations/class-classic-editor.php:723
 #: includes/shortcode/class-shortcode-attribute-table.php:185
 msgid "Max Draft"
-msgstr ""
+msgstr "Max Draft"
 
 #: includes/class-invp.php:755
 msgid "GMC"
@@ -895,51 +985,51 @@ msgstr "120 Mall Blvd"
 msgid "Black"
 msgstr "Black"
 
-#: includes/class-invp.php:715 includes/class-taxonomies.php:1159
-#: includes/class-taxonomies.php:1161 includes/class-taxonomies.php:1162
+#: includes/class-taxonomies.php:1159
+#: includes/class-taxonomies.php:1161
+#: includes/class-taxonomies.php:1162
 #: includes/class-taxonomies.php:1174
 #: includes/integrations/class-classic-editor.php:735
 #: includes/shortcode/class-shortcode-attribute-table.php:155
 msgid "Horsepower"
 msgstr "Horsepower"
 
-#: includes/class-invp.php:645 includes/class-invp.php:687
+#: includes/class-invp.php:645
+#: includes/class-invp.php:687
 msgid "355 grams per mile"
-msgstr ""
+msgstr "355 grams per mile"
 
-#: includes/class-invp.php:633 includes/class-invp.php:675
+#: includes/class-invp.php:633
+#: includes/class-invp.php:675
 msgid "13.18 barrels"
 msgstr "13.18 barrels"
 
-#: includes/class-invp.php:627 includes/class-invp.php:669
+#: includes/class-invp.php:627
+#: includes/class-invp.php:669
 msgid "Regular Gasoline"
-msgstr ""
+msgstr "Regular Gasoline"
 
 #: includes/class-invp.php:621
 msgid "Gas"
-msgstr ""
+msgstr "Gas"
 
-#: includes/class-invp.php:608 includes/class-taxonomies.php:1136
+#: includes/class-taxonomies.php:1136
 #: includes/class-taxonomies.php:1148
 #: includes/integrations/class-classic-editor.php:732
 #: includes/shortcode/class-shortcode-attribute-table.php:199
 msgid "Engine Model"
-msgstr ""
+msgstr "Engine Model"
 
 #: includes/class-invp.php:604
 msgid "Yamaha"
 msgstr "Yamaha"
 
-#: includes/class-invp.php:602 includes/class-taxonomies.php:1110
+#: includes/class-taxonomies.php:1110
 #: includes/class-taxonomies.php:1122
 #: includes/integrations/class-classic-editor.php:729
 #: includes/shortcode/class-shortcode-attribute-table.php:192
 msgid "Engine Make"
-msgstr ""
-
-#: includes/class-invp.php:596
-msgid "# of Engines"
-msgstr ""
+msgstr "Engine Make"
 
 #: includes/class-invp.php:592
 msgid "3.7L 5 cylinder"
@@ -947,7 +1037,7 @@ msgstr "3.7L 5 cylinder"
 
 #: includes/class-invp.php:581
 msgid "Rear Wheel Drive"
-msgstr ""
+msgstr "Rear Wheel Drive"
 
 #: includes/class-invp.php:563
 msgid "Clean, non-smoker, must-see!"
@@ -961,10 +1051,9 @@ msgstr "Used"
 msgid "Excellent"
 msgstr "Excellent"
 
-#: includes/class-invp.php:532
 #: includes/integrations/class-classic-editor.php:720
 msgid "Boat Condition"
-msgstr ""
+msgstr "Boat Condition"
 
 #: includes/class-invp.php:528
 msgid "Red"
@@ -985,7 +1074,7 @@ msgstr "Configure which taxonomies are active, whether they are shown in the das
 
 #: includes/admin/class-admin-options.php:762
 msgid "Show in Admin Menu"
-msgstr ""
+msgstr "Show in Admin Menu"
 
 #: includes/admin/class-admin-options.php:760
 msgid "Taxonomy"
@@ -994,10 +1083,6 @@ msgstr "Taxonomy"
 #: includes/admin/class-admin-options.php:671
 msgid "Choose a form to include on vehicle single pages."
 msgstr "Choose a form to include on vehicle single pages."
-
-#: includes/admin/class-admin-options.php:647
-msgid "Gravity Forms"
-msgstr "Gravity Forms"
 
 #: includes/admin/class-admin-options.php:634
 msgid "WP Forms"
@@ -1013,15 +1098,15 @@ msgstr "None"
 
 #: includes/admin/class-admin-options.php:589
 msgid "Enable, disable, show, and hide these taxonomies in the dashboard menu and Editors:"
-msgstr ""
+msgstr "Enable, disable, show, and hide these taxonomies in the dashboard menu and Editors:"
 
 #: includes/admin/class-admin-options.php:566
 msgid "Manage Taxonomies"
-msgstr ""
+msgstr "Manage Taxonomies"
 
 #: includes/admin/class-admin-options.php:206
 msgid "Singles Contact Form"
-msgstr ""
+msgstr "Singles Contact Form"
 
 #: includes/admin/class-admin-options.php:55
 #: includes/admin/class-admin-options.php:56
@@ -1033,7 +1118,7 @@ msgstr "Taxonomies"
 
 #: includes/template-tags.php:942
 msgid "Sale Pending"
-msgstr ""
+msgstr "Sale Pending"
 
 #: includes/widget/class-widget-inventory-grid.php:58
 msgid "columns"
@@ -1115,7 +1200,8 @@ msgstr "Popular body styles"
 msgid "Search body styles"
 msgstr "Search body styles"
 
-#: includes/class-taxonomies.php:948 includes/class-taxonomies.php:950
+#: includes/class-taxonomies.php:948
+#: includes/class-taxonomies.php:950
 msgid "Body styles"
 msgstr "Body styles"
 
@@ -1163,7 +1249,8 @@ msgstr "Popular transmissions"
 msgid "Search transmissions"
 msgstr "Search transmissions"
 
-#: includes/class-taxonomies.php:883 includes/class-taxonomies.php:885
+#: includes/class-taxonomies.php:883
+#: includes/class-taxonomies.php:885
 msgid "Transmissions"
 msgstr "Transmissions"
 
@@ -1219,11 +1306,13 @@ msgstr "Popular propulsion types"
 msgid "Search propulsion types"
 msgstr "Search propulsion types"
 
-#: includes/class-taxonomies.php:818 includes/class-taxonomies.php:830
+#: includes/class-taxonomies.php:818
+#: includes/class-taxonomies.php:830
 msgid "Propulsion type"
 msgstr "Propulsion type"
 
-#: includes/class-taxonomies.php:815 includes/class-taxonomies.php:817
+#: includes/class-taxonomies.php:815
+#: includes/class-taxonomies.php:817
 msgid "Propulsion types"
 msgstr "Propulsion types"
 
@@ -1247,11 +1336,13 @@ msgstr "Popular drive types"
 msgid "Search drive types"
 msgstr "Search drive types"
 
-#: includes/class-taxonomies.php:780 includes/class-taxonomies.php:792
+#: includes/class-taxonomies.php:780
+#: includes/class-taxonomies.php:792
 msgid "Drive type"
 msgstr "Drive type"
 
-#: includes/class-taxonomies.php:777 includes/class-taxonomies.php:779
+#: includes/class-taxonomies.php:777
+#: includes/class-taxonomies.php:779
 msgid "Drive types"
 msgstr "Drive types"
 
@@ -1275,7 +1366,8 @@ msgstr "Popular availabilities"
 msgid "Search availabilities"
 msgstr "Search availabilities"
 
-#: includes/class-taxonomies.php:747 includes/class-taxonomies.php:749
+#: includes/class-taxonomies.php:747
+#: includes/class-taxonomies.php:749
 msgid "Availabilities"
 msgstr "Availabilities"
 
@@ -1299,15 +1391,18 @@ msgstr "Popular types"
 msgid "Search types"
 msgstr "Search types"
 
-#: includes/class-taxonomies.php:708 includes/class-taxonomies.php:710
+#: includes/class-taxonomies.php:708
+#: includes/class-taxonomies.php:710
 msgid "Types"
 msgstr "Types"
 
-#: includes/class-taxonomies.php:690 includes/class-taxonomies.php:1054
+#: includes/class-taxonomies.php:690
+#: includes/class-taxonomies.php:1054
 msgid "New Condition Name"
 msgstr "New Condition Name"
 
-#: includes/class-taxonomies.php:687 includes/class-taxonomies.php:1051
+#: includes/class-taxonomies.php:687
+#: includes/class-taxonomies.php:1051
 msgid "Parent Condition"
 msgstr "Parent Condition"
 
@@ -1315,7 +1410,8 @@ msgstr "Parent Condition"
 msgid "All new and used"
 msgstr "All new and used"
 
-#: includes/class-taxonomies.php:685 includes/class-taxonomies.php:1049
+#: includes/class-taxonomies.php:685
+#: includes/class-taxonomies.php:1049
 msgid "Popular conditions"
 msgstr "Popular conditions"
 
@@ -1323,7 +1419,8 @@ msgstr "Popular conditions"
 msgid "Search new and used"
 msgstr "Search new and used"
 
-#: includes/class-taxonomies.php:680 includes/class-taxonomies.php:682
+#: includes/class-taxonomies.php:680
+#: includes/class-taxonomies.php:682
 msgid "Conditions"
 msgstr "Conditions"
 
@@ -1347,7 +1444,8 @@ msgstr "Popular models"
 msgid "Search models"
 msgstr "Search models"
 
-#: includes/class-taxonomies.php:656 includes/class-taxonomies.php:658
+#: includes/class-taxonomies.php:656
+#: includes/class-taxonomies.php:658
 msgid "Models"
 msgstr "Models"
 
@@ -1371,7 +1469,8 @@ msgstr "Popular makes"
 msgid "Search makes"
 msgstr "Search makes"
 
-#: includes/class-taxonomies.php:632 includes/class-taxonomies.php:634
+#: includes/class-taxonomies.php:632
+#: includes/class-taxonomies.php:634
 msgid "Makes"
 msgstr "Makes"
 
@@ -1395,11 +1494,13 @@ msgstr "Popular years"
 msgid "Search years"
 msgstr "Search years"
 
-#: includes/class-taxonomies.php:611 includes/class-taxonomies.php:623
+#: includes/class-taxonomies.php:611
+#: includes/class-taxonomies.php:623
 msgid "Model year"
 msgstr "Model year"
 
-#: includes/class-taxonomies.php:608 includes/class-taxonomies.php:610
+#: includes/class-taxonomies.php:608
+#: includes/class-taxonomies.php:610
 msgid "Model years"
 msgstr "Model years"
 
@@ -1431,7 +1532,8 @@ msgstr "PVC"
 
 #: includes/class-taxonomies.php:1212
 #: includes/integrations/class-classic-editor.php:752
-#: inventory-presser.php:1222 inventory-presser.php:1252
+#: inventory-presser.php:1222
+#: inventory-presser.php:1252
 msgid "Other"
 msgstr "Other"
 
@@ -1645,11 +1747,13 @@ msgstr "Edit Type"
 msgid "&larr; Go to conditions"
 msgstr "&larr; Go to conditions"
 
-#: includes/class-taxonomies.php:689 includes/class-taxonomies.php:1053
+#: includes/class-taxonomies.php:689
+#: includes/class-taxonomies.php:1053
 msgid "Add New Condition"
 msgstr "Add New Condition"
 
-#: includes/class-taxonomies.php:688 includes/class-taxonomies.php:1052
+#: includes/class-taxonomies.php:688
+#: includes/class-taxonomies.php:1052
 msgid "Edit Condition"
 msgstr "Edit Condition"
 
@@ -1721,14 +1825,6 @@ msgstr "Load Sample Vehicles"
 msgid "Manage Inventory"
 msgstr "Manage Inventory"
 
-#: includes/class-invp.php:830
-msgid "Term"
-msgstr "Term"
-
-#: includes/class-invp.php:818
-msgid "Rate"
-msgstr "Rate"
-
 #: includes/admin/class-admin-options.php:960
 msgid "No filter"
 msgstr "No filter"
@@ -1778,29 +1874,9 @@ msgstr "Active"
 msgid "Listings Pages"
 msgstr "Listings Pages"
 
-#: includes/class-invp.php:438 inventory-presser.php:947
+#: includes/class-invp.php:438
 msgid "For Sale"
 msgstr "For Sale"
-
-#: includes/class-invp.php:505
-msgid "Carfax Top-Condition Badge URL"
-msgstr "CARFAX Top-Condition Badge URL"
-
-#: includes/class-invp.php:500
-msgid "Carfax One-Owner Badge URL"
-msgstr "CARFAX One-Owner Badge URL"
-
-#: includes/class-invp.php:495
-msgid "Carfax Accident-Free Badge URL"
-msgstr "CARFAX Accident-Free Badge URL"
-
-#: includes/class-invp.php:485
-msgid "Carfax Top Condition"
-msgstr "CARFAX Top Condition"
-
-#: includes/class-invp.php:470
-msgid "Carfax Accident Free"
-msgstr "CARFAX Accident Free"
 
 #. Description of the plugin
 #: inventory-presser.php
@@ -1828,14 +1904,6 @@ msgstr "Rearrange Photos Block"
 msgid "Certified Pre-owned"
 msgstr "Certified Pre-owned"
 
-#: includes/shortcode/class-shortcode-sort-by.php:218
-msgid "Down Payment High"
-msgstr "Down Payment High"
-
-#: includes/shortcode/class-shortcode-sort-by.php:217
-msgid "Down Payment Low"
-msgstr "Down Payment Low"
-
 #: includes/shortcode/class-shortcode-sort-by.php:136
 msgid "Last modified"
 msgstr "Last modified"
@@ -1843,42 +1911,6 @@ msgstr "Last modified"
 #: includes/shortcode/class-shortcode-sort-by.php:132
 msgid "Date entered"
 msgstr "Date entered"
-
-#: includes/shortcode/class-shortcode-sort-by.php:116
-msgid "Year Newest"
-msgstr "Year Newest"
-
-#: includes/shortcode/class-shortcode-sort-by.php:115
-msgid "Year Oldest"
-msgstr "Year Oldest"
-
-#: includes/shortcode/class-shortcode-sort-by.php:110
-msgid "High"
-msgstr "High"
-
-#: includes/shortcode/class-shortcode-sort-by.php:105
-msgid "Low"
-msgstr "Low"
-
-#: includes/shortcode/class-shortcode-sort-by.php:98
-msgid "Price High"
-msgstr "Price High"
-
-#: includes/shortcode/class-shortcode-sort-by.php:97
-msgid "Price Low"
-msgstr "Price Low"
-
-#: includes/shortcode/class-shortcode-sort-by.php:93
-msgid "Make Z-A"
-msgstr "Make Z-A"
-
-#: includes/shortcode/class-shortcode-sort-by.php:92
-msgid "Make A-Z"
-msgstr "Make A-Z"
-
-#: includes/shortcode/class-shortcode-sort-by.php:65
-msgid "SORT"
-msgstr "SORT"
 
 #: includes/shortcode/class-shortcode-archive.php:125
 msgid "Search Inventory"
@@ -1893,44 +1925,45 @@ msgstr "Please choose a vehicle..."
 msgid "Limited to two (2) on display widths of 480px and less."
 msgstr "Limited to two (2) on display widths of 480px and less."
 
-#: includes/addon/class-addon-updater.php:359
+#: includes/addon/class-addon-updater.php:360
 msgid "update now"
 msgstr "update now"
 
-#: includes/addon/class-addon-updater.php:358
+#: includes/addon/class-addon-updater.php:359
 msgid "now"
 msgstr "now"
 
-#: includes/addon/class-addon-updater.php:356
+#: includes/addon/class-addon-updater.php:357
 msgid "Update"
 msgstr "Update"
 
-#: includes/addon/class-addon-updater.php:354 includes/template-tags.php:438
+#: includes/addon/class-addon-updater.php:355
+#: includes/template-tags.php:438
 msgid "or"
 msgstr "or"
 
-#: includes/addon/class-addon-updater.php:345
+#: includes/addon/class-addon-updater.php:346
 msgid " View version"
 msgstr "View version"
 
-#: includes/addon/class-addon-updater.php:344
-#: includes/addon/class-addon-updater.php:347
+#: includes/addon/class-addon-updater.php:345
+#: includes/addon/class-addon-updater.php:348
 msgid "details"
 msgstr "details"
 
-#: includes/addon/class-addon-updater.php:342
+#: includes/addon/class-addon-updater.php:343
 msgid "version"
 msgstr "version"
 
-#: includes/addon/class-addon-updater.php:340
+#: includes/addon/class-addon-updater.php:341
 msgid "View"
 msgstr "View"
 
-#: includes/addon/class-addon-updater.php:338
+#: includes/addon/class-addon-updater.php:339
 msgid "available."
 msgstr "available."
 
-#: includes/addon/class-addon-updater.php:336
+#: includes/addon/class-addon-updater.php:337
 msgid "There is a new version of"
 msgstr "There is a new version of"
 
@@ -1987,17 +2020,14 @@ msgstr "Street Address line two"
 msgid "Street Address"
 msgstr "Street Address"
 
-#: includes/class-invp.php:1156 includes/class-photo-numberer.php:80
+#: includes/class-invp.php:1156
+#: includes/class-photo-numberer.php:80
 msgid "of"
 msgstr "of"
 
 #: includes/class-photo-numberer.php:78
 msgid "Photo"
 msgstr "Photo"
-
-#: includes/class-invp.php:526
-msgid "Base Color"
-msgstr "Base Colour"
 
 #: includes/addon/class-addon.php:76
 msgid "to receive plugin updates."
@@ -2007,15 +2037,14 @@ msgstr "to receive plugin updates."
 msgid "License key"
 msgstr "Licence key"
 
-#: includes/addon/class-addon-updater.php:600
+#: includes/addon/class-addon-updater.php:601
 msgid "Error"
 msgstr "Error"
 
-#: includes/addon/class-addon-updater.php:600
+#: includes/addon/class-addon-updater.php:601
 msgid "You do not have permission to install plugin updates"
 msgstr "You do not have permission to install plugin updates"
 
-#: includes/class-invp.php:567
 #: includes/shortcode/class-shortcode-attribute-table.php:125
 msgid "Doors"
 msgstr "Doors"
@@ -2040,7 +2069,8 @@ msgstr "Map"
 msgid "to use the Map widget."
 msgstr "to use the Map widget."
 
-#: includes/addon/class-addon.php:76 includes/admin/class-admin-options.php:484
+#: includes/addon/class-addon.php:76
+#: includes/admin/class-admin-options.php:484
 msgid "Obtain a key at"
 msgstr "Obtain a key at"
 
@@ -2056,15 +2086,11 @@ msgstr "Skip bin when deleting vehicles and delete permanently"
 msgid "Skip Trash"
 msgstr "Skip Bin"
 
-#: includes/class-invp.php:794
 #: includes/integrations/class-classic-editor.php:446
-#: build/blocks/payment/index.js:1 src/blocks/payment/edit.js:27
+#: build/blocks/payment/index.js:1
+#: src/blocks/payment/edit.js:27
 msgid "Payment"
 msgstr "Payment"
-
-#: includes/class-invp.php:550
-msgid "Date Entered"
-msgstr "Date Entered"
 
 #: includes/widget/class-widget-inventory-slider.php:317
 msgid "Overlay price"
@@ -2135,7 +2161,8 @@ msgstr "YouTube video ID"
 msgid "Interior color"
 msgstr "Interior colour"
 
-#: includes/class-taxonomies.php:951 includes/class-taxonomies.php:963
+#: includes/class-taxonomies.php:951
+#: includes/class-taxonomies.php:963
 #: includes/integrations/class-classic-editor.php:608
 msgid "Body style"
 msgstr "Body style"
@@ -2465,7 +2492,8 @@ msgstr "3rd Row Seats"
 msgid "Featured in Slideshows"
 msgstr "Featured in Slideshows"
 
-#: includes/admin/class-admin-options.php:297 inventory-presser.php:1471
+#: includes/admin/class-admin-options.php:297
+#: inventory-presser.php:1471
 msgid "Settings"
 msgstr "Settings"
 
@@ -2503,7 +2531,8 @@ msgstr "Vehicle restored to revision from %s."
 msgid "Vehicle updated."
 msgstr "Vehicle updated."
 
-#: inventory-presser.php:979 inventory-presser.php:980
+#: inventory-presser.php:979
+#: inventory-presser.php:980
 msgid "Custom field updated."
 msgstr "Custom field updated."
 
@@ -2523,7 +2552,8 @@ msgstr "Preview vehicle"
 msgid "View vehicle"
 msgstr "View vehicle"
 
-#: includes/admin/class-admin-bar.php:32 inventory-presser.php:944
+#: includes/admin/class-admin-bar.php:32
+#: inventory-presser.php:944
 msgid "Vehicles"
 msgstr "Vehicles"
 
@@ -2578,7 +2608,8 @@ msgstr "Appointment"
 msgid "Display hours of operation."
 msgstr "Display hours of operation."
 
-#: includes/class-taxonomies.php:1013 includes/class-taxonomies.php:1028
+#: includes/class-taxonomies.php:1013
+#: includes/class-taxonomies.php:1028
 msgid "Locations"
 msgstr "Locations"
 
@@ -2843,7 +2874,7 @@ msgid "General"
 msgstr "General"
 
 #: includes/admin/class-admin-options.php:65
-#: includes/admin/class-admin-options.php:66 includes/class-invp.php:788
+#: includes/admin/class-admin-options.php:66
 #: includes/shortcode/class-shortcode-single-vehicle.php:184
 msgid "Options"
 msgstr "Options"
@@ -2904,7 +2935,8 @@ msgstr "EPA Fuel Economy"
 msgid "Speed"
 msgstr "Speed"
 
-#: includes/template-tags.php:985 includes/template-tags.php:1077
+#: includes/template-tags.php:985
+#: includes/template-tags.php:1077
 msgid "Down"
 msgstr "Down"
 
@@ -2924,19 +2956,23 @@ msgstr "per month"
 msgid "per week"
 msgstr "per week"
 
-#: includes/admin/class-admin-options.php:511 includes/template-tags.php:1010
+#: includes/admin/class-admin-options.php:511
+#: includes/template-tags.php:1010
 msgid "You Save"
 msgstr "You Save"
 
-#: includes/admin/class-admin-options.php:510 includes/template-tags.php:1008
+#: includes/admin/class-admin-options.php:510
+#: includes/template-tags.php:1008
 msgid "Now"
 msgstr "Now"
 
-#: includes/admin/class-admin-options.php:508 includes/template-tags.php:1006
+#: includes/admin/class-admin-options.php:508
+#: includes/template-tags.php:1006
 msgid "Retail"
 msgstr "Retail"
 
-#: includes/admin/class-admin-options.php:515 includes/template-tags.php:946
+#: includes/admin/class-admin-options.php:515
+#: includes/template-tags.php:946
 #: includes/template-tags.php:992
 msgid "Call For Price"
 msgstr "Call For Price"
@@ -3023,10 +3059,6 @@ msgstr "HIN"
 msgid "Stock"
 msgstr "Stock"
 
-#: includes/shortcode/class-shortcode-attribute-table.php:118
-msgid "Interior"
-msgstr "Interior"
-
 #: includes/shortcode/class-shortcode-attribute-table.php:90
 msgid "Mileage"
 msgstr "Mileage"
@@ -3095,306 +3127,195 @@ msgstr "Tue"
 msgid "Mon"
 msgstr "Mon"
 
-#: includes/class-invp.php:883 build/blocks/youtube/index.js:1
-#: js/editor-sidebar.js:76 src/blocks/youtube/edit.js:67
+#: build/blocks/youtube/index.js:1
+#: js/editor-sidebar.js:76
+#: src/blocks/youtube/edit.js:67
 msgid "YouTube Video ID"
 msgstr "YouTube Video ID"
 
-#: includes/class-invp.php:877
 #: includes/integrations/class-classic-editor.php:560
 #: build/blocks/year-make-model-and-trim/index.js:1
-#: build/blocks/year/index.js:1 src/blocks/year-make-model-and-trim/edit.js:30
+#: build/blocks/year/index.js:1
+#: src/blocks/year-make-model-and-trim/edit.js:30
 #: src/blocks/year/edit.js:27
 msgid "Year"
 msgstr "Year"
 
-#: includes/class-invp.php:872
-msgid "Is Wholesale"
-msgstr "Is Wholesale"
-
-#: includes/class-invp.php:866
 #: includes/integrations/class-classic-editor.php:547
 #: includes/shortcode/class-shortcode-attribute-table.php:215
-#: build/blocks/vin/index.js:1 src/blocks/vin/edit.js:27
+#: build/blocks/vin/index.js:1
+#: src/blocks/vin/edit.js:27
 msgid "VIN"
 msgstr "VIN"
 
-#: includes/class-invp.php:860 includes/class-taxonomies.php:711
+#: includes/class-taxonomies.php:711
 #: includes/class-taxonomies.php:724
 msgid "Type"
 msgstr "Type"
 
-#: includes/class-invp.php:854 build/blocks/trim/index.js:1
-#: build/blocks/year-make-model-and-trim/index.js:1 src/blocks/trim/edit.js:27
+#: build/blocks/trim/index.js:1
+#: build/blocks/year-make-model-and-trim/index.js:1
+#: src/blocks/trim/edit.js:27
 #: src/blocks/year-make-model-and-trim/edit.js:45
 msgid "Trim Level"
 msgstr "Trim Level"
 
-#: includes/class-invp.php:848 build/blocks/transmission-speeds/index.js:1
+#: build/blocks/transmission-speeds/index.js:1
 #: src/blocks/transmission-speeds/edit.js:27
 msgid "Transmission Speeds"
 msgstr "Transmission Speeds"
 
-#: includes/class-invp.php:842 includes/class-taxonomies.php:886
+#: includes/class-taxonomies.php:886
 #: includes/class-taxonomies.php:898
 #: includes/shortcode/class-shortcode-attribute-table.php:97
 msgid "Transmission"
 msgstr "Transmission"
 
-#: includes/class-invp.php:836 build/blocks/title-status/index.js:1
+#: build/blocks/title-status/index.js:1
 #: src/blocks/title-status/edit.js:27
 msgid "Title Status"
 msgstr "Title Status"
 
-#: includes/class-invp.php:824 build/blocks/stock-number/index.js:1
+#: build/blocks/stock-number/index.js:1
 #: src/blocks/stock-number/edit.js:27
 msgid "Stock Number"
 msgstr "Stock Number"
 
-#: includes/class-invp.php:812
-msgid "Propulsion Type"
-msgstr "Propulsion Type"
-
-#: includes/admin/class-admin-posts-list.php:28 includes/class-invp.php:806
+#: includes/admin/class-admin-posts-list.php:28
 #: includes/integrations/class-classic-editor.php:443
-#: build/blocks/price/index.js:1 src/blocks/price/edit.js:27
+#: build/blocks/price/index.js:1
+#: src/blocks/price/edit.js:27
 msgid "Price"
 msgstr "Price"
 
-#: includes/class-invp.php:800
-msgid "Payment Frequency"
-msgstr "Payment Frequency"
-
-#: includes/admin/class-admin-posts-list.php:27 includes/class-invp.php:782
+#: includes/admin/class-admin-posts-list.php:27
 #: includes/integrations/class-classic-editor.php:659
-#: inventory-presser.php:1230 build/blocks/odometer/index.js:1
+#: inventory-presser.php:1230
+#: build/blocks/odometer/index.js:1
 #: src/blocks/odometer/edit.js:27
 msgid "Odometer"
 msgstr "Odometer"
 
-#: includes/class-invp.php:777
-msgid "NextGear Inspection URL"
-msgstr "NextGear Inspection URL"
-
-#: includes/class-invp.php:771
 #: includes/integrations/class-classic-editor.php:444
-#: build/blocks/msrp/index.js:1 src/blocks/msrp/edit.js:27
+#: build/blocks/msrp/index.js:1
+#: src/blocks/msrp/edit.js:27
 msgid "MSRP"
 msgstr "MSRP"
 
-#: includes/class-invp.php:765 includes/class-taxonomies.php:659
+#: includes/class-taxonomies.php:659
 #: includes/class-taxonomies.php:671
 #: includes/integrations/class-classic-editor.php:599
 #: build/blocks/model/index.js:1
-#: build/blocks/year-make-model-and-trim/index.js:1 src/blocks/model/edit.js:27
+#: build/blocks/year-make-model-and-trim/index.js:1
+#: src/blocks/model/edit.js:27
 #: src/blocks/year-make-model-and-trim/edit.js:40
 msgid "Model"
 msgstr "Model"
 
-#: includes/class-invp.php:753 includes/class-taxonomies.php:635
+#: includes/class-taxonomies.php:635
 #: includes/class-taxonomies.php:647
 #: includes/integrations/class-classic-editor.php:596
 #: build/blocks/make/index.js:1
-#: build/blocks/year-make-model-and-trim/index.js:1 src/blocks/make/edit.js:27
+#: build/blocks/year-make-model-and-trim/index.js:1
+#: src/blocks/make/edit.js:27
 #: src/blocks/year-make-model-and-trim/edit.js:35
 msgid "Make"
 msgstr "Make"
 
-#: includes/class-invp.php:747 includes/class-taxonomies.php:1015
-#: includes/class-taxonomies.php:1016 includes/class-taxonomies.php:1033
+#: includes/class-taxonomies.php:1015
+#: includes/class-taxonomies.php:1016
+#: includes/class-taxonomies.php:1033
 msgid "Location"
 msgstr "Location"
 
-#: includes/class-invp.php:742
 #: includes/integrations/class-classic-editor.php:738
 #: includes/shortcode/class-shortcode-attribute-table.php:162
-#: build/blocks/length/index.js:1 src/blocks/length/edit.js:27
+#: build/blocks/length/index.js:1
+#: src/blocks/length/edit.js:27
 msgid "Length"
 msgstr "Length"
 
-#: includes/class-invp.php:737
-msgid "Leads ID"
-msgstr "Leads ID"
-
-#: includes/class-invp.php:731 build/blocks/last-modified/index.js:1
+#: build/blocks/last-modified/index.js:1
 #: src/blocks/last-modified/edit.js:27
 msgid "Last Modified"
 msgstr "Last Modified"
 
-#: includes/class-invp.php:725 build/blocks/interior-color/index.js:1
+#: build/blocks/interior-color/index.js:1
 #: src/blocks/interior-color/edit.js:27
 msgid "Interior Color"
 msgstr "Interior Colour"
 
-#: includes/class-invp.php:720 includes/class-taxonomies.php:1188
+#: includes/class-taxonomies.php:1188
 #: includes/class-taxonomies.php:1200
 #: includes/shortcode/class-shortcode-attribute-table.php:169
 msgid "Hull Material"
 msgstr "Hull Material"
 
-#: includes/class-invp.php:709
-msgid "Fuel Economy Five Year Savings"
-msgstr "Fuel Economy Five Year Savings"
-
-#: includes/class-invp.php:703
-msgid "Fuel Economy Highway (fuel type 2)"
-msgstr "Fuel Economy Highway (fuel type 2)"
-
-#: includes/class-invp.php:697
-msgid "Fuel Economy Combined (fuel type 2)"
-msgstr "Fuel Economy Combined (fuel type 2)"
-
-#: includes/class-invp.php:691
-msgid "Fuel Economy City (fuel type 2)"
-msgstr "Fuel Economy City (fuel type 2)"
-
-#: includes/class-invp.php:685
-msgid "Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 2)"
-msgstr "Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 2)"
-
-#: includes/class-invp.php:679
-msgid "Fuel Economy Annual Fuel Cost (fuel type 2)"
-msgstr "Fuel Economy Annual Fuel Cost (fuel type 2)"
-
-#: includes/class-invp.php:673
-msgid "Fuel Economy Annual Fuel Consumption (fuel type 2)"
-msgstr "Fuel Economy Annual Fuel Consumption (fuel type 2)"
-
-#: includes/class-invp.php:667
-msgid "Fuel Economy Name (fuel type 2)"
-msgstr "Fuel Economy Name (fuel type 2)"
-
-#: includes/class-invp.php:661
-msgid "Fuel Economy Highway (fuel type 1)"
-msgstr "Fuel Economy Highway (fuel type 1)"
-
-#: includes/class-invp.php:655
-msgid "Fuel Economy Combined (fuel type 1)"
-msgstr "Fuel Economy Combined (fuel type 1)"
-
-#: includes/class-invp.php:649
-msgid "Fuel Economy City (fuel type 1)"
-msgstr "Fuel Economy City (fuel type 1)"
-
-#: includes/class-invp.php:643
-msgid "Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 1)"
-msgstr "Fuel Economy Annual Tailpipe CO2 Emissions (fuel type 1)"
-
-#: includes/class-invp.php:637
-msgid "Fuel Economy Annual Fuel Cost (fuel type 1)"
-msgstr "Fuel Economy Annual Fuel Cost (fuel type 1)"
-
-#: includes/class-invp.php:631
-msgid "Fuel Economy Annual Fuel Consumption (fuel type 1)"
-msgstr "Fuel Economy Annual Fuel Consumption (fuel type 1)"
-
-#: includes/class-invp.php:625
-msgid "Fuel Economy Name (fuel type 1)"
-msgstr "Fuel Economy Name (fuel type 1)"
-
-#: includes/class-invp.php:619 includes/class-taxonomies.php:861
+#: includes/class-taxonomies.php:861
 msgid "Fuel"
 msgstr "Fuel"
 
-#: includes/class-invp.php:614
-msgid "Featured"
-msgstr "Featured"
-
-#: includes/class-invp.php:590
 #: includes/integrations/class-classic-editor.php:605
 #: includes/shortcode/class-shortcode-attribute-table.php:139
-#: build/blocks/engine/index.js:1 src/blocks/engine/edit.js:27
+#: build/blocks/engine/index.js:1
+#: src/blocks/engine/edit.js:27
 msgid "Engine"
 msgstr "Engine"
 
-#: includes/class-invp.php:585
-msgid "Edmunds Style ID"
-msgstr "Edmunds Style ID"
-
-#: includes/class-invp.php:579
 #: includes/shortcode/class-shortcode-attribute-table.php:111
 msgid "Drive Type"
 msgstr "Drive Type"
 
-#: includes/class-invp.php:573 build/blocks/down-payment/index.js:1
+#: build/blocks/down-payment/index.js:1
 #: src/blocks/down-payment/edit.js:27
 msgid "Down Payment"
 msgstr "Down Payment"
 
-#: includes/class-invp.php:561
 #: includes/integrations/class-classic-editor.php:672
 #: includes/shortcode/class-shortcode-single-vehicle.php:164
 msgid "Description"
 msgstr "Description"
 
-#: includes/class-invp.php:556
-msgid "Dealer ID"
-msgstr "Dealer ID"
-
-#: includes/class-invp.php:544 includes/class-taxonomies.php:913
-#: includes/class-taxonomies.php:915 includes/class-taxonomies.php:928
+#: includes/class-taxonomies.php:913
+#: includes/class-taxonomies.php:915
+#: includes/class-taxonomies.php:928
 msgid "Cylinders"
 msgstr "Cylinders"
 
-#: includes/class-invp.php:538 includes/class-taxonomies.php:683
-#: includes/class-taxonomies.php:695 includes/class-taxonomies.php:1044
-#: includes/class-taxonomies.php:1046 includes/class-taxonomies.php:1047
+#: includes/class-taxonomies.php:683
+#: includes/class-taxonomies.php:695
+#: includes/class-taxonomies.php:1044
+#: includes/class-taxonomies.php:1046
+#: includes/class-taxonomies.php:1047
 #: includes/class-taxonomies.php:1059
 #: includes/shortcode/class-shortcode-attribute-table.php:206
 msgid "Condition"
 msgstr "Condition"
 
-#: includes/admin/class-admin-posts-list.php:26 includes/class-invp.php:520
-#: includes/class-taxonomies.php:974 includes/class-taxonomies.php:975
+#: includes/admin/class-admin-posts-list.php:26
+#: includes/class-taxonomies.php:974
+#: includes/class-taxonomies.php:975
 #: includes/class-taxonomies.php:987
 #: includes/integrations/class-classic-editor.php:653
-#: includes/shortcode/class-shortcode-attribute-table.php:104
-#: build/blocks/color/index.js:1 src/blocks/color/edit.js:27
+#: build/blocks/color/index.js:1
+#: src/blocks/color/edit.js:27
 msgid "Color"
 msgstr "Colour"
 
-#: includes/class-invp.php:510
-msgid "Carfax Report URL"
-msgstr "CARFAX Report URL"
-
-#: includes/class-invp.php:490
-msgid "Carfax Icon URL"
-msgstr "CARFAX Icon URL"
-
-#: includes/class-invp.php:480
-msgid "Carfax One Owner"
-msgstr "CARFAX One Owner"
-
-#: includes/class-invp.php:475
-msgid "Carfax Have Report"
-msgstr "CARFAX Have Report"
-
-#: includes/class-invp.php:465
-msgid "Car ID"
-msgstr "Car ID"
-
-#: includes/class-invp.php:459
-msgid "NADA Book Value"
-msgstr "NADA Book Value"
-
-#: includes/class-invp.php:453
-msgid "KBB Book Value"
-msgstr "KBB Book Value"
-
-#: includes/class-invp.php:447
 #: includes/shortcode/class-shortcode-attribute-table.php:82
-#: build/blocks/body-style/index.js:1 src/blocks/body-style/edit.js:27
+#: build/blocks/body-style/index.js:1
+#: src/blocks/body-style/edit.js:27
 msgid "Body Style"
 msgstr "Body Style"
 
-#: includes/class-invp.php:442
 #: includes/integrations/class-classic-editor.php:717
 #: includes/shortcode/class-shortcode-attribute-table.php:178
-#: build/blocks/beam/index.js:1 src/blocks/beam/edit.js:27
+#: build/blocks/beam/index.js:1
+#: src/blocks/beam/edit.js:27
 msgid "Beam"
 msgstr "Beam"
 
-#: includes/class-invp.php:436 includes/class-taxonomies.php:750
+#: includes/class-taxonomies.php:750
 #: includes/class-taxonomies.php:762
 msgid "Availability"
 msgstr "Availability"
@@ -3523,7 +3444,7 @@ msgstr "Uploaded to this vehicle"
 #: inventory-presser.php:375
 msgctxt "Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4"
 msgid "Attach to vehicle"
-msgstr ""
+msgstr "Attach to vehicle"
 
 #: inventory-presser.php:374
 msgctxt "The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4"
@@ -3534,7 +3455,8 @@ msgstr "Inventory"
 msgid "No vehicles found in Trash."
 msgstr "No vehicles found in bin."
 
-#: includes/shortcode/class-shortcode-archive.php:124 inventory-presser.php:372
+#: includes/shortcode/class-shortcode-archive.php:124
+#: inventory-presser.php:372
 msgid "No vehicles found."
 msgstr "No vehicles found."
 
@@ -3601,9 +3523,13 @@ msgid "https://inventorypresser.com"
 msgstr "https://inventorypresser.com"
 
 #. Plugin Name of the plugin
-#: inventory-presser.php includes/class-blocks.php:23
-#: includes/class-site-health.php:53 includes/class-site-health.php:59
-#: includes/class-site-health.php:79 includes/class-site-health.php:94
-#: includes/class-site-health.php:119 includes/class-site-health.php:134
+#: inventory-presser.php
+#: includes/class-blocks.php:23
+#: includes/class-site-health.php:53
+#: includes/class-site-health.php:59
+#: includes/class-site-health.php:79
+#: includes/class-site-health.php:94
+#: includes/class-site-health.php:119
+#: includes/class-site-health.php:134
 msgid "Inventory Presser"
 msgstr "Inventory Presser"
