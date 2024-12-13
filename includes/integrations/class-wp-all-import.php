@@ -25,8 +25,22 @@ class Inventory_Presser_WP_All_Import {
 		// Help save options in a multi-valued meta field.
 		add_action( 'pmxi_update_post_meta', array( $this, 'detect_delimited_options' ), 10, 3 );
 
-		// Mark imported vehicles as "For Sale" in the Availability taxonomy
-		add_action( 'pmxi_saved_post', array( $this, 'set_availability_for_sale' ), 10, 3 );
+		// Mark imported vehicles as "For Sale" in the Availability taxonomy.
+		add_action( 'pmxi_saved_post', array( $this, 'set_availability_for_sale' ), 10, 1 );
+
+		// Number photos when they are uploaded.
+		add_action( 'pmxi_gallery_image', array( $this, 'number_photos' ), 10, 2 );
+
+		add_action( 'pmxi_before_post_import', array( $this, 'do_not_renumber_on_save' ) );
+	}
+
+	/**
+	 * Disable a feature that renumbers photos during vehicle saves.
+	 *
+	 * @return void
+	 */
+	public function do_not_renumber_on_save() {
+		remove_action( 'save_post_' . INVP::POST_TYPE, array( 'Inventory_Presser_Photo_Numberer', 'renumber_photos' ), 10, 1 );
 	}
 
 	/**
@@ -97,8 +111,9 @@ class Inventory_Presser_WP_All_Import {
 	 * @param  int $attachment_id The attachment ID.
 	 * @return void
 	 */
-	public function detect_piped_options( $post_id, $meta_key, $meta_value ) {
-		$this->detect_delimited_options( $post_id, $meta_key, $meta_value );
+	public function number_photos( $post_id, $attachment_id ) {
+		// The maybe_number_photo() method checks if the parent is a vehicle.
+		Inventory_Presser_Photo_Numberer::maybe_number_photo( $attachment_id );
 	}
 
 	/**
@@ -109,7 +124,13 @@ class Inventory_Presser_WP_All_Import {
 	 * @param  int $post_id The inserted or updated post ID.
 	 * @return void
 	 */
-	public function set_availability_for_sale( $post_id, $xml_node, $is_update ) {
+	public function set_availability_for_sale( $post_id ) {
+		// Is it a vehicle?
+		if ( ! class_exists( 'INVP' ) || INVP::POST_TYPE !== get_post_type( $post_id ) ) {
+			// No.
+			return;
+		}
+
 		$taxonomy = 'availability';
 		if ( ! empty( wp_get_object_terms( $post_id, $taxonomy ) ) ) {
 			// There is already a relationship.
