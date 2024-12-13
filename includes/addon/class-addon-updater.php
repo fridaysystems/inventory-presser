@@ -15,6 +15,7 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 	class Inventory_Presser_Addon_Updater {
 		private $api_url     = '';
 		private $api_data    = array();
+		private $beta        = false;
 		private $name        = '';
 		private $slug        = '';
 		private $version     = '';
