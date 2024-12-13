@@ -146,7 +146,7 @@ class Inventory_Presser_Photo_Numberer {
 	 * @return void
 	 */
 	public static function renumber_photos( $post_id ) {
-		// Get all of this vehicle's photos.
+		// Get all of this vehicle's photos that have numbers.
 		$posts = get_children(
 			array(
 				'meta_key'    => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
@@ -156,6 +156,7 @@ class Inventory_Presser_Photo_Numberer {
 			)
 		);
 
+		// Get all of this post's attachments with or without numbers.
 		$unnumbered_posts = get_children(
 			array(
 				'post_parent' => $post_id,
