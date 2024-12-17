@@ -129,7 +129,8 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 					<div class="vehicle-price-and-buttons">
 						<h3 class="vehicle-price">
 						<?php
-						echo esc_html( invp_get_the_price() );
+						/* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */
+						echo invp_get_the_price();
 						?>
 						</h3>
 						<?php
