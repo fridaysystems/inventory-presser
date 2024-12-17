@@ -78,8 +78,9 @@ class Inventory_Presser_Shortcode_Archive {
 		);
 
 		// Allow orderby and order $_GET parameters to change the sort order.
-		if ( '' !== get_query_var( 'orderby' ) ) {
-			$atts['meta_key'] = apply_filters( 'invp_prefix_meta_key', get_query_var( 'orderby' ) );
+		$orderby = get_query_var( 'orderby' );
+		if ( '' !== $orderby && 'meta_value' !== $orderby ) {
+			$atts['meta_key'] = apply_filters( 'invp_prefix_meta_key', $orderby );
 			$atts['orderby']  = 'meta_value';
 		}
 
