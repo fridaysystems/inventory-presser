@@ -98,6 +98,16 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 										);
 									}
 								}
+							} else {
+								// Vehicle has no photos.
+								// Allow the invp_no_photo_url filter to work.
+								$url = invp_get_the_photo_url( 'full' );
+								if ( ! empty( $url ) ) {
+									printf(
+										'<li><a data-href="%1$s"><img decoding="async" src="%1$s" class="attachment-large size-large invp-image" alt="" draggable="false" /></a></li>',
+										esc_attr( $url )
+									);
+								}
 							}
 							?>
 							</ul>
