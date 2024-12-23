@@ -947,7 +947,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$title_parts['title'] .= __( 'Vehicles', 'inventory-presser' ) . ' ';
 			}
 
-			$title_parts['title'] .= __( 'For Sale', 'inventory_presser' );
+			$title_parts['title'] .= __( 'For Sale', 'inventory-presser' );
 
 			return $title_parts;
 		}

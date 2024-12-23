@@ -106,7 +106,7 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 			$svg = file_get_contents( $path );
 			printf(
 				'<a href="%s">%s</a>',
-				get_post_type_archive_link( INVP::POST_TYPE ),
+				esc_url( get_post_type_archive_link( INVP::POST_TYPE ) ),
 				$svg
 			);
 		} else {

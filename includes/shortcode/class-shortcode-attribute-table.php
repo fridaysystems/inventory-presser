@@ -101,7 +101,7 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 		// Exterior Color.
 		$table_items[] = array(
 			'member' => 'color',
-			'label'  => __( 'Color', 'inventory_presser' ),
+			'label'  => __( 'Color', 'inventory-presser' ),
 			'value'  => invp_get_the_color( $post_ID ),
 		);
 
@@ -115,7 +115,7 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 		// Interior Color.
 		$table_items[] = array(
 			'member' => 'interior_color',
-			'label'  => __( 'Interior', 'inventory_presser' ),
+			'label'  => __( 'Interior', 'inventory-presser' ),
 			'value'  => invp_get_the_interior_color( $post_ID ),
 		);
 

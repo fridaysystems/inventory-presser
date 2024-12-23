@@ -62,7 +62,7 @@ class Inventory_Presser_Shortcode_Sort_By {
 	public function content( $atts ) {
 		$atts = shortcode_atts(
 			array(
-				'label' => __( 'SORT', 'inventory_presser' ),
+				'label' => __( 'SORT', 'inventory-presser' ),
 			),
 			$atts,
 			'invp_sort_by'
@@ -89,31 +89,31 @@ class Inventory_Presser_Shortcode_Sort_By {
 			'invp_sort_dropdown_options',
 			array(
 				'make'     => array(
-					'ASC'  => __( 'Make A-Z', '_dealer' ),
-					'DESC' => __( 'Make Z-A', '_dealer' ),
+					'ASC'  => __( 'Make A-Z', 'inventory-presser' ),
+					'DESC' => __( 'Make Z-A', 'inventory-presser' ),
 				),
 
 				'price'    => array(
-					'ASC'  => __( 'Price Low', '_dealer' ),
-					'DESC' => __( 'Price High', '_dealer' ),
+					'ASC'  => __( 'Price Low', 'inventory-presser' ),
+					'DESC' => __( 'Price High', 'inventory-presser' ),
 				),
 
 				'odometer' => array(
 					'ASC'  => sprintf(
 						'%s %s',
 						apply_filters( 'invp_odometer_word', 'Mileage' ),
-						__( 'Low', '_dealer' )
+						__( 'Low', 'inventory-presser' )
 					),
 					'DESC' => sprintf(
 						'%s %s',
 						apply_filters( 'invp_odometer_word', 'Mileage' ),
-						__( 'High', '_dealer' )
+						__( 'High', 'inventory-presser' )
 					),
 				),
 
 				'year'     => array(
-					'ASC'  => __( 'Year Oldest', '_dealer' ),
-					'DESC' => __( 'Year Newest', '_dealer' ),
+					'ASC'  => __( 'Year Oldest', 'inventory-presser' ),
+					'DESC' => __( 'Year Newest', 'inventory-presser' ),
 				),
 			)
 		);
@@ -214,8 +214,8 @@ class Inventory_Presser_Shortcode_Sort_By {
 	 */
 	public function add_down_payment_to_sort_dropdown( $options ) {
 		$options['down_payment'] = array(
-			'ASC'  => __( 'Down Payment Low', '_dealer' ),
-			'DESC' => __( 'Down Payment High', '_dealer' ),
+			'ASC'  => __( 'Down Payment Low', 'inventory-presser' ),
+			'DESC' => __( 'Down Payment High', 'inventory-presser' ),
 		);
 		return $options;
 	}

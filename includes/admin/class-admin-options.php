@@ -644,7 +644,7 @@ class Inventory_Presser_Admin_Options {
 					'<option value="GF_%s"%s>%s: %s</option>',
 					esc_attr( $gform['id'] ),
 					selected( 'GF_' . $gform['id'], $current_value, false ),
-					esc_html__( 'Gravity Forms', 'event-milestones' ),
+					esc_html__( 'Gravity Forms', 'inventory-presser' ),
 					esc_attr( $gform['title'] )
 				);
 			}
