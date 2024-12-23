@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.7.1
 Requires PHP: 7.0.0
-Stable tag: 14.18.1
+Stable tag: 14.18.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.14.18.1.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.18.1.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.18.1.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.18.1.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.14.18.2.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.18.2.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.18.2.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.18.2.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,11 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 14.18.2 =
+* [Fixed] Fixes a bug in the [invp_archive] shortcode. Stops adding a meta_key parameter to the posts query when found in the orderby query variable when the value found in orderby is "meta_value".
+* [Fixed] Fixes a bug in the [invp_archive_vehicle] shortcode. Stops escaping the return value of invp_get_the_price(). The value is already escaped for HTML.
+* [Fixed] Fixes a bug in the [invp_single_vehicle] shortcode. Allows the invp_no_photo_url filter to work on vehicle singles.
 
 = 14.18.1 =
 * [Added] Adds translation files that were previously only hosted at wordpress.org.
@@ -247,6 +252,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 14.18.2 =
+Fixes a bug in the [invp_archive] shortcode. Stops adding a meta_key parameter to the posts query when found in the orderby query variable when the value found in orderby is "meta_value". Fixes a bug in the [invp_archive_vehicle] shortcode. Stops escaping the return value of invp_get_the_price(). The value is already escaped for HTML. Fixes a bug in the [invp_single_vehicle] shortcode. Allows the invp_no_photo_url filter to work on vehicle singles.
 
 = 14.18.1 =
 Adds translation files that were previously only hosted at wordpress.org. Fixes bugs when numbering and rearranging photos in the Block Editor. Bug fixes in WP All Import integration. Assign photo meta data to attachments to vehicles as they are imported. Do not let the Vehicles > Taxonomies settings prevent the Categories taxonomy from working if someone adds it to the vehicles post type.
