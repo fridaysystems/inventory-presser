@@ -110,6 +110,15 @@ class Inventory_Presser_Shortcode_Archive {
 				$shortcode = sprintf( '[invp_archive_vehicle show_titles="%s"]', strval( $atts['show_titles'] ) );
 				$output   .= apply_shortcodes( $shortcode );
 			}
+
+			/**
+			 * Paged navigation. Overwrite the global query with this shortcode's
+			 * query so the core pagination functions work as expected. The
+			 * query is rest on the following line outside this condition block.
+			 */
+			global $wp_query;
+			$wp_query = $vehicles_query;
+			$output  .= INVP::get_paging_html();
 		} else {
 			/**
 			 * Do not encourage the user to search if there are zero vehicles.
@@ -130,11 +139,8 @@ class Inventory_Presser_Shortcode_Archive {
 			}
 		}
 
-		// Paged navigation.
-		$output .= INVP::get_paging_html();
-
-		// Restore original post data.
-		wp_reset_postdata();
+		// Restore original query & post data.
+		wp_reset_query();
 
 		return $output;
 	}
