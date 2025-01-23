@@ -15,8 +15,6 @@ class Inventory_Presser_Taxonomy_Overlapper {
 
 
 	/**
-	 * check_for_remaining_term_relationship
-	 *
 	 * A meta value was just deleted after a term relationship was deleted.
 	 * Check for another term relationship in the same taxonomy. A user
 	 * could have marked a vehicle as both an Acura and Audi by mistake, and
@@ -42,8 +40,6 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	}
 
 	/**
-	 * delete_transmission_speeds_meta
-	 *
 	 * When a relationship in the Transmissions taxonomy is deleted, delete a
 	 * post meta value that holds the transmission speeds, too.
 	 *
@@ -60,8 +56,6 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	}
 
 	/**
-	 * extract_speeds
-	 *
 	 * Takes a transmission taxonomy term name like "6 Speed Automatic",
 	 * "5 Speed Manual", "Continuously Variable", or "Unknown" and returns "6",
 	 * "5", "V", and "U", respectively.
@@ -88,17 +82,15 @@ class Inventory_Presser_Taxonomy_Overlapper {
 		if ( 'continuously variable' == strtolower( $transmission_term_name )
 			|| 'CVT' == strtoupper( $transmission_term_name )
 		) {
-			// It's variable
+			// It's variable.
 			return 'V';
 		}
 
-		// It's unknown
+		// It's unknown.
 		return 'U';
 	}
 
 	/**
-	 * hooks_add
-	 *
 	 * Adds hooks to catch updates to meta values and term relationships.
 	 *
 	 * @return void
@@ -138,8 +130,6 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	}
 
 	/**
-	 * hooks_remove_meta
-	 *
 	 * Removes the hooks from post meta adds, updates, and deletes.
 	 *
 	 * @return void
@@ -151,8 +141,6 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	}
 
 	/**
-	 * hooks_remove_terms
-	 *
 	 * Removes the hooks from taxonomy term updates and removals.
 	 *
 	 * @return void
@@ -164,8 +152,6 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	}
 
 	/**
-	 * hooks
-	 *
 	 * This is a formality to match the method naming scheme of all other
 	 * classes in this plugin.
 	 *
@@ -176,8 +162,6 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	}
 
 	/**
-	 * maintain_taxonomy_terms_during_meta_updates
-	 *
 	 * When post meta values are updated on vehicle posts, check to see if the
 	 * same value is also stored in one of our taxonomies to make filtering
 	 * easy. If so, mirror the changes by creating a new term relationship.
@@ -193,9 +177,9 @@ class Inventory_Presser_Taxonomy_Overlapper {
 			return;
 		}
 
-		// These are the unprefixed meta keys that have overlapping taxonomies
+		// These are the unprefixed meta keys that have overlapping taxonomies.
 		$overlapping_keys = $this->overlapping_meta_keys();
-		// unprefix the meta key
+		// unprefix the meta key.
 		$unprefixed = apply_filters( 'invp_unprefix_meta_key', $meta_key );
 
 		// does $meta_key have a corresponding taxonomy?
@@ -227,10 +211,10 @@ class Inventory_Presser_Taxonomy_Overlapper {
 			$this->hooks_add();
 		}
 
-		// if $meta_value is empty or we have deleted a meta value, remove a term
+		// if $meta_value is empty or we have deleted a meta value, remove a term.
 		global $action;
 		if ( empty( $meta_value ) || 'delete-meta' == $action ) {
-			// remove a term actually
+			// remove a term actually.
 			$terms = array();
 			if ( 'availability' == strtolower( $taxonomy ) ) {
 				$terms = wp_get_object_terms( $object_id, $taxonomy );
@@ -240,7 +224,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 						 * Both $unprefixed and $terms[$t]->slug are 'wholesale'
 						 * or $unprefixed and $taxonomy are both 'availability'
 						 */
-						// trash this one
+						// trash this one.
 						unset( $terms[ $t ] );
 						break;
 					}
@@ -292,8 +276,6 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	}
 
 	/**
-	 * overlapping_meta_keys
-	 *
 	 * Returns an array containing keys that are post meta field suffixes. The
 	 * values are the overlapping taxonomy names.
 	 *
@@ -331,8 +313,6 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	}
 
 	/**
-	 * term_relationship_deleted
-	 *
 	 * If the term relationship that was just deleted was in a vehicle taxonomy,
 	 * also delete the meta value that contains the same value.
 	 *
@@ -356,7 +336,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 			return;
 		}
 
-		// delete post meta values from this post
+		// delete post meta values from this post.
 		foreach ( $tt_ids as $term_taxonomy_id ) {
 			$term = get_term_by( 'term_taxonomy_id', $term_taxonomy_id, $taxonomy );
 
@@ -369,7 +349,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 				continue;
 			}
 
-			// The availability taxonomy can contain more than one term, so don't just blindly delete
+			// The availability taxonomy can contain more than one term, so don't just blindly delete.
 			if ( empty( $term->slug ) ) {
 				continue;
 			}
@@ -415,7 +395,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 			return;
 		}
 
-		// An empty array of terms is passed often
+		// An empty array of terms is passed often.
 		if ( empty( $tt_id ) ) {
 			return;
 		}
@@ -436,7 +416,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 			return;
 		}
 
-		// The availability taxonomy was the one updated
+		// The availability taxonomy was the one updated.
 		switch ( strtolower( $term->slug ) ) {
 			case 'for-sale':
 			case 'sold':
@@ -452,15 +432,13 @@ class Inventory_Presser_Taxonomy_Overlapper {
 				break;
 
 			default:
-				return; // Makes sure the action hook below only runs after an update
+				return; // Makes sure the action hook below only runs after an update.
 		}
 
 		do_action( 'invp_taxonomy_overlapper_updated_meta', $object_id, $taxonomy, $term );
 	}
 
 	/**
-	 * update_transmission_speeds_meta
-	 *
 	 * When a relationship in the Transmissions taxonomy is changed, update a
 	 * post meta value that holds the transmission speeds, too.
 	 *
