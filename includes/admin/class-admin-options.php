@@ -1217,7 +1217,7 @@ class Inventory_Presser_Admin_Options {
 		$min    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_script(
 			$handle,
-			plugins_url( "/js/page-settings${min}.js", INVP_PLUGIN_FILE_PATH ),
+			plugins_url( "/js/page-settings{$min}.js", INVP_PLUGIN_FILE_PATH ),
 			array( 'jquery' ),
 			INVP_PLUGIN_VERSION,
 			true
@@ -1233,7 +1233,7 @@ class Inventory_Presser_Admin_Options {
 		);
 		wp_register_style(
 			$handle,
-			plugins_url( "/css/page-settings${min}.css", INVP_PLUGIN_FILE_PATH ),
+			plugins_url( "/css/page-settings$min}.css", INVP_PLUGIN_FILE_PATH ),
 			array(),
 			INVP_PLUGIN_VERSION
 		);
