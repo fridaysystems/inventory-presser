@@ -31,6 +31,56 @@ class Inventory_Presser_Divi {
 
 		// Output a warning near the Listings Pages setting at Vehicles → Options.
 		add_action( 'invp_listings_pages_settings', array( $this, 'output_listings_pages_warning' ) );
+
+		// Change the way some of our meta fields are rendered by the Divi Builder.
+		add_filter( 'et_builder_resolve_dynamic_content_custom_meta_inventory_presser_options_array', array( $this, 'resolve_dynamic_content_options' ), 10, 3 );
+		add_filter( 'et_builder_resolve_dynamic_content', array( $this, 'resolve_dynamic_content' ), 11, 4 );
+	}
+
+	/**
+	 * Returns formatted data for some of our meta fields. Formats currency and
+	 * numeric values.
+	 *
+	 * @param string  $content Empty string.
+	 * @param string  $name Custom field name.
+	 * @param array   $settings Array of dynamic content settings.
+	 * @param integer $post_id Post Id.
+	 * @return string
+	 */
+	public function resolve_dynamic_content( $content, $name, $settings, $post_id ) {
+		$keys_and_callbacks = array(
+			'inventory_presser_odometer'          => 'invp_get_the_odometer',
+			'inventory_presser_payment'           => 'invp_get_the_payment',
+			'custom_meta_inventory_presser_msrp'  => 'invp_get_the_msrp',
+			'custom_meta_inventory_presser_price' => 'invp_get_the_price',
+		);
+		if ( ! array_key_exists( $name, $keys_and_callbacks ) ) {
+			return $content;
+		}
+		return $settings['before'] . call_user_func( $keys_and_callbacks[ $name ], $post_id ) . $settings['after'];
+	}
+
+	/**
+	 * Returns unordered list HTML that contains all vehicle options or empty
+	 * string.
+	 *
+	 * @param string  $content Dynamic content string data.
+	 * @param array   $settings Array of dynamic content settings.
+	 * @param integer $post_id Post Id.
+	 * @return string
+	 */
+	public function resolve_dynamic_content_options( $content, $settings, $post_id ) {
+		$options_array = invp_get_the_options( $post_id );
+		if ( empty( $options_array ) ) {
+			return $content;
+		}
+
+		// If we are rendering the options array, we need to return an HTML list.
+		$options_html = '<ul class="vehicle-features">';
+		foreach ( invp_get_the_options() as $option ) {
+			$options_html .= sprintf( '<li>%s</li>', $option );
+		}
+		return $options_html . '</ul>';
 	}
 
 	/**
