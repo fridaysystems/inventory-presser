@@ -95,7 +95,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 *
 	 * @return void
 	 */
-	function hooks_add() {
+	public function hooks_add() {
 		$this->hooks_add_meta();
 		$this->hooks_add_terms();
 		add_action( 'invp_taxonomy_overlapper_updated_meta', array( $this, 'update_transmission_speeds_meta' ), 10, 3 );
@@ -104,23 +104,35 @@ class Inventory_Presser_Taxonomy_Overlapper {
 		add_action( 'invp_taxonomy_overlapper_deleted_meta', array( $this, 'check_for_remaining_term_relationship' ), 11, 3 );
 	}
 
-	function hooks_add_meta() {
-		/**
-		 * When certain post meta fields like make & model are updated, also
-		 * maintain terms in taxonomies to make filtering vehicles easy.
-		 */
+	/**
+	 * When certain post meta fields like make & model are updated, also
+	 * maintain terms in taxonomies to make filtering vehicles easy.
+	 *
+	 * @return void
+	 */
+	protected function hooks_add_meta() {
 		add_action( 'updated_postmeta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 		add_action( 'added_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 		add_action( 'deleted_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 	}
 
-	function hooks_add_terms() {
-		// Do the same when taxonomy term relationships are changed
+	/**
+	 * When certain taxonomy term relationships are changed, update matching
+	 * post meta fields.
+	 *
+	 * @return void
+	 */
+	protected function hooks_add_terms() {
 		add_action( 'added_term_relationship', array( $this, 'term_relationship_updated' ), 10, 3 );
 		add_action( 'deleted_term_relationships', array( $this, 'term_relationship_deleted' ), 10, 3 );
 	}
 
-	function hooks_remove() {
+	/**
+	 * This method is the inverse of hooks_add().
+	 *
+	 * @return void
+	 */
+	protected function hooks_remove() {
 		$this->hooks_remove_meta();
 		$this->hooks_remove_terms();
 		remove_action( 'invp_taxonomy_overlapper_updated_meta', array( $this, 'update_transmission_speeds_meta' ), 10, 3 );
@@ -134,7 +146,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 *
 	 * @return void
 	 */
-	function hooks_remove_meta() {
+	protected function hooks_remove_meta() {
 		remove_action( 'updated_postmeta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 		remove_action( 'added_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
 		remove_action( 'deleted_post_meta', array( $this, 'maintain_taxonomy_terms_during_meta_updates' ), 10, 4 );
@@ -145,8 +157,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 *
 	 * @return void
 	 */
-	function hooks_remove_terms() {
-		// Do the same when taxonomy term relationships are changed
+	protected function hooks_remove_terms() {
 		remove_action( 'added_term_relationship', array( $this, 'term_relationship_updated' ), 10, 3 );
 		remove_action( 'deleted_term_relationships', array( $this, 'term_relationship_deleted' ), 10, 3 );
 	}
@@ -172,7 +183,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 * @param  string|object $meta_value Metadata value. This will be a PHP-serialized string representation of the value if the value is an array, an object, or itself a PHP-serialized string.
 	 * @return void
 	 */
-	function maintain_taxonomy_terms_during_meta_updates( $meta_id, $object_id, $meta_key, $meta_value ) {
+	public function maintain_taxonomy_terms_during_meta_updates( $meta_id, $object_id, $meta_key, $meta_value ) {
 		if ( '_edit_lock' == strtolower( $meta_key ) ) {
 			return;
 		}
@@ -321,7 +332,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 * @param  string $taxonomy  Taxonomy slug.
 	 * @return void
 	 */
-	function term_relationship_deleted( $object_id, $tt_ids, $taxonomy ) {
+	public function term_relationship_deleted( $object_id, $tt_ids, $taxonomy ) {
 		// Does $object_id belong to a vehicle?
 		if ( INVP::POST_TYPE != get_post_type( $object_id ) ) {
 			// No
@@ -380,7 +391,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 * @param  string $taxonomy  Taxonomy slug.
 	 * @return void
 	 */
-	function term_relationship_updated( $object_id, $tt_id, $taxonomy ) {
+	public function term_relationship_updated( $object_id, $tt_id, $taxonomy ) {
 		// Does $object_id belong to a vehicle?
 		if ( INVP::POST_TYPE != get_post_type( $object_id ) ) {
 			// No
