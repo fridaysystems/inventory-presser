@@ -194,8 +194,8 @@ class Inventory_Presser_Taxonomy_Overlapper {
 		$unprefixed = apply_filters( 'invp_unprefix_meta_key', $meta_key );
 
 		// does $meta_key have a corresponding taxonomy?
-		if ( ! in_array( $unprefixed, array_keys( $overlapping_keys ) ) ) {
-			// No
+		if ( ! in_array( $unprefixed, array_keys( $overlapping_keys ), true ) ) {
+			// No.
 			return;
 		}
 
@@ -206,7 +206,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 		 * appends terms instead of replacing. That means if the $meta_value is
 		 * For Sale or Sold, we need to remove the opposite term.
 		 */
-		if ( 'availability' == strtolower( $unprefixed )
+		if ( 'availability' === strtolower( $unprefixed )
 			&& ! empty( $meta_value )
 			&& in_array( INVP::sluggify( $meta_value ), array( 'for-sale', 'sold' ) )
 		) {
@@ -214,7 +214,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 				array(
 					'taxonomy' => $taxonomy,
 					'fields'   => 'ids',
-					'slug'     => 'sold' == INVP::sluggify( $meta_value ) ? 'for-sale' : 'sold',
+					'slug'     => 'sold' === INVP::sluggify( $meta_value ) ? 'for-sale' : 'sold',
 				)
 			);
 			$this->hooks_remove();
@@ -334,24 +334,27 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 */
 	public function term_relationship_deleted( $object_id, $tt_ids, $taxonomy ) {
 		// Does $object_id belong to a vehicle?
-		if ( INVP::POST_TYPE != get_post_type( $object_id ) ) {
-			// No
+		if ( INVP::POST_TYPE !== get_post_type( $object_id ) ) {
+			// No.
 			return;
 		}
 
 		// Is the taxonomy one that overlaps a meta field?
 		$keys_and_taxonomies = $this->overlapping_meta_keys();
 		$taxonomies_and_keys = array_flip( $keys_and_taxonomies );
-		if ( ! in_array( $taxonomy, array_values( $keys_and_taxonomies ) ) ) {
-			// No
+		if ( ! in_array( $taxonomy, array_values( $keys_and_taxonomies ), true ) ) {
+			// No.
 			return;
 		}
 
 		// delete post meta values from this post.
 		foreach ( $tt_ids as $term_taxonomy_id ) {
 			$term = get_term_by( 'term_taxonomy_id', $term_taxonomy_id, $taxonomy );
+			if ( is_wp_error( $term ) ) {
+				continue;
+			}
 
-			if ( 'availability' != strtolower( $taxonomy ) ) {
+			if ( 'availability' !== strtolower( $taxonomy ) ) {
 				$this->hooks_remove_meta();
 				delete_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', $taxonomies_and_keys[ $taxonomy ] ), $term->name );
 				$this->hooks_add_meta();
@@ -365,7 +368,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 				continue;
 			}
 
-			if ( 'wholesale' == strtolower( $term->slug ) ) {
+			if ( 'wholesale' === strtolower( $term->slug ) ) {
 				$this->hooks_remove_meta();
 				delete_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'wholesale' ), $term->name );
 				$this->hooks_add_meta();
@@ -393,16 +396,16 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 */
 	public function term_relationship_updated( $object_id, $tt_id, $taxonomy ) {
 		// Does $object_id belong to a vehicle?
-		if ( INVP::POST_TYPE != get_post_type( $object_id ) ) {
-			// No
+		if ( INVP::POST_TYPE !== get_post_type( $object_id ) ) {
+			// No.
 			return;
 		}
 
 		// Is the taxonomy one that overlaps a meta field?
 		$keys_and_taxonomies = $this->overlapping_meta_keys();
 		$taxonomies_and_keys = array_flip( $keys_and_taxonomies );
-		if ( ! in_array( $taxonomy, array_values( $keys_and_taxonomies ) ) ) {
-			// No
+		if ( ! in_array( $taxonomy, array_values( $keys_and_taxonomies ), true ) ) {
+			// No.
 			return;
 		}
 
@@ -412,12 +415,12 @@ class Inventory_Presser_Taxonomy_Overlapper {
 		}
 
 		$term = get_term_by( 'term_taxonomy_id', $tt_id, $taxonomy );
-		if ( ! is_object( $term ) || 'WP_Term' != get_class( $term ) ) {
+		if ( ! is_object( $term ) || 'WP_Term' !== get_class( $term ) ) {
 			return;
 		}
 
-		// For most taxonomies, we can just save the term name in the post meta field
-		if ( 'availability' != strtolower( $taxonomy ) ) {
+		// For most taxonomies, we can just save the term name in the post meta field.
+		if ( 'availability' !== strtolower( $taxonomy ) ) {
 			$this->hooks_remove_meta();
 			update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', $taxonomies_and_keys[ $taxonomy ] ), $term->name );
 			$this->hooks_add_meta();
@@ -459,7 +462,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 * @return void
 	 */
 	public function update_transmission_speeds_meta( $object_id, $taxonomy, $term ) {
-		if ( 'transmission' != strtolower( $taxonomy ) ) {
+		if ( 'transmission' !== strtolower( $taxonomy ) ) {
 			return;
 		}
 		update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'transmission_speeds' ), $this->extract_speeds( $term->name ) );
