@@ -45,6 +45,29 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 	class Inventory_Presser_Plugin {
 
 		/**
+		 * Administrators should always have full control over posts in our
+		 * custom post type. No other users will have any capabilities.
+		 *
+		 * @return void
+		 */
+		public function add_admin_capabilities() {
+			$role = get_role( 'administrator' );
+			if ( ! $role ) {
+				return;
+			}
+			$role->add_cap( 'edit_' . INVP::POST_TYPE );
+			$role->add_cap( 'read_' . INVP::POST_TYPE );
+			$role->add_cap( 'delete_' . INVP::POST_TYPE );
+
+			$role->add_cap( 'delete_published_' . INVP::POST_TYPE . 's' );
+			$role->add_cap( 'edit_' . INVP::POST_TYPE . 's' );
+			$role->add_cap( 'edit_others_' . INVP::POST_TYPE . 's' );
+			$role->add_cap( 'edit_published_' . INVP::POST_TYPE . 's' );
+			$role->add_cap( 'publish_' . INVP::POST_TYPE . 's' );
+			$role->add_cap( 'read_private_' . INVP::POST_TYPE . 's' );
+		}
+
+		/**
 		 * Filter callback that adds an ORDER BY clause to the main query when a
 		 * user requests a list of vehicles.
 		 *
@@ -353,10 +376,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				apply_filters(
 					'invp_post_type_args',
 					array(
-						'description'   => __( 'Vehicles for sale', 'inventory-presser' ),
-						'has_archive'   => true,
-						'hierarchical'  => false,
-						'labels'        => array(
+						'capability_type' => INVP::POST_TYPE,
+						'map_meta_cap'    => true,
+						'description'     => __( 'Vehicles for sale', 'inventory-presser' ),
+						'has_archive'     => true,
+						'hierarchical'    => false,
+						'labels'          => array(
 							'name'                  => _x( 'Vehicles', 'Post type general name', 'inventory-presser' ),
 							'singular_name'         => _x( 'Vehicle', 'Post type singular name', 'inventory-presser' ),
 							'menu_name'             => _x( 'Vehicles', 'Admin Menu text', 'inventory-presser' ),
@@ -378,22 +403,22 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							'items_list_navigation' => _x( 'Vehicles list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'inventory-presser' ),
 							'items_list'            => _x( 'Vehicles list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'inventory-presser' ),
 						),
-						'menu_icon'     => 'dashicons-admin-network',
-						'menu_position' => 5, // below Posts.
-						'public'        => true,
-						'rest_base'     => 'inventory',
-						'rewrite'       => array(
+						'menu_icon'       => 'dashicons-admin-network',
+						'menu_position'   => 5, // below Posts.
+						'public'          => true,
+						'rest_base'       => 'inventory',
+						'rewrite'         => array(
 							'slug'       => 'inventory',
 							'with_front' => false,
 						),
-						'show_in_rest'  => true,
-						'supports'      => array(
+						'show_in_rest'    => true,
+						'supports'        => array(
 							'custom-fields',
 							'editor',
 							'title',
 							'thumbnail',
 						),
-						'taxonomies'    => Inventory_Presser_Taxonomies::query_vars_array(),
+						'taxonomies'      => Inventory_Presser_Taxonomies::query_vars_array(),
 					)
 				)
 			);
@@ -611,6 +636,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			// create a custom post type for the vehicles.
 			add_action( 'init', array( $this, 'create_post_type' ) );
+
+			// Give all administrator users full capabilities over the custom post type.
+			add_action( 'admin_init', array( $this, 'add_admin_capabilities' ) );
 
 			// register all postmeta fields the CPT uses.
 			add_action( 'init', array( $this, 'register_meta_fields' ), 20 );
