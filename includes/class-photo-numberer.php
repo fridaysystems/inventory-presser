@@ -205,7 +205,7 @@ class Inventory_Presser_Photo_Numberer {
 	 * post meta. This 32 character string can be used for file comparisons
 	 * while not taxing the server as much as other methods.
 	 *
-	 * @param  int $post_id
+	 * @param  int $post_id The post ID of the attachment.
 	 * @return void
 	 */
 	public static function save_meta_hash( $post_id ) {
