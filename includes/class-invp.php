@@ -20,6 +20,36 @@ class INVP {
 	const OPTION_PAGE_TAXONOMIES = 'invp-taxonomies';
 
 	/**
+	 * Returns an array of base colors. A vehicle painted Ruby Red Metallic has
+	 * a base color of "Red". Base colors allow vehicles to be categorized by
+	 * color.
+	 *
+	 * @return array
+	 */
+	public static function base_colors() {
+		return apply_filters(
+			'invp_base_colors',
+			array(
+				__( 'Beige', 'inventory-presser' ),
+				__( 'Black', 'inventory-presser' ),
+				__( 'Blue', 'inventory-presser' ),
+				__( 'Brown', 'inventory-presser' ),
+				__( 'Burgundy', 'inventory-presser' ),
+				__( 'Gold', 'inventory-presser' ),
+				__( 'Grey', 'inventory-presser' ),
+				__( 'Green', 'inventory-presser' ),
+				__( 'Ivory', 'inventory-presser' ),
+				__( 'Orange', 'inventory-presser' ),
+				__( 'Purple', 'inventory-presser' ),
+				__( 'Red', 'inventory-presser' ),
+				__( 'Silver', 'inventory-presser' ),
+				__( 'White', 'inventory-presser' ),
+				__( 'Yellow', 'inventory-presser' ),
+			)
+		);
+	}
+
+	/**
 	 * Returns the currency symbol. Default is a United States dollar sign.
 	 *
 	 * @return string

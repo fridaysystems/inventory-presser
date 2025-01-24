@@ -502,6 +502,7 @@ class Inventory_Presser_Classic_Editor {
 		$keys   = array(
 			'body_style',
 			'color',
+			'color_base',
 			'description',
 			'engine',
 			'interior_color',
@@ -630,12 +631,26 @@ class Inventory_Presser_Classic_Editor {
 			);
 		}
 
+		$base_color_options_html = '<option value=""></option>';
+		foreach ( INVP::base_colors() as $color ) {
+			$base_color_options_html .= sprintf(
+				'<option value="%s"%s>%s</option>',
+				esc_attr( $color ),
+				selected( $color, $meta['color_base'], false ),
+				esc_html( $color )
+			);
+		}
+
 		printf(
 			'</select></td></tr>'
 
 			// Color.
 			. '<tr><th scope="row"><label for="%1$s">%2$s</label></th>'
 			. '<td><input type="text" name="%1$s" value="%3$s"></td></tr>'
+
+			// Base color.
+			. '<tr><th scope="row"><label for="%14$s">%15$s</label></th>'
+			. '<td><select name="%14$s">' . $base_color_options_html . '</select></td></tr>'
 
 			// Interior color.
 			. '<tr><th scope="row"><label for="%4$s">%5$s</label></th>'
@@ -661,7 +676,9 @@ class Inventory_Presser_Classic_Editor {
 			/* 10 */ esc_attr( apply_filters( 'invp_odometer_word', 'miles' ) ),
 			/* 11 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'youtube' ) ),
 			/* 12 */ esc_html__( 'YouTube video ID', 'inventory-presser' ),
-			/* 13 */ esc_attr( $meta['youtube'] )
+			/* 13 */ esc_attr( $meta['youtube'] ),
+			/* 14 */ esc_attr( apply_filters( 'invp_prefix_meta_key', 'color_base' ) ),
+			/* 15 */ esc_html__( 'Base color', 'inventory-presser' ),
 		);
 
 		// Description.

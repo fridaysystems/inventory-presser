@@ -601,7 +601,8 @@ class Inventory_Presser_Taxonomies {
 	 * @return array
 	 */
 	public static function taxonomy_data() {
-		$taxonomies = array(
+		$base_colors = INVP::base_colors();
+		$taxonomies  = array(
 			array(
 				'args' => array(
 					'hierarchical'   => true,
@@ -989,23 +990,7 @@ class Inventory_Presser_Taxonomies {
 					'show_in_rest'   => true,
 					'show_ui'        => true,
 				),
-				'term_data' => array(
-					'Beige'    => 'Beige',
-					'Black'    => 'Black',
-					'Blue'     => 'Blue',
-					'Brown'    => 'Brown',
-					'Burgundy' => 'Burgundy',
-					'Gold'     => 'Gold',
-					'Grey'     => 'Grey',
-					'Green'    => 'Green',
-					'Ivory'    => 'Ivory',
-					'Orange'   => 'Orange',
-					'Purple'   => 'Purple',
-					'Red'      => 'Red',
-					'Silver'   => 'Silver',
-					'White'    => 'White',
-					'Yellow'   => 'Yellow',
-				),
+				'term_data' => array_combine( $base_colors, $base_colors ),
 			),
 			array(
 				'args' => array(
