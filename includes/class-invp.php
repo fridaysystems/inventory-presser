@@ -953,6 +953,7 @@ class INVP {
 		);
 
 		foreach ( $vehicles as $vehicle ) {
+
 			// Obscure 17 digit VINs.
 			$vin = '';
 			if ( 17 === strlen( $vehicle->meta->inventory_presser_vin ) ) {
@@ -994,7 +995,8 @@ class INVP {
 				'post_type'         => $vehicle->type,
 				'meta_input'        => (array) $vehicle->meta,
 			);
-			$id   = wp_insert_post( $post );
+
+			$id = wp_insert_post( $post );
 			foreach ( $options as $option ) {
 				add_post_meta( $id, apply_filters( 'invp_prefix_meta_key', 'options_array' ), $option );
 			}

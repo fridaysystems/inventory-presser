@@ -12,8 +12,6 @@ defined( 'ABSPATH' ) || exit;
  */
 class Inventory_Presser_Taxonomy_Overlapper {
 
-
-
 	/**
 	 * A meta value was just deleted after a term relationship was deleted.
 	 * Check for another term relationship in the same taxonomy. A user
