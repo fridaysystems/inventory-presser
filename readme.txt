@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.7.1
 Requires PHP: 7.0.0
-Stable tag: 14.18.3
+Stable tag: 15.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.14.18.3.zip](https://downloads.wordpress.org/plugin/inventory-presser.14.18.3.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.18.3.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v14.18.3.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.0.0.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.0.0.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.0.0.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.0.0.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,12 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.0.0 =
+* [Added] Adds Base Color drop down to the Attributes panel in the Classic Editor.
+* [Changed] Stops using _post capabilities. Changes the registration of the inventory_vehicle post type to use its own capabilities. Grants all capabilities to administrator users, but all non-administrators will lose the ability to read, edit, and delete vehicle posts with this update.
+* [Fixed] Fixes a bug that blanked vehicle post titles in REST API responses.
+* [Fixed] Fixes bugs in Divi integration. Output more than one option when the user chooses the Options Array dynamic content value. Format price, payment, and MSRP as currency when used as dynamic content values.. Format odometer as a number when used as a dynamic content value.
 
 = 14.18.3 =
 * [Fixed] Fixes a bug in the [invp_archive] shortcode preventing pagination from working as expected.
@@ -255,6 +261,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 15.0.0 =
+Adds Base Color drop down to the Attributes panel in the Classic Editor. Stops using _post capabilities. Changes the registration of the inventory_vehicle post type to use its own capabilities. Grants all capabilities to administrator users, but all non-administrators will lose the ability to read, edit, and delete vehicle posts with this update. Fixes a bug that blanked vehicle post titles in REST API responses. Fixes bugs in Divi integration. Output more than one option when the user chooses the Options Array dynamic content value. Format price, payment, and MSRP as currency when used as dynamic content values.. Format odometer as a number when used as a dynamic content value.
 
 = 14.18.3 =
 Fixes a bug in the [invp_archive] shortcode preventing pagination from working as expected.
