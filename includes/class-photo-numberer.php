@@ -35,10 +35,18 @@ class Inventory_Presser_Photo_Numberer {
 		add_filter( 'the_title', array( $this, 'add_sequence_number_to_titles' ), 10, 2 );
 	}
 
+	/**
+	 * Dynamically changes post titles of vehicle attachments in the dashboard
+	 * to identify their sequence number.
+	 *
+	 * @param  string $title The post title.
+	 * @param  int    $id The post ID.
+	 * @return string
+	 */
 	public function add_sequence_number_to_titles( $title, $id = null ) {
 		// Don't double dip during REST API requests.
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-			return;
+			return $title;
 		}
 
 		// What post?
