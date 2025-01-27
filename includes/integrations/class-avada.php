@@ -115,6 +115,11 @@ class Inventory_Presser_Avada {
 		$value = '';
 		switch ( apply_filters( 'invp_unprefix_meta_key', $params->element_content->key ) ) {
 
+			// Down payment.
+			case 'down_payment':
+				$value = $params->element_content->before . invp_get_the_down_payment() . $params->element_content->after;
+				break;
+
 			// Odometer.
 			case 'odometer':
 				$value = $params->element_content->before . invp_get_the_odometer( ' ' . apply_filters( 'invp_odometer_word', 'mi' ) ) . $params->element_content->after;
@@ -134,10 +139,21 @@ class Inventory_Presser_Avada {
 				);
 				break;
 
+			// MSRP.
+			case 'msrp':
+				$value = $params->element_content->before . invp_get_the_msrp() . $params->element_content->after;
+				break;
+
+			// Payment.
+			case 'payment':
+				$value = $params->element_content->before . invp_get_the_payment() . $params->element_content->after;
+				break;
+
 			// Price.
 			case 'price':
 				$value = $params->element_content->before . invp_get_the_price() . $params->element_content->after;
 				break;
+
 			default:
 				$value = $content;
 		}

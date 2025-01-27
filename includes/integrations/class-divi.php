@@ -49,10 +49,11 @@ class Inventory_Presser_Divi {
 	 */
 	public function resolve_dynamic_content( $content, $name, $settings, $post_id ) {
 		$keys_and_callbacks = array(
-			'inventory_presser_odometer'          => 'invp_get_the_odometer',
-			'inventory_presser_payment'           => 'invp_get_the_payment',
-			'custom_meta_inventory_presser_msrp'  => 'invp_get_the_msrp',
-			'custom_meta_inventory_presser_price' => 'invp_get_the_price',
+			'custom_meta_inventory_presser_down_payment' => 'invp_get_the_down_payment',
+			'custom_meta_inventory_presser_odometer'     => 'invp_get_the_odometer',
+			'custom_meta_inventory_presser_payment'      => 'invp_get_the_payment',
+			'custom_meta_inventory_presser_msrp'         => 'invp_get_the_msrp',
+			'custom_meta_inventory_presser_price'        => 'invp_get_the_price',
 		);
 		if ( ! array_key_exists( $name, $keys_and_callbacks ) ) {
 			return $content;
