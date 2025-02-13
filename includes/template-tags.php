@@ -1203,6 +1203,16 @@ function invp_get_the_year( $post_ID = null ) {
 }
 
 /**
+ * Returns the YouTube embed code for this vehicle or an empty string.
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return string
+ */
+function invp_get_the_youtube_embed( $post_ID = null ) {
+	return INVP::get_meta( 'youtube_embed', $post_ID );
+}
+
+/**
  * Returns this vehicle's YouTube video URL or empty string.
  *
  * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
