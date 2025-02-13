@@ -204,22 +204,23 @@ class Inventory_Presser_Taxonomy_Overlapper {
 
 		/**
 		 * If we are in the Availability taxonomy, the end of this method
-		 * appends terms instead of replacing. That means if the $meta_value is
-		 * For Sale or Sold, we need to remove the opposite term.
+		 * appends terms instead of replacing so that a vehicle can be both
+		 * For Sale and Wholesale. If the $meta_value is For Sale, Sold or Sale
+		 * Pending, we need to remove the other of these terms.
 		 */
 		if ( 'availability' === strtolower( $unprefixed )
 			&& ! empty( $meta_value )
-			&& in_array( INVP::sluggify( $meta_value ), array( 'for-sale', 'sold' ), true )
+			&& in_array( INVP::sluggify( $meta_value ), array( 'for-sale', 'sold', 'sale-pending' ), true )
 		) {
-			$for_sale_and_sold_term_ids = get_terms(
+			$remove_term_ids = get_terms(
 				array(
 					'taxonomy' => $taxonomy,
 					'fields'   => 'ids',
-					'slug'     => 'sold' === INVP::sluggify( $meta_value ) ? 'for-sale' : 'sold',
+					'slug'     => array_diff( array( 'for-sale', 'sold', 'sale-pending' ), array( INVP::sluggify( $meta_value ) ) ),
 				)
 			);
 			$this->hooks_remove();
-			wp_remove_object_terms( $object_id, $for_sale_and_sold_term_ids, $taxonomy );
+			wp_remove_object_terms( $object_id, $remove_term_ids, $taxonomy );
 			$this->hooks_add();
 		}
 
@@ -281,7 +282,8 @@ class Inventory_Presser_Taxonomy_Overlapper {
 
 		/**
 		 * Assign the new term for this $object_id. The Availability taxonomy
-		 * holds For Sale/Sold and Wholesale, so append in that taxonomy.
+		 * holds For Sale/Sold/Sale Pending and Wholesale, so append in that
+		 * taxonomy.
 		 */
 		$this->hooks_remove();
 		wp_set_object_terms( $object_id, $term->term_id, $taxonomy, ( 'availability' === strtolower( $taxonomy ) ) );
@@ -448,6 +450,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 		// The availability taxonomy was the one updated.
 		switch ( strtolower( $term->slug ) ) {
 			case 'for-sale':
+			case 'sale-pending':
 			case 'sold':
 				$this->hooks_remove_meta();
 				update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', 'availability' ), $term->name );
