@@ -857,6 +857,12 @@ class INVP {
 					'type'   => 'string',
 				),
 				array(
+					'label'  => __( 'Tag Line', 'inventory-presser' ),
+					'name'   => 'tag_line',
+					'sample' => '2010 GMC Canyon SLE-1 Ext. Cab 4WD 170k Miles',
+					'type'   => 'string',
+				),
+				array(
 					'label'  => __( 'Term', 'inventory-presser' ),
 					'name'   => 'term',
 					'sample' => 72,
