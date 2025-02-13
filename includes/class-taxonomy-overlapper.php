@@ -315,7 +315,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 				'propulsion_type' => 'propulsion_type',
 				'transmission'    => 'transmission',
 				'type'            => 'type',
-				'wholesale'       => 'availability',
+				'wholesale'       => 'availability', // Wholesale is a meta field and also a valid Availability taxonomy term.
 
 				'condition_boat'  => 'condition_boat',
 				'engine_count'    => 'engine_count',
@@ -335,7 +335,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 */
 	private static function overlapping_meta_keys_flipped() {
 		$arr = self::overlapping_meta_keys();
-		unset( $arr['wholesale'] );
+		unset( $arr['wholesale'] ); // Wholesale is a meta field and also a valid Availability taxonomy term.
 		return array_flip( $arr );
 	}
 
