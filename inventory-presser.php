@@ -55,13 +55,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			if ( ! $role ) {
 				return;
 			}
-			$role->add_cap( 'edit_' . INVP::POST_TYPE );
-			$role->add_cap( 'read_' . INVP::POST_TYPE );
-			$role->add_cap( 'delete_' . INVP::POST_TYPE );
-
+			$role->add_cap( 'delete_' . INVP::POST_TYPE . 's' );
+			$role->add_cap( 'delete_others_' . INVP::POST_TYPE . 's' );
+			$role->add_cap( 'delete_private_' . INVP::POST_TYPE . 's' );
 			$role->add_cap( 'delete_published_' . INVP::POST_TYPE . 's' );
 			$role->add_cap( 'edit_' . INVP::POST_TYPE . 's' );
 			$role->add_cap( 'edit_others_' . INVP::POST_TYPE . 's' );
+			$role->add_cap( 'edit_private_' . INVP::POST_TYPE . 's' );
 			$role->add_cap( 'edit_published_' . INVP::POST_TYPE . 's' );
 			$role->add_cap( 'publish_' . INVP::POST_TYPE . 's' );
 			$role->add_cap( 'read_private_' . INVP::POST_TYPE . 's' );
