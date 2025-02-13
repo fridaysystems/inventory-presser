@@ -34,7 +34,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 		if ( empty( $terms ) ) {
 			return;
 		}
-		$taxonomies_and_keys = $this->overlapping_meta_keys_flipped();
+		$taxonomies_and_keys = self::overlapping_meta_keys_flipped();
 		$this->hooks_remove_meta();
 		update_post_meta( $object_id, apply_filters( 'invp_prefix_meta_key', $taxonomies_and_keys[ $taxonomy ] ), $terms[0]->name );
 		$this->hooks_add_meta();
@@ -190,7 +190,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 		}
 
 		// These are the unprefixed meta keys that have overlapping taxonomies.
-		$overlapping_keys = $this->overlapping_meta_keys();
+		$overlapping_keys = self::overlapping_meta_keys();
 		// unprefix the meta key.
 		$unprefixed = apply_filters( 'invp_unprefix_meta_key', $meta_key );
 
@@ -296,7 +296,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 *
 	 * @return array
 	 */
-	private function overlapping_meta_keys() {
+	public static function overlapping_meta_keys() {
 		return apply_filters(
 			'invp_overlapping_keys',
 			array(
@@ -333,8 +333,8 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 *
 	 * @return array
 	 */
-	private function overlapping_meta_keys_flipped() {
-		$arr = $this->overlapping_meta_keys();
+	private static function overlapping_meta_keys_flipped() {
+		$arr = self::overlapping_meta_keys();
 		unset( $arr['wholesale'] );
 		return array_flip( $arr );
 	}
@@ -356,13 +356,13 @@ class Inventory_Presser_Taxonomy_Overlapper {
 		}
 
 		// Is the taxonomy one that overlaps a meta field?
-		$keys_and_taxonomies = $this->overlapping_meta_keys();
+		$keys_and_taxonomies = self::overlapping_meta_keys();
 		if ( ! in_array( $taxonomy, array_values( $keys_and_taxonomies ), true ) ) {
 			// No.
 			return;
 		}
 
-		$taxonomies_and_keys = $this->overlapping_meta_keys_flipped();
+		$taxonomies_and_keys = self::overlapping_meta_keys_flipped();
 		// delete post meta values from this post.
 		foreach ( $tt_ids as $term_taxonomy_id ) {
 			$term = get_term_by( 'term_taxonomy_id', $term_taxonomy_id, $taxonomy );
@@ -419,7 +419,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 		}
 
 		// Is the taxonomy one that overlaps a meta field?
-		$keys_and_taxonomies = $this->overlapping_meta_keys();
+		$keys_and_taxonomies = self::overlapping_meta_keys();
 		if ( ! in_array( $taxonomy, array_values( $keys_and_taxonomies ), true ) ) {
 			// No.
 			return;
@@ -435,7 +435,7 @@ class Inventory_Presser_Taxonomy_Overlapper {
 			return;
 		}
 
-		$taxonomies_and_keys = $this->overlapping_meta_keys_flipped();
+		$taxonomies_and_keys = self::overlapping_meta_keys_flipped();
 		// For most taxonomies, we can just save the term name in the post meta field.
 		if ( 'availability' !== strtolower( $taxonomy ) ) {
 			$this->hooks_remove_meta();

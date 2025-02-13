@@ -1884,8 +1884,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$keys   = INVP::keys();
 			$keys[] = 'options_array';
 
-			foreach ( $keys as $key ) {
-				$key = apply_filters( 'invp_prefix_meta_key', $key );
+			foreach ( $keys as $unprefixed_key ) {
+				$key = apply_filters( 'invp_prefix_meta_key', $unprefixed_key );
 				if ( isset( $_POST[ $key ] ) ) {
 					if ( is_array( $_POST[ $key ] ) ) {
 						// delete all meta, this is essentially for the options.
@@ -1899,8 +1899,18 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 							}
 						}
 					} else {
-						// string data.
-						update_post_meta( $post->ID, $key, sanitize_text_field( $_POST[ $key ] ) );
+						// String data.
+						$value = wp_unslash( $_POST[ $key ] );
+						// The values for keys with overlapping taxonomies might be slugs instead of term names.
+						// inventory_presser_availability might arrive with a value of "for-sale" but we want to save "For Sale".
+						$overlapping_keys = Inventory_Presser_Taxonomy_Overlapper::overlapping_meta_keys();
+						if ( isset( $overlapping_keys[ $unprefixed_key ] ) ) {
+							$term = get_term_by( 'slug', $value, $overlapping_keys[ $unprefixed_key ] );
+							if ( false !== $term ) {
+								$value = $term->name;
+							}
+						}
+						update_post_meta( $post->ID, $key, sanitize_text_field( $value ) );
 					}
 				}
 			}
