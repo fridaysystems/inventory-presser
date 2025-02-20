@@ -419,28 +419,30 @@ class Inventory_Presser_Admin_Photo_Arranger {
 				}
 			}
 
-			// Change a CSS class to reflect the number of photos in the Gallery.
-			$block['innerContent'][0] = preg_replace(
-				'/ columns-[0-9]+/',
-				' columns-' . count( $block['innerBlocks'] ) ?? 0,
-				$block['innerContent'][0],
-				2
-			);
+			if ( null !== $block['innerContent'][0] ) {
+				// Change a CSS class to reflect the number of photos in the Gallery.
+				$block['innerContent'][0] = preg_replace(
+					'/ columns-[0-9]+/',
+					' columns-' . count( $block['innerBlocks'] ) ?? 0,
+					$block['innerContent'][0],
+					2
+				);
 
-			// Remove a list item HTML that renders the image in the gallery.
-			$pattern                  = sprintf(
-				'/<!-- wp:image {"id":%1$d,"sizeSlug":"large","linkDestination":"none"} -->'
-					. "[\r\n]*"
-					. '<figure class="wp-block-image size-large"><img src="[^"]+" alt="" class="wp-image-%1$d"/></figure>'
-					. "[\r\n]*"
-					. '<!-- /wp:image -->/',
-				$post_id
-			);
-			$block['innerContent'][0] = preg_replace(
-				$pattern,
-				'',
-				$block['innerContent'][0]
-			);
+				// Remove a list item HTML that renders the image in the gallery.
+				$pattern                  = sprintf(
+					'/<!-- wp:image {"id":%1$d,"sizeSlug":"large","linkDestination":"none"} -->'
+						. "[\r\n]*"
+						. '<figure class="wp-block-image size-large"><img src="[^"]+" alt="" class="wp-image-%1$d"\/><\/figure>'
+						. "[\r\n]*"
+						. '<!-- /wp:image -->/',
+					$post_id
+				);
+				$block['innerContent'][0] = preg_replace(
+					$pattern,
+					'',
+					$block['innerContent'][0]
+				);
+			}
 
 			// Update the block in the $blocks array.
 			$blocks[ $index ] = $block;
