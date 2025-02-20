@@ -795,7 +795,7 @@ class Inventory_Presser_Admin_Options {
 						admin_url(
 							sprintf(
 								'edit-tags.php?taxonomy=%s&post_type=%s',
-								$taxonomy_data[ $i ]['args']['query_var'],
+								str_replace( '-', '_', $taxonomy_data[ $i ]['args']['query_var'] ),
 								INVP::POST_TYPE
 							)
 						)
