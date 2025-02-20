@@ -114,7 +114,7 @@ class Inventory_Presser_Taxonomies {
 	public function add_hooks() {
 		// Create custom taxonomies for vehicles.
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
-		add_action( 'init', array( $this, 'unregister_taxonomies' ), 11 );
+
 		// Remove meta boxes from editors if taxonomies are not active.
 		add_action( 'admin_head', array( $this, 'editor_remove_meta_boxes' ) );
 
@@ -433,11 +433,21 @@ class Inventory_Presser_Taxonomies {
 	 * @return void
 	 */
 	public static function register_taxonomies() {
-		// loop over this data, register the taxonomies, and populate the terms if needed.
+		// Get the huge array of taxonomy data.
 		$taxonomy_data = self::taxonomy_data();
-		$count         = count( $taxonomy_data );
+
+		// Get the plugin settings where some taxonomies may be disabled.
+		$settings = INVP::settings();
+
+		$count = count( $taxonomy_data );
 		for ( $i = 0; $i < $count; $i++ ) {
-			// create the taxonomy, replace hyphens with underscores.
+			// If the taxonomy is disabled in the settings, skip it.
+			if ( ! isset( $settings['taxonomies'][ $taxonomy_data[ $i ]['args']['query_var'] ]['active'] )
+				|| ! $settings['taxonomies'][ $taxonomy_data[ $i ]['args']['query_var'] ]['active'] ) {
+				continue;
+			}
+
+			// Replace hyphens with underscores.
 			$taxonomy_name = str_replace( '-', '_', $taxonomy_data[ $i ]['args']['query_var'] ?? '' );
 			register_taxonomy( $taxonomy_name, INVP::POST_TYPE, $taxonomy_data[ $i ]['args'] );
 		}
@@ -1243,36 +1253,6 @@ class Inventory_Presser_Taxonomies {
 			}
 		}
 		return $html . '</select>';
-	}
-
-	/**
-	 * Users can turn off taxonomies provided by this plugin. This method
-	 * unregisters taxonomies that are turned off.
-	 *
-	 * @return void
-	 */
-	public function unregister_taxonomies() {
-		$settings = INVP::settings();
-		if ( ! isset( $settings['taxonomies'] ) || empty( $settings['taxonomies'] ) ) {
-			return;
-		}
-		$taxonomy_data = self::taxonomy_data();
-		foreach ( $taxonomy_data as $taxonomy_array ) {
-			if ( ! isset( $settings['taxonomies'][ $taxonomy_array['args']['query_var'] ]['active'] )
-				|| ! $settings['taxonomies'][ $taxonomy_array['args']['query_var'] ]['active'] ) {
-
-				/**
-				 * Category taxonomy is not enabled on vehicles. Some users want
-				 * it, though. Do not unregister the category taxonomy here--it
-				 * must have been added explicitly via filter.
-				 */
-				if ( 'category' === $taxonomy_array['args']['query_var'] ) {
-					continue;
-				}
-
-				unregister_taxonomy_for_object_type( $taxonomy_array['args']['query_var'], INVP::POST_TYPE );
-			}
-		}
 	}
 
 	/**
