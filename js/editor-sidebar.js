@@ -1,4 +1,12 @@
-// Hide taxonomy meta boxes in the Block Editor.
+/**
+ * This file name is no longer accurate. Contains JavaScript to customize the
+ * Block Editor beyond just this plugin's editor sidebar.
+ */
+
+/**
+ * Hide taxonomy meta boxes in the Block Editor. Users can customize which
+ * taxonomies are active and shown at Vehicles > Taxonomies.
+ */
 wp.api.loadPromise.done( function() {
 	var post = new wp.api.models.Inventory( { id: wp.media.view.settings.post.id } );
 	post.fetch().then( ( post ) => {
