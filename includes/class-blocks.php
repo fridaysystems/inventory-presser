@@ -64,6 +64,7 @@ class Inventory_Presser_Blocks {
 			'beam', // For boats.
 			'body-style',
 			'color',
+			'description',
 			'down-payment',
 			'engine',
 			'interior-color',
