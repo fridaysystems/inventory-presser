@@ -377,7 +377,7 @@ function invpFormatCurrency( value ) {
 						}
 					),
 					el(
-						MetaBlockField,
+						MetaBlockDigitsField,
 						{
 							fieldName: invp.meta_prefix + 'car_id',
 							id:        invp.meta_prefix + 'car_id',
