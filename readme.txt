@@ -2,7 +2,7 @@
 Contributors: salzano
 Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
-Tested up to: 6.7.1
+Tested up to: 6.7.2
 Requires PHP: 7.0.0
 Stable tag: 15.0.0
 License: GPLv2 or later
@@ -98,10 +98,16 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 == Changelog ==
 
 = 15.0.0 =
+* [Added] Adds a Description block that displays and edits the rich text describing the vehicle in the inventory_presser_description meta field.
 * [Added] Adds Base Color drop down to the Attributes panel in the Classic Editor.
-* [Changed] Stops using _post capabilities. Changes the registration of the inventory_vehicle post type to use its own capabilities. Grants all capabilities to administrator users, but all non-administrators will lose the ability to read, edit, and delete vehicle posts with this update.
+* [Added] Adds a template tag invp_get_the_youtube_embed().
+* [Added] Adds a meta field inventory_presser_tag_line to hold a descriptive sentence that differs from the post title.
 * [Fixed] Fixes a bug that blanked vehicle post titles in REST API responses.
 * [Fixed] Fixes bugs in Divi integration. Output more than one option when the user chooses the Options Array dynamic content value. Format price, payment, and MSRP as currency when used as dynamic content values.. Format odometer as a number when used as a dynamic content value.
+* [Fixed] Fixes bugs in Avada integration. Formats MSRP, payment, and down payment as currency when used as Custom Fields in Text Modules.
+* [Fixed] Fixes bugs around the "Sale Pending" availability term and copying changes involving this term to the overlapping meta field.
+* [Changed] Stops using _post capabilities. Changes the registration of the inventory_vehicle post type to use its own capabilities. Grants all capabilities to administrator users, but all non-administrators will lose the ability to read, edit, and delete vehicle posts with this update.
+* [Changed] Changes tested up to version number to 6.7.2.
 
 = 14.18.3 =
 * [Fixed] Fixes a bug in the [invp_archive] shortcode preventing pagination from working as expected.
@@ -263,7 +269,7 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 == Upgrade Notice ==
 
 = 15.0.0 =
-Adds Base Color drop down to the Attributes panel in the Classic Editor. Stops using _post capabilities. Changes the registration of the inventory_vehicle post type to use its own capabilities. Grants all capabilities to administrator users, but all non-administrators will lose the ability to read, edit, and delete vehicle posts with this update. Fixes a bug that blanked vehicle post titles in REST API responses. Fixes bugs in Divi integration. Output more than one option when the user chooses the Options Array dynamic content value. Format price, payment, and MSRP as currency when used as dynamic content values.. Format odometer as a number when used as a dynamic content value.
+Adds a Description block that displays and edits the rich text describing the vehicle in the inventory_presser_description meta field. Adds Base Color drop down to the Attributes panel in the Classic Editor. Adds a template tag invp_get_the_youtube_embed(). Adds a meta field inventory_presser_tag_line to hold a descriptive sentence that differs from the post title. Stops using _post capabilities. Changes the registration of the inventory_vehicle post type to use its own capabilities. Grants all capabilities to administrator users, but all non-administrators will lose the ability to read, edit, and delete vehicle posts with this update. Fixes a bug that blanked vehicle post titles in REST API responses. Fixes bugs in Divi integration. Output more than one option when the user chooses the Options Array dynamic content value. Format price, payment, and MSRP as currency when used as dynamic content values. Format odometer as a number when used as a dynamic content value. Fixes bugs in Avada integration. Formats MSRP, payment, and down payment as currency when used as Custom Fields in Text Modules. Fixes bugs around the "Sale Pending" availability term and copying changes involving this term to the overlapping meta field. Changes tested up to version number to 6.7.2.
 
 = 14.18.3 =
 Fixes a bug in the [invp_archive] shortcode preventing pagination from working as expected.
