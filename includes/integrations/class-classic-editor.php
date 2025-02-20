@@ -836,5 +836,6 @@ class Inventory_Presser_Classic_Editor {
 			'_thumbnail_id'     => $thumbnail_id,
 		);
 		wp_send_json_success( $data );
+		wp_die();
 	}
 }
