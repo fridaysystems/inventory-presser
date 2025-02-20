@@ -807,11 +807,12 @@ class Inventory_Presser_Admin_Options {
 			}
 			// Output the Active and Show in Admin Menu checkboxes.
 			printf(
-				'</td><td><input type="checkbox" name="%1$s[taxonomies][%2$s][active]" %3$s /></td><td><input type="checkbox" name="%1$s[taxonomies][%2$s][admin_menu]" %4$s /></td>',
+				'</td><td><input type="checkbox" name="%1$s[taxonomies][%2$s][active]" %3$s %5$s /></td><td><input type="checkbox" name="%1$s[taxonomies][%2$s][admin_menu]" %4$s /></td>',
 				esc_attr( INVP::OPTION_NAME ),
 				esc_attr( $taxonomy_data[ $i ]['args']['query_var'] ),
 				checked( true, boolval( $this->option['taxonomies'][ $taxonomy_data[ $i ]['args']['query_var'] ]['active'] ?? false ), false ), // Active.
 				checked( true, boolval( $this->option['taxonomies'][ $taxonomy_data[ $i ]['args']['query_var'] ]['admin_menu'] ?? false ), false ), // Show in Admin Menu.
+				disabled( true, 'type' === $taxonomy_data[ $i ]['args']['query_var'], false ) // Disable the checkbox for the Type taxonomy.
 			);
 
 			// Output checkboxes for each vehicle type.
