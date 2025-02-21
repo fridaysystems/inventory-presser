@@ -225,8 +225,12 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 				);
 			}
 
-			// Are we on a vdp? return a hidden field.
+			// Is this a vehicle details page?
 			if ( is_singular( INVP::POST_TYPE ) ) {
+				// Yes. Return two hidden fields.
+
+				// Vehicle field.
+				// <input type="hidden" name="vehicle" value="2022 KTM 890 DUKE R, K30451" />.
 				$input_atts = array(
 					'type'  => 'hidden',
 					'name'  => $tag->name,
@@ -239,6 +243,19 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 					'<input %s />',
 					wpcf7_format_atts( $input_atts )
 				);
+
+				// Post ID field.
+				// <input type="hidden" name="post_id" value="257" />.
+				$input_atts = array(
+					'type'  => 'hidden',
+					'name'  => 'post_id',
+					'value' => get_the_ID(),
+				);
+				$html      .= sprintf(
+					'<input %s />',
+					wpcf7_format_atts( $input_atts )
+				);
+
 				return apply_filters( 'invp_cf7_field_vehicle_html', $html . $validation_error, $atts );
 			}
 
