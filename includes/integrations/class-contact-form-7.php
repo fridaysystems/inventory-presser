@@ -151,7 +151,13 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 				} else {
 					// This vehicle does not have a term in the location taxonomy.
 					return sprintf(
-						'<vendor><vendorname>%1$s</vendorname><contact><name part="full" type="business">%1$s</name><url>%2$s</url></contact>',
+						'<vendor>'
+						. '<vendorname>%1$s</vendorname>'
+						. '<contact>'
+							. '<name part="full" type="business">%1$s</name>'
+							. '<url>%2$s</url>'
+						. '</contact>'
+						. '</vendor>',
 						$_site_title,
 						$_site_url
 					);
