@@ -73,18 +73,15 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 					return '';
 				}
 
-				/*
-				<vehicle>
-					<id>286535725</id>
-					<year>2017</year>
-					<make>NISSAN</make>
-					<model>ROGUE</model>
-					<vin>5N1AT2MV8HC876642</vin>
-					<stock>876642-A</stock>
-				</vehicle>
-				*/
 				return sprintf(
-					'<vehicle><id>%s</id><year>%s</year><make>%s</make><model>%s</model><vin>%s</vin><stock>%s</stock></vehicle>',
+					'<vehicle>'
+					. '<id>%s</id>'
+					. '<year>%s</year>'
+					. '<make>%s</make>'
+					. '<model>%s</model>'
+					. '<vin>%s</vin>'
+					. '<stock>%s</stock>'
+					. '</vehicle>',
 					INVP::get_meta( 'car_id', $post_id ),
 					invp_get_the_year( $post_id ),
 					invp_get_the_make( $post_id ),
@@ -120,7 +117,21 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 					$phone                   = get_term_meta( $term_id, 'phone_1_number', true );
 
 					return sprintf(
-						'<vendor><vendorname>%1$s</vendorname><contact><name part="full" type="business">%1$s</name><phone type="voice">%2$s</phone><address><street line="1">%3$s</street><street line="2">%4$s</street><city>%5$s</city><regioncode>%6$s</regioncode><postalcode>%7$s</postalcode><url>%8$s</url></address></contact></vendor>',
+						'<vendor>'
+							. '<vendorname>%1$s</vendorname>'
+							. '<contact>'
+								. '<name part="full" type="business">%1$s</name>'
+								. '<phone type="voice">%2$s</phone>'
+								. '<address>'
+									. '<street line="1">%3$s</street>'
+									. '<street line="2">%4$s</street>'
+									. '<city>%5$s</city>'
+									. '<regioncode>%6$s</regioncode>'
+									. '<postalcode>%7$s</postalcode>'
+									. '<url>%8$s</url>'
+								. '</address>'
+							. '</contact>'
+							. '</vendor>',
 						$vendor_name,
 						$phone,
 						$address_street,
@@ -130,24 +141,6 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 						$address_zip,
 						$_site_url
 					);
-
-					/*
-					<vendor>
-						<vendorname>Friday Demo</vendorname>
-						<contact>
-							<name part="full" type="business">Friday Demo</name>
-							<phone type="voice">800-677-7160</phone>
-							<address>
-								<street line="1">1185 Division Hwy</street>
-								<street line="2">Suite B</street>
-								<city>Ephrata</city>
-								<regioncode>PA</regioncode>
-								<postalcode>17522</postalcode>
-								<url>https://demo.inventorypresser.com/</url>
-							</address>
-						</contact>
-					</vendor>
-					*/
 				} else {
 					// This vehicle does not have a term in the location taxonomy.
 					return sprintf(
