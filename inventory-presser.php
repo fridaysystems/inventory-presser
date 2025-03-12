@@ -1095,8 +1095,9 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 
 			// Gravity Forms.
 			$plugin_path = 'gravityforms/gravityforms.php';
-			if ( in_array( $plugin_path, $active_plugins, true )
-				|| is_plugin_active_for_network( $plugin_path ) ) {
+			if ( ( in_array( $plugin_path, $active_plugins, true )
+				|| is_plugin_active_for_network( $plugin_path ) )
+				&& class_exists( 'GF_Fields' ) ) {
 				GF_Fields::register( new GF_Field_Vehicle() );
 			}
 		}
