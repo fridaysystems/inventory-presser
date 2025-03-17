@@ -13,7 +13,7 @@ window.addEventListener(
 	'load',
 	function () {
 		var el = document.getElementById( 'sort_by' );
-		if ( 'undefined' === typeof el ) {
+		if ( null === el || 'undefined' === typeof el ) {
 			return;
 		}
 		el.addEventListener(
