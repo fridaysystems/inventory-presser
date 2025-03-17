@@ -888,7 +888,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			}
 
 			// Adds the "View Details" button to each vehicle in archive loops.
-			add_action( 'invp_archive_buttons', array( $this, 'add_view_details_button' ) );
+			add_action( 'invp_archive_buttons', array( $this, 'add_view_details_button' ), 20 );
 
 			// Embeds a contact form on vehicle singles if one is chosen at Vehicles → Options.
 			add_action( 'invp_single_sections', array( $this, 'single_sections_add_form' ) );
