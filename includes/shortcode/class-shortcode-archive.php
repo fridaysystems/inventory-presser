@@ -103,8 +103,9 @@ class Inventory_Presser_Shortcode_Archive {
 		remove_filter( 'invp_range_filters_main_query', '__return_false' );
 
 		// Create the HTML output.
-		$output = '';
-		if ( $vehicles_query->have_posts() ) {
+		$have_posts = $vehicles_query->have_posts();
+		$output     = '' . apply_filters( '', 'invp_archive_shortcode_before', $have_posts, $atts );
+		if ( $have_posts ) {
 			while ( $vehicles_query->have_posts() ) {
 				$vehicles_query->the_post();
 				$shortcode = sprintf( '[invp_archive_vehicle show_titles="%s"]', strval( $atts['show_titles'] ) );
@@ -142,6 +143,6 @@ class Inventory_Presser_Shortcode_Archive {
 		// Restore original query & post data.
 		wp_reset_query();
 
-		return $output;
+		return $output . apply_filters( '', 'invp_archive_shortcode_after', $have_posts, $atts );
 	}
 }
