@@ -494,7 +494,7 @@ class INVP {
 				array(
 					'label' => __( 'Car ID', 'inventory-presser' ),
 					'name'  => 'car_id', // unique identifier.
-					'type'  => 'integer',
+					'type'  => 'string',
 				),
 				array(
 					'label' => __( 'Carfax Accident Free', 'inventory-presser' ),
