@@ -525,7 +525,7 @@ class Inventory_Presser_Taxonomies {
 	public static function schedule_terms_cron_job( $network_wide ) {
 		if ( ! wp_next_scheduled( self::CRON_HOOK_DELETE_TERMS ) ) {
 			if ( ! is_multisite() || ! $network_wide ) {
-				wp_schedule_event( time(), 'daily', self::CRON_HOOK_DELETE_TERMS );
+				wp_schedule_event( time(), 'weekly', self::CRON_HOOK_DELETE_TERMS );
 				return;
 			}
 
