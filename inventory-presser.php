@@ -1131,6 +1131,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'admin/class-admin-bar.php',
 				'admin/class-admin-editor-sidebar.php',
 				'admin/class-admin-location-meta.php',
+				'admin/class-admin-menus.php',
 				'admin/class-admin-options.php',
 				'admin/class-admin-photo-arranger.php',
 				'admin/class-admin-posts-list.php',
