@@ -133,7 +133,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 				$days          = Inventory_Presser_Shortcode_Hours_Today::create_days_array_from_hours_array( $hours_set );
 				$next_open_day = Inventory_Presser_Shortcode_Hours_Today::find_next_open_day( $days );
 
-				echo '<table>';
+				echo '<table class="table"><tbody>';
 
 				// output a row for each day.
 				$highlighted_a_row = false;
@@ -189,7 +189,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 						}
 
 						printf(
-							'<tr%s><th>%s</th>',
+							'<tr%s><th scope="row">%s</th>',
 							$current_row_class,
 							esc_html( array_values( INVP::weekdays() )[ $i ] )
 						);
@@ -215,7 +215,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 						echo '</tr>';
 					}
 				}
-				echo '</table>';
+				echo '</tbody></table>';
 			}
 		}
 		// Only output HTML here if $html has been emptied, that means it was echoed.
