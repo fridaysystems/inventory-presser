@@ -2,9 +2,9 @@
 Contributors: salzano
 Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
-Tested up to: 6.7.2
+Tested up to: 6.8.1
 Requires PHP: 7.0.0
-Stable tag: 15.0.0
+Stable tag: 15.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,8 +40,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 * Supports Classic Editor
 * Supports Block Editor
 * [Custom post type `inventory_vehicle`](https://inventorypresser.com/docs/vehicle-post-type/) enables [vehicle data imports](https://inventorypresser.com/docs/using-the-rest-api-to-update-vehicle-listings-in-wordpress/)
-* Adds columns to the posts list for vehicles for stock number, color, odometer, price, photo count, and thumbnail
-* Implements 10+ custom taxonomies to group vehicles by year, make, model, type, body style, fuel, transmission, drive type, availability, new or used, location, and more
+* Posts list columns for stock number, color, odometer, price, photo count, and thumbnail
+* Custom taxonomies group vehicles by year, make, model, type, body style, fuel, transmission, drive type, availability, new or used, location, and more
 * [Hooks](https://inventorypresser.com/docs/hooks/) in all the right places & powerful [shortcodes](https://inventorypresser.com/docs/shortcodes/)
 * [Template tags](https://inventorypresser.com/docs/template-tags/) for easy template builds
 * [Runs on any theme](https://inventorypresser.com/docs/theme-compatibility-with-vehicle-listings/) & provides shortcodes for the stubborn ones.
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.15.0.0.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.0.0.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.0.0.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.0.0.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.1.0.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.1.0.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.0.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.0.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,16 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.1.0 =
+* [Added] Adds a "Phone Numbers" meta box to the Appearance > Menus page, allowing phone numbers managed by the Locations taxonomy to be added to menus.
+* [Added] Adds a filter `invp_phone_number_widget_html` to make it easy to edit Phone Number widget HTML before it is output.
+* [Added] Adds two filters `invp_archive_shortcode_before` and `invp_archive_shortcode_after`. These filters make it easy to add content above and below the archive output.
+* [Fixed] Fixes a bug in the [invp_sort_by] shortcode.
+* [Fixed] Fixes a bug in Gravity Forms integration. Do not use a Gravity Forms class GF_Fields before making sure it exists. When the active_plugins option contains Gravity Forms but the site does not have the Gravity Forms plugin files, this condition would cause a fatal error.
+* [Changed] Changes inventory_presser_car_id meta field type from integer to string.
+* [Changed] Changes the cron job to delete unused terms from daily to weekly.
+* [Changed] Changes the filter priority on the View Details button on archives from 10 to 20.
 
 = 15.0.0 =
 * [Added] Adds a Description block that displays and edits the rich text describing the vehicle in the inventory_presser_description meta field.
@@ -268,6 +278,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 15.1.0 =
+Adds a "Phone Numbers" meta box to the Appearance > Menus page, allowing phone numbers managed by the Locations taxonomy to be added to menus. Adds a filter `invp_phone_number_widget_html` to make it easy to edit Phone Number widget HTML before it is output. Adds two filters `invp_archive_shortcode_before` and `invp_archive_shortcode_after`. These filters make it easy to add content above and below the archive output. Fixes a bug in the [invp_sort_by] shortcode. Fixes a bug in Gravity Forms integration. Do not use a Gravity Forms class GF_Fields before making sure it exists. When the active_plugins option contains Gravity Forms but the site does not have the Gravity Forms plugin files, this condition would cause a fatal error. Changes inventory_presser_car_id meta field type from integer to string. Changes the cron job to delete unused terms from daily to weekly. Changes the filter priority on the View Details button on archives from 10 to 20.
 
 = 15.0.0 =
 Adds a Description block that displays and edits the rich text describing the vehicle in the inventory_presser_description meta field. Adds Base Color drop down to the Attributes panel in the Classic Editor. Adds a template tag invp_get_the_youtube_embed(). Adds a meta field inventory_presser_tag_line to hold a descriptive sentence that differs from the post title. Fixes a bug that blanked vehicle post titles in REST API responses. Fixes bugs in Divi integration. Output more than one option when the user chooses the Options Array dynamic content value. Format price, payment, and MSRP as currency when used as dynamic content values.. Format odometer as a number when used as a dynamic content value. Fixes bugs in Avada integration. Formats MSRP, payment, and down payment as currency when used as Custom Fields in Text Modules. Fixes bugs around the "Sale Pending" availability term and copying changes involving this term to the overlapping meta field. Fixes an XML syntax bug in Contact Form 7 integration when creating ADF XML with the [invp_adf_vendor] mail tag. Adds a `post_id` hidden field to the form tag output of [invp_vehicle] to make attaching vehicles to lead submissions more efficient than using the stock number. Stops using _post capabilities. Changes the registration of the inventory_vehicle post type to use its own capabilities. Grants all capabilities to administrator users, but all non-administrators will lose the ability to read, edit, and delete vehicle posts with this update. Changes tested up to version number to 6.7.2.
