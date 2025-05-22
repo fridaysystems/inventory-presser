@@ -151,13 +151,17 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 				// There is a phone number is slot $p, has the user configured this widget to display it?
 				if ( in_array( $phone_uid, $instance['cb_display'][ $term_id ], true ) ) {
 					// Yes, output this number.
-					$number = get_term_meta( $term_id, 'phone_' . $p . '_number', true );
+					$number      = get_term_meta( $term_id, 'phone_' . $p . '_number', true );
+					$html        = '';
+					$description = '';
 					if ( $this->formats()[ $format ]['uses_labels'] ) {
 						$description = get_term_meta( $term_id, 'phone_' . $p . '_description', true );
-						printf( $this->formats()[ $format ]['repeater'], $description, INVP::prepare_phone_number_for_link( $number ), $number );
+						$html .= sprintf( $this->formats()[ $format ]['repeater'], $description, INVP::prepare_phone_number_for_link( $number ), $number );
 					} else {
-						printf( $this->formats()[ $format ]['repeater'], INVP::prepare_phone_number_for_link( $number ), $number );
+						$html .= sprintf( $this->formats()[ $format ]['repeater'], INVP::prepare_phone_number_for_link( $number ), $number );
 					}
+
+					echo apply_filters( 'invp_phone_number_widget_html', $html, $term_id, $phone_uid, $number, $description, $this->formats()[ $format ] );
 				}
 			}
 		}
