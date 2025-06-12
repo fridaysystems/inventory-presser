@@ -117,12 +117,12 @@ class Inventory_Presser_Avada {
 
 			// Down payment.
 			case 'down_payment':
-				$value = $params->element_content->before . invp_get_the_down_payment() . $params->element_content->after;
+				$value = ( $params->element_content->before ?? '' ) . invp_get_the_down_payment() . ( $params->element_content->after ?? '' );
 				break;
 
 			// Odometer.
 			case 'odometer':
-				$value = $params->element_content->before . invp_get_the_odometer( ' ' . apply_filters( 'invp_odometer_word', 'mi' ) ) . $params->element_content->after;
+				$value = ( $params->element_content->before ?? '' ) . invp_get_the_odometer( ' ' . apply_filters( 'invp_odometer_word', 'mi' ) ) . ( $params->element_content->after ?? '' );
 				break;
 
 			// Options.
@@ -133,32 +133,32 @@ class Inventory_Presser_Avada {
 				}
 				$value = sprintf(
 					'%s<ul class="vehicle-features">%s</ul>%s',
-					$params->element_content->before,
+					( $params->element_content->before ?? '' ),
 					$options_html,
-					$params->element_content->after
+					( $params->element_content->after ?? '' )
 				);
 				break;
 
 			// MSRP.
 			case 'msrp':
-				$value = $params->element_content->before . invp_get_the_msrp() . $params->element_content->after;
+				$value = ( $params->element_content->before ?? '' ) . invp_get_the_msrp() . ( $params->element_content->after ?? '' );
 				break;
 
 			// Payment.
 			case 'payment':
-				$value = $params->element_content->before . invp_get_the_payment() . $params->element_content->after;
+				$value = ( $params->element_content->before ?? '' ) . invp_get_the_payment() . ( $params->element_content->after ?? '' );
 				break;
 
 			// Price.
 			case 'price':
-				$value = $params->element_content->before . invp_get_the_price() . $params->element_content->after;
+				$value = ( $params->element_content->before ?? '' ) . invp_get_the_price() . ( $params->element_content->after ?? '' );
 				break;
 
 			default:
 				$value = $content;
 		}
 		if ( empty( $value ) ) {
-			$value = $params->element_content->before . $params->element_content->fallback . $params->element_content->after;
+			$value = ( $params->element_content->before ?? '' ) . $params->element_content->fallback . ( $params->element_content->after ?? '' );
 		}
 		return $value;
 	}
