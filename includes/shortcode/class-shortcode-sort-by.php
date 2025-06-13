@@ -62,7 +62,7 @@ class Inventory_Presser_Shortcode_Sort_By {
 	public function content( $atts ) {
 		$atts = shortcode_atts(
 			array(
-				'label' => __( 'SORT', 'inventory-presser' ),
+				'label' => __( 'Sort', 'inventory-presser' ),
 			),
 			$atts,
 			'invp_sort_by'
