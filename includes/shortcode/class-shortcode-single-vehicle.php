@@ -155,9 +155,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 				?>
 					<div class="vehicle-buttons">
 					<?php
-
 						do_action( 'invp_single_buttons' );
-
 					?>
 					</div>
 				</div>
@@ -197,7 +195,6 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 				}
 
 					$sections = apply_filters( 'invp_single_sections', $sections );
-
 					array_walk(
 						$sections,
 						function ( $value ) {
