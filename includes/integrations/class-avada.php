@@ -30,6 +30,9 @@ class Inventory_Presser_Avada {
 
 		// Change the way some of our meta fields are displayed in Text Block layout elements.
 		add_filter( 'fusion_shortcode_content', array( $this, 'avada_text_meta' ), 11, 3 );
+
+		// Allow filters to work in post card archive layouts.
+		add_filter( 'fusion_post_cards_shortcode_query_args', 'avada_post_cards_args', 10, 1 );
 	}
 
 	/**
@@ -74,6 +77,25 @@ class Inventory_Presser_Avada {
 			$meta[ 'kd_featured-image-' . $i . '_' . INVP::POST_TYPE . '_id' ] = $images[ $i ];
 		}
 		return $meta;
+	}
+
+	/**
+	 * Substitutes the global query variables in for the args Avada uses in the
+	 * [fusion_post_cards] shortcode.
+	 *
+	 * @param  array $args Query args.
+	 * @return array
+	 */
+	public function avada_post_cards_args( $args ) {
+		if ( ! class_exists( 'INVP' ) ) {
+			return $args;
+		}
+		global $wp_query;
+		if ( INVP::POST_TYPE === $args['post_type'] && is_post_type_archive( INVP::POST_TYPE ) ) {
+			// The query variables are already set. Use them instead.
+			return $wp_query->query_vars;
+		}
+		return $args;
 	}
 
 	/**
