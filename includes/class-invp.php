@@ -443,6 +443,43 @@ class INVP {
 	}
 
 	/**
+	 * Checks if there are both 'new' and 'used' vehicles in the inventory.
+	 *
+	 * @return bool True if both new and used vehicles exist, false otherwise.
+	 */
+	public static function have_new_and_used_vehicles() {
+		$new_query  = new WP_Query(
+			array(
+				'post_type'      => self::POST_TYPE,
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+				'tax_query'      => array(
+					array(
+						'taxonomy' => 'condition',
+						'field'    => 'slug',
+						'terms'    => 'new',
+					),
+				),
+			)
+		);
+		$used_query = new WP_Query(
+			array(
+				'post_type'      => self::POST_TYPE,
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+				'tax_query'      => array(
+					array(
+						'taxonomy' => 'condition',
+						'field'    => 'slug',
+						'terms'    => 'used',
+					),
+				),
+			)
+		);
+		return ( $new_query->have_posts() && $used_query->have_posts() );
+	}
+
+	/**
 	 * This is an array of the post meta keys this object uses. These keys
 	 * must be prefixed by an apply_filters() call before use.
 	 *
