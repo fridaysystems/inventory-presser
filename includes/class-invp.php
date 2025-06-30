@@ -932,7 +932,7 @@ class INVP {
 				array(
 					'label'  => __( 'Type', 'inventory-presser' ),
 					'name'   => 'type',
-					'sample' => __( 'Passenger Car', 'inventory-presser' ),
+					'sample' => __( 'Car', 'inventory-presser' ),
 					'type'   => 'string',
 				),
 				array(

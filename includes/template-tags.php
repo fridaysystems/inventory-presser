@@ -415,15 +415,6 @@ function invp_get_the_inventory_sentence() {
 			}
 		}
 
-		// Change a few type names.
-		switch ( $type->name ) {
-			case 'Sport Utility Vehicle':
-				$type->name = __( 'SUV', 'inventory-presser' );
-				break;
-			case 'Passenger Car':
-				$type->name = __( 'Car', 'inventory-presser' );
-				break;
-		}
 		$type_links[] = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url( site_url( 'inventory/type/' . $type->slug . '/' ) ),
