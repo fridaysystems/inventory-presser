@@ -32,7 +32,7 @@ class Inventory_Presser_Avada {
 		add_filter( 'fusion_shortcode_content', array( $this, 'avada_text_meta' ), 11, 3 );
 
 		// Allow filters to work in post card archive layouts.
-		add_filter( 'fusion_post_cards_shortcode_query_args', 'avada_post_cards_args', 10, 1 );
+		add_filter( 'fusion_post_cards_shortcode_query_args', array( $this, 'avada_post_cards_args' ), 10, 1 );
 	}
 
 	/**
