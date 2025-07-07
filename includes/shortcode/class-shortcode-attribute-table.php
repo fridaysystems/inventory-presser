@@ -134,10 +134,16 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 		);
 
 		// Fuel + Engine.
+		// If the last word of the engine is not the fuel value, add the fuel as a suffix.
+		$engine = invp_get_the_engine( $post_ID );
+		$fuel   = invp_get_the_fuel( $post_ID );
+		if ( strpos( $engine, $fuel ) === false ) {
+			$engine = $fuel . ' ' . $engine;
+		}
 		$table_items[] = array(
 			'member' => 'engine',
 			'label'  => __( 'Engine', 'inventory-presser' ),
-			'value'  => trim( implode( ' ', array( invp_get_the_fuel( $post_ID ), invp_get_the_engine( $post_ID ) ) ) ),
+			'value'  => $engine,
 		);
 
 		// Boat-specific engine fields.
