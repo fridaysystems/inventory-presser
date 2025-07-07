@@ -98,8 +98,12 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 == Changelog ==
 
 = 15.1.1 =
+* [Added] Adds an API method INVP::have_new_and_used_vehicles().
+* [Fixed] Bug fix in [invp_attribute_table] shortcode. Avoids repeating a fuel type like "Diesel" in the engine descriptor.
+* [Fixed] Bug fixes in flexslider CSS for more widespread compatibility.
 * [Fixed] Bug fix in Avada integration. Allows taxonomy filters in vehicle archives using Avada post cards layout.
 * [Fixed] Bug fix in Avada integration. Do not assume before and after content object members exist before using them.
+* [Changed] Changes to the Type taxonomy terms that are loaded for Car and SUV. Removes "Sport Utility Vehicle" and "Passenger Car" in favor of SUV and Car.
 
 = 15.1.0 =
 * [Added] Adds a "Phone Numbers" meta box to the Appearance > Menus page, allowing phone numbers managed by the Locations taxonomy to be added to menus.
@@ -283,8 +287,10 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Upgrade Notice ==
 
+
+
 = 15.1.1 =
-Bug fix in Avada integration. Allows taxonomy filters in vehicle archives using Avada post cards layout. Bug fix in Avada integration. Do not assume before and after content object members exist before using them.
+Adds an API method INVP::have_new_and_used_vehicles(). Bug fix in [invp_attribute_table] shortcode. Avoids repeating a fuel type like "Diesel" in the engine descriptor. Bug fixes in flexslider CSS for more widespread compatibility. Bug fix in Avada integration. Allows taxonomy filters in vehicle archives using Avada post cards layout. Bug fix in Avada integration. Do not assume before and after content object members exist before using them. Changes to the Type taxonomy terms that are loaded for Car and SUV. Removes "Sport Utility Vehicle" and "Passenger Car" in favor of SUV and Car.
 
 = 15.1.0 =
 Adds a "Phone Numbers" meta box to the Appearance > Menus page, allowing phone numbers managed by the Locations taxonomy to be added to menus. Adds a filter `invp_phone_number_widget_html` to make it easy to edit Phone Number widget HTML before it is output. Adds two filters `invp_archive_shortcode_before` and `invp_archive_shortcode_after`. These filters make it easy to add content above and below the archive output. Fixes a bug in the [invp_sort_by] shortcode. Fixes a bug in Gravity Forms integration. Do not use a Gravity Forms class GF_Fields before making sure it exists. When the active_plugins option contains Gravity Forms but the site does not have the Gravity Forms plugin files, this condition would cause a fatal error. Changes inventory_presser_car_id meta field type from integer to string. Changes the cron job to delete unused terms from daily to weekly. Changes the filter priority on the View Details button on archives from 10 to 20.
