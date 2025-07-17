@@ -21,7 +21,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	 *
 	 * @var array
 	 */
-	protected $price_defaults = array( 5000, 10000, 15000, 20000 );
+	protected $price_defaults = array( 40000, 30000, 20000, 15000, 10000 );
 
 	/**
 	 * Calls the parent class' contructor and adds a hook that will delete the
@@ -122,7 +122,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 				get_post_type_archive_link( INVP::POST_TYPE )
 			);
 
-			$class_string = ( 'buttons' === $instance['display_type'] ?? '' ) ? '_button _button-med' : 'price-filter-text';
+			$class_string = ( 'buttons' === ( $instance['display_type'] ?? '' ) ) ? '_button _button-med btn' : 'price-filter-text';
 
 			foreach ( $price_points as $price_point ) {
 				$this_link = add_query_arg( 'max_price', $price_point, $base_link );
@@ -141,7 +141,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 				esc_attr( remove_query_arg( 'max_price' ) ),
 				esc_html__( 'Remove', 'inventory-presser' ),
 				number_format( (int) $_GET['max_price'], 0, '.', ',' ),
-				esc_html__( 'Price Filter', 'inventory-presser' )
+				esc_html__( 'Shop by Price', 'inventory-presser' )
 			);
 		}
 
@@ -156,7 +156,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 	 */
 	public function form( $instance ) {
 
-		$title              = isset( $instance['title'] ) ? $instance['title'] : __( 'Price Filter', 'inventory-presser' );
+		$title              = isset( $instance['title'] ) ? $instance['title'] : __( 'Shop by Price', 'inventory-presser' );
 		$prices             = ( isset( $instance['prices'] ) && is_array( $instance['prices'] ) ) ? implode( ',', $instance['prices'] ) : implode( ',', $this->price_defaults );
 		$display_type_slugs = array_keys( $this->display_types() );
 		$display_type       = isset( $instance['display_type'] ) ? $instance['display_type'] : $display_type_slugs[0];
