@@ -52,10 +52,9 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 		// Parse boolean values to make life easy on users.
 		$atts['show_titles'] = filter_var( $atts['show_titles'], FILTER_VALIDATE_BOOLEAN );
 
-		if ( ! wp_style_is( 'invp-attribute-table', 'registered' ) ) {
+		if ( ! wp_style_is( 'invp_archive_vehicle', 'registered' ) ) {
 			Inventory_Presser_Plugin::include_scripts_and_styles();
 		}
-		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'invp_archive_vehicle' );
 
 		// Lie to themes using has_post_thumbnail() statically.
@@ -118,13 +117,11 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 						?>
 						</div>
 
-					<div class="vehicle-summary">
 					<?php
 
 					echo apply_shortcodes( '[invp_attribute_table]' );
 
 					?>
-					</div>
 
 					<div class="vehicle-price-and-buttons">
 						<h3 class="vehicle-price">

@@ -40,10 +40,9 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 
 		$image_url_lists = invp_get_the_photos( array( 'full', 'large', 'thumb' ) );
 
-		if ( ! wp_style_is( 'invp-attribute-table', 'registered' ) ) {
+		if ( ! wp_style_is( 'invp_single_vehicle', 'registered' ) ) {
 			Inventory_Presser_Plugin::include_scripts_and_styles();
 		}
-		wp_enqueue_style( 'invp-attribute-table' );
 		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );
 		wp_enqueue_style( 'invp_single_vehicle' );
@@ -137,19 +136,9 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 				<div class="vehicle-columns">
 				<?php
 
-					$attribute_table = apply_shortcodes( '[invp_attribute_table]' );
+				$attribute_table = apply_shortcodes( '[invp_attribute_table]' );
 				if ( ! empty( $attribute_table ) ) {
-
-					?>
-						<div class="vehicle-summary">
-						<?php
-
-						echo $attribute_table;
-
-						?>
-					</div>
-					<?php
-
+					echo $attribute_table;
 				}
 
 				?>

@@ -224,7 +224,13 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 
 		$table_items = apply_filters( 'invp_vehicle_attribute_table_items', $table_items );
 
-		$html = '';
+		if ( 0 === count( $table_items ) ) {
+			return '';
+		}
+
+		wp_enqueue_style( 'invp-attribute-table' );
+
+		$html = '<div class="vehicle-summary">';
 		foreach ( $table_items as $item ) {
 			// Does the vehicle have a value for this member?
 			$member = $item['member'];
@@ -239,6 +245,7 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 				apply_filters( 'invp_vehicle_attribute_table_cell', empty( $item['value'] ) ? strtolower( INVP::get_meta( $member, $post_ID ) ) : $item['value'] )
 			);
 		}
+		$html .= '</div>';
 
 		return apply_filters( 'invp_vehicle_attribute_table', $html );
 	}
