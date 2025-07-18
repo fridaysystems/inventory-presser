@@ -40,7 +40,7 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 				'include_carousel' => true,
 			),
 			$atts,
-			'photo_slider'
+			'invp_photo_slider'
 		); // Use shortcode_atts_inventory_slider to filter the incoming attributes.
 
 		// Parse boolean values to make life easy on users.

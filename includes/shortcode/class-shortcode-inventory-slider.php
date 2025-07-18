@@ -44,7 +44,7 @@ class Inventory_Presser_Shortcode_Slider {
 				'showcount' => 3, // How many vehicles are shown at one time?
 			),
 			$atts,
-			'inventory_slider'
+			'invp_inventory_slider'
 		); // Use shortcode_atts_inventory_slider to filter the incoming attributes.
 
 		// Parse boolean values to make life easy on users.

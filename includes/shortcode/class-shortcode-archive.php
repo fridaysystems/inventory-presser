@@ -74,7 +74,8 @@ class Inventory_Presser_Shortcode_Archive {
 				'post_status'    => 'publish',
 				'show_titles'    => true,
 			),
-			$atts
+			$atts,
+			'invp_archive'
 		);
 
 		// Allow orderby and order $_GET parameters to change the sort order.

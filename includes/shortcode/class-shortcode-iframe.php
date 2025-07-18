@@ -59,7 +59,8 @@ class Inventory_Presser_Shortcode_Iframe {
 				'frameborder' => '0',
 				'title'       => '',
 			),
-			$atts
+			$atts,
+			'invp_iframe'
 		);
 
 		// Stock number may arrive in a querystring variable with key 'stock'.

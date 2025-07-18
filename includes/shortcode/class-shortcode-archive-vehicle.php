@@ -60,7 +60,8 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 				 */
 				'style'       => 'a',
 			),
-			$atts
+			$atts,
+			'invp_archive_vehicle'
 		);
 
 		// Parse boolean values to make life easy on users.

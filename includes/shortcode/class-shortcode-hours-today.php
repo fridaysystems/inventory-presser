@@ -205,7 +205,8 @@ class Inventory_Presser_Shortcode_Hours_Today {
 			array(
 				'hours_uid' => 0,
 			),
-			$atts
+			$atts,
+			self::SHORTCODE_TAG
 		);
 
 		/**

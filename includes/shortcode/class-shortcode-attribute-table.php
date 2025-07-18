@@ -46,7 +46,7 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 			// uh.
 			),
 			$atts,
-			'attribute_table'
+			'invp_attribute_table'
 		); // Use shortcode_atts_attribute_table to filter the incoming attributes.
 
 		$post_ID       = get_the_ID();

@@ -67,7 +67,8 @@ class Inventory_Presser_Shortcode_Grid {
 				'show_prices'             => false, // replaces 'show_price'.
 				'suppress_call_for_price' => false, // When the price setting is {$Price}, this prevents "Call for price" in the grid.
 			),
-			$atts
+			$atts,
+			'invp_inventory_grid'
 		);
 
 		// Handle the old attribute names.
