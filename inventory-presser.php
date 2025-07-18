@@ -1413,11 +1413,26 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				INVP_PLUGIN_VERSION
 			);
 
-			// Register a stylesheet for the archive vehicle shortcode.
+			// Register multiple stylesheets for the archive vehicle shortcode.
+			// This one always loads.
 			wp_register_style(
 				'invp_archive_vehicle',
 				plugins_url( "/css/shortcode-archive-vehicle{$min}.css", INVP_PLUGIN_FILE_PATH ),
 				null,
+				INVP_PLUGIN_VERSION
+			);
+			// This one loads only when the style is set to "a".
+			wp_register_style(
+				'invp_archive_vehicle_a',
+				plugins_url( "/css/shortcode-archive-vehicle-a{$min}.css", INVP_PLUGIN_FILE_PATH ),
+				array( 'invp_archive_vehicle' ),
+				INVP_PLUGIN_VERSION
+			);
+			// This one loads only when the style is set to "b".
+			wp_register_style(
+				'invp_archive_vehicle_b',
+				plugins_url( "/css/shortcode-archive-vehicle-b{$min}.css", INVP_PLUGIN_FILE_PATH ),
+				array( 'invp_archive_vehicle' ),
 				INVP_PLUGIN_VERSION
 			);
 

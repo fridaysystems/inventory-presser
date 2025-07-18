@@ -4,6 +4,14 @@
 .vehicle-summary .item {
 	display: table-row;
 }
+@media screen and (max-width: 480px){
+	.vehicle-summary {
+		max-width: none;
+	}
+	.vehicle-summary .item {
+		display: flex;
+	}
+}
 .vehicle-summary .item > div {
 	display: table-cell;
 	padding: 5px 0;
