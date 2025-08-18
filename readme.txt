@@ -2,7 +2,7 @@
 Contributors: salzano
 Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 Requires PHP: 7.0.0
 Stable tag: 15.1.2
 License: GPLv2 or later
