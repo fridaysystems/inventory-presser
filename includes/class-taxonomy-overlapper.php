@@ -245,9 +245,12 @@ class Inventory_Presser_Taxonomy_Overlapper {
 				}
 			}
 
-			$this->hooks_remove();
-			wp_set_object_terms( $object_id, array_column( $terms, 'term_id' ), $taxonomy );
-			$this->hooks_add();
+			if ( ! empty( $terms ) ) {
+				$this->hooks_remove();
+				wp_set_object_terms( $object_id, array_column( $terms, 'term_id' ), $taxonomy );
+				$this->hooks_add();
+			}
+
 			return;
 		}
 
