@@ -438,6 +438,8 @@ class Inventory_Presser_Taxonomy_Overlapper {
 			return;
 		}
 
+		$this->hooks_remove_terms();
+
 		$taxonomies_and_keys = self::overlapping_meta_keys_flipped();
 		// For most taxonomies, we can just save the term name in the post meta field.
 		if ( 'availability' !== strtolower( $taxonomy ) ) {
