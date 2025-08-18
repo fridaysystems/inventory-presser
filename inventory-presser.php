@@ -751,7 +751,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				add_action( 'save_post_' . INVP::POST_TYPE, array( 'Inventory_Presser_Photo_Numberer', 'renumber_photos' ), 10, 1 );
 				// Save custom post meta and term relationships when posts are saved.
 				add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_post_meta' ), 10, 3 );
-				add_action( 'save_post_' . INVP::POST_TYPE, array( $this, 'save_vehicle_taxonomy_terms' ), 10, 2 );
 			}
 
 			// Maybe skip the trash bin and permanently delete vehicles & photos.
@@ -1917,7 +1916,21 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						}
 					} else {
 						// String data.
-						$value = wp_unslash( $_POST[ $key ] );
+						$value = sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
+
+						// Some values exist in post meta and taxonomy terms.
+						// Check $_POST['tax_input'] in case the user checked a term box.
+						if ( '' === $value && isset( $_POST['tax_input'] ) ) {
+							$tax_input = $_POST['tax_input'];
+							if ( isset( $overlapping_keys[ $unprefixed_key ] ) && isset( $tax_input[ $overlapping_keys[ $unprefixed_key ] ] ) ) {
+								$term_id = intval( array_values( array_filter( $tax_input[ $overlapping_keys[ $unprefixed_key ] ] ) )[0] ?? '0' );
+								$term    = get_term_by( 'term_taxonomy_id', $term_id, $overlapping_keys[ $unprefixed_key ] );
+								if ( false !== $term ) {
+									$value = $term->name;
+								}
+							}
+						}
+
 						// The values for keys with overlapping taxonomies might be slugs instead of term names.
 						// inventory_presser_availability might arrive with a value of "for-sale" but we want to save "For Sale".
 						$overlapping_keys = Inventory_Presser_Taxonomy_Overlapper::overlapping_meta_keys();
@@ -1930,28 +1943,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 						update_post_meta( $post->ID, $key, sanitize_text_field( $value ) );
 					}
 				}
-			}
-		}
-
-		/**
-		 * Saves custom taxonomy terms when vehicles are saved
-		 *
-		 * @param  int  $post_id   A post ID.
-		 * @param  bool $is_update True if this is a post update rather than an insert.
-		 * @return void
-		 */
-		public function save_vehicle_taxonomy_terms( $post_id, $is_update ) {
-			foreach ( Inventory_Presser_Taxonomies::slugs_array() as $slug ) {
-				$taxonomy_name = $slug;
-				switch ( $slug ) {
-					case 'style':
-						$slug = 'body_style';
-						break;
-					case 'model_year':
-						$slug = 'year';
-						break;
-				}
-				Inventory_Presser_Taxonomies::save_taxonomy_term( $post_id, $taxonomy_name, apply_filters( 'invp_prefix_meta_key', $slug ) );
 			}
 		}
 
