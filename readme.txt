@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.8.1
 Requires PHP: 7.0.0
-Stable tag: 15.1.1
+Stable tag: 15.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.15.1.1.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.1.1.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.1.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.1.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.1.2.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.1.2.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.2.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.2.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,15 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.1.2 =
+* [Added] Adds a `style` parameter to the [invp_archive_vehicle] shortcode. Values can be a or b. Defaults to a.
+* [Fixed] Allow all shortcode attributes to be filtered by other developers. Corrects some shortcode filter names to add invp_ prefix.
+* [Fixed] Fixes the way the vehicle attribute table styles are loaded. Solves the problem of attribute table CSS vanishing when the shortcode is used outside the provided templates.
+* [Fixed] Bug fix in archive CSS. Avoid using a pixel value. Replaces it with a percentage.
+* [Fixed] Fixes a bug when saving changes to vehicles made in the dashboard editors. Stops assigning taxonomy term relationships based on the meta data inputs. Starts using only the tax_input array to populate term relationships.
+* [Changed] Deprecates Inventory_Presser_Taxonomies::save_taxonomy_term(). Use wp_set_object_terms() instead. This method will be removed in a future release.
+* [Changed] Revisions to the Maximum Price Filter. Changes default price amounts to put the larger amounts first. Changes the amounts themselves. Changes the default title to "Shop by Price".
 
 = 15.1.1 =
 * [Added] Adds an API method INVP::have_new_and_used_vehicles().
@@ -287,7 +296,8 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Upgrade Notice ==
 
-
+= 15.1.2 =
+Adds a `style` parameter to the [invp_archive_vehicle] shortcode. Values can be a or b. Defaults to a. Allow all shortcode attributes to be filtered by other developers. Corrects some shortcode filter names to add invp_ prefix. Fixes the way the vehicle attribute table styles are loaded. Solves the problem of attribute table CSS vanishing when the shortcode is used outside the provided templates. Bug fix in archive CSS. Avoid using a pixel value. Replaces it with a percentage. Fixes a bug when saving changes to vehicles made in the dashboard editors. Stops assigning taxonomy term relationships based on the meta data inputs. Starts using only the tax_input array to populate term relationships. Deprecates Inventory_Presser_Taxonomies::save_taxonomy_term(). Use wp_set_object_terms() instead. This method will be removed in a future release. Revisions to the Maximum Price Filter. Changes default price amounts to put the larger amounts first. Changes the amounts themselves. Changes the default title to "Shop by Price".
 
 = 15.1.1 =
 Adds an API method INVP::have_new_and_used_vehicles(). Bug fix in [invp_attribute_table] shortcode. Avoids repeating a fuel type like "Diesel" in the engine descriptor. Bug fixes in flexslider CSS for more widespread compatibility. Bug fix in Avada integration. Allows taxonomy filters in vehicle archives using Avada post cards layout. Bug fix in Avada integration. Do not assume before and after content object members exist before using them. Changes to the Type taxonomy terms that are loaded for Car and SUV. Removes "Sport Utility Vehicle" and "Passenger Car" in favor of SUV and Car.
