@@ -763,15 +763,15 @@
 * [Added] All the values in a vehicle's prices array are now editable in the dashboard. This includes MSRP, down payment, payment, and payment frequency
 * [Changed] Do not show options and prices arrays in the list of default vehicle sort keys on the options page, these are structured data fields
 * [Changed] Move the options meta box to a higher position so it appears directly below the traditional edit box if there are other plugins creating meta boxes
-* [Removed] Removed an option that is implemented in the _dealer theme to affect the way users are redirected after submitting a Contact Form 7 form
-* [Removed] Removed an option that is implemented in the _dealer theme to customize a particular layout style
-* [Removed] Removed an option that is implemented in the _dealer theme to append a page's content to each vehicle details page
-* [Removed] Removed an option that is implemented in the _dealer theme to display vehicle prices in various ways to show discounts
-* [Removed] Removed an option that is implemented in the _dealer theme to change the MSRP label to custom text
-* [Removed] Removed an option that is implemented in the _dealer theme to change the way a Flexslider works
-* [Removed] Removed an option that is implemented in the _dealer theme to control where vehicle descriptions are shown
-* [Removed] Removed an option that is implemented in the _dealer theme to control where CarGurus badges are shown
-* [Removed] Removed an option that is implemented in the _dealer theme to hide footer links
+* [Removed] Removed an option that is implemented in our theme to affect the way users are redirected after submitting a Contact Form 7 form
+* [Removed] Removed an option that is implemented in our theme to customize a particular layout style
+* [Removed] Removed an option that is implemented in our theme to append a page's content to each vehicle details page
+* [Removed] Removed an option that is implemented in our theme to display vehicle prices in various ways to show discounts
+* [Removed] Removed an option that is implemented in our theme to change the MSRP label to custom text
+* [Removed] Removed an option that is implemented in our theme to change the way a Flexslider works
+* [Removed] Removed an option that is implemented in our theme to control where vehicle descriptions are shown
+* [Removed] Removed an option that is implemented in our theme to control where CarGurus badges are shown
+* [Removed] Removed an option that is implemented in our theme to hide footer links
 
 = 3.5.0 =
 * [Added] Added "Wheelchair Access" to the list of default vehicle options
