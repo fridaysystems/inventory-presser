@@ -177,7 +177,7 @@
 = 13.8.0 =
 * [Added] Adds template tags `invp_get_the_last_modified()` and `invp_get_raw_last_modified()`
 * [Added] Registers all scripts and styles on the `enqueue_block_editor_assets` hook so blocks can use them 
-* [Fixed] Adds & implements iFrameResizer.js in the [invp_iframe] shortcode instead of relying on the themes like _dealer to provide the library and resize iframes
+* [Fixed] Adds & implements iFrameResizer.js in the [invp_iframe] shortcode
 * [Fixed] Bug fix when looking for an SVG file path in the Carfax Widget
 * [Fixed] Bug fix in the `invp_get_the_transmission_speeds()` template tag. The single `$post_id` argument is now optional, matching all other template tags.
 
@@ -554,7 +554,7 @@
 * [Fixed] Fixes a bug when renaming the option when some settings have never been assigned a value
 
 = 10.5.0 =
-* [Added] Adds a Price Display setting that lets users show MSRP values, down payments, or 'Call For Price' instead of vehicle prices. This feature was built into the _dealer theme, but now lives in core so it's easy for widgets to show appropriate prices.
+* [Added] Adds a Price Display setting that lets users show MSRP values, down payments, or 'Call For Price' instead of vehicle prices.
 * [Added] Adds filters `invp_price_display_options` and `invp_price_display` that allow developers to create their own price display options.
 * [Added] Adds a method to the vehicle class that identifies the address where the vehicle is located when there is more than one term in the locations taxonomy containing vehicles.
 * [Added] Adds a filter `invp_vehicle_location_sentence` so that the output of the new location sentence method in the vehicle class can be filtered.
@@ -584,7 +584,7 @@
 * [Fixed] Fixes a bug in the Vehicle Slider widget when using the "prioritize featured vehicles" setting. Previously, no vehicles were shown (and no slider was included on the page) if no vehicles in inventory were set as featured.
 
 = 10.2.0 =
-* [Added] Adds CSS for the Grid widget and shortcode. Previously, the styles that styled this widget lived in the _dealer theme.
+* [Added] Adds CSS for the Grid widget and shortcode.
 * [Changed] Upgrades the version of flexslider embedded in this plugin to the latest version, 2.7.2. This changes the previous and next arrow buttons from their location in the top right of photos to the left and right sides of the frame how most sliders operate.
 * [Fixed] Fixes a bug where menu args were assumed to exist before using them to identify a specific menu this plugin modifies.
 
@@ -649,7 +649,7 @@
 
 = 8.1.0 =
 * [Added] Adds a list of full size photo URLs to the response array of the vehicle class' get_images_html_array() method. These accompany the <img> elements that are still part of the response.
-* [Added] Adds JavaScript and CSS payloads and hooks for jQuery.slick, a carousel we've built into our Vehicle Slider widget. This further decouples this plugin from the first theme we built called _dealer.
+* [Added] Adds JavaScript and CSS payloads and hooks for jQuery.slick, a carousel we've built into our Vehicle Slider widget.
 
 = 8.0.0 =
 * [Changed] Changed the custom post type definition to always has_archive, despite whether or not the theme has a proper template to show vehicles.

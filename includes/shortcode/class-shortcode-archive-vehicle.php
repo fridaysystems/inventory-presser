@@ -55,8 +55,8 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 				 *
 				 * Values
 				 * -----
-				 * a. "Flexible" Archive Listing Style from _dealer theme. Condensed.
-				 * b. "Default" Archive Listing Style from _dealer theme. Large photo.
+				 * a. Condensed, 3 column using flexbox. See screenshot-6.png.
+				 * b. Large photo, attribute table and buttons to the right. See screenshot-1.png.
 				 */
 				'style'       => 'a',
 			),
