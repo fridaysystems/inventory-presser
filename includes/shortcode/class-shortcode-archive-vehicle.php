@@ -200,7 +200,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 											the_post_thumbnail( 'large' );
 										} else {
 											?>
-										<img class="no-photo-available" src="<?php echo esc_url( invp_get_the_photo_url() ); ?>" alt="<?php esc_attr_e( 'No photo available', '_dealer' ); ?>" />
+										<img class="no-photo-available" src="<?php echo esc_url( invp_get_the_photo_url() ); ?>" alt="<?php esc_attr_e( 'No photo available', 'inventory-presser' ); ?>" />
 											<?php
 										}
 										// Resume lying about thumbnails.
