@@ -483,7 +483,7 @@ class Inventory_Presser_Taxonomies {
 	 * Used by the save_post_{post_type} hook. Create a term relationship
 	 * between a post and a term. Inserts the term first if it does not exist.
 	 *
-	 * @deprecated 15.1.3
+	 * @deprecated 15.1.2
 	 *
 	 * @param  int    $post_id
 	 * @param  string $taxonomy_name
@@ -491,7 +491,7 @@ class Inventory_Presser_Taxonomies {
 	 * @return void
 	 */
 	public static function save_taxonomy_term( $post_id, $taxonomy_name, $element_name ) {
-		doing_it_wrong( __METHOD__, 'This method has been deprecated. Please use wp_set_object_terms() instead.', '15.1.3' );
+		doing_it_wrong( __METHOD__, 'This method has been deprecated. Please use wp_set_object_terms() instead.', '15.1.2' );
 	}
 
 	/**
