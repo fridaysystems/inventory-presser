@@ -182,6 +182,17 @@ function invpFormatCurrency( value ) {
 					onChange: function( content ) {
 						 props.setMetaFieldValue( content );
 					},
+					onInput: function( event ) {
+						// Is this the VIN field?
+						if ( props.fieldName === invp.meta_prefix + 'vin' ) {
+							// Yes.
+							// Is the VIN Decoding plugin active?
+							if ( typeof window.invp_vin_decoder_maybe_decode === 'function' ) {
+								// Yes.
+								window.invp_vin_decoder_maybe_decode( event );
+							}
+						}
+					}
 				}
 			);
 		}
