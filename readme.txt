@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.8.2
 Requires PHP: 7.0.0
-Stable tag: 15.1.2
+Stable tag: 15.1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.15.1.2.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.1.2.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.2.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.2.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.1.3.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.1.3.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.3.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.3.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.1.3 =
+* [Added] Adds a Block Editor event handler for the VIN Decoder add-on. Detects and runs a VIN decode input handler for Inventory Presser VIN Decoder version 3.0.0 and up.
 
 = 15.1.2 =
 * [Added] Adds a `style` parameter to the [invp_archive_vehicle] shortcode. Values can be a or b. Defaults to a.
