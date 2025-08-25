@@ -34,7 +34,7 @@ class Inventory_Presser_Blocks {
 	 */
 	public function add_hooks() {
 		add_action( 'init', array( $this, 'register_block_types' ) );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_editor_assets' ) );
 		add_filter( 'block_categories_all', array( $this, 'add_category' ), 10, 1 );
 	}
 
@@ -44,8 +44,10 @@ class Inventory_Presser_Blocks {
 	 * @return void
 	 */
 	public function enqueue_block_editor_assets() {
-		wp_enqueue_script( 'invp-blocks' );
-		wp_enqueue_style( 'invp-block-editor' );
+		if ( is_admin() ) {
+			wp_enqueue_script( 'invp-blocks' );
+			wp_enqueue_style( 'invp-block-editor' );
+		}
 	}
 
 	/**
