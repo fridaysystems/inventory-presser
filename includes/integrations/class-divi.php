@@ -58,6 +58,10 @@ class Inventory_Presser_Divi {
 		if ( ! array_key_exists( $name, $keys_and_callbacks ) ) {
 			return $content;
 		}
+		// Odometer takes a different first parameter.
+		if ( 'custom_meta_inventory_presser_odometer' === $name ) {
+			return $settings['before'] . invp_get_the_odometer( '', $post_id ) . $settings['after'];
+		}
 		return $settings['before'] . call_user_func( $keys_and_callbacks[ $name ], $post_id ) . $settings['after'];
 	}
 
