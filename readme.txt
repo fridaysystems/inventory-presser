@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.8.2
 Requires PHP: 7.0.0
-Stable tag: 15.1.3
+Stable tag: 15.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.15.1.3.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.1.3.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.3.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.3.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.1.4.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.1.4.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.4.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.4.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.1.4 =
+* [Fixed] Bug fix in Divi integration. Stops putting the post ID near the odometer value returned by invp_get_the_odometer().
 
 = 15.1.3 =
 * [Added] Adds a Block Editor event handler for the VIN Decoder add-on. Detects and runs a VIN decode input handler for Inventory Presser VIN Decoder version 3.0.0 and up.
@@ -298,6 +301,12 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 15.1.4 =
+Bug fix in Divi integration. Stops putting the post ID near the odometer value returned by invp_get_the_odometer().
+
+= 15.1.3 =
+Adds a Block Editor event handler for the VIN Decoder add-on. Detects and runs a VIN decode input handler for Inventory Presser VIN Decoder version 3.0.0 and up.
 
 = 15.1.2 =
 Adds a `style` parameter to the [invp_archive_vehicle] shortcode. Values can be a or b. Defaults to a. Allow all shortcode attributes to be filtered by other developers. Corrects some shortcode filter names to add invp_ prefix. Fixes the way the vehicle attribute table styles are loaded. Solves the problem of attribute table CSS vanishing when the shortcode is used outside the provided templates. Bug fix in archive CSS. Avoid using a pixel value. Replaces it with a percentage. Fixes a bug when saving changes to vehicles made in the dashboard editors. Stops assigning taxonomy term relationships based on the meta data inputs. Starts using only the tax_input array to populate term relationships. Deprecates Inventory_Presser_Taxonomies::save_taxonomy_term(). Use wp_set_object_terms() instead. This method will be removed in a future release. Revisions to the Maximum Price Filter. Changes default price amounts to put the larger amounts first. Changes the amounts themselves. Changes the default title to "Shop by Price".
