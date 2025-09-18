@@ -98,11 +98,15 @@ if ( ! class_exists( 'Inventory_Presser_Range_Filters' ) ) {
 				return;
 			}
 
+			// Is there a filter in the query string?
 			if ( ! isset( $_GET['min_price'] )
 				&& ! isset( $_GET['max_price'] )
 				&& ! isset( $_GET['min_odometer'] )
 				&& ! isset( $_GET['max_odometer'] )
+				&& ! isset( $_GET['min_down'] )
+				&& ! isset( $_GET['max_down'] )
 			) {
+				// No.
 				return;
 			}
 
@@ -114,6 +118,7 @@ if ( ! class_exists( 'Inventory_Presser_Range_Filters' ) ) {
 
 			$meta_query['relation'] = 'AND';
 
+			// Price filters.
 			if ( isset( $_GET['max_price'] ) ) {
 				$meta_query = self::add_meta_query(
 					$meta_query,
@@ -134,6 +139,7 @@ if ( ! class_exists( 'Inventory_Presser_Range_Filters' ) ) {
 				);
 			}
 
+			// Odometer filters.
 			if ( isset( $_GET['min_odometer'] ) ) {
 				$meta_query = self::add_meta_query(
 					$meta_query,
@@ -149,6 +155,27 @@ if ( ! class_exists( 'Inventory_Presser_Range_Filters' ) ) {
 					$meta_query,
 					apply_filters( 'invp_prefix_meta_key', 'odometer' ),
 					(int) $_GET['max_odometer'],
+					'<=',
+					'numeric'
+				);
+			}
+
+			// Down payment filters.
+			if ( isset( $_GET['min_down'] ) ) {
+				$meta_query = self::add_meta_query(
+					$meta_query,
+					apply_filters( 'invp_prefix_meta_key', 'down_payment' ),
+					(int) $_GET['min_down'],
+					'>=',
+					'numeric'
+				);
+			}
+
+			if ( isset( $_GET['max_down'] ) ) {
+				$meta_query = self::add_meta_query(
+					$meta_query,
+					apply_filters( 'invp_prefix_meta_key', 'down_payment' ),
+					(int) $_GET['max_down'],
 					'<=',
 					'numeric'
 				);
