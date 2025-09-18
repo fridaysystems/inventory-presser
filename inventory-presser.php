@@ -535,16 +535,24 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				)
 			);
 
-			$taxonomies        = get_object_taxonomies( $post_type->name, 'objects' );
 			$new_rewrite_rules = array();
 
 			// Add taxonomy filters to the query vars array.
-			foreach ( $taxonomies as $taxonomy ) {
-				$query_vars[] = $taxonomy->query_var;
+			$settings = INVP::settings();
+			foreach ( Inventory_Presser_Taxonomies::query_vars_array() as $query_var ) {
+				$is_active = $settings['taxonomies'][ $query_var ]['active'] ?? false;
+				if ( $is_active ) {
+					$query_vars[] = $query_var;
+				}
 			}
 
-			// Loop over all the possible combinations of the query vars.
-			$query_vars_count = count( $query_vars );
+			/**
+			 * Create two rules for searches across single and multiple terms
+			 * and for each listings page.
+			 * One rule is page one, and the second supports the paged variable.
+			 */
+			$maximum_simultaneous_filters = intval( apply_filters( 'invp_archive_filter_max', 5 ) );
+			$query_vars_count             = min( $maximum_simultaneous_filters, count( $query_vars ) );
 			for ( $i = 1; $i <= $query_vars_count;  $i++ ) {
 				foreach ( $rewrite_slugs as $rewrite_slug ) {
 					$new_rewrite_rule = $rewrite_slug . '/';
