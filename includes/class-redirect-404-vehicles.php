@@ -78,6 +78,22 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 		}
 
 		/**
+		 * Examines the WP class instance to see if the error request is for a
+		 * vehicle archive.
+		 *
+		 * @param  WP $wp_obj Current WordPress environment instance (passed by reference).
+		 * @return bool
+		 */
+		protected function is_request_for_vehicle_archive( $wp_obj ) {
+			if ( ! isset( $wp_obj->request ) ) {
+				return false;
+			}
+
+			$pieces = explode( '/', $wp_obj->request );
+			return isset( $pieces[0] ) && trim( str_replace( site_url(), '', get_post_type_archive_link( INVP::POST_TYPE ) ), '/' ) === $pieces[0];
+		}
+
+		/**
 		 * Checks to see if the request is for a vehicle that no longer exists.
 		 * If it was, it decides where to redirect the user and performs that
 		 * redirect.
@@ -92,8 +108,12 @@ if ( ! class_exists( 'Redirect_404_Vehicles' ) ) {
 			}
 
 			// is this a 404?
-			// is this a request for a vehicle?
-			if ( ! is_404() || ! $this->is_request_for_vehicle( $wp_obj ) ) {
+			if ( ! is_404() ) {
+				return;
+			}
+
+			// is this a request for a vehicle or vehicle archive?
+			if ( ! $this->is_request_for_vehicle_archive( $wp_obj ) && ! $this->is_request_for_vehicle( $wp_obj ) ) {
 				return;
 			}
 

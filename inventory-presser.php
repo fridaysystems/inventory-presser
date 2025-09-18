@@ -702,7 +702,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			 */
 			if ( ! is_admin() ) {
 				add_action( 'pre_get_posts', array( $this, 'add_orderby_to_query' ) );
-				add_action( 'pre_get_posts', array( $this, 'modify_query_for_max_price' ), 99, 1 );
 			}
 
 			// Register scripts and styles.
@@ -1565,6 +1564,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * Filter callback that changes a query's meta_query value if the meta_query
 		 * does not already contain the provided $key.
 		 *
+		 * @deprecated 15.2.0 This feature has moved to includes/class-range-filters.php.
 		 * @param  array  $meta_query The meta_query member of a WP_Query, retrieved with WP_Query->get('meta_query').
 		 * @param  string $key
 		 * @param  string $value
@@ -1573,47 +1573,23 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * @return array The modified $meta_query array
 		 */
 		public static function maybe_add_meta_query( $meta_query, $key, $value, $compare, $type ) {
-			// Make sure there is not already $key item in the meta_query.
-			if ( self::meta_query_contains_clause( $meta_query, $key, $value, $compare, $type ) ) {
-				return $meta_query;
-			}
-
-			$meta_query[] = array(
-				'key'     => $key,
-				'value'   => $value,
-				'compare' => $compare,
-				'type'    => $type,
-			);
+			_doing_it_wrong( __METHOD__, 'This feature has moved to includes/class-range-filters.php.', '15.2.0' );
 			return $meta_query;
 		}
 
 		/**
 		 * Checks if a meta_query already contains a clause.
 		 *
+		 * @deprecated 15.2.0 This feature has moved to includes/class-range-filters.php.
 		 * @param  mixed $meta_query
 		 * @param  mixed $key
 		 * @param  mixed $value
 		 * @param  mixed $compare
 		 * @param  mixed $type
-		 * @return bool
+		 * @return bool Returns false because deprecated.
 		 */
 		public static function meta_query_contains_clause( $meta_query, $key, $value, $compare, $type ) {
-			if ( is_array( $meta_query ) ) {
-				if ( isset( $meta_query['key'] )
-					&& isset( $meta_query['value'] )
-					&& isset( $meta_query['compare'] )
-					&& isset( $meta_query['type'] )
-				) {
-					return $meta_query['key'] === $key
-					&& $meta_query['value'] === $value
-					&& $meta_query['compare'] === $compare
-					&& $meta_query['type'] === $type;
-				}
-
-				foreach ( $meta_query as $another ) {
-					return self::meta_query_contains_clause( $another, $key, $value, $compare, $type );
-				}
-			}
+			_doing_it_wrong( __METHOD__, 'This feature has moved to includes/class-range-filters.php.', '15.2.0' );
 			return false;
 		}
 
@@ -1621,33 +1597,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * Modifies the $query to filter vehicles by prices for the Maximum
 		 * Price Filter widget.
 		 *
+		 * @deprecated 15.2.0 This feature has moved to includes/class-range-filters.php.
 		 * @param  object $query An instance of the WP_Query class.
 		 * @return void
 		 */
 		public function modify_query_for_max_price( $query ) {
-			// Do not mess with the query if it's not the main one and our CPT.
-			if ( ! isset( $_GET['max_price'] )
-				|| ! $query->is_main_query()
-				|| INVP::POST_TYPE !== $query->get( 'post_type', '' )
-			) {
-				return;
-			}
-
-			// Get original meta query.
-			$meta_query = $query->get( 'meta_query' );
-			if ( ! is_array( $meta_query ) ) {
-				$meta_query = array();
-			}
-
-			$meta_query['relation'] = 'AND';
-			$meta_query             = self::maybe_add_meta_query(
-				$meta_query,
-				apply_filters( 'invp_prefix_meta_key', 'price' ),
-				(int) $_GET['max_price'],
-				'<=',
-				'numeric'
-			);
-			$query->set( 'meta_query', $meta_query );
+			_doing_it_wrong( __METHOD__, 'This feature has moved to includes/class-range-filters.php.', '15.2.0' );
 		}
 
 		/**
