@@ -185,7 +185,8 @@ class Inventory_Presser_Taxonomy_Overlapper {
 	 * @return void
 	 */
 	public function maintain_taxonomy_terms_during_meta_updates( $meta_id, $object_id, $meta_key, $meta_value ) {
-		if ( '_edit_lock' === strtolower( $meta_key ) ) {
+		// Skip private meta keys like _edit_lock, _wp_trash_meta_status, _wp_trash_meta_time, etc.
+		if ( '_' === $meta_key[0] ) {
 			return;
 		}
 
