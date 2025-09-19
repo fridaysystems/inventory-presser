@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.8.2
 Requires PHP: 7.0.0
-Stable tag: 15.1.4
+Stable tag: 15.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.15.1.4.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.1.4.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.4.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.1.4.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.2.0.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.2.0.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.0.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.0.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,11 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.2.0 =
+* [Added] Adds querystring filters for minimum and maximum down payments. Use `min_down` and `max_down` to filter vehicles by down payment amounts in URLs like https://example.com/inventory/?max_down=600.
+* [Fixed] Removes CSS max-width from vehicle attribute table.
+* [Changed] Limits the number of simultaneous taxonomy filters in an archive to five in URLs like https://example.com/inventory/make/acura/make/audi/make/honda/make/gmc/make/subaru/.
 
 = 15.1.4 =
 * [Fixed] Bug fix in Divi integration. Stops putting the post ID near the odometer value returned by invp_get_the_odometer().
@@ -301,6 +306,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 15.2.0 =
+Adds querystring filters for minimum and maximum down payments. Use `min_down` and `max_down` to filter vehicles by down payment amounts in URLs like https://example.com/inventory/?max_down=600. Removes CSS max-width from vehicle attribute table. Limits the number of simultaneous taxonomy filters in an archive to five in URLs like https://example.com/inventory/make/acura/make/audi/make/honda/make/gmc/make/subaru/.
 
 = 15.1.4 =
 Bug fix in Divi integration. Stops putting the post ID near the odometer value returned by invp_get_the_odometer().
