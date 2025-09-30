@@ -73,6 +73,7 @@ class Inventory_Presser_Shortcode_Archive {
 				'posts_per_page' => get_option( 'posts_per_page' ),
 				'post_status'    => 'publish',
 				'show_titles'    => true,
+				'style'          => 'a',
 			),
 			$atts,
 			'invp_archive'
@@ -88,6 +89,9 @@ class Inventory_Presser_Shortcode_Archive {
 		// Parse boolean values to make life easy on users.
 		$atts['show_titles'] = filter_var( $atts['show_titles'], FILTER_VALIDATE_BOOLEAN );
 		$atts['post_type']   = INVP::POST_TYPE;
+
+		// Ensure style is "a" or "b".
+		$atts['style'] = in_array( $atts['style'], array( 'a', 'b' ), true ) ? $atts['style'] : 'a';
 
 		// Add all taxonomy query vars to $atts so filters work.
 		$taxonomies = get_object_taxonomies( $atts['post_type'], 'objects' );
@@ -109,7 +113,7 @@ class Inventory_Presser_Shortcode_Archive {
 		if ( $have_posts ) {
 			while ( $vehicles_query->have_posts() ) {
 				$vehicles_query->the_post();
-				$shortcode = sprintf( '[invp_archive_vehicle show_titles="%s"]', strval( $atts['show_titles'] ) );
+				$shortcode = sprintf( '[invp_archive_vehicle show_titles="%s" style="%s"]', strval( $atts['show_titles'] ), $atts['style'] );
 				$output   .= apply_shortcodes( $shortcode );
 			}
 
