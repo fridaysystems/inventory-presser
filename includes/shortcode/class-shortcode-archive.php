@@ -38,6 +38,7 @@ class Inventory_Presser_Shortcode_Archive {
 	 */
 	private function clean_attributes_for_query( $atts ) {
 		unset( $atts['show_titles'] );
+		unset( $atts['style'] );
 
 		// Turn the location attribute into a tax_query.
 		if ( ! empty( $atts['location'] ) ) {
