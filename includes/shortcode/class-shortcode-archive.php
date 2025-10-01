@@ -109,7 +109,7 @@ class Inventory_Presser_Shortcode_Archive {
 
 		// Create the HTML output.
 		$have_posts = $vehicles_query->have_posts();
-		$output     = '' . apply_filters( '', 'invp_archive_shortcode_before', $have_posts, $atts );
+		$output     = '' . apply_filters( 'invp_archive_shortcode_before', '', $have_posts, $atts );
 		if ( $have_posts ) {
 			while ( $vehicles_query->have_posts() ) {
 				$vehicles_query->the_post();
@@ -148,6 +148,6 @@ class Inventory_Presser_Shortcode_Archive {
 		// Restore original query & post data.
 		wp_reset_query();
 
-		return $output . apply_filters( '', 'invp_archive_shortcode_after', $have_posts, $atts );
+		return $output . apply_filters( 'invp_archive_shortcode_after', '', $have_posts, $atts );
 	}
 }
