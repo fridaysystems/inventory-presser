@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.8.2
 Requires PHP: 7.0.0
-Stable tag: 15.2.0
+Stable tag: 15.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.15.2.0.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.2.0.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.0.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.0.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.2.1.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.2.1.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.1.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.1.zip)
 
 
 ### Requires 5.0.0

@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: Car listings with photo sliders for automobile and powersports dealerships.
- * Version: 15.2.0
+ * Version: 15.2.1
  * Author: Friday Systems
  * Author URI: https://inventorypresser.com
  * Text Domain: inventory-presser
@@ -21,8 +21,8 @@ defined( 'ABSPATH' ) || exit;
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * GitHub Plugin URI: https://github.com/fridaysystems/inventory-presser
  * Primary Branch: main
- * Download URI: https://downloads.wordpress.org/plugin/inventory-presser.15.2.0.zip
- * Download URI: https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.0.zip
+ * Download URI: https://downloads.wordpress.org/plugin/inventory-presser.15.2.1.zip
+ * Download URI: https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.1.zip
  */
 
 if ( ! defined( 'INVP_PLUGIN_BASE' ) ) {
@@ -32,7 +32,7 @@ if ( ! defined( 'INVP_PLUGIN_FILE_PATH' ) ) {
 	define( 'INVP_PLUGIN_FILE_PATH', __FILE__ );
 }
 if ( ! defined( 'INVP_PLUGIN_VERSION' ) ) {
-	define( 'INVP_PLUGIN_VERSION', '15.2.0' );
+	define( 'INVP_PLUGIN_VERSION', '15.2.1' );
 }
 
 if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
@@ -932,10 +932,6 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 		 * @return void
 		 */
 		public function add_view_details_button() {
-			if ( ! in_the_loop() ) {
-				return;
-			}
-
 			$css_classes = apply_filters(
 				'invp_css_classes_view_details_button',
 				array(
