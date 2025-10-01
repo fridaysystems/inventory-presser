@@ -2,7 +2,7 @@
 Contributors: salzano
 Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
-Tested up to: 6.8.2
+Tested up to: 6.8.3
 Requires PHP: 7.0.0
 Stable tag: 15.2.1
 License: GPLv2 or later
@@ -96,6 +96,11 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.2.1 =
+* [Fixed] Adds a style attribute to the [invp_archive] shortcode and passes it into [invp_archive_vehicle] to make the style parameter accessible to archive shortcode users.
+* [Fixed] Bug fix in [invp_archive] shortcode that prevented the before and after filters from working.
+* [Changed] Changes tested up to version number to 6.8.3.
 
 = 15.2.0 =
 * [Added] Adds querystring filters for minimum and maximum down payments. Use `min_down` and `max_down` to filter vehicles by down payment amounts in URLs like https://example.com/inventory/?max_down=600.
