@@ -936,6 +936,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'invp_css_classes_view_details_button',
 				array(
 					'wp-block-button__link',
+					'btn',
 					'button',
 				)
 			);
