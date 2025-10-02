@@ -815,6 +815,10 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				$shortcodes = new Inventory_Presser_Shortcode_Photo_Slider();
 				$shortcodes->add_hooks();
 			}
+			if ( class_exists( 'Inventory_Presser_Shortcode_Price' ) ) {
+				$shortcodes = new Inventory_Presser_Shortcode_Price();
+				$shortcodes->add_hooks();
+			}
 			if ( class_exists( 'Inventory_Presser_Shortcode_Vin' ) ) {
 				$shortcodes = new Inventory_Presser_Shortcode_Vin();
 				$shortcodes->add_hooks();
@@ -1169,6 +1173,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				'shortcode/class-shortcode-archive.php',
 				'shortcode/class-shortcode-archive-vehicle.php',
 				'shortcode/class-shortcode-attribute-table.php',
+				'shortcode/class-shortcode-price.php',
 				'shortcode/class-shortcode-single-vehicle.php',
 				'shortcode/class-shortcode-sort-by.php',
 				'shortcode/class-shortcode-vin.php',
