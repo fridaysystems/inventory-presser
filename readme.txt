@@ -98,6 +98,8 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 == Changelog ==
 
 = 15.2.1 =
+* [Added] Adds a shortcode [invp_price] to display a vehicle's price.
+* [Fixed] Provides the post content as the inventory_presser_description meta field when "Provide single and archive templates" is enabled.
 * [Fixed] Adds a style attribute to the [invp_archive] shortcode and passes it into [invp_archive_vehicle] to make the style parameter accessible to archive shortcode users.
 * [Fixed] Bug fix in [invp_archive] shortcode that prevented the before and after filters from working.
 * [Changed] Changes tested up to version number to 6.8.3.
@@ -311,6 +313,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 15.2.1 =
+Adds a shortcode [invp_price] to display a vehicle's price. Provides the post content as the inventory_presser_description meta field when "Provide single and archive templates" is enabled. Adds a style attribute to the [invp_archive] shortcode and passes it into [invp_archive_vehicle] to make the style parameter accessible to archive shortcode users. Bug fix in [invp_archive] shortcode that prevented the before and after filters from working. Changes tested up to version number to 6.8.3.
 
 = 15.2.0 =
 Adds querystring filters for minimum and maximum down payments. Use `min_down` and `max_down` to filter vehicles by down payment amounts in URLs like https://example.com/inventory/?max_down=600. Removes CSS max-width from vehicle attribute table. Limits the number of simultaneous taxonomy filters in an archive to five in URLs like https://example.com/inventory/make/acura/make/audi/make/honda/make/gmc/make/subaru/.
