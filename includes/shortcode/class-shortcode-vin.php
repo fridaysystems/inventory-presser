@@ -20,8 +20,8 @@ class Inventory_Presser_Shortcode_Vin {
 	 * @return void
 	 */
 	public function add() {
-		add_shortcode( 'invp-vin', 'invp_get_the_vin' );
-		add_shortcode( 'invp_vin', 'invp_get_the_vin' );
+		add_shortcode( 'invp-vin', array( $this, 'content' ) );
+		add_shortcode( 'invp_vin', array( $this, 'content' ) );
 	}
 
 	/**
@@ -31,5 +31,22 @@ class Inventory_Presser_Shortcode_Vin {
 	 */
 	public function add_hooks() {
 		add_action( 'init', array( $this, 'add' ) );
+	}
+
+	/**
+	 * Creates the HTML content of the shortcode
+	 *
+	 * @param  array $atts Shortcode attributes.
+	 * @return string HTML that renders a vehicle VIN
+	 */
+	public function content( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'id' => null,
+			),
+			$atts,
+			'invp_vin'
+		);
+		return invp_get_the_vin( $atts['id'] );
 	}
 }
