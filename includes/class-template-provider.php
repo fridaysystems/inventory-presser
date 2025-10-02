@@ -20,6 +20,9 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) ) {
 		public function add_hooks() {
 			add_filter( 'single_template', array( $this, 'maybe_provide_template' ) );
 			add_filter( 'archive_template', array( $this, 'maybe_provide_template' ) );
+
+			// Return the post content as part of the vehicle description.
+			add_filter( 'get_post_metadata', array( $this, 'return_post_content_as_vehicle_description' ), 10, 5 );
 		}
 
 		/**
@@ -127,6 +130,45 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) ) {
 				remove_filter( 'the_content', array( $this, 'replace_content_with_shortcode_single' ) );
 			}
 			return do_shortcode( '[invp_single_vehicle]' );
+		}
+
+		/**
+		 * Returns the post content as part of the vehicle description.
+		 *
+		 * @param  mixed  $value The value of the metadata.
+		 * @param  int    $object_id The ID of the object the metadata is for.
+		 * @param  string $meta_key The meta key.
+		 * @return mixed null or array
+		 */
+		public function return_post_content_as_vehicle_description( $value, $object_id, $meta_key ) {
+			if ( ! empty( $value ) ) {
+				return $value;
+			}
+
+			if ( apply_filters( 'invp_prefix_meta_key', 'description' ) !== $meta_key ) {
+				return $value;
+			}
+
+			// Is this setting enabled?
+			$settings = INVP::settings();
+			if ( ! isset( $settings['provide_templates'] ) || ! $settings['provide_templates'] ) {
+				// No.
+				return $value;
+			}
+
+			if ( INVP::POST_TYPE !== get_post_type( $object_id ) ) {
+				return $value;
+			}
+
+			ob_start();
+			the_content( null, false, $object_id );
+			$content = ob_get_clean();
+
+			if ( empty( $content ) ) {
+				return $value;
+			}
+
+			return array( $content );
 		}
 	}
 }
