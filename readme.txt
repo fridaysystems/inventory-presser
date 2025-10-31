@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.8.3
 Requires PHP: 7.0.0
-Stable tag: 15.2.2
+Stable tag: 15.2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.15.2.2.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.2.2.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.2.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.2.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.2.3.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.2.3.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.3.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.3.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,14 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.2.3 =
+* [Fixed] Improves the Description block visibility by adding a placeholder "Enter vehicle description...". Adds a Description block to the editor when editing vehicles to help users locate where to put free-form vehicle content.
+* [Fixed] Wraps the text "SOLD!" in a new filter `invp_sold_text` so that it can be changed.
+* [Fixed] Prevent HTML encoding in single vehicle templates for sold and pending sale vehicles.
+
+= 15.2.2 =
+* [Fixed] Reverts a feature added in 15.2.1: 'Provides the post content as the inventory_presser_description meta field when "Provide single and archive templates" is enabled.'
 
 = 15.2.1 =
 * [Added] Adds a shortcode [invp_price] to display a vehicle's price.
@@ -313,6 +321,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 15.2.3 =
+Improves the Description block visibility by adding a placeholder "Enter vehicle description...". Adds a Description block to the editor when editing vehicles to help users locate where to put free-form vehicle content. Wraps the text "SOLD!" in a new filter `invp_sold_text` so that it can be changed. Prevent HTML encoding in single vehicle templates for sold and pending sale vehicles.
 
 = 15.2.2 =
 Reverts a feature in 15.2.1 so more testing may be done. "Provides the post content as the inventory_presser_description meta field when "Provide single and archive templates" is enabled."

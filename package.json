@@ -1,6 +1,6 @@
 {
 	"name": "inventory-presser",
-	"version": "15.2.2",
+	"version": "15.2.3",
 	"description": "Simple inventory listings & everything else",
 	"main": "build/index.js",
 	"scripts": {
