@@ -58,7 +58,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 					<div class="vehicle-content">
 						<h2 class="post-title vehicle-price">
 						<?php
-								echo esc_html( invp_get_the_price() );
+								echo invp_get_the_price();
 						?>
 						</h2>
 

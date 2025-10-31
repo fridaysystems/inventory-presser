@@ -9,4 +9,8 @@
  * @package inventory-presser
  */
 
-printf( '<span %s>%s</span>', wp_kses_data( get_block_wrapper_attributes() ), esc_html( invp_get_the_price() ) );
+/**
+ * The price is escaped by the invp_get_the_price() function.
+ */
+/* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */
+printf( '<span %s>%s</span>', wp_kses_data( get_block_wrapper_attributes() ), invp_get_the_price() );
