@@ -22,7 +22,7 @@ if ( ! class_exists( 'Inventory_Presser_Template_Provider' ) ) {
 			add_filter( 'archive_template', array( $this, 'maybe_provide_template' ) );
 
 			// Return the post content as part of the vehicle description.
-			add_filter( 'get_post_metadata', array( $this, 'return_post_content_as_vehicle_description' ), 10, 5 );
+			//add_filter( 'get_post_metadata', array( $this, 'return_post_content_as_vehicle_description' ), 10, 5 );
 		}
 
 		/**
