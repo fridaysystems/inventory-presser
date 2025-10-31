@@ -925,7 +925,8 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 
 	// If this vehicle is sold, just say so.
 	if ( invp_is_sold( $post_ID ) ) {
-		return apply_filters( 'invp_sold_string', sprintf( '<span class="vehicle-sold">%s</span>', esc_html__( 'SOLD!', 'inventory-presser' ) ) );
+		$sold_text = apply_filters( 'invp_sold_text', esc_html__( 'SOLD!', 'inventory-presser' ) );
+		return apply_filters( 'invp_sold_string', sprintf( '<span class="vehicle-sold">%s</span>', $sold_text ) );
 	}
 
 	// If the vehicle is pending, just say so.
