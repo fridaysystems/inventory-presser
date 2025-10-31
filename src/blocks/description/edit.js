@@ -18,6 +18,8 @@ export default function Edit( { isSelected, context } ) {
 	const { postType } = context;
 	const [ meta, setMeta ] = useEntityProp( 'postType', postType, 'meta' );
 	const blockProps = useBlockProps();
+	const descriptionValue = meta[ invp_blocks.meta_prefix + 'description' ] || '';
+	const isEmpty = ! descriptionValue || descriptionValue.trim() === '';
 
 	/**
 	 * Use isSelected to render the lost focus output that mimics the front-end
@@ -25,10 +27,19 @@ export default function Edit( { isSelected, context } ) {
 	 * @link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#isselected
 	 */
 	if ( ! isSelected ) {
-		// Do not show the input field when the block is not selected.
+		// Show placeholder when empty, otherwise show the content
+		if ( isEmpty ) {
+			return (
+				<div { ...blockProps }>
+					<p style={ { opacity: 0.62, fontStyle: 'italic' } }>
+						{ __( 'Enter vehicle description...', 'inventory-presser' ) }
+					</p>
+				</div>
+			);
+		}
 		return (
 			<>
-				<RichText { ...blockProps } value={ meta[ invp_blocks.meta_prefix + 'description' ] }></RichText>
+				<RichText { ...blockProps } value={ descriptionValue }></RichText>
 			</>
 		);
 	}
@@ -41,7 +52,8 @@ export default function Edit( { isSelected, context } ) {
 				tagName="p"
 				onChange={ ( newValue ) => { setMeta( { ...meta, [invp_blocks.meta_prefix + 'description']: newValue } ); } }
 				allowedFormats={ [ 'core/bold', 'core/italic', 'core/link', 'core/text-color' ] }
-				value={ meta[ invp_blocks.meta_prefix + 'description' ] }
+				value={ descriptionValue }
+				placeholder={ __( 'Enter vehicle description...', 'inventory-presser' ) }
 			></RichText>
 		</>
 	);
