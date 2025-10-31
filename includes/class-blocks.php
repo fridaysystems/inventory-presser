@@ -36,6 +36,51 @@ class Inventory_Presser_Blocks {
 		add_action( 'init', array( $this, 'register_block_types' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_editor_assets' ) );
 		add_filter( 'block_categories_all', array( $this, 'add_category' ), 10, 1 );
+
+		/**
+		 * When a vehicle is opened in the block editor, add a Description block
+		 * to the post.
+		 */
+		add_action( 'the_post', array( $this, 'create_block_description' ), 10, 1 );
+	}
+
+	/**
+	 * Adds a Description Block to the post when a vehicle is opened in the
+	 * block editor.
+	 *
+	 * @param  WP_Post $post The post loaded into the block editor.
+	 * @return void
+	 */
+	public function create_block_description( $post ) {
+		global $pagenow;
+		// Is the user adding or editing a vehicle?
+		if ( ! is_admin()
+			|| get_post_type() !== INVP::POST_TYPE
+			|| ( 'post-new.php' !== $pagenow && 'post.php' !== $pagenow ) ) {
+			// No.
+			return;
+		}
+
+		// Does the post content contain a Description block?
+		$blocks = parse_blocks( $post->post_content );
+		foreach ( $blocks as $block ) {
+			// Is this a Description block?
+			if ( ! empty( $block['blockName'] ) && 'inventory-presser/description' === $block['blockName'] ) {
+				// Yes. The post already has a Description block.
+				return;
+			}
+		}
+
+		// The post does not have a Description block. Add one.
+		$blocks[]           = array(
+			'blockName'    => 'inventory-presser/description',
+			'attrs'        => array(),
+			'innerBlocks'  => array(),
+			'innerHTML'    => '',
+			'innerContent' => array(),
+		);
+		$post->post_content = serialize_blocks( $blocks );
+		wp_update_post( $post );
 	}
 
 	/**
