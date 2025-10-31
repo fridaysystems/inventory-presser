@@ -268,20 +268,6 @@ class Inventory_Presser_Admin_Photo_Arranger {
 		);
 		$post->post_content = serialize_blocks( $blocks );
 		$this->safe_update_post( $post );
-
-			// Add all this vehicle's photos.
-			// $posts = get_children(
-			// array(
-			// 'meta_key'    => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
-			// 'order'       => 'ASC',
-			// 'orderby'     => 'meta_value_num',
-			// 'post_parent' => $post->ID,
-			// 'post_type'   => 'attachment',
-			// )
-			// );
-			// foreach ( $posts as $post ) {
-			// $this->add_attachment_to_gallery( $post->ID, $post->post_parent );
-			// }
 	}
 
 	/**
