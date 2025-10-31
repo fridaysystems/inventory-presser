@@ -5,7 +5,7 @@
 	"main": "build/index.js",
 	"scripts": {
 		"start": "wp-scripts start",
-		"build": "wp-scripts build && cp -R node_modules/leaflet/dist/ js/leaflet  && cp -R node_modules/iframe-resizer/js/ js/iframe-resizer && minify js/leaflet/leaflet.css > js/leaflet/leaflet.min.css && minify vendor/woocommerce/FlexSlider/flexslider.css > css/woocommerce-flexslider.min.css"
+		"build": "wp-scripts build ; cp -R node_modules/leaflet/dist/ js/leaflet ; cp -R node_modules/iframe-resizer/js/ js/iframe-resizer ; minify js/leaflet/leaflet.css > js/leaflet/leaflet.min.css ; minify vendor/woocommerce/FlexSlider/flexslider.css > css/woocommerce-flexslider.min.css"
 	},
 	"repository": {
 		"type": "git",
