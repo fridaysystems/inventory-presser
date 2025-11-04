@@ -45,6 +45,26 @@ if ( ! class_exists( 'Inventory_Presser_Addon' ) ) {
 		}
 
 		/**
+		 * Ensures updaters are initialized for addon plugins in multisite.
+		 * This is called early in the update process to ensure updaters exist even when plugins aren't active on the main site.
+		 *
+		 * @return void
+		 */
+		public static function ensure_multisite_updaters() {
+			if ( ! is_multisite() ) {
+				return;
+			}
+
+			if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
+				return;
+			}
+
+			// Hook into the update process early to ensure updaters are initialized
+			// Use priority 5 to run before other update checks (which use default priority 10)
+			add_filter( 'pre_set_site_transient_update_plugins', array( 'Inventory_Presser_Addon_Updater', 'ensure_addon_updaters_initialized' ), 5, 1 );
+		}
+
+		/**
 		 * add_license_key_box
 		 *
 		 * @param  mixed $option_name

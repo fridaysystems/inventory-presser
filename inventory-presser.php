@@ -631,6 +631,11 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// include all this plugin's classes that live in external files.
 			$this->include_dependencies();
 
+			// Ensure addon updaters are initialized in multisite.
+			if ( class_exists( 'Inventory_Presser_Addon' ) ) {
+				Inventory_Presser_Addon::ensure_multisite_updaters();
+			}
+
 			// Prefix and unprefix meta keys with "inventory_presser_".
 			add_filter( 'invp_prefix_meta_key', array( 'INVP', 'translate_custom_field_names' ) );
 			add_filter( 'invp_unprefix_meta_key', array( 'INVP', 'untranslate_custom_field_names' ) );

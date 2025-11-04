@@ -86,6 +86,113 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 		}
 
 		/**
+		 * Ensures updaters are initialized for all addon plugins in multisite, even if plugins aren't active on the main site.
+		 * This is called via a static hook registered in Inventory_Presser_Addon.
+		 *
+		 * @param object $_transient_data Update array build by WordPress.
+		 * @return object
+		 */
+		public static function ensure_addon_updaters_initialized( $_transient_data ) {
+			if ( ! is_multisite() ) {
+				return $_transient_data;
+			}
+
+			// Map of plugin slugs to their details
+			$addon_plugins = array(
+				'make-list-widget'                 => array(
+					'option_name' => 'make_list_widget_settings',
+					'item_id'     => 607,
+					'class_name'  => 'Make_List_Addon',
+				),
+				'taxonomy-filters-widget'          => array(
+					'option_name' => 'invp_filters_widget_settings',
+					'item_id'     => 597,
+					'class_name'  => 'Taxonomy_Filters_Addon',
+				),
+				'taxonomy-drop-down-search-widget' => array(
+					'option_name' => 'invp_drop_down_widget_settings',
+					'item_id'     => 599,
+					'class_name'  => 'Dropdown_Search_Addon',
+				),
+			);
+
+			// Check if updaters are already initialized
+			global $edd_plugin_data;
+			if ( ! isset( $edd_plugin_data ) ) {
+				$edd_plugin_data = array();
+			}
+
+			// Get all installed plugins
+			$all_plugins = get_plugins();
+
+			foreach ( $addon_plugins as $slug => $plugin_info ) {
+				// Find the plugin file
+				$plugin_file = null;
+				foreach ( $all_plugins as $file => $plugin_data ) {
+					if ( strpos( $file, $slug ) !== false ) {
+						$plugin_file = $file;
+						break;
+					}
+				}
+
+				if ( ! $plugin_file ) {
+					continue;
+				}
+
+				// Check if updater is already initialized
+				if ( isset( $edd_plugin_data[ $slug ] ) ) {
+					continue;
+				}
+
+				// Try to get license key from any site, and remember which site it came from
+				$license_key      = '';
+				$license_site_url = '';
+				$sites            = get_sites( array( 'number' => 100 ) );
+				foreach ( $sites as $site ) {
+					switch_to_blog( $site->blog_id );
+					$options = get_option( $plugin_info['option_name'] );
+					if ( ! empty( $options['license_key'] ) ) {
+						$license_key = $options['license_key'];
+						// Use the site URL where the license key was found
+						// This ensures the license validation matches the registered site
+						$license_site_url = home_url();
+						restore_current_blog();
+						break;
+					}
+					restore_current_blog();
+				}
+
+				// If we found a license key, initialize the updater
+				if ( ! empty( $license_key ) && class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
+					// Get plugin version from file
+					$plugin_path = WP_PLUGIN_DIR . '/' . $plugin_file;
+					if ( file_exists( $plugin_path ) ) {
+						$plugin_data = get_file_data( $plugin_path, array( 'Version' => 'Version' ) );
+						$version     = ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '1.0.0';
+
+						// Use the site URL where the license key was found, or fall back to network URL
+						$site_url = ! empty( $license_site_url ) ? $license_site_url : network_home_url();
+
+						$updater = new Inventory_Presser_Addon_Updater(
+							'https://inventorypresser.com',
+							$plugin_file,
+							array(
+								'version' => $version,
+								'license' => $license_key,
+								'item_id' => $plugin_info['item_id'],
+								'author'  => 'Corey Salzano',
+								'url'     => $site_url,
+								'beta'    => false,
+							)
+						);
+					}
+				}
+			}
+
+			return $_transient_data;
+		}
+
+		/**
 		 * Removes the core "There is a new version of {plugin} available"
 		 * notice on the plugins list. We are adding our own.
 		 *
@@ -123,6 +230,40 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 				return $_transient_data;
 			}
 
+			// In multisite, if license key is empty, try to retrieve it before checking for updates.
+			// This ensures updates work even when plugins aren't active on the main site.
+			if ( is_multisite() && empty( $this->api_data['license'] ) ) {
+				$option_name_map = array(
+					'make-list-widget'                 => 'make_list_widget_settings',
+					'taxonomy-filters-widget'          => 'invp_filters_widget_settings',
+					'taxonomy-drop-down-search-widget' => 'invp_drop_down_widget_settings',
+				);
+
+				if ( isset( $option_name_map[ $this->slug ] ) ) {
+					$option_name     = $option_name_map[ $this->slug ];
+					$current_blog_id = get_current_blog_id();
+
+					// Try current site first.
+					$options = get_option( $option_name );
+					if ( ! empty( $options['license_key'] ) ) {
+						$this->api_data['license'] = $options['license_key'];
+					} else {
+						// If not found, check all sites in the network.
+						$sites = get_sites( array( 'number' => 100 ) );
+						foreach ( $sites as $site ) {
+							switch_to_blog( $site->blog_id );
+							$options = get_option( $option_name );
+							if ( ! empty( $options['license_key'] ) ) {
+								$this->api_data['license'] = $options['license_key'];
+								restore_current_blog();
+								break;
+							}
+							restore_current_blog();
+						}
+					}
+				}
+			}
+
 			$current = $this->get_repo_api_data();
 			if ( false !== $current && is_object( $current ) && isset( $current->new_version ) ) {
 				if ( version_compare( $this->version, $current->new_version, '<' ) ) {
@@ -147,7 +288,70 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 		public function get_repo_api_data() {
 			$version_info = $this->get_cached_version_info();
 
+			// If cached version info has empty package URL but we have a license key, clear cache and retry.
+			// This fixes multisite issues where plugins initialize before site options are available.
+			if ( false !== $version_info && empty( $version_info->package ) && ! empty( $this->api_data['license'] ) ) {
+				// Clear the cache and retry.
+				delete_option( $this->cache_key );
+				$version_info = false;
+			}
+
 			if ( false === $version_info ) {
+				// If license key is empty, try to retrieve it dynamically.
+				// This is a fallback for multisite where site options may not be available during initialization.
+				if ( empty( $this->api_data['license'] ) ) {
+					// Try to get license key from global plugin data registry.
+					global $edd_plugin_data;
+					if ( ! empty( $edd_plugin_data[ $this->slug ]['license'] ) ) {
+						$this->api_data['license'] = $edd_plugin_data[ $this->slug ]['license'];
+					}
+
+					// If still empty and we're in multisite, try to get license key from site options.
+					// Map known plugin slugs to their option names.
+					if ( empty( $this->api_data['license'] ) && is_multisite() ) {
+						$option_name_map = array(
+							'make-list-widget'        => 'make_list_widget_settings',
+							'taxonomy-filters-widget' => 'invp_filters_widget_settings',
+							'taxonomy-drop-down-search-widget' => 'invp_drop_down_widget_settings',
+						);
+
+						if ( isset( $option_name_map[ $this->slug ] ) ) {
+							$option_name     = $option_name_map[ $this->slug ];
+							$current_blog_id = get_current_blog_id();
+
+							// Try current site first.
+							$options = get_option( $option_name );
+							if ( ! empty( $options['license_key'] ) ) {
+								$this->api_data['license'] = $options['license_key'];
+							} else {
+								// If not found, check all sites in the network.
+								$sites = get_sites( array( 'number' => 100 ) );
+								foreach ( $sites as $site ) {
+									switch_to_blog( $site->blog_id );
+									$options = get_option( $option_name );
+									if ( ! empty( $options['license_key'] ) ) {
+										$this->api_data['license'] = $options['license_key'];
+										restore_current_blog();
+										break;
+									}
+									restore_current_blog();
+								}
+							}
+
+							// Update global registry if we found a license key.
+							if ( ! empty( $this->api_data['license'] ) ) {
+								if ( ! isset( $edd_plugin_data ) ) {
+									$edd_plugin_data = array();
+								}
+								if ( ! isset( $edd_plugin_data[ $this->slug ] ) ) {
+									$edd_plugin_data[ $this->slug ] = array();
+								}
+								$edd_plugin_data[ $this->slug ]['license'] = $this->api_data['license'];
+							}
+						}
+					}
+				}
+
 				$version_info = $this->api_request(
 					'plugin_latest_version',
 					array(
@@ -531,6 +735,10 @@ jQuery(document).ready(function(){
 				return false; // Don't allow a plugin to ping itself.
 			}
 
+			// Use the URL from api_data if set (this is the site URL where the license key was found)
+			// Otherwise fall back to home_url() for backward compatibility
+			$request_url = ! empty( $data['url'] ) ? $data['url'] : home_url();
+
 			$api_params = array(
 				'edd_action' => 'get_version',
 				'license'    => ! empty( $data['license'] ) ? $data['license'] : '',
@@ -539,7 +747,7 @@ jQuery(document).ready(function(){
 				'version'    => isset( $data['version'] ) ? $data['version'] : false,
 				'slug'       => $data['slug'],
 				'author'     => $data['author'],
-				'url'        => home_url(),
+				'url'        => $request_url,
 				'beta'       => ! empty( $data['beta'] ),
 			);
 
