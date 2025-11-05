@@ -460,6 +460,7 @@ class Inventory_Presser_Classic_Editor {
 		}
 
 		// Payment frequency is a drop-down.
+		$meta_key = apply_filters( 'invp_prefix_meta_key', 'payment_frequency' );
 		printf(
 			'<tr><th scope="row"><label for="%1$s">Payment frequency</label></th>'
 			. '<td><select name="%1$s"><option></option>',
