@@ -45,7 +45,7 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 			$this->version     = $_api_data['version'];
 			$this->wp_override = isset( $_api_data['wp_override'] ) ? (bool) $_api_data['wp_override'] : false;
 			$this->beta        = ! empty( $this->api_data['beta'] ) ? true : false;
-			$this->cache_key   = 'edd_sl_' . md5( serialize( $this->slug . $this->api_data['license'] . $this->beta ) );
+			$this->cache_key   = 'edd_sl_' . md5( wp_json_encode( $this->slug . $this->api_data['license'] . $this->beta ) );
 
 			$edd_plugin_data[ $this->slug ] = $this->api_data;
 
@@ -910,9 +910,6 @@ jQuery(document).ready(function(){
 			);
 
 			update_option( $cache_key, $data, false );
-
-			// Delete the duplicate option.
-			delete_option( 'edd_api_request_' . md5( serialize( $this->slug . $this->api_data['license'] . $this->beta ) ) );
 		}
 
 		/**
