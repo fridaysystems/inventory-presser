@@ -422,7 +422,7 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 						function () use ( $update_response ) {
 							?><script type="text/javascript"><!--
 jQuery(document).ready(function(){
-	jQuery('#<?php echo $update_response->slug; ?>-update .update-message p em').html( 'License key is missing at Vehicles → Options');
+	jQuery('#<?php echo esc_js( $update_response->slug ); ?>-update .update-message p em').html( 'License key is missing at Vehicles → Options');
 });
 --></script>
 							<?php
@@ -793,7 +793,7 @@ jQuery(document).ready(function(){
 		public function show_changelog() {
 			global $edd_plugin_data;
 
-			if ( empty( $_REQUEST['edd_sl_action'] ) || 'view_plugin_changelog' != $_REQUEST['edd_sl_action'] ) {
+			if ( empty( $_REQUEST['edd_sl_action'] ) || 'view_plugin_changelog' !== sanitize_text_field( wp_unslash( $_REQUEST['edd_sl_action'] ) ) ) {
 				return;
 			}
 
@@ -809,7 +809,13 @@ jQuery(document).ready(function(){
 				wp_die( esc_html__( 'You do not have permission to install plugin updates', 'inventory-presser' ), esc_html__( 'Error', 'inventory-presser' ), array( 'response' => 403 ) );
 			}
 
-			$data         = $edd_plugin_data[ $_REQUEST['slug'] ];
+			$slug = sanitize_text_field( wp_unslash( $_REQUEST['slug'] ) );
+			$data = isset( $edd_plugin_data[ $slug ] ) ? $edd_plugin_data[ $slug ] : null;
+
+			if ( empty( $data ) ) {
+				return;
+			}
+
 			$version_info = $this->get_cached_version_info();
 
 			if ( false === $version_info ) {
@@ -817,7 +823,7 @@ jQuery(document).ready(function(){
 					'edd_action' => 'get_version',
 					'item_name'  => isset( $data['item_name'] ) ? $data['item_name'] : false,
 					'item_id'    => isset( $data['item_id'] ) ? $data['item_id'] : false,
-					'slug'       => $_REQUEST['slug'],
+					'slug'       => $slug,
 					'author'     => $data['author'],
 					'url'        => home_url(),
 					'beta'       => ! empty( $data['beta'] ),
@@ -852,7 +858,8 @@ jQuery(document).ready(function(){
 				$this->set_version_info_cache( $version_info );
 
 				// Delete the unneeded option.
-				delete_option( md5( 'edd_plugin_' . sanitize_key( $_REQUEST['plugin'] ) . '_' . $this->beta . '_version_info' ) );
+				$plugin = sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) );
+				delete_option( md5( 'edd_plugin_' . sanitize_key( $plugin ) . '_' . $this->beta . '_version_info' ) );
 			}
 
 			if ( isset( $version_info->sections ) ) {
