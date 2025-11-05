@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.8.3
 Requires PHP: 7.0.0
-Stable tag: 15.2.3
+Stable tag: 15.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.15.2.3.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.2.3.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.3.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.3.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.2.4.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.2.4.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.4.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.4.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,11 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.2.4 =
+* [Fixed] Fixes bugs when add-ons check for updates from multisite installations.
+* [Fixed] Fixes a bug when saving payment and payment frequency in the Classic Editor.
+* [Fixed] Fixes bugs around sanitizing and escaping data before using it.
 
 = 15.2.3 =
 * [Fixed] Improves the Description block visibility by adding a placeholder "Enter vehicle description...". Adds a Description block to the editor when editing vehicles to help users locate where to put free-form vehicle content.
@@ -321,6 +326,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 15.2.4 =
+Fixes bugs when add-ons check for updates from multisite installations. Fixes a bug when saving payment and payment frequency in the Classic Editor. Fixes bugs around sanitizing and escaping data before using it.
 
 = 15.2.3 =
 Improves the Description block visibility by adding a placeholder "Enter vehicle description...". Adds a Description block to the editor when editing vehicles to help users locate where to put free-form vehicle content. Wraps the text "SOLD!" in a new filter `invp_sold_text` so that it can be changed. Prevent HTML encoding in single vehicle templates for sold and pending sale vehicles.
