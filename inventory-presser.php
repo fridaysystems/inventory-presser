@@ -1023,7 +1023,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				3  => __( 'Custom field updated.', 'inventory-presser' ),
 				4  => __( 'Vehicle updated.', 'inventory-presser' ),
 				/* translators: 1. Formatted date timestamp of a post revision. */
-				5  => isset( $_GET['revision'] ) ? sprintf( __( 'Vehicle restored to revision from %s.', 'inventory-presser' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+				5  => isset( $_GET['revision'] ) ? sprintf( __( 'Vehicle restored to revision from %s.', 'inventory-presser' ), wp_post_revision_title( (int) wp_unslash( $_GET['revision'] ), false ) ) : false,
 				6  => __( 'Vehicle published. ', 'inventory-presser' ) . $view_link,
 				7  => __( 'Vehicle saved.', 'inventory-presser' ),
 				8  => __( 'Vehicle submitted. ', 'inventory-presser' ) . $preview_link,

@@ -521,7 +521,7 @@ jQuery(document).ready(function(){
 			) {
 				// build a plugin list row, with update notification.
 				printf(
-					'<tr class="plugin-update-tr active" id="%1$s-update" data-slug="%1$s" data-plugin="%2$s">'
+					'<tr class="plugin-update-tr" id="%1$s-update" data-slug="%1$s" data-plugin="%2$s">'
 					. '<td colspan="4" class="plugin-update colspanchange">'
 					. '<div class="update-message notice inline notice-warning notice-alt"><p>',
 					esc_attr( $this->slug ),
