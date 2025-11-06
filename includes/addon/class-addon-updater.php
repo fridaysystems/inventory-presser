@@ -529,10 +529,16 @@ jQuery(document).ready(function(){
 				);
 
 				$changelog_link = self_admin_url(
-					sprintf(
-						'index.php?edd_sl_action=view_plugin_changelog&plugin=%s&slug=%s&TB_iframe=true&width=772&height=911',
-						$this->name,
-						$this->slug
+					add_query_arg(
+						array(
+							'edd_sl_action' => 'view_plugin_changelog',
+							'plugin'        => $this->name,
+							'slug'          => $this->slug,
+							'TB_iframe'     => 'true',
+							'width'         => '772',
+							'height'        => '911',
+						),
+						'index.php'
 					)
 				);
 
@@ -554,10 +560,14 @@ jQuery(document).ready(function(){
 
 				// Do we have a license key? Include "update now" link if so.
 				if ( ! empty( $this->api_data['license'] ) ) {
+					$update_url = wp_nonce_url(
+						self_admin_url( add_query_arg( 'action', 'upgrade-plugin', add_query_arg( 'plugin', $this->name, 'update.php' ) ) ),
+						'upgrade-plugin_' . $this->name
+					);
 					printf(
 						' %s <a href="%s" class="update-link" aria-label="%s %s %s">%s</a>.',
 						esc_html__( 'or', 'inventory-presser' ),
-						esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $this->name, 'upgrade-plugin_' . $this->name ) ),
+						esc_url( $update_url ),
 						esc_attr__( 'Update', 'inventory-presser' ),
 						esc_html( $version_info->name ),
 						esc_attr__( 'now', 'inventory-presser' ),
