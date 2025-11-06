@@ -630,7 +630,7 @@ class Inventory_Presser_Admin_Options {
 				$options .= sprintf(
 					'<option value="WPF_%1$s"%2$s>%3$s: %4$s</option>',
 					esc_attr( $wpform->ID ),
-					selected( $wpform->ID, $current_value, false ),
+					selected( 'WPF_' . $wpform->ID, $current_value, false ),
 					esc_html__( 'WP Forms', 'inventory-presser' ),
 					esc_html( $wpform->post_title )
 				);
