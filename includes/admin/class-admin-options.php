@@ -613,7 +613,7 @@ class Inventory_Presser_Admin_Options {
 					esc_attr( $cf7form->id() ),
 					selected( 'CF7_' . $cf7form->id(), $current_value, false ),
 					esc_html__( 'Contact Form 7', 'inventory-presser' ),
-					esc_attr( $cf7form->title() )
+					esc_html( $cf7form->title() )
 				);
 			}
 		}
@@ -632,7 +632,7 @@ class Inventory_Presser_Admin_Options {
 					esc_attr( $wpform->ID ),
 					selected( $wpform->ID, $current_value, false ),
 					esc_html__( 'WP Forms', 'inventory-presser' ),
-					esc_attr( $wpform->post_title )
+					esc_html( $wpform->post_title )
 				);
 			}
 		}
@@ -645,7 +645,7 @@ class Inventory_Presser_Admin_Options {
 					esc_attr( $gform['id'] ),
 					selected( 'GF_' . $gform['id'], $current_value, false ),
 					esc_html__( 'Gravity Forms', 'inventory-presser' ),
-					esc_attr( $gform['title'] )
+					esc_html( $gform['title'] )
 				);
 			}
 		}
@@ -658,7 +658,7 @@ class Inventory_Presser_Admin_Options {
 					esc_attr( $id ),
 					selected( 'WSF_' . $id, $current_value, false ),
 					esc_html__( 'WS Form', 'inventory-presser' ),
-					esc_attr( preg_replace( '/\s\([^\)]+\)$/', '', $wsform ) )
+					esc_html( preg_replace( '/\s\([^\)]+\)$/', '', $wsform ) )
 				);
 			}
 		}

@@ -156,9 +156,9 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 					$description = '';
 					if ( $this->formats()[ $format ]['uses_labels'] ) {
 						$description = get_term_meta( $term_id, 'phone_' . $p . '_description', true );
-						$html .= sprintf( $this->formats()[ $format ]['repeater'], $description, INVP::prepare_phone_number_for_link( $number ), $number );
+						$html .= sprintf( $this->formats()[ $format ]['repeater'], esc_html( $description ), INVP::prepare_phone_number_for_link( $number ), esc_html( $number ) );
 					} else {
-						$html .= sprintf( $this->formats()[ $format ]['repeater'], INVP::prepare_phone_number_for_link( $number ), $number );
+						$html .= sprintf( $this->formats()[ $format ]['repeater'], INVP::prepare_phone_number_for_link( $number ), esc_html( $number ) );
 					}
 
 					echo apply_filters( 'invp_phone_number_widget_html', $html, $term_id, $phone_uid, $number, $description, $this->formats()[ $format ] );
@@ -202,7 +202,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 
 				// Only do this once per location.
 				if ( 1 == $p ) {
-					$phones_table .= sprintf( '<tr><td colspan="3"><strong>%s</strong></td></tr>', $name );
+					$phones_table .= sprintf( '<tr><td colspan="3"><strong>%s</strong></td></tr>', esc_html( $name ) );
 				}
 
 				$number      = get_term_meta( $term_id, 'phone_' . $p . '_number', true );
@@ -221,9 +221,9 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 					'<tr><td>%s</td><td><label for="%s">%s</label></td><td><label for="%s">%s</label></td></tr>',
 					$cb_display_text,
 					$checkbox_id,
-					$description,
+					esc_html( $description ),
 					$checkbox_id,
-					$number
+					esc_html( $number )
 				);
 			}
 		}

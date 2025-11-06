@@ -100,8 +100,8 @@ class Inventory_Presser_Shortcode_Iframe {
 					iframe_element.style.height = target_element.offsetHeight + "px";
 				});
 				</script>',
-				esc_attr( $atts['class'] ),
-				esc_attr( $atts['same_height_as'] )
+				esc_js( $atts['class'] ),
+				esc_js( $atts['same_height_as'] )
 			);
 		}
 

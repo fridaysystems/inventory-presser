@@ -1225,9 +1225,9 @@ class Inventory_Presser_Taxonomies {
 			foreach ( $terms as $term ) {
 				$html .= sprintf(
 					'<option value="%s"%s>%s</option>',
-					$term->slug,
+					esc_attr( $term->slug ),
 					selected( strtolower( $term->slug ), strtolower( $saved_term_slug ), false ),
-					$term->name
+					esc_html( $term->name )
 				);
 			}
 		}

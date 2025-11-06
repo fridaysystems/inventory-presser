@@ -164,8 +164,8 @@ if ( class_exists( 'GF_Field' ) ) {
 				foreach ( $post_ids as $post_id ) {
 					$field .= sprintf(
 						'<option value="%s">%s</option">',
-						$this->create_option_value( $post_id ),
-						$this->create_option_label( $post_id )
+						esc_attr( $this->create_option_value( $post_id ) ),
+						esc_html( $this->create_option_label( $post_id ) )
 					);
 				}
 				$field .= '</select>';
