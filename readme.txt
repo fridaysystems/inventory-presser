@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.8.3
 Requires PHP: 7.0.0
-Stable tag: 15.2.4
+Stable tag: 15.2.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.15.2.4.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.2.4.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.4.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.4.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.2.5.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.2.5.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.5.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.5.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,10 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.2.5 =
+* [Fixed] Fixes bugs around escaping data before it is output.
+* [Fixed] Bug fix when loading saved setting Singles Contact Form when the user has chosen a WPForms form.
 
 = 15.2.4 =
 * [Fixed] Fixes bugs when add-ons check for updates from multisite installations.
@@ -326,6 +330,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 15.2.5 =
+Fixes bugs around escaping data before it is output. Bug fix when loading saved setting Singles Contact Form when the user has chosen a WPForms form.
 
 = 15.2.4 =
 Fixes bugs when add-ons check for updates from multisite installations. Fixes a bug when saving payment and payment frequency in the Classic Editor. Fixes bugs around sanitizing and escaping data before using it.
