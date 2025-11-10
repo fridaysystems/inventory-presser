@@ -8,6 +8,11 @@
  * taxonomies are active and shown at Vehicles > Taxonomies.
  */
 wp.api.loadPromise.done( function() {
+	// Only run in post editor, not widgets editor
+	if ( ! wp.media || ! wp.media.view || ! wp.media.view.settings || ! wp.media.view.settings.post || ! wp.media.view.settings.post.id ) {
+		return;
+	}
+
 	var post = new wp.api.models.Inventory( { id: wp.media.view.settings.post.id } );
 	post.fetch().then( ( post ) => {
 		var inventoryTypes = new wp.api.collections.Inventory_type();
@@ -21,6 +26,11 @@ wp.api.loadPromise.done( function() {
 	} );
 } );
 function invp_block_editor_hide_taxonomies( typeSlug ) {
+	// Only run if core/editor store exists (post editor context)
+	if ( ! wp.data || ! wp.data.dispatch || ! wp.data.select( 'core/editor' ) ) {
+		return;
+	}
+
 	for ( var taxonomy in invp.taxonomies ) {
 		// If the user has disabled this taxonomy, remove its meta box.
 		if ( invp.taxonomies[taxonomy].active === false ) {
@@ -315,6 +325,26 @@ function invpFormatCurrency( value ) {
 		'invp-plugin-sidebar',
 		{
 			render: function() {
+				// Check if we're in a post editor context (not widgets editor)
+				var editorStore = wp.data.select( 'core/editor' );
+				if ( ! editorStore ) {
+					return null;
+				}
+
+				// Check if getCurrentPostType exists and returns the correct post type
+				if ( ! editorStore.getCurrentPostType || editorStore.getCurrentPostType() !== 'inventory_vehicle' ) {
+					return null;
+				}
+
+				// Additional safety check: verify getEditedPostAttribute works and returns meta
+				if ( ! editorStore.getEditedPostAttribute ) {
+					return null;
+				}
+				var testMeta = editorStore.getEditedPostAttribute( 'meta' );
+				if ( ! testMeta || typeof testMeta !== 'object' ) {
+					return null;
+				}
+
 				var fields = el(
 					wp.element.Fragment,
 					{},
@@ -519,9 +549,10 @@ function invpFormatCurrency( value ) {
 						}
 					),
 				);
-				// Is this a boat?
-				const inventory_presser_type = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ).inventory_presser_type ?? '';
-				if ( 'boat' === inventory_presser_type.toLowerCase() ) {
+				// Is this a boat? (testMeta was already retrieved in the guard check above)
+				var meta = testMeta;
+				var inventory_presser_type = ( meta && meta.inventory_presser_type ) ? meta.inventory_presser_type : '';
+				if ( inventory_presser_type && 'boat' === inventory_presser_type.toLowerCase() ) {
 					// Yes, add the boat fields.
 					fields = el(
 						wp.element.Fragment,

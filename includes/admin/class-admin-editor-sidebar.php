@@ -31,8 +31,13 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	 * @return void
 	 */
 	public function sidebar_plugin_script_enqueue() {
+		// Are we on a post editor page?
+		global $pagenow, $post;
+		if ( ! in_array( $pagenow, array( 'post-new.php', 'post.php' ), true ) ) {
+			return;
+		}
+
 		// Are we editing a vehicle?
-		global $post;
 		if ( empty( $post->post_type ) || INVP::POST_TYPE !== $post->post_type ) {
 			return;
 		}
@@ -45,7 +50,9 @@ class Inventory_Presser_Admin_Editor_Sidebar {
 	 * @return void
 	 */
 	public function add_hooks() {
-		add_action( 'enqueue_block_assets', array( $this, 'sidebar_plugin_script_enqueue' ) );
+		// Use enqueue_block_editor_assets instead of enqueue_block_assets
+		// This hook only fires in the block editor, and we'll add additional checks
+		add_action( 'enqueue_block_editor_assets', array( $this, 'sidebar_plugin_script_enqueue' ) );
 		add_action( 'init', array( $this, 'sidebar_plugin_register' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 	}
