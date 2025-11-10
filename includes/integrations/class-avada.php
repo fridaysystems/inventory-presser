@@ -151,7 +151,7 @@ class Inventory_Presser_Avada {
 			case 'options_array':
 				$options_html = '';
 				foreach ( invp_get_the_options() as $option ) {
-					$options_html .= sprintf( '<li>%s</li>', $option );
+					$options_html .= sprintf( '<li>%s</li>', esc_html( $option ) );
 				}
 				$value = sprintf(
 					'%s<ul class="vehicle-features">%s</ul>%s',

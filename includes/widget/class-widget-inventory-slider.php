@@ -294,9 +294,9 @@ class Inventory_Presser_Slider extends WP_Widget {
 		<!--
 			function __return_false(){ return false; }
 			jQuery(document).ready(function(){
-				var sel = jQuery('#<?php echo $this->get_field_id( 'showtext' ); ?>');
+				var sel = jQuery('#<?php echo esc_js( $this->get_field_id( 'showtext' ) ); ?>');
 				sel.on('change', function(){
-					var chks =jQuery('#<?php echo $this->get_field_id( 'cb_showtitle' ); ?>,#<?php echo $this->get_field_id( 'cb_showprice' ); ?>');
+					var chks =jQuery('#<?php echo esc_js( $this->get_field_id( 'cb_showtitle' ) ); ?>,<?php echo esc_js( $this->get_field_id( 'cb_showprice' ) ); ?>');
 					chks.attr('readonly', ('none'==sel.val()));            
 					if('none'==sel.val())
 					{

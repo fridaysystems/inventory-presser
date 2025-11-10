@@ -158,7 +158,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 				if ( ! empty( $description ) ) {
 					$sections['description'] = sprintf(
 						'<h2 class="vehicle-content-wrap">%s</h2><div class="vehicle-content-wrap">%s</div>',
-						__( 'Description', 'inventory-presser' ),
+						esc_html__( 'Description', 'inventory-presser' ),
 						wpautop( $description )
 					);
 				}
@@ -173,12 +173,12 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 					// loop through list of vehicle options.
 					$options_html = '';
 					foreach ( invp_get_the_options() as $option ) {
-						$options_html .= sprintf( '<li>%s</li>', $option );
+						$options_html .= sprintf( '<li>%s</li>', esc_html( $option ) );
 					}
 
 					$sections['options'] = sprintf(
 						'<h2 class="vehicle-features">%s</h2><ul class="vehicle-features">%s</ul>',
-						__( 'Options', 'inventory-presser' ),
+						esc_html__( 'Options', 'inventory-presser' ),
 						$options_html
 					);
 				}

@@ -123,7 +123,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 
 		printf(
 			'<div class="invp-%s">%s',
-			$format,
+			esc_attr( $format ),
 			$this->formats()[ $format ]['before']
 		);
 

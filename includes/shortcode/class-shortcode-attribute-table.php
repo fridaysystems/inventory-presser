@@ -241,8 +241,8 @@ class Inventory_Presser_Shortcode_Attribute_Table {
 
 			$html .= sprintf(
 				'<div class="item"><div class="label">%s</div><div class="value vehicle-content-initcaps">%s</div></div>',
-				apply_filters( 'invp_label-' . $member, $item['label'] ),
-				apply_filters( 'invp_vehicle_attribute_table_cell', empty( $item['value'] ) ? strtolower( INVP::get_meta( $member, $post_ID ) ) : $item['value'] )
+				esc_html( apply_filters( 'invp_label-' . $member, $item['label'] ) ),
+				esc_html( apply_filters( 'invp_vehicle_attribute_table_cell', empty( $item['value'] ) ? strtolower( INVP::get_meta( $member, $post_ID ) ) : $item['value'] ) )
 			);
 		}
 		$html .= '</div>';

@@ -103,7 +103,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 					if ( $atts['show_titles'] ) {
 						?>
 
-							<h2 class="entry-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>                    
+							<h2 class="entry-title"><a href="<?php echo esc_url( get_the_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a></h2>
 
 						<?php
 					}
@@ -118,7 +118,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 						<div class="post-inner">
 							<div class="post-thumbnail">
 								<div class="vehicle-images">
-									<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
+									<a href="<?php echo esc_url( get_the_permalink() ); ?>" title="<?php echo esc_attr( get_the_title() ); ?>">
 										<?php
 										// Stop lying about whether vehicles have thumbnails or not.
 										remove_filter( 'has_post_thumbnail', array( 'Inventory_Presser_Template_Provider', 'lie_about_post_thumbnails' ), 10, 3 );
@@ -127,7 +127,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 										} else {
 											// This will be no-photo.svg.
 											?>
-										<img class="no-photo-available" src="<?php echo esc_attr( invp_get_the_photo_url() ); ?>" alt="<?php the_title(); ?>" />
+										<img class="no-photo-available" src="<?php echo esc_url( invp_get_the_photo_url() ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" />
 											<?php
 										}
 										// Resume lying about thumbnails.
@@ -139,7 +139,7 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 							$photo_count = invp_get_the_photo_count();
 							if ( 0 < $photo_count ) {
 								?>
-								<span class="photo-count"><a href="<?php the_permalink(); ?>">
+								<span class="photo-count"><a href="<?php echo esc_url( get_the_permalink() ); ?>">
 								<?php
 									echo esc_html( $photo_count ) . ' ' . ( 1 === $photo_count ? '<span class="dashicons dashicons-format-image"></span>' : '<span class="dashicons dashicons-format-gallery"></span>' );
 								?>
@@ -186,13 +186,13 @@ class Inventory_Presser_Shortcode_Archive_Vehicle {
 						if ( $atts['show_titles'] ) {
 							?>
 								<h2 class="post-title hpad">
-									<a href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
+									<a href="<?php echo esc_url( get_the_permalink() ); ?>" rel="bookmark" title="<?php echo esc_attr( get_the_title() ); ?>"><?php echo esc_html( get_the_title() ); ?></a>
 								</h2>
 								<?php
 						}
 						?>
 								<div class="vehicle-images">
-									<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
+									<a href="<?php echo esc_url( get_the_permalink() ); ?>" title="<?php echo esc_attr( get_the_title() ); ?>">
 										<?php
 										// Stop lying about whether vehicles have thumbnails or not.
 										remove_filter( 'has_post_thumbnail', array( 'Inventory_Presser_Template_Provider', 'lie_about_post_thumbnails' ), 10, 3 );

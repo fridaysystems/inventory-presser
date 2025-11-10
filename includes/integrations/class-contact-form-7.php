@@ -178,7 +178,7 @@ if ( class_exists( 'Inventory_Presser_Forms_Integration' ) ) {
 				return $replaced;
 			}
 
-			return sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), $replaced );
+			return sprintf( '<a href="%s">%s</a>', esc_url( get_permalink( $post_id ) ), esc_html( $replaced ) );
 		}
 
 		/**

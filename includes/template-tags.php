@@ -93,9 +93,10 @@ function invp_get_the_carfax_icon_html( $post_ID = null ) {
 	}
 
 	return sprintf(
-		'<a href="%s" target="_blank" rel="noopener noreferrer"><img src="%s" alt="SHOW ME THE CARFAX" /></a>',
-		invp_get_the_carfax_url_report( $post_ID ),
-		$svg_url
+		'<a href="%s" target="_blank" rel="noopener noreferrer"><img src="%s" alt="%s" /></a>',
+		esc_url( invp_get_the_carfax_url_report( $post_ID ) ),
+		esc_url( $svg_url ),
+		esc_html__( 'SHOW ME THE CARFAX', 'inventory-presser' )
 	);
 }
 

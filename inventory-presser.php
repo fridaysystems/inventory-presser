@@ -949,8 +949,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 					'button',
 				)
 			);
-			?><a class="<?php echo esc_attr( implode( ' ', $css_classes ) ); ?>" href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php esc_html_e( 'View Details', 'inventory-presser' ); ?></a>
-			<?php
+			printf(
+				'<a class="%s" href="%s" title="%s">%s</a>',
+				esc_attr( implode( ' ', $css_classes ) ),
+				esc_url( get_the_permalink() ),
+				esc_attr( get_the_title() ),
+				esc_html__( 'View Details', 'inventory-presser' )
+			);
 		}
 
 		/**
@@ -1005,13 +1010,13 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			$view_link = sprintf(
 				'<a href="%1$s">%2$s</a>',
 				esc_url( get_permalink( $post->ID ) ),
-				__( 'View vehicle', 'inventory-presser' )
+				esc_html__( 'View vehicle', 'inventory-presser' )
 			);
 
 			$preview_link = sprintf(
 				'<a target="_blank" href="%1$s">%2$s</a>',
 				esc_url( get_preview_post_link( $post->ID ) ),
-				__( 'Preview vehicle', 'inventory-presser' )
+				esc_html__( 'Preview vehicle', 'inventory-presser' )
 			);
 
 			$scheduled_date = date_i18n( __( 'M j, Y @ H:i', 'inventory-presser' ), strtotime( $post->post_date ) );
@@ -1537,8 +1542,8 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			);
 			$links[] = sprintf(
 				'<a href="%s">%s</a>',
-				$url,
-				__( 'Settings', 'inventory-presser' )
+				esc_url( $url ),
+				esc_html__( 'Settings', 'inventory-presser' )
 			);
 			return $links;
 		}

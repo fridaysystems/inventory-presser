@@ -177,12 +177,12 @@ class Inventory_Presser_Grid extends WP_Widget {
 
 			$grid_html .= sprintf(
 				'<li><a class="grid-link" href="%s"><div class="grid-image" style="background-image: url(%s);"></div>',
-				get_the_permalink( $inventory_id ),
-				invp_get_the_photo_url( 'large', $inventory_id )
+				esc_url( get_the_permalink( $inventory_id ) ),
+				esc_url( invp_get_the_photo_url( 'large', $inventory_id ) )
 			);
 
 			if ( $args['show_captions'] ) {
-				$grid_html .= '<p class="grid-caption">' . get_the_title( $inventory_id );
+				$grid_html .= '<p class="grid-caption">' . esc_html( get_the_title( $inventory_id ) );
 
 				if ( $args['show_odometers'] ) {
 					$grid_html .= sprintf(

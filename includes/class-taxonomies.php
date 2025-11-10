@@ -1206,8 +1206,8 @@ class Inventory_Presser_Taxonomies {
 	protected static function taxonomy_meta_box_html( $taxonomy_name, $element_name, $post ) {
 		$html = sprintf(
 			'<select name="%s" id="%s"><option></option>',
-			$element_name,
-			$element_name
+			esc_attr( $element_name ),
+			esc_attr( $element_name )
 		);
 
 		// get all the term names and slugs for $taxonomy_name.

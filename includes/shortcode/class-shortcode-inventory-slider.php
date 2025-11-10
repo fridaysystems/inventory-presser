@@ -82,14 +82,14 @@ class Inventory_Presser_Shortcode_Slider {
 			$flex_html .= sprintf(
 				'<li><a class="flex-link" href="%s">'
 				. '%s',
-				get_the_permalink( $inventory_id ),
+				esc_url( get_the_permalink( $inventory_id ) ),
 				get_the_post_thumbnail( $inventory_id, 'large' )
 			);
 
 			if ( $atts['captions'] ) {
 				$flex_html .= sprintf(
 					'<p class="flex-caption">%s</p>',
-					get_the_title( $inventory_id )
+					esc_html( get_the_title( $inventory_id ) )
 				);
 			}
 

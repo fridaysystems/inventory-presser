@@ -575,13 +575,15 @@ class Inventory_Presser_Admin_Options {
 				|| empty( $taxonomy_data[ $i ]['args']['label'] ) ) {
 				continue;
 			}
-			$links[] = '<a href="' . admin_url(
-				sprintf(
-					'edit-tags.php?taxonomy=%s&post_type=%s',
-					str_replace( '-', '_', $taxonomy_data[ $i ]['args']['query_var'] ?? '' ),
-					INVP::POST_TYPE
+			$links[] = '<a href="' . esc_url(
+				admin_url(
+					sprintf(
+						'edit-tags.php?taxonomy=%s&post_type=%s',
+						str_replace( '-', '_', $taxonomy_data[ $i ]['args']['query_var'] ?? '' ),
+						INVP::POST_TYPE
+					)
 				)
-			) . '">' . $taxonomy_data[ $i ]['args']['label'] . '</a>';
+			) . '">' . esc_html( $taxonomy_data[ $i ]['args']['label'] ) . '</a>';
 		}
 
 		printf(
@@ -971,9 +973,9 @@ class Inventory_Presser_Admin_Options {
 
 			$options .= sprintf(
 				'<option value="%s"%s>%s</option>',
-				$value,
+				esc_attr( $value ),
 				selected( $selected_value, $value, false ),
-				str_replace( '_', ' ', ucfirst( $key ) )
+				esc_html( str_replace( '_', ' ', ucfirst( $key ) ) )
 			);
 		}
 
