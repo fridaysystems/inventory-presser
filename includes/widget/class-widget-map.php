@@ -159,7 +159,8 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
 		}
 
-		printf( '<div class="invp-map %1$s" id="%1$s-inner"></div>', esc_attr( $args['widget_id'] ) ) . wp_kses_post( $args['after_widget'] );
+		printf( '<div class="invp-map %1$s" id="%1$s-inner"></div>', esc_attr( $args['widget_id'] ) );
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**
