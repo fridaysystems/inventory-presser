@@ -184,9 +184,9 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 
 		$keys_to_list = explode( '|', $instance['post-meta-keys'] );
 		if ( 0 < count( $keys_to_list ) ) {
-			echo $args['before_widget'];
+			echo wp_kses_post( $args['before_widget'] );
 			if ( $title ) {
-				echo $args['before_title'] . $title . $args['after_title'];
+				echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
 			}
 			echo '<ul class="order-by-list list-nostyle">';
 			foreach ( $keys_to_list as $key ) {
@@ -194,7 +194,7 @@ class Inventory_Presser_Order_By_Widget extends WP_Widget {
 				. esc_html( isset( $instance[ 'label-' . $key ] ) ? $instance[ 'label-' . $key ] : $key )
 				. '</a></li>';
 			}
-			echo '</ul>' . $args['after_widget'];
+			echo '</ul>' . wp_kses_post( $args['after_widget'] );
 		}
 	}
 }

@@ -96,7 +96,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 			return;
 		}
 
-		echo $args['before_widget'] ?? '';
+		echo wp_kses_post( $args['before_widget'] ?? '' );
 
 		$title = apply_filters( 'widget_title', $instance['title'] ?? '' );
 
@@ -104,9 +104,9 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 		if ( ! empty( $title ) ) {
 			printf(
 				'<div class="price-title">%s%s%s</div>',
-				$args['before_title'] ?? '',
+				wp_kses_post( $args['before_title'] ?? '' ),
 				esc_html( $title ),
-				$args['after_title'] ?? ''
+				wp_kses_post( $args['after_title'] ?? '' )
 			);
 		}
 
@@ -145,7 +145,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 			);
 		}
 
-		echo '</div>' . $args['after_widget'] ?? '';
+		echo '</div>' . wp_kses_post( $args['after_widget'] ?? '' );
 	}
 
 	/**

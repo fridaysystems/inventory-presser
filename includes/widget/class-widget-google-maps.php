@@ -68,11 +68,11 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 		}
 
 		// before and after widget arguments are defined by themes
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
 		}
 
 		// remove line breaks from the term description
@@ -85,7 +85,7 @@ class Inventory_Presser_Google_Maps_Widget extends WP_Widget {
 			esc_attr( $address_to_search )
 		);
 
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**

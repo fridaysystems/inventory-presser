@@ -111,11 +111,11 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		}
 
 		// before and after widget arguments are defined by themes.
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
 		}
 
 		$format_slugs = array_keys( $this->formats() );
@@ -168,7 +168,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 
 		echo $this->formats()[ $format ]['after']
 		. '</div>'
-		. $args['after_widget'];
+		. wp_kses_post( $args['after_widget'] );
 	}
 
 	/**

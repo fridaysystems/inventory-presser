@@ -56,10 +56,10 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		}
 
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'] );
-		// before and after widget arguments are defined by themes
-		echo $args['before_widget'];
+		// before and after widget arguments are defined by themes.
+		echo wp_kses_post( $args['before_widget'] );
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
 		}
 
 		if ( isset( $instance['cb_single_line'] ) && $instance['cb_single_line'] == 'true' ) {
@@ -81,7 +81,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 			}
 		}
 
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**

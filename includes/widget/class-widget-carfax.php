@@ -95,12 +95,12 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		// before and after widget arguments are defined by themes.
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
 		}
 
-		echo wpautop( $instance['before_image'] );
+		echo wp_kses_post( wpautop( $instance['before_image'] ) );
 		if ( 'svg' === strtolower( pathinfo( $this->images()[ $image ]['img'], PATHINFO_EXTENSION ) ) ) {
 			// Include the SVG inline instead of using an <img> element.
 			$svg = file_get_contents( $path );
@@ -116,7 +116,7 @@ class Inventory_Presser_Carfax_Widget extends WP_Widget {
 				esc_url( plugins_url( '/images/' . $this->images()[ $image ]['img'], INVP_PLUGIN_FILE_PATH ) )
 			);
 		}
-		echo wpautop( $instance['after_image'] ) . $args['after_widget'];
+		echo wp_kses_post( wpautop( $instance['after_image'] ) ) . wp_kses_post( $args['after_widget'] );
 	}
 
 	/**

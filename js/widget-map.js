@@ -29,7 +29,7 @@ Array.prototype.map.call(
 
 			// create a marker at the dealership
 			var marker = L.marker( [lat, lon] ).addTo( mymap );
-			// and a popup
+			// and a popup - data is already escaped in PHP via esc_html/wp_kses_post
 			marker.bindPopup( '<b>' + invp_maps.popups[p].name + '</b><br />' + invp_maps.popups[p].address ).openPopup();
 			markers.push( marker );
 		}

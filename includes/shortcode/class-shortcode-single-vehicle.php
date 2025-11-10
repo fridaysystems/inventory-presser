@@ -68,7 +68,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 						if ( ! empty( $location_sentence ) ) {
 							printf(
 								'<div class="vehicle-location">%s</div>',
-								$location_sentence
+								wp_kses_post( $location_sentence )
 							);
 						}
 
@@ -88,12 +88,12 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 										printf(
 											'<li><a data-href="%s">%s</a></li>',
 											esc_attr( $image_url_lists['urls'][ $p ] ),
-											$image_url_lists['large'][ $p ]
+											wp_kses_post( $image_url_lists['large'][ $p ] )
 										);
 									} else {
 										printf(
 											'<li>%s</li>',
-											$image_url_lists['large'][ $p ]
+											wp_kses_post( $image_url_lists['large'][ $p ] )
 										);
 									}
 								}
@@ -120,7 +120,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 							<?php
 
 							foreach ( $image_url_lists['thumb'] as $image ) {
-								printf( '<li>%s</li>', $image );
+								printf( '<li>%s</li>', wp_kses_post( $image ) );
 							}
 
 							?>

@@ -93,10 +93,10 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 			 * widget on the same page.
 			 */
 			$popup->widget_id = $args['widget_id'];
-			// Location title/dealership name.
-			$popup->name = $location_terms[ $t ]->name;
-			// Address.
-			$popup->address = str_replace( "\r", '', str_replace( PHP_EOL, '<br />', $location_terms[ $t ]->description ) );
+			// Location title/dealership name - escape to prevent XSS.
+			$popup->name = esc_html( $location_terms[ $t ]->name );
+			// Address - allow <br /> tags but escape other HTML to prevent XSS.
+			$popup->address = wp_kses_post( str_replace( "\r", '', str_replace( PHP_EOL, '<br />', $location_terms[ $t ]->description ) ) );
 			// Get the latitude and longitude coordinates for this address.
 			$location = INVP::fetch_latitude_and_longitude( $location_terms[ $t ]->term_id );
 			if ( false !== $location ) {
@@ -152,14 +152,14 @@ class Inventory_Presser_Map_Widget extends WP_Widget {
 		}
 
 		// before and after widget arguments are defined by themes.
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
 		}
 
-		echo sprintf( '<div class="invp-map %1$s" id="%1$s-inner"></div>', esc_attr( $args['widget_id'] ) ) . $args['after_widget'];
+		printf( '<div class="invp-map %1$s" id="%1$s-inner"></div>', esc_attr( $args['widget_id'] ) ) . wp_kses_post( $args['after_widget'] );
 	}
 
 	/**

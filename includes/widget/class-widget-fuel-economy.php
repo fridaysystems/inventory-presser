@@ -99,10 +99,10 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget {
 		// Need the stylesheet for this content.
 		wp_enqueue_style( 'invp-epa-fuel-economy' );
 
-		echo $args['before_widget']
-		. $args['before_title']
-		. apply_filters( 'widget_title', ( isset( $instance['title'] ) ? $instance['title'] : '' ) )
-		. $args['after_title'];
+		echo wp_kses_post( $args['before_widget'] )
+		. wp_kses_post( $args['before_title'] )
+		. esc_html( apply_filters( 'widget_title', ( isset( $instance['title'] ) ? $instance['title'] : '' ) ) )
+		. wp_kses_post( $args['after_title'] );
 
 		// There could be two fuel types.
 		$fuel_types = 0;
@@ -220,6 +220,6 @@ class Inventory_Presser_Fuel_Economy_Widget extends WP_Widget {
 			}
 		}
 
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 }

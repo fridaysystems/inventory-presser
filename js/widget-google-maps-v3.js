@@ -19,6 +19,7 @@ window.addEventListener('load', function()
 				continue;
 			}
 
+			// Data is already escaped in PHP via esc_html/wp_kses_post
 			var marker = new google.maps.Marker({
 				position: new google.maps.LatLng( invp_google_maps_v3.locations[l].coords.lat, invp_google_maps_v3.locations[l].coords.lon ),
 				map: map,

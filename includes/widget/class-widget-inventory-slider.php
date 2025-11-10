@@ -172,9 +172,9 @@ class Inventory_Presser_Slider extends WP_Widget {
 		}
 
 		// before and after widget arguments are defined by themes.
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
 		}
 		echo '<div id="slider-width"></div><div id="widget_slider" class="flexslider"><ul class="slides">';
 
@@ -201,7 +201,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 			}
 			echo '</a></li>';
 		}
-		echo '</ul></div>' . $args['after_widget'];
+		echo '</ul></div>' . wp_kses_post( $args['after_widget'] );
 	}
 
 	/**

@@ -247,13 +247,13 @@ class Inventory_Presser_Grid extends WP_Widget {
 		}
 
 		// before and after widget arguments are defined by themes.
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 		$title = apply_filters( 'widget_title', $instance['title'] ?? '' );
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
 		}
 
-		echo $this->content( $content_args ) . $args['after_widget'];
+		echo $this->content( $content_args ) . wp_kses_post( $args['after_widget'] );
 	}
 
 	/**

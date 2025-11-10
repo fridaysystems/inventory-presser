@@ -68,23 +68,23 @@ class Inventory_Presser_KBB_Widget extends WP_Widget {
 
 		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '' );
 		// before and after widget arguments are defined by themes.
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
+			echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
 		}
 
 		if ( isset( $instance['before_image'] ) ) {
-			echo wpautop( $instance['before_image'] );
+			echo wp_kses_post( wpautop( $instance['before_image'] ) );
 		}
 		printf(
 			'<a href="https://kbb.com" target="_blank"><img src="%s"></a>',
 			esc_url( plugins_url( '/images/' . $this->images()[ $image ]['img'], INVP_PLUGIN_FILE_PATH ) )
 		);
 		if ( isset( $instance['after_image'] ) ) {
-			echo wpautop( $instance['after_image'] );
+			echo wp_kses_post( wpautop( $instance['after_image'] ) );
 		}
 
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**
