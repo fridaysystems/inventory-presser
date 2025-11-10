@@ -97,6 +97,10 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Changelog ==
 
+= 15.2.6 =
+* [Fixed] Escapes strings before output in HTML. Escapes strings and strips tags while building schema.org json. Adds wp_kses_post() calls where we want to allow some basic HTML tags in strings we output.
+* [Fixed] Bug fix when loading scripts into the block editor. Stop loading block editor scripts on the block widgets pages.
+
 = 15.2.5 =
 * [Fixed] Fixes bugs around escaping data before it is output.
 * [Fixed] Bug fix when loading saved setting Singles Contact Form when the user has chosen a WPForms form.
@@ -330,6 +334,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 15.2.6 =
+Escapes strings before output in HTML. Escapes strings and strips tags while building schema.org json. Adds wp_kses_post() calls where we want to allow some basic HTML tags in strings we output. Bug fix when loading scripts into the block editor. Stop loading block editor scripts on the block widgets pages.
 
 = 15.2.5 =
 Fixes bugs around escaping data before it is output. Bug fix when loading saved setting Singles Contact Form when the user has chosen a WPForms form.
