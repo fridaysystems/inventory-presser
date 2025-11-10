@@ -82,19 +82,19 @@ class Inventory_Presser_Schema_Org_Generator {
 			'@type'    => 'Vehicle',
 		);
 
-		$obj['name'] = get_the_title( $post_ID );
+		$obj['name'] = wp_strip_all_tags( get_the_title( $post_ID ) );
 
 		$make = invp_get_the_make( $post_ID );
 		if ( '' !== $make ) {
 			$obj['brand'] = array(
 				'@type' => 'Thing',
-				'name'  => $make,
+				'name'  => wp_strip_all_tags( $make ),
 			);
 		}
 
 		$vin = invp_get_the_VIN( $post_ID );
 		if ( '' !== $vin ) {
-			$obj['vehicleIdentificationNumber'] = $vin;
+			$obj['vehicleIdentificationNumber'] = wp_strip_all_tags( $vin );
 		}
 
 		$year = invp_get_the_year( $post_ID );
@@ -104,7 +104,7 @@ class Inventory_Presser_Schema_Org_Generator {
 
 		// Do we have photos?
 		if ( 0 < invp_get_the_photo_count( $post_ID ) ) {
-			$obj['image'] = invp_get_the_photo_url( $post_ID );
+			$obj['image'] = esc_url_raw( invp_get_the_photo_url( $post_ID ) );
 		}
 
 		$odometer = invp_get_the_odometer( '', $post_ID );
@@ -121,27 +121,27 @@ class Inventory_Presser_Schema_Org_Generator {
 		if ( '' !== invp_get_the_engine( $post_ID ) || '' !== invp_get_the_fuel( $post_ID ) ) {
 			$obj['vehicleEngine'] = array();
 			if ( '' !== invp_get_the_engine( $post_ID ) ) {
-				$obj['vehicleEngine']['engineType'] = invp_get_the_engine( $post_ID );
+				$obj['vehicleEngine']['engineType'] = wp_strip_all_tags( invp_get_the_engine( $post_ID ) );
 			}
 			if ( '' !== invp_get_the_fuel( $post_ID ) ) {
-				$obj['vehicleEngine']['fuelType'] = invp_get_the_fuel( $post_ID );
+				$obj['vehicleEngine']['fuelType'] = wp_strip_all_tags( invp_get_the_fuel( $post_ID ) );
 			}
 		}
 
 		if ( '' !== invp_get_the_body_style( $post_ID ) ) {
-			$obj['bodyType'] = invp_get_the_body_style( $post_ID );
+			$obj['bodyType'] = wp_strip_all_tags( invp_get_the_body_style( $post_ID ) );
 		}
 
 		if ( '' !== invp_get_the_color( $post_ID ) ) {
-			$obj['color'] = invp_get_the_color( $post_ID );
+			$obj['color'] = wp_strip_all_tags( invp_get_the_color( $post_ID ) );
 		}
 
 		if ( '' !== invp_get_the_interior_color( $post_ID ) ) {
-			$obj['vehicleInteriorColor'] = invp_get_the_interior_color( $post_ID );
+			$obj['vehicleInteriorColor'] = wp_strip_all_tags( invp_get_the_interior_color( $post_ID ) );
 		}
 
 		if ( invp_get_the_description( $post_ID ) ) {
-			$obj['description'] = invp_get_the_description( $post_ID );
+			$obj['description'] = wp_strip_all_tags( invp_get_the_description( $post_ID ) );
 		}
 
 		$schema_drive_type = $this->schema_org_drive_type( invp_get_the_drive_type( $post_ID ) );
@@ -150,9 +150,9 @@ class Inventory_Presser_Schema_Org_Generator {
 		}
 
 		if ( '' !== invp_get_the_transmission( $post_ID ) ) {
-			$obj['vehicleTransmission'] = invp_get_the_transmission( $post_ID );
+			$obj['vehicleTransmission'] = wp_strip_all_tags( invp_get_the_transmission( $post_ID ) );
 		}
 
-		return '<script type="application/ld+json">' . wp_json_encode( $obj ) . '</script>';
+		return '<script type="application/ld+json">' . wp_json_encode( $obj, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
 	}
 }
