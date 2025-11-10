@@ -210,7 +210,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 								esc_html( $close )
 							);
 						} else {
-							echo '<td colspan="2">Closed</td>';
+							printf( '<td colspan="2">%s</td>', esc_html__( 'Closed', 'inventory-presser' ) );
 						}
 						echo '</tr>';
 					}
