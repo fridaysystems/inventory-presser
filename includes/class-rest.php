@@ -29,6 +29,9 @@ class Inventory_Presser_REST {
 		if ( defined( 'INVP::POST_TYPE' ) ) {
 			// Allow vehicles to be returned in a random order.
 			add_filter( 'rest_' . INVP::POST_TYPE . '_collection_params', array( $this, 'allow_orderby_rand' ) );
+
+			// Prevent REST API warnings when vehicles are deleted during request processing.
+			add_filter( 'rest_prepare_' . INVP::POST_TYPE, array( $this, 'handle_null_post' ), 10, 3 );
 		}
 	}
 
@@ -87,6 +90,32 @@ class Inventory_Presser_REST {
 			return wp_list_pluck( $terms, 'slug' );
 		}
 		return array();
+	}
+
+	/**
+	 * Handles deleted vehicles in REST API responses to prevent warnings.
+	 *
+	 * When a vehicle is deleted during a REST API request (e.g., via skip trash
+	 * setting), the post object may be null when WordPress tries to prepare
+	 * the response. This filter catches null posts early and returns an error
+	 * response instead of allowing WordPress to generate warnings.
+	 *
+	 * @param  WP_REST_Response $response The response object.
+	 * @param  WP_Post|null     $post     The post object, or null if deleted.
+	 * @param  WP_REST_Request  $request  The request object.
+	 * @return WP_REST_Response|WP_Error  The response or an error if post is null.
+	 */
+	public function handle_null_post( $response, $post, $request ) {
+		// If the post is null or not a valid post object, return an error.
+		if ( ! $post || ! is_a( $post, 'WP_Post' ) ) {
+			return new WP_Error(
+				'rest_null_or_invalid',
+				__( 'The vehicle has been deleted or is no longer available.', 'inventory-presser' ),
+				array( 'status' => 410 ) // 410 Gone.
+			);
+		}
+
+		return $response;
 	}
 
 	/**
