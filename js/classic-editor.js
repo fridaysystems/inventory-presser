@@ -33,10 +33,10 @@ function invp_vehicle_type_changed( type_slug ) {
 	jQuery( 'tr.boat-postmeta' ).toggle( is_boat );
 
 	// HIN or VIN?
-	jQuery( 'label[for="' + invp.meta_prefix + 'vin"]' ).html( is_boat ? 'HIN' : 'VIN' );
+	jQuery( 'label[for="' + invp.meta_prefix + 'vin"]' ).text( is_boat ? 'HIN' : 'VIN' );
 
 	// Odometer units are usually miles, but can be changed.
-	jQuery( '.invp_odometer_units' ).html( invp.odometer_units );
+	jQuery( '.invp_odometer_units' ).text( invp.odometer_units );
 
 	if ( is_boat ) {
 
@@ -80,7 +80,7 @@ function update_add_media_button_annotation() {
 				if ( ! response.success ) {
 					return;
 				}
-				jQuery( '#media-annotation' ).html( response.data.button_annotation );
+				jQuery( '#media-annotation' ).text( response.data.button_annotation );
 				if ( '' !== response.data._thumbnail_id ) {
 					document.getElementById('_thumbnail_id').value = response.data._thumbnail_id;
 				}
