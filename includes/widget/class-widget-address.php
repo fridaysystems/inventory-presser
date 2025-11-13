@@ -123,9 +123,9 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		foreach ( $location_terms as $index => $term_object ) {
 			$address_checkbox = sprintf(
 				'<input id="%s" name="%s" value="%s" type="checkbox"%s>',
-				$this->get_field_id( 'cb_title' ),
-				$this->get_field_name( 'cb_display[]' ),
-				$term_object->term_id,
+				esc_attr( $this->get_field_id( 'cb_title' ) ),
+				esc_attr( $this->get_field_name( 'cb_display[]' ) ),
+				esc_attr( $term_object->term_id ),
 				checked( ( in_array( $term_object->term_id, $cb_display ) ), true, false )
 			);
 			$address_table   .= sprintf( '<tr><td>%s</td><td>%s</td></tr>', $address_checkbox, nl2br( $term_object->description ) );

@@ -185,7 +185,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 				get_the_post_thumbnail( $inventory_id, 'large' )
 			);
 			if ( $showtext != 'none' ) {
-				printf( '<div class="flex-caption flex-caption-%s">', $showtext );
+				printf( '<div class="flex-caption flex-caption-%s">', esc_attr( $showtext ) );
 				if ( $showtitle ) {
 					printf(
 						'<h3>%s %s %s</h3>',
@@ -311,10 +311,10 @@ class Inventory_Presser_Slider extends WP_Widget {
 		//-->
 		</script>
 		<p>
-		<label for="<?php echo esc_attr( $this->get_field_id( 'cb_showtitle' ) ); ?>"><input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_showtitle' ) ); ?>" name="<?php echo $this->get_field_name( 'cb_showtitle' ); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showtitle'] ) && 'true' === $instance['cb_showtitle'] ) ); ?>> <?php esc_html_e( 'Overlay year, make, & model', 'inventory-presser' ); ?></label>
+		<label for="<?php echo esc_attr( $this->get_field_id( 'cb_showtitle' ) ); ?>"><input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_showtitle' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'cb_showtitle' ) ); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showtitle'] ) && 'true' === $instance['cb_showtitle'] ) ); ?>> <?php esc_html_e( 'Overlay year, make, & model', 'inventory-presser' ); ?></label>
 		</p>
 		<p>
-		<label for="<?php echo esc_attr( $this->get_field_id( 'cb_showprice' ) ); ?>"><input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_showprice' ) ); ?>" name="<?php echo $this->get_field_name( 'cb_showprice' ); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showprice'] ) && 'true' === $instance['cb_showprice'] ) ); ?>> <?php esc_html_e( 'Overlay price', 'inventory-presser' ); ?></label>
+		<label for="<?php echo esc_attr( $this->get_field_id( 'cb_showprice' ) ); ?>"><input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_showprice' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'cb_showprice' ) ); ?>" value="true"<?php checked( true, ( isset( $instance['cb_showprice'] ) && 'true' === $instance['cb_showprice'] ) ); ?>> <?php esc_html_e( 'Overlay price', 'inventory-presser' ); ?></label>
 		</p>
 
 		<?php

@@ -211,18 +211,18 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 
 				$cb_display_text = sprintf(
 					'<input type="checkbox" id="%s" name="%s" value="%s"%s />',
-					$checkbox_id,
-					$this->get_field_name( 'cb_display[' . $term_id . '][]' ),
-					$phone_uid,
+					esc_attr( $checkbox_id ),
+					esc_attr( $this->get_field_name( 'cb_display[' . $term_id . '][]' ) ),
+					esc_attr( $phone_uid ),
 					checked( ( isset( $cb_display[ $term_id ] ) && is_array( $cb_display[ $term_id ] ) && in_array( $phone_uid, $cb_display[ $term_id ], true ) ), true, false )
 				);
 
 				$phones_table .= sprintf(
 					'<tr><td>%s</td><td><label for="%s">%s</label></td><td><label for="%s">%s</label></td></tr>',
 					$cb_display_text,
-					$checkbox_id,
+					esc_attr( $checkbox_id ),
 					esc_html( $description ),
-					$checkbox_id,
+					esc_attr( $checkbox_id ),
 					esc_html( $number )
 				);
 			}
@@ -247,7 +247,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 				'<option value="%s"%s>%s</option>',
 				esc_attr( $key ),
 				selected( $format == $key, true, false ),
-				$format_array['selector']
+				esc_html( $format_array['selector'] )
 			);
 		}
 		?>

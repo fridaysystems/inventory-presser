@@ -1230,7 +1230,7 @@ class INVP {
 				$end_index,
 				__( 'of', 'inventory-presser' ),
 				$wp_query->found_posts,
-				$object_name
+				esc_html( $object_name )
 			)
 		)
 		. '</p>';

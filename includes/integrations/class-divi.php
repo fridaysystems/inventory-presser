@@ -83,7 +83,7 @@ class Inventory_Presser_Divi {
 		// If we are rendering the options array, we need to return an HTML list.
 		$options_html = '<ul class="vehicle-features">';
 		foreach ( invp_get_the_options() as $option ) {
-			$options_html .= sprintf( '<li>%s</li>', $option );
+			$options_html .= sprintf( '<li>%s</li>', esc_html( $option ) );
 		}
 		return $options_html . '</ul>';
 	}

@@ -114,7 +114,7 @@ class Inventory_Presser_Shortcode_Archive {
 		if ( $have_posts ) {
 			while ( $vehicles_query->have_posts() ) {
 				$vehicles_query->the_post();
-				$shortcode = sprintf( '[invp_archive_vehicle show_titles="%s" style="%s"]', strval( $atts['show_titles'] ), $atts['style'] );
+				$shortcode = sprintf( '[invp_archive_vehicle show_titles="%s" style="%s"]', esc_attr( strval( $atts['show_titles'] ) ), esc_attr( $atts['style'] ) );
 				$output   .= apply_shortcodes( $shortcode );
 			}
 

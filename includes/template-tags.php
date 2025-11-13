@@ -549,9 +549,9 @@ function invp_get_the_location_sentence( $post_ID = null ) {
 	$sentence = sprintf(
 		'%s %s %s <strong><address>%s</address></strong>',
 		__( 'See this', 'inventory-presser' ),
-		invp_get_the_make( $post_ID ),
+		esc_html( invp_get_the_make( $post_ID ) ),
 		__( 'at', 'inventory-presser' ),
-		apply_filters( 'invp_vehicle_location_sentence_address', $location )
+		esc_html( apply_filters( 'invp_vehicle_location_sentence_address', $location ) )
 	);
 
 	// Does this location have a phone number?
@@ -568,8 +568,8 @@ function invp_get_the_location_sentence( $post_ID = null ) {
 			$sentence .= sprintf(
 				'<span class="location-phone">%s <a href="tel:+%s">%s</a></span>',
 				__( 'Call', 'inventory-presser' ),
-				INVP::prepare_phone_number_for_link( $number ),
-				$number
+				esc_attr( INVP::prepare_phone_number_for_link( $number ) ),
+				esc_html( $number )
 			);
 			break; // only add one phone number to the sentence.
 		}
@@ -961,9 +961,9 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 			$down_payment = invp_get_the_down_payment( $post_ID );
 			if ( ! empty( $down_payment ) ) {
 				if ( ! empty( $output ) ) {
-					$output .= apply_filters( 'invp_price_display_separator', ' / ', $settings['price_display'], $post_ID );
+					$output .= esc_html( apply_filters( 'invp_price_display_separator', ' / ', $settings['price_display'], $post_ID ) );
 				}
-				$output .= sprintf( '%s Down', $down_payment );
+				$output .= sprintf( '%s Down', esc_html( $down_payment ) );
 			}
 
 			if ( '' === $output ) {
@@ -996,12 +996,12 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 					'invp_price_display',
 					sprintf(
 						'<div class="price-was-discount">%s %s</div>%s $%s<div class="price-was-discount-save">%s $%s</div>',
-						apply_filters( 'invp_price_was_now_discount_retail', __( 'Retail', 'inventory-presser' ) ),
-						invp_get_the_msrp( $post_ID ),
-						apply_filters( 'invp_price_was_now_discount_now', __( 'Now', 'inventory-presser' ) ),
-						number_format( $price, 0, '.', ',' ),
-						apply_filters( 'invp_price_was_now_discount_save', __( 'You Save', 'inventory-presser' ) ),
-						number_format( ( $msrp - $price ), 0, '.', ',' )
+						esc_html( apply_filters( 'invp_price_was_now_discount_retail', __( 'Retail', 'inventory-presser' ) ) ),
+						esc_html( invp_get_the_msrp( $post_ID ) ),
+						esc_html( apply_filters( 'invp_price_was_now_discount_now', __( 'Now', 'inventory-presser' ) ) ),
+						esc_html( number_format( $price, 0, '.', ',' ) ),
+						esc_html( apply_filters( 'invp_price_was_now_discount_save', __( 'You Save', 'inventory-presser' ) ) ),
+						esc_html( number_format( ( $msrp - $price ), 0, '.', ',' ) )
 					),
 					$settings['price_display'],
 					$post_ID

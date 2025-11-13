@@ -96,7 +96,7 @@ class Inventory_Presser_Site_Health {
 			),
 			'description' => sprintf(
 				'<p>%s</p>',
-				__( 'Media uploads are not organized into month- and year-based folders. Photo upload dates are not revealed to users, and vehicle photo URLs will not change even if the photos themselves change.', 'inventory-presser' )
+				esc_html__( 'Media uploads are not organized into month- and year-based folders. Photo upload dates are not revealed to users, and vehicle photo URLs will not change even if the photos themselves change.', 'inventory-presser' )
 			),
 			'actions'     => '',
 			'test'        => 'invp_media_folders',

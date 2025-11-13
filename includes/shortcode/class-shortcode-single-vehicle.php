@@ -87,7 +87,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 									if ( isset( $image_url_lists['urls'][ $p ] ) ) {
 										printf(
 											'<li><a data-href="%s">%s</a></li>',
-											esc_attr( $image_url_lists['urls'][ $p ] ),
+											esc_url( $image_url_lists['urls'][ $p ] ),
 											wp_kses_post( $image_url_lists['large'][ $p ] )
 										);
 									} else {
@@ -104,7 +104,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 								if ( ! empty( $url ) ) {
 									printf(
 										'<li><a data-href="%1$s"><img decoding="async" src="%1$s" class="attachment-large size-large invp-image" alt="" draggable="false" /></a></li>',
-										esc_attr( $url )
+										esc_url( $url )
 									);
 								}
 							}

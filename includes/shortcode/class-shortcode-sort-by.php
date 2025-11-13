@@ -148,10 +148,10 @@ class Inventory_Presser_Shortcode_Sort_By {
 			foreach ( $options as $dir => $label ) {
 				$html .= sprintf(
 					'<option data-order="%s" value="%s"%s>%s</option>',
-					$dir,
-					$key,
+					esc_attr( $dir ),
+					esc_attr( $key ),
 					selected( $key . $dir, $current_sort_key . $current_sort_dir, false ),
-					$label
+					esc_html( $label )
 				);
 			}
 		}

@@ -112,7 +112,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 					&& is_array( $instance['cb_title'][ $term_id ] )
 					&& in_array( $hours_uid, $instance['cb_title'][ $term_id ], true )
 				) {
-					$hours_title = sprintf( '<strong>%s</strong>', get_term_meta( $term_id, 'hours_' . $h . '_title', true ) );
+					$hours_title = sprintf( '<strong>%s</strong>', esc_html( get_term_meta( $term_id, 'hours_' . $h . '_title', true ) ) );
 				}
 				echo apply_filters( 'invp_hours_title', $hours_title, $hours_uid );
 
@@ -260,9 +260,9 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 				if ( 1 === $h ) {
 					$hours_table .= sprintf(
 						'<tr><td>%s</td><td>%s</td><td>%s</td></tr>',
-						$name,
-						__( 'Display', 'inventory-presser' ),
-						__( 'Title', 'inventory-presser' )
+						esc_html( $name ),
+						esc_html__( 'Display', 'inventory-presser' ),
+						esc_html__( 'Title', 'inventory-presser' )
 					);
 				}
 
@@ -273,23 +273,23 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 
 				$cb_display_text = sprintf(
 					'<input type="checkbox" id="%s" name="%s" value="%s"%s />',
-					$this->get_field_id( 'cb_display_' . $hours_uid ),
-					$this->get_field_name( 'cb_display[' . $term_id . '][]' ),
-					$hours_uid,
+					esc_attr( $this->get_field_id( 'cb_display_' . $hours_uid ) ),
+					esc_attr( $this->get_field_name( 'cb_display[' . $term_id . '][]' ) ),
+					esc_attr( $hours_uid ),
 					checked( true, ( isset( $cb_display[ $term_id ] ) && is_array( $cb_display[ $term_id ] ) && in_array( $hours_uid, $cb_display[ $term_id ], true ) ), false )
 				);
 
 				$cb_title_text = sprintf(
 					'<input type="checkbox" id="%s" name="%s" value="%s"%s />',
-					$this->get_field_id( 'cb_title_' . $hours_uid ),
-					$this->get_field_name( 'cb_title[' . $term_id . '][]' ),
-					$hours_uid,
+					esc_attr( $this->get_field_id( 'cb_title_' . $hours_uid ) ),
+					esc_attr( $this->get_field_name( 'cb_title[' . $term_id . '][]' ) ),
+					esc_attr( $hours_uid ),
 					checked( true, ( isset( $cb_title[ $term_id ] ) && is_array( $cb_title[ $term_id ] ) && in_array( $hours_uid, $cb_title[ $term_id ], true ) ), false )
 				);
 
 				$hours_table .= sprintf(
 					'<tr><td><strong>%s</strong></td><td>%s</td><td>%s</td></tr>',
-					$title,
+					esc_html( $title ),
 					$cb_display_text,
 					$cb_title_text
 				);

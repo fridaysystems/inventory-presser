@@ -138,7 +138,7 @@ class Inventory_Presser_Maximum_Price_Filter extends WP_Widget {
 		if ( isset( $_GET['max_price'] ) ) {
 			printf(
 				'<div><a href="%s">%s $%s %s</a></div>',
-				esc_attr( remove_query_arg( 'max_price' ) ),
+				esc_url( remove_query_arg( 'max_price' ) ),
 				esc_html__( 'Remove', 'inventory-presser' ),
 				number_format( (int) $_GET['max_price'], 0, '.', ',' ),
 				esc_html__( 'Shop by Price', 'inventory-presser' )
