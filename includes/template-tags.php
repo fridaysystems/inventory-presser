@@ -426,7 +426,7 @@ function invp_get_the_inventory_sentence() {
 	printf(
 		'%s %s, %s <a href="%s">%s %s %s</a>.',
 		esc_html__( 'Browse', 'inventory-presser' ),
-		implode( ', ', $type_links ),
+		wp_kses_post( implode( ', ', $type_links ) ),
 		esc_html__( 'or', 'inventory-presser' ),
 		esc_url( site_url( 'inventory/' ) ),
 		esc_html__( 'all', 'inventory-presser' ),
@@ -575,7 +575,7 @@ function invp_get_the_location_sentence( $post_ID = null ) {
 		}
 	}
 
-	$sentence = apply_filters( 'invp_vehicle_location_sentence', $sentence, $post_ID );
+	$sentence = wp_kses_post( apply_filters( 'invp_vehicle_location_sentence', $sentence, $post_ID ) );
 
 	if ( function_exists( 'apply_shortcodes' ) ) {
 		$sentence = apply_shortcodes( $sentence );
@@ -927,12 +927,12 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 	// If this vehicle is sold, just say so.
 	if ( invp_is_sold( $post_ID ) ) {
 		$sold_text = apply_filters( 'invp_sold_text', esc_html__( 'SOLD!', 'inventory-presser' ) );
-		return apply_filters( 'invp_sold_string', sprintf( '<span class="vehicle-sold">%s</span>', $sold_text ) );
+		return wp_kses_post( apply_filters( 'invp_sold_string', sprintf( '<span class="vehicle-sold">%s</span>', esc_html( $sold_text ) ) ) );
 	}
 
 	// If the vehicle is pending, just say so.
 	if ( invp_is_pending( $post_ID ) ) {
-		return apply_filters( 'invp_pending_string', sprintf( '<span class="vehicle-pending">%s</span>', esc_html__( 'Sale Pending', 'inventory-presser' ) ) );
+		return wp_kses_post( apply_filters( 'invp_pending_string', sprintf( '<span class="vehicle-pending">%s</span>', esc_html__( 'Sale Pending', 'inventory-presser' ) ) ) );
 	}
 
 	if ( null === $zero_string ) {
@@ -948,7 +948,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 
 	switch ( $settings['price_display'] ) {
 		case 'msrp':
-			return apply_filters( 'invp_price_display', invp_get_the_msrp( $post_ID ), $settings['price_display'], $post_ID );
+			return wp_kses_post( apply_filters( 'invp_price_display', esc_html( invp_get_the_msrp( $post_ID ) ), $settings['price_display'], $post_ID ) );
 
 		// ${Price} / ${Down Payment} Down.
 		case 'full_or_down':
@@ -967,22 +967,22 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 			}
 
 			if ( '' === $output ) {
-				return apply_filters( 'invp_price_display', $zero_string, $settings['price_display'], $post_ID );
+				return wp_kses_post( apply_filters( 'invp_price_display', esc_html( $zero_string ), $settings['price_display'], $post_ID ) );
 			}
-			return apply_filters( 'invp_price_display', $output, $settings['price_display'], $post_ID );
+			return wp_kses_post( apply_filters( 'invp_price_display', esc_html( $output ), $settings['price_display'], $post_ID ) );
 
 		// down payment only.
 		case 'down_only':
 			$down_payment = invp_get_the_down_payment( $post_ID );
 			if ( ! empty( $down_payment ) ) {
-				return apply_filters( 'invp_price_display', sprintf( '%s %s', $down_payment, __( 'Down', 'inventory-presser' ) ), $settings['price_display'], $post_ID );
+				return wp_kses_post( apply_filters( 'invp_price_display', sprintf( '%s %s', esc_html( $down_payment ), esc_html__( 'Down', 'inventory-presser' ) ), $settings['price_display'], $post_ID ) );
 			}
-			return apply_filters( 'invp_price_display', $zero_string, $settings['price_display'], $post_ID );
+			return wp_kses_post( apply_filters( 'invp_price_display', esc_html( $zero_string ), $settings['price_display'], $post_ID ) );
 
 		// call_for_price.
 		case 'call_for_price':
 			// Not $zero_string, but explicity "Call for Price".
-			return apply_filters( 'invp_price_display', __( 'Call For Price', 'inventory-presser' ), $settings['price_display'], $post_ID );
+			return wp_kses_post( apply_filters( 'invp_price_display', esc_html__( 'Call For Price', 'inventory-presser' ), $settings['price_display'], $post_ID ) );
 
 		// was_now_discount - MSRP = was price, regular price = now price, discount = was - now.
 		case 'was_now_discount':
@@ -992,7 +992,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 				&& ! empty( $price )
 				&& $msrp > $price ) {
 
-				return apply_filters(
+				return wp_kses_post( apply_filters(
 					'invp_price_display',
 					sprintf(
 						'<div class="price-was-discount">%s %s</div>%s $%s<div class="price-was-discount-save">%s $%s</div>',
@@ -1005,13 +1005,13 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 					),
 					$settings['price_display'],
 					$post_ID
-				);
+				) );
 			}
 
 			// Either no discount between the two prices or one is empty.
 			if ( ! empty( $price ) ) {
 				// We have a price, so fallback to "default" behavior and show it.
-				return apply_filters( 'invp_price_display', INVP::currency_symbol() . number_format( $price, 0, '.', ',' ), $settings['price_display'], $post_ID );
+				return wp_kses_post( apply_filters( 'invp_price_display', esc_html( INVP::currency_symbol() . number_format( $price, 0, '.', ',' ) ), $settings['price_display'], $post_ID ) );
 			}
 			break;
 
@@ -1020,7 +1020,7 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 			$payment           = invp_get_the_payment( $post_ID );
 			$payment_frequency = invp_get_the_payment_frequency( $post_ID );
 			if ( empty( $payment ) || empty( $payment_frequency ) ) {
-				return apply_filters( 'invp_price_display', $zero_string, $settings['price_display'], $post_ID );
+				return wp_kses_post( apply_filters( 'invp_price_display', esc_html( $zero_string ), $settings['price_display'], $post_ID ) );
 			}
 
 			switch ( $payment_frequency ) {
@@ -1040,24 +1040,24 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 					$payment_frequency = __( 'twice a month', 'inventory-presser' );
 					break;
 			}
-			return apply_filters(
+			return wp_kses_post( apply_filters(
 				'invp_price_display',
 				sprintf(
 					'%s %s',
-					$payment,
-					$payment_frequency
+					esc_html( $payment ),
+					esc_html( $payment_frequency )
 				),
 				$settings['price_display'],
 				$post_ID
-			);
+			) );
 
 		case 'default':
 			// Normally, show the price field as currency.
 			$price = invp_get_raw_price( $post_ID );
 			if ( empty( $price ) ) {
-				return apply_filters( 'invp_price_display', $zero_string, $settings['price_display'], $post_ID );
+				return wp_kses_post( apply_filters( 'invp_price_display', esc_html( $zero_string ), $settings['price_display'], $post_ID ) );
 			}
-			return apply_filters( 'invp_price_display', INVP::currency_symbol() . number_format( $price, 0, '.', ',' ), $settings['price_display'], $post_ID );
+			return wp_kses_post( apply_filters( 'invp_price_display', esc_html( INVP::currency_symbol() . number_format( $price, 0, '.', ',' ) ), $settings['price_display'], $post_ID ) );
 
 		case 'down_and_payment':
 			$string       = '';
@@ -1066,28 +1066,28 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 			if ( ! empty( $down_payment ) ) {
 				$string .= sprintf(
 					'%s %s',
-					$down_payment,
-					__( 'Down', 'inventory-presser' )
+					esc_html( $down_payment ),
+					esc_html__( 'Down', 'inventory-presser' )
 				);
 			}
 			if ( ! empty( $payment ) ) {
 				if ( ! empty( $string ) ) {
-					$string .= apply_filters( 'invp_price_display_separator', ' / ', $settings['price_display'], $post_ID );
+					$string .= esc_html( apply_filters( 'invp_price_display_separator', ' / ', $settings['price_display'], $post_ID ) );
 				}
 				$string .= sprintf(
 					'%s %s',
-					$payment,
-					ucfirst( invp_get_the_payment_frequency( $post_ID ) )
+					esc_html( $payment ),
+					esc_html( ucfirst( invp_get_the_payment_frequency( $post_ID ) ) )
 				);
 			}
-			return apply_filters( 'invp_price_display', $string, $settings['price_display'], $post_ID );
+			return wp_kses_post( apply_filters( 'invp_price_display', esc_html( $string ), $settings['price_display'], $post_ID ) );
 
 		default:
 			/**
 			 * The price display type is something beyond what this
 			 * plugin supports. Allow the value to be filtered.
 			 */
-			return apply_filters( 'invp_price_display', $zero_string, $settings['price_display'], $post_ID );
+			return wp_kses_post( apply_filters( 'invp_price_display', esc_html( $zero_string ), $settings['price_display'], $post_ID ) );
 	}
 
 	return $zero_string;

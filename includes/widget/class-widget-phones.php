@@ -161,7 +161,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 						$html .= sprintf( $this->formats()[ $format ]['repeater'], INVP::prepare_phone_number_for_link( $number ), esc_html( $number ) );
 					}
 
-					echo apply_filters( 'invp_phone_number_widget_html', $html, $term_id, $phone_uid, $number, $description, $this->formats()[ $format ] );
+					echo wp_kses_post( apply_filters( 'invp_phone_number_widget_html', $html, $term_id, $phone_uid, $number, $description, $this->formats()[ $format ] ) );
 				}
 			}
 		}
@@ -253,7 +253,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		?>
 			</select>
 		</p>
-		<p><?php echo $phones_table; ?></p>
+		<p><?php echo wp_kses_post( $phones_table ); ?></p>
 		<?php
 	}
 

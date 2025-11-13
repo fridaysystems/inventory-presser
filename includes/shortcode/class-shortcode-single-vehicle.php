@@ -138,7 +138,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 
 				$attribute_table = apply_shortcodes( '[invp_attribute_table]' );
 				if ( ! empty( $attribute_table ) ) {
-					echo $attribute_table;
+					echo wp_kses_post( $attribute_table );
 				}
 
 				?>
@@ -159,7 +159,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 					$sections['description'] = sprintf(
 						'<h2 class="vehicle-content-wrap">%s</h2><div class="vehicle-content-wrap">%s</div>',
 						esc_html__( 'Description', 'inventory-presser' ),
-						wpautop( $description )
+						wp_kses_post( wpautop( $description ) )
 					);
 				}
 
@@ -187,7 +187,7 @@ class Inventory_Presser_Shortcode_Single_Vehicle {
 					array_walk(
 						$sections,
 						function ( $value ) {
-							echo $value;
+							echo wp_kses_post( $value );
 						}
 					);
 

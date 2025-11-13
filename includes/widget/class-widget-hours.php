@@ -114,7 +114,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 				) {
 					$hours_title = sprintf( '<strong>%s</strong>', esc_html( get_term_meta( $term_id, 'hours_' . $h . '_title', true ) ) );
 				}
-				echo apply_filters( 'invp_hours_title', $hours_title, $hours_uid );
+				echo wp_kses_post( apply_filters( 'invp_hours_title', $hours_title, $hours_uid ) );
 
 				// get current day number, starting on a monday.
 				$current_weekday = gmdate( 'w' ) - 1;
@@ -220,7 +220,7 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 		}
 		// Only output HTML here if $html has been emptied, that means it was echoed.
 		if ( empty( $html ) ) {
-			echo '</div>' . $args['after_widget'];
+			echo '</div>' . wp_kses_post( $args['after_widget'] );
 		}
 	}
 

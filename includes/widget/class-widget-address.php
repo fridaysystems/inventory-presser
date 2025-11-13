@@ -76,7 +76,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 			foreach ( $instance['cb_display'] as $i => $term_id ) {
 				$location = get_term( $term_id, 'location' );
 				if ( ! is_wp_error( $location ) && null !== $location ) {
-					echo '<div>' . nl2br( $location->description ) . '</div>';
+					echo '<div>' . wp_kses_post( nl2br( $location->description ) ) . '</div>';
 				}
 			}
 		}
@@ -128,7 +128,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 				esc_attr( $term_object->term_id ),
 				checked( ( in_array( $term_object->term_id, $cb_display ) ), true, false )
 			);
-			$address_table   .= sprintf( '<tr><td>%s</td><td>%s</td></tr>', $address_checkbox, nl2br( $term_object->description ) );
+			$address_table   .= sprintf( '<tr><td>%s</td><td>%s</td></tr>', $address_checkbox, wp_kses_post( nl2br( $term_object->description ) ) );
 		}
 
 		$address_table .= '</tbody></table>';
@@ -143,7 +143,7 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_single_line' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'cb_single_line' ) ); ?>" value="true"<?php checked( ( isset( $instance['cb_single_line'] ) && 'true' === $instance['cb_single_line'] ) ); ?>>
 		<label for="<?php echo esc_attr( $this->get_field_id( 'cb_single_line' ) ); ?>"><?php esc_html_e( 'Single Line Display', 'inventory-presser' ); ?></label>
 		</p>
-		<p><?php echo $address_table; ?></p>
+		<p><?php echo wp_kses_post( $address_table ); ?></p>
 		<?php
 	}
 

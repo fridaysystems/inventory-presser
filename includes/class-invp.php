@@ -1220,7 +1220,7 @@ class INVP {
 			$pagination_html = '<ul class="group">' . $pagination_html . '</ul>';
 		}
 
-		$pagination_html .= '<p>' . apply_filters(
+		$pagination_html .= '<p>' . wp_kses_post( apply_filters(
 			'invp_pagination_sentence',
 			sprintf(
 				'%s %d %s %d %s %d %s',
@@ -1232,11 +1232,11 @@ class INVP {
 				$wp_query->found_posts,
 				esc_html( $object_name )
 			)
-		)
+		) )
 		. '</p>';
 
 		return '<nav class="invp-pagination pagination group">'
-		. apply_filters( 'invp_pagination_html', $pagination_html )
+		. wp_kses_post( apply_filters( 'invp_pagination_html', $pagination_html ) )
 		. '</nav>';
 	}
 

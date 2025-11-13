@@ -77,13 +77,13 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 					if ( isset( $image_url_lists['urls'][ $p ] ) ) {
 						printf(
 							'<li><a data-href="%s">%s</a></li>',
-							$image_url_lists['urls'][ $p ],
-							$image_url_lists['large'][ $p ]
+							esc_url( $image_url_lists['urls'][ $p ] ),
+							wp_kses_post( $image_url_lists['large'][ $p ] )
 						);
 					} else {
 						printf(
 							'<li>%s</li>',
-							$image_url_lists['large'][ $p ]
+							wp_kses_post( $image_url_lists['large'][ $p ] )
 						);
 					}
 				}
@@ -100,7 +100,7 @@ class Inventory_Presser_Shortcode_Photo_Slider {
 				<?php
 
 				foreach ( $image_url_lists['thumb'] as $image ) {
-					printf( '<li>%s</li>', $image );
+					printf( '<li>%s</li>', wp_kses_post( $image ) );
 				}
 
 				?>
