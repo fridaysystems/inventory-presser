@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.8.3
 Requires PHP: 7.0.0
-Stable tag: 15.2.6
+Stable tag: 15.2.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.15.2.6.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.2.6.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.6.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.6.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.2.7.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.2.7.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.7.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.7.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,10 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.2.7 =
+* [Fixed] Escapes strings before output in HTML. Uses esc_url() and wp_kses_post() in more places where appropriate.
+* [Fixed] Prevents warnings when REST API handlers run into missing vehicles that were just deleted.
 
 = 15.2.6 =
 * [Fixed] Escapes strings before output in HTML. Escapes strings and strips tags while building schema.org json. Adds wp_kses_post() calls where we want to allow some basic HTML tags in strings we output.
@@ -334,6 +338,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 15.2.7 =
+Escapes strings before output in HTML. Uses esc_url() and wp_kses_post() in more places where appropriate. Prevents warnings when REST API handlers run into missing vehicles that were just deleted.
 
 = 15.2.6 =
 Escapes strings before output in HTML. Escapes strings and strips tags while building schema.org json. Adds wp_kses_post() calls where we want to allow some basic HTML tags in strings we output. Bug fix when loading scripts into the block editor. Stop loading block editor scripts on the block widgets pages.
