@@ -1,2 +1,4 @@
+.cursorindexingignore
+.specstory/
 node_modules/
 vendor/
