@@ -2,9 +2,9 @@
 Contributors: salzano
 Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
-Tested up to: 6.8.3
+Tested up to: 6.9
 Requires PHP: 7.0.0
-Stable tag: 15.2.7
+Stable tag: 15.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.15.2.7.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.2.7.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.7.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.2.7.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.3.0.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.3.0.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.3.0.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.3.0.zip)
 
 
 ### Requires 5.0.0
@@ -96,6 +96,14 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.3.0 =
+* [Added] Adds type and condition arguments to the [invp_inventory_slider] shortcode.
+* [Fixed] Allows more than one [invp_inventory_slider] to appear on the same page.
+* [Fixed] Fixes horizontal layout of maximum price filter.
+* [Fixed] Fixes doubly-escaped strings in Address widget.
+* [Fixed] Bug fix when hiding editor meta boxes based on the vehicle type. Hides boat fields when editing cars.
+* [Changed] Changes tested up to version number to 6.9.
 
 = 15.2.7 =
 * [Fixed] Escapes strings before output in HTML. Uses esc_url() and wp_kses_post() in more places where appropriate.
@@ -338,6 +346,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 15.3.0 =
+Adds type and condition arguments to the [invp_inventory_slider] shortcode. Allows more than one [invp_inventory_slider] to appear on the same page. Fixes horizontal layout of maximum price filter. Bug fix when hiding editor meta boxes based on the vehicle type. Changes tested up to version number to 6.9.
 
 = 15.2.7 =
 Escapes strings before output in HTML. Uses esc_url() and wp_kses_post() in more places where appropriate. Prevents warnings when REST API handlers run into missing vehicles that were just deleted.
