@@ -992,20 +992,22 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 				&& ! empty( $price )
 				&& $msrp > $price ) {
 
-				return wp_kses_post( apply_filters(
-					'invp_price_display',
-					sprintf(
-						'<div class="price-was-discount">%s %s</div>%s $%s<div class="price-was-discount-save">%s $%s</div>',
-						esc_html( apply_filters( 'invp_price_was_now_discount_retail', __( 'Retail', 'inventory-presser' ) ) ),
-						esc_html( invp_get_the_msrp( $post_ID ) ),
-						esc_html( apply_filters( 'invp_price_was_now_discount_now', __( 'Now', 'inventory-presser' ) ) ),
-						esc_html( number_format( $price, 0, '.', ',' ) ),
-						esc_html( apply_filters( 'invp_price_was_now_discount_save', __( 'You Save', 'inventory-presser' ) ) ),
-						esc_html( number_format( ( $msrp - $price ), 0, '.', ',' ) )
-					),
-					$settings['price_display'],
-					$post_ID
-				) );
+				return wp_kses_post(
+					apply_filters(
+						'invp_price_display',
+						sprintf(
+							'<div class="price-was-discount">%s %s</div>%s $%s<div class="price-was-discount-save">%s $%s</div>',
+							esc_html( apply_filters( 'invp_price_was_now_discount_retail', __( 'Retail', 'inventory-presser' ) ) ),
+							esc_html( invp_get_the_msrp( $post_ID ) ),
+							esc_html( apply_filters( 'invp_price_was_now_discount_now', __( 'Now', 'inventory-presser' ) ) ),
+							esc_html( number_format( $price, 0, '.', ',' ) ),
+							esc_html( apply_filters( 'invp_price_was_now_discount_save', __( 'You Save', 'inventory-presser' ) ) ),
+							esc_html( number_format( ( $msrp - $price ), 0, '.', ',' ) )
+						),
+						$settings['price_display'],
+						$post_ID
+					)
+				);
 			}
 
 			// Either no discount between the two prices or one is empty.
@@ -1040,16 +1042,18 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 					$payment_frequency = __( 'twice a month', 'inventory-presser' );
 					break;
 			}
-			return wp_kses_post( apply_filters(
-				'invp_price_display',
-				sprintf(
-					'%s %s',
-					esc_html( $payment ),
-					esc_html( $payment_frequency )
-				),
-				$settings['price_display'],
-				$post_ID
-			) );
+			return wp_kses_post(
+				apply_filters(
+					'invp_price_display',
+					sprintf(
+						'%s %s',
+						esc_html( $payment ),
+						esc_html( $payment_frequency )
+					),
+					$settings['price_display'],
+					$post_ID
+				)
+			);
 
 		case 'default':
 			// Normally, show the price field as currency.

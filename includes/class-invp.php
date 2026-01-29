@@ -1220,19 +1220,21 @@ class INVP {
 			$pagination_html = '<ul class="group">' . $pagination_html . '</ul>';
 		}
 
-		$pagination_html .= '<p>' . wp_kses_post( apply_filters(
-			'invp_pagination_sentence',
-			sprintf(
-				'%s %d %s %d %s %d %s',
-				__( 'Showing', 'inventory-presser' ),
-				$start_index,
-				__( 'to', 'inventory-presser' ),
-				$end_index,
-				__( 'of', 'inventory-presser' ),
-				$wp_query->found_posts,
-				esc_html( $object_name )
+		$pagination_html .= '<p>' . wp_kses_post(
+			apply_filters(
+				'invp_pagination_sentence',
+				sprintf(
+					'%s %d %s %d %s %d %s',
+					__( 'Showing', 'inventory-presser' ),
+					$start_index,
+					__( 'to', 'inventory-presser' ),
+					$end_index,
+					__( 'of', 'inventory-presser' ),
+					$wp_query->found_posts,
+					esc_html( $object_name )
+				)
 			)
-		) )
+		)
 		. '</p>';
 
 		return '<nav class="invp-pagination pagination group">'

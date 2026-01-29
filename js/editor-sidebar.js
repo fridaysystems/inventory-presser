@@ -7,24 +7,32 @@
  * Hide taxonomy meta boxes in the Block Editor. Users can customize which
  * taxonomies are active and shown at Vehicles > Taxonomies.
  */
-wp.api.loadPromise.done( function() {
-	// Only run in post editor, not widgets editor
-	if ( ! wp.media || ! wp.media.view || ! wp.media.view.settings || ! wp.media.view.settings.post || ! wp.media.view.settings.post.id ) {
-		return;
-	}
+wp.api.loadPromise.done(
+	function () {
+		// Only run in post editor, not widgets editor
+		if ( ! wp.media || ! wp.media.view || ! wp.media.view.settings || ! wp.media.view.settings.post || ! wp.media.view.settings.post.id ) {
+				return;
+		}
 
-	var post = new wp.api.models.Inventory( { id: wp.media.view.settings.post.id } );
-	post.fetch().then( ( post ) => {
-		var inventoryTypes = new wp.api.collections.Inventory_type();
-		inventoryTypes.fetch().then( ( types ) => {
-			types.forEach( ( type ) => {
-				if ( -1 !== post.inventory_type.indexOf( type.id ) ) {
-					invp_block_editor_hide_taxonomies( type.slug );
-				}
-			} );
-		} );
-	} );
-} );
+		var post                   = new wp.api.models.Inventory( { id: wp.media.view.settings.post.id } );
+		post.fetch().then(
+			( post ) => {
+            var inventoryTypes = new wp.api.collections.Inventory_type();
+            inventoryTypes.fetch().then(
+                    ( types ) => {
+                    types.forEach(
+							( type ) => {
+                            if ( -1 !== post.inventory_type.indexOf( type.id ) ) {
+                                invp_block_editor_hide_taxonomies( type.slug );
+                            }
+							}
+						);
+                    }
+                );
+			}
+		);
+	}
+);
 function invp_block_editor_hide_taxonomies( typeSlug ) {
 	// Only run if core/editor store exists (post editor context)
 	if ( ! wp.data || ! wp.data.dispatch || ! wp.data.select( 'core/editor' ) ) {
@@ -34,7 +42,7 @@ function invp_block_editor_hide_taxonomies( typeSlug ) {
 	for ( var taxonomy in invp.taxonomies ) {
 		// If the user has disabled this taxonomy, remove its meta box.
 		if ( invp.taxonomies[taxonomy].active === false ) {
-			wp.data.dispatch( 'core/editor').removeEditorPanel( 'taxonomy-panel-' + taxonomy.replace( '-', '_' ) );
+			wp.data.dispatch( 'core/editor' ).removeEditorPanel( 'taxonomy-panel-' + taxonomy.replace( '-', '_' ) );
 			continue;
 		}
 
@@ -42,19 +50,20 @@ function invp_block_editor_hide_taxonomies( typeSlug ) {
 		if ( 'undefined' === typeof invp.taxonomies[taxonomy][typeSlug]
 			|| false === invp.taxonomies[taxonomy][typeSlug] ) {
 
-			wp.data.dispatch( 'core/editor').removeEditorPanel( 'taxonomy-panel-' + taxonomy.replace( '-', '_' ) );
+			wp.data.dispatch( 'core/editor' ).removeEditorPanel( 'taxonomy-panel-' + taxonomy.replace( '-', '_' ) );
 		}
 	}
 }
 
 /**
  * Formats numbers as currency.
+ *
  * @param value Amount.
  * @returns string
  */
 function invpFormatCurrency( value ) {
 	// Is value numeric?
-	if ( !isNaN(parseFloat(value)) && isFinite(value) ) {
+	if ( ! isNaN( parseFloat( value ) ) && isFinite( value ) ) {
 		// Yes.
 		return invp_blocks.currency_symbol + Number( value ).toLocaleString();
 	}
@@ -64,7 +73,7 @@ function invpFormatCurrency( value ) {
 /**
  * Editor sidebar spin up.
  */
-( function( wp ) {
+( function ( wp ) {
 	var registerPlugin = wp.plugins.registerPlugin;
 	var PluginSidebar  = wp.editor.PluginSidebar;
 	var el             = wp.element.createElement;
@@ -74,10 +83,10 @@ function invpFormatCurrency( value ) {
 	var withSelect     = wp.data.withSelect;
 	var withDispatch   = wp.data.withDispatch;
 	var compose        = wp.compose.compose;
-	const { __ } = wp.i18n;
+	const { __ }       = wp.i18n;
 
 	function getLabel( meta_key ) {
-		if ( invp.meta_prefix !== meta_key.substr(0, invp.meta_prefix.length ) ) {
+		if ( invp.meta_prefix !== meta_key.substr( 0, invp.meta_prefix.length ) ) {
 			return meta_key;
 		}
 
@@ -158,9 +167,9 @@ function invpFormatCurrency( value ) {
 	// Most text fields.
 	var MetaBlockField = compose(
 		withDispatch(
-			function( dispatch, props ) {
+			function ( dispatch, props ) {
 				return {
-					setMetaFieldValue: function( value ) {
+					setMetaFieldValue: function ( value ) {
 						// Is this a numeric meta field? Can't save an empty string in those.
 						if ( props.isNumeric && '' === value ) {
 							value = '0';
@@ -173,26 +182,26 @@ function invpFormatCurrency( value ) {
 			}
 		),
 		withSelect(
-			function( select, props ) {
+			function ( select, props ) {
 				return {
 					metaFieldValue: select( 'core/editor' )
-					 .getEditedPostAttribute( 'meta' )
-					 [ props.fieldName ],
+					.getEditedPostAttribute( 'meta' )
+					[ props.fieldName ],
 				}
 			}
 		)
 	)(
-		function( props ) {
+		function ( props ) {
 			return el(
 				Text,
 				{
 					label: getLabel( props.fieldName ),
 					value: props.metaFieldValue,
 					id: props.id,
-					onChange: function( content ) {
-						 props.setMetaFieldValue( content );
+					onChange: function ( content ) {
+						props.setMetaFieldValue( content );
 					},
-					onInput: function( event ) {
+					onInput: function ( event ) {
 						// Is this the VIN field?
 						if ( props.fieldName === invp.meta_prefix + 'vin' ) {
 							// Yes.
@@ -211,9 +220,9 @@ function invpFormatCurrency( value ) {
 	// Text field that allows only digits.
 	var MetaBlockDigitsField = compose(
 		withDispatch(
-			function( dispatch, props ) {
+			function ( dispatch, props ) {
 				return {
-					setMetaFieldValue: function( value ) {
+					setMetaFieldValue: function ( value ) {
 						dispatch( 'core/editor' ).editPost(
 							{ meta: { [ props.fieldName ]: value } }
 						);
@@ -222,24 +231,24 @@ function invpFormatCurrency( value ) {
 			}
 		),
 		withSelect(
-			function( select, props ) {
+			function ( select, props ) {
 				return {
 					metaFieldValue: select( 'core/editor' )
-					 .getEditedPostAttribute( 'meta' )
-					 [ props.fieldName ],
+					.getEditedPostAttribute( 'meta' )
+					[ props.fieldName ],
 				}
 			}
 		)
 	)(
-		function( props ) {
+		function ( props ) {
 			return el(
 				Text,
 				{
 					label: getLabel( props.fieldName ),
 					value: props.metaFieldValue,
 					id: props.id,
-					onChange: function( content ) {
-						 props.setMetaFieldValue( content.replace( /[^0-9]+/g, '' ) );
+					onChange: function ( content ) {
+						props.setMetaFieldValue( content.replace( /[^0-9]+/g, '' ) );
 					},
 				}
 			);
@@ -249,9 +258,9 @@ function invpFormatCurrency( value ) {
 	// Drop down
 	var MetaBlockFieldSelect = compose(
 		withDispatch(
-			function( dispatch, props ) {
+			function ( dispatch, props ) {
 				return {
-					setMetaFieldValue: function( value ) {
+					setMetaFieldValue: function ( value ) {
 						dispatch( 'core/editor' ).editPost(
 							{ meta: { [ props.fieldName ]: value } }
 						);
@@ -260,24 +269,24 @@ function invpFormatCurrency( value ) {
 			}
 		),
 		withSelect(
-			function( select, props ) {
+			function ( select, props ) {
 				return {
 					metaFieldValue: select( 'core/editor' )
-					 .getEditedPostAttribute( 'meta' )
-					 [ props.fieldName ],
+					.getEditedPostAttribute( 'meta' )
+					[ props.fieldName ],
 				}
 			}
 		)
 	)(
-		function( props ) {
+		function ( props ) {
 			return el(
 				Select,
 				{
 					label: getLabel( props.fieldName ),
 					value: props.metaFieldValue,
 					options: props.optionArray,
-					onChange: function( content ) {
-						 props.setMetaFieldValue( content );
+					onChange: function ( content ) {
+						props.setMetaFieldValue( content );
 					},
 				}
 			);
@@ -287,9 +296,9 @@ function invpFormatCurrency( value ) {
 	// Boolean fields are checkboxes.
 	var MetaBlockCheckboxField = compose(
 		withDispatch(
-			function( dispatch, props ) {
+			function ( dispatch, props ) {
 				return {
-					setMetaFieldValue: function( value ) {
+					setMetaFieldValue: function ( value ) {
 						dispatch( 'core/editor' ).editPost(
 							{ meta: { [ props.fieldName ]: value } }
 						);
@@ -298,22 +307,22 @@ function invpFormatCurrency( value ) {
 			}
 		),
 		withSelect(
-			function( select, props ) {
+			function ( select, props ) {
 				return {
 					metaFieldValue: select( 'core/editor' )
-					 .getEditedPostAttribute( 'meta' )
-					 [ props.fieldName ],
+					.getEditedPostAttribute( 'meta' )
+					[ props.fieldName ],
 				}
 			}
 		)
 	)(
-		function( props ) {
+		function ( props ) {
 			return el(
 				Checkbox,
 				{
 					label: getLabel( props.fieldName ),
 					checked: props.metaFieldValue,
-					onChange: function( value ) {
+					onChange: function ( value ) {
 						props.setMetaFieldValue( value );
 					},
 				}
@@ -324,7 +333,7 @@ function invpFormatCurrency( value ) {
 	registerPlugin(
 		'invp-plugin-sidebar',
 		{
-			render: function() {
+			render: function () {
 				// Check if we're in a post editor context (not widgets editor)
 				var editorStore = wp.data.select( 'core/editor' );
 				if ( ! editorStore ) {
@@ -550,7 +559,7 @@ function invpFormatCurrency( value ) {
 					),
 				);
 				// Is this a boat? (testMeta was already retrieved in the guard check above)
-				var meta = testMeta;
+				var meta                   = testMeta;
 				var inventory_presser_type = ( meta && meta.inventory_presser_type ) ? meta.inventory_presser_type : '';
 				if ( inventory_presser_type && 'boat' === inventory_presser_type.toLowerCase() ) {
 					// Yes, add the boat fields.

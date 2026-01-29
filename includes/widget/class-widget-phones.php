@@ -156,7 +156,7 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 					$description = '';
 					if ( $this->formats()[ $format ]['uses_labels'] ) {
 						$description = get_term_meta( $term_id, 'phone_' . $p . '_description', true );
-						$html .= sprintf( $this->formats()[ $format ]['repeater'], esc_html( $description ), INVP::prepare_phone_number_for_link( $number ), esc_html( $number ) );
+						$html       .= sprintf( $this->formats()[ $format ]['repeater'], esc_html( $description ), INVP::prepare_phone_number_for_link( $number ), esc_html( $number ) );
 					} else {
 						$html .= sprintf( $this->formats()[ $format ]['repeater'], INVP::prepare_phone_number_for_link( $number ), esc_html( $number ) );
 					}

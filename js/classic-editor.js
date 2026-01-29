@@ -68,25 +68,28 @@ function is_number( evt ) {
 }
 
 function update_add_media_button_annotation() {
-	setTimeout( function() {
-		var data = {
-			'action': 'get_add_media_result',
-			'post_ID': document.getElementById( 'post_ID' ).value,
-		};
-		jQuery.post(
-			ajaxurl,
-			data,
-			function ( response ) {
-				if ( ! response.success ) {
-					return;
+	setTimeout(
+		function () {
+			var data = {
+				'action': 'get_add_media_result',
+				'post_ID': document.getElementById( 'post_ID' ).value,
+			};
+			jQuery.post(
+				ajaxurl,
+				data,
+				function ( response ) {
+					if ( ! response.success ) {
+							return;
+					}
+					jQuery( '#media-annotation' ).text( response.data.button_annotation );
+					if ( '' !== response.data._thumbnail_id ) {
+						document.getElementById( '_thumbnail_id' ).value = response.data._thumbnail_id;
+					}
 				}
-				jQuery( '#media-annotation' ).text( response.data.button_annotation );
-				if ( '' !== response.data._thumbnail_id ) {
-					document.getElementById('_thumbnail_id').value = response.data._thumbnail_id;
-				}
-			}
-		);
-	}, 2000 );
+			);
+		},
+		2000
+	);
 }
 
 /**
