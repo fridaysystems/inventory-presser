@@ -1261,7 +1261,7 @@ class Inventory_Presser_Taxonomies {
 		foreach ( self::query_vars_array() as $query_var ) {
 			$is_active = $settings['taxonomies'][ $query_var ][ $type ] ?? false;
 			if ( ! $is_active ) {
-				$id = $query_var . 'div';
+				$id = str_replace( '-', '_', $query_var ) . 'div';
 				if ( 'location' === $query_var ) {
 					$id = 'tagsdiv-location';
 				}
