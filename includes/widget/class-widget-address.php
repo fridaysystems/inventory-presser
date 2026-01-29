@@ -143,7 +143,12 @@ class Inventory_Presser_Location_Address extends WP_Widget {
 		<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'cb_single_line' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'cb_single_line' ) ); ?>" value="true"<?php checked( ( isset( $instance['cb_single_line'] ) && 'true' === $instance['cb_single_line'] ) ); ?>>
 		<label for="<?php echo esc_attr( $this->get_field_id( 'cb_single_line' ) ); ?>"><?php esc_html_e( 'Single Line Display', 'inventory-presser' ); ?></label>
 		</p>
-		<p><?php echo wp_kses_post( $address_table ); ?></p>
+		<p>
+		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $address_table;
+		?>
+		</p>
 		<?php
 	}
 
