@@ -9,6 +9,13 @@ defined( 'ABSPATH' ) || exit;
 class Inventory_Presser_Shortcode_Slider {
 
 	/**
+	 * Counter for generating unique slider IDs
+	 *
+	 * @var int
+	 */
+	private static $slider_counter = 0;
+
+	/**
 	 * Adds two shortcodes
 	 *
 	 * @return void
@@ -39,6 +46,8 @@ class Inventory_Presser_Shortcode_Slider {
 				'captions'  => 'true',
 				'make'      => '',
 				'model'     => '',
+				'type'      => '',
+				'condition' => '',
 				'orderby'   => 'rand',
 				'order'     => 'ASC',
 				'showcount' => 3, // How many vehicles are shown at one time?
@@ -63,19 +72,31 @@ class Inventory_Presser_Shortcode_Slider {
 		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );
 		wp_enqueue_style( 'invp-slider' );
-		// Provide one of the widget settings to JavaScript.
+
+		// Generate unique IDs for this slider instance.
+		++self::$slider_counter;
+		$slider_id        = 'invp-slider-' . self::$slider_counter;
+		$slider_width_id  = 'slider-width-' . self::$slider_counter;
+		$widget_slider_id = 'widget_slider-' . self::$slider_counter;
+
+		// Store slider configuration in a global object for JavaScript.
+		// Initialize the object if it doesn't exist.
 		wp_add_inline_script(
 			'invp-slider',
-			'const widget_slider = ' . wp_json_encode(
+			'if (typeof window.invpSliderConfigs === "undefined") { window.invpSliderConfigs = {}; }'
+			. 'window.invpSliderConfigs["' . esc_js( $slider_id ) . '"] = ' . wp_json_encode(
 				array(
 					'showcount' => $atts['showcount'],
+					'sliderId'  => $slider_id,
 				)
-			),
+			) . ';',
 			'before'
 		);
 		wp_enqueue_script( 'invp-slider' );
 
-		$flex_html = '<div class="widget__invp_slick"><div id="slider-width"></div><div id="widget_slider" class="flexslider flex-native">'
+		$flex_html = '<div class="widget__invp_slick" data-slider-id="' . esc_attr( $slider_id ) . '">'
+		. '<div id="' . esc_attr( $slider_width_id ) . '" class="slider-width"></div>'
+		. '<div id="' . esc_attr( $widget_slider_id ) . '" class="flexslider flex-native">'
 		. '<ul class="slides">';
 
 		foreach ( $inventory_ids as $inventory_id ) {
@@ -117,6 +138,24 @@ class Inventory_Presser_Shortcode_Slider {
 				'key'     => apply_filters( 'invp_prefix_meta_key', 'model' ),
 				'value'   => $shortcode_atts['model'],
 				'compare' => 'LIKE',
+			);
+		}
+
+		// Type filter.
+		if ( ! empty( $shortcode_atts['type'] ) ) {
+			$query_args['meta_query'][] = array(
+				'key'     => apply_filters( 'invp_prefix_meta_key', 'type' ),
+				'value'   => $shortcode_atts['type'],
+				'compare' => '=',
+			);
+		}
+
+		// Condition filter.
+		if ( ! empty( $shortcode_atts['condition'] ) ) {
+			$query_args['meta_query'][] = array(
+				'key'     => apply_filters( 'invp_prefix_meta_key', 'condition' ),
+				'value'   => $shortcode_atts['condition'],
+				'compare' => '=',
 			);
 		}
 
