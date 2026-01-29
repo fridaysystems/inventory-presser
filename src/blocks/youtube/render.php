@@ -9,4 +9,6 @@
  * @package inventory-presser
  */
 
+defined( 'ABSPATH' ) || exit;
+
 printf( '<span %s>%s</span>', wp_kses_data( get_block_wrapper_attributes() ), wp_oembed_get( esc_html( invp_get_the_youtube_url() ) ) );

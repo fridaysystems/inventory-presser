@@ -9,4 +9,6 @@
  * @package inventory-presser
  */
 
+defined( 'ABSPATH' ) || exit;
+
 printf( '<div %s>%s</div>', wp_kses_data( get_block_wrapper_attributes() ), invp_get_the_description() );

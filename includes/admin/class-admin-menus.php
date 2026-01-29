@@ -171,7 +171,7 @@ if ( ! class_exists( 'Inventory_Presser_Admin_Menus' ) ) {
 			?>
 			</ul><span class="add-to-menu">
 			<input type="submit" 
-				class="button submit-add-to-menu right" value="<?php esc_attr_e( 'Add to Menu' ); ?>"
+				class="button submit-add-to-menu right" value="<?php esc_attr_e( 'Add to Menu', 'inventory-presser' ); ?>"
 				name="add-taxonomy-menu-item" id="submit-taxonomy-location"
 			/>
 			<span class="spinner"></span></span></p></div></div>
