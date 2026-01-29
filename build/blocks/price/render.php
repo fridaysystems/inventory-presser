@@ -9,6 +9,8 @@
  * @package inventory-presser
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * The price is escaped by the invp_get_the_price() function.
  */
