@@ -116,6 +116,9 @@ ul.vehicle-features {
 }
 
 @media screen and (max-width: 700px){
+	.vehicle-row div.vehicle-price-and-buttons > div{
+		max-width: none;
+	}
 	.vehicle-info .post-inner{
 		flex-direction: column;
 	}
@@ -130,6 +133,11 @@ ul.vehicle-features {
 	}
 	.vehicle-row.vehicle-head-widget{
 		flex-direction: column;
+	}
+	/* Options list padding when small screens squish 3 columsn into 2. */
+	ul.vehicle-features{
+		padding-left: 1em;
+		padding-right: 1em;
 	}
 }
 

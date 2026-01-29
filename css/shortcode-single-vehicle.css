@@ -28,6 +28,7 @@ ul.vehicle-features {
 	margin-top: .5em;
 	flex-grow: 2;
 	max-width: none;
+	font-size: 1em;
 }
 .vehicle-columns .vehicle-summary .item {
 	display: inline-block;
