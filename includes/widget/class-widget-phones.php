@@ -253,7 +253,12 @@ class Inventory_Presser_Location_Phones extends WP_Widget {
 		?>
 			</select>
 		</p>
-		<p><?php echo wp_kses_post( $phones_table ); ?></p>
+		<p>
+		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $phones_table;
+		?>
+		</p>
 		<?php
 	}
 

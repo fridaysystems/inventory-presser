@@ -101,6 +101,7 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 * [Added] Adds type and condition arguments to the [invp_inventory_slider] shortcode.
 * [Fixed] Allows more than one [invp_inventory_slider] to appear on the same page.
 * [Fixed] Fixes horizontal layout of maximum price filter.
+* [Fixed] Fixes bug in Phones widget admin form.
 * [Fixed] Fixes doubly-escaped strings in Address widget.
 * [Fixed] Bug fix when hiding editor meta boxes based on the vehicle type. Hides boat fields when editing cars.
 * [Changed] Changes tested up to version number to 6.9.
