@@ -65,9 +65,10 @@ class Inventory_Presser_Slider extends WP_Widget {
 	 * Enqueues stylesheets and JavaScripts
 	 *
 	 * @param  array $instance The widget settings.
+	 * @param  string $widget_id The unique widget ID.
 	 * @return void
 	 */
-	protected function include_scripts( $instance ) {
+	protected function include_scripts( $instance, $widget_id ) {
 		// Need flexslider scripts and styles.
 		wp_enqueue_style( 'flexslider' );
 		wp_enqueue_style( 'invp-flexslider' );
@@ -75,14 +76,30 @@ class Inventory_Presser_Slider extends WP_Widget {
 
 		// Spin-up script.
 		wp_enqueue_script( 'invp-slider' );
-		// Provide one of the widget settings to JavaScript.
+
+		// Generate unique slider ID from widget ID.
+		$slider_id = 'widget-slider-' . sanitize_html_class( $widget_id );
+
+		// Initialize the global config object only once.
+		static $config_initialized = false;
+		if ( ! $config_initialized ) {
+			wp_add_inline_script(
+				'invp-slider',
+				'if (typeof window.invpSliderConfigs === "undefined") { window.invpSliderConfigs = {}; }',
+				'before'
+			);
+			$config_initialized = true;
+		}
+
+		// Store this widget's configuration in the global object.
 		wp_add_inline_script(
 			'invp-slider',
-			'const widget_slider = ' . wp_json_encode(
+			'window.invpSliderConfigs["' . esc_js( $slider_id ) . '"] = ' . wp_json_encode(
 				array(
 					'showcount' => $instance['showcount'] ?? 3,
+					'sliderId'  => $slider_id,
 				)
-			),
+			) . ';',
 			'before'
 		);
 	}
@@ -95,7 +112,13 @@ class Inventory_Presser_Slider extends WP_Widget {
 	 * @return void
 	 */
 	public function widget( $args, $instance ) {
-		$this->include_scripts( $instance );
+		// Generate unique IDs for this widget instance.
+		$widget_id   = $args['widget_id'];
+		$slider_id   = 'widget-slider-' . sanitize_html_class( $widget_id );
+		$width_id    = 'slider-width-' . sanitize_html_class( $widget_id );
+		$slider_div_id = 'widget_slider-' . sanitize_html_class( $widget_id );
+
+		$this->include_scripts( $instance, $widget_id );
 
 		$title                 = empty( $instance['title'] ) ? '' : apply_filters( 'widget_title', $instance['title'] );
 		$showcount             = empty( $instance['showcount'] ) ? 3 : $instance['showcount'];
@@ -176,7 +199,15 @@ class Inventory_Presser_Slider extends WP_Widget {
 		if ( ! empty( $title ) ) {
 			echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
 		}
-		echo '<div id="slider-width"></div><div id="widget_slider" class="flexslider"><ul class="slides">';
+		printf(
+			'<div class="widget__invp_slick" data-slider-id="%s">',
+			esc_attr( $slider_id )
+		);
+		printf(
+			'<div id="%s" class="slider-width"></div><div id="%s" class="flexslider flex-native"><ul class="slides">',
+			esc_attr( $width_id ),
+			esc_attr( $slider_div_id )
+		);
 
 		foreach ( $inventory_ids as $inventory_id ) {
 			printf(
@@ -201,7 +232,7 @@ class Inventory_Presser_Slider extends WP_Widget {
 			}
 			echo '</a></li>';
 		}
-		echo '</ul></div>' . wp_kses_post( $args['after_widget'] );
+		echo '</ul></div></div>' . wp_kses_post( $args['after_widget'] );
 	}
 
 	/**

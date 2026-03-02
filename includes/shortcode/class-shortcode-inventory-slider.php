@@ -79,12 +79,23 @@ class Inventory_Presser_Shortcode_Slider {
 		$slider_width_id  = 'slider-width-' . self::$slider_counter;
 		$widget_slider_id = 'widget_slider-' . self::$slider_counter;
 
+		// Enqueue the script first so inline scripts can be attached.
+		wp_enqueue_script( 'invp-slider' );
+
 		// Store slider configuration in a global object for JavaScript.
-		// Initialize the object if it doesn't exist.
+		// Initialize the object only on the first shortcode instance.
+		if ( 1 === self::$slider_counter ) {
+			wp_add_inline_script(
+				'invp-slider',
+				'if (typeof window.invpSliderConfigs === "undefined") { window.invpSliderConfigs = {}; }',
+				'before'
+			);
+		}
+
+		// Add this slider's configuration.
 		wp_add_inline_script(
 			'invp-slider',
-			'if (typeof window.invpSliderConfigs === "undefined") { window.invpSliderConfigs = {}; }'
-			. 'window.invpSliderConfigs["' . esc_js( $slider_id ) . '"] = ' . wp_json_encode(
+			'window.invpSliderConfigs["' . esc_js( $slider_id ) . '"] = ' . wp_json_encode(
 				array(
 					'showcount' => $atts['showcount'],
 					'sliderId'  => $slider_id,
@@ -92,7 +103,6 @@ class Inventory_Presser_Shortcode_Slider {
 			) . ';',
 			'before'
 		);
-		wp_enqueue_script( 'invp-slider' );
 
 		$flex_html = '<div class="widget__invp_slick" data-slider-id="' . esc_attr( $slider_id ) . '">'
 		. '<div id="' . esc_attr( $slider_width_id ) . '" class="slider-width"></div>'
