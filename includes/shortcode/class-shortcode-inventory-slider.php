@@ -131,14 +131,22 @@ class Inventory_Presser_Shortcode_Slider {
 	}
 
 	protected static function add_make_and_model_query_args( $query_args, $shortcode_atts ) {
+		// Ensure meta_query exists and is an array.
+		if ( ! isset( $query_args['meta_query'] ) || ! is_array( $query_args['meta_query'] ) ) {
+			$query_args['meta_query'] = array();
+		}
+
+		// Ensure tax_query exists and is an array.
+		if ( ! isset( $query_args['tax_query'] ) || ! is_array( $query_args['tax_query'] ) ) {
+			$query_args['tax_query'] = array();
+		}
+
 		// Make filter.
 		if ( ! empty( $shortcode_atts['make'] ) ) {
-			$query_args['tax_query'] = array(
-				array(
-					'taxonomy' => 'make',
-					'field'    => 'slug',
-					'terms'    => $shortcode_atts['make'],
-				),
+			$query_args['tax_query'][] = array(
+				'taxonomy' => 'make',
+				'field'    => 'slug',
+				'terms'    => $shortcode_atts['make'],
 			);
 		}
 
@@ -151,12 +159,12 @@ class Inventory_Presser_Shortcode_Slider {
 			);
 		}
 
-		// Type filter.
+		// Type filter - type is a taxonomy, not a meta field.
 		if ( ! empty( $shortcode_atts['type'] ) ) {
-			$query_args['meta_query'][] = array(
-				'key'     => apply_filters( 'invp_prefix_meta_key', 'type' ),
-				'value'   => $shortcode_atts['type'],
-				'compare' => '=',
+			$query_args['tax_query'][] = array(
+				'taxonomy' => 'type',
+				'field'    => 'slug',
+				'terms'    => strtolower( $shortcode_atts['type'] ),
 			);
 		}
 
@@ -173,16 +181,18 @@ class Inventory_Presser_Shortcode_Slider {
 	}
 
 	public static function get_vehicle_IDs( $shortcode_atts ) {
+		// Check if any filters are specified.
+		$has_filters = ! empty( $shortcode_atts['make'] )
+			|| ! empty( $shortcode_atts['model'] )
+			|| ! empty( $shortcode_atts['type'] )
+			|| ! empty( $shortcode_atts['condition'] );
+
+		// Base query arguments.
 		$gpargs = array(
 			'posts_per_page' => 10,
 			'post_type'      => INVP::POST_TYPE,
 			'meta_query'     => array(
 				'relation' => 'AND',
-				array(
-					'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
-					'value'   => 1,
-					'compare' => '=',
-				),
 				array(
 					'key'     => '_thumbnail_id',
 					'compare' => 'EXISTS',
@@ -193,10 +203,22 @@ class Inventory_Presser_Shortcode_Slider {
 			'order'          => $shortcode_atts['order'],
 		);
 
-		$inventory_ids = get_posts( self::add_make_and_model_query_args( $gpargs, $shortcode_atts ) );
+		// Only require featured vehicles if no filters are specified.
+		if ( ! $has_filters ) {
+			$gpargs['meta_query'][] = array(
+				'key'     => apply_filters( 'invp_prefix_meta_key', 'featured' ),
+				'value'   => 1,
+				'compare' => '=',
+			);
+		}
 
-		// If we found less than 10 vehicles, do not required featured vehicles.
-		if ( count( $inventory_ids ) < 10 ) {
+		// Add filter arguments (make, model, type, condition).
+		$gpargs = self::add_make_and_model_query_args( $gpargs, $shortcode_atts );
+
+		$inventory_ids = get_posts( $gpargs );
+
+		// If we found less than 10 vehicles and no filters were specified, try non-featured vehicles.
+		if ( count( $inventory_ids ) < 10 && ! $has_filters ) {
 			$gpargs = array(
 				'posts_per_page' => 10 - ( count( $inventory_ids ) ),
 				'post_type'      => INVP::POST_TYPE,
