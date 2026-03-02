@@ -97,6 +97,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Changelog ==
 
+= 15.3.1 =
+* [Fixed] Allows more than one [invp_inventory_slider] shortcode and Vehicle Slider widget to appear on the same page.
+
 = 15.3.0 =
 * [Added] Adds type and condition arguments to the [invp_inventory_slider] shortcode.
 * [Fixed] Allows more than one [invp_inventory_slider] to appear on the same page.
@@ -347,6 +350,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Upgrade Notice ==
+
+= 15.3.1 =
+Allows more than one [invp_inventory_slider] shortcode and Vehicle Slider widget to appear on the same page.
 
 = 15.3.0 =
 Adds type and condition arguments to the [invp_inventory_slider] shortcode. Allows more than one [invp_inventory_slider] to appear on the same page. Fixes horizontal layout of maximum price filter. Bug fix when hiding editor meta boxes based on the vehicle type. Changes tested up to version number to 6.9.
