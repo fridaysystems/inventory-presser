@@ -829,9 +829,13 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 		$post_ID = get_the_ID();
 	}
 
-	$cache_key_images = 'invp_get_the_photos_images_' . $post_ID;
-	$images           = get_transient( $cache_key_images );
-	if ( empty( $images ) ) {
+	// Use the object cache instead of transients to avoid MySQL deadlocks when
+	// concurrent requests for the same vehicle all miss the cache simultaneously
+	// and race to write the same options table row.
+	$cache_group      = 'invp_photos';
+	$cache_key_images = 'images_' . $post_ID;
+	$images           = wp_cache_get( $cache_key_images, $cache_group );
+	if ( false === $images ) {
 		$images = get_posts(
 			array(
 				'meta_key'       => apply_filters( 'invp_prefix_meta_key', 'photo_number' ),
@@ -866,12 +870,12 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 	}
 
 	if ( ! empty( $images ) ) {
-		set_transient( $cache_key_images, $images, MINUTE_IN_SECONDS * 5 );
+		wp_cache_set( $cache_key_images, $images, $cache_group, MINUTE_IN_SECONDS * 5 );
 	}
 
-	$cache_key_image_urls = 'invp_get_the_photos_image_urls_' . $post_ID;
-	$image_urls           = get_transient( $cache_key_image_urls );
-	if ( empty( $image_urls ) ) {
+	$cache_key_image_urls = 'image_urls_' . $post_ID;
+	$image_urls           = wp_cache_get( $cache_key_image_urls, $cache_group );
+	if ( false === $image_urls ) {
 		$image_urls = array();
 		foreach ( $images as $image ) {
 			foreach ( $sizes as $size ) {
@@ -893,7 +897,7 @@ function invp_get_the_photos( $sizes, $post_ID = null ) {
 				}
 			}
 		}
-		set_transient( $cache_key_image_urls, $image_urls, MINUTE_IN_SECONDS * 5 );
+		wp_cache_set( $cache_key_image_urls, $image_urls, $cache_group, MINUTE_IN_SECONDS * 5 );
 	}
 
 	return $image_urls;
