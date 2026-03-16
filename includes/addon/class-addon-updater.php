@@ -288,12 +288,20 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 		public function get_repo_api_data() {
 			$version_info = $this->get_cached_version_info();
 
-			// If cached version info has empty package URL but we have a license key, clear cache and retry.
-			// This fixes multisite issues where plugins initialize before site options are available.
+			// If the cache was written with a different (e.g. empty) license key but we now have one,
+			// clear the cache and retry so the API can return a valid package URL.
+			// Only bust the cache when the license key has actually changed; otherwise the cache
+			// would be invalidated on every check when a license is expired/invalid and `package`
+			// is always absent, causing a live HTTP round-trip to inventorypresser.com on every
+			// WP-Cron run triggered by front-end page loads.
 			if ( false !== $version_info && empty( $version_info->package ) && ! empty( $this->api_data['license'] ) ) {
-				// Clear the cache and retry.
-				delete_option( $this->cache_key );
-				$version_info = false;
+				$raw_cache       = get_option( $this->cache_key );
+				$cached_license  = isset( $raw_cache['license_hash'] ) ? $raw_cache['license_hash'] : '';
+				$current_license = md5( $this->api_data['license'] );
+				if ( $cached_license !== $current_license ) {
+					delete_option( $this->cache_key );
+					$version_info = false;
+				}
 			}
 
 			if ( false === $version_info ) {
@@ -399,7 +407,8 @@ if ( ! class_exists( 'Inventory_Presser_Addon_Updater' ) ) {
 					continue;
 				}
 
-				if ( strlen( $update_response->url ) < strlen( Inventory_Presser_Addon_License::STORE_URL )
+			if ( ! isset( $update_response->url )
+					|| strlen( $update_response->url ) < strlen( Inventory_Presser_Addon_License::STORE_URL )
 					|| Inventory_Presser_Addon_License::STORE_URL != substr( $update_response->url, 0, strlen( Inventory_Presser_Addon_License::STORE_URL ) )
 				) {
 					continue;
@@ -922,8 +931,9 @@ jQuery(document).ready(function(){
 			}
 
 			$data = array(
-				'timeout' => strtotime( '+3 hours', time() ),
-				'value'   => wp_json_encode( $value ),
+				'timeout'      => strtotime( '+3 hours', time() ),
+				'value'        => wp_json_encode( $value ),
+				'license_hash' => md5( $this->api_data['license'] ?? '' ),
 			);
 
 			update_option( $cache_key, $data, false );
