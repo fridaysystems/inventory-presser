@@ -30,8 +30,8 @@ class Inventory_Presser_REST {
 			// Allow vehicles to be returned in a random order.
 			add_filter( 'rest_' . INVP::POST_TYPE . '_collection_params', array( $this, 'allow_orderby_rand' ) );
 
-			// Prevent REST API warnings when vehicles are deleted during request processing.
-			add_filter( 'rest_prepare_' . INVP::POST_TYPE, array( $this, 'handle_null_post' ), 10, 3 );
+			// Strip deleted vehicles from the query before WP core tries to read their properties.
+			add_filter( 'rest_' . INVP::POST_TYPE . '_query', array( $this, 'exclude_deleted_posts' ), 10, 2 );
 		}
 	}
 
@@ -93,29 +93,36 @@ class Inventory_Presser_REST {
 	}
 
 	/**
-	 * Handles deleted vehicles in REST API responses to prevent warnings.
+	 * Strips post IDs that no longer exist from a REST API collection query so
+	 * that WordPress core never attempts to prepare a response for a deleted
+	 * vehicle. The previous approach of using rest_prepare_{post_type} was too
+	 * late — WP core had already read properties off the null post object and
+	 * generated PHP warnings before the filter ran.
 	 *
-	 * When a vehicle is deleted during a REST API request (e.g., via skip trash
-	 * setting), the post object may be null when WordPress tries to prepare
-	 * the response. This filter catches null posts early and returns an error
-	 * response instead of allowing WordPress to generate warnings.
-	 *
-	 * @param  WP_REST_Response $response The response object.
-	 * @param  WP_Post|null     $post     The post object, or null if deleted.
-	 * @param  WP_REST_Request  $request  The request object.
-	 * @return WP_REST_Response|WP_Error  The response or an error if post is null.
+	 * @param  array           $args    WP_Query args built by the REST controller.
+	 * @param  WP_REST_Request $request The REST API request.
+	 * @return array
 	 */
-	public function handle_null_post( $response, $post, $request ) {
-		// If the post is null or not a valid post object, return an error.
-		if ( ! $post || ! is_a( $post, 'WP_Post' ) ) {
-			return new WP_Error(
-				'rest_null_or_invalid',
-				__( 'The vehicle has been deleted or is no longer available.', 'inventory-presser' ),
-				array( 'status' => 410 ) // 410 Gone.
-			);
+	public function exclude_deleted_posts( $args, $request ) {
+		if ( empty( $args['post__in'] ) ) {
+			return $args;
 		}
 
-		return $response;
+		$existing = get_posts(
+			array(
+				'post__in'       => $args['post__in'],
+				'post_type'      => INVP::POST_TYPE,
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+			)
+		);
+
+		// When every requested ID has been deleted, pass 0 so WP doesn't fall
+		// back to returning all posts.
+		$args['post__in'] = ! empty( $existing ) ? $existing : array( 0 );
+
+		return $args;
 	}
 
 	/**
