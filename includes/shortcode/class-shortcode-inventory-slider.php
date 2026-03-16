@@ -161,10 +161,23 @@ class Inventory_Presser_Shortcode_Slider {
 
 		// Type filter - type is a taxonomy, not a meta field.
 		if ( ! empty( $shortcode_atts['type'] ) ) {
+			// Support multiple types separated by commas.
+			$type_terms = $shortcode_atts['type'];
+			if ( is_string( $type_terms ) && strpos( $type_terms, ',' ) !== false ) {
+				// Split comma-separated values and trim whitespace.
+				$type_terms = array_map( 'trim', explode( ',', $type_terms ) );
+			}
+			// Ensure it's an array for consistent handling.
+			if ( ! is_array( $type_terms ) ) {
+				$type_terms = array( $type_terms );
+			}
+			// Convert all to lowercase.
+			$type_terms = array_map( 'strtolower', $type_terms );
+
 			$query_args['tax_query'][] = array(
 				'taxonomy' => 'type',
 				'field'    => 'slug',
-				'terms'    => strtolower( $shortcode_atts['type'] ),
+				'terms'    => $type_terms,
 			);
 		}
 
