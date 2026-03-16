@@ -92,6 +92,9 @@ class Inventory_Presser_Blocks {
 		if ( is_admin() ) {
 			wp_enqueue_script( 'invp-blocks' );
 			wp_enqueue_style( 'invp-block-editor' );
+			wp_enqueue_script( Inventory_Presser_Map_Widget::SCRIPT_HANDLE_LEAFLET );
+			wp_enqueue_style( Inventory_Presser_Map_Widget::SCRIPT_HANDLE_LEAFLET );
+			wp_enqueue_style( Inventory_Presser_Map_Widget::ID_BASE );
 		}
 	}
 
@@ -118,6 +121,7 @@ class Inventory_Presser_Blocks {
 			'last-modified',
 			'length', // For trailers & boats.
 			'make',
+			'map',
 			'model',
 			'msrp',
 			'odometer',

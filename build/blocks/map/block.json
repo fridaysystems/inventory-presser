@@ -1,0 +1,28 @@
+{
+  "title": "Map",
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "inventory-presser/map",
+  "version": "1.0.0",
+  "description": "Embeds a map pointed at one or more dealership addresses.",
+  "icon": "admin-network",
+  "category": "inventory-presser",
+  "attributes": {
+    "locationSlug": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "example": {},
+  "textdomain": "inventory-presser",
+  "editorScript": "file:./index.js",
+  "keywords": [
+    "map",
+    "location",
+    "dealer"
+  ],
+  "render": "file:./render.php"
+}
