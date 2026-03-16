@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.9
 Requires PHP: 7.0.0
-Stable tag: 15.3.1
+Stable tag: 15.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,8 @@ Adds listings and vehicle details pages to any theme. Comes with templates and p
 
 ### Downloads
 
- * [https://downloads.wordpress.org/plugin/inventory-presser.15.3.1.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.3.1.zip)
- * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.3.1.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.3.1.zip)
+ * [https://downloads.wordpress.org/plugin/inventory-presser.15.4.0.zip](https://downloads.wordpress.org/plugin/inventory-presser.15.4.0.zip)
+ * [https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.4.0.zip](https://inventorypresser.com/wp-content/uploads/inventory-presser-v15.4.0.zip)
 
 
 ### Requires 5.0.0
@@ -97,8 +97,13 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Changelog ==
 
+= 15.4.0 =
+* [Added] Adds a Map block. This is an equivalent to the Map widget for the block editor.
+* [Fixed] Fixes bugs in the add-on updater to reduce requests to inventorypresser.com during each plugin update check.
+
 = 15.3.1 =
 * [Fixed] Allows more than one [invp_inventory_slider] shortcode and Vehicle Slider widget to appear on the same page.
+* [Fixed] Allows more than one type slug in the [invp_inventory_slider type="car,suv,van,tru"] shortcode type filter.
 
 = 15.3.0 =
 * [Added] Adds type and condition arguments to the [invp_inventory_slider] shortcode.
@@ -351,8 +356,11 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 == Upgrade Notice ==
 
+= 15.4.0 =
+Adds a Map block. This is an equivalent to the Map widget for the block editor. Fixes bugs in the add-on updater to reduce requests to inventorypresser.com during each plugin update check.
+
 = 15.3.1 =
-Allows more than one [invp_inventory_slider] shortcode and Vehicle Slider widget to appear on the same page.
+Allows more than one [invp_inventory_slider] shortcode and Vehicle Slider widget to appear on the same page. Allows more than one type slug in the [invp_inventory_slider type="car,suv,van,tru"] shortcode type filter.
 
 = 15.3.0 =
 Adds type and condition arguments to the [invp_inventory_slider] shortcode. Allows more than one [invp_inventory_slider] to appear on the same page. Fixes horizontal layout of maximum price filter. Bug fix when hiding editor meta boxes based on the vehicle type. Changes tested up to version number to 6.9.
