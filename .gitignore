@@ -1,4 +1,5 @@
 .cursorindexingignore
 .specstory/
+.vscode/
 node_modules/
 vendor/
