@@ -18,8 +18,8 @@
 	},
 	"homepage": "https://github.com/fridaysystems/inventory-presser#readme",
 	"devDependencies": {
-		"@wordpress/scripts": "^30.1.0",
-		"iframe-resizer": "^4.3.2",
+		"@wordpress/scripts": "^31.6.0",
+		"iframe-resizer": "^5.5.9",
 		"leaflet": "^1.7.1",
 		"minify": "^8.0.4"
 	}

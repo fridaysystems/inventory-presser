@@ -1415,7 +1415,7 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 			// Register the iFrameResizer.js script for use by our [invp_iframe] shortcode and Iframe block.
 			wp_register_script(
 				'invp-iframe-resizer',
-				plugins_url( "/js/iframe-resizer/iframeResizer{$min}.js", INVP_PLUGIN_FILE_PATH ),
+				plugins_url( '/js/iframe-resizer/iframeResizer.js', INVP_PLUGIN_FILE_PATH ),
 				array(),
 				INVP_PLUGIN_VERSION,
 				true
