@@ -1261,6 +1261,12 @@ if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {
 				array(),
 				INVP_PLUGIN_VERSION
 			);
+			wp_register_style(
+				'invp-price-breakdown',
+				plugins_url( "css/price-breakdown{$min}.css", INVP_PLUGIN_FILE_PATH ),
+				array(),
+				INVP_PLUGIN_VERSION
+			);
 
 			// Register a script without a .js URL for our inline invp object.
 			if ( ! wp_script_is( 'invp', 'registered' ) ) {

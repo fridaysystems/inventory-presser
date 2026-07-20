@@ -917,6 +917,44 @@ function invp_get_raw_price( $post_ID = null ) {
 }
 
 /**
+ * invp_get_raw_doc_fee
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return string
+ */
+function invp_get_raw_doc_fee( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return apply_filters( 'invp_get_raw_doc_fee', INVP::get_meta( 'doc_fee', $post_ID ), $post_ID );
+}
+
+/**
+ * invp_get_raw_rebate
+ *
+ * @param  int|null $post_ID     The post ID of a vehicle. Must be passed when using this method outside the loop.
+ * @return string
+ */
+function invp_get_raw_rebate( $post_ID = null ) {
+	if ( empty( $post_ID ) ) {
+		$post_ID = get_the_ID();
+	}
+	return apply_filters( 'invp_get_raw_rebate', INVP::get_meta( 'rebate', $post_ID ), $post_ID );
+}
+
+/**
+ * Formats a number as currency using the same conventions as the rest of this
+ * file. Whole-dollar amounts are shown without cents.
+ *
+ * @param  float $amount A money amount.
+ * @return string The amount formatted as currency, like $1,234 or $1,234.56.
+ */
+function invp_format_currency( $amount ) {
+	$decimals = ( floor( $amount ) == $amount ) ? 0 : 2;
+	return INVP::currency_symbol() . number_format( $amount, $decimals, '.', ',' );
+}
+
+/**
  * Template tag. Returns the vehicle's price.
  *
  * @param  string   $zero_string The text to display when the price is zero.
@@ -1065,7 +1103,49 @@ function invp_get_the_price( $zero_string = null, $post_ID = null ) {
 			if ( empty( $price ) ) {
 				return wp_kses_post( apply_filters( 'invp_price_display', esc_html( $zero_string ), $settings['price_display'], $post_ID ) );
 			}
-			return wp_kses_post( apply_filters( 'invp_price_display', esc_html( INVP::currency_symbol() . number_format( $price, 0, '.', ',' ) ), $settings['price_display'], $post_ID ) );
+
+			$doc_fee = abs( floatval( invp_get_raw_doc_fee( $post_ID ) ) );
+			$rebate  = abs( floatval( invp_get_raw_rebate( $post_ID ) ) );
+
+			// No doc fee or rebate? Show the price by itself.
+			if ( empty( $doc_fee ) && empty( $rebate ) ) {
+				return wp_kses_post( apply_filters( 'invp_price_display', esc_html( INVP::currency_symbol() . number_format( $price, 0, '.', ',' ) ), $settings['price_display'], $post_ID ) );
+			}
+
+			// Show a breakdown: price, + doc fee, - rebate, and a total.
+			wp_enqueue_style( 'invp-price-breakdown' );
+			$output = sprintf(
+				'<span class="invp-price-line invp-price-line-price">%s %s</span>',
+				esc_html( apply_filters( 'invp_price_label', __( 'Price', 'inventory-presser' ), $post_ID ) ),
+				esc_html( invp_format_currency( $price ) )
+			);
+			if ( ! empty( $doc_fee ) ) {
+				$output .= sprintf(
+					'<span class="invp-price-line invp-price-line-doc-fee">+ %s %s</span>',
+					esc_html( apply_filters( 'invp_doc_fee_label', __( 'Doc Fee', 'inventory-presser' ), $post_ID ) ),
+					esc_html( invp_format_currency( $doc_fee ) )
+				);
+			}
+			if ( ! empty( $rebate ) ) {
+				$output .= sprintf(
+					'<span class="invp-price-line invp-price-line-rebate">- %s %s</span>',
+					esc_html( apply_filters( 'invp_rebate_label', __( 'Rebate', 'inventory-presser' ), $post_ID ) ),
+					esc_html( invp_format_currency( $rebate ) )
+				);
+			}
+			$output .= sprintf(
+				'<span class="invp-price-line invp-price-line-total">%s %s</span>',
+				esc_html( apply_filters( 'invp_price_total_label', __( 'Total', 'inventory-presser' ), $post_ID ) ),
+				esc_html( invp_format_currency( $price + $doc_fee - $rebate ) )
+			);
+			return wp_kses_post(
+				apply_filters(
+					'invp_price_display',
+					sprintf( '<span class="invp-price-breakdown">%s</span>', $output ),
+					$settings['price_display'],
+					$post_ID
+				)
+			);
 
 		case 'down_and_payment':
 			$string       = '';

@@ -631,6 +631,12 @@ class INVP {
 					'type'   => 'string',
 				),
 				array(
+					'label'  => __( 'Doc Fee', 'inventory-presser' ),
+					'name'   => 'doc_fee',
+					'sample' => 299,
+					'type'   => 'number',
+				),
+				array(
 					'label'  => __( 'Doors', 'inventory-presser' ),
 					'name'   => 'doors',
 					'sample' => 4,
@@ -885,6 +891,12 @@ class INVP {
 					'label'  => __( 'Rate', 'inventory-presser' ),
 					'name'   => 'rate',
 					'sample' => 6.99,
+					'type'   => 'number',
+				),
+				array(
+					'label'  => __( 'Rebate', 'inventory-presser' ),
+					'name'   => 'rebate',
+					'sample' => 500,
 					'type'   => 'number',
 				),
 				array(

@@ -1,0 +1,19 @@
+/**
+ * Styles the price + doc fee - rebate = total breakdown output by
+ * invp_get_the_price() when a vehicle has a doc fee or rebate.
+ */
+.invp-price-breakdown {
+	display: inline-block;
+	text-align: left;
+}
+.invp-price-breakdown .invp-price-line {
+	display: block;
+	font-size: 0.65em;
+	font-weight: normal;
+	line-height: 1.5;
+	white-space: nowrap;
+}
+.invp-price-breakdown .invp-price-line-total {
+	font-size: 1em;
+	font-weight: 800;
+}
