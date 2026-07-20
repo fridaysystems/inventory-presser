@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  * Plugin Name: Inventory Presser
  * Plugin URI: https://inventorypresser.com
  * Description: Car listings with photo sliders for automobile and powersports dealerships.
- * Version: 15.4.1
+ * Version: 15.5.0
  * Author: Friday Systems
  * Author URI: https://inventorypresser.com
  * Text Domain: inventory-presser
@@ -32,7 +32,7 @@ if ( ! defined( 'INVP_PLUGIN_FILE_PATH' ) ) {
 	define( 'INVP_PLUGIN_FILE_PATH', __FILE__ );
 }
 if ( ! defined( 'INVP_PLUGIN_VERSION' ) ) {
-	define( 'INVP_PLUGIN_VERSION', '15.4.1' );
+	define( 'INVP_PLUGIN_VERSION', '15.5.0' );
 }
 
 if ( ! class_exists( 'Inventory_Presser_Plugin' ) ) {

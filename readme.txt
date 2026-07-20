@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.9
 Requires PHP: 7.0.0
-Stable tag: 15.4.1
+Stable tag: 15.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,10 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.5.0 =
+* [Added] Adds Doc Fee and Rebate meta fields, `doc_fee` and `rebate`. When either holds a value, the default price display becomes an itemized breakdown: price, + doc fee, - rebate, and a bolder, larger total. Vehicles without a doc fee or rebate display the price the same as previous versions.
+* [Added] Adds template tags `invp_get_raw_doc_fee()` and `invp_get_raw_rebate()` and filters `invp_price_label`, `invp_doc_fee_label`, `invp_rebate_label`, and `invp_price_total_label`.
 
 = 15.4.1 =
 * [Fixed] Bug fix. Adds a file_exists() check around each register_block_type() call.
