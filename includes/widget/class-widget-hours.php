@@ -116,8 +116,8 @@ class Inventory_Presser_Location_Hours extends WP_Widget {
 				}
 				echo wp_kses_post( apply_filters( 'invp_hours_title', $hours_title, $hours_uid ) );
 
-				// get current day number, starting on a monday.
-				$current_weekday = gmdate( 'w' ) - 1;
+				// get current day number, starting on a monday. Use the site's time zone, not UTC.
+				$current_weekday = (int) wp_date( 'w' ) - 1;
 				$current_weekday = ( -1 === $current_weekday ) ? 6 : $current_weekday;
 
 				$start_of_week = get_option( 'start_of_week' ) - 1;
