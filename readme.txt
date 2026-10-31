@@ -4,7 +4,7 @@ Tags: car dealer, car dealership, car listings, auto dealer, car sales
 Requires at least: 5.0.0
 Tested up to: 6.9
 Requires PHP: 7.0.0
-Stable tag: 15.5.0
+Stable tag: 15.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,9 @@ Yes. Visit our [Internationalization Guide](https://inventorypresser.com/docs/in
 
 
 == Changelog ==
+
+= 15.5.1 =
+* [Fixed] Fixes the Hours widget highlighting the wrong day in the evening. It used UTC to decide what day it is instead of the site's time zone.
 
 = 15.5.0 =
 * [Added] Adds Doc Fee and Rebate meta fields, `doc_fee` and `rebate`. When either holds a value, the default price display becomes an itemized breakdown: price, + doc fee, - rebate, and a bolder, larger total. Vehicles without a doc fee or rebate display the price the same as previous versions.
